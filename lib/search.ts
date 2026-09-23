@@ -72,6 +72,7 @@ export interface SearchDoc {
 export const entryKindLabel = (entry: RegistryEntryMeta) => {
   if (entry.category === 'templates') return 'Template';
   if (entry.category === 'blocks') return entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : 'Block';
+
   return CATEGORY_LABELS[entry.category];
 };
 
@@ -119,6 +120,7 @@ const withinOneEdit = (a: string, b: string) => {
       j++;
     }
   }
+
   return edits + (a.length - i) + (b.length - j) <= 1;
 };
 
@@ -128,6 +130,7 @@ const wordScore = (token: string, word: string) => {
   if (token.length >= 3 && word.includes(token)) return 0.4;
   if (token.length >= 5 && withinOneEdit(token, word)) return 0.5;
   if (word.length >= 4 && token.startsWith(word) && token.length - word.length <= 2) return 0.6;
+
   return 0;
 };
 
@@ -139,6 +142,7 @@ const tokenScore = (doc: SearchDoc, token: string, exact = false) => {
       if (score > best) best = score;
     }
   }
+
   return best;
 };
 
@@ -160,6 +164,7 @@ const scoreDoc = (doc: SearchDoc, tokens: string[], query: string) => {
   }
 
   if (!matchedAll) return score >= 150 ? score : 0;
+
   return score;
 };
 

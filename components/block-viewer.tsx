@@ -45,7 +45,6 @@ export interface BlockViewerProps {
 }
 
 export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: BlockViewerProps) => {
-  const title = entry.title;
   const embedHref = entryEmbedHref(entry, useRegistryBase());
   const maxHeight = entry.category === 'templates' ? TEMPLATE_MAX_HEIGHT : BLOCK_MAX_HEIGHT;
   const [viewport, setViewport] = React.useState<Viewport>('desktop');
@@ -72,6 +71,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
           itemClassName="h-6 rounded-[2px] px-2 text-xs uppercase"
           items={ORDER.map((v) => {
             const Icon = ICONS[v];
+
             return {
               value: v,
               ariaLabel: `${SIZES[v].label} viewport${v === 'desktop' ? '' : ` (${SIZES[v].width}px)`}`,
@@ -80,7 +80,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
                   <Icon className="size-3" />
                   <span className="hidden sm:inline">{SIZES[v].label}</span>
                   {v !== 'desktop' && active && (
-                    <span className="tabular-nums text-muted-foreground">{SIZES[v].width}</span>
+                    <span className="text-muted-foreground tabular-nums">{SIZES[v].width}</span>
                   )}
                 </>
               ),
@@ -101,7 +101,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
       <div className="bg-dot-grid flex justify-center overflow-x-auto bg-card/20 p-3 sm:p-4">
         <PreviewFrame
           src={src}
-          title={`${title} preview`}
+          title={`${entry.title} preview`}
           refreshKey={key}
           initialHeight={initialHeight}
           minHeight={MIN_HEIGHT}

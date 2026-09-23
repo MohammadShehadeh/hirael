@@ -21,9 +21,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const SUPPORT_TIME_ZONE = 'Europe/Lisbon';
 const OPENS_AT = 8;
@@ -53,11 +51,13 @@ const getReplyStatus = (): ReplyStatus => {
   if (workday && hour >= OPENS_AT && hour < CLOSES_AT) return 'open';
   if (workday && hour < OPENS_AT) return 'later-today';
   if (workday && weekday !== 'Fri') return 'tomorrow';
+
   return 'monday';
 };
 
 const subscribeToClock = (onChange: () => void) => {
   const timer = setInterval(onChange, 60_000);
+
   return () => clearInterval(timer);
 };
 
@@ -165,6 +165,7 @@ const ARTICLES: readonly { keywords: readonly string[]; articles: readonly Artic
 const findArticles = (subject: string) => {
   const text = subject.toLowerCase();
   if (text.trim().length < 3) return [];
+
   return ARTICLES.filter((group) => group.keywords.some((keyword) => text.includes(keyword)))
     .flatMap((group) => group.articles)
     .slice(0, 2);
@@ -193,6 +194,7 @@ const validate = (state: FormState): FormErrors => {
   if (state.subject.trim().length < 4) errors.subject = 'Add a short subject.';
   if (state.message.trim().length < 20) errors.message = 'A few more words help us answer the first time.';
   else if (state.message.length > MESSAGE_MAX) errors.message = `Keep it under ${MESSAGE_MAX} characters.`;
+
   return errors;
 };
 
@@ -204,15 +206,16 @@ const ReplyTime = () => {
   }
 
   const open = status === 'open';
+
   return (
     <span
       key={status}
-      className={cn(SWAP, 'inline-flex items-center gap-2', open ? 'text-accent-cool' : 'text-muted-foreground')}
+      className={cn(SWAP, 'inline-flex items-center gap-2', open ? 'text-primary' : 'text-muted-foreground')}
     >
       {open && (
         <span aria-hidden className="relative flex size-2">
-          <span className="absolute inset-0 animate-ping rounded-full bg-accent-cool opacity-60 motion-reduce:animate-none" />
-          <span className="relative size-2 rounded-full bg-accent-cool" />
+          <span className="absolute inset-0 animate-ping rounded-full bg-primary opacity-60 motion-reduce:animate-none" />
+          <span className="relative size-2 rounded-full bg-primary" />
         </span>
       )}
       {REPLY_COPY[status]}
@@ -263,14 +266,14 @@ const Contact04 = () => {
   const sending = status === 'sending';
 
   return (
-    <section data-slot="support-contact" className="bg-background py-16 md:py-24">
+    <section data-slot="support-contact" className="bg-background py-20 sm:py-28">
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-16">
         <div data-slot="support-info" className="flex flex-col gap-10">
           <div className="flex flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Support</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Support</span>
             <h2
               style={stagger(1, 80)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               Get unstuck
             </h2>
@@ -283,7 +286,7 @@ const Contact04 = () => {
               style={stagger(3, 80)}
               className={cn(ENTER, 'flex flex-col gap-1 text-sm')}
             >
-              <span className="text-xs uppercase text-muted-foreground">Current reply time</span>
+              <span className="text-xs text-muted-foreground uppercase">Current reply time</span>
               <ReplyTime />
             </p>
           </div>
@@ -295,11 +298,12 @@ const Contact04 = () => {
           >
             {CHANNELS.map((channel) => {
               const Icon = channel.icon;
+
               return (
                 <li key={channel.label}>
                   <a
                     href={channel.href}
-                    className="group flex items-start gap-3 py-4 outline-none transition-colors duration-150 hover:bg-muted/30 focus-visible:bg-muted/40"
+                    className="group flex items-start gap-3 py-4 transition-colors duration-150 outline-none hover:bg-muted/30 focus-visible:bg-muted/40"
                   >
                     <Icon aria-hidden className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
@@ -307,7 +311,7 @@ const Contact04 = () => {
                         <span className="text-sm font-medium">{channel.label}</span>
                         <span className="text-sm text-muted-foreground">{channel.detail}</span>
                       </span>
-                      <span className="text-sm text-muted-foreground text-pretty">{channel.note}</span>
+                      <span className="text-sm text-pretty text-muted-foreground">{channel.note}</span>
                     </span>
                     <ArrowRight
                       aria-hidden
@@ -320,7 +324,7 @@ const Contact04 = () => {
           </ul>
 
           <div data-slot="support-faq" style={stagger(5, 80)} className={cn(ENTER, 'flex flex-col gap-2')}>
-            <h3 className="text-xs font-normal uppercase text-muted-foreground">Asked this week</h3>
+            <h3 className="text-xs font-normal text-muted-foreground uppercase">Asked this week</h3>
             <Accordion type="single" collapsible>
               {QUESTIONS.map((item) => (
                 <AccordionItem key={item.value} value={item.value}>
@@ -344,7 +348,7 @@ const Contact04 = () => {
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm/40 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
           />
           {status === 'sent' ? (
             <div
@@ -436,8 +440,8 @@ const Contact04 = () => {
                   >
                     <div className="overflow-hidden">
                       {suggestions.length > 0 && (
-                        <div key={suggestionKey} className={cn(SWAP, 'mt-4 border-s-2 border-warm ps-4')}>
-                          <p className="text-xs uppercase text-muted-foreground">Suggested answers</p>
+                        <div key={suggestionKey} className={cn(SWAP, 'mt-4 border-s-2 border-primary ps-4')}>
+                          <p className="text-xs text-muted-foreground uppercase">Suggested answers</p>
                           <ul className="mt-2 flex flex-col gap-2">
                             {suggestions.map((article) => (
                               <li key={article.id}>

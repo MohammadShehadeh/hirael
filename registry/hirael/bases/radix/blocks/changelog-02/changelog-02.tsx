@@ -13,9 +13,7 @@ const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
 const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-300 ${EASE} fill-mode-both motion-reduce:animate-none`;
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 type ColumnId = 'now' | 'next' | 'later';
 type Sort = 'votes' | 'newest';
@@ -167,7 +165,7 @@ const Upvote = ({ count, voted, title, onToggle }: UpvoteProps) => {
         <span
           key={count}
           className={cn(
-            'block tabular-nums animate-in fade-in duration-250 fill-mode-both motion-reduce:animate-none',
+            'block animate-in tabular-nums duration-250 fill-mode-both fade-in motion-reduce:animate-none',
             EASE,
             voted ? 'slide-in-from-bottom-2' : 'slide-in-from-top-2',
           )}
@@ -189,6 +187,7 @@ const Changelog02 = () => {
       const next = new Set(current);
       if (next.has(id)) next.delete(id);
       else next.add(id);
+
       return next;
     });
   };
@@ -196,18 +195,18 @@ const Changelog02 = () => {
   const sorted = sortItems(ITEMS, sort);
 
   return (
-    <section data-slot="roadmap" aria-labelledby="changelog-02-heading" className="bg-background py-20 md:py-28">
+    <section data-slot="roadmap" aria-labelledby="changelog-02-heading" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 md:gap-12 md:px-10">
         <header
           data-slot="roadmap-header"
           className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between md:gap-10"
         >
           <div className="flex max-w-xl flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Public roadmap</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Public roadmap</span>
             <h2
               id="changelog-02-heading"
               style={stagger(1, 80)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               What we are working on
             </h2>
@@ -217,7 +216,7 @@ const Changelog02 = () => {
           </div>
 
           <div style={stagger(3, 80)} className={cn(ENTER, 'flex items-center gap-3')}>
-            <span id="changelog-02-sort" className="text-xs uppercase text-muted-foreground">
+            <span id="changelog-02-sort" className="text-xs text-muted-foreground uppercase">
               Sort
             </span>
             <ToggleGroup
@@ -249,7 +248,7 @@ const Changelog02 = () => {
               {COLUMNS.map((column) => (
                 <TabsTrigger key={column.id} value={column.id} className="flex-none">
                   {column.title}
-                  <span className="text-xs tabular-nums text-muted-foreground">
+                  <span className="text-xs text-muted-foreground tabular-nums">
                     {ITEMS.filter((item) => item.column === column.id).length}
                   </span>
                 </TabsTrigger>
@@ -263,6 +262,7 @@ const Changelog02 = () => {
           >
             {COLUMNS.map((column) => {
               const items = sorted.filter((item) => item.column === column.id);
+
               return (
                 <div
                   key={column.id}
@@ -276,7 +276,7 @@ const Changelog02 = () => {
                   >
                     <div className="flex items-center gap-2">
                       <h3 className="text-sm font-medium">{column.title}</h3>
-                      <span className="text-xs tabular-nums text-muted-foreground">{items.length}</span>
+                      <span className="text-xs text-muted-foreground tabular-nums">{items.length}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{column.meaning}</p>
                   </div>
@@ -284,6 +284,7 @@ const Changelog02 = () => {
                   <ul key={sort} className="flex flex-col divide-y divide-border">
                     {items.map((item, index) => {
                       const voted = votes.has(item.id);
+
                       return (
                         <li
                           key={item.id}
@@ -293,7 +294,7 @@ const Changelog02 = () => {
                         >
                           <div className="flex min-w-0 flex-1 flex-col gap-2">
                             <div className="flex flex-col gap-1">
-                              <h4 className="text-sm font-medium leading-snug">{item.title}</h4>
+                              <h4 className="text-sm leading-snug font-medium">{item.title}</h4>
                               <p className="text-sm leading-relaxed text-muted-foreground">{item.description}</p>
                             </div>
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">

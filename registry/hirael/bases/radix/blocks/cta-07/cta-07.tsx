@@ -14,9 +14,7 @@ const EMPHASIS_WORDS = 2;
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const glow = (w: number, h: number) =>
   `radial-gradient(${w}% ${h}% at 50% 0%, transparent 0%, transparent 55%, color-mix(in oklab, var(--primary) 30%, transparent) 82%, color-mix(in oklab, var(--primary) 30%, transparent) 100%)`;
@@ -44,7 +42,7 @@ const Cta07 = () => {
     <section ref={containerRef} data-slot="cta" className="bg-background px-6 py-16 md:px-10 md:py-24">
       <div
         data-slot="cta-panel"
-        className={cn(ENTER, 'relative mx-auto max-w-6xl overflow-hidden rounded-3xl px-6 pb-24 pt-18')}
+        className={cn(ENTER, 'relative mx-auto max-w-6xl overflow-hidden rounded-3xl px-6 pt-18 pb-24')}
       >
         <motion.div
           aria-hidden
@@ -65,7 +63,7 @@ const Cta07 = () => {
             style={stagger(2)}
             className={cn(
               ENTER,
-              'mt-4 font-serif text-balance text-3xl font-medium leading-[1.12] tracking-tight md:text-4xl lg:text-5xl',
+              'mt-4 font-serif text-3xl leading-[1.12] font-medium tracking-tight text-balance md:text-4xl lg:text-5xl',
             )}
           >
             {words.map((word, i) => (
@@ -84,7 +82,7 @@ const Cta07 = () => {
           <p
             data-slot="cta-description"
             style={stagger(3)}
-            className={cn(ENTER, 'mt-4 max-w-md text-pretty text-base text-muted-foreground md:text-lg')}
+            className={cn(ENTER, 'mt-4 max-w-md text-base text-pretty text-muted-foreground md:text-lg')}
           >
             Import a repo, watch its workflow appear as a graph, and run it. The first pipeline takes minutes, not an
             afternoon.

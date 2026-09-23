@@ -99,7 +99,7 @@ const CellFrame = () => {
   return (
     <div className="pointer-events-none absolute inset-[calc(var(--box-padding)-1px)] z-0">
       <div className="absolute start-1/2 top-0 h-px w-[200%] bg-border ltr:-translate-x-1/2 rtl:translate-x-1/2" />
-      <div className="absolute bottom-0 start-1/2 h-px w-[200%] bg-border ltr:-translate-x-1/2 rtl:translate-x-1/2" />
+      <div className="absolute start-1/2 bottom-0 h-px w-[200%] bg-border ltr:-translate-x-1/2 rtl:translate-x-1/2" />
       <div className="absolute start-0 top-1/2 h-[200%] w-px -translate-y-1/2 bg-border" />
       <div className="absolute end-0 top-1/2 h-[200%] w-px -translate-y-1/2 bg-border" />
     </div>
@@ -141,15 +141,15 @@ const Feature09 = () => {
                     <cell.icon
                       aria-hidden
                       className={cn(
-                        'size-14 stroke-[1.2] transition-colors duration-150 group-hover:text-warm',
-                        isSelected ? 'text-warm' : 'text-muted-foreground/50',
+                        'size-14 stroke-[1.2] transition-colors duration-150 group-hover:text-primary',
+                        isSelected ? 'text-primary' : 'text-muted-foreground/50',
                       )}
                     />
                   </div>
                 </div>
                 <div className="relative min-h-24 p-3">
                   <h3 className="mb-1 text-base font-semibold text-foreground md:text-lg">{cell.title}</h3>
-                  <p className="text-pretty text-sm leading-relaxed text-muted-foreground">{cell.description}</p>
+                  <p className="text-sm leading-relaxed text-pretty text-muted-foreground">{cell.description}</p>
                   <div className="absolute start-1/2 top-0 h-px w-screen bg-border ltr:-translate-x-1/2 rtl:translate-x-1/2" />
                 </div>
                 <CellFrame />
@@ -185,7 +185,7 @@ const Feature09 = () => {
                 style={stagger(index, 60, 180)}
                 className={cn(
                   cellClassName,
-                  'cursor-pointer outline-none transition-colors duration-150 hover:bg-muted/30 focus-visible:bg-muted/30 data-selected:bg-muted/40',
+                  'cursor-pointer transition-colors duration-150 outline-none hover:bg-muted/30 focus-visible:bg-muted/30 data-selected:bg-muted/40',
                 )}
               >
                 {body}
@@ -201,7 +201,7 @@ const Feature09 = () => {
           className={cn(ENTER, 'border border-border bg-card/40')}
         >
           <div className="flex items-center justify-between gap-4 border-b border-border px-5 py-3">
-            <span className="text-xs uppercase text-muted-foreground">Step settings</span>
+            <span className="text-xs text-muted-foreground uppercase">Step settings</span>
             <span key={selectedCell.title} className={cn(SWAP, 'text-sm font-medium')}>
               {selectedCell.title}
             </span>

@@ -17,6 +17,7 @@ export const Hero = () => {
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
+
     return () => {
       document.body.style.overflow = '';
     };
@@ -85,7 +86,7 @@ export const Hero = () => {
             <span className="mb-5 block text-[13px] tracking-wide text-gray-900 sm:mb-8 sm:text-[14px]">
               Hirael Studio
             </span>
-            <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] font-medium leading-[1.08] tracking-[-0.03em] text-gray-900 sm:text-[clamp(2.5rem,5vw,4.2rem)]">
+            <h1 className="text-[clamp(1.75rem,7vw,4.2rem)] leading-[1.08] font-medium tracking-[-0.03em] text-gray-900 sm:text-[clamp(2.5rem,5vw,4.2rem)]">
               We craft digital experiences
               <br className="hidden sm:block" />
               <span className="sm:hidden"> </span>
@@ -128,7 +129,7 @@ export const Hero = () => {
                 key={link}
                 href="#"
                 onClick={() => setMenuOpen(false)}
-                className="text-[28px] font-medium leading-[32px] text-gray-900"
+                className="text-[28px] leading-[32px] font-medium text-gray-900"
               >
                 {link}
               </a>

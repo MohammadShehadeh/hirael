@@ -4,6 +4,7 @@ import * as React from 'react';
 import { CreditCard } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 
 export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'diners' | 'jcb' | 'unknown';
@@ -90,6 +91,7 @@ export const getCardBrandSpec = (brand: CardBrand): CardBrandSpec => {
 export const detectCardBrand = (number: string): CardBrand => {
   const digits = digitsOnly(number);
   if (!digits) return 'unknown';
+
   return CARD_BRANDS.find((b) => b.pattern.test(digits))?.brand ?? 'unknown';
 };
 
@@ -108,6 +110,7 @@ export const luhnCheck = (number: string): boolean => {
     sum += n;
     double = !double;
   }
+
   return sum % 10 === 0;
 };
 
@@ -124,12 +127,14 @@ export const formatCardNumber = (number: string, brand?: CardBrand): string => {
     i += size;
   }
   if (i < digits.length) parts.push(digits.slice(i));
+
   return parts.join(' ');
 };
 
 export const formatCardExpiry = (expiry: string): string => {
   const digits = digitsOnly(expiry).slice(0, 4);
   if (digits.length <= 2) return digits;
+
   return `${digits.slice(0, 2)}/${digits.slice(2)}`;
 };
 
@@ -143,6 +148,7 @@ const isExpiryValid = (expiry: string, now: Date): boolean => {
   const nowMonth = now.getMonth() + 1;
   if (year < nowYear) return false;
   if (year === nowYear && month < nowMonth) return false;
+
   return year - nowYear <= 20;
 };
 
@@ -187,6 +193,7 @@ const useCreditCardInput = () => {
   if (!ctx) {
     throw new Error('CreditCardInput compound parts must be used inside <CreditCardInput>');
   }
+
   return ctx;
 };
 
@@ -208,6 +215,7 @@ const computeErrors = (value: CreditCardValue, spec: CardBrandSpec, now: Date): 
   if (!numberOk) errors.push('number');
   if (!isExpiryValid(value.expiry, now)) errors.push('expiry');
   if (digitsOnly(value.cvc).length !== spec.cvcLength) errors.push('cvc');
+
   return errors;
 };
 
@@ -342,18 +350,25 @@ const CreditCardInputNumber = ({
   children,
   onBlur,
   onKeyDown,
+  ref,
   ...props
 }: CreditCardInputNumberProps) => {
   const ctx = useCreditCardInput();
+  const { register } = ctx;
+  const composedRef = React.useMemo(
+    () => composeRefs<HTMLInputElement>((el) => register('number', el), ref),
+    [register, ref],
+  );
   const invalid = ctx.touched.number && ctx.errors.includes('number');
   const maxLength = Math.max(...ctx.spec.lengths);
+
   return (
     <div
       data-slot="credit-card-input-number"
       className={cn('relative min-w-0', ctx.variant === 'row' ? 'flex-1' : undefined)}
     >
       <Input
-        ref={(el) => ctx.register('number', el)}
+        ref={composedRef}
         id={`${ctx.id}-number`}
         type="text"
         inputMode="numeric"
@@ -393,13 +408,20 @@ const CreditCardInputExpiry = ({
   className,
   onBlur,
   onKeyDown,
+  ref,
   ...props
 }: CreditCardInputExpiryProps) => {
   const ctx = useCreditCardInput();
+  const { register } = ctx;
+  const composedRef = React.useMemo(
+    () => composeRefs<HTMLInputElement>((el) => register('expiry', el), ref),
+    [register, ref],
+  );
   const invalid = ctx.touched.expiry && ctx.errors.includes('expiry');
+
   return (
     <Input
-      ref={(el) => ctx.register('expiry', el)}
+      ref={composedRef}
       id={`${ctx.id}-expiry`}
       type="text"
       inputMode="numeric"
@@ -438,13 +460,20 @@ const CreditCardInputCvc = ({
   className,
   onBlur,
   onKeyDown,
+  ref,
   ...props
 }: CreditCardInputCvcProps) => {
   const ctx = useCreditCardInput();
+  const { register } = ctx;
+  const composedRef = React.useMemo(
+    () => composeRefs<HTMLInputElement>((el) => register('cvc', el), ref),
+    [register, ref],
+  );
   const invalid = ctx.touched.cvc && ctx.errors.includes('cvc');
+
   return (
     <Input
-      ref={(el) => ctx.register('cvc', el)}
+      ref={composedRef}
       id={`${ctx.id}-cvc`}
       type="text"
       inputMode="numeric"
@@ -481,13 +510,14 @@ interface CreditCardInputBrandProps extends Omit<React.ComponentProps<'span'>, '
 const CreditCardInputBrand = ({ labels, className, ...props }: CreditCardInputBrandProps) => {
   const ctx = useCreditCardInput();
   const label = labels?.[ctx.brand] ?? ctx.spec.label;
+
   return (
     <span
       data-slot="credit-card-input-brand"
       data-brand={ctx.brand}
       aria-live="polite"
       className={cn(
-        'inline-flex h-5 items-center justify-center rounded-sm border border-border bg-muted px-1.5 text-xs font-medium uppercase text-muted-foreground',
+        'inline-flex h-5 items-center justify-center rounded-sm border border-border bg-muted px-1.5 text-xs font-medium text-muted-foreground uppercase',
         ctx.brand !== 'unknown' && 'text-foreground',
         className,
       )}

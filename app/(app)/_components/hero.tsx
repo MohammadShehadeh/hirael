@@ -32,9 +32,9 @@ export const Hero = ({ latestRelease }: HeroProps) => {
                   v{latestRelease.version}
                 </span>
               )}
-              <span className="group-hover:underline line-clamp-1 text-start">{latestRelease.title}</span>
+              <span className="line-clamp-1 text-start group-hover:underline">{latestRelease.title}</span>
               <ArrowRight
-                className="text-foreground -rotate-45 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
+                className="-rotate-45 text-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
                 size={16}
               />
             </span>
@@ -43,7 +43,7 @@ export const Hero = ({ latestRelease }: HeroProps) => {
 
         <h1
           className={cn(
-            'text-display w-full text-balance text-3xl italic leading-normal tracking-tight delay-[80ms] fill-mode-both sm:text-4xl sm:leading-[0.9] md:text-5xl',
+            'text-display w-full text-3xl leading-normal tracking-tight text-balance italic delay-[80ms] fill-mode-both sm:text-4xl sm:leading-[0.9] md:text-5xl',
             rise,
           )}
         >

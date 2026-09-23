@@ -13,6 +13,7 @@ const exportedNames = (code: string): string[] => {
       if (local) names.add(local);
     }
   }
+
   return [...names];
 };
 
@@ -20,6 +21,7 @@ const exportedNames = (code: string): string[] => {
 export const installTarget = (file: RegistryFileMeta): string => {
   if (file.target) return file.target;
   if (file.path.startsWith('components/')) return file.path;
+
   return `components/ui/${file.path.split('/').pop()}`;
 };
 

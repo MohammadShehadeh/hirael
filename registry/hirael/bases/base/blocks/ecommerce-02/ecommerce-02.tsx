@@ -86,6 +86,7 @@ const Ecommerce02 = () => {
 
   React.useEffect(() => {
     const pending = timers.current;
+
     return () => pending.forEach(clearTimeout);
   }, []);
 
@@ -140,15 +141,15 @@ const Ecommerce02 = () => {
 
   return (
     <section data-slot="ecommerce" className="bg-background py-20 sm:py-28">
-      <div className="container flex w-full flex-col gap-10">
+      <div className="mx-auto flex w-full max-w-[1480px] flex-col gap-10 px-4">
         <div data-slot="ecommerce-header" className="flex flex-wrap items-end justify-between gap-3">
           <div className="flex flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Cart</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Cart</span>
             <h2
               style={stagger(1, 70)}
               className={cn(
                 ENTER,
-                'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+                'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
               )}
             >
               {checkout === 'placed' ? 'On its way.' : 'Almost yours.'}
@@ -158,7 +159,7 @@ const Ecommerce02 = () => {
             <span
               style={stagger(2, 70)}
               aria-live="polite"
-              className={cn(ENTER, 'text-xs tabular-nums uppercase text-muted-foreground')}
+              className={cn(ENTER, 'text-xs text-muted-foreground uppercase tabular-nums')}
             >
               {count} item{count === 1 ? '' : 's'}
             </span>
@@ -176,20 +177,20 @@ const Ecommerce02 = () => {
                 <CircleCheck aria-hidden className="size-5 shrink-0 text-success" />
                 Order placed
               </p>
-              <p className="text-sm leading-relaxed text-muted-foreground text-pretty">
+              <p className="text-sm leading-relaxed text-pretty text-muted-foreground">
                 We sent a receipt to your email and will write again when the parcel ships, usually within two working
                 days.
               </p>
             </div>
             <dl className="grid grid-cols-2 gap-4 border-y border-border py-4 text-sm">
               <div className="flex flex-col gap-1">
-                <dt className="text-xs uppercase text-muted-foreground">Order number</dt>
+                <dt className="text-xs text-muted-foreground uppercase">Order number</dt>
                 <dd dir="ltr" className="text-start font-medium tabular-nums">
                   {ORDER_NUMBER}
                 </dd>
               </div>
               <div className="flex flex-col gap-1">
-                <dt className="text-xs uppercase text-muted-foreground">Charged</dt>
+                <dt className="text-xs text-muted-foreground uppercase">Charged</dt>
                 <dd className="font-medium tabular-nums">{usd(placedTotal)}</dd>
               </div>
             </dl>
@@ -216,6 +217,7 @@ const Ecommerce02 = () => {
             <ul data-slot="ecommerce-cart-items" className="flex flex-col border-t border-border lg:col-span-2">
               {items.map((item, index) => {
                 const leaving = removing.includes(item.id);
+
                 return (
                   <li
                     key={item.id}
@@ -223,7 +225,7 @@ const Ecommerce02 = () => {
                     data-removing={leaving || undefined}
                     className={cn(
                       'grid grid-rows-[1fr] transition-[grid-template-rows,opacity,translate] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none',
-                      leaving && 'grid-rows-[0fr] translate-x-2 opacity-0 rtl:-translate-x-2',
+                      leaving && 'translate-x-2 grid-rows-[0fr] opacity-0 rtl:-translate-x-2',
                     )}
                     aria-hidden={leaving || undefined}
                   >
@@ -238,7 +240,7 @@ const Ecommerce02 = () => {
 
                         <div className="flex min-w-0 flex-1 flex-col gap-1">
                           <h3 className="text-sm font-medium tracking-[-0.01em] text-pretty">{item.name}</h3>
-                          <span className="text-xs uppercase text-muted-foreground">{item.variant}</span>
+                          <span className="text-xs text-muted-foreground uppercase">{item.variant}</span>
                           <div className="mt-2 inline-flex w-fit items-center rounded-sm border border-border">
                             <Button
                               variant="ghost"
@@ -284,7 +286,7 @@ const Ecommerce02 = () => {
                           </Button>
                           <span className="text-sm font-medium tabular-nums">{usd(item.price * item.qty)}</span>
                           {item.qty > 1 && (
-                            <span className="text-[10px] tabular-nums text-muted-foreground">
+                            <span className="text-[10px] text-muted-foreground tabular-nums">
                               {usd(item.price)} each
                             </span>
                           )}
@@ -314,7 +316,7 @@ const Ecommerce02 = () => {
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-muted-foreground">Shipping</span>
                     {shipping === 0 ? (
-                      <span className="text-xs uppercase text-success">Free</span>
+                      <span className="text-xs text-success uppercase">Free</span>
                     ) : (
                       <span className="tabular-nums">{usd(shipping)}</span>
                     )}
@@ -336,7 +338,7 @@ const Ecommerce02 = () => {
                           <X className="size-2.5" />
                         </Button>
                       </span>
-                      <span className="tabular-nums text-success">−{usd(discount)}</span>
+                      <span className="text-success tabular-nums">−{usd(discount)}</span>
                     </div>
                   )}
                   {shipping > 0 && (
@@ -349,7 +351,7 @@ const Ecommerce02 = () => {
 
                   <div className="flex items-baseline justify-between">
                     <span className="text-sm font-medium">Total</span>
-                    <span className="text-xl font-semibold tabular-nums tracking-[-0.02em]">{usd(total)}</span>
+                    <span className="text-xl font-semibold tracking-[-0.02em] tabular-nums">{usd(total)}</span>
                   </div>
 
                   {!promoApplied && (
@@ -413,7 +415,7 @@ const Ecommerce02 = () => {
                       </span>
                     )}
                   </Button>
-                  <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs uppercase text-muted-foreground">
+                  <p className="flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs text-muted-foreground uppercase">
                     <span>Free returns</span>
                     <span aria-hidden className="text-border">
                       |

@@ -20,7 +20,6 @@ export interface BlockPreviewProps {
 }
 
 export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = false }: BlockPreviewProps) => {
-  const title = entry.title;
   const embedHref = entryEmbedHref(entry, useRegistryBase());
   const ref = React.useRef<HTMLDivElement>(null);
   const contentRoRef = React.useRef<ResizeObserver | null>(null);
@@ -38,6 +37,7 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
+
     return () => ro.disconnect();
   }, []);
 
@@ -81,18 +81,18 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
           loaded ? 'pointer-events-none opacity-0' : 'opacity-100',
         )}
       >
-        <span className="text-xs uppercase text-muted-foreground/70">{title}</span>
+        <span className="text-xs text-muted-foreground/70 uppercase">{entry.title}</span>
       </div>
       {scale !== null && (
         <iframe
           src={`${embedHref}?static=1`}
-          title={`${title} preview`}
+          title={`${entry.title} preview`}
           loading="lazy"
           tabIndex={-1}
           aria-hidden
           onLoad={handleLoad}
           className={cn(
-            'pointer-events-none absolute left-0 top-0 origin-top-left border-0 transition-opacity duration-500',
+            'pointer-events-none absolute top-0 left-0 origin-top-left border-0 transition-opacity duration-500',
             loaded ? 'opacity-100' : 'opacity-0',
           )}
           style={{

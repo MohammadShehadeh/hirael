@@ -37,7 +37,14 @@ const TimePickerDemo = () => {
         <FieldLabel htmlFor="tp-reminder">
           {t({ en: 'Reminder (12h · seconds)', ar: 'تذكير (12 ساعة · ثوانٍ)' })}
         </FieldLabel>
-        <TimePicker value={t12} onValueChange={setT12} format="12h" showSeconds secondStep={15}>
+        <TimePicker
+          value={t12}
+          onValueChange={setT12}
+          format="12h"
+          showSeconds
+          secondStep={15}
+          meridiemLabels={{ am: t({ en: 'AM', ar: 'ص' }), pm: t({ en: 'PM', ar: 'م' }) }}
+        >
           <TimePickerTrigger id="tp-reminder" />
           <TimePickerContent />
         </TimePicker>

@@ -26,13 +26,13 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
 
       <header className="flex flex-col gap-4">
         {category.isComingSoon && (
-          <span className="w-fit rounded-sm border border-border bg-card px-1.5 py-0.5 text-xs uppercase text-muted-foreground">
+          <span className="w-fit rounded-sm border border-border bg-card px-1.5 py-0.5 text-xs text-muted-foreground uppercase">
             Roadmap
           </span>
         )}
-        <h1 className="text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">{category.title}.</h1>
+        <h1 className="text-4xl leading-[1.05] font-semibold tracking-tight sm:text-5xl">{category.title}.</h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{category.description}</p>
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {category.isComingSoon
             ? 'Planned, not shipped yet'
             : `${total} block${total === 1 ? '' : 's'}, live at full size, install from here`}
@@ -50,6 +50,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
           <section className="flex flex-col gap-14 sm:gap-20">
             {blocks.map((entry, index) => {
               const href = entryHref(entry);
+
               return (
                 <article
                   key={entry.name}
@@ -59,8 +60,8 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                 >
                   <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
                     <div className="flex min-w-0 flex-col gap-2">
-                      <p className="flex flex-wrap items-center gap-x-2 text-xs uppercase text-muted-foreground">
-                        <span className="tabular-nums text-foreground">
+                      <p className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase">
+                        <span className="text-foreground tabular-nums">
                           {String(index + 1).padStart(2, '0')}
                           <span className="text-muted-foreground/60"> / {String(total).padStart(2, '0')}</span>
                         </span>
@@ -118,10 +119,10 @@ const RoadmapState = ({ category }: RoadmapStateProps) => {
       <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">
         <div
           aria-hidden
-          className="bg-dot-grid pointer-events-none absolute inset-0 opacity-50 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)]"
+          className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] opacity-50"
         />
         <div className="relative flex flex-col gap-4">
-          <span className="text-xs uppercase text-muted-foreground">In design</span>
+          <span className="text-xs text-muted-foreground uppercase">In design</span>
           <h3 className="text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
             {category.title} blocks are on the roadmap.
           </h3>

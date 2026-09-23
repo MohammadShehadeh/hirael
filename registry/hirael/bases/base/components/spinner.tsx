@@ -16,7 +16,7 @@ const circleVariants = cva('block animate-spin rounded-full border-current borde
   },
 });
 
-const dotVariants = cva('animate-bounce rounded-full bg-current', {
+const dotVariants = cva('animate-bounce rounded-full bg-current motion-reduce:animate-none', {
   variants: {
     size: {
       sm: 'size-1',
@@ -29,7 +29,7 @@ const dotVariants = cva('animate-bounce rounded-full bg-current', {
   },
 });
 
-const barVariants = cva('animate-pulse rounded-full bg-current', {
+const barVariants = cva('animate-pulse rounded-full bg-current motion-reduce:animate-none', {
   variants: {
     size: {
       sm: 'h-3 w-0.5',

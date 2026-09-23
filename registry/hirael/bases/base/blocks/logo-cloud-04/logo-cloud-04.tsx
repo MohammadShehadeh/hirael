@@ -12,9 +12,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -110,8 +108,6 @@ const STORIES: readonly Story[] = [
   },
 ];
 
-const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
-
 const LogoCloud04 = () => {
   const [active, setActive] = React.useState(STORIES[0].value);
   const [picked, setPicked] = React.useState(false);
@@ -134,13 +130,13 @@ const LogoCloud04 = () => {
   };
 
   return (
-    <section data-slot="logo-cloud" className="bg-background py-20 md:py-28">
+    <section data-slot="logo-cloud" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 md:px-10">
         <div data-slot="logo-cloud-header" className="flex max-w-xl flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Customer results</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Customer results</span>
           <h2
             style={stagger(1, 80)}
-            className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+            className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
           >
             Six teams and the number they moved
           </h2>
@@ -176,6 +172,7 @@ const LogoCloud04 = () => {
             >
               {STORIES.map((story) => {
                 const isActive = story.value === active;
+
                 return (
                   <TabsTrigger
                     key={story.value}
@@ -200,9 +197,9 @@ const LogoCloud04 = () => {
                               : undefined
                           }
                           className={cn(
-                            'block size-full bg-warm',
+                            'block size-full bg-primary',
                             autoAdvance &&
-                              'animate-in slide-in-from-start ease-linear fill-mode-both motion-reduce:animate-none',
+                              'animate-in ease-linear fill-mode-both slide-in-from-start motion-reduce:animate-none',
                           )}
                         />
                       )}
@@ -217,15 +214,15 @@ const LogoCloud04 = () => {
             <TabsContent key={story.value} value={story.value} data-slot="logo-cloud-proof" className="mt-10 md:mt-14">
               <div className="grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
                 <div className="flex flex-col gap-3">
-                  <span dir="ltr" className={cn(SWAP, 'text-xs tabular-nums text-muted-foreground rtl:text-end')}>
-                    {formatIndex(index)}
+                  <span dir="ltr" className={cn(SWAP, 'text-xs text-muted-foreground tabular-nums rtl:text-end')}>
+                    {String(index + 1).padStart(2, '0')}
                     <span className="mx-1.5 text-border">|</span>
                     {String(STORIES.length).padStart(2, '0')}
                   </span>
                   <p style={stagger(1)} className={cn(SWAP, 'mt-3 flex flex-col gap-1')}>
                     <span
                       dir="ltr"
-                      className="text-6xl font-semibold tracking-tight tabular-nums rtl:text-end sm:text-7xl"
+                      className="text-6xl font-semibold tracking-tight tabular-nums sm:text-7xl rtl:text-end"
                     >
                       {story.metric}
                     </span>

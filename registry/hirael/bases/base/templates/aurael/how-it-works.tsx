@@ -57,6 +57,7 @@ interface HowItWorksProps {
 
 export const HowItWorks = ({ lang }: HowItWorksProps) => {
   const c = COPY[lang];
+
   return (
     <Band id="how-it-works" index="01" label={c.label} note={c.note} lang={lang}>
       <Reveal>
@@ -69,7 +70,7 @@ export const HowItWorks = ({ lang }: HowItWorksProps) => {
         {c.steps.map((step, i) => (
           <Reveal key={step.title} delay={i * 0.05}>
             <li className="grid grid-cols-[2.5rem_1fr] gap-5 border-t border-border py-7 sm:grid-cols-[4rem_1fr]">
-              <span className="font-mono text-sm text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+              <span className="text-sm text-muted-foreground tabular-nums">{String(i + 1).padStart(2, '0')}</span>
               <div>
                 <h3 className="text-lg font-medium text-foreground">{step.title}</h3>
                 <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">{step.body}</p>

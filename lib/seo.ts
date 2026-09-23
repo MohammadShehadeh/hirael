@@ -86,6 +86,7 @@ const KEYWORD_SHAPES = [
 
 export const entryKeywords = (entry: RegistryEntryMeta): string[] => {
   const shapes = KEYWORD_SHAPES.map((shape) => shape(entry.title));
+
   return [
     ...new Set([entry.title, entry.name, ...shapes, collectionName(entry), 'shadcn registry', SITE.name.toLowerCase()]),
   ];

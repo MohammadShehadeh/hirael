@@ -47,8 +47,8 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
           className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"
         />
 
-        <nav className="absolute left-1/2 top-0 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-b-2xl bg-black md:max-w-none md:rounded-b-3xl">
-          <ul className="flex items-center gap-5 overflow-x-auto whitespace-nowrap px-5 py-2.5 sm:gap-7 md:gap-9 md:px-9 lg:gap-11 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+        <nav className="absolute top-0 left-1/2 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-b-2xl bg-black md:max-w-none md:rounded-b-3xl">
+          <ul className="flex [scrollbar-width:none] items-center gap-5 overflow-x-auto px-5 py-2.5 whitespace-nowrap sm:gap-7 md:gap-9 md:px-9 lg:gap-11 [&::-webkit-scrollbar]:hidden">
             {NAV_ITEMS.map((item) => (
               <li key={item} className="shrink-0">
                 <a
@@ -65,7 +65,7 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
         <div className="relative z-10 mt-auto p-4 sm:p-6 md:p-8 lg:p-10">
           <div className="grid grid-cols-12 items-end gap-6 md:gap-8">
             <div className="col-span-12 lg:col-span-8">
-              <h1 className="text-[24vw] font-medium leading-[0.85] tracking-[-0.07em] text-(--cs-cream) sm:text-[22vw] md:text-[20vw] lg:text-[18vw] xl:text-[17vw] 2xl:text-[18vw]">
+              <h1 className="text-[24vw] leading-[0.85] font-medium tracking-[-0.07em] text-(--cs-cream) sm:text-[22vw] md:text-[20vw] lg:text-[18vw] xl:text-[17vw] 2xl:text-[18vw]">
                 <WordsPullUp text="Hirael" showAsterisk />
               </h1>
             </div>
@@ -83,7 +83,7 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
               <motion.div {...fade(0.7)}>
                 <a
                   href="#"
-                  className="group inline-flex w-fit items-center gap-2 rounded-full bg-(--cs-ink) py-1.5 pe-1.5 ps-5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
+                  className="group inline-flex w-fit items-center gap-2 rounded-full bg-(--cs-ink) py-1.5 ps-5 pe-1.5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
                 >
                   Join the lab
                   <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10">

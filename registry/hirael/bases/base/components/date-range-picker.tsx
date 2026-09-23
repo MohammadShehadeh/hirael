@@ -9,13 +9,20 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 import {
+  DEFAULT_LOCALE,
   addDays,
   clampDate,
+  findFocusableDay,
   gridKeyToDate,
+  isDayDisabled,
   monthCells,
   monthIndex,
+  rangeHasDisabledDay,
   sameDay,
   startOfDay,
+  startOfMonth,
+  useToday,
+  type WeekStartsOn,
 } from '@/registry/hirael/bases/base/components/calendar-utils';
 
 export interface DateRange {
@@ -32,6 +39,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
     label: 'Today',
     range: () => {
       const t = startOfDay(new Date());
+
       return { from: t, to: t };
     },
   },
@@ -39,6 +47,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
     label: 'Last 7 days',
     range: () => {
       const t = startOfDay(new Date());
+
       return { from: addDays(t, -6), to: t };
     },
   },
@@ -46,6 +55,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
     label: 'Last 14 days',
     range: () => {
       const t = startOfDay(new Date());
+
       return { from: addDays(t, -13), to: t };
     },
   },
@@ -53,6 +63,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
     label: 'Last 30 days',
     range: () => {
       const t = startOfDay(new Date());
+
       return { from: addDays(t, -29), to: t };
     },
   },
@@ -60,6 +71,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
     label: 'This month',
     range: () => {
       const t = new Date();
+
       return {
         from: new Date(t.getFullYear(), t.getMonth(), 1),
         to: new Date(t.getFullYear(), t.getMonth() + 1, 0),
@@ -70,6 +82,7 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
     label: 'Last month',
     range: () => {
       const t = new Date();
+
       return {
         from: new Date(t.getFullYear(), t.getMonth() - 1, 1),
         to: new Date(t.getFullYear(), t.getMonth(), 0),
@@ -80,44 +93,35 @@ const DEFAULT_PRESETS: DateRangePreset[] = [
 
 const EMPTY_RANGE: DateRange = {};
 
-const getIsDayDisabled = (d: Date, min?: Date, max?: Date, disabledDate?: (d: Date) => boolean): boolean => {
-  if (min && d.getTime() < startOfDay(min).getTime()) return true;
-  if (max && d.getTime() > startOfDay(max).getTime()) return true;
-  return disabledDate ? disabledDate(d) : false;
-};
+// Laid out while today is unknown (server render, hydration); it has six week rows, so the height never jumps.
+const PLACEHOLDER_MONTH = new Date(2000, 0, 1);
 
-// Today differs between the static-export build and the visitor, so read it on the client only.
-const subscribeToday = () => () => {};
-const getTodaySnapshot = () => startOfDay(new Date()).getTime();
-const getServerTodaySnapshot = () => null;
+// The second month is hidden below the `sm` breakpoint, so keyboard focus and paging treat it as absent.
+const WIDE_QUERY = '(min-width: 40rem)';
+const subscribeWide = (onChange: () => void) => {
+  if (typeof window.matchMedia !== 'function') return () => {};
+  const mql = window.matchMedia(WIDE_QUERY);
+  mql.addEventListener('change', onChange);
 
-// Disabled days can't take focus, so walk past them in the direction of travel, stopping at min/max.
-const findFocusableDay = (
-  from: Date,
-  dir: 1 | -1,
-  isDisabled: (d: Date) => boolean,
-  min?: Date,
-  max?: Date,
-): Date | null => {
-  let d = from;
-  for (let i = 0; i < 366; i++) {
-    if (min && d.getTime() < startOfDay(min).getTime()) return null;
-    if (max && d.getTime() > startOfDay(max).getTime()) return null;
-    if (!isDisabled(d)) return d;
-    d = addDays(d, dir);
-  }
-  return null;
+  return () => mql.removeEventListener('change', onChange);
 };
+const getWideSnapshot = () => typeof window.matchMedia !== 'function' || window.matchMedia(WIDE_QUERY).matches;
+const getServerWideSnapshot = () => true;
 
 export interface DateRangeCalendarProps extends Omit<React.ComponentProps<'div'>, 'defaultValue'> {
   value?: DateRange;
   defaultValue?: DateRange;
   onValueChange?: (range: DateRange | undefined) => void;
+  month?: Date;
+  defaultMonth?: Date;
+  onMonthChange?: (month: Date) => void;
   min?: Date;
   max?: Date;
+  /** Disabled days can't be picked, and a range can't span one. */
   disabledDate?: (d: Date) => boolean;
+  /** BCP 47 tag for labels. Defaults to `en-US` so server and client render the same text. */
   locale?: string;
-  weekStartsOn?: 0 | 1;
+  weekStartsOn?: WeekStartsOn;
   numberOfMonths?: 1 | 2;
 }
 
@@ -125,10 +129,13 @@ const DateRangeCalendar = ({
   value: valueProp,
   defaultValue,
   onValueChange,
+  month: monthProp,
+  defaultMonth,
+  onMonthChange,
   min,
   max,
   disabledDate,
-  locale,
+  locale = DEFAULT_LOCALE,
   weekStartsOn = 1,
   numberOfMonths = 2,
   className,
@@ -137,13 +144,41 @@ const DateRangeCalendar = ({
 }: DateRangeCalendarProps) => {
   const [internal, setInternal] = React.useState<DateRange | undefined>(defaultValue);
   const range = valueProp !== undefined ? valueProp : internal;
-  const todayTime = React.useSyncExternalStore(subscribeToday, getTodaySnapshot, getServerTodaySnapshot);
-  const today = todayTime === null ? null : new Date(todayTime);
+  const today = useToday();
+  const wide = React.useSyncExternalStore(subscribeWide, getWideSnapshot, getServerWideSnapshot);
+  const visibleMonths = wide ? numberOfMonths : 1;
 
-  const [viewMonth, setViewMonth] = React.useState<Date>(() => {
-    const anchor = range?.from ?? new Date();
-    return new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+  // With no anchor, the first month is today's, which is only known after hydration.
+  const [internalMonth, setInternalMonth] = React.useState<Date | null>(() => {
+    const anchor = monthProp ?? defaultMonth ?? range?.from;
+
+    return anchor ? startOfMonth(anchor) : null;
   });
+  const resolvedMonth =
+    monthProp !== undefined ? startOfMonth(monthProp) : (internalMonth ?? (today && startOfMonth(today)));
+  const viewMonth = resolvedMonth ?? PLACEHOLDER_MONTH;
+  const setViewMonth = (next: Date) => {
+    if (monthProp === undefined) setInternalMonth(next);
+    onMonthChange?.(next);
+  };
+
+  const isMonthVisible = (d: Date) => {
+    const k = monthIndex(d);
+    const v = monthIndex(viewMonth);
+
+    return k >= v && k < v + visibleMonths;
+  };
+
+  // Follow a controlled `from` that lands outside the visible months, like DateCalendar does.
+  const fromMonthKey = valueProp?.from ? monthIndex(valueProp.from) : null;
+  const [prevFromMonthKey, setPrevFromMonthKey] = React.useState(fromMonthKey);
+  if (fromMonthKey !== prevFromMonthKey) {
+    setPrevFromMonthKey(fromMonthKey);
+    if (valueProp?.from && monthProp === undefined && !isMonthVisible(valueProp.from)) {
+      setInternalMonth(startOfMonth(valueProp.from));
+    }
+  }
+
   const [hovered, setHovered] = React.useState<Date | null>(null);
 
   const pending = !!range?.from && !range?.to;
@@ -156,14 +191,16 @@ const DateRangeCalendar = ({
     [valueProp, onValueChange],
   );
 
-  const isDayDisabled = React.useCallback(
-    (d: Date) => getIsDayDisabled(d, min, max, disabledDate),
+  const isDisabled = React.useCallback(
+    (d: Date) => isDayDisabled(d, { min, max, disabledDate }),
     [min, max, disabledDate],
   );
 
   const selectDay = (d: Date) => {
-    if (!range?.from || range.to) {
+    // A range can't span a disabled day, so that click starts a new range instead.
+    if (!range?.from || range.to || rangeHasDisabledDay(range.from, d, isDisabled)) {
       setRange({ from: d });
+
       return;
     }
     setHovered(null);
@@ -176,7 +213,7 @@ const DateRangeCalendar = ({
 
   const fromDay = range?.from ? startOfDay(range.from) : undefined;
   const toDay = range?.to ? startOfDay(range.to) : undefined;
-  const previewing = pending && !!hovered && !!fromDay;
+  const previewing = pending && !!hovered && !!fromDay && !rangeHasDisabledDay(fromDay, hovered, isDisabled);
   const lo = previewing ? (hovered.getTime() < fromDay.getTime() ? hovered : fromDay) : fromDay;
   const hi = previewing ? (hovered.getTime() < fromDay.getTime() ? fromDay : hovered) : toDay;
   const hasSpan = !!lo && !!hi && !sameDay(lo, hi);
@@ -186,17 +223,11 @@ const DateRangeCalendar = ({
     (_, i) => new Date(viewMonth.getFullYear(), viewMonth.getMonth() + i, 1),
   );
 
-  const isMonthVisible = (d: Date) => {
-    const k = monthIndex(d);
-    const v = monthIndex(viewMonth);
-    return k >= v && k < v + numberOfMonths;
-  };
-
   const canPrev =
     !min || new Date(viewMonth.getFullYear(), viewMonth.getMonth(), 0).getTime() >= startOfDay(min).getTime();
   const canNext =
     !max ||
-    new Date(viewMonth.getFullYear(), viewMonth.getMonth() + numberOfMonths, 1).getTime() <= startOfDay(max).getTime();
+    new Date(viewMonth.getFullYear(), viewMonth.getMonth() + visibleMonths, 1).getTime() <= startOfDay(max).getTime();
 
   const stepMonth = (n: number) => setViewMonth(new Date(viewMonth.getFullYear(), viewMonth.getMonth() + n, 1));
 
@@ -224,29 +255,35 @@ const DateRangeCalendar = ({
     if (!next) return;
     e.preventDefault();
     const target = clampDate(next, min, max);
-    const focusable = findFocusableDay(target, target.getTime() < d.getTime() ? -1 : 1, isDayDisabled, min, max);
+    const focusable = findFocusableDay(target, target.getTime() < d.getTime() ? -1 : 1, isDisabled, min, max);
     if (focusable) focusDay(focusable);
   };
 
-  const monthFmt = new Intl.DateTimeFormat(locale, {
-    month: 'long',
-    year: 'numeric',
-  });
-  const weekdayFmt = new Intl.DateTimeFormat(locale, { weekday: 'short' });
-  const dayLabelFmt = new Intl.DateTimeFormat(locale, { dateStyle: 'full' });
+  const monthFmt = React.useMemo(() => new Intl.DateTimeFormat(locale, { month: 'long', year: 'numeric' }), [locale]);
+  const weekdayFmt = React.useMemo(() => new Intl.DateTimeFormat(locale, { weekday: 'short' }), [locale]);
+  const dayLabelFmt = React.useMemo(() => new Intl.DateTimeFormat(locale, { dateStyle: 'full' }), [locale]);
   const weekdays = Array.from({ length: 7 }, (_, i) =>
     weekdayFmt.format(new Date(2021, 7, 1 + ((weekStartsOn + i) % 7))),
   );
 
-  const isTabbable = (d: Date | null | undefined): d is Date => !!d && isMonthVisible(d) && !isDayDisabled(d);
+  const isTabbable = (d: Date | null | undefined): d is Date => !!d && isMonthVisible(d) && !isDisabled(d);
   const tabbable = isTabbable(fromDay)
     ? fromDay
     : isTabbable(today)
       ? today
-      : (months.flatMap((m) => monthCells(m, weekStartsOn)).find((c): c is Date => isTabbable(c)) ?? viewMonth);
+      : (months
+          .slice(0, visibleMonths)
+          .flatMap((m) => monthCells(m, weekStartsOn))
+          .find((c): c is Date => isTabbable(c)) ?? viewMonth);
 
   return (
-    <div ref={composedRef} data-slot="date-range-calendar" className={cn('flex gap-4', className)} {...props}>
+    <div
+      ref={composedRef}
+      data-slot="date-range-calendar"
+      data-pending={resolvedMonth ? undefined : ''}
+      className={cn('flex gap-4', !resolvedMonth && 'invisible', className)}
+      {...props}
+    >
       {months.map((month, mi) => {
         const last = mi === numberOfMonths - 1;
         const cells = monthCells(month, weekStartsOn);
@@ -254,6 +291,7 @@ const DateRangeCalendar = ({
         for (let i = 0; i < cells.length; i += 7) {
           weeks.push(cells.slice(i, i + 7));
         }
+
         return (
           <div
             key={monthIndex(month)}
@@ -274,7 +312,7 @@ const DateRangeCalendar = ({
               </Button>
               <span
                 data-slot="date-range-calendar-caption"
-                className="text-xs tabular-nums uppercase text-muted-foreground"
+                className="text-xs text-muted-foreground uppercase tabular-nums"
               >
                 {monthFmt.format(month)}
               </span>
@@ -303,7 +341,7 @@ const DateRangeCalendar = ({
                     key={i}
                     role="columnheader"
                     data-slot="date-range-calendar-weekday"
-                    className="flex h-7 items-center justify-center text-xs uppercase text-muted-foreground"
+                    className="flex h-7 items-center justify-center text-xs text-muted-foreground uppercase"
                   >
                     {label}
                   </span>
@@ -323,7 +361,8 @@ const DateRangeCalendar = ({
                     const isSelected =
                       isAnchor || (!!fromDay && !!toDay && t > fromDay.getTime() && t < toDay.getTime());
                     const isToday = sameDay(d, today);
-                    const out = isDayDisabled(d);
+                    const out = isDisabled(d);
+
                     return (
                       <button
                         key={i}
@@ -342,7 +381,7 @@ const DateRangeCalendar = ({
                         onFocus={() => pending && setHovered(d)}
                         tabIndex={sameDay(d, tabbable) ? 0 : -1}
                         className={cn(
-                          'relative size-8 rounded-sm font-mono text-xs tabular-nums outline-none transition-colors',
+                          'relative size-8 rounded-sm font-mono text-xs tabular-nums transition-colors outline-none',
                           'hover:bg-accent hover:text-accent-foreground',
                           'focus-visible:ring-2 focus-visible:ring-ring',
                           'disabled:opacity-30 disabled:hover:bg-transparent',
@@ -351,7 +390,7 @@ const DateRangeCalendar = ({
                           isAnchor && 'bg-primary text-primary-foreground hover:bg-primary',
                           isLo && hasSpan && 'rounded-e-none',
                           isHi && hasSpan && 'rounded-s-none',
-                          !isAnchor && isToday && 'ring-1 ring-inset ring-primary/60',
+                          !isAnchor && isToday && 'ring-1 ring-primary/60 ring-inset',
                         )}
                       >
                         {d.getDate()}
@@ -375,6 +414,9 @@ interface DateRangePickerContextValue {
   setOpen: (open: boolean) => void;
   min?: Date;
   max?: Date;
+  disabledDate?: (d: Date) => boolean;
+  locale: string;
+  weekStartsOn?: WeekStartsOn;
   disabled?: boolean;
 }
 
@@ -385,6 +427,7 @@ const useDateRangePicker = () => {
   if (!ctx) {
     throw new Error('DateRangePicker compound components must be used inside <DateRangePicker>');
   }
+
   return ctx;
 };
 
@@ -397,6 +440,11 @@ export interface DateRangePickerProps {
   onOpenChange?: (open: boolean) => void;
   min?: Date;
   max?: Date;
+  /** Disabled days can't be picked, and a range can't span one. */
+  disabledDate?: (d: Date) => boolean;
+  /** BCP 47 tag for the trigger label and calendar. Defaults to `en-US` so server and client render the same text. */
+  locale?: string;
+  weekStartsOn?: WeekStartsOn;
   disabled?: boolean;
   children?: React.ReactNode;
 }
@@ -410,6 +458,9 @@ const DateRangePicker = ({
   onOpenChange,
   min,
   max,
+  disabledDate,
+  locale = DEFAULT_LOCALE,
+  weekStartsOn,
   disabled,
   children,
 }: DateRangePickerProps) => {
@@ -434,8 +485,8 @@ const DateRangePicker = ({
   );
 
   const ctx = React.useMemo<DateRangePickerContextValue>(
-    () => ({ range, setRange, open, setOpen, min, max, disabled }),
-    [range, setRange, open, setOpen, min, max, disabled],
+    () => ({ range, setRange, open, setOpen, min, max, disabledDate, locale, weekStartsOn, disabled }),
+    [range, setRange, open, setOpen, min, max, disabledDate, locale, weekStartsOn, disabled],
   );
 
   return (
@@ -449,6 +500,7 @@ const DateRangePicker = ({
 
 interface DateRangePickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
+  /** Overrides the root `locale`. */
   locale?: string;
   children?: React.ReactNode;
 }
@@ -461,12 +513,14 @@ const DateRangePickerTrigger = ({
   ...props
 }: DateRangePickerTriggerProps) => {
   const ctx = useDateRangePicker();
-  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
+  const resolvedLocale = locale ?? ctx.locale;
+  const fmt = React.useMemo(() => new Intl.DateTimeFormat(resolvedLocale, { dateStyle: 'medium' }), [resolvedLocale]);
   const label = ctx.range?.from
     ? ctx.range.to
       ? `${fmt.format(ctx.range.from)} – ${fmt.format(ctx.range.to)}`
       : `${fmt.format(ctx.range.from)} – …`
     : placeholder;
+
   return (
     <PopoverTrigger
       render={
@@ -475,9 +529,9 @@ const DateRangePickerTrigger = ({
           disabled={ctx.disabled}
           data-slot="date-range-picker-trigger"
           className={cn(
-            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors',
+            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start font-mono text-sm tabular-nums transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
-            !ctx.range?.from && 'text-muted-foreground font-sans',
+            !ctx.range?.from && 'font-sans text-muted-foreground',
             'disabled:cursor-not-allowed disabled:opacity-50',
             className,
           )}
@@ -496,10 +550,16 @@ const DateRangePickerTrigger = ({
 interface DateRangePickerContentProps extends React.ComponentProps<typeof PopoverContent> {
   presets?: DateRangePreset[];
   showPresets?: boolean;
+  /** Overrides the root `locale`. */
   locale?: string;
-  weekStartsOn?: 0 | 1;
+  /** Overrides the root `weekStartsOn`. */
+  weekStartsOn?: WeekStartsOn;
   numberOfMonths?: 1 | 2;
+  /** Overrides the root `disabledDate`. */
   disabledDate?: (d: Date) => boolean;
+  month?: Date;
+  defaultMonth?: Date;
+  onMonthChange?: (month: Date) => void;
 }
 
 const DateRangePickerContent = ({
@@ -508,14 +568,18 @@ const DateRangePickerContent = ({
   locale,
   weekStartsOn,
   numberOfMonths,
-  disabledDate,
+  disabledDate: disabledDateProp,
+  month,
+  defaultMonth,
+  onMonthChange,
   align = 'start',
   className,
   ...props
 }: DateRangePickerContentProps) => {
   const ctx = useDateRangePicker();
+  const disabledDate = disabledDateProp ?? ctx.disabledDate;
 
-  const isDayDisabled = (d: Date) => getIsDayDisabled(d, ctx.min, ctx.max, disabledDate);
+  const isDisabled = (d: Date) => isDayDisabled(d, { min: ctx.min, max: ctx.max, disabledDate });
 
   const resolvePreset = (preset: DateRangePreset): DateRange | null => {
     const raw = preset.range();
@@ -525,13 +589,14 @@ const DateRangePickerContent = ({
     if (ctx.max && rawFrom.getTime() > startOfDay(ctx.max).getTime()) return null;
     let from = clampDate(rawFrom, ctx.min, ctx.max);
     let to = clampDate(rawTo, ctx.min, ctx.max);
-    while (from.getTime() <= to.getTime() && isDayDisabled(from)) {
+    while (from.getTime() <= to.getTime() && isDisabled(from)) {
       from = addDays(from, 1);
     }
-    while (to.getTime() >= from.getTime() && isDayDisabled(to)) {
+    while (to.getTime() >= from.getTime() && isDisabled(to)) {
       to = addDays(to, -1);
     }
-    if (from.getTime() > to.getTime()) return null;
+    if (from.getTime() > to.getTime() || rangeHasDisabledDay(from, to, isDisabled)) return null;
+
     return { from, to };
   };
 
@@ -548,6 +613,7 @@ const DateRangePickerContent = ({
             <div data-slot="date-range-picker-presets" className="flex flex-row flex-wrap gap-0.5 sm:w-32 sm:flex-col">
               {presets.map((preset) => {
                 const resolved = resolvePreset(preset);
+
                 return (
                   <Button
                     key={preset.label}
@@ -568,19 +634,25 @@ const DateRangePickerContent = ({
                 );
               })}
             </div>
-            <Separator orientation="vertical" className="max-sm:hidden h-auto" />
+            <Separator orientation="vertical" className="h-auto max-sm:hidden" />
             <Separator className="sm:hidden" />
           </>
         )}
         <div data-slot="date-range-picker-content-calendar" className="flex flex-col gap-2">
           <DateRangeCalendar
             value={ctx.range ?? EMPTY_RANGE}
-            onValueChange={ctx.setRange}
+            onValueChange={(next) => {
+              ctx.setRange(next);
+              if (next?.from && next.to) ctx.setOpen(false);
+            }}
+            month={month}
+            defaultMonth={defaultMonth}
+            onMonthChange={onMonthChange}
             min={ctx.min}
             max={ctx.max}
             disabledDate={disabledDate}
-            locale={locale}
-            weekStartsOn={weekStartsOn}
+            locale={locale ?? ctx.locale}
+            weekStartsOn={weekStartsOn ?? ctx.weekStartsOn}
             numberOfMonths={numberOfMonths}
           />
           {ctx.range?.from && (
@@ -591,7 +663,7 @@ const DateRangePickerContent = ({
                 size="sm"
                 data-slot="date-range-picker-clear"
                 onClick={() => ctx.setRange(undefined)}
-                className="h-7 gap-1 px-2 text-xs uppercase text-muted-foreground"
+                className="h-7 gap-1 px-2 text-xs text-muted-foreground uppercase"
               >
                 <X className="size-3" />
                 Clear

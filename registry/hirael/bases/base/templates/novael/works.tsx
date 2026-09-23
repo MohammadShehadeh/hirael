@@ -127,7 +127,7 @@ const ProjectPlaceholder = ({ index }: ProjectPlaceholderProps) => {
         ].join(', '),
       }}
     >
-      <span className="absolute bottom-4 end-5 font-mono text-6xl font-medium text-foreground/10 sm:text-7xl">
+      <span className="absolute end-5 bottom-4 text-6xl font-medium text-foreground/10 tabular-nums sm:text-7xl">
         {String(index + 1).padStart(2, '0')}
       </span>
     </div>
@@ -149,11 +149,12 @@ export const Works = ({ lang }: WorksProps) => {
         <div className="mt-14 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {PROJECT_IDS.map((id, index) => {
             const copy = c.items[id];
+
             return (
               <Reveal key={id} delay={(index % 2) * 120}>
                 <a
                   href="#"
-                  aria-label={`${copy.title} — ${copy.category}`}
+                  aria-label={`${copy.title}, ${copy.category}`}
                   className="group relative block overflow-hidden rounded-lg outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
                 >
                   <div className="relative aspect-[16/10] w-full overflow-hidden bg-card">
@@ -172,7 +173,7 @@ export const Works = ({ lang }: WorksProps) => {
                     <p
                       className={cn(
                         'text-xs font-medium text-primary',
-                        lang === 'en' ? 'uppercase tracking-[0.2em]' : 'text-sm tracking-normal',
+                        lang === 'en' ? 'tracking-[0.2em] uppercase' : 'text-sm tracking-normal',
                       )}
                     >
                       {copy.category}
@@ -183,7 +184,7 @@ export const Works = ({ lang }: WorksProps) => {
 
                     <div className="grid grid-rows-[0fr] transition-[grid-template-rows] duration-500 ease-out group-hover:grid-rows-[1fr] group-focus-visible:grid-rows-[1fr]">
                       <div className="overflow-hidden">
-                        <p className="pt-3 text-sm font-light leading-relaxed text-white/70">{copy.description}</p>
+                        <p className="pt-3 text-sm leading-relaxed font-light text-white/70">{copy.description}</p>
                       </div>
                     </div>
 

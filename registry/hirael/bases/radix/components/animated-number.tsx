@@ -15,6 +15,7 @@ export interface AnimatedNumberProps extends Omit<React.ComponentProps<'span'>, 
   decimals?: number;
   /** Extra `Intl.NumberFormat` options (currency, notation, …). */
   format?: Intl.NumberFormatOptions;
+  /** Defaults to `en-US` so server and client render the same digits. */
   locale?: string;
   prefix?: string;
   suffix?: string;
@@ -29,6 +30,7 @@ const useReducedMotion = () =>
     (onStoreChange) => {
       const query = window.matchMedia(REDUCED_MOTION);
       query.addEventListener('change', onStoreChange);
+
       return () => query.removeEventListener('change', onStoreChange);
     },
     () => window.matchMedia(REDUCED_MOTION).matches,
@@ -41,7 +43,7 @@ const AnimatedNumber = ({
   duration = 700,
   decimals = 0,
   format,
-  locale,
+  locale = 'en-US',
   prefix,
   suffix,
   className,
@@ -82,6 +84,7 @@ const AnimatedNumber = ({
     };
 
     frame = requestAnimationFrame(tick);
+
     return () => cancelAnimationFrame(frame);
   }, [value, duration, animated]);
 

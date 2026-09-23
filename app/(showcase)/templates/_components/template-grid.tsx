@@ -12,7 +12,7 @@ const TemplateCard = ({ entry }: TemplateCardProps) => {
   return (
     <Link
       href={entryHref(entry)}
-      className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background outline-none transition-colors hover:border-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      className="group flex flex-col overflow-hidden rounded-sm border border-border bg-background transition-colors outline-none hover:border-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
     >
       <BlockPreview entry={entry} />
 
@@ -24,14 +24,14 @@ const TemplateCard = ({ entry }: TemplateCardProps) => {
             {entry.dependencies.map((dep) => (
               <span
                 key={dep}
-                className="rounded-full border border-border px-2 py-0.5 text-xs uppercase text-muted-foreground"
+                className="rounded-full border border-border px-2 py-0.5 text-xs text-muted-foreground uppercase"
               >
                 {dep}
               </span>
             ))}
           </div>
         ) : null}
-        <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-2.5 text-xs uppercase text-muted-foreground">
+        <div className="mt-auto flex items-center justify-between gap-2 border-t border-border pt-2.5 text-xs text-muted-foreground uppercase">
           <span>{entryFileLabel(entry)}</span>
           <span className="inline-flex shrink-0 items-center gap-1 transition-colors group-hover:text-foreground">
             view

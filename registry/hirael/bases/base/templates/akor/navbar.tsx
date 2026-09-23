@@ -33,7 +33,7 @@ export const Navbar = () => {
             <a
               key={link.label}
               href={link.href}
-              className="text-sm uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground"
             >
               {link.label}
             </a>
@@ -63,7 +63,7 @@ export const Navbar = () => {
               key={link.label}
               href={link.href}
               onClick={() => setIsOpen(false)}
-              className="rounded-md px-4 py-3 text-sm uppercase tracking-widest text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="rounded-md px-4 py-3 text-sm tracking-widest text-muted-foreground uppercase transition-colors hover:bg-secondary hover:text-foreground"
             >
               {link.label}
             </a>

@@ -1,3 +1,6 @@
+// Runs in `pnpm registry:props`. Reads each component's props, JSDoc included,
+// from the default base into registry-props.json for the API tables.
+
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
@@ -26,6 +29,7 @@ interface ComponentDoc {
 const createProgram = (rootNames: string[]) => {
   const { config } = ts.readConfigFile(path.join(ROOT, 'tsconfig.json'), (p) => readFileSync(p, 'utf8'));
   const parsed = ts.parseJsonConfigFileContent(config, ts.sys, ROOT);
+
   return ts.createProgram({ rootNames, options: parsed.options });
 };
 
@@ -36,6 +40,7 @@ const declarationOf = (symbol: ts.Symbol) => symbol.valueDeclaration ?? symbol.d
 
 const functionOf = (declaration: ts.Declaration | undefined): ts.SignatureDeclaration | undefined => {
   const node = declaration && ts.isVariableDeclaration(declaration) ? declaration.initializer : declaration;
+
   return node && ts.isFunctionLike(node) ? node : undefined;
 };
 
@@ -48,6 +53,7 @@ const collectDefaults = (declaration: ts.Declaration | undefined) => {
     const key = (element.propertyName ?? element.name).getText();
     defaults[key] = element.initializer.getText();
   }
+
   return defaults;
 };
 
@@ -91,6 +97,7 @@ const extractComponent = (checker: ts.TypeChecker, symbol: ts.Symbol): Omit<Comp
       description: ts.displayPartsToString(prop.getDocumentationComment(checker)) || null,
     });
   }
+
   return { props, extendsNative };
 };
 
@@ -111,8 +118,7 @@ for (const entry of entries) {
     if (!moduleSymbol) continue;
     for (const exported of checker.getExportsOfModule(moduleSymbol)) {
       const name = exported.getName();
-      const isComponentName = /^[A-Z]/.test(name);
-      if (!isComponentName) continue;
+      if (!/^[A-Z]/.test(name)) continue;
       const resolved = resolveAlias(checker, exported);
       if (!(resolved.flags & ts.SymbolFlags.Value)) continue;
       const api = extractComponent(checker, resolved);

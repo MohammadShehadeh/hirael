@@ -15,7 +15,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -72,6 +72,7 @@ const Login01 = () => {
     if (!email.trim()) next.email = 'Enter the email you signed up with.';
     else if (!EMAIL_PATTERN.test(email)) next.email = "That doesn't look like a valid email.";
     if (!password) next.password = 'Enter your password.';
+
     return next;
   };
 
@@ -95,7 +96,7 @@ const Login01 = () => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
       />
 
       <div className="mx-auto w-full max-w-md px-6">
@@ -105,7 +106,7 @@ const Login01 = () => {
         >
           <div
             data-slot="login-header"
-            className="flex flex-col items-center gap-4 border-b border-border px-8 pb-6 pt-8"
+            className="flex flex-col items-center gap-4 border-b border-border px-8 pt-8 pb-6"
           >
             <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
             <div className="flex flex-col items-center gap-1 text-center">
@@ -155,7 +156,7 @@ const Login01 = () => {
                   <FieldLabel htmlFor="login01-password">Password</FieldLabel>
                   <a
                     href="#"
-                    className="text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
+                    className="text-xs text-muted-foreground uppercase transition-colors hover:text-foreground"
                   >
                     Forgot?
                   </a>
@@ -226,7 +227,7 @@ const Login01 = () => {
           style={stagger(5)}
           className={cn(
             ENTER,
-            'mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs uppercase text-muted-foreground',
+            'mt-4 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-xs text-muted-foreground uppercase',
           )}
         >
           <span>Protected by single-tenant auth</span>

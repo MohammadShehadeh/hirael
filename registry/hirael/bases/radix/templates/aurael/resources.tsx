@@ -35,6 +35,7 @@ interface ResourcesProps {
 
 export const Resources = ({ lang }: ResourcesProps) => {
   const c = COPY[lang];
+
   return (
     <Band id="resources" index="05" label={c.label} note={c.note} lang={lang}>
       <Reveal>
@@ -51,7 +52,7 @@ export const Resources = ({ lang }: ResourcesProps) => {
                 href="#"
                 className="group grid grid-cols-[3.5rem_1fr_auto] items-baseline gap-4 border-t border-border py-5"
               >
-                <span className={cn('text-xs text-muted-foreground', lang === 'en' && 'uppercase tracking-wider')}>
+                <span className={cn('text-xs text-muted-foreground', lang === 'en' && 'tracking-wider uppercase')}>
                   {item.tag}
                 </span>
                 <span className="text-base font-medium text-foreground sm:text-lg">{item.title}</span>

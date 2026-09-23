@@ -8,9 +8,7 @@ import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 interface Logo {
   name: string;
@@ -30,7 +28,7 @@ const LOGOS: readonly Logo[] = [
 const LogoCloud03 = () => {
   return (
     <section data-slot="logo-cloud" className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-03-heading">
-      <div className="container w-full max-w-4xl">
+      <div className="mx-auto w-full max-w-4xl px-4">
         <h2 id="logo-cloud-03-heading" className="sr-only">
           Teams building on Hirael
         </h2>

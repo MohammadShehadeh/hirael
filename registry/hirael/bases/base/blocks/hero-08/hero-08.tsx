@@ -8,9 +8,7 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -74,12 +72,12 @@ const Hero08 = () => {
       <div
         data-slot="hero-backdrop"
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_-12%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_56%),radial-gradient(80%_70%_at_84%_110%,color-mix(in_oklch,var(--accent-cool)_26%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_78%,color-mix(in_oklch,var(--warm)_18%,transparent),transparent_66%)] opacity-80"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_-12%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_56%),radial-gradient(80%_70%_at_84%_110%,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_78%,color-mix(in_oklch,var(--primary)_18%,transparent),transparent_66%)] opacity-80"
       />
       <div
         data-slot="hero-grid"
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[56px_56px] opacity-40 mask-[radial-gradient(ellipse_at_center,black_25%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] mask-[radial-gradient(ellipse_at_center,black_25%,transparent_75%)] bg-size-[56px_56px] opacity-40"
       />
 
       <div data-slot="hero-content" className="relative z-10 px-6">
@@ -134,7 +132,7 @@ const Hero08 = () => {
           className={cn(
             RISE,
             'mx-auto max-w-5xl rounded-t-xl border border-b-0 border-border',
-            'bg-card/60 p-2 shadow-elevated backdrop-blur-sm',
+            'bg-card/60 p-2 shadow-xl shadow-foreground/10 backdrop-blur-sm',
           )}
         >
           <div className="flex items-center justify-between gap-3 px-2 pb-2">
@@ -144,7 +142,7 @@ const Hero08 = () => {
               <span className="size-2.5 rounded-full bg-muted" />
             </div>
             <span className="truncate text-xs text-muted-foreground">Q3 launch board</span>
-            <span className="text-xs tabular-nums text-muted-foreground">7 tasks</span>
+            <span className="text-xs text-muted-foreground tabular-nums">7 tasks</span>
           </div>
           <div
             data-slot="hero-board"
@@ -166,7 +164,7 @@ const Hero08 = () => {
                     data-slot="hero-board-card"
                     className={cn(
                       'flex flex-col gap-2 rounded-md border border-border bg-card p-2.5',
-                      card.state === 'active' && 'border-accent-cool/40',
+                      card.state === 'active' && 'border-primary/40',
                     )}
                   >
                     <span
@@ -182,8 +180,8 @@ const Hero08 = () => {
                       <span
                         className={cn(
                           'truncate',
-                          card.state === 'active' && 'text-accent-cool',
-                          card.state === 'review' && 'text-warm',
+                          card.state === 'active' && 'text-primary',
+                          card.state === 'review' && 'text-primary',
                         )}
                       >
                         {card.state === 'queued' || card.state === 'done' ? card.meta : STATE_LABEL[card.state]}

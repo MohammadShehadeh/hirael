@@ -58,7 +58,6 @@ interface NavItem {
   label: string;
   href: string;
   icon: LucideIcon;
-  active?: boolean;
   badge?: string;
 }
 
@@ -69,7 +68,7 @@ const SWAP =
 
 const WORKSPACE: readonly NavItem[] = [
   { label: 'Overview', href: '#', icon: LayoutDashboard },
-  { label: 'Documents', href: '#', icon: FileText, active: true },
+  { label: 'Documents', href: '#', icon: FileText },
   { label: 'Projects', href: '#', icon: FolderGit2 },
   { label: 'Activity', href: '#', icon: Activity },
 ];
@@ -166,7 +165,7 @@ const DocumentList = () => {
             onClick={() => setFilter(option)}
           >
             {option}
-            <span className="text-xs tabular-nums text-muted-foreground">
+            <span className="text-xs text-muted-foreground tabular-nums">
               {option === 'All' ? DOCUMENTS.length : DOCUMENTS.filter((doc) => doc.status === option).length}
             </span>
           </Button>
@@ -177,7 +176,7 @@ const DocumentList = () => {
         {visible.map((doc) => (
           <li
             key={doc.title}
-            className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0 transition-colors hover:bg-muted/40"
+            className="flex items-center gap-3 border-b border-border px-4 py-3 transition-colors last:border-b-0 hover:bg-muted/40"
           >
             <FileText className="size-4 shrink-0 text-muted-foreground" aria-hidden />
             <div className="flex min-w-0 flex-1 flex-col">
@@ -191,7 +190,10 @@ const DocumentList = () => {
               </span>
             </div>
             <span
-              className={cn('hidden text-xs sm:inline', doc.status === 'Draft' ? 'text-warm' : 'text-muted-foreground')}
+              className={cn(
+                'hidden text-xs sm:inline',
+                doc.status === 'Draft' ? 'text-primary' : 'text-muted-foreground',
+              )}
             >
               {doc.status}
             </span>
@@ -217,7 +219,17 @@ const BrandMark = ({ className }: BrandMarkProps) => {
   );
 };
 
-const AppSidebar = () => {
+interface AppSidebarProps {
+  active: string;
+  onNavigate: (label: string) => void;
+}
+
+const AppSidebar = ({ active, onNavigate }: AppSidebarProps) => {
+  const navigate = (event: React.MouseEvent, label: string) => {
+    event.preventDefault();
+    onNavigate(label);
+  };
+
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader>
@@ -229,7 +241,7 @@ const AppSidebar = () => {
               </span>
               <div className="grid flex-1 text-start leading-tight">
                 <span className="truncate text-sm font-semibold tracking-[-0.01em]">Hirael</span>
-                <span className="truncate text-xs uppercase text-muted-foreground">workspace</span>
+                <span className="truncate text-xs text-muted-foreground uppercase">workspace</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -244,8 +256,14 @@ const AppSidebar = () => {
               {WORKSPACE.map((item) => (
                 <SidebarMenuItem key={item.label}>
                   <SidebarMenuButton
-                    render={<a href={item.href} aria-current={item.active ? 'page' : undefined} />}
-                    isActive={item.active}
+                    render={
+                      <a
+                        href={item.href}
+                        aria-current={active === item.label ? 'page' : undefined}
+                        onClick={(event) => navigate(event, item.label)}
+                      />
+                    }
+                    isActive={active === item.label}
                     tooltip={item.label}
                   >
                     <item.icon className="size-4" />
@@ -263,7 +281,17 @@ const AppSidebar = () => {
             <SidebarMenu>
               {TOOLS.map((item) => (
                 <SidebarMenuItem key={item.label}>
-                  <SidebarMenuButton render={<a href={item.href} />} tooltip={item.label}>
+                  <SidebarMenuButton
+                    render={
+                      <a
+                        href={item.href}
+                        aria-current={active === item.label ? 'page' : undefined}
+                        onClick={(event) => navigate(event, item.label)}
+                      />
+                    }
+                    isActive={active === item.label}
+                    tooltip={item.label}
+                  >
                     <item.icon className="size-4" />
                     <span>{item.label}</span>
                   </SidebarMenuButton>
@@ -330,9 +358,11 @@ const AppSidebar = () => {
 };
 
 const AppShell05 = () => {
+  const [active, setActive] = React.useState('Documents');
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar active={active} onNavigate={setActive} />
       <SidebarInset className="min-w-0">
         <header className="sticky top-0 z-10 flex h-12 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-4 backdrop-blur supports-backdrop-filter:bg-background/60">
           <SidebarTrigger className="-ms-1" />
@@ -344,7 +374,7 @@ const AppShell05 = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage>Documents</BreadcrumbPage>
+                <BreadcrumbPage>{active}</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -352,7 +382,7 @@ const AppShell05 = () => {
 
         <div data-slot="app-shell-main" className={cn(ENTER, 'min-w-0 flex-1 overflow-x-hidden p-4 sm:p-6')}>
           <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold tracking-[-0.02em]">Documents</h1>
+            <h1 className="text-2xl font-semibold tracking-[-0.02em]">{active}</h1>
             <p className="text-sm text-muted-foreground">
               Everything your workspace has written, newest first. Drafts stay private until you share them.
             </p>

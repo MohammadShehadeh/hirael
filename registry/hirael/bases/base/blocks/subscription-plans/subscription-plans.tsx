@@ -4,6 +4,16 @@ import * as React from 'react';
 import { Check, Loader2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/registry/hirael/bases/base/ui/alert-dialog';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
@@ -41,7 +51,7 @@ const SubscriptionPlanBadge = ({ className, ...props }: SubscriptionPlanBadgePro
     <Badge
       variant="secondary"
       data-slot="subscription-plan-badge"
-      className={cn('absolute -top-2.5 inset-e-4', className)}
+      className={cn('absolute inset-e-4 -top-2.5', className)}
       {...props}
     />
   );
@@ -172,11 +182,19 @@ const PLANS = [
 const SubscriptionPlansBlock = () => {
   const [currentId, setCurrentId] = React.useState('scale');
   const [pendingId, setPendingId] = React.useState<string | null>(null);
+  const [downgradeId, setDowngradeId] = React.useState<string | null>(null);
+  const [downgradeOpen, setDowngradeOpen] = React.useState(false);
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
   const currentIndex = PLANS.findIndex((plan) => plan.id === currentId);
+  const downgradePlan = PLANS.find((plan) => plan.id === downgradeId);
+
+  const confirmDowngrade = (id: string) => {
+    setDowngradeId(id);
+    setDowngradeOpen(true);
+  };
 
   const choose = (id: string) => {
     setPendingId(id);
@@ -193,7 +211,8 @@ const SubscriptionPlansBlock = () => {
         {PLANS.map((plan, index) => {
           const current = plan.id === currentId;
           const pending = plan.id === pendingId;
-          const verb = index > currentIndex ? 'Upgrade to' : 'Switch to';
+          const upgrade = index > currentIndex;
+
           return (
             <SubscriptionPlan
               key={plan.id}
@@ -224,7 +243,7 @@ const SubscriptionPlansBlock = () => {
                   variant={plan.featured ? 'primary' : 'outline'}
                   disabled={pendingId !== null}
                   aria-busy={pending || undefined}
-                  onClick={() => choose(plan.id)}
+                  onClick={() => (upgrade ? choose(plan.id) : confirmDowngrade(plan.id))}
                 >
                   {pending ? (
                     <>
@@ -232,7 +251,7 @@ const SubscriptionPlansBlock = () => {
                       Switching
                     </>
                   ) : (
-                    `${verb} ${plan.name}`
+                    `${upgrade ? 'Upgrade to' : 'Downgrade to'} ${plan.name}`
                   )}
                 </SubscriptionPlanAction>
               )}
@@ -240,6 +259,29 @@ const SubscriptionPlansBlock = () => {
           );
         })}
       </SubscriptionPlans>
+      <AlertDialog open={downgradeOpen} onOpenChange={setDowngradeOpen}>
+        <AlertDialogContent data-slot="subscription-plans-downgrade-dialog">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Downgrade to {downgradePlan?.name}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You keep {PLANS[currentIndex].name} features until the end of this billing period. After that, anything
+              beyond the {downgradePlan?.name} limits is paused.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep {PLANS[currentIndex].name}</AlertDialogCancel>
+            <AlertDialogAction
+              variant="destructive"
+              onClick={() => {
+                if (downgradeId) choose(downgradeId);
+                setDowngradeOpen(false);
+              }}
+            >
+              Downgrade
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       <p aria-live="polite" className="sr-only">
         {pendingId ? 'Changing plan' : `Current plan: ${PLANS[currentIndex].name}`}
       </p>

@@ -15,9 +15,7 @@ const Cta03Backdrop = dynamic(() => import('./cta-03-backdrop'), {
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const Cta03 = () => {
   const [active, setActive] = React.useState(false);
@@ -31,7 +29,7 @@ const Cta03 = () => {
       >
         <div
           data-slot="cta-panel"
-          className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-card md:rounded-[48px] shadow-sm"
+          className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-card shadow-sm md:rounded-[48px]"
         >
           <div
             aria-hidden
@@ -49,7 +47,7 @@ const Cta03 = () => {
               data-slot="cta-eyebrow"
               className={cn(
                 ENTER,
-                'mb-8 inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-1.5 text-sm font-medium text-foreground backdrop-blur-sm dark:text-primary',
+                'mb-8 inline-flex items-center gap-2 rounded-full border border-primary/10 bg-primary/5 px-4 py-1.5 text-sm font-medium text-foreground backdrop-blur-sm',
               )}
             >
               <PenLine aria-hidden className="size-3.5" />
@@ -61,7 +59,7 @@ const Cta03 = () => {
               style={stagger(1)}
               className={cn(
                 ENTER,
-                'mb-8 font-serif text-5xl font-medium leading-[1.05] tracking-tight text-foreground md:text-7xl lg:text-8xl',
+                'mb-8 font-serif text-5xl leading-[1.05] font-medium tracking-tight text-foreground md:text-7xl lg:text-8xl',
               )}
             >
               Your words,

@@ -42,7 +42,7 @@ const CreditCardInputDemo = () => {
   return (
     <div className="grid w-full max-w-md gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Checkout row · brand detection',
             ar: 'صف الدفع · كشف العلامة',
@@ -94,7 +94,7 @@ const CreditCardInputDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Stacked · own labels', ar: 'مكدّس · تسميات مخصصة' })}
         </p>
         <div className="rounded-md border border-border bg-card p-4">

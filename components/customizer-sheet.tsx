@@ -37,6 +37,7 @@ export interface CustomizerTriggerProps {
 
 export const CustomizerTrigger = ({ className }: CustomizerTriggerProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
+
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
       <SheetTrigger asChild>
@@ -190,7 +191,7 @@ const CustomizerBody = () => {
 
       <Separator />
       <SheetFooter className="flex-row items-center justify-between">
-        <p className="text-xs uppercase text-muted-foreground">Saved in this browser</p>
+        <p className="text-xs text-muted-foreground uppercase">Saved in this browser</p>
         <Button type="button" size="sm" variant="ghost" onClick={reset} disabled={isDefault}>
           <RotateCcw className="size-3.5" />
           Reset
@@ -284,7 +285,7 @@ interface CodeCardProps {
 const CodeCard = ({ title, code, copyLabel, placeholder }: CodeCardProps) => (
   <div className="overflow-hidden rounded-md border border-border bg-card">
     <div className="flex items-center justify-between gap-2 border-b border-border py-1 ps-3 pe-1.5">
-      <span className="text-xs uppercase text-muted-foreground">{title}</span>
+      <span className="text-xs text-muted-foreground uppercase">{title}</span>
       <CopyButton value={code} size="sm" variant="ghost" disabled={!code} className="h-7">
         {copyLabel}
       </CopyButton>
@@ -309,8 +310,8 @@ const Section = ({ title, hint, children }: SectionProps) => {
   return (
     <section className="flex flex-col gap-2.5">
       <div className="flex items-baseline justify-between gap-3">
-        <h3 className="text-xs uppercase text-muted-foreground">{title}</h3>
-        {hint && <span className="text-[11px] uppercase text-muted-foreground/70">{hint}</span>}
+        <h3 className="text-xs text-muted-foreground uppercase">{title}</h3>
+        {hint && <span className="text-[11px] text-muted-foreground/70 uppercase">{hint}</span>}
       </div>
       {children}
     </section>

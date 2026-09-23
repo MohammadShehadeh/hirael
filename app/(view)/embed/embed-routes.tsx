@@ -44,6 +44,7 @@ export interface BlockEmbedMetadataProps {
 
 export const blockEmbedMetadata = async ({ params }: BlockEmbedMetadataProps): Promise<Metadata> => {
   const { block } = await params;
+
   return embedMetadata(`${REGISTRY_BY_NAME[block]?.title ?? 'Block'} preview`);
 };
 
@@ -53,6 +54,7 @@ export interface TemplateEmbedMetadataProps {
 
 export const templateEmbedMetadata = async ({ params }: TemplateEmbedMetadataProps): Promise<Metadata> => {
   const { template } = await params;
+
   return embedMetadata(`${REGISTRY_BY_NAME[template]?.title ?? 'Template'} preview`);
 };
 
@@ -65,6 +67,7 @@ export const exampleEmbedMetadata = async ({ params }: ExampleEmbedMetadataProps
   const entry = REGISTRY_BY_NAME[component];
   const ref = entry ? getExamples(entry.name).find((e) => e.slug === example) : undefined;
   const title = entry && ref ? `${entry.title} ${ref.title.toLowerCase()}` : 'Component';
+
   return embedMetadata(`${title} preview`);
 };
 
@@ -96,6 +99,7 @@ export interface TemplateEmbedProps {
 export const TemplateEmbed = ({ base, template }: TemplateEmbedProps) => {
   const entry = REGISTRY_BY_NAME[template];
   if (!entry || entry.category !== 'templates') notFound();
+
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
@@ -115,6 +119,7 @@ export interface ExampleEmbedProps {
 export const ExampleEmbed = ({ base, component, example }: ExampleEmbedProps) => {
   const entry = REGISTRY_BY_NAME[component];
   if (!entry || !isComponentEntry(entry) || !getExamples(entry.name).some((e) => e.slug === example)) notFound();
+
   return (
     <>
       <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />

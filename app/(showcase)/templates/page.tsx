@@ -38,7 +38,7 @@ export default function TemplatesIndex() {
         title="Full pages, ready to copy."
         blurb="Complete pages assembled from the blocks and components in this registry with light, dark and RTL already handled. One command copies the whole page into your repo, then you swap in your copy and brand."
       >
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {TEMPLATES.length} template{TEMPLATES.length === 1 ? '' : 's'}
         </p>
       </PageHeader>

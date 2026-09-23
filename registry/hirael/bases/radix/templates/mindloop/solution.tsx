@@ -31,7 +31,7 @@ export const Solution = () => {
   return (
     <section id="how-it-works" className="border-t border-border/30 px-8 py-32 md:px-28 md:py-44">
       <div className="mx-auto max-w-6xl">
-        <motion.p {...fade(0)} className="text-xs uppercase tracking-[3px] text-muted-foreground">
+        <motion.p {...fade(0)} className="text-xs tracking-[3px] text-muted-foreground uppercase">
           SOLUTION
         </motion.p>
 

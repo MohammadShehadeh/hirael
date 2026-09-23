@@ -4,6 +4,7 @@ import * as React from 'react';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 
 export type TagValidator = (candidate: string, current: string[]) => true | string;
@@ -24,6 +25,9 @@ interface Ctx {
   inputRef: React.RefObject<HTMLInputElement | null>;
 }
 
+const DEFAULT_COMMIT_KEYS = ['Enter', ','];
+const DEFAULT_SPLIT_ON = /[,\n\t]+/;
+
 const TagInputContext = React.createContext<Ctx | null>(null);
 
 const useTagInput = () => {
@@ -31,6 +35,7 @@ const useTagInput = () => {
   if (!ctx) {
     throw new Error('TagInput compound parts must be used inside <TagInput>');
   }
+
   return ctx;
 };
 
@@ -59,8 +64,8 @@ const TagInput = ({
   unique = true,
   caseSensitive = false,
   validate,
-  commitKeys = ['Enter', ','],
-  splitOn = /[,\n\t]+/,
+  commitKeys = DEFAULT_COMMIT_KEYS,
+  splitOn = DEFAULT_SPLIT_ON,
   className,
   children,
   ...props
@@ -120,6 +125,7 @@ const TagInput = ({
       } else if (anyAdded) {
         setError(null);
       }
+
       // A duplicate is already there, so it counts as handled and the draft clears.
       return anyAdded || (anyDuplicate && !batchError);
     },
@@ -129,8 +135,7 @@ const TagInput = ({
   const remove = React.useCallback(
     (index: number) => {
       if (disabled || readOnly) return;
-      const next = value.filter((_, i) => i !== index);
-      setValue(next);
+      setValue(value.filter((_, i) => i !== index));
       setError(null);
     },
     [disabled, readOnly, value, setValue],
@@ -168,6 +173,7 @@ type TagInputContainerProps = React.ComponentProps<'div'>;
 
 const TagInputContainer = ({ className, children, onMouseDown, ...props }: TagInputContainerProps) => {
   const ctx = useTagInput();
+
   return (
     <div
       data-slot="tag-input-container"
@@ -182,10 +188,10 @@ const TagInputContainer = ({ className, children, onMouseDown, ...props }: TagIn
         }
       }}
       className={cn(
-        'flex min-h-9 w-full flex-wrap items-center gap-1 rounded-sm border border-input bg-transparent px-1.5 py-1 text-sm outline-none transition-colors',
+        'flex min-h-9 w-full flex-wrap items-center gap-1 rounded-sm border border-input bg-transparent px-1.5 py-1 text-sm transition-colors outline-none',
         'focus-within:border-ring',
         ctx.error && 'border-destructive focus-within:border-destructive',
-        (ctx.disabled || ctx.readOnly) && 'opacity-60 cursor-not-allowed',
+        (ctx.disabled || ctx.readOnly) && 'cursor-not-allowed opacity-60',
         className,
       )}
       {...props}
@@ -204,6 +210,7 @@ const TagInputTag = ({ index, children, className, ...props }: TagInputTagProps)
   const ctx = useTagInput();
   const tag = ctx.value[index];
   if (tag === undefined) return null;
+
   return (
     <Badge variant="secondary" data-slot="tag-input-tag" className={cn('gap-1 pe-1 font-normal', className)} {...props}>
       <span className="min-w-0 truncate">{children ?? tag}</span>
@@ -224,6 +231,7 @@ const TagInputTag = ({ index, children, className, ...props }: TagInputTagProps)
 
 const TagInputTags = () => {
   const ctx = useTagInput();
+
   return (
     <>
       {ctx.value.map((_, i) => (
@@ -241,14 +249,18 @@ const TagInputField = ({
   onKeyDown,
   onPaste,
   onBlur,
+  ref,
   ...props
 }: TagInputFieldProps) => {
   const ctx = useTagInput();
   const { inputRef } = ctx;
+  const composedRef = React.useMemo(() => composeRefs(inputRef, ref), [inputRef, ref]);
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(e);
     if (e.defaultPrevented) return;
+    // Enter or comma confirming an IME composition must not commit the half-composed draft.
+    if (e.nativeEvent.isComposing || e.keyCode === 229) return;
     if (ctx.commitKeys.includes(e.key)) {
       if (ctx.draft.trim()) {
         e.preventDefault();
@@ -256,6 +268,7 @@ const TagInputField = ({
       } else if (e.key !== 'Enter') {
         e.preventDefault();
       }
+
       return;
     }
     if (e.key === 'Backspace' && !ctx.draft && ctx.value.length > 0) {
@@ -281,7 +294,7 @@ const TagInputField = ({
 
   return (
     <input
-      ref={inputRef}
+      ref={composedRef}
       type="text"
       value={ctx.draft}
       onChange={(e) => {
@@ -303,7 +316,7 @@ const TagInputField = ({
       aria-describedby={ctx.error ? ctx.errorId : undefined}
       data-slot="tag-input-field"
       className={cn(
-        'flex-1 min-w-[6rem] bg-transparent px-1.5 py-0.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed',
+        'min-w-[6rem] flex-1 bg-transparent px-1.5 py-0.5 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed',
         className,
       )}
       {...props}
@@ -314,6 +327,7 @@ const TagInputField = ({
 const TagInputError = ({ className, ...props }: React.ComponentProps<'p'>) => {
   const ctx = useTagInput();
   if (!ctx.error) return null;
+
   return (
     <p
       role="alert"

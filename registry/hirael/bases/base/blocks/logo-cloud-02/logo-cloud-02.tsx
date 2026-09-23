@@ -23,9 +23,7 @@ import { Marquee } from '@/registry/hirael/bases/base/components/marquee';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 interface Logo {
   name: string;
@@ -74,9 +72,9 @@ const LogoRow = ({ logos, reverse }: LogoRowProps) => (
 const LogoCloud02 = () => {
   return (
     <section data-slot="logo-cloud" className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-02-heading">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="logo-cloud-header" className="mx-auto max-w-2xl text-center">
-          <p className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>In production at</p>
+          <p className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>In production at</p>
           <h2
             id="logo-cloud-02-heading"
             style={stagger(1)}
@@ -104,7 +102,7 @@ const LogoCloud02 = () => {
         <LogoRow logos={ROW_TWO} reverse />
       </div>
 
-      <div className="container mt-12 w-full">
+      <div className="mx-auto mt-12 w-full max-w-[1480px] px-4">
         <p style={stagger(3)} className={cn(ENTER, 'text-center text-sm text-muted-foreground')}>
           From two-person studios to platform teams, they build their product screens on the same components.
         </p>

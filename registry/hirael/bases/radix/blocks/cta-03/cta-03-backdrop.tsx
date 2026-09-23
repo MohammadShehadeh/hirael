@@ -10,6 +10,7 @@ const resolveColor = (value: string) => {
   document.body.append(probe);
   const resolved = getComputedStyle(probe).color;
   probe.remove();
+
   return resolved;
 };
 
@@ -32,6 +33,7 @@ const usePalette = () => {
       attributes: true,
       attributeFilter: ['class'],
     });
+
     return () => observer.disconnect();
   }, []);
 
@@ -43,6 +45,7 @@ const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
 const subscribeReducedMotion = (onChange: () => void) => {
   const media = window.matchMedia(REDUCED_MOTION);
   media.addEventListener('change', onChange);
+
   return () => media.removeEventListener('change', onChange);
 };
 

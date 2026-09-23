@@ -5,12 +5,14 @@ import { type HTMLMotionProps, type Variants, MotionConfig, motion } from 'motio
 
 import { cn } from '@/lib/utils';
 
-type FabSide = 'top' | 'bottom' | 'left' | 'right';
+export type FabSide = 'top' | 'bottom' | 'left' | 'right';
 
 interface FabContextValue {
   open: boolean;
   setOpen: (open: boolean) => void;
   side: FabSide;
+  focusFirstItem: () => void;
+  focusTrigger: () => void;
 }
 
 const FabContext = React.createContext<FabContextValue | null>(null);
@@ -20,6 +22,7 @@ const useFab = () => {
   if (!ctx) {
     throw new Error('FloatingActionButton parts must be used within <FloatingActionButton>');
   }
+
   return ctx;
 };
 
@@ -43,7 +46,7 @@ const listVariants: Variants = {
   closed: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
 };
 
-interface FloatingActionButtonProps extends React.ComponentProps<'div'> {
+export interface FloatingActionButtonProps extends React.ComponentProps<'div'> {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
@@ -57,6 +60,7 @@ const FloatingActionButton = ({
   side = 'top',
   className,
   children,
+  onKeyDown,
   ...props
 }: FloatingActionButtonProps) => {
   const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
@@ -80,17 +84,40 @@ const FloatingActionButton = ({
       }
     };
     document.addEventListener('pointerdown', onPointerDown);
+
     return () => document.removeEventListener('pointerdown', onPointerDown);
   }, [open, setOpen]);
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'Escape' || !open) return;
+  const focusTrigger = React.useCallback(() => {
+    rootRef.current?.querySelector<HTMLElement>('[data-slot="floating-action-button-trigger"]')?.focus();
+  }, []);
+
+  // Items stay `visibility: hidden` until the open animation starts, so focus waits a few frames for them.
+  const focusFirstItem = React.useCallback(() => {
+    let frames = 3;
+    const attempt = () => {
+      const item = rootRef.current?.querySelector<HTMLElement>(
+        '[data-slot="floating-action-button-item"]:not(:disabled)',
+      );
+      item?.focus();
+      frames -= 1;
+      if (item && document.activeElement !== item && frames > 0) requestAnimationFrame(attempt);
+    };
+    requestAnimationFrame(attempt);
+  }, []);
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event);
+    if (event.defaultPrevented || event.key !== 'Escape' || !open) return;
     event.stopPropagation();
     setOpen(false);
-    rootRef.current?.querySelector<HTMLElement>('[data-slot="floating-action-button-trigger"]')?.focus();
+    focusTrigger();
   };
 
-  const value = React.useMemo<FabContextValue>(() => ({ open, setOpen, side }), [open, setOpen, side]);
+  const value = React.useMemo<FabContextValue>(
+    () => ({ open, setOpen, side, focusFirstItem, focusTrigger }),
+    [open, setOpen, side, focusFirstItem, focusTrigger],
+  );
 
   return (
     <FabContext.Provider value={value}>
@@ -99,9 +126,9 @@ const FloatingActionButton = ({
           ref={rootRef}
           data-slot="floating-action-button"
           data-state={open ? 'open' : 'closed'}
-          onKeyDown={onKeyDown}
           className={cn('relative inline-flex', className)}
           {...props}
+          onKeyDown={handleKeyDown}
         >
           {children}
         </div>
@@ -110,10 +137,11 @@ const FloatingActionButton = ({
   );
 };
 
-type FloatingActionButtonTriggerProps = HTMLMotionProps<'button'>;
+export type FloatingActionButtonTriggerProps = HTMLMotionProps<'button'>;
 
-const FloatingActionButtonTrigger = ({ className, children, ...props }: FloatingActionButtonTriggerProps) => {
-  const { open, setOpen } = useFab();
+const FloatingActionButtonTrigger = ({ className, children, onClick, ...props }: FloatingActionButtonTriggerProps) => {
+  const { open, setOpen, focusFirstItem } = useFab();
+
   return (
     <motion.button
       type="button"
@@ -121,27 +149,33 @@ const FloatingActionButtonTrigger = ({ className, children, ...props }: Floating
       data-state={open ? 'open' : 'closed'}
       aria-expanded={open}
       aria-haspopup="menu"
-      onClick={() => setOpen(!open)}
       animate={{ rotate: open ? 45 : 0 }}
       transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        'inline-flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background [&_svg]:size-5',
+        'inline-flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none [&_svg]:size-5',
         className,
       )}
       {...props}
+      onClick={(event) => {
+        onClick?.(event);
+        if (event.defaultPrevented) return;
+        setOpen(!open);
+        if (!open) focusFirstItem();
+      }}
     >
       {children}
     </motion.button>
   );
 };
 
-type FloatingActionButtonListProps = HTMLMotionProps<'div'>;
+export type FloatingActionButtonListProps = HTMLMotionProps<'div'>;
 
-const FloatingActionButtonList = ({ className, ...props }: FloatingActionButtonListProps) => {
+const FloatingActionButtonList = ({ className, onKeyDown, ...props }: FloatingActionButtonListProps) => {
   const { open, side } = useFab();
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (!open) return;
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event);
+    if (event.defaultPrevented || !open) return;
     // The row is pinned to physical order in both directions, so the arrow keys stay physical too.
     const horizontal = side === 'left' || side === 'right';
     const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown';
@@ -167,7 +201,6 @@ const FloatingActionButtonList = ({ className, ...props }: FloatingActionButtonL
       initial={false}
       animate={open ? 'open' : 'closed'}
       variants={listVariants}
-      onKeyDown={onKeyDown}
       className={cn(
         'absolute z-10 flex items-center gap-2',
         listSideClasses[side],
@@ -175,14 +208,15 @@ const FloatingActionButtonList = ({ className, ...props }: FloatingActionButtonL
         className,
       )}
       {...props}
+      onKeyDown={handleKeyDown}
     />
   );
 };
 
-type FloatingActionButtonItemProps = HTMLMotionProps<'button'>;
+export type FloatingActionButtonItemProps = HTMLMotionProps<'button'>;
 
-const FloatingActionButtonItem = ({ className, ...props }: FloatingActionButtonItemProps) => {
-  const { open, side } = useFab();
+const FloatingActionButtonItem = ({ className, onClick, ...props }: FloatingActionButtonItemProps) => {
+  const { open, setOpen, side, focusTrigger } = useFab();
   const itemVariants: Variants = {
     open: { opacity: 1, x: 0, y: 0, visibility: 'visible' },
     closed: {
@@ -191,6 +225,7 @@ const FloatingActionButtonItem = ({ className, ...props }: FloatingActionButtonI
       transitionEnd: { visibility: 'hidden' },
     },
   };
+
   return (
     <motion.button
       type="button"
@@ -201,10 +236,16 @@ const FloatingActionButtonItem = ({ className, ...props }: FloatingActionButtonI
       variants={itemVariants}
       transition={{ type: 'spring', stiffness: 300, damping: 24 }}
       className={cn(
-        'inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-md transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-4',
+        'inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-md transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&_svg]:size-4',
         className,
       )}
       {...props}
+      onClick={(event) => {
+        onClick?.(event);
+        if (event.defaultPrevented) return;
+        setOpen(false);
+        focusTrigger();
+      }}
     />
   );
 };

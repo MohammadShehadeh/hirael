@@ -224,6 +224,7 @@ const ACTIVITY: readonly Activity[] = [
 const deltaTone = ({ delta, goodWhen }: Metric) => {
   if (delta === 0) return 'bg-accent text-muted-foreground';
   const improving = delta > 0 === (goodWhen === 'up');
+
   return improving ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive';
 };
 
@@ -244,7 +245,7 @@ const DeltaChip = ({ metric }: DeltaChipProps) => {
       dir="ltr"
       aria-label={`${label} ${direction} ${Math.abs(delta)} ${measure} against the previous period`}
       className={cn(
-        'inline-flex w-fit shrink-0 items-center gap-1 whitespace-nowrap rounded-sm px-1.5 py-0.5 text-[11px] font-medium leading-none tabular-nums',
+        'inline-flex w-fit shrink-0 items-center gap-1 rounded-sm px-1.5 py-0.5 text-[11px] leading-none font-medium whitespace-nowrap tabular-nums',
         deltaTone(metric),
       )}
     >
@@ -272,6 +273,7 @@ const Dashboard01 = () => {
   React.useEffect(() => {
     if (!exported) return;
     const timeout = setTimeout(() => setExported(false), 2000);
+
     return () => clearTimeout(timeout);
   }, [exported]);
 
@@ -290,13 +292,13 @@ const Dashboard01 = () => {
 
   return (
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="dashboard-header"
           className={cn(ENTER, 'flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between')}
         >
           <div className="flex max-w-xl flex-col gap-3">
-            <span className="text-xs uppercase text-muted-foreground">Overview</span>
+            <span className="text-xs text-muted-foreground uppercase">Overview</span>
             <h2 className="flex flex-wrap items-baseline gap-x-3 font-serif text-4xl font-medium tracking-tight sm:text-5xl">
               <span>Operations</span>
               <span key={range} className={cn(SWAP, 'text-muted-foreground')}>
@@ -341,12 +343,12 @@ const Dashboard01 = () => {
           data-slot="dashboard-metrics"
           className={cn(
             ENTER,
-            'delay-60 mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
+            'mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border delay-60 lg:grid-cols-4',
           )}
         >
           {metrics.map((m) => (
             <div key={m.label} className="flex flex-col gap-2 bg-card p-5">
-              <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
+              <span className="text-xs text-muted-foreground uppercase">{m.label}</span>
               <div key={range} className={cn(SWAP, 'flex flex-col items-start gap-2')}>
                 <span className="text-3xl font-semibold tracking-[-0.035em] tabular-nums">{m.value}</span>
                 <DeltaChip metric={m} />
@@ -355,7 +357,7 @@ const Dashboard01 = () => {
           ))}
         </div>
 
-        <div className={cn(ENTER, 'delay-120 mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}>
+        <div className={cn(ENTER, 'mt-6 grid grid-cols-1 gap-6 delay-120 lg:grid-cols-3 lg:items-start')}>
           <Card data-slot="dashboard-chart" className="lg:col-span-2">
             <CardHeader>
               <CardDescription>
@@ -368,7 +370,7 @@ const Dashboard01 = () => {
                 <Button variant="outline" size="sm" onClick={onExport} aria-label={exported ? 'Exported' : 'Export'}>
                   {exported ? (
                     <Check
-                      className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none"
+                      className="size-3.5 animate-in duration-250 zoom-in-50 motion-reduce:animate-none"
                       aria-hidden
                     />
                   ) : (
@@ -407,7 +409,7 @@ const Dashboard01 = () => {
                             style={{ height: `${(row.b / chartMax) * 100}%` }}
                           />
                         </span>
-                        <span className="text-center text-xs uppercase text-muted-foreground">{row.d}</span>
+                        <span className="text-center text-xs text-muted-foreground uppercase">{row.d}</span>
                       </button>
                     </TooltipTrigger>
                     <TooltipContent>
@@ -425,17 +427,17 @@ const Dashboard01 = () => {
 
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-5">
-                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                     <span aria-hidden className="size-2 rounded-xs bg-foreground/85" />
                     Sign-ups
                   </span>
-                  <span className="inline-flex items-center gap-1.5 text-xs uppercase text-muted-foreground">
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase">
                     <span aria-hidden className="size-2 rounded-xs bg-muted-foreground/40" />
                     Activated
                   </span>
                 </div>
                 <p className="flex items-baseline gap-2">
-                  <span className="text-xs uppercase text-muted-foreground">Conversion</span>
+                  <span className="text-xs text-muted-foreground uppercase">Conversion</span>
                   <span className="text-sm font-semibold tabular-nums">{signups.conversion}</span>
                 </p>
               </div>
@@ -474,7 +476,7 @@ const Dashboard01 = () => {
                         <span className="font-medium text-foreground">{a.name}</span>{' '}
                         <span className="text-muted-foreground">{a.action}</span>
                       </p>
-                      <span className="text-xs uppercase text-muted-foreground">{a.time}</span>
+                      <span className="text-xs text-muted-foreground uppercase">{a.time}</span>
                     </div>
                   </li>
                 ))}

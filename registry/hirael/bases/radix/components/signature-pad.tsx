@@ -15,6 +15,8 @@ type Stroke = Point[];
 
 interface SignaturePadDataURLOptions {
   backgroundColor?: string;
+  /** Ink for this export; overrides the pad's `exportColor`. */
+  inkColor?: string;
 }
 
 export interface SignaturePadRef {
@@ -38,6 +40,7 @@ const useSignaturePad = () => {
   if (!ctx) {
     throw new Error('SignaturePad compound components must be used inside <SignaturePad>');
   }
+
   return ctx;
 };
 
@@ -64,6 +67,7 @@ const drawStroke = (ctx: CanvasRenderingContext2D, points: Stroke) => {
     ctx.beginPath();
     ctx.arc(p.x, p.y, Math.max(p.w / 2, 0.5), 0, Math.PI * 2);
     ctx.fill();
+
     return;
   }
   for (let i = 1; i < points.length; i++) {
@@ -73,6 +77,8 @@ const drawStroke = (ctx: CanvasRenderingContext2D, points: Stroke) => {
 
 export interface SignaturePadProps extends Omit<React.ComponentProps<'div'>, 'onChange' | 'ref'> {
   penColor?: string;
+  /** Ink used by `toDataURL`. Defaults to `penColor`, else black, so a dark-theme signature doesn't export white. */
+  exportColor?: string;
   minStrokeWidth?: number;
   maxStrokeWidth?: number;
   onChange?: (isEmpty: boolean) => void;
@@ -84,6 +90,7 @@ export interface SignaturePadProps extends Omit<React.ComponentProps<'div'>, 'on
 
 const SignaturePad = ({
   penColor,
+  exportColor,
   minStrokeWidth = 1.5,
   maxStrokeWidth = 3.5,
   onChange,
@@ -122,6 +129,7 @@ const SignaturePad = ({
     if (penColor) return penColor;
     const canvas = canvasRef.current;
     if (!canvas) return '#000';
+
     return getComputedStyle(canvas).color || '#000';
   }, [penColor]);
 
@@ -134,6 +142,7 @@ const SignaturePad = ({
     const ink = resolveInk();
     ctx.strokeStyle = ink;
     ctx.fillStyle = ink;
+
     return ctx;
   }, [resolveInk]);
 
@@ -167,6 +176,7 @@ const SignaturePad = ({
       attributes: true,
       attributeFilter: ['class', 'style'],
     });
+
     return () => {
       ro.disconnect();
       mo.disconnect();
@@ -207,20 +217,22 @@ const SignaturePad = ({
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
-        const ink = resolveInk();
+        const ink = opts?.inkColor ?? exportColor ?? penColor ?? '#000000';
         ctx.strokeStyle = ink;
         ctx.fillStyle = ink;
         for (const stroke of strokesRef.current) {
           drawStroke(ctx, stroke);
         }
+
         return off.toDataURL(type);
       },
     }),
-    [clear, undo, resolveInk],
+    [clear, undo, exportColor, penColor],
   );
 
   const pointFromEvent = (e: React.PointerEvent<HTMLCanvasElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
+
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   };
 
@@ -306,7 +318,7 @@ const SignaturePad = ({
           aria-hidden
           data-slot="signature-pad-baseline"
           className={cn(
-            'pointer-events-none absolute bottom-7 start-4 end-4 flex items-end gap-2 transition-opacity duration-300',
+            'pointer-events-none absolute start-4 end-4 bottom-7 flex items-end gap-2 transition-opacity duration-300',
             empty ? 'opacity-100' : 'opacity-0',
           )}
         >
@@ -331,8 +343,9 @@ const SignaturePad = ({
   );
 };
 
-const SignaturePadClear = ({ className, children, ...props }: React.ComponentProps<typeof Button>) => {
+const SignaturePadClear = ({ className, children, onClick, ...props }: React.ComponentProps<typeof Button>) => {
   const ctx = useSignaturePad();
+
   return (
     <Button
       type="button"
@@ -340,7 +353,11 @@ const SignaturePadClear = ({ className, children, ...props }: React.ComponentPro
       size="sm"
       data-slot="signature-pad-clear"
       disabled={ctx.disabled || ctx.empty}
-      onClick={() => ctx.clear()}
+      onClick={(e) => {
+        onClick?.(e);
+        if (e.defaultPrevented) return;
+        ctx.clear();
+      }}
       className={className}
       {...props}
     >
@@ -350,8 +367,9 @@ const SignaturePadClear = ({ className, children, ...props }: React.ComponentPro
   );
 };
 
-const SignaturePadUndo = ({ className, children, ...props }: React.ComponentProps<typeof Button>) => {
+const SignaturePadUndo = ({ className, children, onClick, ...props }: React.ComponentProps<typeof Button>) => {
   const ctx = useSignaturePad();
+
   return (
     <Button
       type="button"
@@ -359,7 +377,11 @@ const SignaturePadUndo = ({ className, children, ...props }: React.ComponentProp
       size="sm"
       data-slot="signature-pad-undo"
       disabled={ctx.disabled || ctx.empty}
-      onClick={() => ctx.undo()}
+      onClick={(e) => {
+        onClick?.(e);
+        if (e.defaultPrevented) return;
+        ctx.undo();
+      }}
       className={className}
       {...props}
     >

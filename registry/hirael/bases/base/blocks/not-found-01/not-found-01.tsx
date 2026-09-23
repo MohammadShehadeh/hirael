@@ -18,19 +18,17 @@ const SUGGESTIONS: readonly Suggestion[] = [
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60): React.CSSProperties => ({
-  animationDelay: `${index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 const NotFound01 = () => {
   return (
     <section data-slot="not-found" className="flex min-h-[80vh] items-center justify-center bg-background py-20">
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">
         <div className="flex flex-col items-start gap-6">
-          <span className={cn(ENTER, 'text-xs uppercase tabular-nums text-muted-foreground')}>404</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase tabular-nums')}>404</span>
           <h1
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-6xl font-medium leading-none tracking-tight sm:text-7xl')}
+            className={cn(ENTER, 'font-serif text-6xl leading-none font-medium tracking-tight sm:text-7xl')}
           >
             Page not found.
           </h1>
@@ -51,7 +49,7 @@ const NotFound01 = () => {
           </div>
 
           <div data-slot="not-found-suggestions" className="mt-6 w-full border-t border-border pt-6">
-            <span style={stagger(4)} className={cn(ENTER, 'block text-xs uppercase text-muted-foreground')}>
+            <span style={stagger(4)} className={cn(ENTER, 'block text-xs text-muted-foreground uppercase')}>
               Try one of these
             </span>
             <ul className="mt-3 flex flex-col">
@@ -63,13 +61,13 @@ const NotFound01 = () => {
                 >
                   <a
                     href={s.route}
-                    className="group flex items-center justify-between gap-4 p-3 transition-colors duration-150 hover:bg-card focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="group flex items-center justify-between gap-4 p-3 transition-colors duration-150 hover:bg-card focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                   >
                     <div className="flex min-w-0 flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-4">
                       <span dir="ltr" className="text-sm text-foreground">
                         {s.route}
                       </span>
-                      <span className="text-pretty text-sm text-muted-foreground">{s.description}</span>
+                      <span className="text-sm text-pretty text-muted-foreground">{s.description}</span>
                     </div>
                     <ArrowRight
                       aria-hidden

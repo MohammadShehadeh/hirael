@@ -10,7 +10,7 @@ const PARAGRAPH =
 
 export const About = () => {
   return (
-    <section className="overflow-hidden bg-white pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-24 lg:pt-32">
+    <section className="overflow-hidden bg-white pt-16 pb-12 sm:pt-20 sm:pb-16 lg:pt-32 lg:pb-24">
       <div className="mx-auto w-full max-w-[1440px]">
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
           <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-900 text-[11px] font-semibold text-white sm:h-7 sm:w-7 sm:text-[12px]">
@@ -26,7 +26,7 @@ export const About = () => {
           </span>
         </div>
 
-        <h2 className="mb-12 px-5 text-[clamp(1.5rem,4vw,3.2rem)] font-medium leading-[1.12] tracking-[-0.02em] text-gray-900 sm:mb-16 sm:px-8 lg:mb-28 lg:px-12">
+        <h2 className="mb-12 px-5 text-[clamp(1.5rem,4vw,3.2rem)] leading-[1.12] font-medium tracking-[-0.02em] text-gray-900 sm:mb-16 sm:px-8 lg:mb-28 lg:px-12">
           Strategy-led creatives, delivering
           <br />
           results in digital and beyond.
@@ -34,7 +34,7 @@ export const About = () => {
 
         <div className="px-5 sm:px-8 lg:px-12">
           <div className="lg:hidden">
-            <p className="text-[15px] font-medium leading-[1.6] text-gray-900 sm:text-[17px]">{PARAGRAPH}</p>
+            <p className="text-[15px] leading-[1.6] font-medium text-gray-900 sm:text-[17px]">{PARAGRAPH}</p>
             <OrangeButton label="About our studio" className="mt-6" />
             <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-end sm:gap-5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -56,7 +56,7 @@ export const About = () => {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={SMALL_IMAGE} alt="" className="aspect-[438/346] w-full rounded-2xl object-cover" />
             <div className="pb-1">
-              <p className="text-[16px] font-medium leading-[1.65] text-gray-900 xl:text-[18px]">{PARAGRAPH}</p>
+              <p className="text-[16px] leading-[1.65] font-medium text-gray-900 xl:text-[18px]">{PARAGRAPH}</p>
               <OrangeButton label="About our studio" className="mt-6" />
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}

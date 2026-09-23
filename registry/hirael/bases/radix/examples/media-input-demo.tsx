@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { ImageIcon, Music, Upload } from 'lucide-react';
 
 import { useT } from '@/lib/demo-locale';
@@ -46,7 +45,7 @@ const MediaInputDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-4">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Audio · feeds the audio player',
             ar: 'صوت · يغذّي مشغّل الصوت',
@@ -80,7 +79,7 @@ const MediaInputDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Image · max 5 MB', ar: 'صورة · بحد أقصى 5 ميجابايت' })}
         </p>
         <MediaInput accept="image/*" maxSize={5 * 1024 * 1024}>

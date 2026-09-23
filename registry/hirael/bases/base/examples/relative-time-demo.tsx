@@ -23,13 +23,17 @@ const RelativeTimeDemo = () => {
         {notes.map((date) => (
           <li key={date} className="flex items-center justify-between gap-4 px-4 py-3">
             <span className="text-foreground">{t({ en: 'Note added', ar: 'أُضيفت ملاحظة' })}</span>
-            <RelativeTime date={date} locale={locale} className="text-muted-foreground tabular-nums" />
+            <span className="text-muted-foreground tabular-nums">
+              <RelativeTime date={date} locale={locale} />
+            </span>
           </li>
         ))}
         {events.map((event) => (
           <li key={event.date} className="flex items-center justify-between gap-4 px-4 py-3">
             <span className="text-foreground">{event.label}</span>
-            <RelativeTime date={event.date} locale={locale} className="text-muted-foreground" />
+            <span className="text-muted-foreground">
+              <RelativeTime date={event.date} locale={locale} />
+            </span>
           </li>
         ))}
       </ul>

@@ -13,9 +13,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 type View = 'before' | 'after';
 
@@ -44,9 +42,9 @@ const Comparison03 = () => {
 
   return (
     <section data-slot="comparison" className="bg-background py-20 sm:py-28" aria-labelledby="comparison-03-heading">
-      <div className="container w-full max-w-5xl">
+      <div className="mx-auto w-full max-w-5xl px-4">
         <div data-slot="comparison-header" className="max-w-2xl">
-          <p className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Before and after</p>
+          <p className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Before and after</p>
           <h2
             id="comparison-03-heading"
             style={stagger(1)}
@@ -88,7 +86,7 @@ const Comparison03 = () => {
             <div className={SWAP}>
               <div className="flex items-center gap-2">
                 <CircleAlert aria-hidden className="size-4 text-muted-foreground" />
-                <h3 className="text-xs uppercase text-muted-foreground">Writing it yourself</h3>
+                <h3 className="text-xs text-muted-foreground uppercase">Writing it yourself</h3>
               </div>
               <ul className="mt-6 flex flex-col gap-4">
                 {BEFORE.map((item) => (

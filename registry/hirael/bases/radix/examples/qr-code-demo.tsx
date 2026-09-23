@@ -12,7 +12,7 @@ const QrCodeDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
         <div className="flex items-end gap-4">
           <QRCode value="https://hirael.com" size={64} title="hirael.com" />
           <QRCode value="https://hirael.com" size={96} title="hirael.com" />
@@ -21,24 +21,16 @@ const QrCodeDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
-          {t({ en: 'currentColor theming', ar: 'تنسيق currentColor' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Custom colors', ar: 'ألوان مخصصة' })}</p>
         <div className="flex items-center gap-4">
-          <div className="text-primary">
-            <QRCode value="https://hirael.com" size={96} />
-          </div>
-          <div className="text-muted-foreground">
-            <QRCode value="https://hirael.com" size={96} />
-          </div>
-          <div className="rounded-md bg-primary p-1.5 text-primary-foreground">
-            <QRCode value="https://hirael.com" size={96} />
-          </div>
+          <QRCode value="https://hirael.com" size={96} foreground="#1c1917" background="#f5f5f4" />
+          <QRCode value="https://hirael.com" size={96} foreground="#1e3a8a" background="#eff6ff" />
+          <QRCode value="https://hirael.com" size={96} foreground="#14532d" background="#f0fdf4" />
         </div>
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Error correction · L vs H',
             ar: 'تصحيح الأخطاء · L مقابل H',
@@ -57,7 +49,7 @@ const QrCodeDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'In a card', ar: 'داخل بطاقة' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'In a card', ar: 'داخل بطاقة' })}</p>
         <div className="grid w-fit justify-items-center gap-3 rounded-lg border border-border bg-card p-6">
           <QRCode
             value="https://hirael.com"

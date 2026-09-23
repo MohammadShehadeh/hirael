@@ -9,7 +9,7 @@
 
 <h3>The components shadcn/ui doesn't ship.</h3>
 
-75+ components, 140+ section blocks and 10+ full-page templates.<br />
+80+ components, 140+ section blocks and 10+ full-page templates.<br />
 Built on shadcn primitives, installed with the shadcn CLI, owned by you.
 
 <p>
@@ -27,10 +27,10 @@ Built on shadcn primitives, installed with the shadcn CLI, owned by you.
 npx shadcn@latest add @hirael/multi-select
 ```
 
-No config needed: `@hirael` is in shadcn's registry index, so any project with
-shadcn/ui can install from it right away.
+No setup needed. Hirael is listed in shadcn's registry directory, so any project
+that uses shadcn/ui can install from it right away.
 
-## See it
+## Previews
 
 <table>
   <tr>
@@ -55,18 +55,21 @@ shadcn/ui can install from it right away.
 
 ## Why Hirael
 
-- **You own the code.** The CLI copies the source into your project and
-  rewrites imports to match your `components.json`. No package to update, no
-  runtime to depend on.
-- **It feels like shadcn.** The same flat compound API, a `data-slot` on every
-  part, and the primitives you already have.
-- **Radix UI or Base UI.** Every item ships in both, so it matches your stack.
-- **Light, dark and RTL out of the box.** Colors come from your theme tokens and
-  layouts use logical properties, so `dir="rtl"` just works.
-- **Built for AI editors.** Each item has a Markdown page with its install
-  command, usage, source and API, plus a site-wide
-  [`llms.txt`](https://hirael.com/llms.txt). Paste a link into Cursor, Claude or
-  v0 and it has everything it needs.
+- **You own the code.** The shadcn CLI copies each component's source into your
+  project and adjusts the imports to match your setup. There is no package to
+  keep updated, and you can change anything you like.
+- **It works like shadcn/ui.** Components are built from small parts you put
+  together, the same way shadcn/ui's own components are. They use the shadcn
+  primitives already in your project.
+- **Radix UI or Base UI.** Every component, block and template comes in both
+  versions, so you can use whichever library your project is built on.
+- **Your theme, in light, dark and right-to-left.** Colors come from your
+  shadcn/ui theme, so everything matches your design without extra styling.
+  Layouts also work in right-to-left languages like Arabic.
+- **Easy to use with AI editors.** Every component has a Markdown page with its
+  install command, usage, source code and props, and the whole library is
+  summarized in [`llms.txt`](https://hirael.com/llms.txt). Share a link with
+  Cursor, Claude or v0 and it has everything it needs.
 
 ## What's inside
 
@@ -83,23 +86,33 @@ shadcn/ui can install from it right away.
 
 ## Quick start
 
-**1. Set up shadcn/ui** if the project doesn't have it yet.
+**1. Set up shadcn/ui** if your project doesn't use it yet.
 
 ```bash
 npx shadcn@latest init
 ```
 
-**2. Add what you need.** Dependencies, including the shadcn primitives each
-item builds on, install with it.
+**2. Add the components you need.** The CLI also installs anything they depend
+on, including the shadcn/ui components they're built from.
 
 ```bash
 npx shadcn@latest add @hirael/multi-select @hirael/date-range-picker @hirael/pricing-04
 ```
 
-**3. Use it.**
+**3. Use them in your code.**
 
 ```tsx
-import { MultiSelect, MultiSelectContent, MultiSelectTrigger } from '@/components/ui/multi-select';
+'use client';
+
+import { useState } from 'react';
+
+import { MultiSelect, MultiSelectContent, MultiSelectTrigger } from '@/components/multi-select';
+
+const frameworks = [
+  { value: 'next', label: 'Next.js' },
+  { value: 'remix', label: 'Remix' },
+  { value: 'astro', label: 'Astro' },
+];
 
 export function FrameworkPicker() {
   const [value, setValue] = useState<string[]>([]);
@@ -113,9 +126,10 @@ export function FrameworkPicker() {
 }
 ```
 
-### Radix UI or Base UI
+### Using Base UI
 
-Radix UI is the default. For Base UI, install from the `base` path:
+The commands above install the Radix UI version. If your project uses Base UI,
+install from the `base` path instead:
 
 ```bash
 npx shadcn@latest add https://hirael.com/r/base/multi-select.json
@@ -141,9 +155,10 @@ Sponsored by [Sahabti](https://sahabti.com/en).
 
 ## Contributing
 
-New components, blocks and fixes are welcome. Read
-**[CONTRIBUTING.md](./CONTRIBUTING.md)** for the workflow and the item
-checklist, and **[the Code of Conduct](./CODE_OF_CONDUCT.md)** before you start.
+Contributions are welcome, from bug fixes to new components and blocks. Please
+read the **[contributing guide](./CONTRIBUTING.md)** to learn how the project is
+organized and how to submit a change, and follow our
+**[Code of Conduct](./CODE_OF_CONDUCT.md)**.
 
 <a href="https://github.com/MohammadShehadeh/hirael/graphs/contributors">
   <img alt="Contributors" src="https://contrib.rocks/image?repo=MohammadShehadeh/hirael" />
@@ -154,33 +169,35 @@ checklist, and **[the Code of Conduct](./CODE_OF_CONDUCT.md)** before you start.
 
 <br />
 
-This repo is the showcase site: a static Next.js 16 export that previews every
-item and serves the generated `/r/*.json` files. Requires Node 22+ (see
-`.nvmrc`) and pnpm 10.
+This repository is the Hirael website. It previews every component, block and
+template, and serves the files the shadcn CLI installs from. You'll need
+Node.js 24 and pnpm 12.
 
 ```bash
 git clone https://github.com/MohammadShehadeh/hirael.git
 cd hirael
 pnpm install
-pnpm dev            # http://localhost:3000
+pnpm dev
 ```
 
-| Script                         | Does                                                  |
-| ------------------------------ | ----------------------------------------------------- |
-| `pnpm dev`                     | Dev server (Turbopack)                                |
-| `pnpm build`                   | Regenerate the registry, then static-export to `out/` |
-| `pnpm lint` / `pnpm typecheck` | ESLint / `tsc --noEmit`                               |
+The site runs at [http://localhost:3000](http://localhost:3000).
 
-Every item is declared in `registry/hirael/registry-meta.ts` and ships from two
-parallel trees, `registry/hirael/bases/radix` and `registry/hirael/bases/base`.
-The `registry*.json` files and `/r/**` payloads are generated from it on
-install and build. Never commit or hand-edit them.
+| Command          | What it does                                              |
+| ---------------- | --------------------------------------------------------- |
+| `pnpm dev`       | Starts the development server                             |
+| `pnpm build`     | Builds the registry and exports the static site to `out/` |
+| `pnpm test`      | Runs the tests                                            |
+| `pnpm lint`      | Checks the code with ESLint                               |
+| `pnpm typecheck` | Checks the TypeScript types                               |
+
+See the [contributing guide](./CONTRIBUTING.md) for how the code is organized.
 
 </details>
 
 ## Security
 
-Report vulnerabilities privately. See **[SECURITY.md](./SECURITY.md)**.
+Please report security vulnerabilities privately, as described in
+**[SECURITY.md](./SECURITY.md)**.
 
 ## License
 

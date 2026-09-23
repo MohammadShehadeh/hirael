@@ -13,7 +13,7 @@ export interface MasonryColumns {
 }
 
 export interface MasonryProps extends React.ComponentProps<'div'> {
-  /** Column count, fixed or responsive per Tailwind breakpoint. */
+  /** Column count, fixed or per Tailwind breakpoint matched against the container's width. */
   columns?: number | MasonryColumns;
   /** Gap in pixels, applied on both axes. */
   gap?: number;
@@ -22,6 +22,7 @@ export interface MasonryProps extends React.ComponentProps<'div'> {
 const roundRobin = (itemCount: number, columnCount: number) => {
   const next: number[][] = Array.from({ length: columnCount }, () => []);
   for (let i = 0; i < itemCount; i++) next[i % columnCount].push(i);
+
   return next;
 };
 
@@ -33,6 +34,7 @@ const sameAssignment = (a: number[][] | null, b: number[][]) => {
       if (a[c][i] !== b[c][i]) return false;
     }
   }
+
   return true;
 };
 
@@ -42,6 +44,7 @@ const Masonry = ({
   className,
   style,
   children,
+  ref,
   ...props
 }: MasonryProps) => {
   const base = typeof columns === 'number' ? columns : (columns.base ?? 1);
@@ -61,23 +64,37 @@ const Masonry = ({
   const itemRefsRef = React.useRef(new Map<number, (node: HTMLDivElement | null) => void>());
   const observerRef = React.useRef<ResizeObserver | null>(null);
   const rafRef = React.useRef(0);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  React.useEffect(() => {
+  const setContainerRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      containerRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
+
+  // Layout effect so a client render settles on the measured column count before paint.
+  React.useLayoutEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
     const resolve = (width: number) => {
       let count = base;
       if (width >= 640 && sm != null) count = sm;
       if (width >= 768 && md != null) count = md;
       if (width >= 1024 && lg != null) count = lg;
       if (width >= 1280 && xl != null) count = xl;
+
       return Math.max(1, count);
     };
-    const update = () => setColumnCount(resolve(window.innerWidth));
-    update();
-    const queries = [640, 768, 1024, 1280].map((bp) => window.matchMedia(`(min-width: ${bp}px)`));
-    for (const query of queries) query.addEventListener('change', update);
-    return () => {
-      for (const query of queries) query.removeEventListener('change', update);
-    };
+    setColumnCount(resolve(node.getBoundingClientRect().width));
+    const observer = new ResizeObserver(([entry]) => {
+      if (entry) setColumnCount(resolve(entry.contentRect.width));
+    });
+    observer.observe(node);
+
+    return () => observer.disconnect();
   }, [base, sm, md, lg, xl]);
 
   React.useEffect(() => {
@@ -140,6 +157,7 @@ const Masonry = ({
       };
       itemRefsRef.current.set(index, callback);
     }
+
     return callback;
   };
 
@@ -150,6 +168,7 @@ const Masonry = ({
 
   return (
     <div
+      ref={setContainerRef}
       data-slot="masonry"
       style={{ ...style, gap: `${gap}px` }}
       className={cn('flex w-full min-w-0 items-start', className)}
@@ -166,6 +185,7 @@ const Masonry = ({
           {columnIndices.map((index) => {
             const child = childArray[index];
             const key = React.isValidElement(child) && child.key != null ? child.key : index;
+
             return (
               <div
                 key={key}

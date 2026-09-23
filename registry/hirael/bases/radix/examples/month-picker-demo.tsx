@@ -36,7 +36,13 @@ const MonthPickerDemo = () => {
 
       <Field className="gap-2">
         <FieldLabel htmlFor="mp-quarter">{t({ en: 'Quarter range', ar: 'نطاق ربع السنة' })}</FieldLabel>
-        <MonthPicker mode="range" value={range} onValueChange={setRange} minYear={2024} maxYear={2028}>
+        <MonthPicker
+          mode="range"
+          value={range}
+          onValueChange={setRange}
+          min={{ year: 2024, month: 3 }}
+          max={{ year: 2028, month: 8 }}
+        >
           <MonthPickerTrigger id="mp-quarter" placeholder={t({ en: 'Pick a range', ar: 'اختر نطاقًا' })} />
           <MonthPickerContent />
         </MonthPicker>

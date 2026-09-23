@@ -12,9 +12,7 @@ const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
 const SWAP = `animate-in fade-in zoom-in-97 duration-250 ${EASE} fill-mode-both motion-reduce:animate-none`;
 
-const stagger = (index: number, step = 70): React.CSSProperties => ({
-  animationDelay: `${index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -27,6 +25,7 @@ const Newsletter01 = () => {
     event.preventDefault();
     if (!EMAIL_PATTERN.test(email.trim())) {
       setError('Enter a valid email address.');
+
       return;
     }
     setError(null);
@@ -51,7 +50,7 @@ const Newsletter01 = () => {
           <span
             data-slot="newsletter-label"
             style={stagger(1)}
-            className={cn(ENTER, 'inline-flex items-center gap-2 text-xs uppercase text-muted-foreground')}
+            className={cn(ENTER, 'inline-flex items-center gap-2 text-xs text-muted-foreground uppercase')}
           >
             <Mail aria-hidden className="size-3.5" />
             Release notes
@@ -127,7 +126,7 @@ const Newsletter01 = () => {
                 <span className="text-xs text-muted-foreground">Join 1,200+ developers on the list.</span>
               </div>
 
-              <p style={stagger(6)} className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>
+              <p style={stagger(6)} className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>
                 Only release notes. Unsubscribe in one click.
               </p>
             </React.Fragment>

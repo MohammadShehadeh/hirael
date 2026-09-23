@@ -38,7 +38,7 @@ export const GlassButton = ({ className, ...props }: GlassButtonProps) => {
       type="button"
       data-slot="glass-button"
       className={cn(
-        'liquid-glass-strong inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap text-foreground outline-none transition-all focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
+        'liquid-glass-strong inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium whitespace-nowrap text-foreground transition-all outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0',
         className,
       )}
       {...props}
@@ -55,7 +55,7 @@ export const Heading = ({ children, className }: HeadingProps) => {
   return (
     <h2
       className={cn(
-        'text-4xl italic leading-[0.9] tracking-tight text-foreground [font-family:var(--font-prism-serif)] md:text-5xl lg:text-6xl',
+        '[font-family:var(--font-prism-serif)] text-4xl leading-[0.9] tracking-tight text-foreground italic md:text-5xl lg:text-6xl',
         className,
       )}
     >

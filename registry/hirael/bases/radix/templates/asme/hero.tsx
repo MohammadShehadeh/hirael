@@ -42,6 +42,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: HeroProps) => {
   // A video that buffered before hydration has already fired `canplay`; catch it on attach.
   const attachVideo = React.useCallback((video: HTMLVideoElement | null) => {
     if (video && video.readyState >= 3) setIsVisible(true);
+
     return () => {
       if (restartTimerRef.current) window.clearTimeout(restartTimerRef.current);
     };
@@ -96,13 +97,13 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: HeroProps) => {
       <Navbar />
 
       <div className="relative z-10 flex flex-1 -translate-y-[20%] flex-col items-center justify-center px-6 py-12 text-center">
-        <h1 className="mb-10 text-7xl tracking-tight text-foreground [font-family:var(--font-asme-serif)] sm:whitespace-nowrap md:text-8xl lg:text-9xl">
+        <h1 className="mb-10 [font-family:var(--font-asme-serif)] text-7xl tracking-tight text-foreground sm:whitespace-nowrap md:text-8xl lg:text-9xl">
           Know it <em className="italic">all</em>.
         </h1>
 
         <form
           onSubmit={(event) => event.preventDefault()}
-          className="liquid-glass w-full max-w-xl rounded-full py-2 pe-2 ps-6"
+          className="liquid-glass w-full max-w-xl rounded-full py-2 ps-6 pe-2"
         >
           <Field orientation="horizontal">
             <FieldLabel htmlFor="asme-hero-email" className="sr-only">

@@ -6,8 +6,8 @@ import { ArrowLeftRight, Check, FilePlus2, UserPlus, Wallet } from 'lucide-react
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
-import { Label } from '@/registry/hirael/bases/radix/ui/label';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 
 interface QuickActionsProps extends React.ComponentProps<'div'> {
@@ -35,11 +35,12 @@ interface QuickActionProps extends React.ComponentProps<'button'> {
 
 const QuickAction = ({ asChild = false, className, ...props }: QuickActionProps) => {
   const Comp = asChild ? Slot : 'button';
+
   return (
     <Comp
       data-slot="quick-action"
       className={cn(
-        'group flex flex-col items-start gap-2.5 rounded-lg border border-border bg-card p-3 text-start transition-colors duration-150 hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[state=open]:bg-accent',
+        'group flex flex-col items-start gap-2.5 rounded-lg border border-border bg-card p-3 text-start transition-colors duration-150 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none data-[state=open]:bg-accent',
         className,
       )}
       {...(asChild ? {} : { type: 'button' })}
@@ -88,6 +89,16 @@ const SWAP =
 
 const formatAmount = (value: string) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value) || 0);
+
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const validateDraft = (type: string, field: string, value: string) => {
+  if (!value) return `Enter the ${field.toLowerCase()}.`;
+  if (type === 'email' && !EMAIL_PATTERN.test(value)) return "That doesn't look like a valid email.";
+  if (type === 'number' && !(Number(value) > 0)) return 'Enter an amount above zero.';
+
+  return null;
+};
 
 const QUICK_ACTION_ROWS = [
   {
@@ -140,6 +151,7 @@ const QuickActionsBlock = () => {
   const [openId, setOpenId] = React.useState<string | null>(null);
   const [drafts, setDrafts] = React.useState<Record<string, string>>({});
   const [results, setResults] = React.useState<Record<string, string>>({});
+  const [errors, setErrors] = React.useState<Record<string, string | null>>({});
 
   return (
     <section data-slot="quick-actions-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
@@ -147,13 +159,18 @@ const QuickActionsBlock = () => {
         {QUICK_ACTION_ROWS.map((action) => {
           const result = results[action.id];
           const draft = drafts[action.id] ?? '';
+          const error = errors[action.id];
           const inputId = `quick-action-${action.id}`;
+          const errorId = `${inputId}-error`;
 
           return (
             <Popover
               key={action.id}
               open={openId === action.id}
-              onOpenChange={(open) => setOpenId(open ? action.id : null)}
+              onOpenChange={(open) => {
+                setOpenId(open ? action.id : null);
+                setErrors((current) => ({ ...current, [action.id]: null }));
+              }}
             >
               <PopoverTrigger asChild>
                 <QuickAction data-done={result ? '' : undefined}>
@@ -168,17 +185,20 @@ const QuickActionsBlock = () => {
               </PopoverTrigger>
               <PopoverContent align="start" className="w-64">
                 <form
+                  noValidate
                   className="flex flex-col gap-3"
                   onSubmit={(event) => {
                     event.preventDefault();
-                    if (!draft.trim()) return;
+                    const nextError = validateDraft(action.type, action.field, draft.trim());
+                    setErrors((current) => ({ ...current, [action.id]: nextError }));
+                    if (nextError) return;
                     setResults((current) => ({ ...current, [action.id]: action.result(draft.trim()) }));
                     setDrafts((current) => ({ ...current, [action.id]: '' }));
                     setOpenId(null);
                   }}
                 >
-                  <div className="flex flex-col gap-2">
-                    <Label htmlFor={inputId}>{action.field}</Label>
+                  <Field data-invalid={Boolean(error) || undefined}>
+                    <FieldLabel htmlFor={inputId}>{action.field}</FieldLabel>
                     <Input
                       id={inputId}
                       type={action.type}
@@ -187,14 +207,16 @@ const QuickActionsBlock = () => {
                       placeholder={action.placeholder}
                       value={draft}
                       onChange={(event) => setDrafts((current) => ({ ...current, [action.id]: event.target.value }))}
-                      required
+                      aria-invalid={Boolean(error) || undefined}
+                      aria-describedby={error ? errorId : undefined}
                     />
-                  </div>
+                    <FieldError id={errorId}>{error}</FieldError>
+                  </Field>
                   <div className="flex justify-end gap-2">
                     <Button type="button" variant="ghost" size="sm" onClick={() => setOpenId(null)}>
                       Cancel
                     </Button>
-                    <Button type="submit" size="sm" disabled={!draft.trim()}>
+                    <Button type="submit" size="sm">
                       {action.submit}
                     </Button>
                   </div>

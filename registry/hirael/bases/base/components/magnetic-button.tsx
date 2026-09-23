@@ -14,7 +14,7 @@ const MotionSlot = motion.create(MagneticSlot);
 
 const SPRING = { stiffness: 200, damping: 15, mass: 0.1 };
 
-interface MagneticButtonProps extends HTMLMotionProps<'button'> {
+export interface MagneticButtonProps extends HTMLMotionProps<'button'> {
   /** Pull strength as a fraction of the cursor's distance from center. */
   strength?: number;
   /** Render another element instead of a button (e.g. `render={<a href="/docs" />}`). */
@@ -33,10 +33,9 @@ const MagneticButton = ({
   const x = useSpring(0, SPRING);
   const y = useSpring(0, SPRING);
 
-  // Consumer handlers run alongside the magnet instead of replacing it.
   const handlePointerMove = (event: React.PointerEvent<HTMLButtonElement>) => {
     onPointerMove?.(event);
-    if (reduced) return;
+    if (event.defaultPrevented || reduced || event.pointerType !== 'mouse') return;
     const rect = event.currentTarget.getBoundingClientRect();
     x.set((event.clientX - (rect.left + rect.width / 2)) * strength);
     y.set((event.clientY - (rect.top + rect.height / 2)) * strength);
@@ -57,7 +56,7 @@ const MagneticButton = ({
       style={{ x, y }}
       className={cn(
         !render &&
-          'inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+          'inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
         className,
       )}
       {...props}

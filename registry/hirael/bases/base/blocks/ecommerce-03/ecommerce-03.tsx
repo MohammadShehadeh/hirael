@@ -102,6 +102,7 @@ const getDeliveryDate = () => {
     const day = date.getDay();
     if (day !== 0 && day !== 6) businessDays -= 1;
   }
+
   return new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).format(date);
 };
 
@@ -167,7 +168,7 @@ const Ecommerce03 = () => {
             ))}
             <span
               dir="ltr"
-              className="absolute start-3 top-3 rounded-md bg-background/85 px-2 py-1 text-xs tabular-nums text-muted-foreground backdrop-blur"
+              className="absolute start-3 top-3 rounded-md bg-background/85 px-2 py-1 text-xs text-muted-foreground tabular-nums backdrop-blur"
             >
               {formatIndex(view)}
               <span className="mx-1.5 text-border">|</span>
@@ -208,7 +209,7 @@ const Ecommerce03 = () => {
                 aria-current={index === view}
                 onClick={() => setView(index)}
                 className={cn(
-                  'relative aspect-square overflow-hidden rounded-md border border-border bg-muted outline-none ring-offset-2 ring-offset-background transition-[box-shadow,opacity] duration-150 focus-visible:ring-2 focus-visible:ring-ring',
+                  'relative aspect-square overflow-hidden rounded-md border border-border bg-muted ring-offset-2 ring-offset-background transition-[box-shadow,opacity] duration-150 outline-none focus-visible:ring-2 focus-visible:ring-ring',
                   index === view ? 'ring-2 ring-foreground' : 'opacity-70 hover:opacity-100',
                 )}
               >
@@ -244,7 +245,7 @@ const Ecommerce03 = () => {
             </Breadcrumb>
             <h2
               style={stagger(1)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               Atlas Wireless Headphones
             </h2>
@@ -260,7 +261,7 @@ const Ecommerce03 = () => {
             </div>
             <div style={stagger(3)} className={cn(ENTER, 'flex flex-wrap items-baseline gap-x-3 gap-y-2')}>
               <span className="text-2xl font-semibold tabular-nums">$249</span>
-              <span className="text-base tabular-nums text-muted-foreground line-through">
+              <span className="text-base text-muted-foreground tabular-nums line-through">
                 <span className="sr-only">Was </span>$299
               </span>
               <Badge variant="outline" className="self-center">
@@ -314,6 +315,7 @@ const Ecommerce03 = () => {
               >
                 {SIZES.map((option) => {
                   const unavailable = STOCK[colour][option] === 0;
+
                   return (
                     <ToggleGroupItem
                       key={option}

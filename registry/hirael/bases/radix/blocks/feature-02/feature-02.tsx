@@ -46,12 +46,12 @@ const FEATURES: readonly Feature[] = [
 const Feature02 = () => {
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>What you get</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>What you get</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             Everything you need to decide before you install
           </h2>
@@ -72,13 +72,13 @@ const Feature02 = () => {
               style={stagger(index, 60, 180)}
               className={cn(ENTER, 'flex flex-col gap-3 border-b border-border py-8')}
             >
-              <span dir="ltr" className="self-start text-xs tabular-nums text-muted-foreground">
+              <span dir="ltr" className="self-start text-xs text-muted-foreground tabular-nums">
                 <span className="text-foreground">{formatIndex(index)}</span>
                 <span className="mx-1.5 text-border">|</span>
                 {formatIndex(FEATURES.length - 1)}
               </span>
               <h3 className="text-base font-semibold tracking-[-0.01em]">{feature.title}</h3>
-              <p className="text-sm leading-relaxed text-muted-foreground text-pretty">{feature.body}</p>
+              <p className="text-sm leading-relaxed text-pretty text-muted-foreground">{feature.body}</p>
             </li>
           ))}
         </ul>

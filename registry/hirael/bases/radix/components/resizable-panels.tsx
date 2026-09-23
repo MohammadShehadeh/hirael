@@ -5,44 +5,62 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 
-type ResizableDirection = 'horizontal' | 'vertical';
+export type ResizableOrientation = 'horizontal' | 'vertical';
+
+/** @deprecated Use `ResizableOrientation`. */
+export type ResizableDirection = ResizableOrientation;
 
 interface ResizableContextValue {
-  direction: ResizableDirection;
+  orientation: ResizableOrientation;
   resizeEpoch: number;
   notifyResize: () => void;
 }
 
-const ResizableContext = React.createContext<ResizableContextValue>({
-  direction: 'horizontal',
-  resizeEpoch: 0,
-  notifyResize: () => {},
-});
+const ResizableContext = React.createContext<ResizableContextValue | null>(null);
 
-interface ResizablePanelGroupProps extends React.ComponentProps<'div'> {
-  direction?: ResizableDirection;
+const useResizable = () => {
+  const ctx = React.useContext(ResizableContext);
+  if (!ctx) {
+    throw new Error('ResizableHandle must be used within <ResizablePanelGroup>');
+  }
+
+  return ctx;
+};
+
+export interface ResizablePanelGroupProps extends React.ComponentProps<'div'> {
+  orientation?: ResizableOrientation;
+  /** @deprecated Use `orientation`. */
+  direction?: ResizableOrientation;
 }
 
-const ResizablePanelGroup = ({ direction = 'horizontal', className, ...props }: ResizablePanelGroupProps) => {
+const ResizablePanelGroup = ({
+  orientation: orientationProp,
+  direction,
+  className,
+  ...props
+}: ResizablePanelGroupProps) => {
+  const orientation = orientationProp ?? direction ?? 'horizontal';
   const [resizeEpoch, setResizeEpoch] = React.useState(0);
   const notifyResize = React.useCallback(() => setResizeEpoch((epoch) => epoch + 1), []);
   const value = React.useMemo<ResizableContextValue>(
-    () => ({ direction, resizeEpoch, notifyResize }),
-    [direction, resizeEpoch, notifyResize],
+    () => ({ orientation, resizeEpoch, notifyResize }),
+    [orientation, resizeEpoch, notifyResize],
   );
+
   return (
     <ResizableContext.Provider value={value}>
       <div
         data-slot="resizable-panel-group"
-        data-direction={direction}
-        className={cn('flex min-h-0 min-w-0', direction === 'vertical' ? 'flex-col' : 'flex-row', className)}
+        data-orientation={orientation}
+        data-direction={orientation}
+        className={cn('flex min-h-0 min-w-0', orientation === 'vertical' ? 'flex-col' : 'flex-row', className)}
         {...props}
       />
     </ResizableContext.Provider>
   );
 };
 
-interface ResizablePanelProps extends React.ComponentProps<'div'> {
+export interface ResizablePanelProps extends React.ComponentProps<'div'> {
   /** Initial size as a proportion shared across sibling panels. */
   defaultSize?: number;
   /** Minimum size as a percentage of the group. */
@@ -61,27 +79,30 @@ const ResizablePanel = ({ defaultSize = 50, minSize = 10, className, style, ...p
   );
 };
 
-type ResizableHandleProps = React.ComponentProps<'div'>;
+export type ResizableHandleProps = React.ComponentProps<'div'>;
 
-const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => {
-  const { direction, resizeEpoch, notifyResize } = React.useContext(ResizableContext);
-  const isHorizontal = direction === 'horizontal';
+const DEFAULT_RANGE = { now: 50, min: 0, max: 100 };
+
+const ResizableHandle = ({ className, ref, onPointerDown, onKeyDown, ...props }: ResizableHandleProps) => {
+  const { orientation, resizeEpoch, notifyResize } = useResizable();
+  const isHorizontal = orientation === 'horizontal';
   const localRef = React.useRef<HTMLDivElement | null>(null);
-  const [range, setRange] = React.useState({ now: 50, min: 0, max: 100 });
+  const [range, setRange] = React.useState(DEFAULT_RANGE);
 
   const measure = React.useCallback(
     (handle: HTMLElement) => {
       const prev = handle.previousElementSibling as HTMLElement | null;
       const next = handle.nextElementSibling as HTMLElement | null;
-      if (!prev || !next) return { now: 50, min: 0, max: 100 };
+      if (!prev || !next) return DEFAULT_RANGE;
       const prevSize = isHorizontal ? prev.clientWidth : prev.clientHeight;
       const nextSize = isHorizontal ? next.clientWidth : next.clientHeight;
       const totalSize = prevSize + nextSize;
-      if (totalSize <= 0) return { now: 50, min: 0, max: 100 };
+      if (totalSize <= 0) return DEFAULT_RANGE;
       const group = handle.parentElement;
       const groupSize = group ? (isHorizontal ? group.clientWidth : group.clientHeight) : totalSize;
       const prevMin = (parseFloat(prev.dataset.minSize || '0') / 100) * groupSize;
       const nextMin = (parseFloat(next.dataset.minSize || '0') / 100) * groupSize;
+
       return {
         now: Math.round((prevSize / totalSize) * 100),
         min: Math.round((prevMin / totalSize) * 100),
@@ -96,11 +117,14 @@ const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => 
   }, [measure, resizeEpoch]);
 
   React.useEffect(() => {
-    const onWindowResize = () => {
+    const group = localRef.current?.parentElement;
+    if (!group || typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(() => {
       if (localRef.current) setRange(measure(localRef.current));
-    };
-    window.addEventListener('resize', onWindowResize);
-    return () => window.removeEventListener('resize', onWindowResize);
+    });
+    observer.observe(group);
+
+    return () => observer.disconnect();
   }, [measure]);
 
   const resize = (handle: HTMLElement, deltaPx: number) => {
@@ -112,6 +136,7 @@ const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => 
     const prevSize = isHorizontal ? prev.clientWidth : prev.clientHeight;
     const nextSize = isHorizontal ? next.clientWidth : next.clientHeight;
     const totalSize = prevSize + nextSize;
+    if (totalSize <= 0) return;
     const prevGrow = parseFloat(prev.style.flexGrow || '1');
     const nextGrow = parseFloat(next.style.flexGrow || '1');
     const totalGrow = prevGrow + nextGrow;
@@ -122,7 +147,6 @@ const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => 
     const newPrevGrow = (newPrev / totalSize) * totalGrow;
     prev.style.flexGrow = String(newPrevGrow);
     next.style.flexGrow = String(totalGrow - newPrevGrow);
-    if (totalSize <= 0) return;
     // Re-measuring after the style writes would force a synchronous layout per pointermove.
     const nextRange = {
       now: Math.round((newPrev / totalSize) * 100),
@@ -136,7 +160,9 @@ const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => 
     );
   };
 
-  const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    onPointerDown?.(event);
+    if (event.defaultPrevented) return;
     event.preventDefault();
     const handle = event.currentTarget;
     handle.setPointerCapture(event.pointerId);
@@ -164,7 +190,9 @@ const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => 
     handle.addEventListener('pointercancel', onUp);
   };
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(event);
+    if (event.defaultPrevented) return;
     const handle = event.currentTarget;
     const group = handle.parentElement;
     if (!group) return;
@@ -199,16 +227,16 @@ const ResizableHandle = ({ className, ref, ...props }: ResizableHandleProps) => 
       aria-valuemin={range.min}
       aria-valuemax={range.max}
       data-slot="resizable-handle"
-      onPointerDown={onPointerDown}
-      onKeyDown={onKeyDown}
       className={cn(
         'relative shrink-0 bg-border transition-colors hover:bg-ring focus-visible:bg-ring focus-visible:outline-none',
         isHorizontal
-          ? 'w-px cursor-col-resize before:absolute before:inset-y-0 before:-inset-x-1'
+          ? 'w-px cursor-col-resize before:absolute before:-inset-x-1 before:inset-y-0'
           : 'h-px cursor-row-resize before:absolute before:inset-x-0 before:-inset-y-1',
         className,
       )}
       {...props}
+      onPointerDown={handlePointerDown}
+      onKeyDown={handleKeyDown}
     />
   );
 };

@@ -26,6 +26,7 @@ import {
   EmptyMedia,
   EmptyTitle,
 } from '@/registry/hirael/bases/base/ui/empty';
+import { useDirection } from '@/registry/hirael/bases/base/ui/direction';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/base/ui/input-group';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/base/ui/tabs';
@@ -249,7 +250,7 @@ type MobilePane = 'list' | 'thread';
 
 const AppShell03 = () => {
   const [selectedId, setSelectedId] = React.useState<string | null>(CONVERSATIONS[0].id);
-  const [readIds, setReadIds] = React.useState<readonly string[]>([]);
+  const [readIds, setReadIds] = React.useState<readonly string[]>([CONVERSATIONS[0].id]);
   const [starred, setStarred] = React.useState<readonly string[]>(['launch-checklist']);
   const [removedIds, setRemovedIds] = React.useState<readonly string[]>([]);
   const [lastRemoval, setLastRemoval] = React.useState<Removal | null>(null);
@@ -258,6 +259,7 @@ const AppShell03 = () => {
   const [filter, setFilter] = React.useState<InboxFilter>('all');
   const [draft, setDraft] = React.useState('');
   const [mobilePane, setMobilePane] = React.useState<MobilePane>('list');
+  const tooltipSide = useDirection() === 'rtl' ? 'left' : 'right';
 
   const optionRefs = React.useRef(new Map<string, HTMLLIElement>());
 
@@ -269,9 +271,11 @@ const AppShell03 = () => {
 
   const visible = React.useMemo(() => {
     const normalized = query.trim().toLowerCase();
+
     return inbox.filter((c) => {
       if (filter === 'unread' && !isUnread(c)) return false;
       if (!normalized) return true;
+
       return c.sender.toLowerCase().includes(normalized) || c.subject.toLowerCase().includes(normalized);
     });
   }, [inbox, filter, query, isUnread]);
@@ -383,7 +387,7 @@ const AppShell03 = () => {
                 <span aria-hidden className="absolute end-1.5 top-1.5 size-1.5 rounded-full bg-foreground" />
               )}
             </TooltipTrigger>
-            <TooltipContent side="right">{item.label}</TooltipContent>
+            <TooltipContent side={tooltipSide}>{item.label}</TooltipContent>
           </Tooltip>
         ))}
         <div className="mt-auto flex flex-col items-center gap-1">
@@ -391,7 +395,7 @@ const AppShell03 = () => {
             <TooltipTrigger render={<Button type="button" variant="ghost" size="icon" aria-label="Settings" />}>
               <Settings className="size-4" aria-hidden />
             </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
+            <TooltipContent side={tooltipSide}>Settings</TooltipContent>
           </Tooltip>
           <span className="inline-flex size-8 items-center justify-center rounded-full border border-border bg-card text-[11px] font-medium">
             MS
@@ -438,7 +442,7 @@ const AppShell03 = () => {
                 <TabsTrigger value="unread">Unread</TabsTrigger>
               </TabsList>
             </Tabs>
-            <span dir="ltr" aria-live="polite" className="text-xs uppercase tabular-nums text-muted-foreground">
+            <span dir="ltr" aria-live="polite" className="text-xs text-muted-foreground uppercase tabular-nums">
               {visible.length} of {inbox.length}
             </span>
           </div>
@@ -447,7 +451,7 @@ const AppShell03 = () => {
 
         {lastRemoval && (
           <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/40 px-4 py-2">
-            <span className="truncate text-xs uppercase text-muted-foreground">conversation {lastRemoval.kind}</span>
+            <span className="truncate text-xs text-muted-foreground uppercase">conversation {lastRemoval.kind}</span>
             <Button variant="ghost" size="xs" className="shrink-0" onClick={undoRemoval}>
               <Undo2 className="size-3 rtl:rotate-180" aria-hidden />
               Undo
@@ -489,6 +493,7 @@ const AppShell03 = () => {
             {visible.map((c) => {
               const active = c.id === selectedId;
               const unread = isUnread(c);
+
               return (
                 <li
                   key={c.id}
@@ -521,7 +526,7 @@ const AppShell03 = () => {
                       {c.sender}
                       {unread && <span className="sr-only"> (unread)</span>}
                     </span>
-                    <Stamp time={c.time} className="ms-auto shrink-0 text-xs uppercase text-muted-foreground" />
+                    <Stamp time={c.time} className="ms-auto shrink-0 text-xs text-muted-foreground uppercase" />
                   </span>
                   <span className="truncate text-xs text-foreground">{c.subject}</span>
                   <span className="truncate text-xs text-muted-foreground">{c.preview}…</span>
@@ -535,7 +540,7 @@ const AppShell03 = () => {
       <section
         aria-label="Conversation"
         data-slot="app-shell-reading-pane"
-        className={cn(ENTER, 'delay-80 min-w-0 flex-1 flex-col md:flex', mobilePane === 'list' ? 'hidden' : 'flex')}
+        className={cn(ENTER, 'min-w-0 flex-1 flex-col delay-80 md:flex', mobilePane === 'list' ? 'hidden' : 'flex')}
       >
         {selected ? (
           <div key={selected.id} className={cn(SWAP, 'flex min-h-0 flex-1 flex-col')}>
@@ -618,7 +623,7 @@ const AppShell03 = () => {
                       {m.initials}
                     </span>
                     <span className="text-xs font-medium">{m.from}</span>
-                    <Stamp time={m.time} className="ms-auto text-xs uppercase text-muted-foreground" />
+                    <Stamp time={m.time} className="ms-auto text-xs text-muted-foreground uppercase" />
                   </div>
                   <p className="text-sm text-muted-foreground">{m.body}</p>
                 </article>
@@ -642,7 +647,7 @@ const AppShell03 = () => {
                 className="min-h-20 resize-none"
               />
               <div className="flex items-center justify-between gap-2">
-                <span className="text-xs uppercase text-muted-foreground">⌘ + enter to send</span>
+                <span className="text-xs text-muted-foreground uppercase">⌘ + enter to send</span>
                 <Button size="sm" onClick={sendReply} disabled={!draft.trim()}>
                   Send
                   <SendHorizonal className="size-3.5 rtl:rotate-180" aria-hidden />

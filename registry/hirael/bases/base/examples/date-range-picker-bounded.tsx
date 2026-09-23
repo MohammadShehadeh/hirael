@@ -27,6 +27,7 @@ const DateRangePickerBounded = () => {
         onValueChange={setBounded}
         min={new Date(2026, 5, 1)}
         max={new Date(2026, 7, 31)}
+        disabledDate={(d) => d.getDay() === 0 || d.getDay() === 6}
       >
         <DateRangePickerTrigger
           id="drp-bounded"
@@ -35,13 +36,9 @@ const DateRangePickerBounded = () => {
             ar: 'اختر أيام العمل فقط',
           })}
         />
-        <DateRangePickerContent
-          numberOfMonths={1}
-          showPresets={false}
-          disabledDate={(d) => d.getDay() === 0 || d.getDay() === 6}
-        />
+        <DateRangePickerContent numberOfMonths={1} showPresets={false} />
       </DateRangePicker>
-      <p className="text-xs uppercase text-muted-foreground">{print(bounded)}</p>
+      <p className="text-xs text-muted-foreground uppercase">{print(bounded)}</p>
     </Field>
   );
 };

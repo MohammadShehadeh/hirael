@@ -16,5 +16,6 @@ interface TemplateEmbedRouteProps {
 
 export default async function TemplateEmbedRoute({ params }: TemplateEmbedRouteProps) {
   const { template } = await params;
+
   return <TemplateEmbed base={DEFAULT_BASE} template={template} />;
 }

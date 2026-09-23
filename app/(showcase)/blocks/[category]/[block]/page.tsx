@@ -26,6 +26,7 @@ export async function generateMetadata({ params }: BlockRouteProps): Promise<Met
   const { category, block } = await params;
   const entry = REGISTRY_BY_NAME[block];
   if (!entry || entry.category !== 'blocks' || entryCategorySlug(entry) !== category) return {};
+
   return detailMetadata(entry, { titleSuffix: 'block' });
 }
 
@@ -40,6 +41,7 @@ export default async function BlockRoute({ params }: BlockRouteProps) {
     { label: meta?.title ?? category, href: `/blocks/${category}` },
     { label: entry.title },
   ];
+
   return (
     <>
       <EntryJsonLd entry={entry} breadcrumb={breadcrumb} addedAt={extras.addedAt} />

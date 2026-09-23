@@ -79,7 +79,7 @@ export const Navbar = () => {
         </div>
 
         {open ? (
-          <div className="flex flex-col items-center gap-1 border-t border-border px-4 pb-3 pt-2 md:hidden">
+          <div className="flex flex-col items-center gap-1 border-t border-border px-4 pt-2 pb-3 md:hidden">
             {NAV_LINKS.map((link) => (
               <a
                 key={link.label}

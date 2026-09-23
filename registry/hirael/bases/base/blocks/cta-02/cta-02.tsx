@@ -8,9 +8,7 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const REGISTRY_URL = 'https://hirael.com/r/multi-select.json';
 const COMMAND = `npx shadcn add ${REGISTRY_URL}`;
@@ -32,13 +30,13 @@ const Cta02 = () => {
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-7 px-6 text-center md:px-10">
-        <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>One-line install</span>
+        <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>One-line install</span>
 
         <h2
           style={stagger(1)}
           className={cn(
             ENTER,
-            'font-serif text-4xl font-medium leading-[1.03] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl',
+            'font-serif text-4xl leading-[1.03] font-medium tracking-tight sm:text-5xl md:text-6xl lg:text-7xl',
           )}
         >
           Make your component layer{' '}
@@ -62,7 +60,7 @@ const Cta02 = () => {
             Browse the registry
             <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
           </Button>
-          <span className="text-xs uppercase text-muted-foreground">
+          <span className="text-xs text-muted-foreground uppercase">
             or{' '}
             <a
               className="underline-offset-4 transition-colors duration-150 hover:text-foreground hover:underline"
@@ -82,12 +80,12 @@ const Cta02 = () => {
             'mt-2 flex w-full max-w-xl min-w-0 items-center gap-3 rounded-full border border-border bg-card/70 py-1.5 ps-5 pe-1.5 backdrop-blur-sm',
           )}
         >
-          <span aria-hidden className="shrink-0 select-none font-mono text-xs text-muted-foreground">
+          <span aria-hidden className="shrink-0 text-xs text-muted-foreground select-none">
             $
           </span>
-          <code className="min-w-0 flex-1 truncate text-start font-mono text-xs text-foreground">
+          <span className="min-w-0 flex-1 truncate text-start text-xs text-foreground tabular-nums">
             npx shadcn add <span className="text-muted-foreground">{REGISTRY_URL}</span>
-          </code>
+          </span>
           <CopyButton value={COMMAND} size="md" className="shrink-0" />
         </div>
       </div>

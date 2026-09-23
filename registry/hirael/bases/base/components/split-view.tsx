@@ -5,7 +5,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
-type SplitOrientation = 'horizontal' | 'vertical';
+export type SplitOrientation = 'horizontal' | 'vertical';
 
 interface SplitViewContextValue {
   orientation: SplitOrientation;
@@ -24,6 +24,7 @@ const useSplitView = () => {
   if (!ctx) {
     throw new Error('SplitView parts must be used within <SplitView>');
   }
+
   return ctx;
 };
 
@@ -31,10 +32,13 @@ const isRtl = (el: HTMLElement | null) => {
   return el ? getComputedStyle(el).direction === 'rtl' : false;
 };
 
-interface SplitViewProps extends React.ComponentProps<'div'> {
+export interface SplitViewProps extends React.ComponentProps<'div'> {
   orientation?: SplitOrientation;
-  /** Size of the first panel, as a percentage. */
+  /** Size of the first panel, as a percentage. Pass with `onSizeChange` to control it. */
+  size?: number;
+  /** Initial size of the first panel when uncontrolled, as a percentage. */
   defaultSize?: number;
+  onSizeChange?: (size: number) => void;
   /** Minimum size of the first panel, as a percentage. */
   minSize?: number;
   /** Maximum size of the first panel, as a percentage. */
@@ -43,7 +47,9 @@ interface SplitViewProps extends React.ComponentProps<'div'> {
 
 const SplitView = ({
   orientation = 'horizontal',
+  size: sizeProp,
   defaultSize = 50,
+  onSizeChange,
   minSize = 15,
   maxSize = 85,
   className,
@@ -54,24 +60,40 @@ const SplitView = ({
 }: SplitViewProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const composedRef = React.useMemo(() => composeRefs(ref, consumerRef), [consumerRef]);
-  const [size, setSize] = React.useState(defaultSize);
+  const [internalSize, setInternalSize] = React.useState(defaultSize);
+  const size = sizeProp ?? internalSize;
+  const sizeRef = React.useRef(size);
   const [dragging, setDragging] = React.useState(false);
 
-  const clamp = React.useCallback((value: number) => Math.min(maxSize, Math.max(minSize, value)), [minSize, maxSize]);
+  React.useEffect(() => {
+    sizeRef.current = size;
+  }, [size]);
+
+  const setSize = React.useCallback(
+    (next: number) => {
+      const clamped = Math.min(maxSize, Math.max(minSize, next));
+      if (clamped === sizeRef.current) return;
+      sizeRef.current = clamped;
+      if (sizeProp === undefined) setInternalSize(clamped);
+      onSizeChange?.(clamped);
+    },
+    [minSize, maxSize, sizeProp, onSizeChange],
+  );
 
   const resizeToPointer = React.useCallback(
     (clientX: number, clientY: number) => {
       const el = ref.current;
       if (!el) return;
       const rect = el.getBoundingClientRect();
+      if ((orientation === 'horizontal' ? rect.width : rect.height) <= 0) return;
       let pct =
         orientation === 'horizontal'
           ? ((clientX - rect.left) / rect.width) * 100
           : ((clientY - rect.top) / rect.height) * 100;
       if (orientation === 'horizontal' && isRtl(el)) pct = 100 - pct;
-      setSize(clamp(pct));
+      setSize(pct);
     },
-    [orientation, clamp],
+    [orientation, setSize],
   );
 
   const onResizerPointerDown = React.useCallback(
@@ -111,10 +133,10 @@ const SplitView = ({
       }
       if (delta !== 0) {
         event.preventDefault();
-        setSize((value) => clamp(value + delta));
+        setSize(sizeRef.current + delta);
       }
     },
-    [orientation, clamp],
+    [orientation, setSize],
   );
 
   const value = React.useMemo<SplitViewContextValue>(
@@ -153,16 +175,17 @@ const SplitView = ({
   );
 };
 
-type SplitViewPanelProps = React.ComponentProps<'div'>;
+export type SplitViewPanelProps = React.ComponentProps<'div'>;
 
 const SplitViewPanel = ({ className, ...props }: SplitViewPanelProps) => {
   return <div data-slot="split-view-panel" className={cn('min-h-0 min-w-0 overflow-auto', className)} {...props} />;
 };
 
-type SplitViewResizerProps = React.ComponentProps<'div'>;
+export type SplitViewResizerProps = React.ComponentProps<'div'>;
 
-const SplitViewResizer = ({ className, ...props }: SplitViewResizerProps) => {
+const SplitViewResizer = ({ className, onPointerDown, onKeyDown, ...props }: SplitViewResizerProps) => {
   const { orientation, size, minSize, maxSize, dragging, onResizerPointerDown, onResizerKeyDown } = useSplitView();
+
   return (
     <div
       role="separator"
@@ -173,16 +196,22 @@ const SplitViewResizer = ({ className, ...props }: SplitViewResizerProps) => {
       aria-valuemax={maxSize}
       data-slot="split-view-resizer"
       data-dragging={dragging ? '' : undefined}
-      onPointerDown={onResizerPointerDown}
-      onKeyDown={onResizerKeyDown}
       className={cn(
-        'relative shrink-0 bg-border transition-colors hover:bg-ring focus-visible:outline-none focus-visible:bg-ring data-[dragging]:bg-ring',
+        'relative shrink-0 bg-border transition-colors hover:bg-ring focus-visible:bg-ring focus-visible:outline-none data-[dragging]:bg-ring',
         orientation === 'horizontal'
-          ? 'w-px cursor-col-resize before:absolute before:inset-y-0 before:-inset-x-1'
+          ? 'w-px cursor-col-resize before:absolute before:-inset-x-1 before:inset-y-0'
           : 'h-px cursor-row-resize before:absolute before:inset-x-0 before:-inset-y-1',
         className,
       )}
       {...props}
+      onPointerDown={(event) => {
+        onPointerDown?.(event);
+        if (!event.defaultPrevented) onResizerPointerDown(event);
+      }}
+      onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (!event.defaultPrevented) onResizerKeyDown(event);
+      }}
     />
   );
 };

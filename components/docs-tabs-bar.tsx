@@ -16,6 +16,7 @@ export const DocsTabsBar = () => {
         <div className="-ms-3 flex items-stretch gap-1">
           {NAV_LINKS.map((link) => {
             const active = isActive(link.href);
+
             return (
               <Link
                 key={link.href}

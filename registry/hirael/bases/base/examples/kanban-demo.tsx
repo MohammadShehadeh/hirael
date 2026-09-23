@@ -84,7 +84,7 @@ const KanbanDemo = () => {
   return (
     <div className="grid w-full max-w-4xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Three-column board', ar: 'لوحة من ثلاثة أعمدة' })}
         </p>
         <Kanban value={board} onValueChange={setBoard}>
@@ -97,9 +97,10 @@ const KanbanDemo = () => {
               <KanbanColumnContent className="max-h-80">
                 {board[column.id].map((cardId) => {
                   const task = TASKS[cardId];
+
                   return (
                     <KanbanCard key={cardId} id={cardId}>
-                      <p className="font-medium leading-snug">{t(task.title)}</p>
+                      <p className="leading-snug font-medium">{t(task.title)}</p>
                       <div className="flex items-center justify-between gap-2">
                         <Badge variant="outline">{t(task.tag)}</Badge>
                         <Avatar size="sm">
@@ -123,7 +124,7 @@ const KanbanDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Compact, handle only', ar: 'مضغوط، بالمقبض فقط' })}
         </p>
         <Kanban
@@ -135,7 +136,7 @@ const KanbanDemo = () => {
           <KanbanColumn id="backlog" className="w-56">
             <KanbanColumnHeader>
               <KanbanColumnTitle>
-                <span className="text-xs uppercase text-muted-foreground">
+                <span className="text-xs text-muted-foreground uppercase">
                   {t({ en: 'Backlog', ar: 'قائمة الانتظار' })}
                 </span>
               </KanbanColumnTitle>
@@ -154,7 +155,7 @@ const KanbanDemo = () => {
           <KanbanColumn id="review" className="w-56">
             <KanbanColumnHeader>
               <KanbanColumnTitle>
-                <span className="text-xs uppercase text-muted-foreground">
+                <span className="text-xs text-muted-foreground uppercase">
                   {t({ en: 'In review', ar: 'قيد المراجعة' })}
                 </span>
               </KanbanColumnTitle>

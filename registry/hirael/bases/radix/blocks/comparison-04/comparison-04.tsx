@@ -14,9 +14,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none md:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 type PlanKey = 'starter' | 'team' | 'enterprise';
 type Value = boolean | string;
@@ -87,6 +85,7 @@ const CellValue = ({ value }: CellValueProps) => {
   if (typeof value === 'string') {
     return <span className="text-sm tabular-nums">{value}</span>;
   }
+
   return value ? (
     <>
       <Check aria-hidden className="size-4 text-foreground" />
@@ -135,13 +134,13 @@ const Comparison04 = () => {
   });
 
   return (
-    <section data-slot="comparison" className="bg-background py-20 md:py-28">
+    <section data-slot="comparison" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 md:gap-14 md:px-10">
         <div data-slot="comparison-header" className="flex max-w-xl flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Compare plans</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Compare plans</span>
           <h2
             style={stagger(1, 80)}
-            className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+            className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
           >
             Every feature, every plan
           </h2>
@@ -172,7 +171,7 @@ const Comparison04 = () => {
             </ToggleGroup>
             <p className="hidden text-sm text-muted-foreground md:block" aria-live="polite">
               Showing{' '}
-              <span className="tabular-nums text-foreground">{differencesOnly ? DIFFERENT_ROWS : TOTAL_ROWS}</span> of{' '}
+              <span className="text-foreground tabular-nums">{differencesOnly ? DIFFERENT_ROWS : TOTAL_ROWS}</span> of{' '}
               <span className="tabular-nums">{TOTAL_ROWS}</span> features
             </p>
             <div className="flex items-center gap-3">
@@ -193,13 +192,14 @@ const Comparison04 = () => {
               <tr>
                 <th
                   scope="col"
-                  className="sticky top-0 z-10 w-2/5 border-b border-border bg-background px-4 py-4 text-start align-bottom text-xs font-normal uppercase text-muted-foreground md:w-1/4"
+                  className="sticky top-0 z-10 w-2/5 border-b border-border bg-background px-4 py-4 text-start align-bottom text-xs font-normal text-muted-foreground uppercase md:w-1/4"
                 >
                   Features
                 </th>
                 {PLANS.map((plan) => {
                   const { className, ...handlers } = columnProps(plan);
                   const active = focusColumn === plan.key;
+
                   return (
                     <th
                       key={plan.key}
@@ -220,7 +220,10 @@ const Comparison04 = () => {
                         )}
                       />
                       {plan.recommended && (
-                        <span aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-warm/70" />
+                        <span
+                          aria-hidden
+                          className="pointer-events-none absolute inset-x-0 top-0 h-0.5 bg-primary/70"
+                        />
                       )}
                       <div
                         key={picked ? selected : undefined}
@@ -230,11 +233,11 @@ const Comparison04 = () => {
                           <span className="flex items-center gap-2 text-base font-medium text-foreground">
                             {plan.name}
                             {plan.recommended && (
-                              <span className="text-xs font-normal uppercase text-warm">Recommended</span>
+                              <span className="text-xs font-normal text-primary uppercase">Recommended</span>
                             )}
                           </span>
                           <span className="text-sm text-muted-foreground">
-                            <span dir="ltr" className="font-medium tabular-nums text-foreground">
+                            <span dir="ltr" className="font-medium text-foreground tabular-nums">
                               {plan.price}
                             </span>{' '}
                             {plan.cadence}
@@ -251,17 +254,19 @@ const Comparison04 = () => {
             </thead>
             {GROUPS.map((group) => {
               const groupOpen = !differencesOnly || group.rows.some((row) => !isSame(row.values));
+
               return (
                 <tbody key={group.name} data-slot="comparison-group">
                   <tr aria-hidden={!groupOpen || undefined}>
                     <th scope="colgroup" colSpan={PLANS.length + 1} className="p-0 text-start font-normal">
-                      <Collapse open={groupOpen} className="px-4 pt-8 pb-3 text-xs uppercase text-muted-foreground">
+                      <Collapse open={groupOpen} className="px-4 pt-8 pb-3 text-xs text-muted-foreground uppercase">
                         {group.name}
                       </Collapse>
                     </th>
                   </tr>
                   {group.rows.map((row) => {
                     const open = !differencesOnly || !isSame(row.values);
+
                     return (
                       <tr key={row.feature} data-slot="comparison-row" aria-hidden={!open || undefined}>
                         <th scope="row" className="p-0 text-start text-sm font-normal">
@@ -271,6 +276,7 @@ const Comparison04 = () => {
                         </th>
                         {PLANS.map((plan) => {
                           const { className, ...handlers } = columnProps(plan);
+
                           return (
                             <td
                               key={plan.key}

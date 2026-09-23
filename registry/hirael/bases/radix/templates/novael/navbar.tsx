@@ -11,7 +11,7 @@ import { SECTION_IDS, useActiveSection, type Lang, type SectionId } from './prim
 const COPY = {
   en: {
     toLang: 'العربية',
-    home: 'Novael — home',
+    home: 'Novael home',
     openMenu: 'Open menu',
     closeMenu: 'Close menu',
     menuTitle: 'Lorem ipsum',
@@ -19,7 +19,7 @@ const COPY = {
   },
   ar: {
     toLang: 'English',
-    home: 'نوفايل — الرئيسية',
+    home: 'نوفايل، الرئيسية',
     openMenu: 'افتح القائمة',
     closeMenu: 'أغلق القائمة',
     menuTitle: 'لوريم إيبسوم',
@@ -52,7 +52,7 @@ export const Navbar = ({ lang, setLang }: NavbarProps) => {
           <Wordmark />
         </a>
 
-        <nav className="absolute start-1/2 hidden h-full -translate-x-1/2 rtl:translate-x-1/2 md:block">
+        <nav className="absolute start-1/2 hidden h-full -translate-x-1/2 md:block rtl:translate-x-1/2">
           <ul className="flex h-full items-stretch border-s border-border">
             {SECTION_IDS.map((id) => (
               <li key={id} className="border-e border-border">
@@ -60,7 +60,7 @@ export const Navbar = ({ lang, setLang }: NavbarProps) => {
                   href={`#${id}`}
                   aria-current={active === id ? 'true' : undefined}
                   className={cn(
-                    'flex h-full items-center px-7 text-[10px] font-medium uppercase tracking-[0.3em] transition-colors',
+                    'flex h-full items-center px-7 text-[10px] font-medium tracking-[0.3em] uppercase transition-colors',
                     'rtl:text-sm rtl:tracking-normal',
                     active === id ? 'bg-accent text-accent-foreground' : 'text-foreground/50 hover:text-foreground',
                   )}

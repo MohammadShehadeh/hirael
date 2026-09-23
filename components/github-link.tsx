@@ -14,6 +14,7 @@ export const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
 
 const formatStars = (count: number): string => {
   if (count < 1000) return `${count}`;
+
   return `${(count / 1000).toFixed(count >= 10000 ? 0 : 1)}k`;
 };
 
@@ -32,7 +33,7 @@ export const GithubLink = ({ stars }: GithubLinkProps) => {
       >
         <GithubIcon />
         {stars ? (
-          <span className="hidden items-center gap-1 tabular-nums text-xs sm:inline-flex">
+          <span className="hidden items-center gap-1 text-xs tabular-nums sm:inline-flex">
             <Star className="size-3 fill-current" />
             {formatStars(stars)}
           </span>

@@ -9,8 +9,16 @@ export interface ScrollProgressProps extends React.ComponentProps<'div'> {
   position?: 'top' | 'bottom';
 }
 
-const ScrollProgress = ({ className, style, target, position = 'top', ...props }: ScrollProgressProps) => {
+const ScrollProgress = ({ className, style, target, position = 'top', ref, ...props }: ScrollProgressProps) => {
   const barRef = React.useRef<HTMLDivElement | null>(null);
+  const setBarRef = React.useCallback(
+    (node: HTMLDivElement | null) => {
+      barRef.current = node;
+      if (typeof ref === 'function') ref(node);
+      else if (ref) ref.current = node;
+    },
+    [ref],
+  );
 
   React.useEffect(() => {
     const bar = barRef.current;
@@ -45,6 +53,7 @@ const ScrollProgress = ({ className, style, target, position = 'top', ...props }
     apply();
     source.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule, { passive: true });
+
     return () => {
       if (frame) cancelAnimationFrame(frame);
       source.removeEventListener('scroll', schedule);
@@ -54,7 +63,7 @@ const ScrollProgress = ({ className, style, target, position = 'top', ...props }
 
   return (
     <div
-      ref={barRef}
+      ref={setBarRef}
       data-slot="scroll-progress"
       aria-hidden
       className={cn(

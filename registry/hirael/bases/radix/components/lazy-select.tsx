@@ -44,6 +44,7 @@ const useLazySelect = () => {
   if (!ctx) {
     throw new Error('LazySelect compound parts must be used inside <LazySelect>');
   }
+
   return ctx;
 };
 
@@ -70,11 +71,13 @@ export interface LazySelectProps {
   children?: React.ReactNode;
 }
 
+const NO_OPTIONS: LazySelectOption[] = [];
+
 const LazySelect = ({
   value: valueProp,
   defaultValue,
   onValueChange,
-  options = [],
+  options = NO_OPTIONS,
   open: openProp,
   defaultOpen = false,
   onOpenChange,
@@ -205,7 +208,7 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: L
           data-slot="lazy-select-trigger"
           data-state={ctx.open ? 'open' : 'closed'}
           className={cn(
-            'group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors',
+            'group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring',
             'data-[state=open]:border-ring',
             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -223,7 +226,12 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: L
             {ctx.selectedLabel ?? placeholder}
           </span>
           <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
-            <ChevronDown className={cn('size-3.5 transition-transform duration-150', ctx.open && 'rotate-180')} />
+            <ChevronDown
+              className={cn(
+                'size-3.5 transition-transform duration-150 motion-reduce:transition-none',
+                ctx.open && 'rotate-180',
+              )}
+            />
           </span>
         </button>
       </PopoverTrigger>
@@ -280,6 +288,7 @@ const LazySelectContent = ({
       { root: root as Element | null, rootMargin: '80px' },
     );
     observer.observe(el);
+
     return () => observer.disconnect();
   }, [ctx.open, ctx.hasMore, ctx.loading, ctx.loadingMore, ctx.options.length, onLoadMore]);
 
@@ -321,7 +330,7 @@ const LazySelectContent = ({
               ) : (
                 endMessage &&
                 ctx.options.length > 0 && (
-                  <div className="py-3 text-center text-xs uppercase text-muted-foreground">{endMessage}</div>
+                  <div className="py-3 text-center text-xs text-muted-foreground uppercase">{endMessage}</div>
                 )
               )}
             </>
@@ -349,7 +358,8 @@ const LazySelectItem = ({ option, children, className, ...props }: LazySelectIte
       value={option.value}
       disabled={option.disabled}
       onSelect={() => {
-        ctx.setValue(selected ? undefined : option.value, option);
+        if (!selected) ctx.setValue(option.value, option);
+        else if (ctx.clearable) ctx.setValue(undefined);
         ctx.setOpen(false);
       }}
       data-slot="lazy-select-item"
@@ -383,7 +393,7 @@ export const useLazySelectOptions = <T,>(
   map: (item: T) => LazySelectOption,
   { debounce = 250, enabled = true }: UseLazySelectOptionsOptions = {},
 ) => {
-  const [query, setQuery] = React.useState('');
+  const [query, setQueryState] = React.useState('');
   const [options, setOptions] = React.useState<LazySelectOption[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [loadingMore, setLoadingMore] = React.useState(false);
@@ -395,6 +405,7 @@ export const useLazySelectOptions = <T,>(
   const loadingRef = React.useRef(false);
   const loadingMoreRef = React.useRef(false);
   const hasMoreRef = React.useRef(false);
+  const queryRef = React.useRef(query);
 
   const loaderRef = React.useRef(loader);
   const mapRef = React.useRef(map);
@@ -411,6 +422,23 @@ export const useLazySelectOptions = <T,>(
     hasMoreRef.current = next;
     setHasMore(next);
   }, []);
+
+  // Clear the old results as soon as the query changes, so the sentinel can't
+  // fetch the old query's next page during the debounce.
+  const setQuery = React.useCallback(
+    (next: string) => {
+      if (next === queryRef.current) return;
+      queryRef.current = next;
+      setQueryState(next);
+      if (!enabled) return;
+      reqId.current += 1;
+      pageRef.current = 0;
+      setLoadingBoth(true);
+      setHasMoreBoth(false);
+      setOptions([]);
+    },
+    [enabled, setLoadingBoth, setHasMoreBoth],
+  );
 
   React.useEffect(() => {
     if (!enabled) return;
@@ -430,6 +458,7 @@ export const useLazySelectOptions = <T,>(
         if (id === reqId.current) setLoadingBoth(false);
       }
     }, debounce);
+
     return () => clearTimeout(t);
   }, [query, enabled, debounce, setLoadingBoth, setHasMoreBoth]);
 
@@ -442,9 +471,9 @@ export const useLazySelectOptions = <T,>(
     loadingMoreRef.current = true;
     setLoadingMore(true);
     try {
-      const res = await loader({ query, page: nextPage });
+      const res = await loaderRef.current({ query: queryRef.current, page: nextPage });
       if (id !== reqId.current) return;
-      setOptions((prev) => [...prev, ...res.items.map(map)]);
+      setOptions((prev) => [...prev, ...res.items.map(mapRef.current)]);
       pageRef.current = nextPage;
       setHasMoreBoth(res.hasMore);
     } catch (e) {
@@ -453,7 +482,7 @@ export const useLazySelectOptions = <T,>(
       loadingMoreRef.current = false;
       setLoadingMore(false);
     }
-  }, [enabled, query, loader, map, setHasMoreBoth]);
+  }, [enabled, setHasMoreBoth]);
 
   return {
     query,

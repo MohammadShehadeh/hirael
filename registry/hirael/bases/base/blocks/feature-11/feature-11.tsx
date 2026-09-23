@@ -68,7 +68,7 @@ const AssignPanel = () => {
             <span
               className={cn(
                 'hidden shrink-0 text-xs sm:inline',
-                conversation.live ? 'text-accent-cool' : 'text-muted-foreground',
+                conversation.live ? 'text-primary' : 'text-muted-foreground',
               )}
             >
               {conversation.state}
@@ -122,7 +122,7 @@ const RepliesPanel = () => {
         style={stagger(REPLIES.length)}
         className={cn(SWAP, 'mt-auto rounded-md border border-border bg-background/60 p-4')}
       >
-        <p className="text-xs uppercase text-muted-foreground">Draft to Nadia</p>
+        <p className="text-xs text-muted-foreground uppercase">Draft to Nadia</p>
         <p className="mt-2 text-sm leading-relaxed">
           Hi Nadia, the duplicate charge of $49.00 is on its way back to the card ending 4412. Most banks show it within
           five working days
@@ -157,15 +157,15 @@ const SnoozePanel = () => {
               aria-hidden
               className={cn(
                 'grid size-4 shrink-0 place-items-center rounded-full border',
-                option.chosen ? 'border-warm' : 'border-border',
+                option.chosen ? 'border-primary' : 'border-border',
               )}
             >
-              {option.chosen && <span className="size-2 rounded-full bg-warm" />}
+              {option.chosen && <span className="size-2 rounded-full bg-primary" />}
             </span>
             <span className={cn('flex-1 text-sm', option.chosen ? 'font-medium' : 'text-muted-foreground')}>
               {option.label}
             </span>
-            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">{option.when}</span>
+            <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{option.when}</span>
           </li>
         ))}
       </ul>
@@ -190,13 +190,13 @@ const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
 
 const Feature11 = () => {
   return (
-    <section data-slot="feature" className="bg-background py-20 md:py-28">
+    <section data-slot="feature" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 md:gap-16 md:px-10">
         <div data-slot="feature-header" className="flex max-w-xl flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Shared inbox</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Shared inbox</span>
           <h2
             style={stagger(1, 80)}
-            className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+            className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
           >
             Keep the queue moving
           </h2>
@@ -219,7 +219,7 @@ const Feature11 = () => {
                 style={stagger(index, 80, 240)}
                 className={cn(
                   ENTER,
-                  'group/trigger h-auto w-full items-start whitespace-normal text-start after:hidden',
+                  'group/trigger h-auto w-full items-start text-start whitespace-normal after:hidden',
                 )}
               >
                 <span aria-hidden className="absolute inset-y-0 start-0 w-px bg-border" />
@@ -228,14 +228,14 @@ const Feature11 = () => {
                   className="absolute inset-y-0 start-0 w-0.5 origin-top scale-y-0 bg-foreground transition-transform duration-300 ease-out group-data-active/trigger:scale-y-100 motion-reduce:transition-none"
                 />
                 <span className="flex min-w-0 flex-1 items-start gap-4 px-3 py-3">
-                  <span className="pt-px text-xs tabular-nums text-muted-foreground transition-colors group-data-active/trigger:text-warm">
+                  <span className="pt-px text-xs text-muted-foreground tabular-nums transition-colors group-data-active/trigger:text-primary">
                     {formatIndex(index)}
                   </span>
                   <span className="flex min-w-0 flex-1 flex-col">
                     <span className="text-sm font-medium">{feature.title}</span>
                     <span className="grid grid-rows-[0fr] opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-out group-data-active/trigger:grid-rows-[1fr] group-data-active/trigger:opacity-100 motion-reduce:transition-none">
                       <span className="overflow-hidden">
-                        <span className="block pt-1.5 text-sm font-normal leading-relaxed text-muted-foreground">
+                        <span className="block pt-1.5 text-sm leading-relaxed font-normal text-muted-foreground">
                           {feature.summary}
                         </span>
                       </span>
@@ -251,20 +251,21 @@ const Feature11 = () => {
             style={stagger(0, 0, 400)}
             className={cn(
               ENTER,
-              'relative mt-6 flex min-h-80 flex-col overflow-hidden rounded-xl lg:ms-12 lg:mt-0 border border-border bg-card/40 shadow-sm lg:min-h-96',
+              'relative mt-6 flex min-h-80 flex-col overflow-hidden rounded-xl border border-border bg-card/40 shadow-sm lg:ms-12 lg:mt-0 lg:min-h-96',
             )}
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm/40 to-transparent"
+              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
             />
             {FEATURES.map((feature, index) => {
               const Panel = PANELS[feature.value];
+
               return (
                 <TabsContent key={feature.value} value={feature.value} className="flex flex-1 flex-col">
                   <div className="flex items-center justify-between border-b border-border px-5 py-3">
-                    <span className={cn(SWAP, 'text-xs uppercase text-muted-foreground')}>{feature.label}</span>
-                    <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+                    <span className={cn(SWAP, 'text-xs text-muted-foreground uppercase')}>{feature.label}</span>
+                    <span dir="ltr" className="text-xs text-muted-foreground tabular-nums">
                       {formatIndex(index)}
                       <span className="mx-1.5 text-border">|</span>
                       {formatIndex(FEATURES.length - 1)}

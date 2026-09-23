@@ -6,9 +6,7 @@ import { cn } from '@/lib/utils';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 interface LinkColumn {
   title: string;
@@ -79,7 +77,7 @@ const SOCIALS = [
 const Footer01 = () => {
   return (
     <footer data-slot="footer" className="border-t border-border bg-background">
-      <div className="container w-full py-16">
+      <div className="mx-auto w-full max-w-[1480px] px-4 py-16">
         <div className="grid grid-cols-2 gap-10 lg:grid-cols-5 lg:gap-16">
           <div data-slot="footer-brand" className={cn(ENTER, 'col-span-2')}>
             <div className="flex flex-col gap-4">
@@ -101,7 +99,7 @@ const Footer01 = () => {
               style={stagger(index + 1)}
               className={cn(ENTER, 'flex flex-col gap-4')}
             >
-              <h3 className="text-xs uppercase text-muted-foreground">{col.title}</h3>
+              <h3 className="text-xs text-muted-foreground uppercase">{col.title}</h3>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((l) => (
                   <li key={l.label}>
@@ -139,7 +137,7 @@ const Footer01 = () => {
                 key={label}
                 href={href}
                 aria-label={label}
-                className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors duration-150 hover:border-border hover:bg-card hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                className="inline-flex size-8 items-center justify-center rounded-sm border border-transparent text-muted-foreground transition-colors duration-150 hover:border-border hover:bg-card hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
                 <Icon className="size-4" />
               </a>

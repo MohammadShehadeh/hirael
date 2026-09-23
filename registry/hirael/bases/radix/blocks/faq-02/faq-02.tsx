@@ -44,15 +44,15 @@ const FAQS = [
 
 const Faq02 = () => {
   return (
-    <section data-slot="faq" className="bg-background py-20 md:py-28">
+    <section data-slot="faq" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-12 px-6 md:px-10">
         <div data-slot="faq-header" className="flex flex-col items-center gap-4 text-center">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Frequently asked</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Frequently asked</span>
           <h2
             style={stagger(1, 70)}
             className={cn(
               ENTER,
-              'max-w-2xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+              'max-w-2xl font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
             )}
           >
             Everything you&apos;d ask in the first ten minutes.
@@ -76,7 +76,7 @@ const Faq02 = () => {
                   >
                     <AccordionTrigger>
                       <span className="flex items-baseline gap-3">
-                        <span className="text-xs tabular-nums text-muted-foreground">Q{ci * 3 + i + 1}</span>
+                        <span className="text-xs text-muted-foreground tabular-nums">Q{ci * 3 + i + 1}</span>
                         <span>{f.q}</span>
                       </span>
                     </AccordionTrigger>

@@ -22,7 +22,7 @@ const MetricCardDemo = () => {
           {t({ en: 'CPU load', ar: 'حمل المعالج' })}
         </MetricCardHeader>
         <MetricCardValue unit="%">47</MetricCardValue>
-        <MetricCardSpark tone="positive" points={[38, 41, 40, 44, 42, 39, 45, 47]} />
+        <MetricCardSpark tone="success" points={[38, 41, 40, 44, 42, 39, 45, 47]} />
         <MetricCardFooter>
           <MetricCardTrend direction="up" tone="neutral">
             +6%
@@ -36,9 +36,9 @@ const MetricCardDemo = () => {
           {t({ en: 'p99 latency', ar: 'زمن الاستجابة p99' })}
         </MetricCardHeader>
         <MetricCardValue unit="ms">312</MetricCardValue>
-        <MetricCardSpark tone="critical" points={[180, 190, 210, 240, 260, 300, 290, 312]} />
+        <MetricCardSpark tone="destructive" points={[180, 190, 210, 240, 260, 300, 290, 312]} />
         <MetricCardFooter>
-          <MetricCardTrend direction="up" tone="critical">
+          <MetricCardTrend direction="up" tone="destructive">
             +38%
           </MetricCardTrend>{' '}
           {t({ en: 'over budget', ar: 'تجاوز الحد' })}
@@ -52,7 +52,7 @@ const MetricCardDemo = () => {
         <MetricCardValue unit={t({ en: 'req/s', ar: 'طلب/ث' })}>8.2k</MetricCardValue>
         <MetricCardSpark tone="neutral" points={[6, 6.4, 7, 6.8, 7.6, 8, 7.9, 8.2]} />
         <MetricCardFooter>
-          <MetricCardTrend direction="up" tone="positive">
+          <MetricCardTrend direction="up" tone="success">
             +12%
           </MetricCardTrend>{' '}
           {t({ en: 'steady', ar: 'مستقر' })}

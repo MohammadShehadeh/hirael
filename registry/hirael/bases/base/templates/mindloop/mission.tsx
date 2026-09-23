@@ -38,6 +38,7 @@ const Word = ({ token, index, total, progress, reduce }: WordProps) => {
   const start = index / total;
   const end = (index + 0.9) / total;
   const opacity = useTransform(progress, [start, end], [0.15, 1]);
+
   return (
     <motion.span className={cn(token.highlight && 'text-foreground')} style={reduce ? undefined : { opacity }}>
       {token.text}{' '}
@@ -58,7 +59,7 @@ export const Mission = () => {
   const total = tokens1.length + tokens2.length;
 
   return (
-    <section id="philosophy" className="px-8 pb-32 pt-0 md:px-28 md:pb-44">
+    <section id="philosophy" className="px-8 pt-0 pb-32 md:px-28 md:pb-44">
       <div className="mx-auto flex max-w-4xl flex-col items-center">
         <video
           className="w-full max-w-[800px] rounded-2xl object-cover"

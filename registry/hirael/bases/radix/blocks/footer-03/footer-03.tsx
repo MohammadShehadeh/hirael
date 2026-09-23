@@ -39,9 +39,7 @@ const InstagramIcon = (props: React.SVGProps<SVGSVGElement>) => {
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 interface FooterColumn {
   label: string;
@@ -93,7 +91,7 @@ const Footer03 = () => {
   return (
     <footer data-slot="footer" className="w-full rounded-sm border border-input bg-muted/10 p-2">
       <div className="pt-12 pb-2 md:pb-12">
-        <div className="container">
+        <div className="mx-auto max-w-[1480px] px-4">
           <div className="mb-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
             <div data-slot="footer-brand" className={ENTER}>
               <span className="mb-3 inline-flex items-center gap-2 text-base font-semibold tracking-tight text-foreground">

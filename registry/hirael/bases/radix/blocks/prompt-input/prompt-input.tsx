@@ -50,12 +50,14 @@ const usePromptInput = () => {
   if (!context) {
     throw new Error('PromptInput parts must be rendered inside <PromptInput>.');
   }
+
   return context;
 };
 
 const formatBytes = (bytes: number) => {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 };
 
@@ -63,6 +65,7 @@ let attachmentSeq = 0;
 
 const toAttachment = (file: File): PromptAttachment => {
   attachmentSeq += 1;
+
   return {
     id: `${file.name}-${file.size}-${attachmentSeq}`,
     name: file.name,
@@ -372,7 +375,7 @@ const PromptInputAttachment = ({ name, size, icon, onRemove, className, ...props
     <div
       data-slot="prompt-input-attachment"
       className={cn(
-        'inline-flex max-w-full items-center gap-1.5 rounded-md border border-border bg-muted/40 py-1 pe-1 ps-2 text-xs text-foreground',
+        'inline-flex max-w-full items-center gap-1.5 rounded-md border border-border bg-muted/40 py-1 ps-2 pe-1 text-xs text-foreground',
         className,
       )}
       {...props}
@@ -572,6 +575,7 @@ interface CharacterCounterProps {
 const CharacterCounter = ({ max }: CharacterCounterProps) => {
   const { value } = usePromptInput();
   const over = value.length > max;
+
   return (
     <span
       data-slot="prompt-input-counter"
@@ -613,7 +617,7 @@ const PromptInputBlock = () => {
   return (
     <section data-slot="prompt-input-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className={cn(ENTER, 'flex w-full max-w-2xl flex-col gap-3')}>
-        <span className="text-xs uppercase text-muted-foreground">New message</span>
+        <span className="text-xs text-muted-foreground uppercase">New message</span>
 
         <PromptInput
           onSubmit={handleSubmit}
@@ -646,13 +650,13 @@ const PromptInputBlock = () => {
               <>
                 <span
                   aria-hidden
-                  className="size-1.5 rounded-full bg-accent-cool animate-pulse motion-reduce:animate-none"
+                  className="size-1.5 animate-pulse rounded-full bg-primary motion-reduce:animate-none"
                 />
                 Generating a reply, press Stop to cancel
               </>
             ) : lastSent ? (
               <>
-                <span className="uppercase tracking-[0.1em]">Sent</span>
+                <span className="tracking-[0.1em] uppercase">Sent</span>
                 <span className="truncate text-foreground">{lastSent.text || '(no text)'}</span>
                 <span className="shrink-0">
                   {lastSent.attachments} {lastSent.attachments === 1 ? 'attachment' : 'attachments'}

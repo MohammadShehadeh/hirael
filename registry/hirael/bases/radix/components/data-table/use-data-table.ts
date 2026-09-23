@@ -1,3 +1,4 @@
+'use no memo';
 'use client';
 
 import { type DataTableFeatures, dataTableFeatures } from './data-table-features';
@@ -31,6 +32,7 @@ const useCallbackRef = <T extends (...args: never[]) => unknown>(callback: T | u
   React.useEffect(() => {
     callbackRef.current = callback;
   });
+
   return React.useMemo(() => ((...args) => callbackRef.current?.(...args)) as T, []);
 };
 
@@ -38,6 +40,7 @@ const useDebouncedCallback = <T extends (...args: never[]) => unknown>(callback:
   const handleCallback = useCallbackRef(callback);
   const debounceTimerRef = React.useRef(0);
   React.useEffect(() => () => window.clearTimeout(debounceTimerRef.current), []);
+
   return React.useCallback(
     (...args: Parameters<T>) => {
       window.clearTimeout(debounceTimerRef.current);
@@ -52,20 +55,24 @@ const toTime = (value: unknown): number | null => {
   if (typeof value === 'number') return value;
   if (typeof value === 'string') {
     const time = new Date(value).getTime();
+
     return Number.isNaN(time) ? null : time;
   }
+
   return null;
 };
 
 const startOfDay = (timestamp: number): number => {
   const date = new Date(timestamp);
   date.setHours(0, 0, 0, 0);
+
   return date.getTime();
 };
 
 const endOfDay = (timestamp: number): number => {
   const date = new Date(timestamp);
   date.setHours(23, 59, 59, 999);
+
   return date.getTime();
 };
 
@@ -85,6 +92,7 @@ const getFilterFn = <TData extends RowData>(variant: FilterVariant | undefined):
       case 'multiSelect': {
         const selected = (Array.isArray(filterValue) ? filterValue : [filterValue]).map(String);
         if (selected.length === 0) return true;
+
         return selected.includes(String(value));
       }
       case 'range': {
@@ -94,11 +102,13 @@ const getFilterFn = <TData extends RowData>(variant: FilterVariant | undefined):
         if (Number.isNaN(num)) return false;
         if (min != null && min !== '' && num < Number(min)) return false;
         if (max != null && max !== '' && num > Number(max)) return false;
+
         return true;
       }
       case 'number': {
         const target = Number(filterValue);
         if (Number.isNaN(target)) return true;
+
         return Number(value) === target;
       }
       case 'date':
@@ -109,15 +119,18 @@ const getFilterFn = <TData extends RowData>(variant: FilterVariant | undefined):
           const [from, to] = filterValue;
           if (from != null && from !== '' && rowTime < startOfDay(Number(from))) return false;
           if (to != null && to !== '' && rowTime > endOfDay(Number(to))) return false;
+
           return true;
         }
         const target = Number(filterValue);
         if (Number.isNaN(target)) return true;
+
         return startOfDay(rowTime) === startOfDay(target);
       }
       default: {
         const needle = String(Array.isArray(filterValue) ? (filterValue[0] ?? '') : filterValue).toLowerCase();
         if (!needle) return true;
+
         return String(value ?? '')
           .toLowerCase()
           .includes(needle);
@@ -132,17 +145,31 @@ const getColumnId = <TData extends RowData>(column: ColumnDef<DataTableFeatures,
   if ('accessorKey' in column && column.accessorKey !== undefined) {
     return String(column.accessorKey).split('.').join('_');
   }
+
   return typeof column.header === 'string' ? column.header : '';
 };
 
 const serializeFilterValue = (value: unknown): string => {
   if (value == null) return '';
+
   return Array.isArray(value) ? value.map(String).join(ARRAY_SEPARATOR) : String(value);
+};
+
+const toQueryValue = (value: unknown): string | string[] | null => {
+  if (value == null || value === '') return null;
+  if (Array.isArray(value)) {
+    const items = value.map((item) => (item == null ? '' : String(item)));
+
+    return items.every((item) => item === '') ? null : items;
+  }
+
+  return String(value);
 };
 
 const areFiltersEqual = (a: ColumnFiltersState, b: ColumnFiltersState): boolean => {
   if (a.length !== b.length) return false;
   const values = new Map(a.map((f) => [f.id, serializeFilterValue(f.value)]));
+
   return b.every((f) => values.has(f.id) && values.get(f.id) === serializeFilterValue(f.value));
 };
 
@@ -301,6 +328,7 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
   const tableColumns = React.useMemo<ColumnDef<DataTableFeatures, TData>[]>(() => {
     return columns.map((column) => {
       if (column.filterFn || !column.enableColumnFilter) return column;
+
       return { ...column, filterFn: getFilterFn<TData>(column.meta?.variant) };
     });
   }, [columns]);
@@ -313,6 +341,7 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
       acc[key] = isArrayVariant(column.meta?.variant)
         ? parseAsArrayOf(parseAsString, ARRAY_SEPARATOR).withOptions(queryStateOptions)
         : parseAsString.withOptions(queryStateOptions);
+
       return acc;
     }, {});
   }, [filterableColumns, queryStateOptions, prefix]);
@@ -332,6 +361,7 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
           value,
         });
       }
+
       return filters;
     }, []);
   }, [filterValues, prefix]);
@@ -356,8 +386,9 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
 
       const filterUpdates = next.reduce<Record<string, string | string[] | null>>((acc, filter) => {
         if (filterableColumns.find((column) => getColumnId(column) === filter.id)) {
-          acc[`${prefix}${filter.id}`] = filter.value as string | string[];
+          acc[`${prefix}${filter.id}`] = toQueryValue(filter.value);
         }
+
         return acc;
       }, {});
 
@@ -402,5 +433,5 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
     manualFiltering: manual,
   });
 
-  return React.useMemo(() => ({ table, shallow, debounceMs, throttleMs }), [table, shallow, debounceMs, throttleMs]);
+  return { table, shallow, debounceMs, throttleMs };
 };

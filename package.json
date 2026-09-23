@@ -18,6 +18,7 @@
     "start": "npx serve out",
     "lint": "eslint .",
     "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
     "registry:gen": "tsx scripts/build-registry.mts && tsx scripts/build-llms.mts",
     "registry:props": "tsx scripts/extract-props.mts",
@@ -25,9 +26,13 @@
     "registry:build": "shadcn build && shadcn build registry.base.json -o public/r/base && tsx scripts/stamp-source.mts",
     "check:registry": "tsx scripts/check-registry.mts",
     "check:install": "tsx scripts/check-install.mts",
-    "prepare": "husky && pnpm registry:gen && pnpm registry:props && pnpm registry:md"
+    "check:health": "tsx scripts/check-health.mts",
+    "prepare": "husky && pnpm registry:gen && pnpm registry:props && pnpm registry:md",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "lint-staged": {
+    "**/*.{js,jsx,mjs,cjs,ts,tsx,mts,cts}": "eslint --fix --no-warn-ignored",
     "**/*": "prettier --write --ignore-unknown"
   },
   "dependencies": {
@@ -44,14 +49,14 @@
     "@tiptap/starter-kit": "^3.31.3",
     "class-variance-authority": "^0.7.1",
     "cmdk": "^1.1.1",
-    "cn": "^0.3.2",
+    "cn": "^0.4.0",
     "embla-carousel-react": "^8.6.0",
     "gray-matter": "^4.0.3",
     "gsap": "^3.15.0",
     "input-otp": "^1.5.0",
     "lucide-react": "^1.47.0",
-    "motion": "^13.4.0",
-    "next": "16.3.5",
+    "motion": "^13.4.1",
+    "next": "16.3.6",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
     "nuqs": "^2.10.1",
@@ -60,7 +65,7 @@
     "react-day-picker": "^10.0.1",
     "react-dom": "19.3.0",
     "react-hook-form": "^7.88.0",
-    "react-resizable-panels": "^4.13.1",
+    "react-resizable-panels": "^4.13.2",
     "recharts": "3.10.1",
     "shadcn": "^4.21.0",
     "shaders": "^3.2.470",
@@ -71,30 +76,35 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
-    "@shadcn/lint": "^0.1.5",
+    "@eslint/compat": "^2.1.1",
+    "@shadcn/lint": "^0.2.0",
+    "@stylistic/eslint-plugin": "^5.10.0",
     "@tailwindcss/postcss": "^4.3.3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/mdx": "^2.0.14",
     "@types/node": "^26.6.2",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
     "@typescript-eslint/parser": "^8.70.1",
     "@typescript/native": "npm:typescript@^7.0.2",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/eslint-plugin": "^1.6.27",
     "babel-plugin-react-compiler": "^1.0.0",
-    "eslint": "^9.39.5",
-    "eslint-config-next": "16.3.5",
+    "eslint": "^10.11.0",
+    "eslint-config-next": "16.3.6",
     "husky": "^9.1.7",
+    "jsdom": "^30.1.1",
     "lint-staged": "^17.5.1",
-    "prettier": "3.9.8",
+    "prettier": "3.9.9",
+    "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4.3.3",
     "ts-morph": "^28.0.0",
     "tsx": "^4.23.15",
-    "typescript": "npm:@typescript/typescript6@^6.0.2"
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "vitest": "^5.0.1"
   },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "19.2.17",
-      "@types/react-dom": "19.2.3",
-      "postcss": ">=8.5.10"
-    }
-  }
+  "packageManager": "pnpm@12.5.1"
 }

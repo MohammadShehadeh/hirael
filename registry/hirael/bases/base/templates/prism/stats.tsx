@@ -18,7 +18,7 @@ export const Stats = () => {
         {STATS.map((stat) => (
           <div key={stat.label} className="flex flex-col gap-2">
             <dt className="order-2 text-sm font-light text-foreground/60">{stat.label}</dt>
-            <dd className="text-4xl italic tabular-nums tracking-tight text-foreground [font-family:var(--font-prism-serif)] md:text-5xl lg:text-6xl">
+            <dd className="[font-family:var(--font-prism-serif)] text-4xl tracking-tight text-foreground italic tabular-nums md:text-5xl lg:text-6xl">
               {stat.value}
             </dd>
           </div>

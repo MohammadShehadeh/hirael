@@ -46,6 +46,7 @@ const classifyValue = (raw: string): Token[] => {
     tokens.push({ className, text: value });
   }
   if (comment) tokens.push({ className: tokenClass.comment, text: comment });
+
   return tokens;
 };
 
@@ -58,6 +59,7 @@ const tokenizeLine = (line: string): Token[] => {
 
   if (rest.startsWith('#')) {
     tokens.push({ className: tokenClass.comment, text: rest });
+
     return tokens;
   }
 
@@ -73,10 +75,12 @@ const tokenizeLine = (line: string): Token[] => {
     tokens.push({ className: tokenClass.punctuation, text: ':' });
     const after = rest.slice(keyMatch[1].length + 1);
     tokens.push(...classifyValue(after));
+
     return tokens;
   }
 
   if (rest) tokens.push(...classifyValue(rest));
+
   return tokens;
 };
 
@@ -86,6 +90,7 @@ interface HighlightLineProps {
 
 const HighlightLine = React.memo(function HighlightLine({ line }: HighlightLineProps) {
   const tokens = tokenizeLine(line);
+
   return (
     <span className="block min-h-[1.25rem]">
       {tokens.length === 0
@@ -104,6 +109,7 @@ interface YamlEditorProps extends Omit<React.ComponentProps<'div'>, 'onChange' |
   defaultValue?: string;
   onValueChange?: (value: string) => void;
   readOnly?: boolean;
+  disabled?: boolean;
   /** Visible rows before the editor scrolls. */
   rows?: number;
   textareaProps?: React.ComponentProps<'textarea'>;
@@ -114,9 +120,11 @@ const YamlEditor = ({
   defaultValue = '',
   onValueChange,
   readOnly,
+  disabled,
   rows = 12,
   className,
   textareaProps,
+  'aria-invalid': ariaInvalid,
   ...props
 }: YamlEditorProps) => {
   const [internal, setInternal] = React.useState(defaultValue);
@@ -126,6 +134,8 @@ const YamlEditor = ({
   const preRef = React.useRef<HTMLPreElement>(null);
   const gutterRef = React.useRef<HTMLDivElement>(null);
   const caretRafRef = React.useRef(0);
+  // Escape hands Tab back to the browser so keyboard users can leave the editor.
+  const tabReleasedRef = React.useRef(false);
 
   React.useEffect(() => () => cancelAnimationFrame(caretRafRef.current), []);
 
@@ -147,7 +157,17 @@ const YamlEditor = ({
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key !== 'Tab' || readOnly) return;
+    if (event.key === 'Escape') {
+      tabReleasedRef.current = true;
+
+      return;
+    }
+    if (event.key !== 'Tab') {
+      tabReleasedRef.current = false;
+
+      return;
+    }
+    if (readOnly || disabled || tabReleasedRef.current) return;
     event.preventDefault();
     const el = event.currentTarget;
     const start = el.selectionStart;
@@ -163,9 +183,13 @@ const YamlEditor = ({
   return (
     <div
       data-slot="yaml-editor"
+      data-disabled={disabled || undefined}
       dir="ltr"
       className={cn(
-        'flex overflow-hidden rounded-lg border border-border bg-card font-mono text-xs leading-5',
+        'flex overflow-hidden rounded-lg border border-border bg-card font-mono text-xs leading-5 transition-[color,box-shadow]',
+        'focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50',
+        'has-[textarea[aria-invalid=true]]:border-destructive has-[textarea[aria-invalid=true]]:ring-destructive/20 dark:has-[textarea[aria-invalid=true]]:ring-destructive/40',
+        disabled && 'cursor-not-allowed opacity-50',
         className,
       )}
       style={{ height: `calc(${rows} * 1.25rem + 1.5rem)` }}
@@ -175,7 +199,7 @@ const YamlEditor = ({
         ref={gutterRef}
         data-slot="yaml-editor-gutter"
         aria-hidden
-        className="shrink-0 select-none overflow-hidden border-e border-border bg-muted/40 py-3 text-end text-muted-foreground"
+        className="shrink-0 overflow-hidden border-e border-border bg-muted/40 py-3 text-end text-muted-foreground select-none"
       >
         {lines.map((_, i) => (
           <div key={i} className="px-2.5">
@@ -203,10 +227,12 @@ const YamlEditor = ({
           autoCapitalize="off"
           autoCorrect="off"
           readOnly={readOnly}
+          disabled={disabled}
+          aria-invalid={ariaInvalid}
           value={text}
           className={cn(
             layerClass,
-            'resize-none overflow-auto bg-transparent text-transparent caret-foreground outline-none selection:text-transparent',
+            'resize-none overflow-auto bg-transparent text-transparent caret-foreground outline-none selection:text-transparent disabled:cursor-not-allowed',
           )}
           {...textareaProps}
           // After the spread so consumer handlers compose with, not replace, the editor's own.
@@ -219,8 +245,13 @@ const YamlEditor = ({
             textareaProps?.onScroll?.(event);
           }}
           onKeyDown={(event) => {
-            handleKeyDown(event);
             textareaProps?.onKeyDown?.(event);
+            if (event.defaultPrevented) return;
+            handleKeyDown(event);
+          }}
+          onFocus={(event) => {
+            tabReleasedRef.current = false;
+            textareaProps?.onFocus?.(event);
           }}
         />
       </div>

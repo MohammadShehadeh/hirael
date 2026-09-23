@@ -3,10 +3,10 @@
 import * as React from 'react';
 import { animate, type HTMLMotionProps, motion, useReducedMotion } from 'motion/react';
 
-type ScrollRevealDirection = 'up' | 'down' | 'left' | 'right';
+export type ScrollRevealDirection = 'up' | 'down' | 'left' | 'right' | 'start' | 'end';
 
-interface ScrollRevealProps extends HTMLMotionProps<'div'> {
-  /** Direction the content travels in from. */
+export interface ScrollRevealProps extends HTMLMotionProps<'div'> {
+  /** Direction the content travels as it reveals. `start` and `end` follow the text direction; `left` and `right` stay physical. */
   direction?: ScrollRevealDirection;
   /** Travel distance, in px. */
   distance?: number;
@@ -22,7 +22,7 @@ interface ScrollRevealProps extends HTMLMotionProps<'div'> {
 
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const offsetFor = (direction: ScrollRevealDirection, distance: number) => {
+const offsetFor = (direction: ScrollRevealDirection, distance: number, rtl: boolean) => {
   switch (direction) {
     case 'up':
       return { x: 0, y: distance };
@@ -32,6 +32,10 @@ const offsetFor = (direction: ScrollRevealDirection, distance: number) => {
       return { x: distance, y: 0 };
     case 'right':
       return { x: -distance, y: 0 };
+    case 'start':
+      return { x: rtl ? -distance : distance, y: 0 };
+    case 'end':
+      return { x: rtl ? distance : -distance, y: 0 };
   }
 };
 
@@ -68,6 +72,7 @@ const observeReveal = (node: Element, amount: number, handler: RevealHandler) =>
   const { observer, handlers } = entry;
   handlers.set(node, handler);
   observer.observe(node);
+
   return () => {
     if (!handlers.delete(node)) return;
     observer.unobserve(node);
@@ -95,7 +100,6 @@ const ScrollReveal = ({
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement);
-  const { x, y } = offsetFor(direction, distance);
 
   // A callback ref, not an effect: observation starts when the node attaches and stops when it detaches.
   const revealRef = React.useCallback(
@@ -107,7 +111,9 @@ const ScrollReveal = ({
         if (!inView) {
           if (isHidden) return;
           isHidden = true;
+          const { x, y } = offsetFor(direction, distance, getComputedStyle(node).direction === 'rtl');
           animate(node, { opacity: 0, x, y }, { duration: 0 });
+
           return;
         }
         if (isHidden) {
@@ -116,9 +122,10 @@ const ScrollReveal = ({
         }
         if (once) stop();
       });
+
       return stop;
     },
-    [reduced, amount, once, duration, delay, x, y],
+    [reduced, amount, once, duration, delay, direction, distance],
   );
 
   return <motion.div ref={revealRef} data-slot="scroll-reveal" {...props} />;

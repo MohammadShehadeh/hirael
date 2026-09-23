@@ -15,9 +15,7 @@ const Hero01Backdrop = dynamic(() => import('./hero-01-backdrop'), {
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const NAV_LINKS = ['Product', 'Docs', 'Pricing', 'Changelog'] as const;
 
@@ -37,11 +35,11 @@ const Hero01 = () => {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card md:rounded-[40px] text-card-foreground shadow-sm">
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card text-card-foreground shadow-sm md:rounded-[40px]">
           <div
             aria-hidden
             data-slot="hero-wash"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_55%_at_16%_4%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_62%),radial-gradient(65%_60%_at_90%_94%,color-mix(in_oklch,var(--accent-cool)_26%,transparent),transparent_66%),radial-gradient(95%_70%_at_50%_112%,color-mix(in_oklch,var(--warm)_18%,transparent),transparent_70%)]"
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_55%_at_16%_4%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_62%),radial-gradient(65%_60%_at_90%_94%,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_66%),radial-gradient(95%_70%_at_50%_112%,color-mix(in_oklch,var(--primary)_18%,transparent),transparent_70%)]"
           />
           <div
             aria-hidden
@@ -86,7 +84,7 @@ const Hero01 = () => {
               style={stagger(1)}
               className={cn(
                 ENTER,
-                'max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl',
+                'max-w-4xl font-serif text-5xl leading-[1.04] font-medium tracking-tight text-foreground sm:text-6xl md:text-7xl',
               )}
             >
               The interface layer your product was missing.
@@ -125,10 +123,10 @@ const Hero01 = () => {
               <React.Fragment key={stat.label}>
                 {i > 0 && <span aria-hidden className="h-9 w-px bg-border" />}
                 <div data-slot="hero-stat" className="text-center">
-                  <div dir="ltr" className="font-serif text-2xl font-medium tabular-nums text-foreground md:text-3xl">
+                  <div dir="ltr" className="font-serif text-2xl font-medium text-foreground tabular-nums md:text-3xl">
                     {stat.value}
                   </div>
-                  <div className="mt-1 text-xs uppercase tracking-[0.14em] text-muted-foreground">{stat.label}</div>
+                  <div className="mt-1 text-xs tracking-[0.14em] text-muted-foreground uppercase">{stat.label}</div>
                 </div>
               </React.Fragment>
             ))}

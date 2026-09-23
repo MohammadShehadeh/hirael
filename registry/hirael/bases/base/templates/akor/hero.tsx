@@ -41,14 +41,14 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
         />
       )}
 
-      <div className="relative z-10 px-8 pb-20 pt-32 lg:px-16 lg:pb-28">
-        <h1 className="fade-up text-5xl font-light leading-[0.95] tracking-tight text-foreground [animation-delay:0.2s] sm:text-6xl lg:text-[5.5rem]">
+      <div className="relative z-10 px-8 pt-32 pb-20 lg:px-16 lg:pb-28">
+        <h1 className="fade-up text-5xl leading-[0.95] font-light tracking-tight text-foreground [animation-delay:0.2s] sm:text-6xl lg:text-[5.5rem]">
           Intelligent
           <br />
           Security Systems
         </h1>
 
-        <p className="fade-up mb-10 mt-6 max-w-xl text-base text-muted-foreground [animation-delay:0.45s] lg:text-lg">
+        <p className="fade-up mt-6 mb-10 max-w-xl text-base text-muted-foreground [animation-delay:0.45s] lg:text-lg">
           Innovative security, automation, and AI solutions for businesses and smart cities
         </p>
 

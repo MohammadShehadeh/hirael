@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import {
   ArrowRight,
   BookOpen,
@@ -149,7 +148,7 @@ const MENU_ROOT = cn(
   '**:data-[slot=navigation-menu-viewport]:mt-2',
   '**:data-[slot=navigation-menu-viewport]:duration-250 **:data-[slot=navigation-menu-viewport]:ease-[cubic-bezier(0.22,1,0.36,1)]',
   '**:data-[slot=navigation-menu-viewport]:data-[state=open]:fade-in-0 **:data-[slot=navigation-menu-viewport]:data-[state=open]:zoom-in-97',
-  '**:data-[slot=navigation-menu-viewport]:data-[state=closed]:fade-out-0 **:data-[slot=navigation-menu-viewport]:data-[state=closed]:zoom-out-97 **:data-[slot=navigation-menu-viewport]:data-[state=closed]:duration-150',
+  '**:data-[slot=navigation-menu-viewport]:data-[state=closed]:duration-150 **:data-[slot=navigation-menu-viewport]:data-[state=closed]:fade-out-0 **:data-[slot=navigation-menu-viewport]:data-[state=closed]:zoom-out-97',
   '**:data-[slot=navigation-menu-content]:duration-250 **:data-[slot=navigation-menu-content]:ease-[cubic-bezier(0.22,1,0.36,1)]',
   '**:data-[slot=navigation-menu-content]:data-[motion=from-end]:slide-in-from-right-6 **:data-[slot=navigation-menu-content]:data-[motion=from-start]:slide-in-from-left-6',
   '**:data-[slot=navigation-menu-content]:data-[motion=to-end]:slide-out-to-right-6 **:data-[slot=navigation-menu-content]:data-[motion=to-start]:slide-out-to-left-6 **:data-[slot=navigation-menu-content]:data-[motion^=to-]:duration-150',
@@ -167,7 +166,7 @@ const Wordmark = ({ className }: WordmarkProps) => {
       href="#"
       data-slot="header-brand"
       className={cn(
-        'rounded-sm text-base font-semibold tracking-[-0.03em] text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'rounded-sm text-base font-semibold tracking-[-0.03em] text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         className,
       )}
     >
@@ -182,6 +181,7 @@ interface FlyoutRowProps {
 
 const FlyoutRow = ({ link }: FlyoutRowProps) => {
   const Icon = link.icon;
+
   return (
     <li>
       <NavigationMenuLink href={link.href} className="flex-row items-start">
@@ -203,12 +203,12 @@ const FlyoutFeature = ({ feature }: FlyoutFeatureProps) => {
   return (
     <div
       data-slot="header-flyout-feature"
-      className="flex flex-col gap-2 border-t border-border bg-muted/30 p-5 md:border-t-0 md:border-s"
+      className="flex flex-col gap-2 border-t border-border bg-muted/30 p-5 md:border-s md:border-t-0"
     >
-      <span className="text-xs uppercase text-muted-foreground">{feature.label}</span>
+      <span className="text-xs text-muted-foreground uppercase">{feature.label}</span>
       <p className="text-sm font-medium text-foreground">{feature.title}</p>
       <p className="text-sm leading-relaxed text-muted-foreground">{feature.body}</p>
-      <time dateTime={feature.dateTime} className="text-xs tabular-nums text-muted-foreground">
+      <time dateTime={feature.dateTime} className="text-xs text-muted-foreground tabular-nums">
         {feature.date}
       </time>
       <NavigationMenuLink href={feature.href} className="group/cta mt-auto flex-row items-center self-start">
@@ -286,12 +286,13 @@ const Header03 = () => {
                         <ul className="flex flex-col">
                           {group.links.map((link) => {
                             const Icon = link.icon;
+
                             return (
                               <li key={link.title}>
                                 <SheetClose asChild>
                                   <a
                                     href={link.href}
-                                    className="-mx-2 flex items-start gap-3 rounded-md px-2 py-2.5 transition-colors duration-150 hover:bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                                    className="-mx-2 flex items-start gap-3 rounded-md px-2 py-2.5 transition-colors duration-150 hover:bg-muted/60 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                                   >
                                     <Icon aria-hidden className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                                     <span className="flex min-w-0 flex-col gap-0.5">
@@ -314,7 +315,7 @@ const Header03 = () => {
                       <SheetClose asChild>
                         <a
                           href={link.href}
-                          className="block py-4 text-base font-medium focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                          className="block py-4 text-base font-medium focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
                         >
                           {link.label}
                         </a>

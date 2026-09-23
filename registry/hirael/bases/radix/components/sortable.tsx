@@ -33,6 +33,7 @@ const useSortable = () => {
   if (!ctx) {
     throw new Error('Sortable compound parts must be used inside <Sortable>');
   }
+
   return ctx;
 };
 
@@ -53,15 +54,27 @@ const useSortableItem = () => {
   if (!ctx) {
     throw new Error('Sortable item parts must be used inside <SortableItem>');
   }
+
   return ctx;
 };
 
 const DRAG_THRESHOLD = 5;
 
+// Presses that start on these keep their own behavior instead of starting a drag.
+const INTERACTIVE_SELECTOR = 'button, a, input, textarea, select, [role="button"], [contenteditable]';
+
+const composeHandlers =
+  <E extends React.SyntheticEvent>(theirs: ((event: E) => void) | undefined, ours: ((event: E) => void) | undefined) =>
+  (event: E) => {
+    theirs?.(event);
+    if (!event.defaultPrevented) ours?.(event);
+  };
+
 const arrayMove = (arr: string[], from: number, to: number) => {
   const next = arr.slice();
   const [moved] = next.splice(from, 1);
   next.splice(to, 0, moved);
+
   return next;
 };
 
@@ -73,6 +86,7 @@ const reorderPinned = (order: string[], isDisabled: (id: string) => boolean, id:
   if (to === from) return order;
   const nextMovable = arrayMove(movable, from, to);
   let m = 0;
+
   return order.map((v) => (isDisabled(v) ? v : nextMovable[m++]));
 };
 
@@ -97,7 +111,12 @@ const Sortable = ({
 }: SortableProps) => {
   const [internal, setInternal] = React.useState(defaultValue);
   const [preview, setPreview] = React.useState<string[] | null>(null);
-  const [dragId, setDragId] = React.useState<string | null>(null);
+  const [dragId, setDragIdState] = React.useState<string | null>(null);
+  const dragIdRef = React.useRef<string | null>(null);
+  const setDragId = React.useCallback((id: string | null) => {
+    dragIdRef.current = id;
+    setDragIdState(id);
+  }, []);
   const [grabbedId, setGrabbedId] = React.useState<string | null>(null);
   const [liveText, setLiveText] = React.useState('');
 
@@ -122,16 +141,13 @@ const Sortable = ({
 
   const registerItem = React.useCallback((id: string, entry: ItemEntry) => {
     itemsRef.current.set(id, entry);
+
     return () => {
       itemsRef.current.delete(id);
     };
   }, []);
 
   const isDisabled = React.useCallback((id: string) => itemsRef.current.get(id)?.disabled ?? false, []);
-
-  const announce = React.useCallback((text: string) => {
-    setLiveText(text);
-  }, []);
 
   const itemLabel = React.useCallback((id: string) => {
     return itemsRef.current.get(id)?.node.textContent?.trim() || null;
@@ -155,7 +171,7 @@ const Sortable = ({
     setDragId(null);
     setGrabbedId(null);
     pressRef.current = null;
-  }, []);
+  }, [setDragId]);
 
   const startPress = React.useCallback(
     (e: React.PointerEvent, id: string) => {
@@ -172,7 +188,7 @@ const Sortable = ({
       const press = pressRef.current;
       if (!press || press.id !== id) return;
 
-      if (dragId !== id) {
+      if (dragIdRef.current !== id) {
         const dx = e.clientX - press.x;
         const dy = e.clientY - press.y;
         if (Math.hypot(dx, dy) < DRAG_THRESHOLD) return;
@@ -200,29 +216,30 @@ const Sortable = ({
         setPreview(reorderPinned(current, isDisabled, id, before));
       }
     },
-    [dragId, orientation, isDisabled],
+    [orientation, isDisabled, setDragId],
   );
 
   const handlePointerEnd = React.useCallback(
     (e: React.PointerEvent, id: string, cancelled: boolean) => {
-      const wasDragging = dragId === id;
+      const wasDragging = dragIdRef.current === id;
       pressRef.current = null;
       if (!wasDragging) return;
       setDragId(null);
       if (cancelled) {
         setPreview(null);
+
         return;
       }
       const next = orderRef.current;
       commit(next);
       const label = itemLabel(id);
-      announce(
+      setLiveText(
         label
           ? `Moved ${label} to position ${next.indexOf(id) + 1} of ${next.length}`
           : `Moved to position ${next.indexOf(id) + 1} of ${next.length}`,
       );
     },
-    [dragId, commit, announce, itemLabel],
+    [commit, itemLabel, setDragId],
   );
 
   const moveGrabbed = React.useCallback(
@@ -236,13 +253,13 @@ const Sortable = ({
       const next = reorderPinned(current, isDisabled, id, to);
       setPreview(next);
       const label = itemLabel(id);
-      announce(
+      setLiveText(
         label
           ? `Moved ${label} to position ${next.indexOf(id) + 1} of ${next.length}`
           : `Moved to position ${next.indexOf(id) + 1} of ${next.length}`,
       );
     },
-    [announce, isDisabled, itemLabel],
+    [isDisabled, itemLabel],
   );
 
   const handleKeyDown = React.useCallback(
@@ -258,7 +275,7 @@ const Sortable = ({
           setGrabbedId(null);
           commit(next);
           const label = itemLabel(id);
-          announce(
+          setLiveText(
             label
               ? `Dropped ${label} at position ${next.indexOf(id) + 1} of ${next.length}`
               : `Dropped at position ${next.indexOf(id) + 1} of ${next.length}`,
@@ -267,10 +284,11 @@ const Sortable = ({
           setGrabbedId(id);
           const current = orderRef.current;
           const label = itemLabel(id);
-          announce(
+          setLiveText(
             `Grabbed ${label ?? 'item'}, position ${current.indexOf(id) + 1} of ${current.length}. Use arrow keys to move, Space to drop, Escape to cancel.`,
           );
         }
+
         return;
       }
 
@@ -279,8 +297,9 @@ const Sortable = ({
           e.preventDefault();
           cancel();
           const label = itemLabel(id);
-          announce(`Reorder cancelled. ${label ?? 'Item'} returned to its original position.`);
+          setLiveText(`Reorder cancelled. ${label ?? 'Item'} returned to its original position.`);
         }
+
         return;
       }
 
@@ -299,7 +318,7 @@ const Sortable = ({
         moveGrabbed(id, dir);
       }
     },
-    [disabled, orientation, grabbedId, dragId, commit, cancel, announce, moveGrabbed, itemLabel],
+    [disabled, orientation, grabbedId, dragId, commit, cancel, moveGrabbed, itemLabel],
   );
 
   const handleBlur = React.useCallback(
@@ -318,6 +337,7 @@ const Sortable = ({
       }
     };
     window.addEventListener('keydown', onKeyDown);
+
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [dragId, cancel]);
 
@@ -380,7 +400,19 @@ export interface SortableItemProps extends React.ComponentProps<'div'> {
   disabled?: boolean;
 }
 
-const SortableItem = ({ value, disabled: disabledProp = false, className, style, ...props }: SortableItemProps) => {
+const SortableItem = ({
+  value,
+  disabled: disabledProp = false,
+  className,
+  style,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  onKeyDown,
+  onBlur,
+  ...props
+}: SortableItemProps) => {
   const {
     order,
     disabled: rootDisabled,
@@ -401,10 +433,12 @@ const SortableItem = ({ value, disabled: disabledProp = false, className, style,
   React.useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
+
     return registerItem(value, { node, disabled });
   }, [value, disabled, registerItem]);
 
   const index = order.indexOf(value);
+  const interactive = !hasHandle && !disabled;
   const state: SortableItemState = dragId === value || grabbedId === value ? 'grabbed' : 'idle';
 
   const itemCtx = React.useMemo<SortableItemCtx>(
@@ -423,15 +457,36 @@ const SortableItem = ({ value, disabled: disabledProp = false, className, style,
         aria-roledescription="sortable item"
         tabIndex={hasHandle || disabled ? undefined : 0}
         style={{ ...style, order: index === -1 ? undefined : index }}
-        onPointerDown={hasHandle || disabled ? undefined : (e) => startPress(e, value)}
+        onPointerDown={composeHandlers(
+          onPointerDown,
+          interactive
+            ? (e) => {
+                const hit = (e.target as HTMLElement).closest(INTERACTIVE_SELECTOR);
+                if (hit && hit !== e.currentTarget && e.currentTarget.contains(hit)) return;
+                startPress(e, value);
+              }
+            : undefined,
+        )}
         // The handle owns pointer events; bubbled copies here would end the drag twice.
-        onPointerMove={hasHandle || disabled ? undefined : (e) => handlePointerMove(e, value)}
-        onPointerUp={hasHandle || disabled ? undefined : (e) => handlePointerEnd(e, value, false)}
-        onPointerCancel={hasHandle || disabled ? undefined : (e) => handlePointerEnd(e, value, true)}
-        onKeyDown={hasHandle || disabled ? undefined : (e) => handleKeyDown(e, value)}
-        onBlur={hasHandle || disabled ? undefined : () => handleBlur(value)}
+        onPointerMove={composeHandlers(onPointerMove, interactive ? (e) => handlePointerMove(e, value) : undefined)}
+        onPointerUp={composeHandlers(onPointerUp, interactive ? (e) => handlePointerEnd(e, value, false) : undefined)}
+        onPointerCancel={composeHandlers(
+          onPointerCancel,
+          interactive ? (e) => handlePointerEnd(e, value, true) : undefined,
+        )}
+        onKeyDown={composeHandlers(
+          onKeyDown,
+          interactive
+            ? (e) => {
+                // Keys typed into inner controls bubble here; only the focused item itself moves.
+                if (e.target !== e.currentTarget) return;
+                handleKeyDown(e, value);
+              }
+            : undefined,
+        )}
+        onBlur={composeHandlers(onBlur, interactive ? () => handleBlur(value) : undefined)}
         className={cn(
-          'group/sortable-item relative flex select-none items-center gap-2 rounded-md border border-border bg-background text-sm outline-none transition-[box-shadow,transform,background-color]',
+          'group/sortable-item relative flex items-center gap-2 rounded-md border border-border bg-background text-sm transition-[box-shadow,transform,background-color] outline-none select-none',
           !hasHandle && !disabled && 'cursor-grab touch-none',
           !hasHandle &&
             'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
@@ -445,12 +500,23 @@ const SortableItem = ({ value, disabled: disabledProp = false, className, style,
   );
 };
 
-const SortableHandle = ({ className, children, ...props }: React.ComponentProps<'button'>) => {
+const SortableHandle = ({
+  className,
+  children,
+  onPointerDown,
+  onPointerMove,
+  onPointerUp,
+  onPointerCancel,
+  onKeyDown,
+  onBlur,
+  ...props
+}: React.ComponentProps<'button'>) => {
   const { startPress, handlePointerMove, handlePointerEnd, handleKeyDown, handleBlur } = useSortable();
   const { id, disabled, setHasHandle, state } = useSortableItem();
 
   React.useLayoutEffect(() => {
     setHasHandle(true);
+
     return () => setHasHandle(false);
   }, [setHasHandle]);
 
@@ -462,14 +528,14 @@ const SortableHandle = ({ className, children, ...props }: React.ComponentProps<
       disabled={disabled}
       aria-label="Drag to reorder"
       aria-pressed={state === 'grabbed'}
-      onPointerDown={(e) => startPress(e, id)}
-      onPointerMove={(e) => handlePointerMove(e, id)}
-      onPointerUp={(e) => handlePointerEnd(e, id, false)}
-      onPointerCancel={(e) => handlePointerEnd(e, id, true)}
-      onKeyDown={(e) => handleKeyDown(e, id)}
-      onBlur={() => handleBlur(id)}
+      onPointerDown={composeHandlers(onPointerDown, (e) => startPress(e, id))}
+      onPointerMove={composeHandlers(onPointerMove, (e) => handlePointerMove(e, id))}
+      onPointerUp={composeHandlers(onPointerUp, (e) => handlePointerEnd(e, id, false))}
+      onPointerCancel={composeHandlers(onPointerCancel, (e) => handlePointerEnd(e, id, true))}
+      onKeyDown={composeHandlers(onKeyDown, (e) => handleKeyDown(e, id))}
+      onBlur={composeHandlers(onBlur, () => handleBlur(id))}
       className={cn(
-        'inline-flex size-6 shrink-0 cursor-grab touch-none select-none items-center justify-center rounded text-muted-foreground outline-none transition-colors',
+        'inline-flex size-6 shrink-0 cursor-grab touch-none items-center justify-center rounded text-muted-foreground transition-colors outline-none select-none',
         'hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
         'disabled:cursor-not-allowed',
         state === 'grabbed' && 'cursor-grabbing text-foreground',

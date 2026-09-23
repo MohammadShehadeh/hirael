@@ -32,6 +32,7 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       setCount(Math.round(progress * 100));
       if (progress < 1) {
         raf = requestAnimationFrame(tick);
+
         return;
       }
       setExiting(true);
@@ -39,6 +40,7 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
     };
 
     raf = requestAnimationFrame(tick);
+
     return () => {
       cancelAnimationFrame(raf);
       if (exitTimer) clearTimeout(exitTimer);
@@ -47,6 +49,7 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
 
   React.useEffect(() => {
     const id = setInterval(() => setWordIndex((i) => (i + 1) % WORDS.length), WORD_INTERVAL);
+
     return () => clearInterval(id);
   }, []);
 
@@ -62,7 +65,7 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className="absolute start-6 top-6 text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted))] sm:start-10 sm:top-10"
+        className="absolute start-6 top-6 text-xs tracking-[0.3em] text-[hsl(var(--muted))] uppercase sm:start-10 sm:top-10"
       >
         Portfolio
       </motion.span>
@@ -75,14 +78,14 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="font-display text-4xl italic text-[hsl(var(--text))]/80 md:text-6xl lg:text-7xl"
+            className="font-display text-4xl text-[hsl(var(--text))]/80 italic md:text-6xl lg:text-7xl"
           >
             {WORDS[wordIndex]}
           </motion.span>
         </AnimatePresence>
       </div>
 
-      <span className="absolute bottom-6 end-6 font-display text-6xl tabular-nums md:bottom-10 md:end-10 md:text-8xl lg:text-9xl">
+      <span className="font-display absolute end-6 bottom-6 text-6xl tabular-nums md:end-10 md:bottom-10 md:text-8xl lg:text-9xl">
         {String(count).padStart(3, '0')}
       </span>
 

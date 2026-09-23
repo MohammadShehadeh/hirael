@@ -13,7 +13,7 @@ export const mdxComponents: MDXComponents = {
     />
   ),
   h3: ({ className, ...props }: React.ComponentProps<'h3'>) => (
-    <h3 className={cn('mt-6 text-xs uppercase text-muted-foreground', className)} {...props} />
+    <h3 className={cn('mt-6 text-xs text-muted-foreground uppercase', className)} {...props} />
   ),
   p: ({ className, ...props }: React.ComponentProps<'p'>) => (
     <p className={cn('mt-4 text-sm leading-relaxed text-foreground/80 first:mt-0', className)} {...props} />
@@ -22,7 +22,7 @@ export const mdxComponents: MDXComponents = {
     <ul className={cn('mt-3 flex flex-col gap-2 text-sm', className)} {...props} />
   ),
   ol: ({ className, ...props }: React.ComponentProps<'ol'>) => (
-    <ol className={cn('mt-3 flex flex-col gap-2 list-decimal ps-5 text-sm', className)} {...props} />
+    <ol className={cn('mt-3 flex list-decimal flex-col gap-2 ps-5 text-sm', className)} {...props} />
   ),
   li: ({ className, children, ...props }: React.ComponentProps<'li'>) => (
     <li className={cn('flex gap-2.5', className)} {...props}>
@@ -32,12 +32,13 @@ export const mdxComponents: MDXComponents = {
   ),
   a: ({ className, href, ...props }: React.ComponentProps<'a'>) => {
     const classes = cn(
-      'font-medium text-foreground underline underline-offset-4 decoration-border transition-colors hover:decoration-foreground',
+      'font-medium text-foreground underline decoration-border underline-offset-4 transition-colors hover:decoration-foreground',
       className,
     );
     if (href && /^https?:\/\//.test(href)) {
       return <a href={href} className={classes} target="_blank" rel="noreferrer" {...props} />;
     }
+
     return <Link href={href ?? '#'} className={classes} {...props} />;
   },
   strong: ({ className, ...props }: React.ComponentProps<'strong'>) => (

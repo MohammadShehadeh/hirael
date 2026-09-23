@@ -13,5 +13,6 @@ export const metadata: Metadata = listingMetadata({
 
 export default async function ChangelogPage() {
   const changelog = await getChangelog();
+
   return <ChangelogView {...changelog} />;
 }

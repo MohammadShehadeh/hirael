@@ -8,7 +8,7 @@ export const UseCasesSection = () => {
       <div className="mx-auto grid max-w-[88rem] grid-cols-1 items-start gap-8 md:grid-cols-2">
         <div className="md:pe-12 md:pt-2">
           <p className="mb-2 text-sm text-black/60">USD Halo in Practice</p>
-          <h2 className="mb-6 text-5xl font-medium leading-none tracking-[-0.04em] text-black md:text-6xl">
+          <h2 className="mb-6 text-5xl leading-none font-medium tracking-[-0.04em] text-black md:text-6xl">
             Use modes
           </h2>
           <p className="max-w-sm text-base leading-relaxed text-black/60">
@@ -28,7 +28,7 @@ export const UseCasesSection = () => {
           />
           <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/15 to-transparent" />
           <div className="relative z-10 p-10 md:p-12">
-            <h3 className="mb-5 text-4xl font-medium leading-tight tracking-[-0.03em] text-black md:text-5xl">
+            <h3 className="mb-5 text-4xl leading-tight font-medium tracking-[-0.03em] text-black md:text-5xl">
               Commerce
             </h3>
             <p className="mb-8 max-w-md text-base text-black/70">

@@ -114,27 +114,27 @@ const groupId = (label: string) => `faq-${label.toLowerCase().replace(/[^a-z0-9]
 
 const Faq04 = () => {
   return (
-    <section data-slot="faq" className="bg-background py-16 md:py-24">
+    <section data-slot="faq" className="bg-background py-20 sm:py-28">
       <div className="relative mx-auto w-full max-w-2xl border-border md:border-x">
         <span
           aria-hidden
-          className="absolute -start-px top-0 hidden h-px w-6 -translate-x-full bg-border rtl:translate-x-full md:block"
+          className="absolute -start-px top-0 hidden h-px w-6 -translate-x-full bg-border md:block rtl:translate-x-full"
         />
         <span
           aria-hidden
-          className="absolute -end-px top-0 hidden h-px w-6 translate-x-full bg-border rtl:-translate-x-full md:block"
+          className="absolute -end-px top-0 hidden h-px w-6 translate-x-full bg-border md:block rtl:-translate-x-full"
         />
 
         <div
           data-slot="faq-header"
           className="flex flex-col items-center gap-4 border-b border-border px-6 py-12 text-center md:px-10 md:py-16"
         >
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Help archive</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Help archive</span>
           <h2
             style={stagger(1, 70)}
             className={cn(
               ENTER,
-              'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl md:text-6xl',
+              'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
             )}
           >
             Asked, answered, archived.
@@ -154,7 +154,7 @@ const Faq04 = () => {
                 href={`#${groupId(group.label)}`}
                 className="group inline-flex items-baseline gap-2 text-sm text-muted-foreground transition-colors duration-150 hover:text-foreground"
               >
-                <span className="text-xs tabular-nums text-muted-foreground/70 transition-colors duration-150 group-hover:text-warm">
+                <span className="text-xs text-muted-foreground/70 tabular-nums transition-colors duration-150 group-hover:text-primary">
                   {formatIndex(gi)}
                 </span>
                 {group.label}
@@ -174,7 +174,7 @@ const Faq04 = () => {
             >
               <div className="flex items-baseline justify-between gap-3 md:px-4">
                 <h3 className="text-lg font-semibold tracking-[-0.02em]">{group.label}</h3>
-                <span dir="ltr" className="text-xs tabular-nums text-muted-foreground">
+                <span dir="ltr" className="text-xs text-muted-foreground tabular-nums">
                   {formatIndex(gi)}
                   <span className="mx-1.5 text-border">|</span>
                   {formatIndex(GROUPS.length - 1)}

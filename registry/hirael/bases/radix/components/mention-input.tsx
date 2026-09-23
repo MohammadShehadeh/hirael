@@ -56,6 +56,7 @@ export const getMentions = (value: string, trigger: string | string[] = '@'): st
   const out: string[] = [];
   let m: RegExpExecArray | null;
   while ((m = re.exec(value)) !== null) out.push(m[1]);
+
   return out;
 };
 
@@ -67,9 +68,11 @@ const getActiveMention = (text: string, caret: number, triggers: string[]): Acti
       if (i === 0 || /\s/.test(text[i - 1])) {
         return { start: i, trigger: ch, query: text.slice(i + 1, caret) };
       }
+
       return null;
     }
   }
+
   return null;
 };
 
@@ -98,6 +101,7 @@ const measureCaret = (textarea: HTMLTextAreaElement, index: number) => {
     height: lineHeight,
   };
   mirror.remove();
+
   return rect;
 };
 
@@ -120,6 +124,7 @@ const segmentValue = (value: string, triggers: string[], known: Set<string>): Se
     last = start + token.length;
   }
   if (last < value.length) segments.push({ text: value.slice(last), mention: false });
+
   return segments;
 };
 
@@ -162,6 +167,7 @@ export const useMentionInput = () => {
   if (!ctx) {
     throw new Error('MentionInput compound parts must be used inside <MentionInput>');
   }
+
   return ctx;
 };
 
@@ -182,11 +188,13 @@ export interface MentionInputProps extends Omit<React.ComponentProps<'div'>, 'de
   name?: string;
 }
 
+const NO_ITEMS: MentionItem[] = [];
+
 const MentionInput = ({
   value: valueProp,
   defaultValue,
   onValueChange,
-  items = [],
+  items = NO_ITEMS,
   onSearch,
   trigger = '@',
   placeholder,
@@ -233,6 +241,14 @@ const MentionInput = ({
   const backdropRef = React.useRef<HTMLDivElement | null>(null);
   const popupRef = React.useRef<HTMLDivElement | null>(null);
   const dismissedRef = React.useRef(false);
+  const focusFrameRef = React.useRef<number | null>(null);
+
+  React.useEffect(
+    () => () => {
+      if (focusFrameRef.current !== null) cancelAnimationFrame(focusFrameRef.current);
+    },
+    [],
+  );
 
   const open = mention !== null && !disabled;
 
@@ -240,6 +256,7 @@ const MentionInput = ({
     if (onSearch) return asyncItems;
     if (!mention) return [];
     const q = mention.query.toLowerCase();
+
     return items.filter((it) => it.label.toLowerCase().includes(q) || it.description?.toLowerCase().includes(q));
   }, [onSearch, asyncItems, items, mention]);
 
@@ -249,6 +266,7 @@ const MentionInput = ({
     const set = new Set<string>();
     for (const it of items) set.add(it.label.toLowerCase());
     for (const label of selectedLabels) set.add(label.toLowerCase());
+
     return set;
   }, [items, selectedLabels]);
 
@@ -288,6 +306,7 @@ const MentionInput = ({
           setLoading(false);
         });
     }, 200);
+
     return () => {
       cancelled = true;
       clearTimeout(t);
@@ -339,6 +358,7 @@ const MentionInput = ({
     if (!open) return;
     const close = () => setMention(null);
     window.addEventListener('resize', close);
+
     return () => window.removeEventListener('resize', close);
   }, [open]);
 
@@ -355,6 +375,7 @@ const MentionInput = ({
       if (prev.length === 0) return prev;
       const present = new Set(getMentions(value, triggers).map((m) => m.toLowerCase()));
       const next = prev.filter((label) => present.has(label.toLowerCase()));
+
       return next.length === prev.length ? prev : next;
     });
   }
@@ -367,6 +388,7 @@ const MentionInput = ({
         if (prev && next && prev.start === next.start && prev.trigger === next.trigger && prev.query === next.query) {
           return prev;
         }
+
         return next;
       });
     },
@@ -385,7 +407,9 @@ const MentionInput = ({
       onMention?.(item);
       setMention(null);
       const position = mention.start + inserted.length;
-      requestAnimationFrame(() => {
+      if (focusFrameRef.current !== null) cancelAnimationFrame(focusFrameRef.current);
+      focusFrameRef.current = requestAnimationFrame(() => {
+        focusFrameRef.current = null;
         ta.focus();
         ta.setSelectionRange(position, position);
       });
@@ -396,6 +420,8 @@ const MentionInput = ({
   const handleKeyDown = React.useCallback(
     (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
       if (!open) return;
+      // Enter confirming an IME composition must not pick a suggestion.
+      if (e.nativeEvent.isComposing || e.keyCode === 229) return;
       if (e.key === 'ArrowDown') {
         e.preventDefault();
         setActiveIndex(filtered.length ? (active + 1) % filtered.length : 0);
@@ -564,6 +590,7 @@ const MentionInputTextarea = ({
     textareaProps,
   } = useMentionInput();
   const composedRef = React.useMemo(() => composeRefs(textareaRef, ref), [textareaRef, ref]);
+
   return (
     <>
       <div
@@ -613,7 +640,7 @@ const MentionInputTextarea = ({
         onBlur={chainHandlers(onBlur, textareaProps.onBlur)}
         className={cn(
           metrics,
-          'relative resize-none border-input bg-transparent outline-none transition-colors',
+          'relative resize-none border-input bg-transparent transition-colors outline-none',
           'placeholder:text-muted-foreground',
           'focus-visible:border-ring',
           'disabled:cursor-not-allowed disabled:opacity-50',
@@ -682,6 +709,7 @@ const MentionInputItem = ({
 }: MentionInputItemProps) => {
   const ctx = useMentionInput();
   const active = index === ctx.activeIndex;
+
   return (
     <div
       id={`${ctx.id}-option-${index}`}

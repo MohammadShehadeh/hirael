@@ -1,66 +1,77 @@
 'use client';
 
-import { motion } from 'motion/react';
+import type * as React from 'react';
 import { ArrowUpRight, ChevronRight, Sparkles } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
 
 import { Navbar } from './navbar';
 
 const HERO_VIDEO = '/media/templates/rivr/hero.mp4';
 
+const EASE = 'ease-out fill-mode-both motion-reduce:animate-none';
+const RISE = `animate-in fade-in slide-in-from-bottom-5 ${EASE}`;
+
+const delay = (ms: number): React.CSSProperties => ({ animationDelay: `${ms}ms` });
+
 const HeroBadge = () => {
   return (
-    <motion.div
+    <div
       data-slot="hero-badge"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
-      className="mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/60 px-4 py-2 backdrop-blur-md"
+      className={cn(
+        RISE,
+        'mx-auto mb-5 flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/60 px-4 py-2 backdrop-blur-md duration-600',
+      )}
     >
       <Sparkles className="size-4 text-foreground/80" />
       <span className="text-sm font-medium text-foreground">Fluid Staking</span>
-    </motion.div>
+    </div>
   );
 };
 
 const BottomLeftCard = () => {
   return (
-    <motion.div
+    <div
       data-slot="hero-stat"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-      className="absolute bottom-28 end-4 start-auto flex w-fit min-w-[150px] flex-col gap-2 rounded-[1.5rem] border border-white/30 bg-white/30 p-4 backdrop-blur-xl md:bottom-6 md:end-auto md:start-6 lg:bottom-10 lg:min-w-[180px] lg:gap-3 lg:rounded-[2rem] lg:p-5 lg:start-10"
+      style={delay(200)}
+      className={cn(
+        RISE,
+        'duration-800',
+        'absolute start-auto end-4 bottom-28 flex w-fit min-w-[150px] flex-col gap-2 rounded-[1.5rem] border border-white/30 bg-white/30 p-4 backdrop-blur-xl md:start-6 md:end-auto md:bottom-6 lg:start-10 lg:bottom-10 lg:min-w-[180px] lg:gap-3 lg:rounded-[2rem] lg:p-5',
+      )}
     >
       <div className="flex flex-col">
         <span className="text-2xl font-semibold tracking-tight text-foreground md:text-3xl">5.2K</span>
-        <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground md:text-xs">
+        <span className="text-[10px] font-medium tracking-wider text-muted-foreground uppercase md:text-xs">
           Active Yielders
         </span>
       </div>
 
       <a
         href="#"
-        className="flex w-fit items-center gap-2 self-start rounded-full bg-white py-1.5 pe-5 ps-1.5 transition-colors hover:bg-white/90"
+        className="flex w-fit items-center gap-2 self-start rounded-full bg-white py-1.5 ps-1.5 pe-5 transition-colors hover:bg-white/90"
       >
         <span className="flex items-center justify-center rounded-full bg-foreground/10 p-1">
           <ArrowUpRight className="size-4 text-foreground rtl:-scale-x-100" />
         </span>
         <span className="text-sm font-medium text-foreground">Join Discord</span>
       </a>
-    </motion.div>
+    </div>
   );
 };
 
 const BottomRightCorner = () => {
   return (
-    <motion.div
+    <div
       data-slot="hero-docs"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.4, ease: 'easeOut' }}
-      className="absolute bottom-0 end-0 flex items-center gap-3 rounded-ss-[1.5rem] bg-background p-3 ps-8 pt-5 sm:gap-4 sm:rounded-ss-[2rem] sm:p-4 sm:ps-10 sm:pt-6 md:gap-6 md:rounded-ss-[3.5rem] md:p-6 md:ps-14 md:pt-8"
+      style={delay(400)}
+      className={cn(
+        RISE,
+        'duration-800',
+        'absolute end-0 bottom-0 flex items-center gap-3 rounded-ss-[1.5rem] bg-background p-3 ps-8 pt-5 sm:gap-4 sm:rounded-ss-[2rem] sm:p-4 sm:ps-10 sm:pt-6 md:gap-6 md:rounded-ss-[3.5rem] md:p-6 md:ps-14 md:pt-8',
+      )}
     >
-      <div className="pointer-events-none absolute -top-[1.5rem] end-0 size-[1.5rem] text-background sm:-top-[2rem] sm:size-[2rem] md:-top-[3.5rem] md:size-[3.5rem]">
+      <div className="pointer-events-none absolute end-0 -top-[1.5rem] size-[1.5rem] text-background sm:-top-[2rem] sm:size-[2rem] md:-top-[3.5rem] md:size-[3.5rem]">
         <svg
           width="100%"
           height="100%"
@@ -73,7 +84,7 @@ const BottomRightCorner = () => {
         </svg>
       </div>
 
-      <div className="pointer-events-none absolute bottom-0 -start-[1.5rem] size-[1.5rem] text-background sm:-start-[2rem] sm:size-[2rem] md:-start-[3.5rem] md:size-[3.5rem]">
+      <div className="pointer-events-none absolute -start-[1.5rem] bottom-0 size-[1.5rem] text-background sm:-start-[2rem] sm:size-[2rem] md:-start-[3.5rem] md:size-[3.5rem]">
         <svg
           width="100%"
           height="100%"
@@ -97,7 +108,7 @@ const BottomRightCorner = () => {
           <ChevronRight className="size-3 md:size-4 rtl:rotate-180" />
         </a>
       </div>
-    </motion.div>
+    </div>
   );
 };
 
@@ -129,25 +140,28 @@ export const Hero = () => {
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
             <HeroBadge />
 
-            <motion.h1
+            <h1
               data-slot="hero-title"
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: 'easeOut' }}
-              style={{ color: 'var(--hero-title)' }}
-              className="font-display mb-4 text-4xl font-semibold leading-[1.05] sm:text-5xl md:text-6xl lg:text-[80px]"
+              style={{ ...delay(100), color: 'var(--hero-title)' }}
+              className={cn(
+                'animate-in duration-800 fade-in zoom-in-98',
+                EASE,
+                'font-display mb-4 text-4xl leading-[1.05] font-semibold sm:text-5xl md:text-6xl lg:text-[80px]',
+              )}
             >
               Fluid Asset Streams
-            </motion.h1>
+            </h1>
 
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
-              className="max-w-xl text-base leading-relaxed text-foreground/80 sm:text-lg"
+            <p
+              style={delay(300)}
+              className={cn(
+                'animate-in duration-800 fade-in',
+                EASE,
+                'max-w-xl text-base leading-relaxed text-foreground/80 sm:text-lg',
+              )}
             >
               Access Smart Vaults, stake RIVR and NFTs, and turn rigid holdings into liquid cash, instantly.
-            </motion.p>
+            </p>
           </div>
 
           <BottomLeftCard />

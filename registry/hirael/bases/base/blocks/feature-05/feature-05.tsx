@@ -50,7 +50,7 @@ const Title = () => {
     <h2
       data-slot="feature-title"
       style={stagger(1)}
-      className={cn(RISE, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl')}
+      className={cn(RISE, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight text-balance sm:text-5xl')}
     >
       The principles behind every component
     </h2>
@@ -67,7 +67,7 @@ const DottedGlow = ({ className }: DottedGlowProps) => {
       aria-hidden
       data-slot="dotted-glow"
       className={cn(
-        'pointer-events-none absolute inset-0 bg-[radial-gradient(var(--warm)_1.6px,transparent_1.6px)] bg-size-[10px_10px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)]',
+        'pointer-events-none absolute inset-0 bg-[radial-gradient(var(--primary)_1.6px,transparent_1.6px)] [mask-image:radial-gradient(ellipse_at_center,black,transparent_80%)] bg-size-[10px_10px] opacity-40',
         className,
       )}
     />
@@ -101,7 +101,7 @@ const Feature05 = () => {
 
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <div className={RISE}>
             <Badge variant="outline">Values</Badge>

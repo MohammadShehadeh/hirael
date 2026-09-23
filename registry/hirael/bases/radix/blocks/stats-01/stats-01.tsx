@@ -11,7 +11,7 @@ type StatsProps = React.ComponentProps<'section'>;
 const Stats = ({ className, children, ...props }: StatsProps) => {
   return (
     <section data-slot="stats" className={cn('bg-background py-20 sm:py-28', className)} {...props}>
-      <div className="container grid w-full grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+      <div className="mx-auto grid w-full max-w-[1480px] grid-cols-1 gap-12 px-4 lg:grid-cols-12 lg:items-center lg:gap-16">
         {children}
       </div>
     </section>
@@ -28,7 +28,7 @@ type StatsEyebrowProps = React.ComponentProps<'span'>;
 
 const StatsEyebrow = ({ className, ...props }: StatsEyebrowProps) => {
   return (
-    <span data-slot="stats-eyebrow" className={cn('text-xs uppercase text-muted-foreground', className)} {...props} />
+    <span data-slot="stats-eyebrow" className={cn('text-xs text-muted-foreground uppercase', className)} {...props} />
   );
 };
 
@@ -39,7 +39,7 @@ const StatsTitle = ({ className, ...props }: StatsTitleProps) => {
     <h2
       data-slot="stats-title"
       className={cn(
-        'font-serif text-4xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl',
+        'font-serif text-4xl leading-[1.04] font-medium tracking-tight text-foreground sm:text-5xl',
         className,
       )}
       {...props}
@@ -88,27 +88,38 @@ const StatsItem = ({ className, ...props }: StatsItemProps) => {
   );
 };
 
-const useInView = <T extends Element>(margin = '0px 0px -10% 0px') => {
+// Counts up only when the value scrolls in from off screen, so the server
+// render and anything visible on load show the real number.
+const useCountUp = <T extends Element>(margin = '0px 0px -10% 0px') => {
   const ref = React.useRef<T | null>(null);
-  const [inView, setInView] = React.useState(false);
+  const [countUp, setCountUp] = React.useState(false);
 
   React.useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    let first = true;
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries.some((entry) => entry.isIntersecting)) {
-          setInView(true);
+        const visible = entries.some((entry) => entry.isIntersecting);
+        if (first) {
+          first = false;
+          if (visible) observer.disconnect();
+
+          return;
+        }
+        if (visible) {
+          setCountUp(true);
           observer.disconnect();
         }
       },
       { rootMargin: margin },
     );
     observer.observe(el);
+
     return () => observer.disconnect();
   }, [margin]);
 
-  return [ref, inView] as const;
+  return [ref, countUp] as const;
 };
 
 interface StatsValueProps extends Omit<React.ComponentProps<'div'>, 'children'> {
@@ -116,7 +127,7 @@ interface StatsValueProps extends Omit<React.ComponentProps<'div'>, 'children'> 
   prefix?: string;
   suffix?: string;
   decimals?: number;
-  /** Tween length in milliseconds once the item scrolls into view. */
+  /** Tween length in milliseconds when the item scrolls into view. */
   duration?: number;
   format?: Intl.NumberFormatOptions;
 }
@@ -131,20 +142,22 @@ const StatsValue = ({
   className,
   ...props
 }: StatsValueProps) => {
-  const [ref, inView] = useInView<HTMLDivElement>();
+  const [ref, countUp] = useCountUp<HTMLDivElement>();
 
   return (
     <div
       ref={ref}
       data-slot="stats-value"
       className={cn(
-        'font-serif text-4xl font-medium leading-none tracking-tight text-foreground sm:text-5xl',
+        'font-serif text-4xl leading-none font-medium tracking-tight text-foreground sm:text-5xl',
         className,
       )}
       {...props}
     >
       <AnimatedNumber
-        value={inView ? value : 0}
+        key={countUp ? 'count-up' : 'static'}
+        value={value}
+        startValue={countUp ? 0 : value}
         duration={duration}
         decimals={decimals}
         prefix={prefix}
@@ -167,12 +180,13 @@ interface StatsDeltaProps extends React.ComponentProps<'span'> {
 
 const StatsDelta = ({ trend = 'up', className, children, ...props }: StatsDeltaProps) => {
   const Icon = trend === 'up' ? ArrowUpRight : ArrowDownRight;
+
   return (
     <span
       data-slot="stats-delta"
       data-trend={trend}
       className={cn(
-        'inline-flex items-center gap-1 text-xs uppercase whitespace-nowrap text-muted-foreground',
+        'inline-flex items-center gap-1 text-xs whitespace-nowrap text-muted-foreground uppercase',
         className,
       )}
       {...props}

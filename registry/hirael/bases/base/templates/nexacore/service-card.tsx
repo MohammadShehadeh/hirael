@@ -60,7 +60,7 @@ export const ServiceCard = ({ label, level, title, bullets }: ServiceCardProps) 
 
         <div className="flex-grow" />
 
-        <h3 className="text-[length:clamp(16px,1.7vw,24px)] font-medium leading-snug text-white transition-transform duration-500 group-hover:-translate-y-2">
+        <h3 className="text-[length:clamp(16px,1.7vw,24px)] leading-snug font-medium text-white transition-transform duration-500 group-hover:-translate-y-2">
           {title}
         </h3>
 

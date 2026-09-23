@@ -32,6 +32,7 @@ const kindOf = (value: unknown): JsonKind => {
   if (type === 'boolean') return 'boolean';
   if (type === 'function') return 'function';
   if (type === 'symbol') return 'symbol';
+
   return 'undefined';
 };
 
@@ -46,6 +47,7 @@ const entriesOf = (value: unknown, kind: JsonKind): [string, unknown][] => {
   if (kind === 'object') {
     return Object.entries(value as Record<string, unknown>);
   }
+
   return [];
 };
 
@@ -54,21 +56,71 @@ const IDENTIFIER = /^[A-Za-z_$][\w$]*$/;
 // Keys that aren't identifiers get bracket-quoted so "a.b" and nested a -> b don't share a path.
 const childPath = (path: string, key: string, parentKind: JsonKind) => {
   if (parentKind === 'array') return `${path}[${key}]`;
+
   return IDENTIFIER.test(key) ? `${path}.${key}` : `${path}[${JSON.stringify(key)}]`;
 };
 
-const collectPaths = (value: unknown, path = '$'): string[] => {
+const CIRCULAR = '[Circular]';
+
+const collectPaths = (value: unknown, path = '$', ancestors = new WeakSet<object>()): string[] => {
   const kind = kindOf(value);
   if (!isExpandable(kind)) return [];
+  const node = value as object;
+  if (ancestors.has(node)) return [];
+  ancestors.add(node);
   const out = [path];
   for (const [key, child] of entriesOf(value, kind)) {
-    out.push(...collectPaths(child, childPath(path, key, kind)));
+    out.push(...collectPaths(child, childPath(path, key, kind), ancestors));
   }
+  ancestors.delete(node);
+
   return out;
 };
 
 const stringify = (value: unknown, indent: number) => {
-  return JSON.stringify(value, (_key, v: unknown) => (typeof v === 'bigint' ? v.toString() : v), indent);
+  const ancestors: unknown[] = [];
+
+  return JSON.stringify(
+    value,
+    function replacer(this: unknown, _key: string, v: unknown) {
+      if (typeof v === 'bigint') return v.toString();
+      if (typeof v !== 'object' || v === null) return v;
+      while (ancestors.length > 0 && ancestors[ancestors.length - 1] !== this) ancestors.pop();
+      if (ancestors.includes(v)) return CIRCULAR;
+      ancestors.push(v);
+
+      return v;
+    },
+    indent,
+  );
+};
+
+type FocusUpdate = string | ((current: string) => string);
+
+interface FocusStore {
+  get: () => string;
+  set: (next: FocusUpdate) => void;
+  subscribe: (listener: () => void) => () => void;
+}
+
+const createFocusStore = (initial: string): FocusStore => {
+  let current = initial;
+  const listeners = new Set<() => void>();
+
+  return {
+    get: () => current,
+    set: (next) => {
+      const resolved = typeof next === 'function' ? next(current) : next;
+      if (resolved === current) return;
+      current = resolved;
+      listeners.forEach((listener) => listener());
+    },
+    subscribe: (listener) => {
+      listeners.add(listener);
+
+      return () => listeners.delete(listener);
+    },
+  };
 };
 
 interface JsonViewerCtx {
@@ -78,18 +130,46 @@ interface JsonViewerCtx {
   toggle: (path: string, depth: number) => void;
   expandAll: () => void;
   collapseAll: () => void;
-  focusedPath: string;
-  setFocusedPath: (path: string) => void;
+  setFocusedPath: (next: FocusUpdate) => void;
   treeRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const JsonViewerContext = React.createContext<JsonViewerCtx | null>(null);
+
+const JsonViewerFocusContext = React.createContext<FocusStore | null>(null);
+
+const useIsFocusedPath = (path: string) => {
+  const store = React.useContext(JsonViewerFocusContext);
+  const subscribe = React.useCallback((listener: () => void) => store?.subscribe(listener) ?? (() => {}), [store]);
+
+  return React.useSyncExternalStore(
+    subscribe,
+    () => (store ? store.get() === path : path === '$'),
+    () => path === '$',
+  );
+};
+
+interface Ancestry {
+  value: object;
+  parent: Ancestry | null;
+}
+
+const JsonViewerAncestryContext = React.createContext<Ancestry | null>(null);
+
+const isCircular = (ancestry: Ancestry | null, value: unknown) => {
+  for (let link = ancestry; link; link = link.parent) {
+    if (link.value === value) return true;
+  }
+
+  return false;
+};
 
 const useJsonViewer = () => {
   const ctx = React.useContext(JsonViewerContext);
   if (!ctx) {
     throw new Error('JsonViewer compound parts must be used inside <JsonViewer>');
   }
+
   return ctx;
 };
 
@@ -105,6 +185,7 @@ const useJsonViewerNode = () => {
   if (!ctx) {
     throw new Error('JsonViewer node parts must be used inside <JsonViewerNode>');
   }
+
   return ctx;
 };
 
@@ -142,7 +223,8 @@ const JsonViewer = ({
     depth: defaultExpanded === true ? Infinity : defaultExpanded === false ? 0 : defaultExpanded,
     overrides: {},
   }));
-  const [focusedPath, setFocusedPath] = React.useState('$');
+  const [focusStore] = React.useState(() => createFocusStore('$'));
+  const setFocusedPath = focusStore.set;
   const treeRef = React.useRef<HTMLDivElement | null>(null);
 
   const controlled = expandedProp !== undefined;
@@ -152,6 +234,7 @@ const JsonViewer = ({
     (path: string, depth: number) => {
       if (expandedSet) return expandedSet.has(path);
       const override = internal.overrides[path];
+
       return override ?? depth < internal.depth;
     },
     [expandedSet, internal],
@@ -171,6 +254,7 @@ const JsonViewer = ({
         if (next) set.add(path);
         else set.delete(path);
         onExpandedChange?.(Array.from(set));
+
         return;
       }
       setInternal((s) => ({
@@ -178,12 +262,13 @@ const JsonViewer = ({
         overrides: { ...s.overrides, [path]: next },
       }));
     },
-    [controlled, expandedSet, isExpanded, onExpandedChange],
+    [controlled, expandedSet, isExpanded, onExpandedChange, setFocusedPath],
   );
 
   const expandAll = React.useCallback(() => {
     if (controlled) {
       onExpandedChange?.(collectPaths(value));
+
       return;
     }
     setInternal({ depth: Infinity, overrides: {} });
@@ -193,10 +278,11 @@ const JsonViewer = ({
     setFocusedPath('$');
     if (controlled) {
       onExpandedChange?.([]);
+
       return;
     }
     setInternal({ depth: 0, overrides: {} });
-  }, [controlled, onExpandedChange]);
+  }, [controlled, onExpandedChange, setFocusedPath]);
 
   const ctx = React.useMemo<JsonViewerCtx>(
     () => ({
@@ -206,31 +292,33 @@ const JsonViewer = ({
       toggle,
       expandAll,
       collapseAll,
-      focusedPath,
       setFocusedPath,
       treeRef,
     }),
-    [value, maxStringLength, isExpanded, toggle, expandAll, collapseAll, focusedPath],
+    [value, maxStringLength, isExpanded, toggle, expandAll, collapseAll, setFocusedPath],
   );
 
   return (
     <JsonViewerContext.Provider value={ctx}>
-      <div
-        data-slot="json-viewer"
-        className={cn(
-          'overflow-auto rounded-md border border-border bg-card p-3 font-mono text-xs leading-relaxed text-card-foreground',
-          className,
-        )}
-        {...props}
-      >
-        {children ?? <JsonViewerTree />}
-      </div>
+      <JsonViewerFocusContext.Provider value={focusStore}>
+        <div
+          data-slot="json-viewer"
+          className={cn(
+            'overflow-auto rounded-md border border-border bg-card p-3 font-mono text-xs leading-relaxed text-card-foreground',
+            className,
+          )}
+          {...props}
+        >
+          {children ?? <JsonViewerTree />}
+        </div>
+      </JsonViewerFocusContext.Provider>
     </JsonViewerContext.Provider>
   );
 };
 
 const JsonViewerTree = ({ className, ...props }: Omit<React.ComponentProps<'div'>, 'children'>) => {
   const { value, treeRef } = useJsonViewer();
+
   return (
     <div ref={treeRef} role="tree" data-slot="json-viewer-tree" className={cn('min-w-max', className)} {...props}>
       <JsonViewerNode value={value} path="$" depth={0} isLast />
@@ -247,7 +335,7 @@ export interface JsonViewerNodeProps extends Omit<React.ComponentProps<'div'>, '
   isLast?: boolean;
 }
 
-const JsonViewerNode = ({
+const JsonViewerNodeImpl = ({
   value,
   name,
   path = '$',
@@ -256,16 +344,23 @@ const JsonViewerNode = ({
   className,
   ...props
 }: JsonViewerNodeProps) => {
-  const { isExpanded, toggle, focusedPath, setFocusedPath, treeRef } = useJsonViewer();
+  const { isExpanded, toggle, setFocusedPath, treeRef } = useJsonViewer();
+  const focused = useIsFocusedPath(path);
+  const ancestry = React.useContext(JsonViewerAncestryContext);
   const kind = kindOf(value);
+  const circular = (kind === 'object' || kind === 'array') && isCircular(ancestry, value);
   // Compared inline rather than via isExpandable() so the compiler sees a primitive memo dependency.
-  const expandable = kind === 'object' || kind === 'array';
+  const expandable = !circular && (kind === 'object' || kind === 'array');
   const entries = expandable ? entriesOf(value, kind) : [];
   const expanded = expandable && isExpanded(path, depth);
   const open = kind === 'array' ? '[' : '{';
   const close = kind === 'array' ? ']' : '}';
 
   const nodeCtx = React.useMemo<JsonViewerNodeCtx>(() => ({ expandable, expanded }), [expandable, expanded]);
+  const childAncestry = React.useMemo<Ancestry | null>(
+    () => (expandable ? { value: value as object, parent: ancestry } : ancestry),
+    [expandable, value, ancestry],
+  );
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
     const row = e.currentTarget;
@@ -314,11 +409,15 @@ const JsonViewerNode = ({
         break;
       }
       case 'Enter':
-      case ' ':
-        if (!expandable) break;
+      case ' ': {
         e.preventDefault();
-        toggle(path, depth);
+        if (expandable) {
+          toggle(path, depth);
+          break;
+        }
+        row.querySelector<HTMLButtonElement>('[data-slot="json-viewer-more"]')?.click();
         break;
+      }
     }
   };
 
@@ -335,10 +434,10 @@ const JsonViewerNode = ({
         <div
           role="treeitem"
           data-slot="json-viewer-row"
-          tabIndex={focusedPath === path ? 0 : -1}
+          tabIndex={focused ? 0 : -1}
           aria-level={depth + 1}
           aria-expanded={expandable ? expanded : undefined}
-          aria-selected={focusedPath === path}
+          aria-selected={focused}
           onFocus={() => setFocusedPath(path)}
           onKeyDown={handleKeyDown}
           onClick={(e) => {
@@ -372,6 +471,13 @@ const JsonViewerNode = ({
                 {!isLast ? ',' : null}
               </span>
             )
+          ) : circular ? (
+            <>
+              <span data-slot="json-viewer-value" data-kind="circular" className="text-muted-foreground italic">
+                {CIRCULAR}
+              </span>
+              {!isLast ? <span className="text-muted-foreground">,</span> : null}
+            </>
           ) : (
             <>
               <JsonViewerValue value={value} />
@@ -382,16 +488,18 @@ const JsonViewerNode = ({
         {expandable && expanded ? (
           <>
             <div role="group" data-slot="json-viewer-children" className="ms-3 border-s border-border ps-2">
-              {entries.map(([key, child], i) => (
-                <JsonViewerNode
-                  key={key}
-                  name={key}
-                  value={child}
-                  path={childPath(path, key, kind)}
-                  depth={depth + 1}
-                  isLast={i === entries.length - 1}
-                />
-              ))}
+              <JsonViewerAncestryContext.Provider value={childAncestry}>
+                {entries.map(([key, child], i) => (
+                  <JsonViewerNode
+                    key={key}
+                    name={key}
+                    value={child}
+                    path={childPath(path, key, kind)}
+                    depth={depth + 1}
+                    isLast={i === entries.length - 1}
+                  />
+                ))}
+              </JsonViewerAncestryContext.Provider>
             </div>
             <div data-slot="json-viewer-close" className="ps-6 text-muted-foreground">
               {close}
@@ -404,8 +512,11 @@ const JsonViewerNode = ({
   );
 };
 
+const JsonViewerNode = React.memo(JsonViewerNodeImpl);
+
 const JsonViewerToggle = ({ className, ...props }: Omit<React.ComponentProps<'span'>, 'children'>) => {
   const { expandable, expanded } = useJsonViewerNode();
+
   return (
     <span
       data-slot="json-viewer-toggle"
@@ -500,6 +611,7 @@ const JsonViewerValue = ({ value, className, ...props }: JsonViewerValueProps) =
           <span className="text-muted-foreground">…</span>
           <button
             type="button"
+            data-slot="json-viewer-more"
             tabIndex={-1}
             onClick={(e) => {
               e.stopPropagation();
@@ -524,12 +636,15 @@ export interface JsonViewerCopyProps extends Omit<React.ComponentProps<typeof Co
 
 const JsonViewerCopy = ({ value, indent = 2, ...props }: JsonViewerCopyProps) => {
   const root = useJsonViewer();
-  const text = stringify(value === undefined ? root.value : value, indent);
-  return <CopyButton data-slot="json-viewer-copy" size="sm" value={text ?? ''} {...props} />;
+  const source = value === undefined ? root.value : value;
+  const getText = React.useCallback(() => stringify(source, indent) ?? '', [source, indent]);
+
+  return <CopyButton data-slot="json-viewer-copy" size="sm" value={getText} {...props} />;
 };
 
 const JsonViewerExpandAll = ({ className, children, ...props }: React.ComponentProps<typeof Button>) => {
   const { expandAll } = useJsonViewer();
+
   return (
     <Button
       type="button"
@@ -548,6 +663,7 @@ const JsonViewerExpandAll = ({ className, children, ...props }: React.ComponentP
 
 const JsonViewerCollapseAll = ({ className, children, ...props }: React.ComponentProps<typeof Button>) => {
   const { collapseAll } = useJsonViewer();
+
   return (
     <Button
       type="button"

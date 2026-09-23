@@ -28,6 +28,7 @@ const lazyFor = (key: string, load: () => Promise<{ default: React.ComponentType
     Component = React.lazy(() => load().catch(() => ({ default: () => null })));
     lazyCache.set(key, Component);
   }
+
   return Component;
 };
 
@@ -39,6 +40,7 @@ const Render = ({
   fallback: React.ReactNode;
 }) => {
   if (!Component) return null;
+
   return (
     <React.Suspense fallback={fallback}>
       <Component />
@@ -80,6 +82,7 @@ export const RegistryDemo = ({
 
   const primary = getExamples(name)[0];
   if (!primary) return null;
+
   return (
     <Render
       Component={lazyFor(`${base}:example:${primary.slug}`, () => loadExample(base, primary.slug))}

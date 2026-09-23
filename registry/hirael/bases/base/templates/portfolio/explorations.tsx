@@ -105,6 +105,7 @@ export const Explorations = () => {
       if (e.key === 'Escape') setActive(null);
     };
     window.addEventListener('keydown', onKey);
+
     return () => window.removeEventListener('keydown', onKey);
   }, [active]);
 
@@ -114,11 +115,11 @@ export const Explorations = () => {
         <div className="px-6 text-center">
           <div className="flex items-center justify-center gap-3">
             <span className="h-px w-8 bg-[hsl(var(--stroke))]" />
-            <span className="text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted))]">Explorations</span>
+            <span className="text-xs tracking-[0.3em] text-[hsl(var(--muted))] uppercase">Explorations</span>
             <span className="h-px w-8 bg-[hsl(var(--stroke))]" />
           </div>
-          <h2 className="mt-5 text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl">
-            Visual <span className="font-display italic font-normal">playground</span>
+          <h2 className="mt-5 text-4xl leading-[1.05] font-medium tracking-tight sm:text-5xl">
+            Visual <span className="font-display font-normal italic">playground</span>
           </h2>
           <p className="mx-auto mt-4 max-w-sm text-sm text-[hsl(var(--muted))]">
             Loose experiments, off-brief sketches and the studies that never shipped.

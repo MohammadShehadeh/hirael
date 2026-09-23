@@ -1,9 +1,11 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowDownToLine } from 'lucide-react';
+import { ArrowDownToLine, Pause, Play, ScrollText } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/base/ui/button';
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from '@/registry/hirael/bases/base/ui/empty';
 import { Toggle } from '@/registry/hirael/bases/base/ui/toggle';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
 
@@ -77,11 +79,11 @@ const LogLine = ({ level = 'info', time, source, className, children, ...props }
     <div
       data-slot="log-line"
       data-level={level}
-      className={cn('flex gap-2 whitespace-pre-wrap break-words px-1 py-0.5', 'hover:bg-muted/50', className)}
+      className={cn('flex gap-2 px-1 py-0.5 break-words whitespace-pre-wrap', 'hover:bg-muted/50', className)}
       {...props}
     >
       {time ? <span className="shrink-0 text-muted-foreground tabular-nums">{time}</span> : null}
-      <span className={cn('shrink-0 select-none font-medium', levelText[level])} aria-label={level}>
+      <span className={cn('shrink-0 font-medium select-none', levelText[level])} aria-label={level}>
         {levelLabel[level]}
       </span>
       {source ? <span className="shrink-0 text-muted-foreground/80">{source}</span> : null}
@@ -147,25 +149,29 @@ const FILTERS: { value: LogFilter; label: string; levels: LogLevel[] | null }[] 
 
 const matchesFilter = (entry: LogEntry, filter: LogFilter) => {
   const levels = FILTERS.find((option) => option.value === filter)?.levels;
+
   return !levels || levels.includes(entry.level);
 };
 
 const LogViewerBlock = () => {
   const [logs, setLogs] = React.useState<LogEntry[]>(() => INITIAL_LOGS.map((entry, id) => ({ ...entry, id })));
   const [filter, setFilter] = React.useState<LogFilter>('all');
+  const [streaming, setStreaming] = React.useState(true);
   const [follow, setFollow] = React.useState(true);
 
   React.useEffect(() => {
-    if (!follow) return;
+    if (!streaming) return;
     const timer = window.setInterval(() => {
       setLogs((current) => {
         const id = (current[current.length - 1]?.id ?? -1) + 1;
         const incoming = INCOMING_LOGS[id % INCOMING_LOGS.length];
+
         return [...current, { ...incoming, id, time: formatClock(START_SECONDS + id) }].slice(-MAX_LINES);
       });
     }, 1800);
+
     return () => window.clearInterval(timer);
-  }, [follow]);
+  }, [streaming]);
 
   const visible = logs.filter((entry) => matchesFilter(entry, filter));
   const activeLabel = FILTERS.find((option) => option.value === filter)?.label.toLowerCase();
@@ -186,23 +192,29 @@ const LogViewerBlock = () => {
             {FILTERS.map((option) => (
               <ToggleGroupItem key={option.value} value={option.value}>
                 {option.label}
-                <span className="tabular-nums text-muted-foreground">
+                <span className="text-muted-foreground tabular-nums">
                   {logs.filter((entry) => matchesFilter(entry, option.value)).length}
                 </span>
               </ToggleGroupItem>
             ))}
           </ToggleGroup>
-          <Toggle size="sm" variant="outline" pressed={follow} onPressedChange={setFollow}>
-            <ArrowDownToLine aria-hidden className="size-3.5" />
-            Follow
-            <span
-              aria-hidden
-              className={cn(
-                'size-1.5 rounded-full transition-colors',
-                follow ? 'animate-pulse bg-accent-cool motion-reduce:animate-none' : 'bg-muted-foreground/40',
-              )}
-            />
-          </Toggle>
+          <div className="flex items-center gap-2">
+            <Button type="button" size="sm" variant="outline" onClick={() => setStreaming((value) => !value)}>
+              {streaming ? <Pause aria-hidden /> : <Play aria-hidden />}
+              {streaming ? 'Pause' : 'Resume'}
+              <span
+                aria-hidden
+                className={cn(
+                  'size-1.5 rounded-full transition-colors',
+                  streaming ? 'animate-pulse bg-primary motion-reduce:animate-none' : 'bg-muted-foreground/40',
+                )}
+              />
+            </Button>
+            <Toggle size="sm" variant="outline" pressed={follow} onPressedChange={setFollow}>
+              <ArrowDownToLine aria-hidden />
+              Follow
+            </Toggle>
+          </div>
         </div>
         <LogViewer follow={follow} dir="ltr" className="h-72">
           {visible.length ? (
@@ -214,12 +226,19 @@ const LogViewerBlock = () => {
               ))}
             </div>
           ) : (
-            <p
-              key={`${filter}-empty`}
-              className={cn(SWAP, 'flex h-full items-center justify-center font-sans text-muted-foreground')}
-            >
-              No {activeLabel} lines yet.
-            </p>
+            <div key={`${filter}-empty`} className={cn(SWAP, 'flex h-full font-sans')}>
+              <Empty>
+                <EmptyHeader>
+                  <EmptyMedia variant="icon">
+                    <ScrollText />
+                  </EmptyMedia>
+                  <EmptyTitle>No {activeLabel} lines yet</EmptyTitle>
+                  <EmptyDescription>
+                    {streaming ? 'New lines show up here as they arrive.' : 'Resume the stream to pick up new lines.'}
+                  </EmptyDescription>
+                </EmptyHeader>
+              </Empty>
+            </div>
           )}
         </LogViewer>
       </div>

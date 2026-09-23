@@ -186,6 +186,7 @@ const getRSBlocks = (version: number, level: QRCodeLevel): RSBlock[] => {
       blocks.push({ total: row[i + 1], data: row[i + 2] });
     }
   }
+
   return blocks;
 };
 
@@ -213,6 +214,7 @@ const rsGeneratorPoly = (degree: number): number[] => {
     }
     poly = next;
   }
+
   return poly;
 };
 
@@ -227,12 +229,14 @@ const rsRemainder = (data: number[], degree: number): Uint8Array => {
       for (let i = 0; i < degree; i++) rem[i] ^= gfMul(gen[i + 1], factor);
     }
   }
+
   return rem;
 };
 
 const dataCapacityBytes = (version: number, level: QRCodeLevel): number => {
   let total = 0;
   for (const block of getRSBlocks(version, level)) total += block.data;
+
   return total;
 };
 
@@ -284,6 +288,7 @@ const buildCodewords = (bytes: Uint8Array, version: number, level: QRCodeLevel):
   for (let i = 0; i < maxEc; i++) {
     for (const block of blocks) if (i < block.ec.length) out.push(block.ec[i]);
   }
+
   return out;
 };
 
@@ -295,6 +300,7 @@ const alignmentPositions = (version: number): number[] => {
   for (let i = 0, pos = version * 4 + 10; i < count - 1; i++, pos -= step) {
     positions.splice(1, 0, pos);
   }
+
   return positions;
 };
 
@@ -352,6 +358,7 @@ const linePenalty = (line: boolean[]): number => {
       score += 40;
     }
   }
+
   return score;
 };
 
@@ -373,6 +380,7 @@ const penaltyScore = (modules: boolean[][]): number => {
   let dark = 0;
   for (const row of modules) for (const m of row) if (m) dark++;
   score += Math.floor(Math.abs((dark * 100) / (size * size) - 50) / 5) * 10;
+
   return score;
 };
 
@@ -507,13 +515,28 @@ export interface QRCodeProps extends Omit<React.ComponentProps<'svg'>, 'children
   size?: number;
   /** Quiet zone width, in modules. */
   margin?: number;
-  /** Accessible title announced by screen readers. */
+  /** Accessible title announced by screen readers. Defaults to "QR code for {value}". */
   title?: string;
+  /** Module color. Scanners expect dark modules on a light background. */
+  foreground?: string;
+  /** Fill behind the symbol and its quiet zone. Keep it lighter than `foreground`. */
+  background?: string;
   /** Called when the value fails to encode; an empty svg is still rendered. */
   onError?: (error: unknown) => void;
 }
 
-const QRCode = ({ value, level = 'M', size = 128, margin = 2, title, onError, className, ...props }: QRCodeProps) => {
+const QRCode = ({
+  value,
+  level = 'M',
+  size = 128,
+  margin = 2,
+  title,
+  foreground = '#000',
+  background = '#fff',
+  onError,
+  className,
+  ...props
+}: QRCodeProps) => {
   const { d, dim, error } = React.useMemo(() => {
     try {
       const matrix = encodeQR(value, level);
@@ -523,6 +546,7 @@ const QRCode = ({ value, level = 'M', size = 128, margin = 2, title, onError, cl
           if (matrix[y][x]) path += `M${x + margin} ${y + margin}h1v1h-1z`;
         }
       }
+
       return { d: path, dim: matrix.length + margin * 2, error: null };
     } catch (err) {
       return { d: '', dim: margin * 2, error: err };
@@ -547,11 +571,12 @@ const QRCode = ({ value, level = 'M', size = 128, margin = 2, title, onError, cl
       viewBox={`0 0 ${dim} ${dim}`}
       width={size}
       height={size}
-      className={cn('shrink-0 text-foreground', className)}
+      className={cn('shrink-0', className)}
       {...props}
     >
       <title>{title ?? `QR code for ${value}`}</title>
-      <path data-slot="qr-code-path" d={d} fill="currentColor" shapeRendering="crispEdges" />
+      <rect data-slot="qr-code-background" width={dim} height={dim} fill={background} />
+      <path data-slot="qr-code-path" d={d} fill={foreground} shapeRendering="crispEdges" />
     </svg>
   );
 };

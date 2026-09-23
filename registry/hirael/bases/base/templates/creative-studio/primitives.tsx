@@ -13,6 +13,7 @@ const noiseDataUri = (baseFrequency: number, numOctaves: number) => {
     `<filter id='n'><feTurbulence type='fractalNoise' baseFrequency='${baseFrequency}' numOctaves='${numOctaves}' stitchTiles='stitch'/>` +
     `<feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 0'/></filter>` +
     `<rect width='100%' height='100%' filter='url(#n)'/></svg>`;
+
   return `url("data:image/svg+xml;utf8,${encodeURIComponent(svg)}")`;
 };
 
@@ -58,6 +59,7 @@ interface CinematicBackgroundProps {
 
 export const CinematicBackground = ({ variant = 'hero', className }: CinematicBackgroundProps) => {
   const reduce = useReducedMotion();
+
   return (
     <div aria-hidden className={cn('absolute inset-0 overflow-hidden bg-black', className)}>
       <motion.div
@@ -95,6 +97,7 @@ interface WithAsteriskProps {
 const WithAsterisk = ({ word }: WithAsteriskProps) => {
   const chars = Array.from(word);
   const last = chars.pop() ?? '';
+
   return (
     <>
       {chars.join('')}
@@ -133,6 +136,7 @@ export const WordsPullUp = ({
     <span ref={ref} className={cn('inline-flex flex-wrap gap-x-[0.25em]', className)}>
       {words.map((word, i) => {
         const last = i === words.length - 1;
+
         return (
           <motion.span
             key={i}
@@ -215,6 +219,7 @@ const AnimatedLetter = ({ char, index, total, progress }: AnimatedLetterProps) =
   const reduce = useReducedMotion();
   const charProgress = index / total;
   const opacity = useTransform(progress, [charProgress - 0.1, charProgress + 0.05], [0.2, 1]);
+
   return (
     <motion.span aria-hidden className="inline-block whitespace-pre" style={reduce ? undefined : { opacity }}>
       {char}
@@ -242,6 +247,7 @@ export const ScrollRevealText = ({ text, className }: ScrollRevealTextProps) => 
     <p ref={ref} aria-label={text} className={className}>
       {words.map((word, wi) => {
         const start = starts[wi];
+
         return (
           <React.Fragment key={wi}>
             <span className="inline-block whitespace-nowrap">

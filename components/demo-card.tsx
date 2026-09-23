@@ -52,13 +52,13 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
             {compact && <NewBadge addedAt={addedAt} />}
           </h3>
           {!compact && (
-            <span className="shrink-0 text-xs uppercase text-muted-foreground">{CATEGORY_LABELS[entry.category]}</span>
+            <span className="shrink-0 text-xs text-muted-foreground uppercase">{CATEGORY_LABELS[entry.category]}</span>
           )}
         </div>
         {!compact && (
           <>
             <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
-            <span className="mt-1 inline-flex items-center gap-1 text-xs uppercase tracking-[0.12em] text-muted-foreground transition-colors group-hover/card:text-foreground">
+            <span className="mt-1 inline-flex items-center gap-1 text-xs tracking-[0.12em] text-muted-foreground uppercase transition-colors group-hover/card:text-foreground">
               View
               <ArrowRight className="size-3 transition-transform group-hover/card:translate-x-0.5 rtl:rotate-180" />
             </span>
@@ -69,12 +69,11 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
   );
 };
 
-const PREVIEW_FRAME = 'bg-dot-grid relative flex items-center justify-center overflow-hidden p-5';
-
 const hoverQuery = typeof window !== 'undefined' ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
 
 const subscribeHover = (onChange: () => void) => {
   hoverQuery?.addEventListener('change', onChange);
+
   return () => hoverQuery?.removeEventListener('change', onChange);
 };
 
@@ -106,14 +105,22 @@ const LazyDemo = ({ name, inert, compact }: LazyDemoProps) => {
       { rootMargin: '240px' },
     );
     observer.observe(el);
+
     return () => observer.disconnect();
   }, [isNear]);
 
   const base = useRegistryBase();
 
   return (
-    <div ref={ref} inert={inert} className={cn(PREVIEW_FRAME, compact ? 'aspect-video' : 'h-60')}>
-      <div className="mask-[linear-gradient(to_bottom,transparent,black_7%,black_93%,transparent)] relative z-10 flex max-h-full w-full items-center justify-center">
+    <div
+      ref={ref}
+      inert={inert}
+      className={cn(
+        'bg-dot-grid relative flex items-center justify-center overflow-hidden p-5',
+        compact ? 'aspect-video' : 'h-60',
+      )}
+    >
+      <div className="relative z-10 flex max-h-full w-full items-center justify-center mask-[linear-gradient(to_bottom,transparent,black_7%,black_93%,transparent)]">
         {isNear && <RegistryDemo name={name} base={base} fallback={<DemoSkeleton />} />}
       </div>
     </div>

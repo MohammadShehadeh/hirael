@@ -17,7 +17,7 @@ export const Features = () => {
         {...fadeUp()}
         className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between md:mb-12"
       >
-        <h2 className="font-display max-w-2xl text-3xl font-semibold leading-tight text-foreground sm:text-4xl md:text-5xl">
+        <h2 className="font-display max-w-2xl text-3xl leading-tight font-semibold text-foreground sm:text-4xl md:text-5xl">
           Architected for high-performance DeFi
         </h2>
         <PillButton label="Start Staking" variant="outline" className="shrink-0" />
@@ -28,12 +28,12 @@ export const Features = () => {
           {...fadeUp(0.05)}
           className={`${CARD_BASE} flex min-h-[28rem] flex-col justify-between md:row-span-2 md:p-9`}
         >
-          <Layers className="pointer-events-none absolute -bottom-10 -end-10 size-72 text-foreground opacity-[0.02] transition-transform duration-500 group-hover:scale-110" />
+          <Layers className="pointer-events-none absolute -end-10 -bottom-10 size-72 text-foreground opacity-[0.02] transition-transform duration-500 group-hover:scale-110" />
           <span className={`relative ${ICON_CHIP}`}>
             <Layers className="size-6" />
           </span>
           <div className="relative">
-            <h3 className="text-2xl font-semibold leading-snug text-foreground md:text-3xl">
+            <h3 className="text-2xl leading-snug font-semibold text-foreground md:text-3xl">
               Unlock the liquidity of your staked assets
             </h3>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
@@ -47,7 +47,7 @@ export const Features = () => {
           {...fadeUp(0.1)}
           className={`${CARD_BASE} flex min-h-[13rem] flex-col justify-between md:col-span-2 md:p-9`}
         >
-          <Activity className="pointer-events-none absolute -bottom-8 -end-6 size-60 text-foreground opacity-[0.02] transition-transform duration-500 group-hover:scale-110" />
+          <Activity className="pointer-events-none absolute -end-6 -bottom-8 size-60 text-foreground opacity-[0.02] transition-transform duration-500 group-hover:scale-110" />
           <span className={`relative ${ICON_CHIP}`}>
             <Activity className="size-6" />
           </span>

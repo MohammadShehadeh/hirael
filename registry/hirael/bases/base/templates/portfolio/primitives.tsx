@@ -146,12 +146,12 @@ export const SectionHeader = ({
     >
       <div className="flex items-center gap-3">
         <span className="h-px w-8 bg-[hsl(var(--stroke))]" />
-        <span className="text-xs uppercase tracking-[0.3em] text-[hsl(var(--muted))]">{eyebrow}</span>
+        <span className="text-xs tracking-[0.3em] text-[hsl(var(--muted))] uppercase">{eyebrow}</span>
       </div>
       <div className="mt-5 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div className="max-w-xl">
-          <h2 className="text-3xl font-medium leading-[1.05] tracking-tight sm:text-4xl lg:text-5xl">
-            {lead} <span className="font-display italic font-normal">{accent}</span>
+          <h2 className="text-3xl leading-[1.05] font-medium tracking-tight sm:text-4xl lg:text-5xl">
+            {lead} <span className="font-display font-normal italic">{accent}</span>
             {trailing}
           </h2>
           <p className="mt-4 max-w-md text-sm text-[hsl(var(--muted))] sm:text-base">{subtext}</p>

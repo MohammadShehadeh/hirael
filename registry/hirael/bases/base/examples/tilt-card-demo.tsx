@@ -11,7 +11,7 @@ const TiltCardDemo = () => {
       <TiltCard glare className="w-64">
         <div className="flex flex-col gap-6 p-5">
           <div className="flex items-center justify-between">
-            <span className="text-xs uppercase text-muted-foreground">{t({ en: 'Virtual', ar: 'افتراضية' })}</span>
+            <span className="text-xs text-muted-foreground uppercase">{t({ en: 'Virtual', ar: 'افتراضية' })}</span>
             <span className="size-6 rounded-full bg-foreground/10" />
           </div>
           <div className="font-mono text-lg tracking-[0.12em] text-foreground">•••• 8021</div>
@@ -21,7 +21,7 @@ const TiltCardDemo = () => {
           </div>
         </div>
       </TiltCard>
-      <p className="text-xs uppercase text-muted-foreground">
+      <p className="text-xs text-muted-foreground uppercase">
         {t({
           en: 'Point at the card to tilt',
           ar: 'وجّه المؤشر نحو البطاقة للإمالة',

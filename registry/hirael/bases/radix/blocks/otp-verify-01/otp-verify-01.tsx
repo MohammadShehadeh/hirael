@@ -17,9 +17,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60): React.CSSProperties => ({
-  animationDelay: `${index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 interface BrandMarkProps {
   className?: string;
@@ -46,6 +44,7 @@ const OtpVerify01 = () => {
     const id = window.setTimeout(() => {
       setSecondsLeft((s) => s - 1);
     }, 1000);
+
     return () => window.clearTimeout(id);
   }, [secondsLeft]);
 
@@ -53,6 +52,7 @@ const OtpVerify01 = () => {
     if (status === 'verifying') return;
     if (value.length < CODE_LENGTH) {
       setError('Enter all six digits to continue.');
+
       return;
     }
     setError(null);
@@ -79,7 +79,7 @@ const OtpVerify01 = () => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
       />
 
       <div className="mx-auto w-full max-w-md px-6">
@@ -100,7 +100,7 @@ const OtpVerify01 = () => {
               </div>
               <a
                 href="#"
-                className="mt-2 text-xs uppercase text-muted-foreground transition-colors hover:text-foreground"
+                className="mt-2 text-xs text-muted-foreground uppercase transition-colors hover:text-foreground"
               >
                 Continue to dashboard
               </a>
@@ -109,7 +109,7 @@ const OtpVerify01 = () => {
             <>
               <div
                 data-slot="otp-verify-header"
-                className="flex flex-col items-center gap-4 border-b border-border px-6 pb-6 pt-8 sm:px-8"
+                className="flex flex-col items-center gap-4 border-b border-border px-6 pt-8 pb-6 sm:px-8"
               >
                 <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
                 <div style={stagger(1)} className={cn(ENTER, 'flex flex-col items-center gap-1 text-center')}>
@@ -184,7 +184,7 @@ const OtpVerify01 = () => {
                     {secondsLeft > 0 ? (
                       <>
                         Resend code in{' '}
-                        <span dir="ltr" className="tabular-nums text-foreground">
+                        <span dir="ltr" className="text-foreground tabular-nums">
                           0:{String(secondsLeft).padStart(2, '0')}
                         </span>
                       </>
@@ -218,7 +218,7 @@ const OtpVerify01 = () => {
           )}
         </div>
 
-        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs uppercase text-muted-foreground')}>
+        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs text-muted-foreground uppercase')}>
           One-time codes are never shared with anyone
         </p>
       </div>

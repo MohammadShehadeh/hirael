@@ -35,14 +35,14 @@ export default function GlobalError() {
           <div aria-hidden className="ambient-halo" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 mask-[radial-gradient(ellipse_55%_45%_at_50%_0%,black,transparent_75%)]"
+            className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_55%_45%_at_50%_0%,black,transparent_75%)] opacity-40"
           />
 
           <div className="container flex flex-col items-center gap-6">
             <LogoMark className="relative size-8" />
 
             <div className="relative flex flex-col items-center gap-3">
-              <span className="text-xs uppercase text-muted-foreground">Something went wrong</span>
+              <span className="text-xs text-muted-foreground uppercase">Something went wrong</span>
               <h1 className="text-display text-3xl leading-[1.05] sm:text-4xl">This page failed to load.</h1>
               <p className="max-w-sm text-sm text-muted-foreground">
                 An unexpected error occurred. Try refreshing the page or come back in a moment.

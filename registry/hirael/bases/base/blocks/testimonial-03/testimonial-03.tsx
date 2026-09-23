@@ -5,9 +5,7 @@ import { cn } from '@/lib/utils';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 80, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 80}ms` });
 
 const Testimonial03 = () => {
   return (
@@ -17,7 +15,7 @@ const Testimonial03 = () => {
         <blockquote data-slot="testimonial-quote">
           <p
             data-slot="testimonial-heading"
-            className="space-y-1 font-serif text-4xl font-medium leading-[1.08] tracking-tight sm:text-5xl md:text-6xl"
+            className="space-y-1 font-serif text-4xl leading-[1.08] font-medium tracking-tight sm:text-5xl md:text-6xl"
           >
             <span
               data-slot="testimonial-line"
@@ -39,10 +37,7 @@ const Testimonial03 = () => {
             <span
               data-slot="testimonial-divider"
               style={stagger(1)}
-              className={cn(
-                ENTER,
-                'flex items-center justify-center gap-2 text-foreground sm:gap-3 md:justify-start dark:text-primary',
-              )}
+              className={cn(ENTER, 'flex items-center justify-center gap-2 text-foreground sm:gap-3 md:justify-start')}
             >
               <span
                 aria-hidden
@@ -70,7 +65,7 @@ const Testimonial03 = () => {
         <figcaption
           data-slot="testimonial-attribution"
           style={stagger(3)}
-          className={cn(ENTER, 'mt-8 flex items-center justify-center gap-2 text-xs uppercase text-muted-foreground')}
+          className={cn(ENTER, 'mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground uppercase')}
         >
           <span>Priya Anand</span>
           <span aria-hidden className="text-border">

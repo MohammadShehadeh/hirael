@@ -110,6 +110,7 @@ export const formatForCountry = (
 ): AddressFormat => {
   const patch = overrides[country.toUpperCase()];
   if (!patch) return DEFAULT_FORMAT;
+
   return {
     rows: patch.rows ?? DEFAULT_FORMAT.rows,
     labels: { ...DEFAULT_FORMAT.labels, ...patch.labels },
@@ -135,6 +136,7 @@ const useAddressInput = () => {
   if (!ctx) {
     throw new Error('AddressInput compound parts must be used inside <AddressInput>');
   }
+
   return ctx;
 };
 
@@ -226,6 +228,7 @@ export interface AddressInputCountryProps extends React.ComponentProps<'div'> {
 const AddressInputCountry = ({ label, priority, className, ...props }: AddressInputCountryProps) => {
   const ctx = useAddressInput();
   const id = ctx.fieldId('country');
+
   return (
     <Field data-slot="address-input-country" className={cn('gap-2', className)} {...props}>
       <FieldLabel htmlFor={id}>{label ?? ctx.countryLabel}</FieldLabel>
@@ -260,6 +263,7 @@ const AddressInputField = ({ field, label, fieldClassName, className, ...props }
   const ctx = useAddressInput();
   const id = ctx.fieldId(field);
   const isPostal = field === 'postalCode';
+
   return (
     <Field data-slot="address-input-field" data-field={field} className={cn('gap-2', fieldClassName)}>
       <FieldLabel htmlFor={id}>{label ?? ctx.labelFor(field)}</FieldLabel>
@@ -281,6 +285,7 @@ const AddressInputField = ({ field, label, fieldClassName, className, ...props }
 
 const AddressInputFields = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useAddressInput();
+
   return (
     <div data-slot="address-input-fields" className={cn('flex flex-col gap-4', className)} {...props}>
       {ctx.format.rows.map((row) => (

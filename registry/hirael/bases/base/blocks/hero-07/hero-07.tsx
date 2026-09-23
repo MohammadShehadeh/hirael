@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 
@@ -15,16 +14,17 @@ const Headline = () => {
   return (
     <h1
       data-slot="hero-headline"
-      className="max-w-3xl font-serif text-[42px] font-medium leading-[1.04] tracking-tight text-foreground sm:text-5xl md:text-7xl"
+      className="max-w-3xl font-serif text-[42px] leading-[1.04] font-medium tracking-tight text-foreground sm:text-5xl md:text-7xl"
     >
       {words.map((word, i) => {
         const accent = i >= words.length - 2;
+
         return (
           <span
             key={`${word}-${i}`}
             className={cn(
-              'inline-block animate-in fade-in slide-in-from-bottom-4 blur-in-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
-              accent && 'italic text-foreground',
+              'inline-block animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both blur-in-4 fade-in slide-in-from-bottom-4 motion-reduce:animate-none',
+              accent && 'text-foreground italic',
             )}
             style={{ animationDelay: `${40 + i * 35}ms` }}
           >
@@ -170,30 +170,30 @@ const Hero07 = () => {
       <div
         aria-hidden
         data-slot="hero-backdrop"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_26%,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_60%),radial-gradient(80%_70%_at_6%_96%,color-mix(in_oklch,var(--accent-cool)_24%,transparent),transparent_64%),radial-gradient(80%_70%_at_94%_92%,color-mix(in_oklch,var(--warm)_20%,transparent),transparent_64%)] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_26%,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_60%),radial-gradient(80%_70%_at_6%_96%,color-mix(in_oklch,var(--primary)_24%,transparent),transparent_64%),radial-gradient(80%_70%_at_94%_92%,color-mix(in_oklch,var(--primary)_20%,transparent),transparent_64%)] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
       />
 
       <Beam
         reduce={reduce}
-        className="pointer-events-none absolute -top-8 start-1/2 -translate-x-1/2 scale-[0.6] rtl:translate-x-1/2 sm:top-0 sm:scale-90"
+        className="pointer-events-none absolute start-1/2 -top-8 -translate-x-1/2 scale-[0.6] sm:top-0 sm:scale-90 rtl:translate-x-1/2"
       />
       <Beam
         reduce={reduce}
-        className="pointer-events-none absolute -bottom-8 start-1/2 -translate-x-1/2 -scale-[0.6] rtl:translate-x-1/2 sm:bottom-0 sm:-scale-90"
+        className="pointer-events-none absolute start-1/2 -bottom-8 -translate-x-1/2 -scale-[0.6] sm:bottom-0 sm:-scale-90 rtl:translate-x-1/2"
       />
       <SideBeam
         reduce={reduce}
-        className="pointer-events-none absolute top-1/2 start-0 hidden -translate-y-1/2 scale-90 rtl:-scale-x-90 md:block"
+        className="pointer-events-none absolute start-0 top-1/2 hidden -translate-y-1/2 scale-90 md:block rtl:-scale-x-90"
       />
       <SideBeam
         reduce={reduce}
-        className="pointer-events-none absolute top-1/2 end-0 hidden -translate-y-1/2 -scale-x-90 rtl:scale-90 md:block"
+        className="pointer-events-none absolute end-0 top-1/2 hidden -translate-y-1/2 -scale-x-90 md:block rtl:scale-90"
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center gap-5 animate-in fade-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+      <div className="relative z-10 mx-auto flex w-full max-w-3xl animate-in flex-col items-center gap-5 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in motion-reduce:animate-none">
         <span
           data-slot="hero-badge"
-          className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm"
+          className="inline-flex w-fit items-center gap-2 rounded-full border border-border bg-card/70 px-4 py-1.5 text-xs text-muted-foreground uppercase backdrop-blur-sm"
         >
           Now in beta
         </span>
@@ -202,7 +202,7 @@ const Hero07 = () => {
 
         <p
           data-slot="hero-subhead"
-          className="mt-2 max-w-xl text-muted-foreground animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both delay-330 motion-reduce:animate-none sm:mt-4"
+          className="mt-2 max-w-xl animate-in text-muted-foreground delay-330 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none sm:mt-4"
         >
           One source of truth for your interface. Design it, theme it, and reuse it across every project without
           rewriting the same components.
@@ -210,7 +210,7 @@ const Hero07 = () => {
 
         <div
           data-slot="hero-actions"
-          className="mt-4 flex flex-col gap-3 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both delay-390 motion-reduce:animate-none sm:flex-row"
+          className="mt-4 flex animate-in flex-col gap-3 delay-390 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none sm:flex-row"
         >
           <Button render={<a href="#" />} nativeButton={false} size="lg" className="group">
             <span>Get started</span>

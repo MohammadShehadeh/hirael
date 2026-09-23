@@ -191,6 +191,7 @@ const usdCents = new Intl.NumberFormat('en-US', {
 
 const signedUsd = (amount: number) => {
   const sign = amount > 0 ? '+' : amount < 0 ? '−' : '';
+
   return `${sign}${usdCents.format(Math.abs(amount))}`;
 };
 
@@ -205,6 +206,7 @@ const Donut = ({ plans }: DonutProps) => {
       {plans.map((p, i) => {
         // 25 rotates the first slice to 12 o'clock.
         const offset = 25 - plans.slice(0, i).reduce((sum, prev) => sum + prev.share, 0);
+
         return (
           <circle
             key={p.plan}
@@ -231,6 +233,7 @@ const Dashboard03 = () => {
   React.useEffect(() => {
     if (!exported) return;
     const timeout = setTimeout(() => setExported(false), 2000);
+
     return () => clearTimeout(timeout);
   }, [exported]);
 
@@ -241,13 +244,13 @@ const Dashboard03 = () => {
 
   return (
     <section data-slot="dashboard" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="dashboard-header"
           className={cn(ENTER, 'flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between')}
         >
           <div className="flex max-w-xl flex-col gap-3">
-            <span className="text-xs uppercase text-muted-foreground">Revenue</span>
+            <span className="text-xs text-muted-foreground uppercase">Revenue</span>
             <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Where the money lands.</h2>
           </div>
           <div className="flex items-center gap-2">
@@ -281,7 +284,7 @@ const Dashboard03 = () => {
               aria-label={exported ? `Exported ${month.label}` : `Export ${month.label}`}
             >
               {exported ? (
-                <Check className="size-3.5 animate-in zoom-in-50 duration-250 motion-reduce:animate-none" aria-hidden />
+                <Check className="size-3.5 animate-in duration-250 zoom-in-50 motion-reduce:animate-none" aria-hidden />
               ) : (
                 <Download className="size-3.5" aria-hidden />
               )}
@@ -290,7 +293,7 @@ const Dashboard03 = () => {
           </div>
         </div>
 
-        <div className={cn(ENTER, 'delay-80 mt-10 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}>
+        <div className={cn(ENTER, 'mt-10 grid grid-cols-1 gap-6 delay-80 lg:grid-cols-3 lg:items-start')}>
           <div className="flex flex-col gap-6">
             <Card data-slot="dashboard-plan-mix">
               <CardHeader>
@@ -327,7 +330,7 @@ const Dashboard03 = () => {
                     <li key={p.plan} className="flex items-center gap-2.5">
                       <span aria-hidden className={cn('size-2 rounded-xs', PLAN_TONE[p.plan].swatch)} />
                       <span className="text-xs text-foreground">{p.plan}</span>
-                      <span className="ms-auto text-xs tabular-nums text-muted-foreground">{p.share}%</span>
+                      <span className="ms-auto text-xs text-muted-foreground tabular-nums">{p.share}%</span>
                       <span className="w-16 text-end text-xs tabular-nums">{usd.format(p.mrr)}</span>
                     </li>
                   ))}
@@ -349,7 +352,7 @@ const Dashboard03 = () => {
                     <div className="flex items-center gap-2.5">
                       <span aria-hidden className={cn('size-1.5 rounded-full', INVOICE_TONE[inv.state])} />
                       <span className="text-xs text-foreground">{inv.state}</span>
-                      <span className="ms-auto text-xs tabular-nums text-muted-foreground">{inv.count}</span>
+                      <span className="ms-auto text-xs text-muted-foreground tabular-nums">{inv.count}</span>
                       <span className="w-20 text-end text-xs tabular-nums">{usd.format(inv.amount)}</span>
                     </div>
                   </React.Fragment>
@@ -375,7 +378,7 @@ const Dashboard03 = () => {
             <CardContent>
               <div
                 aria-hidden
-                className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border pb-2 text-xs uppercase text-muted-foreground sm:grid"
+                className="hidden grid-cols-[1fr_110px_70px_110px] gap-3 border-b border-border pb-2 text-xs text-muted-foreground uppercase sm:grid"
               >
                 <span>Customer</span>
                 <span>Status</span>
@@ -385,6 +388,7 @@ const Dashboard03 = () => {
               <ul key={page} className={cn(SWAP, 'flex flex-col')}>
                 {pageRows.map((t, i) => {
                   const status = TXN_STATUS[t.status];
+
                   return (
                     <li
                       key={t.email}
@@ -409,7 +413,7 @@ const Dashboard03 = () => {
                         <span aria-hidden className={cn('size-1.5 rounded-full', status.dot)} />
                         {status.label}
                       </Badge>
-                      <span className="hidden text-xs tabular-nums text-muted-foreground sm:inline">{t.date}</span>
+                      <span className="hidden text-xs text-muted-foreground tabular-nums sm:inline">{t.date}</span>
                       <span dir="ltr" className={cn('text-end text-sm tabular-nums', status.amount)}>
                         <span className="sr-only">{status.label}, </span>
                         {signedUsd(t.amount)}
@@ -420,7 +424,7 @@ const Dashboard03 = () => {
               </ul>
               <Separator />
               <div className="flex items-center justify-between px-6 pt-4">
-                <span dir="ltr" aria-live="polite" className="text-xs uppercase tabular-nums text-muted-foreground">
+                <span dir="ltr" aria-live="polite" className="text-xs text-muted-foreground uppercase tabular-nums">
                   {pageStart + 1}–{pageStart + pageRows.length} of {TRANSACTIONS.length}
                 </span>
                 <div className="flex items-center gap-1">

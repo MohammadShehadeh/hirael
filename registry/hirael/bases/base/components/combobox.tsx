@@ -30,8 +30,17 @@ const ComboboxInput = ({
   inputClassName,
   children,
   showClear = false,
+  triggerLabel = 'Show options',
+  clearLabel = 'Clear',
   ...props
-}: WithClassName<ComboboxPrimitive.Input.Props> & { showClear?: boolean; inputClassName?: string }) => {
+}: WithClassName<ComboboxPrimitive.Input.Props> & {
+  showClear?: boolean;
+  inputClassName?: string;
+  /** Accessible name for the open/close button. */
+  triggerLabel?: string;
+  /** Accessible name for the clear button when `showClear` is set. */
+  clearLabel?: string;
+}) => {
   return (
     <InputGroup
       className={cn(
@@ -49,10 +58,10 @@ const ComboboxInput = ({
         {...props}
       />
       <InputGroupAddon align="inline-end">
-        {showClear && <ComboboxClear />}
+        {showClear && <ComboboxClear aria-label={clearLabel} />}
         <ComboboxPrimitive.Trigger
           data-slot="combobox-trigger"
-          aria-label="Toggle"
+          aria-label={triggerLabel}
           className="flex size-6 shrink-0 items-center justify-center rounded-[calc(var(--radius)-5px)] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
         >
           <ChevronsUpDownIcon className="size-3.5" />
@@ -98,7 +107,12 @@ const ComboboxChips = ({
   );
 };
 
-const ComboboxChip = ({ className, children, ...props }: WithClassName<ComboboxPrimitive.Chip.Props>) => {
+const ComboboxChip = ({
+  className,
+  children,
+  removeLabel = 'Remove',
+  ...props
+}: WithClassName<ComboboxPrimitive.Chip.Props> & { removeLabel?: string }) => {
   return (
     <ComboboxPrimitive.Chip
       data-slot="combobox-chip"
@@ -111,7 +125,7 @@ const ComboboxChip = ({ className, children, ...props }: WithClassName<ComboboxP
       {children}
       <ComboboxPrimitive.ChipRemove
         data-slot="combobox-chip-remove"
-        aria-label="Remove"
+        aria-label={removeLabel}
         className="flex size-3.5 items-center justify-center rounded-[3px] text-muted-foreground hover:bg-foreground/10 hover:text-foreground"
       >
         <XIcon className="size-3" />
@@ -160,7 +174,7 @@ const ComboboxContent = ({
           data-slot="combobox-content"
           className={cn(
             'max-h-[min(var(--available-height),20rem)] w-[var(--anchor-width)] min-w-[12rem] origin-[var(--transform-origin)] overflow-x-hidden overflow-y-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md outline-hidden',
-            'data-[starting-style]:animate-in data-[starting-style]:fade-in-0 data-[starting-style]:zoom-in-95 data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[ending-style]:zoom-out-95',
+            'data-[ending-style]:animate-out data-[ending-style]:fade-out-0 data-[ending-style]:zoom-out-95 data-[starting-style]:animate-in data-[starting-style]:fade-in-0 data-[starting-style]:zoom-in-95',
             className,
           )}
           {...props}

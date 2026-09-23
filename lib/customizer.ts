@@ -16,7 +16,6 @@ export const BASES = REGISTRY_BASES.map((name) => ({
   name,
   title: BASE_LABELS[name],
 }));
-export type BaseName = RegistryBase;
 
 export const ICON_LIBRARIES = [
   { name: 'lucide', title: 'Lucide', pkg: 'lucide-react' },
@@ -37,7 +36,7 @@ export const RADII = [
 export type RadiusName = (typeof RADII)[number]['name'];
 
 export interface CustomizerConfig {
-  base: BaseName;
+  base: RegistryBase;
   iconLibrary: IconLibraryName;
   previewOnly: boolean;
   baseColor: BaseColorName;
@@ -66,6 +65,7 @@ export const normalizeConfig = (raw: Partial<CustomizerConfig> | null | undefine
   const themeNames = getThemesForBaseColor(baseColor).map((t) => t.name);
   const theme = pick(raw?.theme, themeNames, baseColor);
   const chartColor = pick(raw?.chartColor, themeNames, theme);
+
   return {
     base: pick(
       raw?.base,
@@ -150,6 +150,7 @@ const rule = (selector: string, body: string) => (body ? `${selector}{${body}}` 
 export const buildCustomizerCss = (tokens: ResolvedTokens, isScoped: boolean): string => {
   const scope = isScoped ? ` ${SCOPE_SELECTOR}` : '';
   const font = tokens.fontFamily ? `--font-sans-active:${tokens.fontFamily};` : '';
+
   return [
     rule(`.light${scope}`, declarations(tokens.light)),
     rule(`.dark${scope}`, declarations(tokens.dark)),
@@ -163,8 +164,10 @@ export const formatThemeCss = (tokens: ResolvedTokens): string => {
   const block = (selector: string, vars: ThemeTokens) => {
     const keys = Object.keys(vars);
     if (!keys.length) return '';
+
     return `${selector} {\n${keys.map((k) => `  --${k}: ${vars[k]};`).join('\n')}\n}`;
   };
+
   return [block(':root', tokens.light), block('.dark', tokens.dark)].filter(Boolean).join('\n\n');
 };
 

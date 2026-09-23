@@ -3,7 +3,7 @@
 import * as React from 'react';
 import {
   AnimatePresence,
-  HTMLMotionProps,
+  type HTMLMotionProps,
   type MotionValue,
   motion,
   useMotionValue,
@@ -27,6 +27,7 @@ const DockContext = React.createContext<DockContextValue | null>(null);
 const useDock = () => {
   const ctx = React.useContext(DockContext);
   if (!ctx) throw new Error('Dock parts must be used within <Dock>');
+
   return ctx;
 };
 
@@ -34,11 +35,16 @@ interface DockItemContextValue {
   hovered: boolean;
 }
 
-const DockItemContext = React.createContext<DockItemContextValue>({
-  hovered: false,
-});
+const DockItemContext = React.createContext<DockItemContextValue | null>(null);
 
-interface DockProps extends React.ComponentProps<'div'> {
+const useDockItem = () => {
+  const ctx = React.useContext(DockItemContext);
+  if (!ctx) throw new Error('DockLabel must be used within <DockItem>');
+
+  return ctx;
+};
+
+export interface DockProps extends React.ComponentProps<'div'> {
   /** Resting icon size, in px. */
   baseSize?: number;
   /** Peak icon size at the cursor, in px. */
@@ -54,6 +60,8 @@ const Dock = ({
   className,
   children,
   onKeyDown,
+  onPointerMove,
+  onPointerLeave,
   ...props
 }: DockProps) => {
   const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
@@ -61,15 +69,20 @@ const Dock = ({
     () => ({ mouseX, baseSize, magnification, distance }),
     [mouseX, baseSize, magnification, distance],
   );
+
   return (
     <DockContext.Provider value={value}>
       <div
         role="toolbar"
         data-slot="dock"
         onPointerMove={(event) => {
-          if (event.pointerType === 'mouse') mouseX.set(event.clientX);
+          onPointerMove?.(event);
+          if (!event.defaultPrevented && event.pointerType === 'mouse') mouseX.set(event.clientX);
         }}
-        onPointerLeave={() => mouseX.set(Number.POSITIVE_INFINITY)}
+        onPointerLeave={(event) => {
+          onPointerLeave?.(event);
+          mouseX.set(Number.POSITIVE_INFINITY);
+        }}
         onKeyDown={(event) => {
           onKeyDown?.(event);
           if (event.defaultPrevented) return;
@@ -86,7 +99,7 @@ const Dock = ({
           items[(index + delta + items.length) % items.length]?.focus();
         }}
         className={cn(
-          'mx-auto flex items-end gap-3 rounded-2xl border border-border bg-popover/90 px-3 pb-3 pt-3 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-popover/70',
+          'mx-auto flex items-end gap-3 rounded-2xl border border-border bg-popover/90 px-3 pt-3 pb-3 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-popover/70',
           className,
         )}
         {...props}
@@ -97,9 +110,18 @@ const Dock = ({
   );
 };
 
-type DockItemProps = HTMLMotionProps<'button'>;
+export type DockItemProps = HTMLMotionProps<'button'>;
 
-const DockItem = ({ className, children, ref: consumerRef, ...props }: DockItemProps) => {
+const DockItem = ({
+  className,
+  children,
+  ref: consumerRef,
+  onHoverStart,
+  onHoverEnd,
+  onFocus,
+  onBlur,
+  ...props
+}: DockItemProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
   const composedRef = React.useMemo(() => composeRefs(ref, consumerRef), [consumerRef]);
   const { mouseX, baseSize, magnification, distance } = useDock();
@@ -109,6 +131,7 @@ const DockItem = ({ className, children, ref: consumerRef, ...props }: DockItemP
   const distanceFromMouse = useTransform(mouseX, (x) => {
     const bounds = ref.current?.getBoundingClientRect();
     const center = bounds ? bounds.x + bounds.width / 2 : 0;
+
     return x - center;
   });
   const widthTarget = useTransform(distanceFromMouse, [-distance, 0, distance], [baseSize, magnification, baseSize]);
@@ -128,12 +151,24 @@ const DockItem = ({ className, children, ref: consumerRef, ...props }: DockItemP
         type="button"
         data-slot="dock-item"
         style={reducedMotion ? { width: baseSize, height: baseSize } : { width, height: width }}
-        onHoverStart={() => setHovered(true)}
-        onHoverEnd={() => setHovered(false)}
-        onFocus={() => setHovered(true)}
-        onBlur={() => setHovered(false)}
+        onHoverStart={(event, info) => {
+          onHoverStart?.(event, info);
+          setHovered(true);
+        }}
+        onHoverEnd={(event, info) => {
+          onHoverEnd?.(event, info);
+          setHovered(false);
+        }}
+        onFocus={(event) => {
+          onFocus?.(event);
+          setHovered(true);
+        }}
+        onBlur={(event) => {
+          onBlur?.(event);
+          setHovered(false);
+        }}
         className={cn(
-          'relative flex shrink-0 items-center justify-center rounded-xl border border-border bg-card text-foreground shadow-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring [&_svg]:size-1/2',
+          'relative flex shrink-0 items-center justify-center rounded-xl border border-border bg-card text-foreground shadow-sm transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&_svg]:size-1/2',
           className,
         )}
       >
@@ -143,29 +178,39 @@ const DockItem = ({ className, children, ref: consumerRef, ...props }: DockItemP
   );
 };
 
-type DockLabelProps = HTMLMotionProps<'div'>;
+export interface DockLabelProps extends Omit<HTMLMotionProps<'div'>, 'children'> {
+  children?: React.ReactNode;
+}
 
 const DockLabel = ({ className, children, ...props }: DockLabelProps) => {
-  const { hovered } = React.useContext(DockItemContext);
+  const { hovered } = useDockItem();
+
   return (
-    <AnimatePresence>
-      {hovered ? (
-        <motion.div
-          {...props}
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 4 }}
-          transition={{ duration: 0.15 }}
-          data-slot="dock-label"
-          className={cn(
-            'pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md border border-border bg-popover px-2 py-1 text-xs text-popover-foreground shadow-md',
-            className,
-          )}
-        >
-          {children}
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+    <>
+      {/* Always in the accessibility tree, so an icon-only item keeps its name while the tooltip is hidden. */}
+      <span data-slot="dock-label-text" className="sr-only">
+        {children}
+      </span>
+      <AnimatePresence>
+        {hovered ? (
+          <motion.div
+            {...props}
+            aria-hidden
+            initial={{ opacity: 0, y: 4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 4 }}
+            transition={{ duration: 0.15 }}
+            data-slot="dock-label"
+            className={cn(
+              'pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 rounded-md border border-border bg-popover px-2 py-1 text-xs whitespace-nowrap text-popover-foreground shadow-md',
+              className,
+            )}
+          >
+            {children}
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </>
   );
 };
 

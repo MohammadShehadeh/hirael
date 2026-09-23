@@ -4,6 +4,7 @@ import * as React from 'react';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's';
 
@@ -29,6 +30,7 @@ const splitDuration = (total: number, units: DurationUnit[]): Record<DurationUni
     parts[unit] = Math.floor(rest / UNIT_SECONDS[unit]);
     rest -= parts[unit] * UNIT_SECONDS[unit];
   }
+
   return parts;
 };
 
@@ -63,6 +65,7 @@ const useDurationInput = () => {
   if (!ctx) {
     throw new Error('DurationInput compound parts must be used inside <DurationInput>');
   }
+
   return ctx;
 };
 
@@ -116,6 +119,7 @@ const DurationInput = ({
     (unit: DurationUnit) => {
       const index = units.indexOf(unit);
       if (index > 0) return UNIT_SECONDS[units[index - 1]] / UNIT_SECONDS[unit] - 1;
+
       return max === undefined ? Infinity : Math.floor(max / UNIT_SECONDS[unit]);
     },
     [units, max],
@@ -124,6 +128,7 @@ const DurationInput = ({
   const widthFor = React.useCallback(
     (unit: DurationUnit) => {
       const limit = maxFor(unit);
+
       return Number.isFinite(limit) ? Math.max(2, String(limit).length) : 3;
     },
     [maxFor],
@@ -191,6 +196,7 @@ const DurationInput = ({
 
 const DurationInputContainer = ({ className, children, onMouseDown, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useDurationInput();
+
   return (
     <div
       data-slot="duration-input-container"
@@ -206,7 +212,7 @@ const DurationInputContainer = ({ className, children, onMouseDown, ...props }: 
         first?.focus();
       }}
       className={cn(
-        'flex h-9 w-full items-center gap-0.5 rounded-sm border border-input bg-transparent px-2 text-sm outline-none transition-colors',
+        'flex h-9 w-full items-center gap-0.5 rounded-sm border border-input bg-transparent px-2 text-sm transition-colors outline-none',
         'focus-within:border-ring',
         (ctx.disabled || ctx.readOnly) && 'cursor-not-allowed opacity-60',
         className,
@@ -234,9 +240,15 @@ const DurationInputSegment = ({
   onKeyDown,
   onFocus,
   onBlur,
+  ref,
   ...props
 }: DurationInputSegmentProps) => {
   const ctx = useDurationInput();
+  const { registerSegment } = ctx;
+  const composedRef = React.useMemo(
+    () => composeRefs<HTMLInputElement>((el) => registerSegment(unit, el), ref),
+    [registerSegment, unit, ref],
+  );
   if (!ctx.units.includes(unit)) return null;
 
   const width = ctx.widthFor(unit);
@@ -299,7 +311,7 @@ const DurationInputSegment = ({
   return (
     <span data-slot="duration-input-part" className="inline-flex items-baseline">
       <input
-        ref={(el) => ctx.registerSegment(unit, el)}
+        ref={composedRef}
         type="text"
         inputMode="numeric"
         autoComplete="off"
@@ -344,6 +356,7 @@ const DurationInputSegment = ({
 
 const DurationInputSegments = ({ className, ...props }: React.ComponentProps<'span'>) => {
   const ctx = useDurationInput();
+
   return (
     <span
       data-slot="duration-input-segments"
@@ -360,6 +373,7 @@ const DurationInputSegments = ({ className, ...props }: React.ComponentProps<'sp
 const DurationInputClear = ({ className, children, onClick, ...props }: React.ComponentProps<'button'>) => {
   const ctx = useDurationInput();
   if (ctx.seconds === null || ctx.disabled || ctx.readOnly) return null;
+
   return (
     <button
       type="button"

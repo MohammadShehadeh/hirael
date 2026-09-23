@@ -92,16 +92,16 @@ const Pricing03 = () => {
   return (
     <section data-slot="pricing" className="relative overflow-hidden bg-background py-20 text-foreground sm:py-28">
       <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute -top-24 start-1/2 h-72 w-3/5 -translate-x-1/2 rounded-full bg-foreground/[0.06] blur-3xl rtl:translate-x-1/2" />
-        <div className="absolute -bottom-24 end-[-8%] h-72 w-2/5 rounded-full bg-primary/10 blur-3xl" />
+        <div className="absolute start-1/2 -top-24 h-72 w-3/5 -translate-x-1/2 rounded-full bg-foreground/[0.06] blur-3xl rtl:translate-x-1/2" />
+        <div className="absolute end-[-8%] -bottom-24 h-72 w-2/5 rounded-full bg-primary/10 blur-3xl" />
       </div>
 
-      <div className="container relative flex flex-col items-center gap-8">
+      <div className="relative mx-auto flex max-w-[1480px] flex-col items-center gap-8 px-4">
         <div data-slot="pricing-header" className="flex max-w-2xl flex-col items-center gap-4 text-center">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Pricing</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Pricing</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             Pick the plan that fits your pace.
           </h2>
@@ -149,7 +149,7 @@ const Pricing03 = () => {
                 className={cn(ENTER, 'relative h-full text-start')}
               >
                 {plan.popular && (
-                  <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 text-xs uppercase text-foreground">
+                  <span className="absolute end-6 -top-2.5 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 text-xs text-foreground uppercase">
                     Most popular
                   </span>
                 )}

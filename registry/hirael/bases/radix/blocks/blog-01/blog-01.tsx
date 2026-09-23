@@ -137,7 +137,7 @@ const PostCover = ({ cover, alt, category, featured }: PostCoverProps) => {
     <div className="relative size-full overflow-hidden bg-card">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[24px_24px] opacity-40 [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[24px_24px] opacity-40"
       />
       <div
         aria-hidden
@@ -160,6 +160,7 @@ interface PostCardProps {
 
 const PostCard = ({ post, style }: PostCardProps) => {
   const titleId = `blog-01-post-${post.title.replace(/[^a-z0-9]+/gi, '-').slice(0, 24)}`;
+
   return (
     <div data-slot="blog-post" style={style} className={cn(SWAP, CARD_SURFACE, 'group relative overflow-hidden')}>
       <article aria-labelledby={titleId} className="flex h-full flex-col">
@@ -171,7 +172,7 @@ const PostCard = ({ post, style }: PostCardProps) => {
         <CardHeader className="mt-5">
           <div className="flex items-center justify-between">
             {!post.cover ? <Badge variant="outline">{post.category}</Badge> : <span aria-hidden />}
-            <span className="inline-flex items-center gap-1 text-xs uppercase text-muted-foreground">
+            <span className="inline-flex items-center gap-1 text-xs text-muted-foreground uppercase">
               <Clock aria-hidden className="size-2.5" />
               {post.readMin} min
             </span>
@@ -197,7 +198,7 @@ const PostCard = ({ post, style }: PostCardProps) => {
               </span>
               <span className="truncate text-xs text-foreground">{post.author.name}</span>
             </div>
-            <span className="shrink-0 text-xs uppercase text-muted-foreground">{post.date}</span>
+            <span className="shrink-0 text-xs text-muted-foreground uppercase">{post.date}</span>
           </div>
         </CardFooter>
       </article>
@@ -214,16 +215,16 @@ const Blog01 = () => {
 
   return (
     <section data-slot="blog" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="blog-header"
           className="flex flex-col gap-5 border-b border-border pb-10 sm:flex-row sm:items-end sm:justify-between"
         >
           <div className="flex max-w-xl flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Journal</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Journal</span>
             <h2
               style={stagger(1)}
-              className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+              className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
             >
               Writing from the workshop.
             </h2>
@@ -281,7 +282,7 @@ const Blog01 = () => {
               </a>
 
               <div className="flex flex-col gap-4 p-6 lg:col-span-5 lg:p-8">
-                <span className="flex items-center gap-2 text-xs uppercase text-muted-foreground">
+                <span className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
                   <span>{FEATURED.date}</span>
                   <span aria-hidden className="text-border">
                     |
@@ -290,7 +291,7 @@ const Blog01 = () => {
                 </span>
                 <h3
                   id="blog-01-featured-title"
-                  className="text-2xl font-semibold leading-[1.15] tracking-[-0.025em] text-pretty sm:text-3xl"
+                  className="text-2xl leading-[1.15] font-semibold tracking-[-0.025em] text-pretty sm:text-3xl"
                 >
                   <a href={FEATURED.href} className="after:absolute after:inset-0 focus-visible:outline-none">
                     {FEATURED.title}

@@ -8,9 +8,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -36,7 +34,12 @@ const Hero10 = () => {
         height={1080}
         quality={75}
         priority
-        className="absolute inset-0 h-full w-full object-cover dark:opacity-40 blur-[1px] md:blur-[2px]"
+        className="absolute inset-0 h-full w-full object-cover blur-[1px] md:blur-[2px]"
+      />
+      <div
+        aria-hidden
+        data-slot="hero-scrim"
+        className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/70 via-black/55 to-black/70"
       />
 
       <div data-slot="hero-content" className="relative z-10 px-6">
@@ -54,7 +57,7 @@ const Hero10 = () => {
           <h1
             style={stagger(1)}
             className={cn(
-              'relative text-balance text-5xl font-semibold leading-14 md:text-6xl lg:text-7xl xl:leading-16 text-white',
+              'relative text-5xl leading-14 font-semibold text-balance text-white md:text-6xl lg:text-7xl xl:leading-16',
               RISE,
             )}
           >

@@ -4,14 +4,16 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-type FloatingToolbarProps = React.ComponentProps<'div'>;
+export type FloatingToolbarProps = React.ComponentProps<'div'>;
 
-const FloatingToolbar = ({ className, ...props }: FloatingToolbarProps) => {
+const FloatingToolbar = ({ className, onKeyDown, ...props }: FloatingToolbarProps) => {
   return (
     <div
       role="toolbar"
       data-slot="floating-toolbar"
       onKeyDown={(event) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented) return;
         if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
         const items = Array.from(
           event.currentTarget.querySelectorAll<HTMLElement>('[data-slot="floating-toolbar-button"]:not(:disabled)'),
@@ -33,7 +35,7 @@ const FloatingToolbar = ({ className, ...props }: FloatingToolbarProps) => {
   );
 };
 
-interface FloatingToolbarButtonProps extends React.ComponentProps<'button'> {
+export interface FloatingToolbarButtonProps extends React.ComponentProps<'button'> {
   active?: boolean;
 }
 
@@ -45,7 +47,7 @@ const FloatingToolbarButton = ({ className, active, ...props }: FloatingToolbarB
       data-active={active ? '' : undefined}
       aria-pressed={active}
       className={cn(
-        'inline-flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-full px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring data-[active]:bg-accent data-[active]:text-foreground [&_svg]:size-4',
+        'inline-flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-full px-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none data-[active]:bg-accent data-[active]:text-foreground [&_svg]:size-4',
         className,
       )}
       {...props}
@@ -53,7 +55,7 @@ const FloatingToolbarButton = ({ className, active, ...props }: FloatingToolbarB
   );
 };
 
-type FloatingToolbarSeparatorProps = React.ComponentProps<'div'>;
+export type FloatingToolbarSeparatorProps = React.ComponentProps<'div'>;
 
 const FloatingToolbarSeparator = ({ className, ...props }: FloatingToolbarSeparatorProps) => {
   return (
@@ -66,13 +68,13 @@ const FloatingToolbarSeparator = ({ className, ...props }: FloatingToolbarSepara
   );
 };
 
-type FloatingToolbarLabelProps = React.ComponentProps<'span'>;
+export type FloatingToolbarLabelProps = React.ComponentProps<'span'>;
 
 const FloatingToolbarLabel = ({ className, ...props }: FloatingToolbarLabelProps) => {
   return (
     <span
       data-slot="floating-toolbar-label"
-      className={cn('px-2 text-xs uppercase text-muted-foreground', className)}
+      className={cn('px-2 text-xs text-muted-foreground uppercase', className)}
       {...props}
     />
   );

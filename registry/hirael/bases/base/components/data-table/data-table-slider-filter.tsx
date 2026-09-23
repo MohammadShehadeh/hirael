@@ -13,11 +13,6 @@ import type { Column, RowData } from '@tanstack/react-table';
 import { PlusCircle, XCircle } from 'lucide-react';
 import * as React from 'react';
 
-interface Range {
-  min: number;
-  max: number;
-}
-
 type RangeValue = [number, number];
 
 const getIsValidRange = (value: unknown): value is RangeValue => {
@@ -30,6 +25,7 @@ const parseValuesAsNumbers = (value: unknown): RangeValue | undefined => {
   const parsed = value.map((v) => {
     if (typeof v === 'number') return v;
     if (typeof v === 'string' && v.trim() !== '') return Number(v);
+
     return Number.NaN;
   });
 
@@ -56,16 +52,15 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
   // Read outside the memo so a data change (new faceted tuple) recomputes the bounds.
   const facetedMinMax = defaultRange && getIsValidRange(defaultRange) ? undefined : column.getFacetedMinMaxValues();
 
-  const { min, max, step } = React.useMemo<Range & { step: number }>(() => {
+  const { min, max, step } = React.useMemo<{ min: number; max: number; step: number }>(() => {
     let minValue = 0;
     let maxValue = 100;
 
     if (defaultRange && getIsValidRange(defaultRange)) {
       [minValue, maxValue] = defaultRange;
     } else {
-      const values = facetedMinMax;
-      if (values && Array.isArray(values) && values.length === 2) {
-        const [facetMinValue, facetMaxValue] = values;
+      if (facetedMinMax && Array.isArray(facetedMinMax) && facetedMinMax.length === 2) {
+        const [facetMinValue, facetMaxValue] = facetedMinMax;
         if (typeof facetMinValue === 'number' && typeof facetMaxValue === 'number') {
           minValue = facetMinValue;
           maxValue = facetMaxValue;
@@ -205,7 +200,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
                   className={cn('h-8 w-24', unit && 'pe-8')}
                 />
                 {unit && (
-                  <span className="absolute top-0 bottom-0 end-0 flex items-center rounded-e-md bg-accent px-2 text-muted-foreground text-sm">
+                  <span className="absolute end-0 top-0 bottom-0 flex items-center rounded-e-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}
@@ -238,7 +233,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
                   className={cn('h-8 w-24', unit && 'pe-8')}
                 />
                 {unit && (
-                  <span className="absolute top-0 bottom-0 end-0 flex items-center rounded-e-md bg-accent px-2 text-muted-foreground text-sm">
+                  <span className="absolute end-0 top-0 bottom-0 flex items-center rounded-e-md bg-accent px-2 text-sm text-muted-foreground">
                     {unit}
                   </span>
                 )}

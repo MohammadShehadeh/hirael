@@ -11,7 +11,7 @@ export const Footer = () => {
             <a
               key={link.label}
               href={link.href}
-              className="text-xs uppercase tracking-widest text-muted-foreground transition-colors hover:text-foreground"
+              className="text-xs tracking-widest text-muted-foreground uppercase transition-colors hover:text-foreground"
             >
               {link.label}
             </a>

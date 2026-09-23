@@ -11,9 +11,7 @@ const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
 const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-250 ${EASE} fill-mode-both motion-reduce:animate-none`;
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 interface Role {
   title: string;
@@ -89,10 +87,10 @@ const Careers01 = () => {
     <section data-slot="careers" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-4xl px-6 md:px-10">
         <div data-slot="careers-header" className="flex flex-col gap-5">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Careers</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Careers</span>
           <h2
             style={stagger(1, 70)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             Open roles.
           </h2>
@@ -118,7 +116,7 @@ const Careers01 = () => {
             {DEPARTMENTS.map((dept) => (
               <ToggleGroupItem key={dept} value={dept}>
                 {dept}
-                <span className="text-xs tabular-nums text-muted-foreground">{countFor(dept)}</span>
+                <span className="text-xs text-muted-foreground tabular-nums">{countFor(dept)}</span>
               </ToggleGroupItem>
             ))}
           </ToggleGroup>

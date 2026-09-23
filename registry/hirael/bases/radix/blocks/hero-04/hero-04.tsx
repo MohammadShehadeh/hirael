@@ -8,9 +8,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const Hero04 = () => {
   return (
@@ -32,7 +30,7 @@ const Hero04 = () => {
       />
 
       <header data-slot="hero-nav" className={cn(ENTER, 'relative z-10 px-4 py-4 md:px-6')}>
-        <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-border bg-card/70 py-2 pe-2 ps-5 backdrop-blur-md">
+        <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-border bg-card/70 py-2 ps-5 pe-2 backdrop-blur-md">
           <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
             <Orbit aria-hidden className="size-5 text-primary" />
             Orbit
@@ -50,7 +48,7 @@ const Hero04 = () => {
             style={stagger(1)}
             className={cn(
               ENTER,
-              'inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase text-muted-foreground backdrop-blur-sm',
+              'inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs text-muted-foreground uppercase backdrop-blur-sm',
             )}
           >
             Mission control
@@ -60,7 +58,7 @@ const Hero04 = () => {
             style={stagger(2)}
             className={cn(
               ENTER,
-              'mt-6 max-w-2xl font-serif text-5xl font-medium leading-[1.03] tracking-tight text-foreground sm:text-6xl md:text-7xl',
+              'mt-6 max-w-2xl font-serif text-5xl leading-[1.03] font-medium tracking-tight text-foreground sm:text-6xl md:text-7xl',
             )}
           >
             Launch with confidence.

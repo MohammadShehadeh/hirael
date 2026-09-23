@@ -82,13 +82,13 @@ const Process02 = () => {
   const activeIndex = STEPS.findIndex((step) => step.value === active);
 
   return (
-    <section data-slot="process" className="bg-background py-20 md:py-28">
+    <section data-slot="process" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-6 md:gap-16 md:px-10">
         <div data-slot="process-header" className="flex max-w-xl flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Install flow</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Install flow</span>
           <h2
             style={stagger(1, 70)}
-            className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+            className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
           >
             From the catalog to production
           </h2>
@@ -105,6 +105,7 @@ const Process02 = () => {
             {STEPS.map((step, index) => {
               const reached = index <= activeIndex;
               const isLast = index === STEPS.length - 1;
+
               return (
                 <TabsTrigger
                   key={step.value}
@@ -112,7 +113,7 @@ const Process02 = () => {
                   style={stagger(index, 60, 200)}
                   className={cn(
                     ENTER,
-                    'group/step relative h-auto flex-row items-start justify-start whitespace-normal text-start lg:flex-col',
+                    'group/step relative h-auto flex-row items-start justify-start text-start whitespace-normal lg:flex-col',
                     'after:hidden',
                   )}
                 >
@@ -139,7 +140,7 @@ const Process02 = () => {
                   <span
                     dir="ltr"
                     className={cn(
-                      'relative me-2.5 grid size-7 shrink-0 place-items-center rounded-full lg:me-0 lg:mb-3.5 border text-[11px] font-medium tabular-nums transition-colors duration-250',
+                      'relative me-2.5 grid size-7 shrink-0 place-items-center rounded-full border text-[11px] font-medium tabular-nums transition-colors duration-250 lg:me-0 lg:mb-3.5',
                       index === activeIndex
                         ? 'border-foreground bg-foreground text-background'
                         : reached
@@ -158,7 +159,7 @@ const Process02 = () => {
                     >
                       {step.title}
                     </span>
-                    <span className="text-sm font-normal leading-relaxed text-muted-foreground">{step.body}</span>
+                    <span className="text-sm leading-relaxed font-normal text-muted-foreground">{step.body}</span>
                     <span className="text-xs font-normal text-muted-foreground/80">{step.detail}</span>
                   </span>
                 </TabsTrigger>
@@ -173,7 +174,7 @@ const Process02 = () => {
                 className="grid gap-8 border-y border-border py-8 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] md:gap-14"
               >
                 <div className={cn(SWAP, 'flex flex-col gap-3')}>
-                  <span dir="ltr" className="self-start text-xs tabular-nums text-muted-foreground">
+                  <span dir="ltr" className="self-start text-xs text-muted-foreground tabular-nums">
                     {formatIndex(index)}
                     <span className="mx-1.5 text-border">|</span>
                     {formatIndex(STEPS.length - 1)}
@@ -188,7 +189,7 @@ const Process02 = () => {
                       style={stagger(itemIndex + 1, 50)}
                       className={cn(SWAP, 'flex items-start gap-3 text-sm')}
                     >
-                      <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-warm" />
+                      <Check aria-hidden className="mt-0.5 size-4 shrink-0 text-primary" />
                       {item}
                     </li>
                   ))}
@@ -199,15 +200,15 @@ const Process02 = () => {
         </Tabs>
 
         <div data-slot="process-command" className="flex flex-col gap-3">
-          <span className="text-xs uppercase text-muted-foreground">Try it now</span>
+          <span className="text-xs text-muted-foreground uppercase">Try it now</span>
           <div
             dir="ltr"
             className="flex items-center gap-3 rounded-lg border border-border bg-card/40 py-1.5 ps-4 pe-1.5"
           >
-            <span aria-hidden className="select-none font-mono text-sm text-muted-foreground">
+            <span aria-hidden className="text-sm text-muted-foreground select-none">
               $
             </span>
-            <code className="min-w-0 flex-1 truncate font-mono text-sm">{COMMAND}</code>
+            <span className="min-w-0 flex-1 truncate text-sm tabular-nums">{COMMAND}</span>
             <CopyButton value={COMMAND} size="md" />
           </div>
         </div>

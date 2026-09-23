@@ -17,7 +17,7 @@ const Title = () => {
   return (
     <h2
       data-slot="feature-title"
-      className="font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl"
+      className="font-serif text-4xl leading-[1.04] font-medium tracking-tight text-balance sm:text-5xl"
     >
       {words.map((word, i) => (
         <span
@@ -39,7 +39,7 @@ const GridPattern = () => {
     <div
       aria-hidden
       data-slot="grid-pattern"
-      className="pointer-events-none absolute top-0 start-1/2 -mt-2 -ms-20 h-full w-full [mask-image:linear-gradient(black,transparent)]"
+      className="pointer-events-none absolute start-1/2 top-0 -ms-20 -mt-2 h-full w-full [mask-image:linear-gradient(black,transparent)]"
     >
       <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent [mask-image:radial-gradient(farthest-side_at_top,black,transparent)]">
         <svg className="absolute inset-0 h-full w-full fill-primary/5 stroke-primary/25 mix-blend-overlay">
@@ -92,7 +92,7 @@ const Card = ({ card, index }: CardProps) => {
   return (
     <article
       data-slot="feature-card"
-      className="relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card p-6 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none md:px-10 md:py-8"
+      className="relative flex h-full animate-in flex-col overflow-hidden rounded-lg border border-border bg-card p-6 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none md:px-10 md:py-8"
       style={{ animationDelay: `${base}ms` }}
     >
       <GridPattern />
@@ -120,7 +120,7 @@ const Card = ({ card, index }: CardProps) => {
 const Feature06 = () => {
   return (
     <section data-slot="feature" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="feature-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
           <div className={RISE}>
             <Badge variant="outline">About</Badge>
@@ -128,7 +128,7 @@ const Feature06 = () => {
           <Title />
           <p
             data-slot="feature-description"
-            className={cn('delay-240 max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg', RISE)}
+            className={cn('max-w-2xl text-base text-pretty text-muted-foreground delay-240 sm:text-lg', RISE)}
           >
             We build the components shadcn/ui does not ship, and we build them the way we would want to inherit them.
           </p>

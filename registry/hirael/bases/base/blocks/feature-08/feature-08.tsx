@@ -66,7 +66,7 @@ const CrossDecor = ({ position }: CrossDecorProps) => {
       className={cn(
         'pointer-events-none absolute z-10 size-3.5 shrink-0 text-muted-foreground',
         position === 'top-start' && 'start-0 top-0 -translate-y-1/2 ltr:-translate-x-1/2 rtl:translate-x-1/2',
-        position === 'bottom-end' && 'bottom-0 end-0 translate-y-1/2 ltr:translate-x-1/2 rtl:-translate-x-1/2',
+        position === 'bottom-end' && 'end-0 bottom-0 translate-y-1/2 ltr:translate-x-1/2 rtl:-translate-x-1/2',
       )}
     >
       <path d="M5 12h14" />
@@ -87,8 +87,8 @@ const FeatureCard = ({ className, children, ...props }: React.ComponentProps<'di
       onPointerMove={handlePointerMove}
       data-slot="feature-card"
       className={cn(
-        'group relative flex h-full flex-col justify-start gap-6 bg-background px-6 pb-6 pt-8 shadow-xs',
-        'bg-[radial-gradient(50%_80%_at_25%_0%,var(--warm-glow),transparent)]',
+        'group relative flex h-full flex-col justify-start gap-6 bg-background px-6 pt-8 pb-6 shadow-xs',
+        'bg-[radial-gradient(50%_80%_at_25%_0%,color-mix(in_oklch,var(--primary)_20%,transparent),transparent)]',
         className,
       )}
       {...props}
@@ -96,7 +96,7 @@ const FeatureCard = ({ className, children, ...props }: React.ComponentProps<'di
       {/* Pointer-follow spotlight, fades in on hover along --mx/--my. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_200px_at_var(--mx)_var(--my),color-mix(in_oklch,var(--warm)_14%,transparent),transparent_70%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_200px_at_var(--mx)_var(--my),color-mix(in_oklch,var(--primary)_14%,transparent),transparent_70%)] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
 
       <div className="absolute -inset-y-4 -start-px w-px bg-border" />
@@ -141,7 +141,7 @@ const Feature08 = () => {
                 <feature.icon
                   aria-hidden
                   data-slot="feature-card-icon"
-                  className="size-4 shrink-0 stroke-[1.5] text-muted-foreground transition-colors duration-150 group-hover:text-warm"
+                  className="size-4 shrink-0 stroke-[1.5] text-muted-foreground transition-colors duration-150 group-hover:text-primary"
                 />
                 {feature.title}
               </h3>

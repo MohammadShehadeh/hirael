@@ -18,6 +18,7 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     if (reduce) {
       raf = requestAnimationFrame(() => setValue(target));
+
       return () => cancelAnimationFrame(raf);
     }
     const start = performance.now();
@@ -28,6 +29,7 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
       if (p < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
+
     return () => cancelAnimationFrame(raf);
   }, [active, target, duration]);
 
@@ -43,19 +45,21 @@ interface StatProps {
 
 const Stat = ({ value, suffix, label, active }: StatProps) => {
   const count = useCountUp(value, active);
+
   return (
     <div className="flex flex-col items-center border-t border-[hsl(var(--stroke))] pt-8 text-center sm:items-start sm:text-start">
-      <span className="font-display text-5xl tabular-nums leading-none md:text-7xl">
+      <span className="font-display text-5xl leading-none tabular-nums md:text-7xl">
         {count}
         {suffix}
       </span>
-      <span className="mt-4 text-xs uppercase tracking-[0.2em] text-[hsl(var(--muted))]">{label}</span>
+      <span className="mt-4 text-xs tracking-[0.2em] text-[hsl(var(--muted))] uppercase">{label}</span>
     </div>
   );
 };
 
 export const Stats = () => {
   const [active, setActive] = React.useState(false);
+
   return (
     <section id="stats" className="bg-[hsl(var(--bg))] py-16 md:py-24">
       <motion.div

@@ -47,6 +47,7 @@ const useMultiSelect = () => {
   if (!ctx) {
     throw new Error('MultiSelect compound components must be used inside <MultiSelect>');
   }
+
   return ctx;
 };
 
@@ -65,11 +66,13 @@ export interface MultiSelectProps {
   children?: React.ReactNode;
 }
 
+const NO_OPTIONS: MultiSelectOption[] = [];
+
 const MultiSelect = ({
   value: valueProp,
   defaultValue,
   onValueChange,
-  options = [],
+  options = NO_OPTIONS,
   maxCount,
   disabled,
   loading,
@@ -149,7 +152,7 @@ const MultiSelect = ({
       <Popover open={open} onOpenChange={setOpen}>
         {children}
       </Popover>
-      {name && <input type="hidden" name={name} value={value.join(',')} />}
+      {name && value.map((v) => <input key={v} type="hidden" name={name} value={v} />)}
     </MultiSelectContext.Provider>
   );
 };
@@ -178,7 +181,7 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
           data-slot="multi-select-trigger"
           className={cn(
             'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm transition-colors outline-none',
-            'hover:border-ring/60 focus-within:border-ring',
+            'focus-within:border-ring hover:border-ring/60',
             'data-popup-open:border-ring',
             isDisabled && 'cursor-not-allowed opacity-50',
             className,
@@ -221,7 +224,7 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
             {ctx.maxCount ? `/${ctx.maxCount}` : ''}
           </span>
         )}
-        <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[popup-open]:rotate-180" />
+        <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[popup-open]:rotate-180 motion-reduce:transition-none" />
       </span>
     </PopoverTrigger>
   );
@@ -230,6 +233,7 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
 interface MultiSelectContentProps extends React.ComponentProps<typeof PopoverContent> {
   searchPlaceholder?: string;
   emptyMessage?: string;
+  loadingMessage?: string;
   showSelectAll?: boolean;
   showClear?: boolean;
   selectAllLabel?: string;
@@ -241,6 +245,7 @@ const MultiSelectContent = ({
   className,
   searchPlaceholder = 'Search…',
   emptyMessage = 'Nothing found.',
+  loadingMessage = 'Loading…',
   showSelectAll = true,
   showClear = true,
   selectAllLabel = 'Select all',
@@ -264,6 +269,7 @@ const MultiSelectContent = ({
       if (!map.has(key)) map.set(key, []);
       map.get(key)!.push(opt);
     }
+
     return Array.from(map.entries());
   }, [ctx.options]);
 
@@ -282,7 +288,7 @@ const MultiSelectContent = ({
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
               <Loader2 className="size-3.5 animate-spin" />
-              Loading…
+              {loadingMessage}
             </div>
           ) : (
             <>
@@ -312,7 +318,7 @@ const MultiSelectContent = ({
                         className="justify-between"
                       >
                         <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
-                        <span className="font-mono text-[10px] tabular-nums text-muted-foreground">
+                        <span className="font-mono text-[10px] text-muted-foreground tabular-nums">
                           {ctx.value.length} / {enabled.length}
                         </span>
                       </CommandItem>

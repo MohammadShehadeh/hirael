@@ -27,6 +27,7 @@ const getProbe = () => {
   canvas.width = 1;
   canvas.height = 1;
   probe = canvas.getContext('2d', { willReadFrequently: true });
+
   return probe;
 };
 
@@ -40,6 +41,7 @@ const resolveCssColor = (value: string): Rgb | null => {
   ctx.fillRect(0, 0, 1, 1);
   const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
   if (r === undefined || g === undefined || b === undefined) return null;
+
   return [r / 255, g / 255, b / 255];
 };
 
@@ -56,6 +58,7 @@ const srgbToOklch = ([r, g, b]: Rgb): Oklch => {
   const okL = 0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s;
   const okA = 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s;
   const okB = 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s;
+
   return { l: okL, c: Math.hypot(okA, okB), h: (Math.atan2(okB, okA) * 180) / Math.PI };
 };
 
@@ -66,6 +69,7 @@ const oklchToLinearSrgb = ({ l: okL, c, h }: Oklch): Rgb => {
   const l = (okL + 0.3963377774 * okA + 0.2158037573 * okB) ** 3;
   const m = (okL - 0.1055613458 * okA - 0.0638541728 * okB) ** 3;
   const s = (okL - 0.0894841775 * okA - 1.291485548 * okB) ** 3;
+
   return [
     4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
     -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
@@ -87,6 +91,7 @@ const oklchToSrgb = (color: Oklch): Rgb => {
       else hi = mid;
     }
   }
+
   return oklchToLinearSrgb({ ...color, c: lo }).map((c) =>
     Math.min(1, Math.max(0, toGamma(Math.min(1, Math.max(0, c))))),
   ) as Rgb;
@@ -96,12 +101,14 @@ const oklchToSrgb = (color: Oklch): Rgb => {
 const mixOklab = (a: Oklch, b: Oklch, t: number): Oklch => {
   const toAB = ({ c, h }: Oklch) => {
     const rad = (h * Math.PI) / 180;
+
     return [c * Math.cos(rad), c * Math.sin(rad)] as const;
   };
   const [aA, aB] = toAB(a);
   const [bA, bB] = toAB(b);
   const okA = aA + (bA - aA) * t;
   const okB = aB + (bB - aB) * t;
+
   return {
     l: a.l + (b.l - a.l) * t,
     c: Math.hypot(okA, okB),
@@ -113,7 +120,7 @@ const buildPalette = (): Palette | null => {
   const styles = getComputedStyle(document.documentElement);
   const backgroundRgb = resolveCssColor(styles.getPropertyValue('--background'));
   const primaryRgb = resolveCssColor(styles.getPropertyValue('--primary'));
-  const coolRgb = resolveCssColor(styles.getPropertyValue('--accent-cool'));
+  const coolRgb = resolveCssColor(styles.getPropertyValue('--primary'));
   if (!backgroundRgb || !primaryRgb || !coolRgb) return null;
 
   const background = srgbToOklch(backgroundRgb);
@@ -191,6 +198,7 @@ const compile = (gl: WebGLRenderingContext, type: number, source: string) => {
   if (!shader) return null;
   gl.shaderSource(shader, source);
   gl.compileShader(shader);
+
   return shader;
 };
 

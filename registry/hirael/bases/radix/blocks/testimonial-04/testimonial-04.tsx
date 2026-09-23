@@ -1,4 +1,3 @@
-import type * as React from 'react';
 import { Quote } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -57,7 +56,7 @@ const Headline = () => {
   return (
     <h2
       data-slot="testimonial-title"
-      className="max-w-3xl font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl"
+      className="max-w-3xl font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl"
     >
       {words.map((word, i) => (
         <span
@@ -74,13 +73,13 @@ const Headline = () => {
 
 const Testimonial04 = () => {
   return (
-    <section data-slot="testimonial" className="bg-background py-16 md:py-24">
-      <div className="container w-full">
+    <section data-slot="testimonial" className="bg-background py-20 sm:py-28">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div
           data-slot="testimonial-header"
           className="mx-auto mb-12 flex max-w-3xl flex-col items-center gap-4 text-center"
         >
-          <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+          <div className="animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both zoom-in-95 fade-in motion-reduce:animate-none">
             <Badge variant="outline" data-slot="testimonial-badge">
               Testimonials
             </Badge>
@@ -91,7 +90,7 @@ const Testimonial04 = () => {
           <p
             data-slot="testimonial-description"
             style={{ animationDelay: '240ms' }}
-            className={cn(ENTER, 'max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg')}
+            className={cn(ENTER, 'max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg')}
           >
             Teams shipping with Hirael, in their own words.
           </p>
@@ -105,10 +104,10 @@ const Testimonial04 = () => {
               className={cn(ENTER, 'flex h-full flex-col gap-4 rounded-lg border border-border bg-card p-6')}
               style={{ animationDelay: `${280 + i * 40}ms` }}
             >
-              <Quote data-slot="testimonial-mark" aria-hidden className="size-5 text-warm" />
+              <Quote data-slot="testimonial-mark" aria-hidden className="size-5 text-primary" />
               <blockquote
                 data-slot="testimonial-quote"
-                className="text-pretty text-base font-medium leading-relaxed text-foreground"
+                className="text-base leading-relaxed font-medium text-pretty text-foreground"
               >
                 {item.quote}
               </blockquote>

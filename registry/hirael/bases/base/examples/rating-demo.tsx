@@ -12,14 +12,14 @@ const RatingDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Interactive · whole stars', ar: 'تفاعلي · نجوم كاملة' })}
         </p>
         <Rating defaultValue={4} aria-label={t({ en: 'Overall rating', ar: 'التقييم العام' })} />
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Controlled · half steps', ar: 'متحكَّم به · أنصاف خطوات' })}
         </p>
         <div className="flex items-center gap-3">
@@ -29,12 +29,12 @@ const RatingDemo = () => {
             step={0.5}
             aria-label={t({ en: 'Half-step rating', ar: 'تقييم بنصف خطوة' })}
           />
-          <span className="font-mono text-sm tabular-nums text-muted-foreground">{value.toFixed(1)}</span>
+          <span className="font-mono text-sm text-muted-foreground tabular-nums">{value.toFixed(1)}</span>
         </div>
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Read-only display', ar: 'عرض للقراءة فقط' })}
         </p>
         <div className="flex items-center gap-2">
@@ -46,7 +46,7 @@ const RatingDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
         <div className="flex items-center gap-6">
           <Rating defaultValue={3} size="sm" aria-label={t({ en: 'Small', ar: 'صغير' })} />
           <Rating defaultValue={3} size="md" aria-label={t({ en: 'Medium', ar: 'متوسط' })} />

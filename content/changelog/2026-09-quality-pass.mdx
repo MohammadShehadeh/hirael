@@ -1,0 +1,78 @@
+---
+title: Every item follows your theme
+version: '7.0.0'
+date: 2026-09-23
+description: 'Components and blocks now use only your shadcn theme tokens, plus a library-wide pass on reliability, keyboard and touch behavior.'
+---
+
+Hirael items now take on the design system of the project they land in. If
+you've customized your shadcn theme or primitives, installed items match it
+with no class cleanup.
+
+Breaking:
+
+- **Kbd** now renders a `<kbd>`, like shadcn's. The pressable 3D keycap is
+  `KbdButton`. `KbdDisplay` still works but is deprecated.
+- **useCountdown** returns `null` until the component mounts, so server and
+  browser render the same thing.
+- **Header 2** exports the header as `Header02`. The default export is a
+  preview wrapper.
+- **Callout** no longer adds its own outer margin.
+
+Your theme, everywhere:
+
+- Blocks and templates no longer use Hirael's own accent colors. Highlights,
+  glows and live markers use your `primary` color, so they follow your theme
+  and the Customizer.
+- Blocks that relied on this site's `container` class now center and pad
+  themselves, so they no longer run edge to edge after install.
+- Status colors (success, warning, info) now ship with every item that uses
+  them.
+
+Improved:
+
+- **Your own handlers and refs are respected.** Passing `onClick`,
+  `onKeyDown`, `onPointerDown` or a `ref` to a part now runs alongside the
+  built-in behavior instead of replacing it, across about 30 components.
+  Call `event.preventDefault()` to skip the built-in behavior.
+- **Typing in Arabic, Chinese or Japanese** no longer commits a tag, mention or
+  inline edit mid-word.
+- **Dates and numbers** render the same on the server and in the browser, with
+  `locale` defaulting to `en-US`. Pickers take `locale`, `weekStartsOn` (any
+  day, including Saturday) and `disabledDate` on the root.
+- **Date Range Picker** won't select a range across disabled days, closes when
+  the range is complete, and supports `month` / `onMonthChange`.
+- **Kanban** reports a keyboard move once, when you drop the card. Escape
+  cancels without reporting anything.
+- **Sortable** no longer starts a drag from buttons or inputs inside an item.
+- **Rich Text Editor** no longer fires a change when you set its value. The
+  callback is now `onValueChange`.
+- **Copy Button** falls back when clipboard access is blocked and reports
+  failures with `onCopyError`.
+- **QR Code** draws dark modules on a light background, so it scans in dark
+  mode too.
+- **JSON Viewer** handles circular values. **Diff Viewer** uses a much faster
+  diff for large files.
+- **Phone Input** drops the national leading zero in E.164 output and shares
+  the Country Select list.
+- **Command Palette** ignores its shortcut while you type in a field.
+- **Magnetic Button, Tilt Card, Spotlight Card and Cursor Glow** ignore touch
+  drags.
+- Callout gains `CalloutTitle` and `CalloutDescription`, and every tone set
+  now reads `neutral / info / success / warning / destructive`. Older names
+  still work.
+- Labels like "Clear", "Copied" and "Loading…" can be changed through props,
+  for any language.
+
+Blocks:
+
+- **Settings 1 and 2, Members, AI Chat and Subscription Plans** confirm
+  destructive actions and validate their forms.
+- **VM Table and Pod Table** use the Table primitive, with a sticky header and
+  sorting.
+- **App Shell 2** has a mobile menu. **Env Editor** keeps a revealed secret on
+  its own row after a delete.
+- **Dashboard 4** calculates its peak-hours share from the data.
+- **Status 1** is far quicker to move through by keyboard, and **Stats 1**
+  shows real numbers before the page loads.
+- Code snippets in blocks use the regular font with tabular numbers.

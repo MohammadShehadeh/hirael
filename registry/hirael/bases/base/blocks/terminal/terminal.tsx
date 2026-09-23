@@ -79,7 +79,7 @@ const TerminalLine = ({ className, ...props }: TerminalLineProps) => {
   return (
     <div
       data-slot="terminal-line"
-      className={cn('whitespace-pre-wrap break-words text-foreground', className)}
+      className={cn('break-words whitespace-pre-wrap text-foreground', className)}
       {...props}
     />
   );
@@ -91,7 +91,7 @@ interface TerminalPromptProps extends React.ComponentProps<'span'> {
 
 const TerminalPrompt = ({ symbol = '❯', className, children, ...props }: TerminalPromptProps) => {
   return (
-    <span data-slot="terminal-prompt" className={cn('select-none text-success', className)} {...props}>
+    <span data-slot="terminal-prompt" className={cn('text-success select-none', className)} {...props}>
       {children ? <span className="text-info">{children} </span> : null}
       {symbol}{' '}
     </span>
@@ -155,19 +155,22 @@ const TerminalInput = ({ onSubmit, symbol, user, className, disabled, ...props }
 export { Terminal, TerminalHeader, TerminalBody, TerminalLine, TerminalPrompt, TerminalInput };
 
 interface TerminalEntry {
+  id: number;
   kind: 'command' | 'output' | 'error';
   text: string;
 }
 
 const TERMINAL_USER = 'deploy@edge';
+const MAX_ENTRIES = 200;
 
 const TerminalBlock = () => {
   const [entries, setEntries] = React.useState<TerminalEntry[]>([
-    { kind: 'output', text: 'Hirael cloud shell. Type `help` to start' },
+    { id: 0, kind: 'output', text: 'Hirael cloud shell. Type `help` to start' },
   ]);
+  const nextId = React.useRef(1);
 
   function run(command: string) {
-    const next: TerminalEntry[] = [{ kind: 'command', text: command }];
+    const next: Omit<TerminalEntry, 'id'>[] = [{ kind: 'command', text: command }];
     const [name, ...args] = command.split(/\s+/);
 
     switch (name) {
@@ -197,31 +200,37 @@ const TerminalBlock = () => {
         break;
       case 'clear':
         setEntries([]);
+
         return;
       default:
         next.push({ kind: 'error', text: `command not found: ${name}` });
     }
 
-    setEntries((prev) => [...prev, ...next]);
+    const stamped = next.map((entry) => ({ ...entry, id: nextId.current++ }));
+    setEntries((prev) => [...prev, ...stamped].slice(-MAX_ENTRIES));
   }
 
   return (
     <section data-slot="terminal-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
       <div className="w-full max-w-2xl">
-        <Terminal className="animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+        <Terminal className="animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none">
           <TerminalHeader>{TERMINAL_USER}: ~/app</TerminalHeader>
           <TerminalBody>
-            {entries.map((entry, i) => {
+            {entries.map((entry) => {
               if (entry.kind === 'command') {
                 return (
-                  <TerminalLine key={i}>
+                  <TerminalLine key={entry.id}>
                     <TerminalPrompt>{TERMINAL_USER}</TerminalPrompt>
                     {entry.text}
                   </TerminalLine>
                 );
               }
+
               return (
-                <TerminalLine key={i} className={entry.kind === 'error' ? 'text-destructive' : 'text-muted-foreground'}>
+                <TerminalLine
+                  key={entry.id}
+                  className={entry.kind === 'error' ? 'text-destructive' : 'text-muted-foreground'}
+                >
                   {entry.text}
                 </TerminalLine>
               );

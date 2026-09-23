@@ -40,6 +40,7 @@ export const defaultPasswordScorer: PasswordScorer = (value) => {
     'Nearly there, make it longer',
     'Strong',
   ] as const;
+
   return { score, label: labels[score], hint: hints[score] };
 };
 
@@ -60,6 +61,7 @@ const usePasswordContext = () => {
   if (!ctx) {
     throw new Error('PasswordInput compound parts must be used inside <PasswordInput>');
   }
+
   return ctx;
 };
 
@@ -148,6 +150,7 @@ const PasswordInputField = ({
   ...props
 }: PasswordInputFieldProps) => {
   const ctx = usePasswordContext();
+
   return (
     <InputGroup
       data-slot="password-input-field"
@@ -192,6 +195,7 @@ const PasswordInputStrength = ({ showLabel = true, renderMeta, className, ...pro
   const ctx = usePasswordContext();
   const s = ctx.strength;
   const bar = STRENGTH_COLORS[s.score] ?? STRENGTH_COLORS[0];
+
   return (
     <div data-slot="password-input-strength" className={cn('flex flex-col gap-1.5', className)} {...props}>
       <div
@@ -215,7 +219,7 @@ const PasswordInputStrength = ({ showLabel = true, renderMeta, className, ...pro
           renderMeta(s)
         ) : (
           <div aria-live="polite" className="flex items-center justify-between gap-2">
-            <span className="text-xs uppercase text-muted-foreground">{s.label}</span>
+            <span className="text-xs text-muted-foreground uppercase">{s.label}</span>
             {s.hint && <span className="text-[11px] text-muted-foreground">{s.hint}</span>}
           </div>
         ))}

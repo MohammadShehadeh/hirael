@@ -38,6 +38,7 @@ const readPersistedConfig = (): CustomizerConfig => {
   if (typeof window === 'undefined') return DEFAULT_CONFIG;
   try {
     const raw = localStorage.getItem(CONFIG_STORAGE_KEY);
+
     return normalizeConfig(raw ? JSON.parse(raw) : null);
   } catch {
     return DEFAULT_CONFIG;
@@ -68,6 +69,7 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
       setConfigState((prev) => (JSON.stringify(next) === JSON.stringify(prev) ? prev : next));
     };
     window.addEventListener('storage', handleStorage);
+
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
@@ -80,6 +82,7 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
     let styleElement = document.getElementById(STYLE_ELEMENT_ID) as HTMLStyleElement | null;
     if (!css) {
       styleElement?.remove();
+
       return;
     }
     if (!styleElement) {
@@ -99,10 +102,9 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
         // Storage can be unavailable (private mode, quota).
       }
     }, 200);
+
     return () => window.clearTimeout(timerId);
   }, [config, mainCss, embedCss]);
-
-  const setMode = (nextMode: ThemeMode) => setTheme(nextMode);
 
   const setConfig = (patch: Partial<CustomizerConfig>) => {
     setConfigState((prev) => {
@@ -110,6 +112,7 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
       if ('theme' in patch && !('chartColor' in patch)) {
         next.chartColor = patch.theme;
       }
+
       return normalizeConfig(next);
     });
   };
@@ -118,7 +121,7 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
 
   const value: ThemeContextValue = {
     mode,
-    setMode,
+    setMode: setTheme,
     config,
     base: isMounted ? config.base : DEFAULT_CONFIG.base,
     tokens,
@@ -138,6 +141,7 @@ const readEmbedForcedTheme = (): ThemeMode | undefined => {
   if (typeof window === 'undefined') return undefined;
   if (!isEmbedPath(window.location.pathname)) return undefined;
   const theme = new URLSearchParams(window.location.search).get('theme');
+
   return theme === 'light' || theme === 'dark' ? theme : undefined;
 };
 
@@ -166,6 +170,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
 export const useTheme = (): ThemeContextValue => {
   const ctx = React.useContext(ThemeContext);
   if (!ctx) throw new Error('useTheme must be used inside <ThemeProvider>');
+
   return ctx;
 };
 

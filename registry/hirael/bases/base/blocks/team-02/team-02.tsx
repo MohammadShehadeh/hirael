@@ -19,7 +19,7 @@ const Title = () => {
   return (
     <h2
       data-slot="team-title"
-      className="font-serif text-4xl font-medium leading-[1.04] tracking-tight text-balance sm:text-5xl"
+      className="font-serif text-4xl leading-[1.04] font-medium tracking-tight text-balance sm:text-5xl"
     >
       {words.map((word, i) => (
         <span
@@ -41,7 +41,7 @@ const GridPattern = () => {
     <div
       aria-hidden
       data-slot="grid-pattern"
-      className="pointer-events-none absolute top-0 start-1/2 -mt-2 -ms-20 h-full w-full [mask-image:linear-gradient(black,transparent)]"
+      className="pointer-events-none absolute start-1/2 top-0 -ms-20 -mt-2 h-full w-full [mask-image:linear-gradient(black,transparent)]"
     >
       <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent [mask-image:radial-gradient(farthest-side_at_top,black,transparent)]">
         <svg className="absolute inset-0 h-full w-full fill-primary/5 stroke-primary/25 mix-blend-overlay">
@@ -120,7 +120,7 @@ const MetricCard = ({ metric, index }: MetricCardProps) => {
       className={cn('rounded-lg border border-border bg-card p-4 text-center', RISE)}
       style={{ animationDelay: `${300 + index * 50}ms` }}
     >
-      <h3 className="mb-1 text-xs uppercase text-muted-foreground">{metric.label}</h3>
+      <h3 className="mb-1 text-xs text-muted-foreground uppercase">{metric.label}</h3>
       <p className="font-serif text-3xl font-medium text-foreground">{metric.value}</p>
       <p className="text-sm text-muted-foreground">{metric.subtext}</p>
     </div>
@@ -132,9 +132,9 @@ const Team02 = () => {
 
   return (
     <section data-slot="team" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="team-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+          <div className="animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both zoom-in-95 fade-in motion-reduce:animate-none">
             <Badge variant="outline">Experience</Badge>
           </div>
           <Title />
@@ -197,7 +197,7 @@ const Team02 = () => {
 
             <div
               data-slot="team-marquee"
-              className="relative mt-auto flex flex-col gap-2 pt-6 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]"
+              className="relative mt-auto flex flex-col gap-2 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)] pt-6"
             >
               {rows.map((row, i) => (
                 <Marquee key={i} pauseOnHover reverse={i === 1} duration={30 + i * 5} gap="0.5rem">

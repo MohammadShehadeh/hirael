@@ -64,7 +64,7 @@ const JsonViewerDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'API response', ar: 'استجابة API' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'API response', ar: 'استجابة API' })}</p>
         <JsonViewer value={RESPONSE} />
         <p className="text-[11px] text-muted-foreground">
           {t({
@@ -75,7 +75,7 @@ const JsonViewerDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs uppercase text-muted-foreground">{t({ en: 'With toolbar', ar: 'مع شريط أدوات' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'With toolbar', ar: 'مع شريط أدوات' })}</p>
         <JsonViewer value={CONFIG} defaultExpanded={1}>
           <div className="-mx-3 -mt-3 mb-3 flex items-center justify-between gap-2 border-b border-border px-2 py-1">
             <span className="ps-1 font-sans text-xs text-muted-foreground">package.json</span>

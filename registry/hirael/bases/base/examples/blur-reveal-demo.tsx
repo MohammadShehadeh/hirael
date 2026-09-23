@@ -27,7 +27,7 @@ const BlurRevealDemo = () => {
         {steps.map((label, i) => (
           <BlurReveal key={label} delay={200 + i * 120}>
             <div className="rounded-md border border-border bg-card p-4">
-              <p className="text-xs uppercase text-muted-foreground">0{i + 1}</p>
+              <p className="text-xs text-muted-foreground uppercase">0{i + 1}</p>
               <p className="mt-2 text-sm font-medium text-foreground">{label}</p>
             </div>
           </BlurReveal>

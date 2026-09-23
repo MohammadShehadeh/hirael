@@ -6,7 +6,17 @@ import { createPortal } from 'react-dom';
 import { cn } from '@/lib/utils';
 
 export type SparklineVariant = 'line' | 'area' | 'bar';
-export type SparklineTone = 'default' | 'success' | 'warning' | 'destructive' | 'muted';
+export type SparklineTone =
+  | 'neutral'
+  | 'muted'
+  | 'info'
+  | 'success'
+  | 'warning'
+  | 'destructive'
+  /** @deprecated Use `neutral`. */
+  | 'default';
+
+type ResolvedSparklineTone = Exclude<SparklineTone, 'default'>;
 
 interface Size {
   width: number;
@@ -36,11 +46,13 @@ const useSparkline = () => {
   if (!ctx) {
     throw new Error('Sparkline compound parts must be used inside <Sparkline>');
   }
+
   return ctx;
 };
 
-const TONE_CLASS: Record<SparklineTone, string> = {
-  default: 'text-foreground',
+const TONE_CLASS: Record<ResolvedSparklineTone, string> = {
+  neutral: 'text-foreground',
+  info: 'text-info',
   success: 'text-success',
   warning: 'text-warning',
   destructive: 'text-destructive',
@@ -65,8 +77,11 @@ const linePath = (points: [number, number][], curve: boolean) => {
     const c2y = p2[1] - (p3[1] - p1[1]) / 6;
     d += ` C${c1x} ${c1y} ${c2x} ${c2y} ${p2[0]} ${p2[1]}`;
   }
+
   return d;
 };
+
+const numberFormat = new Intl.NumberFormat('en-US');
 
 const round = (n: number) => {
   return Math.round(n * 100) / 100;
@@ -91,7 +106,7 @@ export interface SparklineProps extends Omit<React.ComponentProps<'div'>, 'child
 const Sparkline = ({
   data,
   variant = 'line',
-  tone = 'default',
+  tone = 'neutral',
   curve = false,
   min: minProp,
   max: maxProp,
@@ -99,8 +114,11 @@ const Sparkline = ({
   label,
   className,
   children,
+  onPointerMove,
+  onPointerLeave,
   ...props
 }: SparklineProps) => {
+  const resolvedTone: ResolvedSparklineTone = tone === 'default' ? 'neutral' : tone;
   const [size, setSize] = React.useState<Size | null>(null);
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
   const [interactive, setInteractive] = React.useState(false);
@@ -119,6 +137,7 @@ const Sparkline = ({
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(node);
+
     return () => ro.disconnect();
   }, []);
 
@@ -143,6 +162,7 @@ const Sparkline = ({
       rMin -= 1;
       rMax += 1;
     }
+
     return { min: rMin, max: rMax };
   }, [data, minProp, maxProp, variant]);
 
@@ -151,9 +171,11 @@ const Sparkline = ({
       const n = data.length;
       if (variant === 'bar') {
         const band = width / Math.max(n, 1);
+
         return round(band * index + band / 2);
       }
       if (n <= 1) return round(width / 2);
+
       return round((index / (n - 1)) * width);
     },
     [data.length, variant, width],
@@ -163,12 +185,14 @@ const Sparkline = ({
     (value: number) => {
       const usable = Math.max(height - inset * 2, 0);
       const ratio = (value - min) / (max - min);
+
       return round(height - inset - ratio * usable);
     },
     [height, inset, min, max],
   );
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    onPointerMove?.(e);
     if (!interactive || data.length === 0 || width === 0) return;
     const r = e.currentTarget.getBoundingClientRect();
     const px = Math.max(0, Math.min(e.clientX - r.left, width));
@@ -199,7 +223,8 @@ const Sparkline = ({
 
   const last = data[data.length - 1];
   const summary =
-    label ?? (data.length ? `Sparkline, ${data.length} points, latest ${last.toLocaleString()}` : 'Sparkline, no data');
+    label ??
+    (data.length ? `Sparkline, ${data.length} points, latest ${numberFormat.format(last)}` : 'Sparkline, no data');
 
   const content =
     children ??
@@ -220,10 +245,13 @@ const Sparkline = ({
         ref={ref}
         data-slot="sparkline"
         data-variant={variant}
-        data-tone={tone}
-        className={cn('relative inline-block h-8 w-24 align-middle', TONE_CLASS[tone], className)}
+        data-tone={resolvedTone}
+        className={cn('relative inline-block h-8 w-24 align-middle', TONE_CLASS[resolvedTone], className)}
         onPointerMove={handlePointerMove}
-        onPointerLeave={() => setActiveIndex(null)}
+        onPointerLeave={(e) => {
+          onPointerLeave?.(e);
+          setActiveIndex(null);
+        }}
         {...props}
       >
         <svg
@@ -246,6 +274,7 @@ const Sparkline = ({
 const SparklineLine = ({ className, strokeWidth = 1.5, ...props }: React.ComponentProps<'path'>) => {
   const { data, x, y, curve } = useSparkline();
   const points = data.map((v, i) => [x(i), y(v)] as [number, number]);
+
   return (
     <path
       data-slot="sparkline-line"
@@ -268,6 +297,7 @@ const SparklineArea = ({ className, fillOpacity = 0.15, ...props }: React.Compon
   const points = data.map((v, i) => [x(i), y(v)] as [number, number]);
   const baseline = y(Math.max(min, Math.min(0, max)));
   const d = `${linePath(points, curve)} L${points[points.length - 1][0]} ${baseline} L${points[0][0]} ${baseline} Z`;
+
   return (
     <path
       data-slot="sparkline-area"
@@ -294,12 +324,14 @@ const SparklineBars = ({ className, gap = 1, radius = 1, ...props }: SparklineBa
   const band = width / n;
   const barWidth = Math.max(band - gap, 1);
   const baseline = y(Math.max(min, Math.min(0, max)));
+
   return (
     <g data-slot="sparkline-bars" className={cn(className)} {...props}>
       {data.map((v, i) => {
         const top = y(v);
         const barY = Math.min(top, baseline);
         const barHeight = Math.max(Math.abs(baseline - top), 1);
+
         return (
           <rect
             key={i}
@@ -330,6 +362,7 @@ const SparklineDot = ({ index, className, r = 2.5, ...props }: SparklineDotProps
   if (data.length === 0) return null;
   const i = index ?? activeIndex ?? data.length - 1;
   if (i < 0 || i >= data.length) return null;
+
   return (
     <circle
       data-slot="sparkline-dot"
@@ -352,6 +385,7 @@ export interface SparklineReferenceProps extends React.ComponentProps<'line'> {
 const SparklineReference = ({ value, className, ...props }: SparklineReferenceProps) => {
   const { width, y } = useSparkline();
   const py = y(value);
+
   return (
     <line
       data-slot="sparkline-reference"
@@ -370,16 +404,17 @@ const SparklineReference = ({ value, className, ...props }: SparklineReferencePr
 };
 
 export interface SparklineTooltipProps extends Omit<React.ComponentProps<'div'>, 'children'> {
-  /** Format the hovered value. Defaults to `toLocaleString()`. */
+  /** Format the hovered value. Defaults to an `en-US` number format. */
   format?: (value: number, index: number) => React.ReactNode;
   children?: (value: number, index: number) => React.ReactNode;
 }
 
-const SparklineTooltip = ({ format, className, children, ...props }: SparklineTooltipProps) => {
+const SparklineTooltip = ({ format, className, style, children, ...props }: SparklineTooltipProps) => {
   const { data, x, width, height, activeIndex, overlay, setInteractive } = useSparkline();
 
   React.useEffect(() => {
     setInteractive(true);
+
     return () => setInteractive(false);
   }, [setInteractive]);
 
@@ -387,7 +422,7 @@ const SparklineTooltip = ({ format, className, children, ...props }: SparklineTo
   const value = data[activeIndex];
   const px = x(activeIndex);
   const align = px < width / 3 ? 'start' : px > (width * 2) / 3 ? 'end' : 'mid';
-  const render = children ?? format ?? ((v: number) => v.toLocaleString());
+  const render = children ?? format ?? ((v: number) => numberFormat.format(v));
 
   return (
     <>
@@ -406,12 +441,12 @@ const SparklineTooltip = ({ format, className, children, ...props }: SparklineTo
         <div
           data-slot="sparkline-tooltip"
           className={cn(
-            'absolute top-0 z-10 w-max -translate-y-full rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[11px] leading-tight text-card-foreground shadow-sm -mt-1',
+            'absolute top-0 z-10 -mt-1 w-max -translate-y-full rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[11px] leading-tight text-card-foreground shadow-sm',
             align === 'start' ? 'translate-x-0' : align === 'end' ? '-translate-x-full' : '-translate-x-1/2',
             className,
           )}
-          style={{ left: px }}
           {...props}
+          style={{ ...style, left: px }}
         >
           {render(value, activeIndex)}
         </div>,

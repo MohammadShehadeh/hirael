@@ -32,6 +32,7 @@ const useLightbox = () => {
   if (!ctx) {
     throw new Error('Lightbox compound components must be used inside <Lightbox>');
   }
+
   return ctx;
 };
 
@@ -68,8 +69,9 @@ const Lightbox = ({
     [openProp, onOpenChange],
   );
 
+  const count = items.length;
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex);
-  const index = indexProp ?? internalIndex;
+  const index = Math.min(Math.max(indexProp ?? internalIndex, 0), Math.max(count - 1, 0));
   const setIndex = React.useCallback(
     (next: number) => {
       if (indexProp === undefined) setInternalIndex(next);
@@ -79,8 +81,6 @@ const Lightbox = ({
   );
 
   const [zoomed, setZoomed] = React.useState(false);
-
-  const count = items.length;
 
   const goTo = React.useCallback(
     (i: number) => {
@@ -139,6 +139,7 @@ interface LightboxTriggerProps extends React.ComponentProps<typeof DialogPrimiti
 
 const LightboxTrigger = ({ index = 0, onClick, ...props }: LightboxTriggerProps) => {
   const { goTo } = useLightbox();
+
   return (
     <DialogPrimitive.Trigger
       data-slot="lightbox-trigger"
@@ -155,8 +156,15 @@ const LightboxClose = (props: React.ComponentProps<typeof DialogPrimitive.Close>
   return <DialogPrimitive.Close data-slot="lightbox-close" {...props} />;
 };
 
+const LightboxPortalContext = React.createContext(false);
+
+/** Wrap `LightboxContent` in this to compose your own overlay; the content then skips its built-in portal and overlay. */
 const LightboxPortal = (props: React.ComponentProps<typeof DialogPrimitive.Portal>) => {
-  return <DialogPrimitive.Portal data-slot="lightbox-portal" {...props} />;
+  return (
+    <LightboxPortalContext.Provider value>
+      <DialogPrimitive.Portal data-slot="lightbox-portal" {...props} />
+    </LightboxPortalContext.Provider>
+  );
 };
 
 const LightboxOverlay = ({ className, ...props }: React.ComponentProps<typeof DialogPrimitive.Overlay>) => {
@@ -165,7 +173,7 @@ const LightboxOverlay = ({ className, ...props }: React.ComponentProps<typeof Di
       data-slot="lightbox-overlay"
       className={cn(
         'fixed inset-0 z-50 bg-black/90 backdrop-blur-sm',
-        'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0',
+        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0',
         'duration-200 ease-out motion-reduce:animate-none',
         className,
       )}
@@ -175,16 +183,47 @@ const LightboxOverlay = ({ className, ...props }: React.ComponentProps<typeof Di
 };
 
 const chromeButtonClass =
-  'inline-flex items-center justify-center rounded-md bg-black/50 p-2 text-white backdrop-blur-sm transition-colors hover:bg-black/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none';
+  'inline-flex items-center justify-center rounded-md bg-background/60 p-2 text-foreground backdrop-blur-sm transition-colors hover:bg-background/80 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none';
 
-const LightboxContent = ({
-  className,
-  children,
-  onKeyDown,
-  ...props
-}: React.ComponentProps<typeof DialogPrimitive.Content>) => {
+export interface LightboxLabels {
+  zoomIn: string;
+  zoomOut: string;
+  close: string;
+  previous: string;
+  next: string;
+  /** Dialog title for an item without `alt`. */
+  image: (index: number, count: number) => string;
+}
+
+const defaultLabels: LightboxLabels = {
+  zoomIn: 'Zoom in',
+  zoomOut: 'Zoom out',
+  close: 'Close',
+  previous: 'Previous image',
+  next: 'Next image',
+  image: (index, count) => `Image ${index + 1} of ${count}`,
+};
+
+const ZOOM_SCALE = 2;
+
+const isEditableTarget = (target: EventTarget) => {
+  if (!(target instanceof HTMLElement)) return false;
+
+  return target.isContentEditable || target.closest('input, textarea, select') !== null;
+};
+
+export interface LightboxContentProps extends React.ComponentProps<typeof DialogPrimitive.Content> {
+  /** Accessible names for the built-in controls. */
+  labels?: Partial<LightboxLabels>;
+}
+
+const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: LightboxContentProps) => {
   const { items, index, zoomed, setZoomed, goTo, next, prev, canPrev, canNext } = useLightbox();
+  const inPortal = React.useContext(LightboxPortalContext);
   const item = items[index];
+  const text = React.useMemo(() => ({ ...defaultLabels, ...labels }), [labels]);
+  const viewportRef = React.useRef<HTMLDivElement | null>(null);
+  const imageRef = React.useRef<HTMLImageElement | null>(null);
 
   const [pan, setPan] = React.useState({ x: 0, y: 0 });
   const [dragging, setDragging] = React.useState(false);
@@ -208,9 +247,19 @@ const LightboxContent = ({
     return getComputedStyle(el).direction === 'rtl';
   }
 
+  function clampPan(x: number, y: number) {
+    const viewport = viewportRef.current;
+    const image = imageRef.current;
+    if (!viewport || !image) return { x, y };
+    const maxX = Math.max(0, (image.offsetWidth * ZOOM_SCALE - viewport.clientWidth) / 2);
+    const maxY = Math.max(0, (image.offsetHeight * ZOOM_SCALE - viewport.clientHeight) / 2);
+
+    return { x: Math.min(maxX, Math.max(-maxX, x)), y: Math.min(maxY, Math.max(-maxY, y)) };
+  }
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     onKeyDown?.(event);
-    if (event.defaultPrevented) return;
+    if (event.defaultPrevented || isEditableTarget(event.target)) return;
     const rtl = isRtl(event.currentTarget);
     switch (event.key) {
       case 'ArrowRight':
@@ -259,7 +308,7 @@ const LightboxContent = ({
     const dx = event.clientX - drag.startX;
     const dy = event.clientY - drag.startY;
     if (Math.abs(dx) > 4 || Math.abs(dy) > 4) drag.moved = true;
-    if (zoomed) setPan({ x: drag.panX + dx, y: drag.panY + dy });
+    if (zoomed) setPan(clampPan(drag.panX + dx, drag.panY + dy));
   }
 
   function handlePointerUp(event: React.PointerEvent<HTMLDivElement>) {
@@ -277,6 +326,7 @@ const LightboxContent = ({
         if (rtl) next();
         else prev();
       }
+
       return;
     }
     const target = event.target as HTMLElement;
@@ -293,108 +343,121 @@ const LightboxContent = ({
     if (zoomed) setPan({ x: drag.panX, y: drag.panY });
   }
 
+  const content = (
+    <DialogPrimitive.Content
+      data-slot="lightbox-content"
+      aria-describedby={undefined}
+      onKeyDown={handleKeyDown}
+      className={cn(
+        'fixed inset-0 z-50 flex flex-col outline-none',
+        'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95',
+        'duration-200 ease-out motion-reduce:animate-none',
+        className,
+      )}
+      {...props}
+    >
+      <DialogPrimitive.Title className="sr-only">{item?.alt || text.image(index, items.length)}</DialogPrimitive.Title>
+      <div
+        ref={viewportRef}
+        data-slot="lightbox-viewport"
+        className="flex min-h-0 w-full flex-1 touch-none items-center justify-center overflow-hidden px-14 py-14 select-none"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerCancel}
+      >
+        {item ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            ref={imageRef}
+            data-slot="lightbox-image"
+            src={item.src}
+            alt={item.alt ?? ''}
+            draggable={false}
+            className={cn(
+              'max-h-full max-w-full object-contain transition-transform duration-200 motion-reduce:transition-none',
+              zoomed ? 'cursor-grab' : 'cursor-zoom-in',
+              dragging && zoomed && 'cursor-grabbing transition-none',
+            )}
+            style={{
+              transform: zoomed ? `translate(${pan.x}px, ${pan.y}px) scale(${ZOOM_SCALE})` : undefined,
+            }}
+          />
+        ) : null}
+      </div>
+      {item?.caption ? (
+        <p
+          data-slot="lightbox-caption"
+          className="mx-auto mb-3 max-w-prose rounded-md bg-background/60 px-3 py-1.5 text-center text-sm text-foreground backdrop-blur-sm"
+        >
+          {item.caption}
+        </p>
+      ) : null}
+      {children}
+      <span
+        data-slot="lightbox-counter"
+        className="absolute start-3 top-3 rounded-full bg-background/60 px-2.5 py-1 text-xs text-foreground tabular-nums backdrop-blur-sm"
+      >
+        {index + 1} / {items.length}
+      </span>
+      <div className="absolute end-3 top-3 flex items-center gap-2">
+        <button
+          type="button"
+          data-slot="lightbox-zoom"
+          aria-label={zoomed ? text.zoomOut : text.zoomIn}
+          aria-pressed={zoomed}
+          onClick={() => setZoomed(!zoomed)}
+          className={chromeButtonClass}
+        >
+          {zoomed ? <ZoomOut className="size-4" /> : <ZoomIn className="size-4" />}
+        </button>
+        <DialogPrimitive.Close data-slot="lightbox-close" aria-label={text.close} className={chromeButtonClass}>
+          <X className="size-4" />
+        </DialogPrimitive.Close>
+      </div>
+      {canPrev ? (
+        <button
+          type="button"
+          data-slot="lightbox-prev"
+          aria-label={text.previous}
+          onClick={prev}
+          className={cn(chromeButtonClass, 'absolute start-3 top-1/2 -translate-y-1/2')}
+        >
+          <ChevronLeft className="size-5 rtl:rotate-180" />
+        </button>
+      ) : null}
+      {canNext ? (
+        <button
+          type="button"
+          data-slot="lightbox-next"
+          aria-label={text.next}
+          onClick={next}
+          className={cn(chromeButtonClass, 'absolute end-3 top-1/2 -translate-y-1/2')}
+        >
+          <ChevronRight className="size-5 rtl:rotate-180" />
+        </button>
+      ) : null}
+    </DialogPrimitive.Content>
+  );
+
+  if (inPortal) return content;
+
   return (
     <LightboxPortal>
       <LightboxOverlay />
-      <DialogPrimitive.Content
-        data-slot="lightbox-content"
-        aria-describedby={undefined}
-        onKeyDown={handleKeyDown}
-        className={cn(
-          'fixed inset-0 z-50 flex flex-col outline-none',
-          'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=open]:fade-in-0 data-[state=closed]:fade-out-0 data-[state=open]:zoom-in-95',
-          'duration-200 ease-out motion-reduce:animate-none',
-          className,
-        )}
-        {...props}
-      >
-        <DialogPrimitive.Title className="sr-only">
-          {item?.alt || `Image ${index + 1} of ${items.length}`}
-        </DialogPrimitive.Title>
-        <div
-          data-slot="lightbox-viewport"
-          className="flex min-h-0 w-full flex-1 touch-none select-none items-center justify-center overflow-hidden px-14 py-14"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerUp}
-          onPointerCancel={handlePointerCancel}
-        >
-          {item ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              data-slot="lightbox-image"
-              src={item.src}
-              alt={item.alt ?? ''}
-              draggable={false}
-              className={cn(
-                'max-h-full max-w-full object-contain transition-transform duration-200 motion-reduce:transition-none',
-                zoomed ? 'cursor-grab' : 'cursor-zoom-in',
-                dragging && zoomed && 'cursor-grabbing transition-none',
-              )}
-              style={{
-                transform: zoomed ? `translate(${pan.x}px, ${pan.y}px) scale(2)` : undefined,
-              }}
-            />
-          ) : null}
-        </div>
-        {item?.caption ? (
-          <p
-            data-slot="lightbox-caption"
-            className="mx-auto mb-3 max-w-prose rounded-md bg-black/50 px-3 py-1.5 text-center text-sm text-white backdrop-blur-sm"
-          >
-            {item.caption}
-          </p>
-        ) : null}
-        {children}
-        <span
-          data-slot="lightbox-counter"
-          className="absolute start-3 top-3 rounded-full bg-black/50 px-2.5 py-1 font-mono text-xs tabular-nums text-white backdrop-blur-sm"
-        >
-          {index + 1} / {items.length}
-        </span>
-        <div className="absolute end-3 top-3 flex items-center gap-2">
-          <button
-            type="button"
-            data-slot="lightbox-zoom"
-            aria-label={zoomed ? 'Zoom out' : 'Zoom in'}
-            aria-pressed={zoomed}
-            onClick={() => setZoomed(!zoomed)}
-            className={chromeButtonClass}
-          >
-            {zoomed ? <ZoomOut className="size-4" /> : <ZoomIn className="size-4" />}
-          </button>
-          <DialogPrimitive.Close data-slot="lightbox-close" aria-label="Close" className={chromeButtonClass}>
-            <X className="size-4" />
-          </DialogPrimitive.Close>
-        </div>
-        {canPrev ? (
-          <button
-            type="button"
-            data-slot="lightbox-prev"
-            aria-label="Previous image"
-            onClick={prev}
-            className={cn(chromeButtonClass, 'absolute start-3 top-1/2 -translate-y-1/2')}
-          >
-            <ChevronLeft className="size-5 rtl:rotate-180" />
-          </button>
-        ) : null}
-        {canNext ? (
-          <button
-            type="button"
-            data-slot="lightbox-next"
-            aria-label="Next image"
-            onClick={next}
-            className={cn(chromeButtonClass, 'absolute end-3 top-1/2 -translate-y-1/2')}
-          >
-            <ChevronRight className="size-5 rtl:rotate-180" />
-          </button>
-        ) : null}
-      </DialogPrimitive.Content>
+      {content}
     </LightboxPortal>
   );
 };
 
-const LightboxThumbnails = ({ className, ...props }: React.ComponentProps<'div'>) => {
+export interface LightboxThumbnailsProps extends React.ComponentProps<'div'> {
+  /** Accessible name for a thumbnail whose item has no `alt`. */
+  getLabel?: (index: number) => string;
+}
+
+const defaultThumbnailLabel = (index: number) => `Go to image ${index + 1}`;
+
+const LightboxThumbnails = ({ getLabel = defaultThumbnailLabel, className, ...props }: LightboxThumbnailsProps) => {
   const { items, index, goTo } = useLightbox();
   const refs = React.useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -422,11 +485,11 @@ const LightboxThumbnails = ({ className, ...props }: React.ComponentProps<'div'>
           }}
           data-slot="lightbox-thumbnail"
           data-active={i === index || undefined}
-          aria-label={item.alt ?? `Go to image ${i + 1}`}
+          aria-label={item.alt ?? getLabel(i)}
           aria-current={i === index ? 'true' : undefined}
           onClick={() => goTo(i)}
           className={cn(
-            'size-14 shrink-0 overflow-hidden rounded-md opacity-60 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring motion-reduce:transition-none',
+            'size-14 shrink-0 overflow-hidden rounded-md opacity-60 transition-opacity hover:opacity-100 focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none',
             i === index && 'opacity-100 ring-2 ring-ring',
           )}
         >

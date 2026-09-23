@@ -16,14 +16,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/registry/hirael/bases/base/ui/dialog';
+import { Empty, EmptyDescription, EmptyHeader, EmptyTitle } from '@/registry/hirael/bases/base/ui/empty';
 import { Field, FieldError } from '@/registry/hirael/bases/base/ui/field';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/base/ui/input-group';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
+import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
 
 export type EnvEnvironment = 'production' | 'preview' | 'development';
 
 export interface EnvVar {
+  /** Stable row identity, so per-row UI state (like a revealed secret) stays with its variable. */
+  id?: string;
   key: string;
   value: string;
   secret?: boolean;
@@ -35,6 +39,15 @@ const ENVIRONMENTS: readonly { id: EnvEnvironment; label: string }[] = [
   { id: 'preview', label: 'Preview' },
   { id: 'development', label: 'Dev' },
 ];
+
+let envVarSeed = 0;
+const createEnvVarId = () => {
+  envVarSeed += 1;
+
+  return `env-var-${envVarSeed}`;
+};
+
+const withId = (item: EnvVar): EnvVar => (item.id ? item : { ...item, id: createEnvVarId() });
 
 const KEY_PATTERN = /^[A-Z_][A-Z0-9_]*$/;
 const SECRET_HINT = /(SECRET|TOKEN|PASSWORD|PRIVATE|API_KEY)/;
@@ -65,6 +78,7 @@ const parseDotEnv = (text: string): EnvVar[] => {
 
     vars.push({ key, value });
   }
+
   return vars;
 };
 
@@ -73,6 +87,7 @@ const validateKey = (key: string): string | null => {
   if (!KEY_PATTERN.test(key)) {
     return 'Use A-Z, 0-9 and underscores. Cannot start with a digit.';
   }
+
   return null;
 };
 
@@ -109,6 +124,7 @@ const useEnvEditor = () => {
   if (!ctx) {
     throw new Error('EnvEditor parts must be used within <EnvEditor>');
   }
+
   return ctx;
 };
 
@@ -167,8 +183,8 @@ const EnvEditor = ({
       const next = [...vars];
       for (const item of list) {
         const existing = next.findIndex((v) => v.key === item.key);
-        if (existing === -1) next.push(item);
-        else next[existing] = { ...next[existing], ...item };
+        if (existing === -1) next.push(withId(item));
+        else next[existing] = { ...next[existing], ...item, id: next[existing].id };
       }
       setVars(next);
     },
@@ -193,6 +209,7 @@ const EnvEditor = ({
       const message = validateKey(v.key);
       if (message) {
         result[i] = message;
+
         return;
       }
       const first = seen.get(v.key);
@@ -202,11 +219,13 @@ const EnvEditor = ({
         seen.set(v.key, i);
       }
     });
+
     return result;
   }, [vars]);
 
   const visible = React.useMemo(() => {
     const q = query.trim().toLowerCase();
+
     return vars
       .map((v, i) => ({ v, i }))
       .filter(({ v }) => !q || v.key.toLowerCase().includes(q) || (!v.secret && v.value.toLowerCase().includes(q)))
@@ -220,6 +239,7 @@ const EnvEditor = ({
       if (!before || !sameVar(v, before)) count += 1;
     });
     count += Math.max(0, baseline.length - vars.length);
+
     return count;
   }, [vars, baseline]);
 
@@ -261,7 +281,7 @@ const EnvEditor = ({
 
 interface EnvEditorHeaderProps extends Omit<React.ComponentProps<'div'>, 'title'> {
   title?: React.ReactNode;
-  /** Hide the search box. */
+  /** Set to false to hide the search box. */
   searchable?: boolean;
 }
 
@@ -369,7 +389,7 @@ const EnvEditorImport = ({ className, children = 'Import .env', ...props }: EnvE
           className="min-h-40"
         />
         <DialogFooter className="sm:items-center sm:justify-between">
-          <span className="text-[11px] tabular-nums text-muted-foreground">
+          <span className="text-[11px] text-muted-foreground tabular-nums">
             {parsed.length} {parsed.length === 1 ? 'variable' : 'variables'} found
           </span>
           <Button type="button" size="sm" disabled={parsed.length === 0} onClick={submit}>
@@ -398,7 +418,7 @@ const EnvEditorTable = ({ className, children, ...props }: EnvEditorTableProps) 
     >
       <div
         role="row"
-        className={cn('hidden border-b border-border px-4 py-2 text-xs uppercase text-muted-foreground', ROW_GRID)}
+        className={cn('hidden border-b border-border px-4 py-2 text-xs text-muted-foreground uppercase', ROW_GRID)}
       >
         <span role="columnheader">Key</span>
         <span role="columnheader">Value</span>
@@ -410,10 +430,15 @@ const EnvEditorTable = ({ className, children, ...props }: EnvEditorTableProps) 
       {children ??
         (visible.length === 0 ? (
           <EnvEditorEmpty>
-            {vars.length === 0 ? 'No variables yet. Add one or import a .env file.' : `Nothing matches "${query}".`}
+            <EmptyHeader>
+              <EmptyTitle>{vars.length === 0 ? 'No variables yet' : 'No matches'}</EmptyTitle>
+              <EmptyDescription>
+                {vars.length === 0 ? 'Add one or import a .env file.' : `Nothing matches "${query}".`}
+              </EmptyDescription>
+            </EmptyHeader>
           </EnvEditorEmpty>
         ) : (
-          visible.map((index) => <EnvEditorRow key={index} index={index} />)
+          visible.map((index) => <EnvEditorRow key={vars[index].id ?? `index-${index}`} index={index} />)
         ))}
     </div>
   );
@@ -426,36 +451,23 @@ interface EnvironmentChipsProps {
 }
 
 const EnvironmentChips = ({ value, onChange, label }: EnvironmentChipsProps) => {
-  const toggle = (id: EnvEnvironment) => {
-    onChange(
-      value.includes(id)
-        ? value.filter((env) => env !== id)
-        : ENVIRONMENTS.map((env) => env.id).filter((env) => env === id || value.includes(env)),
-    );
-  };
-
   return (
-    <div role="group" aria-label={label} data-slot="env-editor-environments" className="flex items-center gap-1">
-      {ENVIRONMENTS.map((env) => {
-        const on = value.includes(env.id);
-        return (
-          <button
-            key={env.id}
-            type="button"
-            aria-pressed={on}
-            onClick={() => toggle(env.id)}
-            className={cn(
-              'inline-flex h-7 items-center rounded-md border px-2 text-xs uppercase transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
-              on
-                ? 'border-foreground bg-foreground text-background'
-                : 'border-border bg-transparent text-muted-foreground hover:text-foreground',
-            )}
-          >
-            {env.label}
-          </button>
-        );
-      })}
-    </div>
+    <ToggleGroup
+      multiple
+      variant="outline"
+      size="sm"
+      spacing={1}
+      aria-label={label}
+      data-slot="env-editor-environments"
+      value={value}
+      onValueChange={(next) => onChange(ENVIRONMENTS.map((env) => env.id).filter((env) => next.includes(env)))}
+    >
+      {ENVIRONMENTS.map((env) => (
+        <ToggleGroupItem key={env.id} value={env.id}>
+          {env.label}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
   );
 };
 
@@ -466,12 +478,12 @@ interface EnvEditorRowProps extends Omit<React.ComponentProps<'div'>, 'children'
 const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
   const { vars, errors, update, remove } = useEnvEditor();
   const [revealed, setRevealed] = React.useState(false);
+  const errorId = React.useId();
   const item = vars[index];
   if (!item) return null;
 
   const error = errors[index];
   const secret = Boolean(item.secret);
-  const errorId = `env-editor-error-${index}`;
 
   return (
     <div
@@ -481,7 +493,7 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
       className={cn('flex flex-col gap-2 border-b border-border px-4 py-3 last:border-b-0', ROW_GRID, className)}
       {...props}
     >
-      <div role="cell" className="flex flex-col gap-1">
+      <Field role="cell" className="gap-1" data-invalid={error ? true : undefined}>
         <Input
           value={item.key}
           onChange={(event) => update(index, { key: event.target.value.toUpperCase() })}
@@ -492,12 +504,8 @@ const EnvEditorRow = ({ index, className, ...props }: EnvEditorRowProps) => {
           autoCapitalize="characters"
           className="h-8"
         />
-        {error ? (
-          <p id={errorId} className="text-xs text-destructive">
-            {error}
-          </p>
-        ) : null}
-      </div>
+        <FieldError id={errorId}>{error}</FieldError>
+      </Field>
 
       <div role="cell" className="flex items-center gap-1">
         <Input
@@ -590,7 +598,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
     event.preventDefault();
     setTouched(true);
     if (keyError) return;
-    add({ key, value, secret, environments });
+    add({ id: createEnvVarId(), key, value, secret, environments });
     reset();
   };
 
@@ -602,7 +610,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
         if (event.key === 'Escape') reset();
       }}
       className={cn(
-        'flex flex-col gap-2 border-t border-border bg-muted/40 px-4 py-3 animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+        'flex animate-in flex-col gap-2 border-t border-border bg-muted/40 px-4 py-3 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none',
         ROW_GRID,
         className,
       )}
@@ -661,14 +669,14 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
   );
 };
 
-type EnvEditorEmptyProps = React.ComponentProps<'div'>;
+type EnvEditorEmptyProps = React.ComponentProps<typeof Empty>;
 
 const EnvEditorEmpty = ({ className, ...props }: EnvEditorEmptyProps) => {
   return (
-    <div
+    <Empty
       data-slot="env-editor-empty"
       className={cn(
-        'flex flex-col items-center justify-center gap-1 px-4 py-12 text-center text-sm text-muted-foreground animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+        'animate-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none',
         className,
       )}
       {...props}
@@ -693,7 +701,7 @@ const EnvEditorFooter = ({ className, children, ...props }: EnvEditorFooterProps
         aria-live="polite"
         className={cn(
           'text-[11px] tabular-nums',
-          'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+          'animate-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none',
           hasErrors ? 'text-destructive' : dirty ? 'text-foreground' : 'text-muted-foreground',
         )}
       >
@@ -731,33 +739,39 @@ export {
 
 const SAMPLE: EnvVar[] = [
   {
+    id: 'database-url',
     key: 'DATABASE_URL',
     value: 'postgres://app:s3cr3t@db.internal:5432/relay',
     secret: true,
     environments: ['production'],
   },
   {
+    id: 'redis-url',
     key: 'REDIS_URL',
     value: 'redis://cache.internal:6379/0',
     environments: ['production', 'preview'],
   },
   {
+    id: 'payments-secret-key',
     key: 'PAYMENTS_SECRET_KEY',
     value: 'pay_8Nx2QfR7ZmY0pL9wVtHc51K',
     secret: true,
     environments: ['production'],
   },
   {
+    id: 'next-public-app-url',
     key: 'NEXT_PUBLIC_APP_URL',
     value: 'https://app.relay.dev',
     environments: ['production', 'preview', 'development'],
   },
   {
+    id: 'log-level',
     key: 'LOG_LEVEL',
     value: 'info',
     environments: ['production', 'preview', 'development'],
   },
   {
+    id: 'session-secret',
     key: 'SESSION_SECRET',
     value: 'b7f2e9c4a1d84f6e9a0c3b5d7e1f2a4c',
     secret: true,
@@ -773,7 +787,7 @@ const EnvEditorBlock = () => {
       <EnvEditor
         value={vars}
         onValueChange={setVars}
-        className="w-full max-w-4xl animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+        className="w-full max-w-4xl animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none"
       >
         <EnvEditorHeader />
         <EnvEditorTable />

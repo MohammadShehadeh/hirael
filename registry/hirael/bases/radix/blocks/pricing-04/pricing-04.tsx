@@ -101,17 +101,17 @@ const Pricing04 = () => {
                 <>
                   <div
                     aria-hidden
-                    className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_0%,var(--warm-glow),transparent_70%)]"
+                    className="absolute inset-0 -z-10 bg-[radial-gradient(120%_90%_at_50%_0%,color-mix(in_oklch,var(--primary)_20%,transparent),transparent_70%)]"
                   />
                   <Badge className="absolute end-5 top-5">Most popular</Badge>
                 </>
               ) : null}
 
               <div className="flex flex-col gap-2">
-                <h3 className="text-xs uppercase text-muted-foreground">{tier.name}</h3>
+                <h3 className="text-xs text-muted-foreground uppercase">{tier.name}</h3>
                 <div key={billing} data-slot="pricing-price" className={cn(SWAP, 'flex flex-col gap-1')}>
                   <div className="flex items-baseline gap-1">
-                    <span dir="ltr" className="text-5xl font-semibold tabular-nums tracking-tight">
+                    <span dir="ltr" className="text-5xl font-semibold tracking-tight tabular-nums">
                       {money.format(price)}
                     </span>
                     <span className="text-sm text-muted-foreground">/ month</span>

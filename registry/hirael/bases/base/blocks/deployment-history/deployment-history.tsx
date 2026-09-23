@@ -66,6 +66,7 @@ const DeploymentHistoryItem = ({
 }: DeploymentHistoryItemProps) => {
   const meta = stateMeta[state];
   const Icon = meta.icon;
+
   return (
     <li
       data-slot="deployment-history-item"
@@ -86,7 +87,7 @@ const DeploymentHistoryItem = ({
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-medium text-foreground">{version}</span>
           {environment ? (
-            <span className="rounded-sm bg-accent px-1.5 py-0.5 text-xs uppercase text-muted-foreground">
+            <span className="rounded-sm bg-accent px-1.5 py-0.5 text-xs text-muted-foreground uppercase">
               {environment}
             </span>
           ) : null}

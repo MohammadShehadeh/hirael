@@ -70,7 +70,7 @@ export const Journal = () => {
               <div className="min-w-0 flex-1">
                 <h3 className="truncate text-base font-medium sm:text-lg">{entry.title}</h3>
                 <p className="mt-1 text-xs text-[hsl(var(--muted))] sm:text-sm">
-                  {entry.readTime} · {entry.date}
+                  {entry.readTime}, {entry.date}
                 </p>
               </div>
               <span className="me-2 flex size-9 shrink-0 items-center justify-center rounded-full border border-[hsl(var(--stroke))] text-[hsl(var(--muted))] transition-colors duration-300 group-hover:text-[hsl(var(--text))]">

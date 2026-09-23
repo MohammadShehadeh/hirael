@@ -52,7 +52,7 @@ export const Philosophy = () => {
               <React.Fragment key={block.label}>
                 {index > 0 ? <div aria-hidden className="my-10 h-px w-full bg-foreground/10" /> : null}
                 <div>
-                  <p className="mb-4 text-xs uppercase tracking-widest text-foreground/40">{block.label}</p>
+                  <p className="mb-4 text-xs tracking-widest text-foreground/40 uppercase">{block.label}</p>
                   <p className="text-base leading-relaxed text-foreground/70 md:text-lg">{block.body}</p>
                 </div>
               </React.Fragment>

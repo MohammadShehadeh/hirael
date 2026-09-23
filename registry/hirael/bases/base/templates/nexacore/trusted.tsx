@@ -39,7 +39,7 @@ export const Trusted = () => {
       style={{ backgroundImage: `url(${TRUSTED_BG})` }}
     >
       <div className="flex w-full max-w-[1200px] flex-col items-center gap-5 text-center">
-        <h2 className="text-[length:clamp(32px,4vw,56px)] font-medium leading-[1.2] text-white">
+        <h2 className="text-[length:clamp(32px,4vw,56px)] leading-[1.2] font-medium text-white">
           Relied on by enterprise teams
           <br />
           <GradientText>from groundbreak to go-live.</GradientText>

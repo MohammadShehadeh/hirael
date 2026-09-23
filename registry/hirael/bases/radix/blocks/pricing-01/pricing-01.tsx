@@ -71,14 +71,14 @@ const Pricing01 = () => {
 
   return (
     <section data-slot="pricing" className="bg-background py-20 sm:py-28">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="pricing-header" className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Pricing</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Pricing</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
-            Send invoices free. Pay when you <span className="italic text-foreground">grow</span>.
+            Send invoices free. Pay when you <span className="text-foreground italic">grow</span>.
           </h2>
           <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
             Every plan takes card and bank payments with no extra fee from us. Upgrade when you need more clients or
@@ -121,16 +121,16 @@ const Pricing01 = () => {
                 className={cn(ENTER, 'relative')}
               >
                 {tier.featured && (
-                  <span className="absolute -top-2.5 end-6 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 text-xs uppercase text-foreground">
+                  <span className="absolute end-6 -top-2.5 inline-flex items-center rounded-full border border-border bg-background px-2.5 py-0.5 text-xs text-foreground uppercase">
                     Most popular
                   </span>
                 )}
 
                 <CardHeader className="flex flex-col">
-                  <h3 className="text-xs font-normal uppercase text-muted-foreground">{tier.name}</h3>
+                  <h3 className="text-xs font-normal text-muted-foreground uppercase">{tier.name}</h3>
                   <div key={billing} data-slot="pricing-price" className={cn(SWAP, 'flex flex-col gap-1')}>
                     <div className="flex items-baseline gap-1">
-                      <span dir="ltr" className="text-4xl font-semibold tabular-nums tracking-[-0.04em]">
+                      <span dir="ltr" className="text-4xl font-semibold tracking-[-0.04em] tabular-nums">
                         {money.format(price)}
                       </span>
                       <span className="text-xs text-muted-foreground">/ month</span>

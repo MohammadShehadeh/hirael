@@ -6,6 +6,7 @@ import {
   CreditCard,
   KeyRound,
   LogOut,
+  Menu,
   Plug,
   Search,
   Settings,
@@ -235,6 +236,7 @@ const fieldMatches = (field: Field, query: string) => {
   ]
     .join(' ')
     .toLowerCase();
+
   return haystack.includes(query);
 };
 
@@ -298,7 +300,7 @@ const FieldRow = ({ field, values, toggles, onCommit, onToggle }: FieldRowProps)
 
       {field.kind === 'secret' && (
         <div className="flex items-center gap-2">
-          <span className="text-sm tabular-nums text-foreground">
+          <span className="text-sm text-foreground tabular-nums">
             {field.value.slice(0, 9)}
             <span aria-hidden>{'•'.repeat(8)}</span>
             <span className="sr-only"> hidden</span>
@@ -381,6 +383,7 @@ const AppShell02 = () => {
       (acc, s) => {
         const fields = SECTION_FIELDS[s.id];
         acc[s.id] = normalized ? fields.filter((f) => fieldMatches(f, normalized)) : fields;
+
         return acc;
       },
       {} as Record<SectionId, readonly Field[]>,
@@ -392,8 +395,26 @@ const AppShell02 = () => {
   return (
     <div className="flex min-h-[640px] flex-col bg-background">
       <header className="sticky top-0 z-20 border-b border-border bg-background/80 backdrop-blur">
-        <div className="container flex h-14 w-full items-center gap-3">
+        <div className="mx-auto flex h-14 w-full max-w-[1480px] items-center gap-3 px-4">
           <BrandMark className="size-7 shrink-0" />
+
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              render={<Button variant="ghost" size="icon-sm" aria-label="Open navigation" className="md:hidden" />}
+            >
+              <Menu aria-hidden />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-48">
+              {NAV.map((item) => (
+                <DropdownMenuItem
+                  key={item}
+                  render={<a href="#" aria-current={item === 'Settings' ? 'page' : undefined} />}
+                >
+                  {item}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
 
           <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
 
@@ -460,9 +481,9 @@ const AppShell02 = () => {
         </div>
       </header>
 
-      <div data-slot="app-shell-main" className={cn(ENTER, 'container w-full py-6 sm:py-8')}>
+      <div data-slot="app-shell-main" className={cn(ENTER, 'mx-auto w-full max-w-[1480px] px-4 py-6 sm:py-8')}>
         <div className="flex flex-col gap-1">
-          <span className="flex gap-1.5 text-xs uppercase text-muted-foreground">
+          <span className="flex gap-1.5 text-xs text-muted-foreground uppercase">
             <span>workspace</span>
             <span className="text-border">|</span>
             <span>plinth labs</span>
@@ -486,6 +507,7 @@ const AppShell02 = () => {
           <TabsList variant="line" className="h-auto w-full justify-start lg:col-span-3">
             {SECTIONS.map((s) => {
               const count = matchesBySection[s.id].length;
+
               return (
                 <TabsTrigger key={s.id} value={s.id}>
                   <s.icon className="size-4 shrink-0 text-muted-foreground" aria-hidden />
@@ -505,12 +527,13 @@ const AppShell02 = () => {
             {SECTIONS.map((s) => {
               const fields = matchesBySection[s.id];
               const elsewhere = SECTIONS.filter((other) => other.id !== s.id && matchesBySection[other.id].length > 0);
+
               return (
                 <TabsContent key={s.id} value={s.id} className="mt-0">
                   <div className={cn(SWAP, 'overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm')}>
                     <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <s.icon className="size-4 shrink-0 self-start mt-0.5 text-muted-foreground" aria-hidden />
+                        <s.icon className="mt-0.5 size-4 shrink-0 self-start text-muted-foreground" aria-hidden />
                         <div className="flex flex-col">
                           <h2 className="text-sm font-semibold">{s.label}</h2>
                           <p className="text-xs text-muted-foreground">{s.desc}</p>

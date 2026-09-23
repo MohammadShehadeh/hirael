@@ -20,6 +20,7 @@ const refreshFor = (diff: number) => {
   if (age < 60_000) return 1000;
   if (age < 3_600_000) return 30_000;
   if (age < 24 * 3_600_000) return 300_000;
+
   return 3_600_000;
 };
 
@@ -41,6 +42,7 @@ const clockFor = (interval: number) => {
     clock = { now: Date.now(), listeners: new Set() };
     clocks.set(interval, clock);
   }
+
   return clock;
 };
 
@@ -57,6 +59,7 @@ const subscribeTo = (interval: number) => {
           clock.listeners.forEach((listener) => listener());
         }, interval);
       }
+
       return () => {
         clock.listeners.delete(onChange);
         if (clock.listeners.size === 0) {
@@ -67,6 +70,7 @@ const subscribeTo = (interval: number) => {
     };
     subscribers.set(interval, subscribe);
   }
+
   return subscribe;
 };
 
@@ -79,6 +83,7 @@ const relativeFormat = (locale: string | undefined, numeric: RelativeNumeric, st
     format = new Intl.RelativeTimeFormat(locale, { numeric, style });
     formatters.set(key, format);
   }
+
   return format as Intl.RelativeTimeFormat;
 };
 
@@ -89,6 +94,7 @@ const absoluteFormat = (locale: string | undefined) => {
     format = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' });
     formatters.set(key, format);
   }
+
   return format as Intl.DateTimeFormat;
 };
 
@@ -96,6 +102,7 @@ const formatRelative = (diff: number, format: Intl.RelativeTimeFormat) => {
   for (const [unit, ms] of UNITS) {
     if (Math.abs(diff) >= ms || unit === 'second') return format.format(Math.round(diff / ms), unit);
   }
+
   return '';
 };
 

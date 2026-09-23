@@ -22,6 +22,7 @@ const useTreeView = () => {
   if (!ctx) {
     throw new Error('TreeItem must be used inside <TreeView>');
   }
+
   return ctx;
 };
 
@@ -68,12 +69,14 @@ const TreeView = ({ value: valueProp, defaultValue, onValueChange, className, ..
     for (const [itemValue, itemEl] of itemsRef.current) {
       if (itemEl === first) return itemValue;
     }
+
     return null;
   }, [getVisibleItems]);
 
   const registerItem = React.useCallback(
     (value: string, el: HTMLButtonElement) => {
       itemsRef.current.set(value, el);
+
       return () => {
         itemsRef.current.delete(value);
         setTabbable((current) => (current === value ? firstVisibleValue() : current));
@@ -88,6 +91,7 @@ const TreeView = ({ value: valueProp, defaultValue, onValueChange, className, ..
       if (selected !== undefined && itemsRef.current.has(selected)) {
         return selected;
       }
+
       return firstVisibleValue();
     });
   }, [selected, firstVisibleValue]);
@@ -106,7 +110,7 @@ const TreeView = ({ value: valueProp, defaultValue, onValueChange, className, ..
 
   return (
     <TreeViewContext.Provider value={ctx}>
-      <div data-slot="tree-view" role="tree" className={cn('w-full select-none text-sm', className)} {...props} />
+      <div data-slot="tree-view" role="tree" className={cn('w-full text-sm select-none', className)} {...props} />
     </TreeViewContext.Provider>
   );
 };
@@ -157,6 +161,7 @@ const TreeItem = ({
   React.useLayoutEffect(() => {
     const el = triggerRef.current;
     if (!el) return;
+
     return registerItem(value, el);
   }, [registerItem, value]);
 
@@ -165,6 +170,7 @@ const TreeItem = ({
   React.useLayoutEffect(() => {
     const el = triggerRef.current;
     const parentTrigger = parentTriggerRef?.current ?? null;
+
     return () => {
       const holdsFocus = el?.closest('[data-slot="tree-item"]')?.contains(document.activeElement) ?? false;
       if (holdsFocus) parentTrigger?.focus();
@@ -208,24 +214,19 @@ const TreeItem = ({
     }
   };
 
-  const triggerStyle: React.CSSProperties = {
-    paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE,
-  };
-  const triggerClassName = cn(
-    'group flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start outline-none transition-colors',
-    'hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring',
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    isSelected ? 'bg-accent font-medium text-foreground' : 'text-foreground/80',
-    className,
-  );
   const triggerProps = {
     ref: triggerRef,
     type: 'button' as const,
     disabled,
     tabIndex: tabbable === value ? 0 : -1,
     'data-slot': 'tree-item-trigger',
-    style: triggerStyle,
-    className: triggerClassName,
+    style: { paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE },
+    className: cn(
+      'group flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start transition-colors outline-none',
+      'hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring',
+      'disabled:cursor-not-allowed disabled:opacity-50',
+      isSelected ? 'bg-accent font-medium text-foreground' : 'text-foreground/80',
+    ),
     onKeyDown: onTriggerKeyDown,
     onFocus: () => setTabbable(value),
   };
@@ -251,8 +252,14 @@ const TreeItem = ({
           hasChildren ? 'group-data-[state=open]:rotate-90 rtl:group-data-[state=closed]:rotate-180' : 'invisible',
         )}
       />
-      {leadingIcon != null && <span className="flex shrink-0 items-center [&_svg]:size-4">{leadingIcon}</span>}
-      <span className="min-w-0 truncate">{label}</span>
+      {leadingIcon != null && (
+        <span data-slot="tree-item-icon" className="flex shrink-0 items-center [&_svg]:size-4">
+          {leadingIcon}
+        </span>
+      )}
+      <span data-slot="tree-item-label" className="min-w-0 truncate">
+        {label}
+      </span>
     </>
   );
 
@@ -262,9 +269,9 @@ const TreeItem = ({
         <div
           data-slot="tree-item"
           role="treeitem"
-          aria-selected={isSelected}
           aria-expanded={open}
           aria-level={depth + 1}
+          className={className}
           {...props}
         >
           <CollapsibleTrigger asChild>
@@ -283,8 +290,16 @@ const TreeItem = ({
   }
 
   return (
-    <div data-slot="tree-item" role="treeitem" aria-selected={isSelected} aria-level={depth + 1} {...props}>
-      <button {...triggerProps} data-state={isSelected ? 'selected' : undefined} onClick={() => setSelected(value)}>
+    <div
+      data-slot="tree-item"
+      data-selected={isSelected ? '' : undefined}
+      role="treeitem"
+      aria-selected={isSelected}
+      aria-level={depth + 1}
+      className={className}
+      {...props}
+    >
+      <button {...triggerProps} data-selected={isSelected ? '' : undefined} onClick={() => setSelected(value)}>
         {labelRow}
       </button>
     </div>

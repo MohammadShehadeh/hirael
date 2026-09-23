@@ -40,10 +40,10 @@ const Process01 = () => {
     <section data-slot="process" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div data-slot="process-header" className="flex max-w-2xl flex-col gap-5">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Getting started</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Getting started</span>
           <h2
             style={stagger(1)}
-            className={cn(ENTER, 'font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl')}
+            className={cn(ENTER, 'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl')}
           >
             Your whole team set up by the end of the day.
           </h2>
@@ -61,17 +61,17 @@ const Process01 = () => {
               style={stagger(index, 70, 180)}
               className={cn(ENTER, 'relative flex flex-col gap-4 border-t border-border pt-6')}
             >
-              <span aria-hidden className="absolute -top-px start-0 h-px w-12 bg-warm" />
-              <span dir="ltr" className="self-start text-xs tabular-nums text-muted-foreground">
+              <span aria-hidden className="absolute start-0 -top-px h-px w-12 bg-primary" />
+              <span dir="ltr" className="self-start text-xs text-muted-foreground tabular-nums">
                 <span className="text-foreground">{formatIndex(index)}</span>
                 <span className="mx-1.5 text-border">|</span>
                 {formatIndex(STEPS.length - 1)}
               </span>
               <div className="flex flex-col gap-2">
                 <h3 className="text-lg font-semibold tracking-[-0.01em]">{step.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground text-pretty">{step.body}</p>
+                <p className="text-sm leading-relaxed text-pretty text-muted-foreground">{step.body}</p>
               </div>
-              <p className="mt-auto text-xs uppercase text-muted-foreground">{step.detail}</p>
+              <p className="mt-auto text-xs text-muted-foreground uppercase">{step.detail}</p>
             </li>
           ))}
         </ol>

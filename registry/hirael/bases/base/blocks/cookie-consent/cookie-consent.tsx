@@ -33,21 +33,21 @@ const useCookieConsent = () => {
   if (!ctx) {
     throw new Error('CookieConsent parts must be used within <CookieConsent>');
   }
+
   return ctx;
 };
-
-const noopUnsubscribe = () => () => {};
 
 // Server render reports "chosen" so the SSR HTML never shows the banner and
 // hydration agrees; the real storage value is read once hydration commits.
 const useStoredChoice = (storageKey: string) => {
   const subscribe = React.useCallback(
     (cb: () => void) => {
-      if (typeof window === 'undefined') return noopUnsubscribe();
+      if (typeof window === 'undefined') return () => {};
       const handler = (e: StorageEvent) => {
         if (e.key === storageKey) cb();
       };
       window.addEventListener('storage', handler);
+
       return () => window.removeEventListener('storage', handler);
     },
     [storageKey],
@@ -61,6 +61,7 @@ const useStoredChoice = (storageKey: string) => {
     }
   }, [storageKey]);
   const getServerSnapshot = React.useCallback(() => true, []);
+
   return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
 
@@ -118,6 +119,7 @@ const CookieConsent = ({
 
   const register = React.useCallback((category: CategoryRecord) => {
     categoriesRef.current.set(category.id, category);
+
     return () => {
       categoriesRef.current.delete(category.id);
     };
@@ -195,8 +197,8 @@ const CookieConsent = ({
         onKeyDown={onKeyDown}
         className={cn(
           position === 'fixed' ? 'fixed' : 'absolute',
-          'bottom-4 start-4 z-50 flex w-[calc(100%-2rem)] max-w-sm flex-col gap-4 rounded-lg border border-border bg-card p-5 text-card-foreground shadow-lg',
-          'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+          'start-4 bottom-4 z-50 flex w-[calc(100%-2rem)] max-w-sm flex-col gap-4 rounded-lg border border-border bg-card p-5 text-card-foreground shadow-lg',
+          'animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-2 motion-reduce:animate-none',
           className,
         )}
         {...props}
@@ -239,6 +241,7 @@ type CookieConsentManageProps = React.ComponentProps<typeof Button>;
 const CookieConsentManage = ({ className, children = 'Manage', ...props }: CookieConsentManageProps) => {
   const { expanded, setExpanded } = useCookieConsent();
   if (expanded) return null;
+
   return (
     <Button
       type="button"
@@ -260,6 +263,7 @@ type CookieConsentCategoriesProps = React.ComponentProps<'div'>;
 // Stays mounted while collapsed so Accept all and Reject all see every category.
 const CookieConsentCategories = ({ className, ...props }: CookieConsentCategoriesProps) => {
   const { expanded } = useCookieConsent();
+
   return (
     <div
       data-slot="cookie-consent-categories-reveal"
@@ -319,7 +323,7 @@ const CookieConsentCategory = ({
       <FieldContent className="min-w-0 gap-0.5">
         <FieldLabel htmlFor={switchId} className="items-center">
           {name}
-          {required ? <span className="text-xs uppercase text-muted-foreground">Always on</span> : null}
+          {required ? <span className="text-xs text-muted-foreground uppercase">Always on</span> : null}
         </FieldLabel>
         {description ? <FieldDescription>{description}</FieldDescription> : null}
       </FieldContent>
@@ -347,6 +351,7 @@ type CookieConsentButtonProps = React.ComponentProps<typeof Button>;
 
 const CookieConsentAcceptAll = ({ children = 'Accept all', ...props }: CookieConsentButtonProps) => {
   const { acceptAll } = useCookieConsent();
+
   return (
     <Button type="button" size="sm" data-slot="cookie-consent-accept-all" onClick={acceptAll} {...props}>
       {children}
@@ -356,6 +361,7 @@ const CookieConsentAcceptAll = ({ children = 'Accept all', ...props }: CookieCon
 
 const CookieConsentRejectAll = ({ children = 'Reject all', ...props }: CookieConsentButtonProps) => {
   const { rejectAll } = useCookieConsent();
+
   return (
     <Button
       type="button"
@@ -373,6 +379,7 @@ const CookieConsentRejectAll = ({ children = 'Reject all', ...props }: CookieCon
 const CookieConsentSave = ({ children = 'Save choices', ...props }: CookieConsentButtonProps) => {
   const { expanded, save } = useCookieConsent();
   if (!expanded) return null;
+
   return (
     <Button type="button" variant="outline" size="sm" data-slot="cookie-consent-save" onClick={save} {...props}>
       {children}
@@ -387,7 +394,7 @@ const CookieConsentLink = ({ className, ...props }: CookieConsentLinkProps) => {
     <a
       data-slot="cookie-consent-link"
       className={cn(
-        'text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         className,
       )}
       {...props}
@@ -441,7 +448,7 @@ const CookieConsentBlock = () => {
       <div className="flex flex-col items-center gap-2 text-center">
         <span
           key={summary ?? 'waiting'}
-          className="flex items-center gap-2 text-xs uppercase text-muted-foreground animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none"
+          className="flex animate-in items-center gap-2 text-xs text-muted-foreground uppercase duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none"
         >
           {summary ? (
             <>

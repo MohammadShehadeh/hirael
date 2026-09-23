@@ -27,6 +27,7 @@ export const loadSource = async (
       out[file] = { code, html, lang };
     }),
   );
+
   return out;
 };
 
@@ -34,5 +35,6 @@ export const loadSources = async (
   files: string[] | undefined,
 ): Promise<Record<RegistryBase, Record<string, SourceFile>>> => {
   const entries = await Promise.all(REGISTRY_BASES.map(async (base) => [base, await loadSource(files, base)] as const));
+
   return Object.fromEntries(entries) as Record<RegistryBase, Record<string, SourceFile>>;
 };

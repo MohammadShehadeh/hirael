@@ -66,6 +66,7 @@ export interface SiteFooterCompactProps {
 
 export const SiteFooterCompact = ({ className }: SiteFooterCompactProps) => {
   const year = new Date().getFullYear();
+
   return (
     <footer className={cn('mt-auto border-t border-border px-4 py-5 sm:px-6 lg:px-8', className)}>
       <div className="flex flex-col gap-3 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
@@ -118,7 +119,7 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
           <div aria-hidden className="ambient-halo opacity-70" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 opacity-30 mask-[radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent_80%)]"
+            className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent_80%)] opacity-30"
           />
 
           <div className="relative px-6 pt-12 sm:px-10 sm:pt-14 lg:px-14">
@@ -140,7 +141,7 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
 
               <Link
                 href="/components"
-                className="group inline-flex h-11 w-fit items-center gap-2 self-start rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 md:self-auto"
+                className="group inline-flex h-11 w-fit items-center gap-2 self-start rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors outline-none hover:bg-primary/90 focus-visible:ring-[3px] focus-visible:ring-ring/50 md:self-auto"
               >
                 Browse components
                 <span className="flex size-7 items-center justify-center rounded-full bg-background/15 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
@@ -152,7 +153,7 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
             <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4">
               {FOOTER_LINKS.map((group) => (
                 <div key={group.label} className="flex flex-col gap-3.5">
-                  <h3 className="text-xs uppercase text-foreground/70">{group.label}</h3>
+                  <h3 className="text-xs text-foreground/70 uppercase">{group.label}</h3>
                   <ul className="flex flex-col gap-2.5">
                     {group.links.map((link) => (
                       <li key={link.href}>
@@ -197,10 +198,10 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
               <path d={HIRAEL_WORDMARK_PATH} fill="url(#footer-wordmark)" />
             </svg>
             <div className="relative flex flex-col items-start justify-between gap-3 border-t border-border/70 px-6 py-6 sm:flex-row sm:items-center sm:px-10 lg:px-14">
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+              <p className="text-xs tracking-widest text-muted-foreground uppercase">
                 © {year} {SITE.author}. Built on shadcn/ui.
               </p>
-              <p className="text-xs uppercase tracking-widest text-muted-foreground">Source, not a package</p>
+              <p className="text-xs tracking-widest text-muted-foreground uppercase">Source, not a package</p>
             </div>
           </div>
         </div>

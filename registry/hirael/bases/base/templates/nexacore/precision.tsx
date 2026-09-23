@@ -113,6 +113,7 @@ const MobileStack = () => {
     <div className="flex w-full flex-col gap-10 sm:hidden">
       {PILLARS.map((pillar, i) => {
         const end = i % 2 === 1;
+
         return (
           <div key={pillar.label} className={end ? 'flex flex-col items-end' : 'flex flex-col items-start'}>
             <PillarChip label={pillar.label} small />
@@ -147,7 +148,7 @@ export const Precision = () => {
           Structured Delivery
         </span>
 
-        <h2 className="mt-[22px] max-w-[clamp(700px,60vw,900px)] text-[length:clamp(28px,4vw,56px)] font-medium leading-[1.15] text-[var(--nexa-navy)]">
+        <h2 className="mt-[22px] max-w-[clamp(700px,60vw,900px)] text-[length:clamp(28px,4vw,56px)] leading-[1.15] font-medium text-[var(--nexa-navy)]">
           <span className="block sm:whitespace-nowrap">One integrated, end-to-end system.</span>
           <GradientText className="block pb-[0.3vw]">Compounding operational value.</GradientText>
         </h2>

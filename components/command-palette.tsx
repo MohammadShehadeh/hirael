@@ -43,6 +43,7 @@ const KIND_ICONS = {
 const recentKind = (entry: RegistryEntryMeta): RecentKind => {
   if (entry.category === 'blocks') return 'block';
   if (entry.category === 'templates') return 'template';
+
   return 'component';
 };
 
@@ -110,7 +111,7 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
             )}
           </CommandList>
         </Command>
-        <div className="flex items-center gap-4 border-t border-border bg-popover px-3 py-2 text-xs uppercase text-muted-foreground">
+        <div className="flex items-center gap-4 border-t border-border bg-popover px-3 py-2 text-xs text-muted-foreground uppercase">
           <span className="inline-flex items-center gap-1.5">
             <Kbd>↑↓</Kbd> navigate
           </span>

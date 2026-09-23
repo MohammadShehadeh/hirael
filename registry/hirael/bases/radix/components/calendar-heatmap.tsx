@@ -13,6 +13,7 @@ const DEFAULT_LEVEL_CLASSES = ['bg-muted', 'bg-primary/25', 'bg-primary/50', 'bg
 const defaultClassForLevel = (level: number, levels: number) => {
   if (level <= 0 || levels <= 1) return DEFAULT_LEVEL_CLASSES[0];
   const index = Math.max(1, Math.round((level / (levels - 1)) * 4));
+
   return DEFAULT_LEVEL_CLASSES[Math.min(index, 4)];
 };
 
@@ -22,6 +23,7 @@ const toLocalDate = (input: Date | string): Date => {
   if (match) {
     return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
   }
+
   return startOfDay(new Date(input));
 };
 
@@ -67,6 +69,7 @@ interface CalendarHeatmapProps extends Omit<React.ComponentProps<'div'>, 'onSele
   classForLevel?: (level: number) => string;
   cellSize?: CalendarHeatmapCellSize;
   gap?: number;
+  /** Defaults to `en-US` so server and client render the same labels. */
   locale?: string;
   showMonthLabels?: boolean;
   showWeekdayLabels?: boolean;
@@ -85,7 +88,7 @@ const CalendarHeatmap = ({
   classForLevel,
   cellSize = 'md',
   gap = 3,
-  locale,
+  locale = 'en-US',
   showMonthLabels = true,
   showWeekdayLabels = true,
   tooltipFormatter,
@@ -102,6 +105,7 @@ const CalendarHeatmap = ({
 
     const weekdays = Array.from({ length: 7 }, (_, row) => {
       const day = (weekStartsOn + row) % 7;
+
       return {
         label: dayFormatter.format(new Date(2024, 0, 7 + day)),
         visible: day === 1 || day === 3 || day === 5,
@@ -143,6 +147,7 @@ const CalendarHeatmap = ({
       for (const cut of cuts) {
         if (value >= cut) level += 1;
       }
+
       return Math.min(level, levels - 1);
     };
 
@@ -170,6 +175,7 @@ const CalendarHeatmap = ({
     }
     const labels = candidates.filter((candidate, i) => {
       const next = candidates[i + 1];
+
       return !next || next.weekIndex - candidate.weekIndex >= 3;
     });
 
@@ -183,23 +189,22 @@ const CalendarHeatmap = ({
 
   const resolveLevelClass = classForLevel ?? ((level: number) => defaultClassForLevel(level, levels));
 
-  const defaultFormatter = React.useCallback(
-    (date: Date, value: number) => {
-      const formattedDate = new Intl.DateTimeFormat(locale, {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-      }).format(date);
-      const formattedValue = new Intl.NumberFormat(locale).format(value);
-      return `${formattedValue} · ${formattedDate}`;
-    },
-    [locale],
-  );
+  const defaultFormatter = React.useMemo(() => {
+    const dateFormat = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' });
+    const numberFormat = new Intl.NumberFormat(locale);
 
-  const formatTooltip = tooltipFormatter ?? defaultFormatter;
+    return (date: Date, value: number) => `${dateFormat.format(date)}: ${numberFormat.format(value)}`;
+  }, [locale]);
 
   const cellRefs = React.useRef(new Map<number, HTMLButtonElement | null>());
   const [focusedIndex, setFocusedIndex] = React.useState<number | null>(null);
+  const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+  const activeCell = activeIndex !== null && cells[activeIndex]?.inRange ? cells[activeIndex] : null;
+
+  const handleGridPointerOver = (event: React.PointerEvent<HTMLDivElement>) => {
+    const cell = (event.target as HTMLElement).closest<HTMLElement>('[data-index]');
+    setActiveIndex(cell ? Number(cell.dataset.index) : null);
+  };
 
   const defaultTabbableIndex = React.useMemo(() => {
     const todayIndex = cells.findIndex((cell) => cell.inRange && dayKey(cell.date) === todayKey);
@@ -207,6 +212,7 @@ const CalendarHeatmap = ({
     for (let i = cells.length - 1; i >= 0; i--) {
       if (cells[i].inRange) return i;
     }
+
     return -1;
   }, [cells, todayKey]);
 
@@ -264,7 +270,7 @@ const CalendarHeatmap = ({
                   <span
                     key={month.weekIndex}
                     data-slot="calendar-heatmap-month-label"
-                    className="whitespace-nowrap text-xs uppercase text-muted-foreground"
+                    className="text-xs whitespace-nowrap text-muted-foreground uppercase"
                     style={{ gridColumnStart: month.weekIndex + 1, gridRow: 1 }}
                   >
                     {month.label}
@@ -297,66 +303,92 @@ const CalendarHeatmap = ({
                 ))}
               </div>
             )}
-            <div
-              data-slot="calendar-heatmap-grid"
-              className="grid grid-flow-col"
-              style={{
-                gridTemplateRows: `repeat(7, ${size}px)`,
-                gridTemplateColumns: `repeat(${weekCount}, ${size}px)`,
-                gap,
-              }}
-            >
-              {cells.map((cell, index) => {
-                if (!cell.inRange) {
-                  return (
+            <div className="relative" onPointerOver={handleGridPointerOver} onPointerLeave={() => setActiveIndex(null)}>
+              <div
+                data-slot="calendar-heatmap-grid"
+                className="grid grid-flow-col"
+                style={{
+                  gridTemplateRows: `repeat(7, ${size}px)`,
+                  gridTemplateColumns: `repeat(${weekCount}, ${size}px)`,
+                  gap,
+                }}
+              >
+                {cells.map((cell, index) => {
+                  if (!cell.inRange) {
+                    return (
+                      <div
+                        key={cell.date.getTime()}
+                        data-slot="calendar-heatmap-cell"
+                        aria-hidden
+                        className="invisible"
+                      />
+                    );
+                  }
+                  const tooltip = tooltipFormatter?.(cell.date, cell.value);
+                  const label = typeof tooltip === 'string' ? tooltip : defaultFormatter(cell.date, cell.value);
+                  const cellClassName = cn(
+                    'rounded-[2px]',
+                    resolveLevelClass(cell.level),
+                    onSelectDay &&
+                      'cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background',
+                  );
+
+                  return onSelectDay ? (
+                    <button
+                      key={cell.date.getTime()}
+                      type="button"
+                      ref={(el) => {
+                        cellRefs.current.set(index, el);
+                      }}
+                      data-slot="calendar-heatmap-cell"
+                      data-level={cell.level}
+                      data-index={index}
+                      aria-label={label}
+                      tabIndex={index === tabbableIndex ? 0 : -1}
+                      className={cellClassName}
+                      onFocus={() => {
+                        setFocusedIndex(index);
+                        setActiveIndex(index);
+                      }}
+                      onBlur={() => setActiveIndex(null)}
+                      onKeyDown={(event) => handleCellKeyDown(event, index)}
+                      onClick={() => onSelectDay(cell.date, cell.value)}
+                    />
+                  ) : (
                     <div
                       key={cell.date.getTime()}
+                      role="img"
                       data-slot="calendar-heatmap-cell"
-                      aria-hidden
-                      className="invisible"
+                      data-level={cell.level}
+                      data-index={index}
+                      aria-label={label}
+                      className={cellClassName}
                     />
                   );
-                }
-                const tooltip = formatTooltip(cell.date, cell.value);
-                const label = typeof tooltip === 'string' ? tooltip : defaultFormatter(cell.date, cell.value);
-                const cellClassName = cn(
-                  'rounded-[2px]',
-                  resolveLevelClass(cell.level),
-                  onSelectDay &&
-                    'cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 focus-visible:ring-offset-background',
-                );
-                return (
-                  <Tooltip key={cell.date.getTime()}>
-                    <TooltipTrigger asChild>
-                      {onSelectDay ? (
-                        <button
-                          type="button"
-                          ref={(el) => {
-                            cellRefs.current.set(index, el);
-                          }}
-                          data-slot="calendar-heatmap-cell"
-                          data-level={cell.level}
-                          aria-label={label}
-                          tabIndex={index === tabbableIndex ? 0 : -1}
-                          className={cellClassName}
-                          onFocus={() => setFocusedIndex(index)}
-                          onKeyDown={(event) => handleCellKeyDown(event, index)}
-                          onClick={() => onSelectDay(cell.date, cell.value)}
-                        />
-                      ) : (
-                        <div
-                          role="img"
-                          data-slot="calendar-heatmap-cell"
-                          data-level={cell.level}
-                          aria-label={label}
-                          className={cellClassName}
-                        />
-                      )}
-                    </TooltipTrigger>
-                    <TooltipContent>{tooltip}</TooltipContent>
-                  </Tooltip>
-                );
-              })}
+                })}
+              </div>
+              <Tooltip open={activeCell !== null} onOpenChange={(open) => !open && setActiveIndex(null)}>
+                <TooltipTrigger key={activeIndex ?? 'none'} asChild>
+                  <span
+                    aria-hidden
+                    data-slot="calendar-heatmap-tooltip-anchor"
+                    className="pointer-events-none absolute"
+                    style={
+                      activeIndex === null
+                        ? { top: 0, insetInlineStart: 0, width: 0, height: 0 }
+                        : {
+                            top: (activeIndex % 7) * (size + gap),
+                            insetInlineStart: Math.floor(activeIndex / 7) * (size + gap),
+                            width: size,
+                            height: size,
+                          }
+                    }
+                  />
+                </TooltipTrigger>
+                <TooltipContent>
+                  {activeCell ? (tooltipFormatter ?? defaultFormatter)(activeCell.date, activeCell.value) : null}
+                </TooltipContent>
+              </Tooltip>
             </div>
           </div>
         </div>

@@ -19,5 +19,6 @@ interface BaseExampleEmbedRouteProps {
 export default async function BaseExampleEmbedRoute({ params }: BaseExampleEmbedRouteProps) {
   const { base, component, example } = await params;
   if (!isRegistryBase(base) || base === DEFAULT_BASE) notFound();
+
   return <ExampleEmbed base={base} component={component} example={example} />;
 }

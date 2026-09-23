@@ -128,6 +128,7 @@ const ImageGallery02 = () => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || typeof document.startViewTransition !== 'function') {
       setView(next);
+
       return;
     }
     document.startViewTransition(() => {
@@ -136,17 +137,17 @@ const ImageGallery02 = () => {
   };
 
   return (
-    <section data-slot="image-gallery" className="bg-background py-20 md:py-28">
+    <section data-slot="image-gallery" className="bg-background py-20 sm:py-28">
       <div className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-6 md:gap-12 md:px-10">
         <div
           data-slot="image-gallery-header"
           className="flex flex-col gap-6 border-b border-border pb-8 md:flex-row md:items-end md:justify-between"
         >
           <div className="flex max-w-xl flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Field notes</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Field notes</span>
             <h2
               style={stagger(1, 80)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               Four walks in one year
             </h2>
@@ -157,7 +158,7 @@ const ImageGallery02 = () => {
           </div>
 
           <div style={stagger(3, 80)} className={cn(ENTER, 'flex items-center justify-between gap-4 md:justify-end')}>
-            <span data-slot="image-gallery-count" className="text-sm tabular-nums text-muted-foreground">
+            <span data-slot="image-gallery-count" className="text-sm text-muted-foreground tabular-nums">
               {PHOTOS.length} photos
             </span>
             <ToggleGroup
@@ -226,7 +227,7 @@ const ImageGallery02 = () => {
                       className="pointer-events-none absolute inset-x-0 bottom-0 flex translate-y-1 flex-col items-start gap-0.5 bg-linear-to-t from-black/70 via-black/35 to-transparent px-3 pt-10 pb-3 text-start text-white opacity-0 transition-[opacity,transform] duration-150 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 motion-reduce:transition-none sm:px-4 sm:pb-4"
                     >
                       <span className="text-sm font-medium text-pretty">{photo.location}</span>
-                      <span className="text-xs tabular-nums text-white/75">{photo.date}</span>
+                      <span className="text-xs text-white/75 tabular-nums">{photo.date}</span>
                     </span>
                   </button>
                 </LightboxTrigger>

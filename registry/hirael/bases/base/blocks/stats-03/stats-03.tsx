@@ -115,17 +115,18 @@ const Stats03 = () => {
 
   React.useEffect(() => {
     const frame = requestAnimationFrame(() => setFilled(true));
+
     return () => cancelAnimationFrame(frame);
   }, []);
 
   return (
-    <section data-slot="stats" className="bg-background py-20 md:py-28">
+    <section data-slot="stats" className="bg-background py-20 sm:py-28">
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 md:px-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-20">
         <div data-slot="stats-story" className="flex max-w-md flex-col gap-4">
-          <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Growth</span>
+          <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Growth</span>
           <h2
             style={stagger(1, 70)}
-            className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+            className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
           >
             Eighteen months, 8,412 seats
           </h2>
@@ -138,7 +139,7 @@ const Stats03 = () => {
             style={stagger(3, 70)}
             className={cn(
               ENTER,
-              'group/link mt-2 inline-flex items-center gap-1.5 self-start rounded-sm text-sm font-medium text-foreground transition-colors duration-150 hover:text-warm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring',
+              'group/link mt-2 inline-flex items-center gap-1.5 self-start rounded-sm text-sm font-medium text-foreground transition-colors duration-150 hover:text-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
             )}
           >
             Read the Q3 investor update
@@ -172,6 +173,7 @@ const Stats03 = () => {
             {metrics.map((metric, index) => {
               const ratio = Math.round((metric.current / metric.target) * 100);
               const met = ratio >= 100;
+
               return (
                 <li
                   key={metric.name}
@@ -198,7 +200,7 @@ const Stats03 = () => {
                     style={{ '--bar-delay': `${index * 60}ms` } as React.CSSProperties}
                   />
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-sm">
-                    <span key={`${period}-value`} className={cn(SWAP, 'tabular-nums text-foreground')}>
+                    <span key={`${period}-value`} className={cn(SWAP, 'text-foreground tabular-nums')}>
                       <span dir="ltr">{metric.format(metric.current)}</span>
                       <span className="text-muted-foreground">
                         {' of '}

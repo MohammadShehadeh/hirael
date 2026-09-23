@@ -16,6 +16,7 @@ export const metadata: Metadata = {
 
 export default async function NotFound() {
   const stars = await getRepoStars();
+
   return (
     <div className="flex min-h-svh flex-col">
       <SiteHeader stars={stars} />
@@ -24,10 +25,10 @@ export default async function NotFound() {
           <div aria-hidden className="ambient-halo" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 opacity-40 mask-[radial-gradient(ellipse_60%_45%_at_50%_0%,black,transparent_75%)]"
+            className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_60%_45%_at_50%_0%,black,transparent_75%)] opacity-40"
           />
           <div className="relative container flex w-full flex-col items-center gap-6 py-24 text-center sm:py-28 lg:py-36">
-            <span className="inline-flex items-center rounded-full border border-border bg-card/60 px-3.5 py-1 text-xs uppercase text-muted-foreground backdrop-blur-sm">
+            <span className="inline-flex items-center rounded-full border border-border bg-card/60 px-3.5 py-1 text-xs text-muted-foreground uppercase backdrop-blur-sm">
               Error 404
             </span>
 
@@ -42,14 +43,14 @@ export default async function NotFound() {
             <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
               <Link
                 href="/"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
               >
                 <ArrowLeft className="size-4 rtl:rotate-180" />
                 Back to home
               </Link>
               <Link
                 href="/components"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                className="inline-flex h-11 items-center justify-center gap-2 rounded-full border border-border bg-card/60 px-6 text-sm font-medium text-foreground backdrop-blur-sm transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none"
               >
                 Browse components
                 <ArrowRight className="size-4 rtl:rotate-180" />

@@ -22,7 +22,7 @@ const RelatedLink = ({ href, icon: Icon, title, detail }: RelatedLinkProps) => {
         </span>
         <div className="flex flex-col gap-0.5">
           <span className="text-sm font-medium">{title}</span>
-          <span className="text-xs uppercase text-muted-foreground">{detail}</span>
+          <span className="text-xs text-muted-foreground uppercase">{detail}</span>
         </div>
       </div>
       <ArrowRight className="size-4 text-muted-foreground transition-transform duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180" />

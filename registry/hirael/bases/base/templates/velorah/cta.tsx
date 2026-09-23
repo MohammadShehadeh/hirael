@@ -17,9 +17,9 @@ export const Cta = () => {
       />
 
       <div className="relative z-10 flex max-w-4xl flex-col items-center">
-        <p className="mb-4 text-xs uppercase tracking-[0.3em] text-muted-foreground sm:text-sm">Starting at $99,000</p>
+        <p className="mb-4 text-xs tracking-[0.3em] text-muted-foreground uppercase sm:text-sm">Starting at $99,000</p>
 
-        <h2 className="text-5xl leading-[0.95] tracking-[-2px] text-foreground [font-family:var(--font-velorah-serif)] sm:text-7xl md:text-8xl">
+        <h2 className="[font-family:var(--font-velorah-serif)] text-5xl leading-[0.95] tracking-[-2px] text-foreground sm:text-7xl md:text-8xl">
           Join the ride
         </h2>
 

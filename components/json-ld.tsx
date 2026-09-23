@@ -3,7 +3,7 @@ export interface JsonLdProps {
   data: object | object[];
 }
 
-// A plain script, so the data is in the exported HTML for crawlers that do not run JavaScript.
+/** A plain script, so the data is in the exported HTML for crawlers that do not run JavaScript. */
 export const JsonLd = ({ id, data }: JsonLdProps) => {
   return (
     <script

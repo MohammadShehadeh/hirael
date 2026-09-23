@@ -15,9 +15,7 @@ const Hero02Backdrop = dynamic(() => import('./hero-02-backdrop'), {
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const WORDMARKS = [
   { name: 'Helix', icon: Dna },
@@ -41,12 +39,12 @@ const Hero02 = () => {
       <div
         aria-hidden
         data-slot="hero-wash"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_55%_at_50%_8%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_64%),radial-gradient(60%_60%_at_10%_92%,color-mix(in_oklch,var(--accent-cool)_28%,transparent),transparent_68%),radial-gradient(60%_60%_at_90%_80%,color-mix(in_oklch,var(--chart-2)_20%,transparent),transparent_68%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_55%_at_50%_8%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_64%),radial-gradient(60%_60%_at_10%_92%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_68%),radial-gradient(60%_60%_at_90%_80%,color-mix(in_oklch,var(--chart-2)_20%,transparent),transparent_68%)]"
       />
       <div
         aria-hidden
         data-slot="hero-backdrop"
-        className="pointer-events-none absolute inset-0 opacity-50 mix-blend-multiply [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)] dark:opacity-40 dark:mix-blend-screen"
+        className="pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black_15%,transparent_72%)] opacity-50 mix-blend-multiply dark:opacity-40 dark:mix-blend-screen"
       >
         <Hero02Backdrop active={active} />
       </div>
@@ -56,14 +54,14 @@ const Hero02 = () => {
         data-slot="hero-release"
         className={cn(
           ENTER,
-          'inline-flex items-center gap-2.5 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm transition-colors duration-150 hover:border-warm/50',
+          'inline-flex items-center gap-2.5 rounded-full border border-border bg-card/70 px-3.5 py-1.5 text-xs uppercase backdrop-blur-sm transition-colors duration-150 hover:border-primary/50',
         )}
       >
-        <span className="text-warm">New release</span>
+        <span className="text-primary">New release</span>
         <span aria-hidden className="text-border">
           |
         </span>
-        <span dir="ltr" className="tabular-nums text-muted-foreground">
+        <span dir="ltr" className="text-muted-foreground tabular-nums">
           2026.06
         </span>
       </a>
@@ -72,7 +70,7 @@ const Hero02 = () => {
         style={stagger(1)}
         className={cn(
           ENTER,
-          'mt-8 max-w-4xl font-serif text-5xl font-medium leading-[1.04] tracking-tight sm:text-6xl md:text-7xl',
+          'mt-8 max-w-4xl font-serif text-5xl leading-[1.04] font-medium tracking-tight sm:text-6xl md:text-7xl',
         )}
       >
         Ship faster with tools that stay{' '}
@@ -100,7 +98,7 @@ const Hero02 = () => {
       </div>
 
       <div data-slot="hero-logos" style={stagger(4)} className={cn(ENTER, 'mt-16 flex flex-col items-center gap-5')}>
-        <p className="text-xs uppercase text-muted-foreground">Used by product teams at</p>
+        <p className="text-xs text-muted-foreground uppercase">Used by product teams at</p>
         <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
           {WORDMARKS.map((w) => (
             <span

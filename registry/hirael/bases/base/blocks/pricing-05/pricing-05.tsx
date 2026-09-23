@@ -95,6 +95,7 @@ const tierNote = (users: number) => {
     index += 1;
   }
   const tier = PRICING.userTiers[index];
+
   return {
     tier: index + 1,
     text: `You are in tier ${index + 1}: ${rate.format(tier.rate)} per user after ${compact.format(floor)}.`,
@@ -120,7 +121,7 @@ const UsageSlider = ({ id, label, unit, value, range, onChange }: UsageSliderPro
           {label}
         </label>
         <span className="text-sm text-muted-foreground">
-          <span dir="ltr" className="font-medium tabular-nums text-foreground">
+          <span dir="ltr" className="font-medium text-foreground tabular-nums">
             {number.format(value)}
           </span>{' '}
           {unit}
@@ -134,9 +135,10 @@ const UsageSlider = ({ id, label, unit, value, range, onChange }: UsageSliderPro
         step={range.step}
         onValueChange={(next) => onChange((next as number[])[0])}
       />
-      <div aria-hidden className="relative h-4 text-xs tabular-nums text-muted-foreground">
+      <div aria-hidden className="relative h-4 text-xs text-muted-foreground tabular-nums">
         {range.ticks.map((tick) => {
           const at = position(tick);
+
           return (
             <span
               key={tick}
@@ -163,14 +165,14 @@ const Pricing05 = () => {
   const note = tierNote(users);
 
   return (
-    <section data-slot="pricing" className="bg-background py-20 md:py-28">
+    <section data-slot="pricing" className="bg-background py-20 sm:py-28">
       <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 md:px-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-16">
         <div data-slot="pricing-inputs" className="flex flex-col gap-10">
           <div data-slot="pricing-header" className="flex max-w-xl flex-col gap-4">
-            <span className={cn(ENTER, 'text-xs uppercase text-muted-foreground')}>Usage pricing</span>
+            <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Usage pricing</span>
             <h2
               style={stagger(1, 80)}
-              className={cn(ENTER, 'text-balance text-3xl font-semibold tracking-tight sm:text-4xl')}
+              className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
             >
               Pay for what your team actually uses
             </h2>
@@ -231,11 +233,11 @@ const Pricing05 = () => {
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-warm/40 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
           />
 
           <div className="flex items-center justify-between gap-4">
-            <span className="text-xs uppercase text-muted-foreground">Estimate</span>
+            <span className="text-xs text-muted-foreground uppercase">Estimate</span>
             <ToggleGroup
               size="sm"
               variant="outline"
@@ -258,10 +260,10 @@ const Pricing05 = () => {
             <p key={billing} className={cn(SWAP, 'text-sm text-muted-foreground')}>
               {billing === 'yearly' ? (
                 <>
-                  <span dir="ltr" className="tabular-nums text-foreground">
+                  <span dir="ltr" className="text-foreground tabular-nums">
                     {money.format(quote.yearly)}
                   </span>{' '}
-                  billed once a year, <span className="text-warm">2 months free</span>
+                  billed once a year, <span className="text-primary">2 months free</span>
                 </>
               ) : (
                 'Billed monthly, cancel any time'
@@ -294,7 +296,7 @@ const Pricing05 = () => {
                     Pay for {PRICING.paidMonthsPerYear} of 12 months
                   </span>
                 </dt>
-                <dd dir="ltr" className="tabular-nums text-warm">
+                <dd dir="ltr" className="text-primary tabular-nums">
                   {money.format(-quote.discount)}
                 </dd>
               </div>

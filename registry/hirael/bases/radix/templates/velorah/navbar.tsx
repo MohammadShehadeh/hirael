@@ -13,9 +13,9 @@ export const Navbar = () => {
     <nav className="relative z-10 mx-auto flex max-w-7xl items-center justify-between px-8 py-6">
       <Wordmark className="text-3xl" />
 
-      <div className="hidden items-center gap-10 text-sm text-white md:flex">
+      <div className="hidden items-center gap-10 text-sm text-foreground md:flex">
         {NAV_LINKS.map((link) => (
-          <a key={link.label} href={link.href} className="text-white transition-colors hover:text-white/80">
+          <a key={link.label} href={link.href} className="transition-colors hover:text-foreground/80">
             {link.label}
           </a>
         ))}

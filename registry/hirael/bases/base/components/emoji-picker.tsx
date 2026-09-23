@@ -41,7 +41,8 @@ export const applySkinTone = (item: EmojiItem, tone: EmojiSkinTone): string => {
   // replaces a text/emoji variation selector.
   const [base, ...rest] = Array.from(item.emoji);
   let tail = rest.join('');
-  if (tail.startsWith('️')) tail = tail.slice(1);
+  if (tail.startsWith('\uFE0F')) tail = tail.slice(1);
+
   return base + SKIN_MODIFIERS[tone] + tail;
 };
 
@@ -683,6 +684,7 @@ const useEmojiPicker = () => {
   if (!ctx) {
     throw new Error('EmojiPicker compound parts must be used inside <EmojiPicker>');
   }
+
   return ctx;
 };
 
@@ -696,6 +698,7 @@ const readRecent = (key: string): string[] => {
     const raw = window.localStorage.getItem(key);
     if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
+
     return Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === 'string') : [];
   } catch {
     return [];
@@ -742,6 +745,12 @@ const EmojiPicker = ({
   const [hovered, setHovered] = React.useState<EmojiItem | null>(null);
   const [activeIndex, setActiveIndex] = React.useState(0);
   const [recentCodes, setRecentCodes] = React.useState<string[]>(() => (recentKey ? readRecent(recentKey) : []));
+  // Persisted from an effect, not the state updater, which React may call twice.
+  const recentChangedRef = React.useRef(false);
+  React.useEffect(() => {
+    if (!recentKey || !recentChangedRef.current) return;
+    writeRecent(recentKey, recentCodes);
+  }, [recentKey, recentCodes]);
   const [internalTone, setInternalTone] = React.useState(defaultSkinTone);
   const skinTone = skinToneProp ?? internalTone;
 
@@ -775,6 +784,7 @@ const EmojiPicker = ({
   const byEmoji = React.useMemo(() => {
     const map = new Map<string, EmojiItem>();
     for (const item of emojis) map.set(item.emoji, item);
+
     return map;
   }, [emojis]);
 
@@ -789,6 +799,7 @@ const EmojiPicker = ({
       return emojis.filter((item) => item.name.includes(q) || item.keywords.includes(q) || item.emoji === q);
     }
     if (category === 'recent') return recent;
+
     return emojis.filter((item) => item.category === category);
   }, [emojis, query, category, recent]);
 
@@ -798,11 +809,8 @@ const EmojiPicker = ({
     (item: EmojiItem) => {
       onEmojiSelect?.(applySkinTone(item, skinTone), item);
       if (!recentKey) return;
-      setRecentCodes((prev) => {
-        const next = [item.emoji, ...prev.filter((c) => c !== item.emoji)].slice(0, maxRecent);
-        writeRecent(recentKey, next);
-        return next;
-      });
+      recentChangedRef.current = true;
+      setRecentCodes((prev) => [item.emoji, ...prev.filter((c) => c !== item.emoji)].slice(0, maxRecent));
     },
     [onEmojiSelect, skinTone, recentKey, maxRecent],
   );
@@ -874,6 +882,7 @@ const EmojiPickerSearch = ({
 }: EmojiPickerSearchProps) => {
   const ctx = useEmojiPicker();
   const activeIndex = React.useContext(EmojiPickerActiveIndexContext);
+
   return (
     <div data-slot="emoji-picker-search" className="relative">
       <Search
@@ -940,6 +949,7 @@ const EmojiPickerCategories = ({ labels, className, ...props }: EmojiPickerCateg
         const active = !searching && ctx.category === tab.id;
         const Icon = tab.icon;
         const label = labels?.[tab.id] ?? tab.label;
+
         return (
           <button
             key={tab.id}
@@ -1068,6 +1078,7 @@ const EmojiPickerItem = React.memo(function EmojiPickerItem({
   ...props
 }: EmojiPickerItemProps) {
   const ctx = useEmojiPicker();
+
   return (
     <button
       type="button"
@@ -1108,6 +1119,7 @@ type EmojiPickerEmptyProps = React.ComponentProps<'p'>;
 const EmojiPickerEmpty = ({ className, children = 'No emoji found.', ...props }: EmojiPickerEmptyProps) => {
   const ctx = useEmojiPicker();
   if (ctx.visible.length > 0) return null;
+
   return (
     <p
       data-slot="emoji-picker-empty"
@@ -1135,6 +1147,7 @@ const EmojiPickerFooter = ({
 }: EmojiPickerFooterProps) => {
   const ctx = useEmojiPicker();
   const item = React.useContext(EmojiPickerHoverContext);
+
   return (
     <div
       data-slot="emoji-picker-footer"
@@ -1177,6 +1190,7 @@ const EmojiPickerSkinTone = ({ labels, className, ...props }: EmojiPickerSkinTon
     category: 'people',
     skin: true,
   };
+
   return (
     <div
       role="radiogroup"
@@ -1197,6 +1211,7 @@ const EmojiPickerSkinTone = ({ labels, className, ...props }: EmojiPickerSkinTon
       {SKIN_TONES.map(({ tone, label }) => {
         const active = ctx.skinTone === tone;
         const text = labels?.[tone] ?? label;
+
         return (
           <button
             key={tone}

@@ -38,6 +38,7 @@ const useTour = () => {
   if (!ctx) {
     throw new Error('Tour compound parts must be used inside <Tour>');
   }
+
   return ctx;
 };
 
@@ -46,6 +47,7 @@ const resolveTarget = (target: TourStep['target'] | undefined): HTMLElement | nu
   if (typeof target === 'string') {
     return document.querySelector<HTMLElement>(target);
   }
+
   return target.current;
 };
 
@@ -103,6 +105,7 @@ const Tour = ({
       for (let i = from; i >= 0 && i < steps.length; i += dir) {
         if (resolveTarget(steps[i]?.target)) return i;
       }
+
       return -1;
     },
     [steps],
@@ -141,6 +144,7 @@ const Tour = ({
   React.useEffect(() => {
     if (!open) return;
     restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
     return () => restoreFocusRef.current?.focus();
   }, [open]);
 
@@ -231,6 +235,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     const el = resolveTarget(target);
     if (!el) {
       setRect(null);
+
       return;
     }
     const r = el.getBoundingClientRect();
@@ -259,12 +264,17 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
       passive: true,
       capture: true,
     });
+    const el = resolveTarget(target);
+    const observer = el && typeof ResizeObserver !== 'undefined' ? new ResizeObserver(schedule) : null;
+    if (el) observer?.observe(el);
+
     return () => {
+      observer?.disconnect();
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener('resize', schedule);
       window.removeEventListener('scroll', schedule, { capture: true });
     };
-  }, [measure]);
+  }, [measure, target]);
 
   React.useLayoutEffect(() => {
     const card = cardRef.current;
@@ -305,6 +315,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     };
     const fits = (s: NonNullable<TourStep['side']>) => {
       const c = coords(s);
+
       return c.top >= edge && c.left >= edge && c.top + h <= viewport.h - edge && c.left + w <= viewport.w - edge;
     };
     const opposite = {
@@ -330,6 +341,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
       if (e.key === 'Escape') {
         e.preventDefault();
         stop();
+
         return;
       }
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
@@ -343,6 +355,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
       }
     };
     document.addEventListener('keydown', onKeyDown);
+
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [stop, next, back]);
 
@@ -355,6 +368,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     );
     if (focusables.length === 0) {
       e.preventDefault();
+
       return;
     }
     const first = focusables[0];
@@ -383,14 +397,17 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     ? `M0 0H${viewport.w}V${viewport.h}H0Z M${spotlight.x + radius} ${spotlight.y}h${spotlight.w - radius * 2}a${radius} ${radius} 0 0 1 ${radius} ${radius}v${spotlight.h - radius * 2}a${radius} ${radius} 0 0 1 ${-radius} ${radius}h${-(spotlight.w - radius * 2)}a${radius} ${radius} 0 0 1 ${-radius} ${-radius}v${-(spotlight.h - radius * 2)}a${radius} ${radius} 0 0 1 ${radius} ${-radius}Z`
     : `M0 0H${viewport.w}V${viewport.h}H0Z`;
 
-  const isLast = !steps.some((s, i) => i > step && resolveTarget(s.target) !== null);
+  const available = steps.flatMap((s, i) => (resolveTarget(s.target) ? [i] : []));
+  const position = available.indexOf(step);
+  const isLast = !available.some((i) => i > step);
+  const isFirst = !available.some((i) => i < step);
 
   return (
     <div data-slot="tour" className="pointer-events-none fixed inset-0 z-50">
       <svg
         data-slot="tour-scrim"
         aria-hidden
-        className="pointer-events-auto absolute inset-0 size-full animate-in fade-in-0 duration-200"
+        className="pointer-events-auto absolute inset-0 size-full animate-in duration-200 fade-in-0"
         width={viewport.w}
         height={viewport.h}
       >
@@ -421,15 +438,15 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
         onKeyDown={onCardKeyDown}
         className={cn(
           'pointer-events-auto fixed w-72 max-w-[calc(100vw-2rem)] rounded-md border border-border bg-popover p-4 text-popover-foreground shadow-lg outline-none',
-          'animate-in fade-in-0 zoom-in-95 duration-200 ease-out',
+          'animate-in duration-200 ease-out fade-in-0 zoom-in-95',
           pos === null && 'invisible',
         )}
         style={{ top: pos?.top ?? 0, left: pos?.left ?? 0 }}
       >
-        <p data-slot="tour-counter" className="text-xs tabular-nums uppercase text-muted-foreground">
-          {step + 1} / {steps.length}
+        <p data-slot="tour-counter" className="text-xs text-muted-foreground uppercase tabular-nums">
+          {(position === -1 ? 0 : position) + 1} / {Math.max(available.length, 1)}
         </p>
-        <h2 id={titleId} data-slot="tour-title" className="mt-1.5 text-sm font-semibold leading-tight">
+        <h2 id={titleId} data-slot="tour-title" className="mt-1.5 text-sm leading-tight font-semibold">
           {current?.title}
         </h2>
         {current?.description ? (
@@ -446,7 +463,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
             {labels?.skip ?? 'Skip'}
           </Button>
           <div className="flex items-center gap-2">
-            <Button data-slot="tour-back" variant="outline" size="sm" onClick={back} disabled={step === 0}>
+            <Button data-slot="tour-back" variant="outline" size="sm" onClick={back} disabled={isFirst}>
               {labels?.back ?? 'Back'}
             </Button>
             <Button data-slot="tour-next" size="sm" onClick={next}>
@@ -466,6 +483,7 @@ export interface TourTriggerProps extends React.ComponentProps<typeof Button> {
 
 const TourTrigger = ({ at, onClick, ...props }: TourTriggerProps) => {
   const { start } = useTour();
+
   return (
     <Button
       {...props}

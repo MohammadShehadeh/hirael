@@ -33,6 +33,7 @@ export const LOREM: Record<Lang, { short: string; medium: string; long: string }
 
 export const useDocumentRtl = () => {
   const subscribe = React.useCallback(() => () => {}, []);
+
   return React.useSyncExternalStore(
     subscribe,
     () => document.documentElement.getAttribute('dir') === 'rtl',
@@ -43,6 +44,7 @@ export const useDocumentRtl = () => {
 const subscribeToDocumentClass = (onChange: () => void) => {
   const observer = new MutationObserver(onChange);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
   return () => observer.disconnect();
 };
 
@@ -62,6 +64,7 @@ interface RevealProps {
 
 export const Reveal = ({ delay = 0, className, children }: RevealProps) => {
   const reduced = useReducedMotion();
+
   return (
     <motion.div
       initial={reduced ? { opacity: 1, y: 0 } : { opacity: 0, y: 12 }}
@@ -97,7 +100,7 @@ export const Band = ({ id, index, label, note, lang, className, children }: Band
       <div className="mx-auto grid w-full max-w-6xl gap-x-12 gap-y-10 py-16 md:py-24 lg:grid-cols-[14rem_1fr] lg:gap-x-16">
         <Reveal className="lg:sticky lg:top-24 lg:self-start">
           <div className="flex items-center gap-3">
-            <span className="font-mono text-xs text-muted-foreground">{index}</span>
+            <span className="text-xs text-muted-foreground tabular-nums">{index}</span>
             <span aria-hidden className="h-px w-6 bg-border" />
             <span className={cn('text-xs text-muted-foreground', lang === 'en' ? 'uppercase' : 'font-medium')}>
               {label}
@@ -122,7 +125,7 @@ export const Lead = ({ lang, className, children }: LeadProps) => {
     <h2
       data-slot="aurael-display"
       className={cn(
-        'max-w-2xl text-balance text-3xl font-medium leading-[1.12] text-foreground sm:text-4xl',
+        'max-w-2xl text-3xl leading-[1.12] font-medium text-balance text-foreground sm:text-4xl',
         lang === 'en' ? 'tracking-tight' : 'tracking-normal',
         className,
       )}

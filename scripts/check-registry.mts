@@ -1,3 +1,8 @@
+// Runs in `pnpm check:registry`, before `shadcn build`. Checks registry-meta.ts
+// against both base trees: every declared file and preview exists, declared
+// dependencies match what the source imports, shipped source uses no site-only
+// class or token, and the order arrays cover every category exactly once.
+
 import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
@@ -24,6 +29,11 @@ const HIRAEL_IMPORT_PATTERN = /^@\/registry\/hirael\/bases\/[a-z]+\/(?:ui|compon
 
 const report = createReporter('registry check');
 
+// Every check runs per base, so every failure names the base.
+const label = (base: RegistryBase, entry: RegistryEntry) => `"${entry.name}" [${base}]`;
+
+const GLOBALS_CSS = readFileSync(path.join(ROOT, 'app/globals.css'), 'utf8');
+
 const parseSource = (source: string, fileName: string) =>
   ts.createSourceFile(fileName, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 
@@ -48,6 +58,7 @@ const importSpecifiers = (source: string, fileName: string) => {
     ts.forEachChild(node, visit);
   };
   visit(parseSource(source, fileName));
+
   return specifiers;
 };
 
@@ -68,13 +79,14 @@ const collectImports = (base: RegistryBase, entry: RegistryEntry) => {
       if (!IMPLICIT_PACKAGES.has(pkg)) packages.add(pkg);
     }
   }
+
   return { hiraelItems, packages };
 };
 
 const checkFiles = (base: RegistryBase, entry: RegistryEntry) => {
   for (const { path: sourcePath } of entry.files ?? []) {
     if (!existsSync(path.join(ROOT, registryFilePath(base, sourcePath)))) {
-      report.fail(`"${entry.name}" → missing ${base} file ${sourcePath}`);
+      report.fail(`${label(base, entry)} missing file ${sourcePath}`);
     }
   }
 };
@@ -85,14 +97,15 @@ const checkPreview = (base: RegistryBase, entry: RegistryEntry) => {
   if (composite) {
     const preview = registryFilePath(base, `${entry.category}/${entry.name}/${entry.name}.tsx`);
     if (!existsSync(path.join(ROOT, preview))) {
-      report.fail(`"${entry.name}" → preview ${preview} missing`);
+      report.fail(`${label(base, entry)} missing preview ${preview}`);
     }
+
     return;
   }
   for (const example of getExamples(entry.name)) {
     const demo = registryFilePath(base, `examples/${example.slug}.tsx`);
     if (!existsSync(path.join(ROOT, demo))) {
-      report.fail(`component "${entry.name}" → missing example ${demo}`);
+      report.fail(`${label(base, entry)} missing example ${demo}`);
     }
   }
 };
@@ -106,20 +119,68 @@ const checkDependencies = (base: RegistryBase, entry: RegistryEntry) => {
     basePackages(base, entry.dependencies ?? [], imported.packages.has(BASE_UI_PACKAGE)),
   );
 
-  const tag = base === 'radix' ? '' : ` [${base}]`;
+  const who = label(base, entry);
   for (const dep of imported.hiraelItems) {
-    if (!declaredRegistry.has(dep)) report.fail(`"${entry.name}"${tag} imports "${dep}" but doesn't declare it`);
+    if (!declaredRegistry.has(dep)) report.fail(`${who} imports "${dep}" but doesn't declare it`);
   }
   for (const dep of declaredRegistry) {
-    if (!imported.hiraelItems.has(dep)) report.fail(`"${entry.name}"${tag} declares "${dep}" but never imports it`);
+    if (!imported.hiraelItems.has(dep)) report.fail(`${who} declares "${dep}" but never imports it`);
   }
   for (const dep of imported.packages) {
-    if (!declaredPackages.has(dep))
-      report.fail(`"${entry.name}"${tag} imports npm package "${dep}" but doesn't declare it`);
+    if (!declaredPackages.has(dep)) report.fail(`${who} imports npm package "${dep}" but doesn't declare it`);
   }
   for (const dep of declaredPackages) {
-    if (!imported.packages.has(dep))
-      report.fail(`"${entry.name}"${tag} declares npm dependency "${dep}" but never imports it`);
+    if (!imported.packages.has(dep)) report.fail(`${who} declares npm dependency "${dep}" but never imports it`);
+  }
+};
+
+// Classes defined only in the site's globals.css render here but vanish in a consumer's project.
+const SITE_ONLY_CLASSES = new Set(
+  [...GLOBALS_CSS.matchAll(/^\s*(?:@utility\s+|\.)([a-z][\w-]*)\s*\{/gm)]
+    .map(([, name]) => name)
+    .filter((name) => !['dark', 'light', 'shiki'].includes(name)),
+);
+
+const classTokens = (source: string, fileName: string) => {
+  const tokens = new Set<string>();
+  const visit = (node: ts.Node) => {
+    if (ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateHead(node)) {
+      for (const token of node.text.split(/\s+/)) tokens.add(token.slice(token.lastIndexOf(':') + 1));
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(parseSource(source, fileName));
+
+  return tokens;
+};
+
+// Items adopt the consumer's theme, so they may only use shadcn's tokens plus the
+// status tokens they ship. Any other `--x` declared on the site's `:root` is
+// site-only; `chart-*` and `sidebar*` are shadcn's and stay allowed.
+const THEME_TOKENS = new Set([
+  ...['background', 'foreground', 'radius', 'border', 'input', 'ring', 'success', 'warning', 'info'],
+  ...['card', 'popover', 'primary', 'secondary', 'muted', 'accent', 'destructive'].flatMap((t) => [
+    t,
+    `${t}-foreground`,
+  ]),
+]);
+const ROOT_BLOCK = GLOBALS_CSS.match(/^:root \{[\s\S]*?^\}/m)?.[0] ?? '';
+const SITE_ONLY_TOKENS = [...ROOT_BLOCK.matchAll(/^\s*--([a-z][\w-]*):/gm)]
+  .map(([, name]) => name)
+  .filter((name) => !THEME_TOKENS.has(name) && !/^(chart-\d|sidebar)/.test(name));
+const SITE_TOKEN_PATTERN = new RegExp(`(?:-|--)(${SITE_ONLY_TOKENS.join('|')})(?![\\w-])`);
+
+const checkSiteOnlyClasses = (base: RegistryBase, entry: RegistryEntry) => {
+  for (const { path: sourcePath } of entry.files ?? []) {
+    const file = path.join(ROOT, registryFilePath(base, sourcePath));
+    if (!existsSync(file)) continue;
+    for (const token of classTokens(readFileSync(file, 'utf8'), sourcePath)) {
+      if (SITE_ONLY_CLASSES.has(token)) {
+        report.fail(`${label(base, entry)} uses site-only class "${token}" (defined in app/globals.css)`);
+      }
+      const siteToken = SITE_ONLY_TOKENS.length ? token.match(SITE_TOKEN_PATTERN)?.[1] : undefined;
+      if (siteToken) report.fail(`${label(base, entry)} uses site-only token "--${siteToken}" in "${token}"`);
+    }
   }
 };
 
@@ -140,6 +201,7 @@ for (const base of REGISTRY_BASES) {
     checkFiles(base, entry);
     checkPreview(base, entry);
     checkDependencies(base, entry);
+    checkSiteOnlyClasses(base, entry);
   }
 }
 

@@ -57,7 +57,7 @@ const MasonryDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid min-w-0 gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Cards · default columns', ar: 'بطاقات · أعمدة افتراضية' })}
         </p>
         <Masonry>
@@ -73,13 +73,13 @@ const MasonryDemo = () => {
       </div>
 
       <div className="grid min-w-0 gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Media · varied aspect ratios',
             ar: 'وسائط · نِسب أبعاد متنوّعة',
           })}
         </p>
-        <Masonry columns={{ base: 2, lg: 3 }} gap={8}>
+        <Masonry columns={{ base: 2, sm: 3 }} gap={8}>
           {aspects.map((aspect, i) => (
             <div key={aspect} className={`${aspect} flex items-end rounded-md bg-muted p-2`}>
               <span className="font-mono text-[10px] text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
@@ -89,13 +89,13 @@ const MasonryDemo = () => {
       </div>
 
       <div className="grid min-w-0 gap-2">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Compact · columns 2 / md 4',
-            ar: 'مدمج · عمودان / md أربعة',
+            en: 'Compact · columns 2 / sm 4',
+            ar: 'مدمج · عمودان / sm أربعة',
           })}
         </p>
-        <Masonry columns={{ base: 2, md: 4 }} gap={8}>
+        <Masonry columns={{ base: 2, sm: 4 }} gap={8}>
           {['Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta'].map((label, i) => (
             <MasonryItem key={label}>
               <div className="rounded-md border border-border bg-card px-3 py-2">

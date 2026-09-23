@@ -23,9 +23,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 interface Logo {
   name: string;
@@ -58,7 +56,7 @@ const STATS = [
 const LogoCloud01 = () => {
   return (
     <section data-slot="logo-cloud" className="bg-background py-20 sm:py-28" aria-labelledby="logo-cloud-01-heading">
-      <div className="container w-full">
+      <div className="mx-auto w-full max-w-[1480px] px-4">
         <div data-slot="logo-cloud-header" className="flex flex-col items-center gap-4 text-center">
           <Badge variant="outline" className={ENTER}>
             Customers
@@ -88,7 +86,7 @@ const LogoCloud01 = () => {
               <a
                 href={logo.href}
                 aria-label={`Read ${logo.name}'s case study`}
-                className="group flex h-20 items-center justify-center px-4 transition-colors hover:bg-card focus-visible:outline-none focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+                className="group flex h-20 items-center justify-center px-4 transition-colors hover:bg-card focus-visible:bg-card focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset"
               >
                 <span className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors group-hover:text-foreground">
                   <logo.icon aria-hidden className="size-4" />
@@ -104,11 +102,11 @@ const LogoCloud01 = () => {
           style={stagger(3)}
           className={cn(ENTER, 'mt-8 flex flex-col items-center justify-between gap-4 sm:flex-row')}
         >
-          <dl className="flex items-center gap-4 text-xs uppercase text-muted-foreground sm:gap-6">
+          <dl className="flex items-center gap-4 text-xs text-muted-foreground uppercase sm:gap-6">
             {STATS.map((s) => (
               <div key={s.label} className="flex items-baseline gap-1.5">
                 <dt className="sr-only">{s.label}</dt>
-                <dd className="text-sm font-semibold tabular-nums text-foreground">{s.value}</dd>
+                <dd className="text-sm font-semibold text-foreground tabular-nums">{s.value}</dd>
                 <span aria-hidden>{s.label}</span>
               </div>
             ))}

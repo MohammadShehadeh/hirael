@@ -11,6 +11,7 @@ export const composeRefs =
   (node) => {
     const cleanups = refs.map((ref) => setRef(ref, node));
     if (!cleanups.some((cleanup) => typeof cleanup === 'function')) return;
+
     return () => {
       cleanups.forEach((cleanup, i) => {
         if (typeof cleanup === 'function') cleanup();

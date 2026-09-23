@@ -14,7 +14,7 @@ const Akor = () => {
       className={cn(
         'akor',
         sora.variable,
-        'relative min-h-svh bg-background text-foreground antialiased [font-family:var(--font-akor-sans),ui-sans-serif,sans-serif]',
+        'relative min-h-svh bg-background [font-family:var(--font-akor-sans),ui-sans-serif,sans-serif] text-foreground antialiased',
       )}
     >
       <AkorStyles />

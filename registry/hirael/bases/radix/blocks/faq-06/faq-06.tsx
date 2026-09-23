@@ -41,7 +41,7 @@ const FAQS: readonly { id: string; q: string; a: string }[] = [
 
 const FaqBadge = ({ className, ...props }: React.ComponentProps<typeof Badge>) => {
   return (
-    <div className="animate-in fade-in zoom-in-95 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none">
+    <div className="animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both zoom-in-95 fade-in motion-reduce:animate-none">
       <Badge data-slot="faq-badge" variant="outline" className={className} {...props} />
     </div>
   );
@@ -59,7 +59,7 @@ const FaqTitle = ({ children, className, ...props }: FaqTitleProps) => {
     <h2
       data-slot="faq-title"
       className={cn(
-        'mx-auto max-w-3xl text-balance font-serif text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl',
+        'mx-auto max-w-3xl font-serif text-4xl leading-[1.04] font-medium tracking-tight text-balance sm:text-5xl',
         className,
       )}
       {...props}
@@ -68,7 +68,7 @@ const FaqTitle = ({ children, className, ...props }: FaqTitleProps) => {
         <span
           key={`${word}-${i}`}
           className={cn(
-            'me-[0.25em] inline-block animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none',
+            'me-[0.25em] inline-block animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none',
             i < half ? 'text-muted-foreground' : 'text-foreground',
           )}
           style={{ animationDelay: `${60 + i * 50}ms` }}
@@ -85,7 +85,7 @@ const FaqDescription = ({ className, ...props }: React.ComponentProps<'p'>) => {
     <p
       data-slot="faq-description"
       className={cn(
-        'mx-auto max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none delay-300',
+        'mx-auto max-w-2xl animate-in text-base text-pretty text-muted-foreground delay-300 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 motion-reduce:animate-none sm:text-lg',
         className,
       )}
       {...props}
@@ -101,7 +101,7 @@ interface FaqCardProps extends React.ComponentProps<typeof AccordionItem> {
 const FaqCard = ({ index = 0, className, ...props }: FaqCardProps) => {
   return (
     <div
-      className={`not-first:mt-3 rounded-lg border border-border bg-card px-4 transition-colors md:px-6 has-data-[state=open]:bg-muted/40 animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none`}
+      className={`animate-in rounded-lg border border-border bg-card px-4 transition-colors duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-4 not-first:mt-3 has-data-[state=open]:bg-muted/40 motion-reduce:animate-none md:px-6`}
       style={{ animationDelay: `${360 + index * 50}ms` }}
     >
       <AccordionItem data-slot="faq-card" className={className} {...props} />
@@ -111,7 +111,7 @@ const FaqCard = ({ index = 0, className, ...props }: FaqCardProps) => {
 
 const Faq06 = () => {
   return (
-    <section data-slot="faq" className="bg-background py-16 md:py-24">
+    <section data-slot="faq" className="bg-background py-20 sm:py-28">
       <div className="mx-auto w-full max-w-3xl px-6">
         <div className="mb-10 flex flex-col items-center gap-5 text-center">
           <FaqBadge>FAQ</FaqBadge>

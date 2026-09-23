@@ -53,7 +53,7 @@ const CodeBlockDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-3">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Filename, language and highlighted lines',
             ar: 'اسم الملف واللغة والأسطر المظلَّلة',
@@ -63,7 +63,7 @@ const CodeBlockDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Diff: config change', ar: 'فرق: تغيير الإعدادات' })}
         </p>
         <CodeBlock
@@ -76,14 +76,14 @@ const CodeBlockDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Max height with expand', ar: 'ارتفاع أقصى مع التوسيع' })}
         </p>
         <CodeBlock code={longSnippet} filename="lib/fetch-json.ts" language="ts" maxHeight={180} />
       </div>
 
       <div className="grid gap-3">
-        <p className="text-xs uppercase text-muted-foreground">
+        <p className="text-xs text-muted-foreground uppercase">
           {t({
             en: 'Bare, no header, no numbers',
             ar: 'مجرّد، بلا ترويسة، بلا أرقام',

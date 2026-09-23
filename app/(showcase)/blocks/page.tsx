@@ -25,7 +25,6 @@ export const metadata: Metadata = listingMetadata({
 
 export default function BlocksIndex() {
   const blocks = REGISTRY.filter((r) => r.category === 'blocks');
-  const blockCount = blocks.length;
 
   return (
     <div className="docs-container flex flex-col gap-14 py-16 sm:gap-16 sm:py-20">
@@ -41,8 +40,8 @@ export default function BlocksIndex() {
         title="Page sections, ready to copy."
         blurb="Hero, pricing, testimonial, FAQ, auth and dashboard sections built on shadcn/ui and Tailwind CSS, each composed from the components in this registry so it matches what you already installed. Preview any block at full width, then copy it in with one command and edit it like a file you wrote."
       >
-        <p className="text-xs uppercase text-muted-foreground">
-          {blockCount} blocks in {BLOCK_KIND_ORDER.length} categories
+        <p className="text-xs text-muted-foreground uppercase">
+          {blocks.length} blocks in {BLOCK_KIND_ORDER.length} categories
         </p>
       </PageHeader>
 

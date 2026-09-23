@@ -44,7 +44,7 @@ import {
   EmptyTitle,
 } from '@/registry/hirael/bases/base/ui/empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/base/ui/input-group';
-import { KbdDisplay } from '@/registry/hirael/bases/base/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/base/components/kbd';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/registry/hirael/bases/base/ui/table';
 import {
@@ -182,24 +182,28 @@ const compareBy = (a: Account, b: Account, key: SortKey) => {
   if (key === 'mrr') return a.mrr - b.mrr;
   if (key === 'plan') return PLAN_RANK[a.plan] - PLAN_RANK[b.plan];
   if (key === 'status') return STATUS_RANK[a.status] - STATUS_RANK[b.status];
+
   return a.name.localeCompare(b.name);
 };
 
 /** Negative deltas use a true minus sign (U+2212), not a hyphen. */
 const formatDelta = ({ delta, unit }: Pick<Metric, 'delta' | 'unit'>) => {
   const sign = delta > 0 ? '+' : delta < 0 ? '−' : '';
+
   return `${sign}${Math.abs(delta)}${unit}`;
 };
 
 const deltaTone = ({ delta, goodWhen }: Pick<Metric, 'delta' | 'goodWhen'>) => {
   if (delta === 0) return 'text-muted-foreground';
   const improving = delta > 0 === (goodWhen === 'up');
+
   return improving ? 'text-success' : 'text-destructive';
 };
 
 const deltaLabel = ({ label, delta, unit }: Metric) => {
   const direction = delta > 0 ? 'up' : delta < 0 ? 'down' : 'unchanged';
   const measure = unit === '%' ? 'percent' : 'points';
+
   return `${label} ${direction} ${Math.abs(delta)} ${measure} against the previous 30 days`;
 };
 
@@ -215,6 +219,12 @@ const BrandMark = ({ className }: BrandMarkProps) => {
   );
 };
 
+const isEditableElsewhere = (target: EventTarget | null, search: HTMLElement | null) => {
+  if (!(target instanceof HTMLElement) || target === search) return false;
+
+  return target.isContentEditable || target.matches('input, textarea, select');
+};
+
 const AppShell01 = () => {
   const [query, setQuery] = React.useState('');
   const [sortKey, setSortKey] = React.useState<SortKey>('mrr');
@@ -223,13 +233,15 @@ const AppShell01 = () => {
 
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.shiftKey || event.altKey) return;
       const isSearchShortcut = event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey);
-      if (!isSearchShortcut) return;
+      if (!isSearchShortcut || isEditableElsewhere(event.target, searchRef.current)) return;
       event.preventDefault();
       searchRef.current?.focus();
       searchRef.current?.select();
     };
     document.addEventListener('keydown', onKeyDown);
+
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
@@ -242,12 +254,14 @@ const AppShell01 = () => {
         )
       : ROWS;
     const sorted = [...matches].sort((a, b) => compareBy(a, b, sortKey));
+
     return sortDirection === 'asc' ? sorted : sorted.reverse();
   }, [query, sortKey, sortDirection]);
 
   const toggleSort = (key: SortKey) => {
     if (key === sortKey) {
       setSortDirection((d) => (d === 'asc' ? 'desc' : 'asc'));
+
       return;
     }
     setSortKey(key);
@@ -268,7 +282,7 @@ const AppShell01 = () => {
                 </span>
                 <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">Hirael</span>
-                  <span className="flex gap-1.5 truncate text-xs uppercase text-muted-foreground">
+                  <span className="flex gap-1.5 truncate text-xs text-muted-foreground uppercase">
                     <span>plinth labs</span>
                     <span className="text-border">|</span>
                     <span>pro</span>
@@ -335,7 +349,7 @@ const AppShell01 = () => {
                   </span>
                   <div className="grid min-w-0 flex-1 text-start leading-tight">
                     <span className="truncate text-xs font-medium">Mohammad Shehadeh</span>
-                    <span className="flex gap-1.5 truncate text-xs uppercase text-muted-foreground">
+                    <span className="flex gap-1.5 truncate text-xs text-muted-foreground uppercase">
                       <span>admin</span>
                       <span className="text-border">|</span>
                       <span>plinth labs</span>
@@ -379,7 +393,7 @@ const AppShell01 = () => {
           <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
           <nav
             aria-label="Breadcrumb"
-            className="hidden items-center gap-1.5 text-xs uppercase text-muted-foreground sm:flex"
+            className="hidden items-center gap-1.5 text-xs text-muted-foreground uppercase sm:flex"
           >
             <span>Workspace</span>
             <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
@@ -401,6 +415,7 @@ const AppShell01 = () => {
                 if (query) {
                   e.preventDefault();
                   setQuery('');
+
                   return;
                 }
                 e.currentTarget.blur();
@@ -409,10 +424,10 @@ const AppShell01 = () => {
               aria-keyshortcuts="Meta+K Control+K"
             />
             <InputGroupAddon dir="ltr" align="inline-end" className="hidden sm:flex">
-              <KbdDisplay>
+              <Kbd>
                 <Command className="size-3" aria-hidden />
-              </KbdDisplay>
-              <KbdDisplay>K</KbdDisplay>
+              </Kbd>
+              <Kbd>K</Kbd>
             </InputGroupAddon>
           </InputGroup>
 
@@ -442,7 +457,7 @@ const AppShell01 = () => {
               <Card key={m.label} size="sm">
                 <CardContent>
                   <div className="flex flex-col gap-1">
-                    <span className="text-xs uppercase text-muted-foreground">{m.label}</span>
+                    <span className="text-xs text-muted-foreground uppercase">{m.label}</span>
                     <span className="text-lg font-semibold tabular-nums">{m.value}</span>
                     <span dir="ltr" aria-label={deltaLabel(m)} className={cn('text-[10px] tabular-nums', deltaTone(m))}>
                       {formatDelta(m)}
@@ -457,11 +472,11 @@ const AppShell01 = () => {
             data-slot="app-shell-table"
             className={cn(
               ENTER,
-              'delay-80 overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm',
+              'overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm delay-80',
             )}
           >
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
-              <span aria-live="polite" className="text-xs uppercase text-muted-foreground">
+              <span aria-live="polite" className="text-xs text-muted-foreground uppercase">
                 recent accounts
                 {query.trim() && (
                   <span className="ms-2 text-foreground">
@@ -508,6 +523,7 @@ const AppShell01 = () => {
                   <TableRow>
                     {COLUMNS.map((column) => {
                       const isSorted = column.key === sortKey;
+
                       return (
                         <TableHead
                           key={column.key}
@@ -518,7 +534,7 @@ const AppShell01 = () => {
                             type="button"
                             onClick={() => toggleSort(column.key)}
                             className={cn(
-                              'flex w-full items-center gap-1 px-2 py-2 text-xs uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset focus-visible:outline-none',
+                              'flex w-full items-center gap-1 px-2 py-2 text-xs uppercase transition-colors hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none focus-visible:ring-inset',
                               column.align === 'end' && 'justify-end',
                               isSorted ? 'text-foreground' : 'text-muted-foreground',
                             )}
@@ -545,6 +561,7 @@ const AppShell01 = () => {
                 <TableBody>
                   {visibleRows.map((r) => {
                     const tone = STATUS_TONE[r.status];
+
                     return (
                       <TableRow key={r.name}>
                         <TableCell>

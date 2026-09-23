@@ -56,6 +56,7 @@ interface ServerCardStatusProps extends Omit<React.ComponentProps<'span'>, 'chil
 
 const ServerCardStatus = ({ status, className, children, ...props }: ServerCardStatusProps) => {
   const live = status === 'provisioning';
+
   return (
     <span
       data-slot="server-card-status"
@@ -106,9 +107,10 @@ interface ServerCardSpecProps extends React.ComponentProps<'div'> {
 
 const ServerCardSpec = ({ label, icon, className, children, ...props }: ServerCardSpecProps) => {
   const Icon = icon ? specIcon[icon] : null;
+
   return (
     <div data-slot="server-card-spec" className={cn('flex flex-col gap-1', className)} {...props}>
-      <dt className="flex items-center gap-1 text-[10px] uppercase tracking-[0.1em] text-muted-foreground">
+      <dt className="flex items-center gap-1 text-[10px] tracking-[0.1em] text-muted-foreground uppercase">
         {Icon ? <Icon className="size-3" aria-hidden /> : null}
         {label}
       </dt>
@@ -129,6 +131,7 @@ const ServerCardMeter = ({ label, value, thresholds = [0.75, 0.9], className, ..
   const frac = pct / 100;
   const [warn, crit] = thresholds;
   const tone = frac >= crit ? 'bg-destructive' : frac >= warn ? 'bg-warning' : 'bg-foreground/60';
+
   return (
     <div data-slot="server-card-meter" className={cn('flex flex-col gap-1.5', className)} {...props}>
       <div className="flex items-center justify-between text-xs">

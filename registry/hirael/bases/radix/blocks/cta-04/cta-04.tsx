@@ -8,9 +8,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const EMAIL = 'hello@lenaparks.dev';
 
@@ -52,7 +50,7 @@ const Cta04 = () => {
           data-slot="cta-eyebrow"
           className={cn(
             ENTER,
-            'inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs uppercase text-muted-foreground',
+            'inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs text-muted-foreground uppercase',
           )}
         >
           Booking projects for Q4
@@ -63,10 +61,10 @@ const Cta04 = () => {
           style={stagger(1)}
           className={cn(
             ENTER,
-            'mt-6 font-serif text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl md:text-6xl',
+            'mt-6 font-serif text-4xl leading-[1.05] font-medium tracking-tight sm:text-5xl md:text-6xl',
           )}
         >
-          Let&apos;s work <span className="italic text-foreground">together</span>.
+          Let&apos;s work <span className="text-foreground italic">together</span>.
         </h2>
 
         <p

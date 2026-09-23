@@ -81,7 +81,7 @@ export const LogoTile = ({ className, markClassName }: LogoTileProps) => {
       role="img"
       aria-label="Hirael"
       className={cn(
-        'relative inline-flex size-9 shrink-0 select-none items-center justify-center overflow-hidden rounded-sm text-foreground',
+        'relative inline-flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-sm text-foreground select-none',
         'border border-input bg-linear-to-b from-card to-card/80',
         'shadow-[0_1px_0_1px_oklch(0%_0_0/0.1),0_2px_4px_-1px_oklch(0%_0_0/0.1),0_4px_6px_-2px_oklch(0%_0_0/0.05)]',
         'dark:shadow-[0_1px_0_1px_oklch(0%_0_0/0.4),0_2px_4px_-1px_oklch(0%_0_0/0.3),0_4px_6px_-2px_oklch(0%_0_0/0.2)]',

@@ -6,7 +6,7 @@ import { Search } from 'lucide-react';
 
 import { useIsApple } from '@/hooks/use-is-apple';
 import { cn } from '@/lib/utils';
-import { KbdDisplay } from '@/registry/hirael/bases/radix/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/radix/components/kbd';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { REGISTRY } from '@/registry/hirael/registry-meta';
 
@@ -32,6 +32,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
       setOpen((prev) => !prev);
     };
     document.addEventListener('keydown', onKeyDown);
+
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
@@ -67,7 +68,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
         >
           <Search className="size-3.5 shrink-0" />
           <span className="hidden text-[13px] tracking-tight sm:inline">Search…</span>
-          <KbdDisplay className="ms-2 hidden sm:inline-flex">{isMac ? '⌘' : 'Ctrl '}K</KbdDisplay>
+          <Kbd className="ms-2 hidden sm:inline-flex">{isMac ? '⌘' : 'Ctrl '}K</Kbd>
         </Button>
       )}
 

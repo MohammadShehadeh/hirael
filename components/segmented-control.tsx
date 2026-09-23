@@ -56,6 +56,7 @@ export const SegmentedControl = ({
     >
       {items.map((item) => {
         const isActive = item.value === value;
+
         return (
           <button
             key={item.value}

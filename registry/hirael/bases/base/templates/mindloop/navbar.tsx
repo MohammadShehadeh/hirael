@@ -1,7 +1,5 @@
 'use client';
 
-import * as React from 'react';
-
 import { InstagramIcon, LinkedinIcon, Logo, TwitterIcon } from './primitives';
 
 const NAV_LINKS = [
@@ -27,18 +25,15 @@ export const Navbar = () => {
             <span className="text-lg font-bold tracking-tight">Mindloop</span>
           </a>
 
-          <div className="hidden items-center gap-2 ps-6 lg:flex">
-            {NAV_LINKS.map((link, i) => (
-              <React.Fragment key={link.label}>
-                {i > 0 ? (
-                  <span aria-hidden className="text-muted-foreground/50">
-                    &bull;
-                  </span>
-                ) : null}
-                <a href={link.href} className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-                  {link.label}
-                </a>
-              </React.Fragment>
+          <div className="hidden items-center gap-6 ps-6 lg:flex">
+            {NAV_LINKS.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </a>
             ))}
           </div>
         </div>

@@ -33,6 +33,7 @@ type StorageBreadcrumbProps = React.ComponentProps<'nav'>;
 
 const StorageBreadcrumb = ({ className, children, ...props }: StorageBreadcrumbProps) => {
   const items = React.Children.toArray(children).filter(Boolean);
+
   return (
     <nav
       data-slot="storage-breadcrumb"
@@ -92,6 +93,7 @@ interface StorageItemProps extends Omit<React.ComponentProps<'button'>, 'type' |
 
 const StorageItem = ({ kind, name, size, modified, icon, selected, className, ...props }: StorageItemProps) => {
   const DefaultIcon = kind === 'folder' ? Folder : File;
+
   return (
     <li>
       <button
@@ -101,8 +103,8 @@ const StorageItem = ({ kind, name, size, modified, icon, selected, className, ..
         data-selected={selected ? '' : undefined}
         aria-pressed={kind === 'file' && selected !== undefined ? selected : undefined}
         className={cn(
-          'flex w-full items-center gap-3 px-3 py-2.5 text-start outline-none transition-colors duration-150',
-          'hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring',
+          'flex w-full items-center gap-3 px-3 py-2.5 text-start transition-colors duration-150 outline-none',
+          'hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
           'data-selected:bg-muted',
           className,
         )}
@@ -218,6 +220,7 @@ const StorageBrowserBlock = () => {
   function open(entry: StorageEntry) {
     if (entry.kind === 'file') {
       setSelected((current) => (current === entry.name ? null : entry.name));
+
       return;
     }
     const next = [...path, entry.name];
@@ -243,7 +246,7 @@ const StorageBrowserBlock = () => {
                 </StorageBreadcrumbItem>
               ))}
             </StorageBreadcrumb>
-            <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+            <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
               {entries.length} {entries.length === 1 ? 'item' : 'items'}
             </span>
           </StorageBrowserHeader>
@@ -277,7 +280,7 @@ const StorageBrowserBlock = () => {
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <dt>Size</dt>
-                  <dd className="text-sm tabular-nums text-foreground">{selectedEntry.size}</dd>
+                  <dd className="text-sm text-foreground tabular-nums">{selectedEntry.size}</dd>
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <dt>Modified</dt>

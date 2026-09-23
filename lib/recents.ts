@@ -33,6 +33,7 @@ const parse = (raw: string | null): RecentItem[] => {
   try {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return NO_RECENTS;
+
     return parsed.filter(
       (item): item is RecentItem =>
         !!item &&
@@ -48,6 +49,7 @@ const parse = (raw: string | null): RecentItem[] => {
 export const subscribeRecents = (onStoreChange: () => void) => {
   listeners.add(onStoreChange);
   window.addEventListener('storage', onStoreChange);
+
   return () => {
     listeners.delete(onStoreChange);
     window.removeEventListener('storage', onStoreChange);
@@ -59,6 +61,7 @@ export const recentsSnapshot = (): RecentItem[] => {
   const raw = read();
   if (cache?.raw === raw) return cache.value;
   cache = { raw, value: parse(raw) };
+
   return cache.value;
 };
 
@@ -72,5 +75,6 @@ export const pushRecent = (item: RecentItem): RecentItem[] => {
     memory = capped;
   }
   for (const listener of listeners) listener();
+
   return capped;
 };

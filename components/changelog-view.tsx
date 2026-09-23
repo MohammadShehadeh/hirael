@@ -10,7 +10,7 @@ export type ChangelogViewProps = Changelog;
 
 export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogViewProps) => {
   return (
-    <article className="docs-container relative py-16 sm:py-20">
+    <article className="relative docs-container py-16 sm:py-20">
       <div className="relative">
         <div
           aria-hidden
@@ -21,14 +21,14 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
           title="Release notes"
           blurb="Every Hirael release, newest first, with the components and blocks it added and the fixes it shipped."
         >
-          {lastUpdated ? <p className="text-xs uppercase text-muted-foreground">Updated {lastUpdated}</p> : null}
+          {lastUpdated ? <p className="text-xs text-muted-foreground uppercase">Updated {lastUpdated}</p> : null}
         </PageHeader>
       </div>
 
       {entries.length === 0 ? (
         <p className="mt-16 text-sm text-muted-foreground">No releases recorded yet.</p>
       ) : (
-        <div className="mt-16 w-full docs-container sm:mt-20">
+        <div className="docs-container mt-16 w-full sm:mt-20">
           {entries.map((entry, index) => (
             <section
               key={entry.slug}
@@ -40,7 +40,7 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
               )}
             >
               <div className="flex flex-wrap items-center gap-3 md:sticky md:top-16 md:flex-col md:items-start md:gap-2.5">
-                <p className="text-xs uppercase text-muted-foreground">
+                <p className="text-xs text-muted-foreground uppercase">
                   <time dateTime={entry.isoDate}>{entry.displayDate}</time>
                 </p>
                 {entry.slug === latestSlug ? (
@@ -54,13 +54,13 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
               <div className="mt-4 min-w-0 md:mt-0">
                 <h2
                   id={`release-${entry.slug}-title`}
-                  className="text-display text-3xl italic leading-[0.95] sm:text-4xl"
+                  className="text-display text-3xl leading-[0.95] italic sm:text-4xl"
                 >
                   {entry.version ?? entry.title}
                 </h2>
 
                 {entry.version && entry.title ? (
-                  <p className="mt-3 text-balance text-base text-muted-foreground">{entry.title}</p>
+                  <p className="mt-3 text-base text-balance text-muted-foreground">{entry.title}</p>
                 ) : null}
 
                 <div className="mt-7">

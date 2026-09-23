@@ -63,7 +63,7 @@ export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: FeatureProps) =
         <div className="flex flex-col justify-between rounded-2xl bg-card p-10 md:p-14">
           <div>
             <span className="mb-8 inline-block h-8 w-8 rounded-full border border-border" />
-            <h2 className="mb-6 text-3xl tracking-[-1px] text-foreground [font-family:var(--font-velorah-serif)] sm:text-5xl">
+            <h2 className="mb-6 [font-family:var(--font-velorah-serif)] text-3xl tracking-[-1px] text-foreground sm:text-5xl">
               {active.heading}
             </h2>
             <p className="max-w-sm text-sm leading-relaxed text-muted-foreground sm:text-base">{active.description}</p>

@@ -16,9 +16,7 @@ const Hero05Backdrop = dynamic(() => import('./hero-05-backdrop'), {
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const AVATARS = [
   '/media/blocks/hero-05/avatar-1.jpg',
@@ -39,11 +37,11 @@ const Hero05 = () => {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card md:rounded-[40px] text-card-foreground shadow-sm">
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card text-card-foreground shadow-sm md:rounded-[40px]">
           <div
             aria-hidden
             data-slot="hero-wash"
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,color-mix(in_oklch,var(--accent-cool)_26%,transparent),transparent_48%),radial-gradient(70%_60%_at_84%_2%,color-mix(in_oklch,var(--primary)_32%,transparent),transparent_62%),radial-gradient(85%_60%_at_38%_110%,color-mix(in_oklch,var(--warm)_22%,transparent),transparent_70%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_48%),radial-gradient(70%_60%_at_84%_2%,color-mix(in_oklch,var(--primary)_32%,transparent),transparent_62%),radial-gradient(85%_60%_at_38%_110%,color-mix(in_oklch,var(--primary)_22%,transparent),transparent_70%)]"
           />
           <div
             aria-hidden
@@ -93,8 +91,8 @@ const Hero05 = () => {
                 )}
               >
                 <span aria-hidden className="relative flex size-1.5">
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-accent-cool opacity-75 motion-reduce:animate-none" />
-                  <span className="relative inline-flex size-1.5 rounded-full bg-accent-cool" />
+                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75 motion-reduce:animate-none" />
+                  <span className="relative inline-flex size-1.5 rounded-full bg-primary" />
                 </span>
                 All systems online
               </span>
@@ -103,7 +101,7 @@ const Hero05 = () => {
                 style={stagger(2)}
                 className={cn(
                   ENTER,
-                  'mt-7 font-serif text-5xl font-medium leading-[1.04] tracking-tight text-foreground sm:text-6xl md:text-7xl',
+                  'mt-7 font-serif text-5xl leading-[1.04] font-medium tracking-tight text-foreground sm:text-6xl md:text-7xl',
                 )}
               >
                 Bring your ideas together.

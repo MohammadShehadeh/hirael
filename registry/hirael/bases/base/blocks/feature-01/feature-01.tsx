@@ -26,7 +26,7 @@ const ShippingMedia = () => {
         <li key={deploy.hash} className="flex items-center gap-3 px-4 py-3">
           <span
             aria-hidden
-            className={cn('size-1.5 shrink-0 rounded-full', deploy.live ? 'bg-accent-cool' : 'bg-muted-foreground/40')}
+            className={cn('size-1.5 shrink-0 rounded-full', deploy.live ? 'bg-primary' : 'bg-muted-foreground/40')}
           />
           <div className="min-w-0 flex-1">
             <p className="truncate text-sm font-medium">{deploy.commit}</p>
@@ -36,7 +36,7 @@ const ShippingMedia = () => {
               <span>{deploy.region}</span>
             </p>
           </div>
-          <span className={cn('shrink-0 text-xs', deploy.live ? 'text-accent-cool' : 'text-muted-foreground')}>
+          <span className={cn('shrink-0 text-xs', deploy.live ? 'text-primary' : 'text-muted-foreground')}>
             {deploy.state}
           </span>
         </li>
@@ -146,10 +146,10 @@ const PRIMITIVES = [
 
 const Feature01 = () => {
   return (
-    <section data-slot="feature" className="bg-background px-4 py-16 md:py-24">
+    <section data-slot="feature" className="bg-background px-4 py-20 sm:py-28">
       <div className="mx-auto w-full max-w-6xl overflow-hidden rounded-2xl border border-border">
         <div data-slot="feature-header" className="bg-card px-6 py-14 text-center sm:px-10 sm:py-16">
-          <p className={cn(ENTER, 'text-xs font-medium uppercase tracking-widest text-muted-foreground')}>
+          <p className={cn(ENTER, 'text-xs font-medium tracking-widest text-muted-foreground uppercase')}>
             The platform
           </p>
           <h2
@@ -170,6 +170,7 @@ const Feature01 = () => {
         {LAYERS.map((layer, index) => {
           const mediaFirst = index % 2 === 1;
           const Media = layer.media;
+
           return (
             <div
               key={layer.title}
@@ -186,7 +187,7 @@ const Feature01 = () => {
                 )}
               >
                 <div style={stagger(index, 60, 180)} className={cn(ENTER, mediaFirst && 'lg:order-last')}>
-                  <p className="flex items-center gap-4 text-xs font-medium uppercase tracking-widest text-muted-foreground">
+                  <p className="flex items-center gap-4 text-xs font-medium tracking-widest text-muted-foreground uppercase">
                     <span dir="ltr" className="tabular-nums">
                       <span className="text-foreground">{formatIndex(index)}</span>
                       <span className="mx-1.5 text-border">|</span>
@@ -207,7 +208,7 @@ const Feature01 = () => {
                     'w-full overflow-hidden rounded-xl border border-border bg-background shadow-sm',
                   )}
                 >
-                  <div className="border-b border-border px-4 py-2.5 text-xs uppercase text-muted-foreground">
+                  <div className="border-b border-border px-4 py-2.5 text-xs text-muted-foreground uppercase">
                     {layer.label}
                   </div>
                   <Media />
@@ -219,7 +220,7 @@ const Feature01 = () => {
 
         <div className="border-t border-border bg-muted/30 px-6 py-14 sm:px-10 sm:py-16 lg:px-14">
           <div className={cn(ENTER, 'text-center')}>
-            <p className="text-xs font-medium uppercase tracking-widest text-muted-foreground">Under the hood</p>
+            <p className="text-xs font-medium tracking-widest text-muted-foreground uppercase">Under the hood</p>
             <h3 className="mx-auto mt-3 max-w-xl text-2xl font-bold tracking-tight sm:text-3xl">
               Primitives that stay out of your way
             </h3>
@@ -238,7 +239,7 @@ const Feature01 = () => {
                 className={cn(ENTER, 'sm:px-6 sm:first:ps-0 sm:last:pe-0')}
               >
                 <h4 className="flex items-center gap-2 text-base font-semibold">
-                  <primitive.icon aria-hidden className="size-4 shrink-0 text-warm" />
+                  <primitive.icon aria-hidden className="size-4 shrink-0 text-primary" />
                   {primitive.title}
                 </h4>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{primitive.body}</p>
@@ -260,13 +261,7 @@ const Feature01 = () => {
                 className="size-5 transition-transform group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
               />
             </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="sm:w-50"
-              render={<a href="#" />}
-              nativeButton={false}
-            >
+            <Button variant="outline" size="lg" className="sm:w-50" render={<a href="#" />} nativeButton={false}>
               Read the docs
             </Button>
           </div>

@@ -102,6 +102,7 @@ export const Services = ({ lang }: ServicesProps) => {
           {SERVICES.map((service, index) => {
             const Icon = service.icon;
             const copy = c.items[service.id];
+
             return (
               <Reveal key={service.id} delay={(index % 2) * 120} className="flex gap-6">
                 <div className="shrink-0 pt-1 text-(--novael-panel-foreground)">
@@ -111,7 +112,7 @@ export const Services = ({ lang }: ServicesProps) => {
                   <h3 data-slot="novael-display" className="text-xl font-semibold text-(--novael-panel-foreground)">
                     {copy.title}
                   </h3>
-                  <p className="mt-2 font-light leading-relaxed text-(--novael-panel-foreground)/85">{copy.text}</p>
+                  <p className="mt-2 leading-relaxed font-light text-(--novael-panel-foreground)/85">{copy.text}</p>
                 </div>
               </Reveal>
             );

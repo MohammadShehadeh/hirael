@@ -19,13 +19,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # Version comes from `packageManager` in package.json.
       - uses: pnpm/action-setup@v6
-        with:
-          version: 10
 
       - uses: actions/setup-node@v7
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: pnpm
 
       - name: Install dependencies
@@ -34,11 +33,17 @@ jobs:
       - name: Registry in sync
         run: pnpm check:registry
 
+      - name: Format
+        run: pnpm format:check
+
       - name: Lint
         run: pnpm lint
 
       - name: Typecheck
         run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
 
       - name: Build
         run: pnpm build

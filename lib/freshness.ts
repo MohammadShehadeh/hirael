@@ -7,12 +7,14 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const parseDay = (day: string | undefined | null): number | null => {
   if (!day) return null;
   const ms = Date.parse(`${day}T00:00:00Z`);
+
   return Number.isNaN(ms) ? null : ms;
 };
 
 export const newBadgeRemainingMs = (addedAt: string | undefined | null, now = Date.now()): number => {
   const added = parseDay(addedAt);
   if (added === null) return 0;
+
   return Math.max(0, added + NEW_WINDOW_DAYS * DAY_MS - now);
 };
 

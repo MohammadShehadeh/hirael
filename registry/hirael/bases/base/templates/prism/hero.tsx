@@ -25,11 +25,11 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
           Introducing AI-powered web design.
         </p>
 
-        <h1 className="mt-6 max-w-3xl text-6xl italic leading-[0.85] tracking-[-2px] text-foreground [font-family:var(--font-prism-serif)] md:text-7xl lg:text-[5.5rem] lg:tracking-[-4px]">
+        <h1 className="mt-6 max-w-3xl [font-family:var(--font-prism-serif)] text-6xl leading-[0.85] tracking-[-2px] text-foreground italic md:text-7xl lg:text-[5.5rem] lg:tracking-[-4px]">
           <BlurText text="The Website Your Brand Deserves" />
         </h1>
 
-        <p className="rise mt-6 max-w-2xl text-sm font-light leading-relaxed text-foreground [animation-delay:0.8s] md:text-base">
+        <p className="rise mt-6 max-w-2xl text-sm leading-relaxed font-light text-foreground [animation-delay:0.8s] md:text-base">
           Stunning design. Blazing performance. Built by AI, refined by experts. This is web design, wildly reimagined.
         </p>
 
@@ -44,13 +44,13 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
           </Button>
         </div>
 
-        <div data-slot="partners" className="rise mt-auto flex flex-col items-center gap-6 pb-8 pt-16">
+        <div data-slot="partners" className="rise mt-auto flex flex-col items-center gap-6 pt-16 pb-8">
           <GlassPill>Trusted by the teams behind</GlassPill>
           <ul className="flex flex-wrap items-center justify-center gap-x-12 gap-y-4">
             {PARTNERS.map((partner) => (
               <li
                 key={partner}
-                className="text-2xl italic tracking-tight text-foreground [font-family:var(--font-prism-serif)] md:text-3xl"
+                className="[font-family:var(--font-prism-serif)] text-2xl tracking-tight text-foreground italic md:text-3xl"
               >
                 {partner}
               </li>

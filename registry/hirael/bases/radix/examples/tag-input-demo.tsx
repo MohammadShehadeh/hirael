@@ -35,7 +35,7 @@ const TagInputDemo = () => {
         </TagInputContainer>
         <TagInputError className="mt-1" />
       </TagInput>
-      <p className="text-xs uppercase text-muted-foreground">
+      <p className="text-xs text-muted-foreground uppercase">
         {t({
           en: <>{tags.length} / 6 · paste &ldquo;a, b, c&rdquo; to split</>,
           ar: <>{tags.length} / 6 · ألصق &ldquo;a, b, c&rdquo; للتقسيم</>,

@@ -52,13 +52,13 @@ const PagerLink = ({ entry, direction }: PagerLinkProps) => {
         isPrev ? 'items-start text-start' : 'items-end text-end',
       )}
     >
-      <span className="flex items-center gap-x-2 text-xs uppercase text-muted-foreground">
+      <span className="flex items-center gap-x-2 text-xs text-muted-foreground uppercase">
         {isPrev && arrow}
         <span>{isPrev ? 'Previous' : 'Next'}</span>
         <span aria-hidden className="text-border">
           |
         </span>
-        <span className="tabular-nums text-foreground">
+        <span className="text-foreground tabular-nums">
           {String(index).padStart(2, '0')}
           <span className="text-muted-foreground/60"> / {String(total).padStart(2, '0')}</span>
         </span>

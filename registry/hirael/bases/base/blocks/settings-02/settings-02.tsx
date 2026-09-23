@@ -39,10 +39,6 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
-
 type SettingsPanelProps = React.ComponentProps<'section'>;
 
 const SettingsPanel = ({ className, ...props }: SettingsPanelProps) => {
@@ -438,7 +434,7 @@ const Settings02 = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="security" style={stagger(1)} className={ENTER}>
+        <Tabs defaultValue="security" style={{ animationDelay: '60ms' }} className={ENTER}>
           <TabsList variant="line" className="w-full justify-start">
             <TabsTrigger value="security" className="flex-none">
               Security

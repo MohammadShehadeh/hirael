@@ -6,7 +6,7 @@ export interface ExampleEmbedShellProps {
   children: ReactNode;
 }
 
-// The docs frame measures the outer shell, so the minimum height sits on the inner box.
+/** The docs frame measures the outer shell, so the minimum height sits on the inner box. */
 export const ExampleEmbedShell = ({ children }: ExampleEmbedShellProps) => {
   return (
     <div data-embed-shell className="bg-background">

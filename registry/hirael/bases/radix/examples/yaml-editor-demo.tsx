@@ -47,8 +47,8 @@ const YamlEditorDemo = () => {
       <YamlEditor value={value} onValueChange={setValue} rows={14} />
       <p className="mt-2 text-xs text-muted-foreground">
         {t({
-          en: `Editable — ${lines} lines. Tab inserts two spaces.`,
-          ar: `قابل للتحرير — ${lines} أسطر. زر Tab يُدرج مسافتين.`,
+          en: `Editable, ${lines} lines. Tab inserts two spaces.`,
+          ar: `قابل للتحرير، ${lines} أسطر. زر Tab يُدرج مسافتين.`,
         })}
       </p>
     </div>

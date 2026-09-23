@@ -214,23 +214,19 @@ const TreeItem = ({
     }
   };
 
-  const triggerStyle: React.CSSProperties = {
-    paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE,
-  };
-  const triggerClassName = cn(
-    'group flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start transition-colors outline-none',
-    'hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring',
-    'disabled:cursor-not-allowed disabled:opacity-50',
-    isSelected ? 'bg-accent font-medium text-foreground' : 'text-foreground/80',
-  );
   const triggerProps = {
     ref: triggerRef,
     type: 'button' as const,
     disabled,
     tabIndex: tabbable === value ? 0 : -1,
     'data-slot': 'tree-item-trigger',
-    style: triggerStyle,
-    className: triggerClassName,
+    style: { paddingInlineStart: depth * TREE_INDENT_PER_LEVEL + TREE_INDENT_BASE },
+    className: cn(
+      'group flex h-7 w-full items-center gap-1.5 rounded-sm pe-2 text-start transition-colors outline-none',
+      'hover:bg-accent focus-visible:bg-accent focus-visible:ring-2 focus-visible:ring-ring',
+      'disabled:cursor-not-allowed disabled:opacity-50',
+      isSelected ? 'bg-accent font-medium text-foreground' : 'text-foreground/80',
+    ),
     onKeyDown: onTriggerKeyDown,
     onFocus: () => setTabbable(value),
   };

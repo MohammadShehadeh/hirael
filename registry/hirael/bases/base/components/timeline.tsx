@@ -40,15 +40,6 @@ export type TimelineTone =
 
 type ResolvedTimelineTone = Exclude<TimelineTone, 'default' | 'danger'>;
 
-const toneAliases: Partial<Record<TimelineTone, ResolvedTimelineTone>> = {
-  default: 'neutral',
-  danger: 'destructive',
-};
-
-const resolveTimelineTone = (tone: TimelineTone): ResolvedTimelineTone => {
-  return toneAliases[tone] ?? (tone as ResolvedTimelineTone);
-};
-
 const timelineDotVariants = cva(
   'relative z-10 mt-1.5 inline-flex size-[15px] shrink-0 items-center justify-center rounded-full ring-2 ring-background',
   {
@@ -93,7 +84,7 @@ interface TimelineDotProps extends Omit<React.ComponentProps<'span'>, 'children'
 }
 
 const TimelineDot = ({ className, tone = 'neutral', children, ...props }: TimelineDotProps) => {
-  const resolvedTone = resolveTimelineTone(tone);
+  const resolvedTone: ResolvedTimelineTone = tone === 'default' ? 'neutral' : tone === 'danger' ? 'destructive' : tone;
   const variants = children ? timelineIconDotVariants : timelineDotVariants;
 
   return (

@@ -1,3 +1,7 @@
+// What more than one script needs: repo paths, brand fields from package.json,
+// the entry list with its showcased/distribution-only split, the source header
+// stamped into payloads, and the pass/fail reporter. Not a script itself.
+
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -17,10 +21,11 @@ import {
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const R_DIR = path.join(ROOT, 'public/r');
 
-export const rDir = (base: RegistryBase) => (base === 'radix' ? R_DIR : path.join(R_DIR, base));
+// public/r for Radix, public/r/<base> for every other base.
+export const builtDir = (base: RegistryBase) => (base === 'radix' ? R_DIR : path.join(R_DIR, base));
 export { REGISTRY_BASES };
 
-// Override to test installs against another server, e.g. `pnpm dev` on localhost.
+/** Override to test installs against another server, e.g. `pnpm dev` on localhost. */
 export const REGISTRY_BASE_URL = process.env.REGISTRY_BASE_URL ?? pkg.homepage;
 
 export const BRAND = {
@@ -40,12 +45,15 @@ export const isShowcased = (entry: RegistryEntry): entry is RegistryEntryMeta =>
 
 export const jsonText = (value: unknown) => `${JSON.stringify(value, null, 2)}\n`;
 
-// `shadcn build` also writes the catalog index here; it is not an installable item.
+/** Source files that get the Hirael header (not CSS, JSON or media). */
+export const STAMPABLE_FILE = /\.(tsx?|jsx?|mjs)$/;
+
+/** `shadcn build` also writes the catalog index here; it is not an installable item. */
 export const readBuiltItems = (base: RegistryBase = 'radix') =>
-  readdirSync(rDir(base))
+  readdirSync(builtDir(base))
     .filter((name) => name.endsWith('.json') && name !== 'registry.json')
     .map((name) => {
-      const file = path.join(rDir(base), name);
+      const file = path.join(builtDir(base), name);
 
       return {
         base,
@@ -55,8 +63,6 @@ export const readBuiltItems = (base: RegistryBase = 'radix') =>
     });
 
 export const readAllBuiltItems = () => REGISTRY_BASES.flatMap((base) => readBuiltItems(base));
-
-export const STAMPABLE_FILE = /\.(tsx?|jsx?|mjs)$/;
 
 const hrefByName = new Map(REGISTRY.map((entry) => [entry.name, entryHref(entry)]));
 
@@ -71,6 +77,7 @@ export const sourceHeader = (item: Pick<RegistryItem, 'name' | 'title'>) => {
   ].join('\n');
 };
 
+/** Collects failures across a check script; `finish` exits 1 if any were reported. */
 export const createReporter = (label: string) => {
   let problems = 0;
 

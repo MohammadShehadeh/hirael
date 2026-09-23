@@ -8,9 +8,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const REGISTRY_URL = 'https://hirael.com/r/multi-select.json';
 const COMMAND = `npx shadcn add ${REGISTRY_URL}`;

@@ -69,8 +69,6 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
   );
 };
 
-const PREVIEW_FRAME = 'bg-dot-grid relative flex items-center justify-center overflow-hidden p-5';
-
 const hoverQuery = typeof window !== 'undefined' ? window.matchMedia('(hover: hover) and (pointer: fine)') : null;
 
 const subscribeHover = (onChange: () => void) => {
@@ -114,7 +112,14 @@ const LazyDemo = ({ name, inert, compact }: LazyDemoProps) => {
   const base = useRegistryBase();
 
   return (
-    <div ref={ref} inert={inert} className={cn(PREVIEW_FRAME, compact ? 'aspect-video' : 'h-60')}>
+    <div
+      ref={ref}
+      inert={inert}
+      className={cn(
+        'bg-dot-grid relative flex items-center justify-center overflow-hidden p-5',
+        compact ? 'aspect-video' : 'h-60',
+      )}
+    >
       <div className="relative z-10 flex max-h-full w-full items-center justify-center mask-[linear-gradient(to_bottom,transparent,black_7%,black_93%,transparent)]">
         {isNear && <RegistryDemo name={name} base={base} fallback={<DemoSkeleton />} />}
       </div>

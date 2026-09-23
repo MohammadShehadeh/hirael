@@ -106,8 +106,6 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
     return () => window.clearTimeout(timerId);
   }, [config, mainCss, embedCss]);
 
-  const setMode = (nextMode: ThemeMode) => setTheme(nextMode);
-
   const setConfig = (patch: Partial<CustomizerConfig>) => {
     setConfigState((prev) => {
       const next: Partial<CustomizerConfig> = { ...prev, ...patch };
@@ -123,7 +121,7 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
 
   const value: ThemeContextValue = {
     mode,
-    setMode,
+    setMode: setTheme,
     config,
     base: isMounted ? config.base : DEFAULT_CONFIG.base,
     tokens,

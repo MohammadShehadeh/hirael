@@ -135,8 +135,7 @@ const TagInput = ({
   const remove = React.useCallback(
     (index: number) => {
       if (disabled || readOnly) return;
-      const next = value.filter((_, i) => i !== index);
-      setValue(next);
+      setValue(value.filter((_, i) => i !== index));
       setError(null);
     },
     [disabled, readOnly, value, setValue],

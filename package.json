@@ -26,6 +26,7 @@
     "registry:build": "shadcn build && shadcn build registry.base.json -o public/r/base && tsx scripts/stamp-source.mts",
     "check:registry": "tsx scripts/check-registry.mts",
     "check:install": "tsx scripts/check-install.mts",
+    "check:health": "tsx scripts/check-health.mts",
     "prepare": "husky && pnpm registry:gen && pnpm registry:props && pnpm registry:md",
     "test": "vitest run",
     "test:watch": "vitest"

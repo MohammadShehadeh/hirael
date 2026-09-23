@@ -7,9 +7,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const LOGOS = [
   { name: 'Helix', icon: Dna },
@@ -30,8 +28,7 @@ const Hero03 = () => {
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-[linear-gradient(to_right,transparent,var(--primary)_50%,transparent)]"
       />
-      {/* Three orbs rather than one grey one: the grid alone left the section
-          reading as bare background in both themes. */}
+      {/* Without the orbs, the grid alone reads as bare background in both themes. */}
       <div
         aria-hidden
         className="pointer-events-none absolute start-1/2 -top-40 -z-10 size-130 -translate-x-1/2 rounded-full bg-primary opacity-25 blur-3xl rtl:translate-x-1/2"

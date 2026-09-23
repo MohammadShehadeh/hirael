@@ -104,9 +104,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 const initialsOf = (name: string) => {
   return name

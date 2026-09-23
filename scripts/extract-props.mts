@@ -1,3 +1,6 @@
+// Runs in `pnpm registry:props`. Reads each component's props, JSDoc included,
+// from the default base into registry-props.json for the API tables.
+
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import ts from 'typescript';
@@ -115,8 +118,7 @@ for (const entry of entries) {
     if (!moduleSymbol) continue;
     for (const exported of checker.getExportsOfModule(moduleSymbol)) {
       const name = exported.getName();
-      const isComponentName = /^[A-Z]/.test(name);
-      if (!isComponentName) continue;
+      if (!/^[A-Z]/.test(name)) continue;
       const resolved = resolveAlias(checker, exported);
       if (!(resolved.flags & ts.SymbolFlags.Value)) continue;
       const api = extractComponent(checker, resolved);

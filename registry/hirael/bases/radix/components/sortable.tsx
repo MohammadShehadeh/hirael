@@ -149,10 +149,6 @@ const Sortable = ({
 
   const isDisabled = React.useCallback((id: string) => itemsRef.current.get(id)?.disabled ?? false, []);
 
-  const announce = React.useCallback((text: string) => {
-    setLiveText(text);
-  }, []);
-
   const itemLabel = React.useCallback((id: string) => {
     return itemsRef.current.get(id)?.node.textContent?.trim() || null;
   }, []);
@@ -237,13 +233,13 @@ const Sortable = ({
       const next = orderRef.current;
       commit(next);
       const label = itemLabel(id);
-      announce(
+      setLiveText(
         label
           ? `Moved ${label} to position ${next.indexOf(id) + 1} of ${next.length}`
           : `Moved to position ${next.indexOf(id) + 1} of ${next.length}`,
       );
     },
-    [commit, announce, itemLabel, setDragId],
+    [commit, itemLabel, setDragId],
   );
 
   const moveGrabbed = React.useCallback(
@@ -257,13 +253,13 @@ const Sortable = ({
       const next = reorderPinned(current, isDisabled, id, to);
       setPreview(next);
       const label = itemLabel(id);
-      announce(
+      setLiveText(
         label
           ? `Moved ${label} to position ${next.indexOf(id) + 1} of ${next.length}`
           : `Moved to position ${next.indexOf(id) + 1} of ${next.length}`,
       );
     },
-    [announce, isDisabled, itemLabel],
+    [isDisabled, itemLabel],
   );
 
   const handleKeyDown = React.useCallback(
@@ -279,7 +275,7 @@ const Sortable = ({
           setGrabbedId(null);
           commit(next);
           const label = itemLabel(id);
-          announce(
+          setLiveText(
             label
               ? `Dropped ${label} at position ${next.indexOf(id) + 1} of ${next.length}`
               : `Dropped at position ${next.indexOf(id) + 1} of ${next.length}`,
@@ -288,7 +284,7 @@ const Sortable = ({
           setGrabbedId(id);
           const current = orderRef.current;
           const label = itemLabel(id);
-          announce(
+          setLiveText(
             `Grabbed ${label ?? 'item'}, position ${current.indexOf(id) + 1} of ${current.length}. Use arrow keys to move, Space to drop, Escape to cancel.`,
           );
         }
@@ -301,7 +297,7 @@ const Sortable = ({
           e.preventDefault();
           cancel();
           const label = itemLabel(id);
-          announce(`Reorder cancelled. ${label ?? 'Item'} returned to its original position.`);
+          setLiveText(`Reorder cancelled. ${label ?? 'Item'} returned to its original position.`);
         }
 
         return;
@@ -322,7 +318,7 @@ const Sortable = ({
         moveGrabbed(id, dir);
       }
     },
-    [disabled, orientation, grabbedId, dragId, commit, cancel, announce, moveGrabbed, itemLabel],
+    [disabled, orientation, grabbedId, dragId, commit, cancel, moveGrabbed, itemLabel],
   );
 
   const handleBlur = React.useCallback(

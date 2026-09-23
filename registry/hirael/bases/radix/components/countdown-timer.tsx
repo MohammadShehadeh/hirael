@@ -19,9 +19,6 @@ export interface UseCountdownOptions {
   onComplete?: () => void;
 }
 
-const toTimestamp = (target: Date | string | number) =>
-  target instanceof Date ? target.getTime() : new Date(target).getTime();
-
 const getCountdownState = (targetMs: number): CountdownState => {
   const totalMs = Math.max(targetMs - Date.now(), 0);
   if (!Number.isFinite(totalMs)) {
@@ -48,7 +45,7 @@ const getCountdownState = (targetMs: number): CountdownState => {
 
 /** Returns `null` until mounted, so server and hydration renders never read the clock. */
 const useCountdown = (target: Date | string | number, options: UseCountdownOptions = {}): CountdownState | null => {
-  const targetMs = toTimestamp(target);
+  const targetMs = new Date(target).getTime();
   const [state, setState] = React.useState<CountdownState | null>(null);
   const onCompleteRef = React.useRef(options.onComplete);
 

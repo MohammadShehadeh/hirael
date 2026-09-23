@@ -37,14 +37,12 @@ const useCookieConsent = () => {
   return ctx;
 };
 
-const noopUnsubscribe = () => () => {};
-
 // Server render reports "chosen" so the SSR HTML never shows the banner and
 // hydration agrees; the real storage value is read once hydration commits.
 const useStoredChoice = (storageKey: string) => {
   const subscribe = React.useCallback(
     (cb: () => void) => {
-      if (typeof window === 'undefined') return noopUnsubscribe();
+      if (typeof window === 'undefined') return () => {};
       const handler = (e: StorageEvent) => {
         if (e.key === storageKey) cb();
       };

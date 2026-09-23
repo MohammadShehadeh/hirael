@@ -83,8 +83,6 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 50): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
-
 const STATS = [
   { label: 'Live campaigns', value: '6', note: '2 end this month' },
   { label: 'Due this week', value: '4', note: '1 waiting on copy' },
@@ -176,7 +174,7 @@ const BoardOverview = () => {
             <div
               key={column.stage}
               data-slot="app-shell-board-column"
-              style={stagger(index + 1)}
+              style={{ animationDelay: `${(index + 1) * 50}ms` }}
               className={cn(ENTER, 'flex flex-col rounded-lg border border-border')}
             >
               <div className="flex items-center justify-between border-b border-border px-3 py-2">

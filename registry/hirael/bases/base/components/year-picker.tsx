@@ -54,11 +54,7 @@ const YEARS_PER_VIEW = 12;
 // Each view is a decade plus one year either side, so paging steps a decade and views stay aligned.
 const YEARS_PER_PAGE = 10;
 
-const viewStartFor = (year: number) => {
-  const base = year - (year % 10);
-
-  return base - 1;
-};
+const viewStartFor = (year: number) => year - (year % 10) - 1;
 
 interface YearPickerSharedProps {
   minYear?: number;
@@ -298,8 +294,7 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
 
   const gridRef = React.useRef<HTMLDivElement>(null);
   const focusYear = (year: number) => {
-    const el = gridRef.current?.querySelector<HTMLButtonElement>(`[data-year="${year}"]`);
-    el?.focus();
+    gridRef.current?.querySelector<HTMLButtonElement>(`[data-year="${year}"]`)?.focus();
   };
 
   const handleKey = (e: React.KeyboardEvent, year: number) => {

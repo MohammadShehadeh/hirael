@@ -16,7 +16,6 @@ export const BASES = REGISTRY_BASES.map((name) => ({
   name,
   title: BASE_LABELS[name],
 }));
-export type BaseName = RegistryBase;
 
 export const ICON_LIBRARIES = [
   { name: 'lucide', title: 'Lucide', pkg: 'lucide-react' },
@@ -37,7 +36,7 @@ export const RADII = [
 export type RadiusName = (typeof RADII)[number]['name'];
 
 export interface CustomizerConfig {
-  base: BaseName;
+  base: RegistryBase;
   iconLibrary: IconLibraryName;
   previewOnly: boolean;
   baseColor: BaseColorName;

@@ -9,7 +9,7 @@ export interface EntryJsonLdProps {
   addedAt?: string;
 }
 
-// Stays a server component so the data is in the exported HTML.
+/** Stays a server component so the data is in the exported HTML. */
 export const EntryJsonLd = ({ entry, breadcrumb, addedAt }: EntryJsonLdProps) => {
   const crumbs = breadcrumb.map((crumb) => ({
     name: crumb.label,

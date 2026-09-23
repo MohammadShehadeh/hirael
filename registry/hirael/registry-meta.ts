@@ -4427,7 +4427,7 @@ export const registryItemPath = (base: RegistryBase, name: string) =>
 export const registryMarkdownPath = (base: RegistryBase, name: string) =>
   base === DEFAULT_BASE ? `/r/${name}.md` : `/r/${base}/${name}.md`;
 
-// Items declare npm dependencies once, for Radix; the Base UI tree swaps Radix-backed packages for @base-ui/react.
+/** Items declare npm dependencies once, for Radix; the Base UI tree swaps Radix-backed packages for @base-ui/react. */
 export const BASE_UI_PACKAGE = '@base-ui/react';
 const RADIX_BACKED = (pkg: string) => pkg === 'radix-ui' || pkg.startsWith('@radix-ui/') || pkg === 'vaul';
 

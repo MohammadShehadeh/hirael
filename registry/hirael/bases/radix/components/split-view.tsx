@@ -69,17 +69,15 @@ const SplitView = ({
     sizeRef.current = size;
   }, [size]);
 
-  const clamp = React.useCallback((value: number) => Math.min(maxSize, Math.max(minSize, value)), [minSize, maxSize]);
-
   const setSize = React.useCallback(
     (next: number) => {
-      const clamped = clamp(next);
+      const clamped = Math.min(maxSize, Math.max(minSize, next));
       if (clamped === sizeRef.current) return;
       sizeRef.current = clamped;
       if (sizeProp === undefined) setInternalSize(clamped);
       onSizeChange?.(clamped);
     },
-    [clamp, sizeProp, onSizeChange],
+    [minSize, maxSize, sizeProp, onSizeChange],
   );
 
   const resizeToPointer = React.useCallback(

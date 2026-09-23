@@ -1,3 +1,7 @@
+// Runs first in `pnpm registry:gen`. Turns registry-meta.ts into one
+// registry.json per base for `shadcn build`: derives each item's type,
+// categories, install targets, cssVars and per-base dependencies.
+
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { registrySchema, type RegistryItem } from 'shadcn/schema';
@@ -22,12 +26,10 @@ const COMPONENTS_DIR = 'components/';
 
 const ITEM_NAMES = new Set(ALL_ENTRIES.map((entry) => entry.name));
 
-type ItemType = RegistryItem['type'];
-
 const isComposite = (entry: RegistryEntry) =>
   isShowcased(entry) ? entry.category === 'blocks' || entry.category === 'templates' : entry.type === 'registry:block';
 
-const deriveType = (entry: RegistryEntry): ItemType => {
+const deriveType = (entry: RegistryEntry): RegistryItem['type'] => {
   if (!isShowcased(entry)) return entry.type;
   if (isComposite(entry)) return 'registry:block';
   const files = entry.files ?? [];
@@ -57,6 +59,8 @@ const resolveDependency = (base: RegistryBase, dep: string) =>
     ? `${REGISTRY_BASE_URL}${registryItemPath(base, dep)}`
     : dep;
 
+// All of an item's source in one string, for the scans below. A missing file
+// reads as empty: this runs before check:registry, which is what reports it.
 const readSources = (base: RegistryBase, entry: RegistryEntry) =>
   (entry.files ?? [])
     .map((file) => {
@@ -69,21 +73,14 @@ const readSources = (base: RegistryBase, entry: RegistryEntry) =>
     .join('\n');
 
 // A Base UI file may import @base-ui/react (useRender) where the Radix version needed no Radix package.
-const importsBaseUi = (base: RegistryBase, entry: RegistryEntry) => {
-  if (base === 'radix') return false;
-  const source = readSources(base, entry);
-
-  return source.includes(`from "${BASE_UI_PACKAGE}`) || source.includes(`from '${BASE_UI_PACKAGE}`);
-};
+const importsBaseUi = (base: RegistryBase, source: string) =>
+  base !== 'radix' && (source.includes(`from "${BASE_UI_PACKAGE}`) || source.includes(`from '${BASE_UI_PACKAGE}`));
 
 // Functional status tokens aren't in shadcn's default theme; ship them with any item that uses them.
-const TOKEN_CSS_VARS: [RegExp, RegistryCssVars][] = [
-  [/(?:\b[a-z]+-|var\(--)(?:success|warning|info)\b/, STATUS_CSS_VARS],
-];
+const STATUS_TOKEN = /(?:\b[a-z]+-|var\(--)(?:success|warning|info)\b/;
 
-const deriveCssVars = (base: RegistryBase, entry: RegistryEntry): RegistryCssVars | undefined => {
-  const source = readSources(base, entry);
-  const sets = [entry.cssVars, ...TOKEN_CSS_VARS.filter(([pattern]) => pattern.test(source)).map(([, vars]) => vars)];
+const deriveCssVars = (entry: RegistryEntry, source: string): RegistryCssVars | undefined => {
+  const sets = [entry.cssVars, STATUS_TOKEN.test(source) ? STATUS_CSS_VARS : undefined];
   const merged: RegistryCssVars = {};
   for (const set of sets) {
     for (const key of ['theme', 'light', 'dark'] as const) {
@@ -96,6 +93,7 @@ const deriveCssVars = (base: RegistryBase, entry: RegistryEntry): RegistryCssVar
 
 const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
   const type = deriveType(entry);
+  const source = readSources(base, entry);
 
   const files = (entry.files ?? []).map((file) => {
     const target = file.target ?? (isComposite(entry) ? undefined : deriveTarget(file.path));
@@ -112,7 +110,7 @@ const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
   }
 
   const docsHref = isShowcased(entry) ? entryHref(entry) : undefined;
-  const cssVars = deriveCssVars(base, entry);
+  const cssVars = deriveCssVars(entry, source);
 
   return {
     name: entry.name,
@@ -120,7 +118,7 @@ const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
     title: entry.title,
     description: entry.description,
     categories: deriveCategories(entry),
-    dependencies: basePackages(base, entry.dependencies ?? [], importsBaseUi(base, entry)).sort(),
+    dependencies: basePackages(base, entry.dependencies ?? [], importsBaseUi(base, source)).sort(),
     registryDependencies: [...(entry.registryDependencies ?? [])].sort().map((dep) => resolveDependency(base, dep)),
     ...(cssVars ? { cssVars } : {}),
     ...(isShowcased(entry) && entry.docs ? { docs: entry.docs } : {}),

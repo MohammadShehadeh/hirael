@@ -12,9 +12,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const AUTO_ADVANCE_MS = 6000;
 
@@ -109,8 +107,6 @@ const STORIES: readonly Story[] = [
     href: '#',
   },
 ];
-
-const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
 
 const LogoCloud04 = () => {
   const [active, setActive] = React.useState(STORIES[0].value);
@@ -216,7 +212,7 @@ const LogoCloud04 = () => {
               <div className="grid gap-10 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
                 <div className="flex flex-col gap-3">
                   <span dir="ltr" className={cn(SWAP, 'text-xs text-muted-foreground tabular-nums rtl:text-end')}>
-                    {formatIndex(index)}
+                    {String(index + 1).padStart(2, '0')}
                     <span className="mx-1.5 text-border">|</span>
                     {String(STORIES.length).padStart(2, '0')}
                   </span>

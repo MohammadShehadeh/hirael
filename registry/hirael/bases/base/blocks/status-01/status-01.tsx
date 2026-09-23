@@ -15,7 +15,7 @@ const DAYS = 90;
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 const DOT_COLOR: Record<DayStatus, string> = {
   operational: 'bg-success',

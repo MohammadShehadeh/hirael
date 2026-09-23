@@ -394,7 +394,6 @@ const ColorPickerArea = ({ className, ref, ...props }: React.ComponentProps<'div
         props.onPointerDown?.(e);
         if (e.defaultPrevented) return;
         e.preventDefault();
-        // Pointer capture routes the rest of the drag to this element, even outside it.
         e.currentTarget.setPointerCapture(e.pointerId);
         draggingRef.current = true;
         updateFromPointer(e.clientX, e.clientY);
@@ -498,7 +497,6 @@ const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps
         props.onPointerDown?.(e);
         if (e.defaultPrevented) return;
         e.preventDefault();
-        // Pointer capture routes the rest of the drag to this element, even outside it.
         e.currentTarget.setPointerCapture(e.pointerId);
         draggingRef.current = true;
         updateFromPointer(e.clientX);

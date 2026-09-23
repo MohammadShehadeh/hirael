@@ -13,8 +13,6 @@ const healthFill: Record<NodeHealth, string> = {
   idle: 'bg-muted-foreground',
 };
 
-const healthDot: Record<NodeHealth, string> = healthFill;
-
 const healthLabel: Record<NodeHealth, string> = {
   healthy: 'Healthy',
   warning: 'Warning',
@@ -92,7 +90,7 @@ interface ClusterMapLegendItemProps extends React.ComponentProps<'span'> {
 const ClusterMapLegendItem = ({ health, className, children, ...props }: ClusterMapLegendItemProps) => {
   return (
     <span data-slot="cluster-map-legend-item" className={cn('inline-flex items-center gap-1.5', className)} {...props}>
-      <span className={cn('size-2.5 rounded-sm', healthDot[health])} aria-hidden />
+      <span className={cn('size-2.5 rounded-sm', healthFill[health])} aria-hidden />
       {children ?? healthLabel[health]}
     </span>
   );

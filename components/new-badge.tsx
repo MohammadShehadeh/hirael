@@ -10,7 +10,7 @@ export interface NewBadgeProps {
   className?: string;
 }
 
-// Static pages cannot know the current time, so the badge is decided in the browser and hidden until hydration.
+/** Static pages cannot know the current time, so the badge is decided in the browser and hidden until hydration. */
 export const NewBadge = ({ addedAt, className }: NewBadgeProps) => {
   const isVisible = React.useSyncExternalStore(
     (onExpire) => {

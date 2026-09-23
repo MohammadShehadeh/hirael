@@ -24,10 +24,6 @@ import {
 export { COUNTRIES };
 export type { Country };
 
-const findCountry = (iso2: string): Country | undefined => {
-  return COUNTRIES.find((c) => c.iso2 === iso2.toUpperCase());
-};
-
 const digitsOnly = (input: string): string => {
   return input.replace(/\D/g, '');
 };
@@ -115,7 +111,10 @@ const PhoneInput = ({
   const reactId = React.useId();
   const fieldId = id ?? reactId;
 
-  const fallback = React.useMemo<Country>(() => findCountry(defaultCountry) ?? COUNTRIES[0], [defaultCountry]);
+  const fallback = React.useMemo<Country>(
+    () => COUNTRIES.find((c) => c.iso2 === defaultCountry.toUpperCase()) ?? COUNTRIES[0],
+    [defaultCountry],
+  );
 
   const [country, setCountryState] = React.useState<Country>(
     () => parseE164(valueProp ?? defaultValue, fallback).country,

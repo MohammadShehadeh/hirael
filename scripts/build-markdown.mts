@@ -1,9 +1,10 @@
-// Must run after registry:props: the API tables come from registry-props.json.
+// Runs in `pnpm registry:md`. Writes a Markdown page per item and base to
+// public/r. Must run after registry:props: the API tables come from registry-props.json.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
-import { registryMarkdown, type MarkdownApiPart } from '@/lib/registry-markdown';
+import { registryMarkdown, type MarkdownApiPart, type RegistryMarkdownInput } from '@/lib/registry-markdown';
 import {
   BASE_LABELS,
   REGISTRY,
@@ -13,9 +14,11 @@ import {
   type RegistryBase,
 } from '@/registry/hirael/registry-meta';
 
-import { REGISTRY_BASE_URL, ROOT, rDir } from './shared.mts';
+import { REGISTRY_BASE_URL, ROOT, builtDir } from './shared.mts';
 
 const PROPS_PATH = path.join(ROOT, 'registry/hirael/registry-props.json');
+
+type MarkdownExample = RegistryMarkdownInput['examples'][number];
 
 const api: Record<string, MarkdownApiPart[]> = existsSync(PROPS_PATH)
   ? JSON.parse(readFileSync(PROPS_PATH, 'utf8'))
@@ -36,7 +39,7 @@ const read = (base: RegistryBase, file: string): string | undefined => {
 let written = 0;
 
 for (const base of REGISTRY_BASES) {
-  const outDir = rDir(base);
+  const outDir = builtDir(base);
   mkdirSync(outDir, { recursive: true });
 
   for (const entry of REGISTRY) {
@@ -53,7 +56,7 @@ for (const base of REGISTRY_BASES) {
 
     const examples = getExamples(entry.name)
       .map(({ slug, title }) => ({ title, code: read(base, `examples/${slug}.tsx`) }))
-      .filter((example): example is { title: string; code: string } => example.code !== undefined);
+      .filter((example): example is MarkdownExample => example.code !== undefined);
 
     const markdown = registryMarkdown({
       entry,

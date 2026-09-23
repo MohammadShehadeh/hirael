@@ -18,13 +18,11 @@ export type MetricTone =
 
 type ResolvedMetricTone = Exclude<MetricTone, 'positive' | 'critical'>;
 
-const toneAliases: Partial<Record<MetricTone, ResolvedMetricTone>> = {
-  positive: 'success',
-  critical: 'destructive',
-};
-
 const resolveMetricTone = (tone: MetricTone): ResolvedMetricTone => {
-  return toneAliases[tone] ?? (tone as ResolvedMetricTone);
+  if (tone === 'positive') return 'success';
+  if (tone === 'critical') return 'destructive';
+
+  return tone;
 };
 
 const toneText: Record<ResolvedMetricTone, string> = {

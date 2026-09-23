@@ -35,9 +35,7 @@ import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 type SettingsProps = React.ComponentProps<'div'>;
 

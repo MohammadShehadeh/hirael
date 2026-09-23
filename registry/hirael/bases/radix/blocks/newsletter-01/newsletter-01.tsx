@@ -12,9 +12,7 @@ const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
 const SWAP = `animate-in fade-in zoom-in-97 duration-250 ${EASE} fill-mode-both motion-reduce:animate-none`;
 
-const stagger = (index: number, step = 70): React.CSSProperties => ({
-  animationDelay: `${index * step}ms`,
-});
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

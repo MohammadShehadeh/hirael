@@ -281,7 +281,7 @@ const EnvEditor = ({
 
 interface EnvEditorHeaderProps extends Omit<React.ComponentProps<'div'>, 'title'> {
   title?: React.ReactNode;
-  /** Hide the search box. */
+  /** Set to false to hide the search box. */
   searchable?: boolean;
 }
 

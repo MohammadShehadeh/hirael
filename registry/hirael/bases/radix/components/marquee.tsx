@@ -18,7 +18,7 @@ export interface MarqueeProps extends React.ComponentProps<'div'> {
 }
 
 // Inline keyframes need no globals.css edit. Flex reverses the tracks under RTL, so
-// --marquee-x-dir flips the travel sign (-1 ltr, 1 rtl) to keep the loop seamless.
+// --marquee-x-dir flips the travel sign (-1 ltr, 1 rtl) so the loop never jumps.
 const MARQUEE_KEYFRAMES = `
 @keyframes msh-marquee-x {
   from { transform: translateX(0); }

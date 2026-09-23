@@ -22,7 +22,7 @@ export interface Country {
   dialCode: string;
 }
 
-// Sorted by name, the order the list renders in.
+/** Sorted by name, the order the list renders in. */
 export const COUNTRIES: readonly Country[] = [
   { iso2: 'DZ', name: 'Algeria', dialCode: '+213' },
   { iso2: 'AR', name: 'Argentina', dialCode: '+54' },

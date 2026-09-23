@@ -77,9 +77,14 @@ shadcn), in both bases; a wrapper element; a `contracts` entry in
 `eslint.config.mjs`. Never disable it inline. Source under `bases/*/ui/**` and
 `bases/*/components/**` is exempt.
 
-Vitest: `*.test.ts` runs in Node, colocated in `lib/`; `*.test.tsx` runs in
-jsdom. Component tests live in `registry/hirael/tests/` (never under `bases/`)
-and cover both bases with `describe.each`. Titles start with "should".
+Vitest: `*.test.ts` runs in Node, `*.test.tsx` in jsdom. Site logic tests sit
+beside their file in `lib/`; registry tests live in `registry/hirael/tests/`
+(never under `bases/`) and cover both bases with `describe.each`. Titles start
+with "should".
+
+Comments explain why (a quirk, a race, a constraint), never what the code
+says. Shipped source reaches consumers verbatim. Prop JSDoc stays: it feeds the
+API tables.
 
 ## Don't undo
 

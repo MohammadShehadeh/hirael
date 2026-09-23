@@ -62,8 +62,6 @@ const formatTime = (seconds: number) => {
   return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${m}:${pad(s)}`;
 };
 
-const IDLE_MS = 2500;
-
 /** iOS Safari only offers native fullscreen on the video element itself. */
 type WebkitVideoElement = HTMLVideoElement & { webkitEnterFullscreen?: () => void };
 
@@ -72,7 +70,7 @@ export interface VideoPlayerProps extends React.ComponentProps<'div'> {
   idleDelay?: number;
 }
 
-const VideoPlayer = ({ idleDelay = IDLE_MS, className, children, onPointerMove, ...props }: VideoPlayerProps) => {
+const VideoPlayer = ({ idleDelay = 2500, className, children, onPointerMove, ...props }: VideoPlayerProps) => {
   const rootRef = React.useRef<HTMLDivElement>(null);
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const idleTimerRef = React.useRef<number | null>(null);

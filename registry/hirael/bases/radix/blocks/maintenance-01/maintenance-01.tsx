@@ -15,7 +15,7 @@ const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:an
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE}`;
 const SWAP = `animate-in fade-in slide-in-from-bottom-1 duration-250 ${EASE}`;
 
-const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
+const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 const Maintenance = ({ className, ...props }: React.ComponentProps<'section'>) => {
   return (

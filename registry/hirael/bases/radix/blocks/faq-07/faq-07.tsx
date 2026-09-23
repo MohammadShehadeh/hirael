@@ -13,9 +13,7 @@ import {
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
-  animationDelay: `${offset + index * step}ms`,
-});
+const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
 const QUESTIONS = [
   {

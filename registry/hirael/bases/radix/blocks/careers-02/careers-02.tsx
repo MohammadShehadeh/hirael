@@ -115,8 +115,6 @@ const validate = (state: FormState): FormErrors => {
   return errors;
 };
 
-const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
-
 const scrollToForm = () => {
   const form = document.getElementById('careers-02-apply');
   if (!form) return;
@@ -434,7 +432,7 @@ const Careers02 = () => {
                     className="grid grid-cols-[2.5rem_minmax(0,1fr)] gap-x-4 gap-y-1 border-t border-border py-5 first:border-t-0 first:pt-0 sm:grid-cols-[2.5rem_minmax(0,1fr)_auto]"
                   >
                     <span dir="ltr" className="pt-0.5 text-xs text-primary tabular-nums">
-                      {formatIndex(index)}
+                      {String(index + 1).padStart(2, '0')}
                     </span>
                     <div className="flex flex-col gap-1">
                       <h4 className="text-sm font-medium">{stage.title}</h4>

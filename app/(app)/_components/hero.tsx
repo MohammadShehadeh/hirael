@@ -59,8 +59,8 @@ export const Hero = ({ latestRelease }: HeroProps) => {
         </h1>
 
         <p className={cn('max-w-2xl text-base text-muted-foreground delay-[160ms] fill-mode-both sm:text-lg', rise)}>
-          The inputs, pickers and page sections shadcn/ui leaves out, built on the same primitives and your Tailwind
-          tokens. Install with the shadcn CLI and the source lands in your repo, styled for light, dark and RTL.
+          A collection of shadcn/ui components, blocks and page templates for building modern, fast and beautiful
+          websites. Built on Radix UI and Base UI. Works with the shadcn CLI and any preset, in light, dark and RTL.
         </p>
 
         <div className={cn('flex flex-wrap items-center justify-center gap-3 delay-[240ms] fill-mode-both', rise)}>

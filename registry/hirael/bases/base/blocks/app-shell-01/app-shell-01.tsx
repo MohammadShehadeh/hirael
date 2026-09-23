@@ -29,6 +29,7 @@ import { Card, CardContent } from '@/registry/hirael/bases/base/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -202,7 +203,11 @@ const deltaLabel = ({ label, delta, unit }: Metric) => {
   return `${label} ${direction} ${Math.abs(delta)} ${measure} against the previous 30 days`;
 };
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -339,10 +344,12 @@ const AppShell01 = () => {
                   <ChevronsUpDown className="ms-auto size-3.5 shrink-0 text-muted-foreground" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent side="top" align="start" sideOffset={8} className="w-56">
-                  <DropdownMenuLabel>
-                    <span className="block text-sm font-medium">Mohammad Shehadeh</span>
-                    <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
-                  </DropdownMenuLabel>
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>
+                      <span className="block text-sm font-medium">Mohammad Shehadeh</span>
+                      <span className="block truncate text-xs text-muted-foreground">hello@mohammadshehadeh.com</span>
+                    </DropdownMenuLabel>
+                  </DropdownMenuGroup>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
                     <Settings />
@@ -448,10 +455,9 @@ const AppShell01 = () => {
 
           <div
             data-slot="app-shell-table"
-            style={{ animationDelay: '80ms' }}
             className={cn(
               ENTER,
-              'overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm',
+              'delay-80 overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm',
             )}
           >
             <div className="flex items-center justify-between border-b border-border px-4 py-2.5">

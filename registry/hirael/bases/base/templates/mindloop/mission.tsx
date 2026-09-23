@@ -26,19 +26,15 @@ const tokenize = (text: string, highlights: string[]): Token[] => {
   }));
 };
 
-const Word = ({
-  token,
-  index,
-  total,
-  progress,
-  reduce,
-}: {
+interface WordProps {
   token: Token;
   index: number;
   total: number;
   progress: MotionValue<number>;
   reduce: boolean;
-}) => {
+}
+
+const Word = ({ token, index, total, progress, reduce }: WordProps) => {
   const start = index / total;
   const end = (index + 0.9) / total;
   const opacity = useTransform(progress, [start, end], [0.15, 1]);
@@ -75,18 +71,12 @@ export const Mission = () => {
         />
 
         <div ref={ref} className="mt-16 w-full text-center md:mt-20">
-          <p
-            className="text-2xl font-medium tracking-[-1px] md:text-4xl lg:text-5xl"
-            style={{ color: 'hsl(var(--hero-subtitle))' }}
-          >
+          <p className="text-2xl font-medium tracking-[-1px] text-[hsl(var(--hero-subtitle))] md:text-4xl lg:text-5xl">
             {tokens1.map((token, i) => (
               <Word key={i} token={token} index={i} total={total} progress={scrollYProgress} reduce={reduce} />
             ))}
           </p>
-          <p
-            className="mt-10 text-xl font-medium md:text-2xl lg:text-3xl"
-            style={{ color: 'hsl(var(--hero-subtitle))' }}
-          >
+          <p className="mt-10 text-xl font-medium text-[hsl(var(--hero-subtitle))] md:text-2xl lg:text-3xl">
             {tokens2.map((token, i) => (
               <Word
                 key={i}

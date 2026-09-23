@@ -24,19 +24,11 @@ const Cta06 = () => {
         <div
           aria-hidden
           data-slot="cta-surface"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              'radial-gradient(120% 120% at 0% 0%, color-mix(in oklch, var(--primary) 16%, transparent), transparent 55%), radial-gradient(100% 100% at 100% 100%, color-mix(in oklch, var(--foreground) 8%, transparent), transparent 60%)',
-          }}
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_0%_0%,color-mix(in_oklch,var(--primary)_16%,transparent),transparent_55%),radial-gradient(100%_100%_at_100%_100%,color-mix(in_oklch,var(--foreground)_8%,transparent),transparent_60%)]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.4] mix-blend-overlay"
-          style={{
-            backgroundImage:
-              'repeating-linear-gradient(45deg, color-mix(in oklch, var(--foreground) 6%, transparent) 0 1px, transparent 1px 14px)',
-          }}
+          className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(45deg,color-mix(in_oklch,var(--foreground)_6%,transparent)_0_1px,transparent_1px_14px)] opacity-[0.4] mix-blend-overlay"
         />
 
         <div className="relative z-10 grid h-full content-center gap-6 px-5 py-8 md:min-h-80 md:grid-cols-[1fr_auto] md:items-center md:gap-10 md:px-10">

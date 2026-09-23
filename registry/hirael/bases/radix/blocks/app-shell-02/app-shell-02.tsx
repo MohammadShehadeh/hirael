@@ -111,7 +111,7 @@ const SECTION_FIELDS: Record<SectionId, readonly Field[]> = {
       kind: 'text',
       id: 'email',
       label: 'Email',
-      value: 'mohammad@hirael.com',
+      value: 'hello@mohammadshehadeh.com',
       hint: 'Used for sign-in',
     },
     {
@@ -232,7 +232,11 @@ const fieldMatches = (field: Field, query: string) => {
   return haystack.includes(query);
 };
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <span
       role="img"
@@ -248,19 +252,15 @@ const BrandMark = ({ className }: { className?: string }) => {
 
 type SaveState = 'idle' | 'saving' | 'saved';
 
-const FieldRow = ({
-  field,
-  values,
-  toggles,
-  onCommit,
-  onToggle,
-}: {
+interface FieldRowProps {
   field: Field;
   values: Record<string, string>;
   toggles: Record<string, boolean>;
   onCommit: (id: string, value: string) => Promise<void>;
   onToggle: (id: string, next: boolean) => void;
-}) => {
+}
+
+const FieldRow = ({ field, values, toggles, onCommit, onToggle }: FieldRowProps) => {
   const hintId = field.hint ? `${field.id}-hint` : undefined;
 
   return (
@@ -389,7 +389,7 @@ const AppShell02 = () => {
         <div className="container flex h-14 w-full items-center gap-3">
           <BrandMark className="size-7 shrink-0" />
 
-          <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
+          <Separator orientation="vertical" className="mx-1 hidden data-[orientation=vertical]:h-5 sm:block" />
 
           <nav aria-label="Primary" className="hidden items-center gap-1 md:flex">
             {NAV.map((item) => (
@@ -437,7 +437,7 @@ const AppShell02 = () => {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel>
                 <span className="block text-sm font-medium">Mohammad Shehadeh</span>
-                <span className="block truncate text-xs text-muted-foreground">mohammad@hirael.com</span>
+                <span className="block truncate text-xs text-muted-foreground">hello@mohammadshehadeh.com</span>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>

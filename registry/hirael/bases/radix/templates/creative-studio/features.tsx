@@ -9,7 +9,11 @@ import { CinematicBackground, NoiseOverlay, WordsPullUp } from './primitives';
 
 const EASE_CARD: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-const IconStoryboard = ({ className }: { className?: string }) => {
+interface IconStoryboardProps {
+  className?: string;
+}
+
+const IconStoryboard = ({ className }: IconStoryboardProps) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -28,7 +32,11 @@ const IconStoryboard = ({ className }: { className?: string }) => {
   );
 };
 
-const IconCritique = ({ className }: { className?: string }) => {
+interface IconCritiqueProps {
+  className?: string;
+}
+
+const IconCritique = ({ className }: IconCritiqueProps) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -46,7 +54,11 @@ const IconCritique = ({ className }: { className?: string }) => {
   );
 };
 
-const IconImmersion = ({ className }: { className?: string }) => {
+interface IconImmersionProps {
+  className?: string;
+}
+
+const IconImmersion = ({ className }: IconImmersionProps) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -110,15 +122,13 @@ const INFO_CARDS: InfoCard[] = [
   },
 ];
 
-const FeatureCard = ({
-  index,
-  className,
-  children,
-}: {
+interface FeatureCardProps {
   index: number;
   className?: string;
   children: React.ReactNode;
-}) => {
+}
+
+const FeatureCard = ({ index, className, children }: FeatureCardProps) => {
   const ref = React.useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
   const reduce = useReducedMotion();
@@ -136,7 +146,11 @@ const FeatureCard = ({
   );
 };
 
-export const Features = ({ videoSrc }: { videoSrc?: string }) => {
+interface FeaturesProps {
+  videoSrc?: string;
+}
+
+export const Features = ({ videoSrc }: FeaturesProps) => {
   return (
     <section className="relative min-h-screen overflow-hidden bg-black py-20 sm:py-28 md:py-32">
       <NoiseOverlay variant="bg" className="opacity-[0.15]" />

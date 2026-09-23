@@ -80,9 +80,9 @@ const TOOLS: readonly NavItem[] = [
 ];
 
 const USER = {
-  name: 'Lena Ortiz',
-  email: 'lena@example.com',
-  initials: 'LO',
+  name: 'Mohammad Shehadeh',
+  email: 'hello@mohammadshehadeh.com',
+  initials: 'MS',
 } as const;
 
 type DocumentStatus = 'Draft' | 'Shared' | 'Final';
@@ -100,8 +100,8 @@ const DOCUMENTS: readonly WorkspaceDocument[] = [
   {
     title: 'Q4 roadmap',
     folder: 'Planning',
-    owner: 'Lena Ortiz',
-    initials: 'LO',
+    owner: 'Mohammad Shehadeh',
+    initials: 'MS',
     updated: 'Today, 10:12',
     status: 'Draft',
   },
@@ -124,8 +124,8 @@ const DOCUMENTS: readonly WorkspaceDocument[] = [
   {
     title: 'Onboarding checklist for new hires',
     folder: 'People',
-    owner: 'Lena Ortiz',
-    initials: 'LO',
+    owner: 'Mohammad Shehadeh',
+    initials: 'MS',
     updated: 'Sep 11',
     status: 'Shared',
   },
@@ -205,7 +205,11 @@ const DocumentList = () => {
   );
 };
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -290,12 +294,14 @@ const AppSidebar = () => {
                 <ChevronsUpDown className="ms-auto size-4 shrink-0" />
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top" align="start" sideOffset={4} className="w-56">
-                <DropdownMenuLabel>
-                  <div className="flex flex-col gap-0.5 font-normal">
-                    <span className="text-sm font-medium">{USER.name}</span>
-                    <span className="truncate text-xs text-muted-foreground">{USER.email}</span>
-                  </div>
-                </DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel>
+                    <div className="flex flex-col gap-0.5 font-normal">
+                      <span className="text-sm font-medium">{USER.name}</span>
+                      <span className="truncate text-xs text-muted-foreground">{USER.email}</span>
+                    </div>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem>

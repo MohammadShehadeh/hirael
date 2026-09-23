@@ -135,7 +135,11 @@ const PAGE_SUMMARY: Record<string, string> = {
   Connections: 'Mailer, ads account and analytics are connected. The CRM sync last ran 20 minutes ago.',
 };
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -344,7 +348,7 @@ const AppShell04 = () => {
         <header className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border px-4">
           <div className="flex min-w-0 items-center gap-2">
             <SidebarTrigger />
-            <Separator orientation="vertical" className="h-4" />
+            <Separator orientation="vertical" className="data-[orientation=vertical]:h-4" />
             <span className="truncate text-sm font-medium tracking-[-0.01em]">{active}</span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -357,7 +361,7 @@ const AppShell04 = () => {
                 3
               </span>
             </Button>
-            <Separator orientation="vertical" className="h-4" />
+            <Separator orientation="vertical" className="data-[orientation=vertical]:h-4" />
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="icon-sm" aria-label="Account menu">
@@ -366,8 +370,8 @@ const AppShell04 = () => {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuLabel>
-                  <span className="block text-sm font-medium">Maya Renner</span>
-                  <span className="block truncate text-xs text-muted-foreground">maya@hirael.com</span>
+                  <span className="block text-sm font-medium">Mohammad Shehadeh</span>
+                  <span className="block truncate text-xs text-muted-foreground">hello@mohammadshehadeh.com</span>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
@@ -392,7 +396,7 @@ const AppShell04 = () => {
           {active === NAV[0].label ? (
             <div key={active} className={cn(SWAP, 'flex flex-col gap-6')}>
               <div className="flex flex-col gap-1">
-                <h1 className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">Good morning, Maya.</h1>
+                <h1 className="font-serif text-2xl font-medium tracking-tight sm:text-3xl">Good morning, Mohammad.</h1>
                 <p className="text-sm text-muted-foreground">
                   Two campaigns are due before Wednesday and three drafts are waiting for review.
                 </p>

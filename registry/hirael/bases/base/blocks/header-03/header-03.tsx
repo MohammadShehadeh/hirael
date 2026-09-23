@@ -151,7 +151,11 @@ const CONTENT_MOTION = cn(
 
 const TRIGGER = cn(navigationMenuTriggerStyle(), 'h-8');
 
-const Wordmark = ({ className }: { className?: string }) => {
+interface WordmarkProps {
+  className?: string;
+}
+
+const Wordmark = ({ className }: WordmarkProps) => {
   return (
     <a
       href="#"
@@ -166,7 +170,11 @@ const Wordmark = ({ className }: { className?: string }) => {
   );
 };
 
-const FlyoutRow = ({ link }: { link: MenuLink }) => {
+interface FlyoutRowProps {
+  link: MenuLink;
+}
+
+const FlyoutRow = ({ link }: FlyoutRowProps) => {
   const Icon = link.icon;
   return (
     <li>
@@ -181,7 +189,11 @@ const FlyoutRow = ({ link }: { link: MenuLink }) => {
   );
 };
 
-const FlyoutFeature = ({ feature }: { feature: MenuFeature }) => {
+interface FlyoutFeatureProps {
+  feature: MenuFeature;
+}
+
+const FlyoutFeature = ({ feature }: FlyoutFeatureProps) => {
   return (
     <div
       data-slot="header-flyout-feature"

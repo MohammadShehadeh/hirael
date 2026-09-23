@@ -3,7 +3,11 @@ import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-const ServiceIcon = ({ level }: { level: number }) => {
+interface ServiceIconProps {
+  level: number;
+}
+
+const ServiceIcon = ({ level }: ServiceIconProps) => {
   return (
     <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[17px] w-[17px] shrink-0 text-[var(--nexa-accent)]">
       <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.3" />
@@ -34,48 +38,29 @@ export const ServiceCard = ({ label, level, title, bullets }: ServiceCardProps) 
   return (
     <div
       data-slot="service-card"
-      className="nexa-blur-card group relative flex cursor-pointer flex-col overflow-hidden rounded-[36px] bg-[var(--nexa-card-dark)]"
-      style={{ height: 'clamp(320px, 32vw, 500px)' }}
+      className="nexa-blur-card group relative flex h-[clamp(320px,32vw,500px)] cursor-pointer flex-col overflow-hidden rounded-[36px] bg-[var(--nexa-card-dark)]"
     >
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 z-[1] h-[55%] translate-y-[-30%] opacity-70 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
-        style={{
-          background:
-            'radial-gradient(120% 90% at 50% 0%, rgba(200, 111, 255, 0.45), transparent 70%), linear-gradient(160deg, rgba(28, 78, 255, 0.35), rgba(10, 5, 20, 0) 60%)',
-        }}
+        className="absolute inset-x-0 top-0 z-[1] h-[55%] translate-y-[-30%] bg-[radial-gradient(120%_90%_at_50%_0%,rgba(200,111,255,0.45),transparent_70%),linear-gradient(160deg,rgba(28,78,255,0.35),rgba(10,5,20,0)_60%)] opacity-70 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
       />
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 z-[1] h-[55%] translate-y-full opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
-        style={{
-          background: 'linear-gradient(to top, rgba(10, 5, 20, 0.95) 60%, transparent)',
-        }}
+        className="absolute inset-x-0 bottom-0 z-[1] h-[55%] translate-y-full bg-[linear-gradient(to_top,rgba(10,5,20,0.95)_60%,transparent)] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100"
       />
 
-      <div
-        className="relative z-[2] flex h-full flex-col"
-        style={{
-          padding: 'clamp(16px, 1.94vw, 32px) clamp(18px, 2.36vw, 36px)',
-        }}
-      >
+      <div className="relative z-[2] flex h-full flex-col px-[clamp(18px,2.36vw,36px)] py-[clamp(16px,1.94vw,32px)]">
         <span
           data-slot="service-card-badge"
-          className="inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-[var(--nexa-badge)] text-white [&>svg]:size-[17px]"
-          style={{
-            padding: 'clamp(6px, 0.7vw, 12px) clamp(10px, 1.25vw, 20px)',
-          }}
+          className="inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-[var(--nexa-badge)] px-[clamp(10px,1.25vw,20px)] py-[clamp(6px,0.7vw,12px)] text-white [&>svg]:size-[17px]"
         >
           <ServiceIcon level={level} />
-          <span style={{ fontSize: 'clamp(12px, 0.97vw, 15px)' }}>{label}</span>
+          <span className="text-[length:clamp(12px,0.97vw,15px)]">{label}</span>
         </span>
 
         <div className="flex-grow" />
 
-        <h3
-          className="font-medium leading-snug text-white transition-transform duration-500 group-hover:-translate-y-2"
-          style={{ fontSize: 'clamp(16px, 1.7vw, 24px)' }}
-        >
+        <h3 className="text-[length:clamp(16px,1.7vw,24px)] font-medium leading-snug text-white transition-transform duration-500 group-hover:-translate-y-2">
           {title}
         </h3>
 
@@ -83,8 +68,7 @@ export const ServiceCard = ({ label, level, title, bullets }: ServiceCardProps) 
           {bullets.map((bullet) => (
             <li
               key={bullet}
-              className="flex items-start gap-2 text-[var(--nexa-lavender-2)]"
-              style={{ fontSize: 'clamp(12px, 1vw, 15px)' }}
+              className="flex items-start gap-2 text-[length:clamp(12px,1vw,15px)] text-[var(--nexa-lavender-2)]"
             >
               <Bullet />
               <span>{bullet}</span>

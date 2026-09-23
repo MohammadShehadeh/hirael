@@ -51,6 +51,13 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/regi
 
 const fakeSelectionPluginKey = new PluginKey('rich-text-editor-fake-selection');
 
+interface FakeSelectionRange {
+  from: number;
+  to: number;
+}
+
+type FakeSelectionMeta = FakeSelectionRange | 'clear';
+
 const SelectionHighlight = Extension.create({
   name: 'richTextEditorSelectionHighlight',
 
@@ -61,7 +68,7 @@ const SelectionHighlight = Extension.create({
         state: {
           init: () => DecorationSet.empty,
           apply: (tr, old) => {
-            const meta = tr.getMeta(fakeSelectionPluginKey) as { from: number; to: number } | 'clear' | undefined;
+            const meta = tr.getMeta(fakeSelectionPluginKey) as FakeSelectionMeta | undefined;
             if (meta === 'clear') return DecorationSet.empty;
             if (meta) {
               const deco = Decoration.inline(meta.from, meta.to, {
@@ -373,13 +380,7 @@ const RichTextEditorLinkPopover = () => {
       <Tooltip>
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
-            <Toggle
-              data-slot="rich-text-editor-link-trigger"
-              size="sm"
-              pressed={isLink}
-              onPressedChange={() => handleOpen(!open)}
-              aria-label="Link"
-            >
+            <Toggle data-slot="rich-text-editor-link-trigger" size="sm" pressed={isLink} aria-label="Link">
               <LinkIcon className="size-4" />
             </Toggle>
           </PopoverTrigger>

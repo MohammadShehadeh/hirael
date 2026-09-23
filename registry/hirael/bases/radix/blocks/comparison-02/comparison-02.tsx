@@ -36,7 +36,11 @@ const ROWS: readonly { label: string; cells: readonly [Cell, Cell, Cell] }[] = [
   { label: 'Upgrades arrive on someone else’s schedule', cells: [false, false, true] },
 ];
 
-const CellValue = ({ value }: { value: Cell }) => {
+interface CellValueProps {
+  value: Cell;
+}
+
+const CellValue = ({ value }: CellValueProps) => {
   if (typeof value === 'string') {
     return <span className="text-sm text-muted-foreground">{value}</span>;
   }

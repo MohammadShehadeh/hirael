@@ -80,7 +80,11 @@ const tokenizeLine = (line: string): Token[] => {
   return tokens;
 };
 
-const HighlightLine = React.memo(function HighlightLine({ line }: { line: string }) {
+interface HighlightLineProps {
+  line: string;
+}
+
+const HighlightLine = React.memo(function HighlightLine({ line }: HighlightLineProps) {
   const tokens = tokenizeLine(line);
   return (
     <span className="block min-h-[1.25rem]">
@@ -200,14 +204,24 @@ const YamlEditor = ({
           autoCorrect="off"
           readOnly={readOnly}
           value={text}
-          onChange={handleChange}
-          onScroll={syncScroll}
-          onKeyDown={handleKeyDown}
           className={cn(
             layerClass,
             'resize-none overflow-auto bg-transparent text-transparent caret-foreground outline-none selection:text-transparent',
           )}
           {...textareaProps}
+          // After the spread so consumer handlers compose with, not replace, the editor's own.
+          onChange={(event) => {
+            handleChange(event);
+            textareaProps?.onChange?.(event);
+          }}
+          onScroll={(event) => {
+            syncScroll(event);
+            textareaProps?.onScroll?.(event);
+          }}
+          onKeyDown={(event) => {
+            handleKeyDown(event);
+            textareaProps?.onKeyDown?.(event);
+          }}
         />
       </div>
     </div>

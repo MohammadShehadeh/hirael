@@ -28,8 +28,9 @@ const writeClipboard = async (text: string) => {
   ta.style.opacity = '0';
   document.body.appendChild(ta);
   ta.select();
-  document.execCommand('copy');
+  const ok = document.execCommand('copy');
   document.body.removeChild(ta);
+  if (!ok) throw new Error('Copy command was rejected');
 };
 
 const CopyButton = ({
@@ -74,7 +75,7 @@ const CopyButton = ({
       size={hasLabel ? 'sm' : size === 'sm' ? 'icon-xs' : 'icon-sm'}
       data-slot="copy-button"
       data-state={copied ? 'copied' : 'idle'}
-      aria-label={copied ? 'Copied' : 'Copy to clipboard'}
+      aria-label={hasLabel ? undefined : copied ? 'Copied' : 'Copy to clipboard'}
       onClick={handleCopy}
       className={cn(size === 'sm' ? '[&_svg]:size-3.5' : '[&_svg]:size-4', className)}
       {...props}

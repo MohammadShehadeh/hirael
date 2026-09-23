@@ -242,6 +242,12 @@ const DiffViewer = ({
   const mode = modeProp ?? internalMode;
 
   const lines = React.useMemo(() => computeLineDiff(oldValue, newValue), [oldValue, newValue]);
+  // Gaps are keyed by line index, so an expansion from the previous diff would open the wrong hunk.
+  const [prevLines, setPrevLines] = React.useState(lines);
+  if (lines !== prevLines) {
+    setPrevLines(lines);
+    setExpandedGaps(new Set());
+  }
   const items = React.useMemo(() => buildItems(lines, context, expandedGaps), [lines, context, expandedGaps]);
   const { added, removed } = React.useMemo(() => {
     let a = 0;

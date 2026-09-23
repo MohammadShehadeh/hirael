@@ -50,7 +50,11 @@ const useReducedMotion = () =>
     () => false,
   );
 
-const Hero05Backdrop = ({ active = false }: { active?: boolean }) => {
+interface Hero05BackdropProps {
+  active?: boolean;
+}
+
+const Hero05Backdrop = ({ active = false }: Hero05BackdropProps) => {
   const palette = usePalette();
   const reduced = useReducedMotion();
   if (!palette) return null;

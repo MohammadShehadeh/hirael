@@ -86,7 +86,11 @@ const COPY = {
   },
 } satisfies Record<Lang, { items: Record<ServiceId, { title: string; text: string }> } & Record<string, unknown>>;
 
-export const Services = ({ lang }: { lang: Lang }) => {
+interface ServicesProps {
+  lang: Lang;
+}
+
+export const Services = ({ lang }: ServicesProps) => {
   const c = COPY[lang];
 
   return (

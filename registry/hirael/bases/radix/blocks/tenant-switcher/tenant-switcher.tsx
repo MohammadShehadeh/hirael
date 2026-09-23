@@ -70,7 +70,12 @@ const initials = (label: string) => {
     .join('');
 };
 
-const TenantLogo = ({ tenant, className }: { tenant?: Tenant; className?: string }) => {
+interface TenantLogoProps {
+  tenant?: Tenant;
+  className?: string;
+}
+
+const TenantLogo = ({ tenant, className }: TenantLogoProps) => {
   return (
     <span
       data-slot="tenant-switcher-logo"
@@ -130,15 +135,17 @@ const TenantSwitcher = ({
   );
 };
 
+interface TenantSwitcherTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
+  placeholder?: string;
+  children?: React.ReactNode;
+}
+
 const TenantSwitcherTrigger = ({
   placeholder = 'Select workspace',
   className,
   children,
   ...props
-}: Omit<React.ComponentProps<'button'>, 'children'> & {
-  placeholder?: string;
-  children?: React.ReactNode;
-}) => {
+}: TenantSwitcherTriggerProps) => {
   const { active, open, disabled } = useTenantSwitcher();
 
   return (
@@ -200,7 +207,7 @@ const TenantSwitcherContent = ({
       align="start"
       sideOffset={6}
       data-slot="tenant-switcher-content"
-      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem]', className)}
+      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem] p-0', className)}
       onOpenAutoFocus={(event) => event.preventDefault()}
       {...props}
     >

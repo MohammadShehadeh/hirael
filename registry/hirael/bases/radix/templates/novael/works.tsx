@@ -110,7 +110,11 @@ const COPY = {
   { items: Record<ProjectId, { title: string; category: string; description: string }> } & Record<string, unknown>
 >;
 
-const ProjectPlaceholder = ({ index }: { index: number }) => {
+interface ProjectPlaceholderProps {
+  index: number;
+}
+
+const ProjectPlaceholder = ({ index }: ProjectPlaceholderProps) => {
   return (
     <div
       aria-hidden
@@ -130,7 +134,11 @@ const ProjectPlaceholder = ({ index }: { index: number }) => {
   );
 };
 
-export const Works = ({ lang }: { lang: Lang }) => {
+interface WorksProps {
+  lang: Lang;
+}
+
+export const Works = ({ lang }: WorksProps) => {
   const c = COPY[lang];
 
   return (

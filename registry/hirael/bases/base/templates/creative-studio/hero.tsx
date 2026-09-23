@@ -9,7 +9,12 @@ const NAV_ITEMS = ['Our story', 'Collective', 'Workshops', 'Programs', 'Inquirie
 
 const EASE_OUT_EXPO: [number, number, number, number] = [0.16, 1, 0.3, 1];
 
-export const Hero = ({ videoSrc, posterSrc }: { videoSrc?: string; posterSrc?: string }) => {
+interface HeroProps {
+  videoSrc?: string;
+  posterSrc?: string;
+}
+
+export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
   const reduce = useReducedMotion();
 
   const fade = (delay: number) => ({
@@ -43,10 +48,7 @@ export const Hero = ({ videoSrc, posterSrc }: { videoSrc?: string; posterSrc?: s
         />
 
         <nav className="absolute left-1/2 top-0 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-b-2xl bg-black md:max-w-none md:rounded-b-3xl">
-          <ul
-            className="flex items-center gap-5 overflow-x-auto whitespace-nowrap px-5 py-2.5 sm:gap-7 md:gap-9 md:px-9 lg:gap-11 [&::-webkit-scrollbar]:hidden"
-            style={{ scrollbarWidth: 'none' }}
-          >
+          <ul className="flex items-center gap-5 overflow-x-auto whitespace-nowrap px-5 py-2.5 sm:gap-7 md:gap-9 md:px-9 lg:gap-11 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
             {NAV_ITEMS.map((item) => (
               <li key={item} className="shrink-0">
                 <a

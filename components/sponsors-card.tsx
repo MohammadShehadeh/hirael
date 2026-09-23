@@ -25,7 +25,11 @@ export const SponsorsRail = () => {
   );
 };
 
-export const SponsorsCard = ({ className }: { className?: string }) => (
+interface SponsorsCardProps {
+  className?: string;
+}
+
+export const SponsorsCard = ({ className }: SponsorsCardProps) => (
   <section
     aria-labelledby="sponsors-heading"
     data-slot="sponsors-card"

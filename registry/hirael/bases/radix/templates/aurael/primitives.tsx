@@ -54,15 +54,13 @@ export const useDocumentScene = () => {
   );
 };
 
-export const Reveal = ({
-  delay = 0,
-  className,
-  children,
-}: {
+interface RevealProps {
   delay?: number;
   className?: string;
   children: React.ReactNode;
-}) => {
+}
+
+export const Reveal = ({ delay = 0, className, children }: RevealProps) => {
   const reduced = useReducedMotion();
   return (
     <motion.div
@@ -77,15 +75,7 @@ export const Reveal = ({
   );
 };
 
-export const Band = ({
-  id,
-  index,
-  label,
-  note,
-  lang,
-  className,
-  children,
-}: {
+interface BandProps {
   id: string;
   index: string;
   label: string;
@@ -93,7 +83,9 @@ export const Band = ({
   lang: Lang;
   className?: string;
   children: React.ReactNode;
-}) => {
+}
+
+export const Band = ({ id, index, label, note, lang, className, children }: BandProps) => {
   return (
     <section
       id={id}
@@ -119,7 +111,13 @@ export const Band = ({
   );
 };
 
-export const Lead = ({ lang, className, children }: { lang: Lang; className?: string; children: React.ReactNode }) => {
+interface LeadProps {
+  lang: Lang;
+  className?: string;
+  children: React.ReactNode;
+}
+
+export const Lead = ({ lang, className, children }: LeadProps) => {
   return (
     <h2
       data-slot="aurael-display"
@@ -134,6 +132,10 @@ export const Lead = ({ lang, className, children }: { lang: Lang; className?: st
   );
 };
 
-export const Accent = ({ children }: { children: React.ReactNode }) => {
+interface AccentProps {
+  children: React.ReactNode;
+}
+
+export const Accent = ({ children }: AccentProps) => {
   return <span className="text-muted-foreground">{children}</span>;
 };

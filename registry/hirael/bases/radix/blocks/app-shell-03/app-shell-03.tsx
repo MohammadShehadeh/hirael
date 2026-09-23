@@ -38,7 +38,12 @@ const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 /** Times are stored as "Today, 9:41" and shown as two spans, no separator glyph. */
-const Stamp = ({ time, className }: { time: string; className?: string }) => {
+interface StampProps {
+  time: string;
+  className?: string;
+}
+
+const Stamp = ({ time, className }: StampProps) => {
   return (
     <span className={cn('flex gap-1.5 tabular-nums', className)}>
       {time.split(', ').map((part) => (
@@ -226,13 +231,21 @@ interface Removal {
   kind: 'archived' | 'deleted';
 }
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
     </svg>
   );
 };
+
+type InboxFilter = 'all' | 'unread';
+
+type MobilePane = 'list' | 'thread';
 
 const AppShell03 = () => {
   const [selectedId, setSelectedId] = React.useState<string | null>(CONVERSATIONS[0].id);
@@ -242,9 +255,9 @@ const AppShell03 = () => {
   const [lastRemoval, setLastRemoval] = React.useState<Removal | null>(null);
   const [replies, setReplies] = React.useState<Record<string, Message[]>>({});
   const [query, setQuery] = React.useState('');
-  const [filter, setFilter] = React.useState<'all' | 'unread'>('all');
+  const [filter, setFilter] = React.useState<InboxFilter>('all');
   const [draft, setDraft] = React.useState('');
-  const [mobilePane, setMobilePane] = React.useState<'list' | 'thread'>('list');
+  const [mobilePane, setMobilePane] = React.useState<MobilePane>('list');
 
   const optionRefs = React.useRef(new Map<string, HTMLLIElement>());
 
@@ -419,7 +432,7 @@ const AppShell03 = () => {
             />
           </InputGroup>
           <div className="flex items-center justify-between gap-2">
-            <Tabs value={filter} onValueChange={(v) => setFilter(v as 'all' | 'unread')} className="w-fit">
+            <Tabs value={filter} onValueChange={(v) => setFilter(v as InboxFilter)} className="w-fit">
               <TabsList className="h-7">
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="unread">Unread</TabsTrigger>
@@ -522,8 +535,7 @@ const AppShell03 = () => {
       <section
         aria-label="Conversation"
         data-slot="app-shell-reading-pane"
-        style={{ animationDelay: '80ms' }}
-        className={cn(ENTER, 'min-w-0 flex-1 flex-col md:flex', mobilePane === 'list' ? 'hidden' : 'flex')}
+        className={cn(ENTER, 'delay-80 min-w-0 flex-1 flex-col md:flex', mobilePane === 'list' ? 'hidden' : 'flex')}
       >
         {selected ? (
           <div key={selected.id} className={cn(SWAP, 'flex min-h-0 flex-1 flex-col')}>

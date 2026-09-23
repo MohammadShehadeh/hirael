@@ -19,7 +19,11 @@ export const onAnchorClick = (event: React.MouseEvent<HTMLAnchorElement>, href: 
   });
 };
 
-export const ArrowUpRight = ({ className }: { className?: string }) => {
+interface IconProps {
+  className?: string;
+}
+
+export const ArrowUpRight = ({ className }: IconProps) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -36,7 +40,7 @@ export const ArrowUpRight = ({ className }: { className?: string }) => {
   );
 };
 
-export const ArrowRight = ({ className }: { className?: string }) => {
+export const ArrowRight = ({ className }: IconProps) => {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -53,15 +57,7 @@ export const ArrowRight = ({ className }: { className?: string }) => {
   );
 };
 
-export const RingLink = ({
-  href,
-  children,
-  ariaLabel,
-  target,
-  rel,
-  outerClassName,
-  innerClassName,
-}: {
+interface RingLinkProps {
   href: string;
   children: React.ReactNode;
   ariaLabel?: string;
@@ -69,7 +65,9 @@ export const RingLink = ({
   rel?: string;
   outerClassName?: string;
   innerClassName?: string;
-}) => {
+}
+
+export const RingLink = ({ href, children, ariaLabel, target, rel, outerClassName, innerClassName }: RingLinkProps) => {
   return (
     <a
       href={href}
@@ -95,7 +93,13 @@ export const RingLink = ({
   );
 };
 
-export const ViewAllButton = ({ label, href, className }: { label: string; href: string; className?: string }) => {
+interface ViewAllButtonProps {
+  label: string;
+  href: string;
+  className?: string;
+}
+
+export const ViewAllButton = ({ label, href, className }: ViewAllButtonProps) => {
   return (
     <RingLink
       href={href}
@@ -108,6 +112,21 @@ export const ViewAllButton = ({ label, href, className }: { label: string; href:
   );
 };
 
+interface SectionHeaderViewAll {
+  label: string;
+  href: string;
+}
+
+interface SectionHeaderProps {
+  eyebrow: string;
+  lead: string;
+  accent: string;
+  trailing?: string;
+  subtext: string;
+  viewAll?: SectionHeaderViewAll;
+  className?: string;
+}
+
 export const SectionHeader = ({
   eyebrow,
   lead,
@@ -116,15 +135,7 @@ export const SectionHeader = ({
   subtext,
   viewAll,
   className,
-}: {
-  eyebrow: string;
-  lead: string;
-  accent: string;
-  trailing?: string;
-  subtext: string;
-  viewAll?: { label: string; href: string };
-  className?: string;
-}) => {
+}: SectionHeaderProps) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}

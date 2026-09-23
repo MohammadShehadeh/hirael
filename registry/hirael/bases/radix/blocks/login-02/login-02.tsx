@@ -23,7 +23,11 @@ const STATS = [
   { value: '0', label: 'runtime deps' },
 ];
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -173,17 +177,11 @@ const Login02 = () => {
       >
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 opacity-30"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
-          }}
+          className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[28px_28px] opacity-30"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -bottom-32 -end-24 -z-10 size-[420px] rounded-full opacity-[0.18] blur-3xl"
-          style={{ background: 'var(--primary)' }}
+          className="pointer-events-none absolute -bottom-32 -end-24 -z-10 size-[420px] rounded-full bg-primary opacity-[0.18] blur-3xl"
         />
 
         <figure className="flex w-full max-w-md flex-col gap-8 px-8 py-12 md:gap-10 md:px-10 lg:px-12 lg:py-16">

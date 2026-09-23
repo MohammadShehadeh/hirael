@@ -116,29 +116,11 @@ const Cta04 = () => {
       <div
         data-slot="cta-glow"
         aria-hidden
-        className="relative -z-10 -mt-24 h-64 w-full overflow-hidden md:-mt-32"
-        style={{
-          maskImage: 'radial-gradient(50% 50%, white, transparent)',
-          WebkitMaskImage: 'radial-gradient(50% 50%, white, transparent)',
-        }}
+        className="relative -z-10 -mt-24 h-64 w-full overflow-hidden [mask-image:radial-gradient(50%_50%,white,transparent)] md:-mt-32"
       >
-        <div
-          className="absolute inset-0 opacity-50 blur-3xl"
-          style={{
-            background:
-              'radial-gradient(circle at bottom center, color-mix(in oklch, var(--primary) 35%, transparent), transparent 70%)',
-          }}
-        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_center,color-mix(in_oklch,var(--primary)_35%,transparent),transparent_70%)] opacity-50 blur-3xl" />
         <div className="absolute inset-s-1/2 top-1/2 aspect-[1/0.7] w-[200%] -translate-x-1/2 rounded-[100%] border-t border-border bg-background rtl:translate-x-1/2" />
-        <div
-          className="absolute inset-x-0 bottom-0 h-full"
-          style={{
-            backgroundImage:
-              'radial-gradient(1px 1px at 20% 30%, color-mix(in oklch, var(--foreground) 40%, transparent), transparent), radial-gradient(1px 1px at 70% 20%, color-mix(in oklch, var(--foreground) 30%, transparent), transparent), radial-gradient(1px 1px at 40% 60%, color-mix(in oklch, var(--foreground) 35%, transparent), transparent), radial-gradient(1px 1px at 85% 50%, color-mix(in oklch, var(--foreground) 25%, transparent), transparent), radial-gradient(1px 1px at 55% 40%, color-mix(in oklch, var(--foreground) 30%, transparent), transparent)',
-            maskImage: 'radial-gradient(50% 50%, white, transparent 85%)',
-            WebkitMaskImage: 'radial-gradient(50% 50%, white, transparent 85%)',
-          }}
-        />
+        <div className="absolute inset-x-0 bottom-0 h-full bg-[radial-gradient(1px_1px_at_20%_30%,color-mix(in_oklch,var(--foreground)_40%,transparent),transparent),radial-gradient(1px_1px_at_70%_20%,color-mix(in_oklch,var(--foreground)_30%,transparent),transparent),radial-gradient(1px_1px_at_40%_60%,color-mix(in_oklch,var(--foreground)_35%,transparent),transparent),radial-gradient(1px_1px_at_85%_50%,color-mix(in_oklch,var(--foreground)_25%,transparent),transparent),radial-gradient(1px_1px_at_55%_40%,color-mix(in_oklch,var(--foreground)_30%,transparent),transparent)] [mask-image:radial-gradient(50%_50%,white,transparent_85%)]" />
       </div>
     </section>
   );

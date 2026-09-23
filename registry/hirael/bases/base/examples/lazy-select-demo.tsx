@@ -17,6 +17,11 @@ interface User {
   name: string;
 }
 
+interface FetchUsersParams {
+  query: string;
+  page: number;
+}
+
 const PAGE_SIZE = 20;
 
 const FIRST_NAMES = {
@@ -39,7 +44,7 @@ const LazySelectDemo = () => {
     name: `${firstNames[i % 10]} ${lastNames[i % 8]} #${i + 1}`,
   }));
 
-  const fetchUsers = async ({ query, page }: { query: string; page: number }): Promise<LazyPage<User>> => {
+  const fetchUsers = async ({ query, page }: FetchUsersParams): Promise<LazyPage<User>> => {
     await new Promise((r) => setTimeout(r, 450));
     const filtered = query ? ALL_USERS.filter((u) => u.name.toLowerCase().includes(query.toLowerCase())) : ALL_USERS;
     const start = page * PAGE_SIZE;

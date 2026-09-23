@@ -477,11 +477,11 @@ const Changelog01Block = () => {
       <ChangelogHeader>
         <div className="flex flex-col gap-3">
           <ChangelogTitle className={ENTER}>Changelog</ChangelogTitle>
-          <ChangelogDescription style={{ animationDelay: '70ms' }} className={ENTER}>
+          <ChangelogDescription className={cn(ENTER, 'delay-70')}>
             What shipped in Relay, most recent first. Releases go out every other Tuesday.
           </ChangelogDescription>
         </div>
-        <div style={{ animationDelay: '140ms' }} className={cn(ENTER, 'flex flex-wrap items-center gap-2')}>
+        <div className={cn(ENTER, 'delay-140 flex flex-wrap items-center gap-2')}>
           <ChangelogFilter />
           <ChangelogSubscribe />
         </div>

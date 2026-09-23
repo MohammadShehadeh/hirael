@@ -24,19 +24,11 @@ const Hero03 = () => {
     <section data-slot="hero" className="relative isolate overflow-hidden bg-background">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
-        }}
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[64px_64px] opacity-30 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_72%)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px"
-        style={{
-          background: 'linear-gradient(to right, transparent, var(--primary) 50%, transparent)',
-        }}
+        className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-[linear-gradient(to_right,transparent,var(--primary)_50%,transparent)]"
       />
       {/* Three orbs rather than one grey one: the grid alone left the section
           reading as bare background in both themes. */}
@@ -91,13 +83,13 @@ const Hero03 = () => {
           style={stagger(3)}
           className={cn(ENTER, 'flex flex-col items-center gap-3 sm:flex-row')}
         >
-          <Button asChild size="lg" className="group h-12">
+          <Button asChild size="lg" className="group">
             <a href="#">
               Start free
               <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
             </a>
           </Button>
-          <Button asChild size="lg" variant="outline" className="h-12">
+          <Button asChild size="lg" variant="outline">
             <a href="#">Book a demo</a>
           </Button>
         </div>

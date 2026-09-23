@@ -2,7 +2,11 @@ import type { ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
-export const Wordmark = ({ className }: { className?: string }) => {
+interface WordmarkProps {
+  className?: string;
+}
+
+export const Wordmark = ({ className }: WordmarkProps) => {
   return (
     <span className={cn('tracking-tight text-foreground [font-family:var(--font-velorah-serif)]', className)}>
       Velorah
@@ -11,9 +15,11 @@ export const Wordmark = ({ className }: { className?: string }) => {
   );
 };
 
+type PillButtonTone = 'glass' | 'outline';
+
 interface PillButtonProps extends ComponentProps<'button'> {
   /** `glass` is the frosted primary pill, `outline` the quiet bordered one. */
-  tone?: 'glass' | 'outline';
+  tone?: PillButtonTone;
 }
 
 export const PillButton = ({ tone = 'glass', className, ...props }: PillButtonProps) => {

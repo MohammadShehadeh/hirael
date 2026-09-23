@@ -30,34 +30,33 @@ const CARD_GRADIENT =
   'radial-gradient(50% 50% at 72% 78%, rgba(150,138,116,0.20), transparent 72%),' +
   '#0b0a09';
 
-const VIGNETTE = 'radial-gradient(125% 120% at 50% 0%, transparent 52%, rgba(0,0,0,0.55) 100%)';
+type NoiseOverlayVariant = 'overlay' | 'bg';
 
-export const NoiseOverlay = ({
-  variant = 'overlay',
-  className,
-}: {
-  variant?: 'overlay' | 'bg';
+interface NoiseOverlayProps {
+  variant?: NoiseOverlayVariant;
   className?: string;
-}) => {
+}
+
+export const NoiseOverlay = ({ variant = 'overlay', className }: NoiseOverlayProps) => {
   return (
     <div
       aria-hidden
-      className={cn('pointer-events-none absolute inset-0', className)}
+      className={cn('pointer-events-none absolute inset-0 bg-size-[160px_160px]', className)}
       style={{
         backgroundImage: variant === 'overlay' ? OVERLAY_NOISE : BG_NOISE,
-        backgroundSize: '160px 160px',
       }}
     />
   );
 };
 
-export const CinematicBackground = ({
-  variant = 'hero',
-  className,
-}: {
-  variant?: 'hero' | 'card';
+type CinematicBackgroundVariant = 'hero' | 'card';
+
+interface CinematicBackgroundProps {
+  variant?: CinematicBackgroundVariant;
   className?: string;
-}) => {
+}
+
+export const CinematicBackground = ({ variant = 'hero', className }: CinematicBackgroundProps) => {
   const reduce = useReducedMotion();
   return (
     <div aria-hidden className={cn('absolute inset-0 overflow-hidden bg-black', className)}>
@@ -84,12 +83,16 @@ export const CinematicBackground = ({
           ease: 'easeInOut',
         }}
       />
-      <div className="absolute inset-0" style={{ background: VIGNETTE }} />
+      <div className="absolute inset-0 bg-[radial-gradient(125%_120%_at_50%_0%,transparent_52%,rgba(0,0,0,0.55)_100%)]" />
     </div>
   );
 };
 
-const WithAsterisk = ({ word }: { word: string }) => {
+interface WithAsteriskProps {
+  word: string;
+}
+
+const WithAsterisk = ({ word }: WithAsteriskProps) => {
   const chars = Array.from(word);
   const last = chars.pop() ?? '';
   return (
@@ -103,6 +106,15 @@ const WithAsterisk = ({ word }: { word: string }) => {
   );
 };
 
+interface WordsPullUpProps {
+  text: string;
+  className?: string;
+  wordClassName?: string;
+  showAsterisk?: boolean;
+  startDelay?: number;
+  stagger?: number;
+}
+
 export const WordsPullUp = ({
   text,
   className,
@@ -110,14 +122,7 @@ export const WordsPullUp = ({
   showAsterisk = false,
   startDelay = 0,
   stagger = 0.08,
-}: {
-  text: string;
-  className?: string;
-  wordClassName?: string;
-  showAsterisk?: boolean;
-  startDelay?: number;
-  stagger?: number;
-}) => {
+}: WordsPullUpProps) => {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const reduce = useReducedMotion();
@@ -125,7 +130,7 @@ export const WordsPullUp = ({
   const show = reduce || inView;
 
   return (
-    <span ref={ref} className={cn('inline-flex flex-wrap', className)} style={{ columnGap: '0.25em' }}>
+    <span ref={ref} className={cn('inline-flex flex-wrap gap-x-[0.25em]', className)}>
       {words.map((word, i) => {
         const last = i === words.length - 1;
         return (
@@ -153,17 +158,19 @@ export interface StyledSegment {
   className?: string;
 }
 
+interface WordsPullUpMultiStyleProps {
+  segments: StyledSegment[];
+  className?: string;
+  startDelay?: number;
+  stagger?: number;
+}
+
 export const WordsPullUpMultiStyle = ({
   segments,
   className,
   startDelay = 0,
   stagger = 0.08,
-}: {
-  segments: StyledSegment[];
-  className?: string;
-  startDelay?: number;
-  stagger?: number;
-}) => {
+}: WordsPullUpMultiStyleProps) => {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
   const reduce = useReducedMotion();
@@ -177,7 +184,7 @@ export const WordsPullUpMultiStyle = ({
   }
 
   return (
-    <span ref={ref} className={cn('inline-flex flex-wrap justify-center', className)} style={{ columnGap: '0.25em' }}>
+    <span ref={ref} className={cn('inline-flex flex-wrap justify-center gap-x-[0.25em]', className)}>
       {words.map((word, i) => (
         <motion.span
           key={i}
@@ -197,17 +204,14 @@ export const WordsPullUpMultiStyle = ({
   );
 };
 
-const AnimatedLetter = ({
-  char,
-  index,
-  total,
-  progress,
-}: {
+interface AnimatedLetterProps {
   char: string;
   index: number;
   total: number;
   progress: MotionValue<number>;
-}) => {
+}
+
+const AnimatedLetter = ({ char, index, total, progress }: AnimatedLetterProps) => {
   const reduce = useReducedMotion();
   const charProgress = index / total;
   const opacity = useTransform(progress, [charProgress - 0.1, charProgress + 0.05], [0.2, 1]);
@@ -218,7 +222,12 @@ const AnimatedLetter = ({
   );
 };
 
-export const ScrollRevealText = ({ text, className }: { text: string; className?: string }) => {
+interface ScrollRevealTextProps {
+  text: string;
+  className?: string;
+}
+
+export const ScrollRevealText = ({ text, className }: ScrollRevealTextProps) => {
   const ref = React.useRef<HTMLParagraphElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,

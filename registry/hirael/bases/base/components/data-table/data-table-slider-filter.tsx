@@ -53,6 +53,9 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
   const defaultRange = column.columnDef.meta?.range;
   const unit = column.columnDef.meta?.unit;
 
+  // Read outside the memo so a data change (new faceted tuple) recomputes the bounds.
+  const facetedMinMax = defaultRange && getIsValidRange(defaultRange) ? undefined : column.getFacetedMinMaxValues();
+
   const { min, max, step } = React.useMemo<Range & { step: number }>(() => {
     let minValue = 0;
     let maxValue = 100;
@@ -60,7 +63,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
     if (defaultRange && getIsValidRange(defaultRange)) {
       [minValue, maxValue] = defaultRange;
     } else {
-      const values = column.getFacetedMinMaxValues();
+      const values = facetedMinMax;
       if (values && Array.isArray(values) && values.length === 2) {
         const [facetMinValue, facetMaxValue] = values;
         if (typeof facetMinValue === 'number' && typeof facetMaxValue === 'number') {
@@ -72,9 +75,11 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
 
     const rangeSize = maxValue - minValue;
     const step = rangeSize <= 20 ? 1 : rangeSize <= 100 ? Math.ceil(rangeSize / 20) : Math.ceil(rangeSize / 50);
+    // Snap max up to the step grid, otherwise the slider can never reach the real max.
+    const snappedMax = minValue + Math.ceil(rangeSize / step) * step;
 
-    return { min: minValue, max: maxValue, step };
-  }, [column, defaultRange]);
+    return { min: minValue, max: snappedMax, step };
+  }, [defaultRange, facetedMinMax]);
 
   const range = React.useMemo((): RangeValue => {
     return columnFilterValue ?? [min, max];

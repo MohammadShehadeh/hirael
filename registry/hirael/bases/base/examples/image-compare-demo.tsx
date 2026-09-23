@@ -14,7 +14,11 @@ import {
 const PHOTO = '/media/components/image-compare/valley.jpg';
 const PHOTO_ALT = '/media/components/image-compare/ridge.jpg';
 
-const MockPanel = ({ styled }: { styled?: boolean }) => {
+interface MockPanelProps {
+  styled?: boolean;
+}
+
+const MockPanel = ({ styled }: MockPanelProps) => {
   return (
     <div className="size-full bg-background p-4">
       <div className="grid h-full content-start gap-3 rounded-lg border border-border bg-card p-4">

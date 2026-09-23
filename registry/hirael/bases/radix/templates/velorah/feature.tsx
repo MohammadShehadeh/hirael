@@ -46,7 +46,12 @@ const FEATURE_TABS = [
   },
 ];
 
-export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: { videoSrc?: string; posterSrc?: string }) => {
+interface FeatureProps {
+  videoSrc?: string;
+  posterSrc?: string;
+}
+
+export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: FeatureProps) => {
   const [activeId, setActiveId] = React.useState(FEATURE_TABS[0].id);
   const [videoFailed, setVideoFailed] = React.useState(false);
 

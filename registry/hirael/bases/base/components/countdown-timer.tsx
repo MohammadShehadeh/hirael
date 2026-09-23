@@ -68,7 +68,7 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
         }
         return;
       }
-      timeout = setTimeout(tick, 1000 - (Date.now() % 1000));
+      timeout = setTimeout(tick, next.totalMs % 1000 || 1000);
     };
 
     tick();
@@ -125,11 +125,12 @@ export interface CountdownTimerUnitProps extends Omit<React.ComponentProps<'div'
   label?: string;
 }
 
+const pad = (value: number | null) => (value === null ? '--' : String(value).padStart(2, '0'));
+
 const CountdownTimerUnit = ({ value, label, className, ...props }: CountdownTimerUnitProps) => {
-  const display = value === null ? '--' : String(value).padStart(2, '0');
   return (
     <div data-slot="countdown-timer-unit" className={cn('flex flex-col items-center gap-0.5', className)} {...props}>
-      <CountdownTimerValue value={display} />
+      <CountdownTimerValue value={pad(value)} />
       {label ? (
         <span
           data-slot="countdown-timer-label"
@@ -176,13 +177,14 @@ const CountdownTimer = ({
   const mounted = useMounted();
 
   const resolvedLabels = { ...defaultLabels, ...labels };
-  const units = hideZeroDays && state.days === 0 ? unitOrder.slice(1) : unitOrder;
+  // Initial state reads Date.now(), so anything derived from it waits for mount to match the static HTML.
+  const units = hideZeroDays && mounted && state.days === 0 ? unitOrder.slice(1) : unitOrder;
   const valueOf = (unit: CountdownUnit) => (mounted ? state[unit] : null);
 
   let content: React.ReactNode;
 
   if (children) {
-    content = children(state);
+    content = mounted ? children(state) : null;
   } else if (mounted && state.isComplete && completeContent !== undefined) {
     content = completeContent;
   } else if (variant === 'boxed') {
@@ -215,7 +217,7 @@ const CountdownTimer = ({
         {units.map((unit, index) => (
           <React.Fragment key={unit}>
             {index > 0 ? <span aria-hidden>:</span> : null}
-            <CountdownTimerValue value={valueOf(unit) === null ? '--' : String(state[unit]).padStart(2, '0')} />
+            <CountdownTimerValue value={pad(valueOf(unit))} />
           </React.Fragment>
         ))}
       </span>

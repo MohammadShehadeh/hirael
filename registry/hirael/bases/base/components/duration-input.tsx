@@ -35,6 +35,11 @@ const splitDuration = (total: number, units: DurationUnit[]): Record<DurationUni
 const joinDuration = (parts: Record<DurationUnit, number>, units: DurationUnit[]): number =>
   units.reduce((total, unit) => total + parts[unit] * UNIT_SECONDS[unit], 0);
 
+interface DurationDraft {
+  unit: DurationUnit;
+  text: string;
+}
+
 interface DurationInputContextValue {
   seconds: number | null;
   units: DurationUnit[];
@@ -43,8 +48,8 @@ interface DurationInputContextValue {
   widthFor: (unit: DurationUnit) => number;
   setUnit: (unit: DurationUnit, next: number) => void;
   clear: () => void;
-  draft: { unit: DurationUnit; text: string } | null;
-  setDraft: (next: { unit: DurationUnit; text: string } | null) => void;
+  draft: DurationDraft | null;
+  setDraft: (next: DurationDraft | null) => void;
   focusUnit: (from: DurationUnit, delta: number) => void;
   registerSegment: (unit: DurationUnit, el: HTMLInputElement | null) => void;
   disabled?: boolean;
@@ -93,7 +98,7 @@ const DurationInput = ({
   const unitsKey = sortUnits(unitsProp ?? ['h', 'm']).join('') || 'hm';
   const units = React.useMemo(() => unitsKey.split('') as DurationUnit[], [unitsKey]);
 
-  const [draft, setDraft] = React.useState<{ unit: DurationUnit; text: string } | null>(null);
+  const [draft, setDraft] = React.useState<DurationDraft | null>(null);
   const segments = React.useRef(new Map<DurationUnit, HTMLInputElement>());
 
   const setSeconds = React.useCallback(

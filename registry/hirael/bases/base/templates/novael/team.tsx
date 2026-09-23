@@ -22,7 +22,11 @@ const COPY = {
   },
 } satisfies Record<Lang, unknown>;
 
-export const Team = ({ lang }: { lang: Lang }) => {
+interface TeamProps {
+  lang: Lang;
+}
+
+export const Team = ({ lang }: TeamProps) => {
   const c = COPY[lang];
 
   return (

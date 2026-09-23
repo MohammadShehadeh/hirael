@@ -181,7 +181,12 @@ const UNIT_WORD: Record<Delta['unit'], string> = {
   pp: 'percentage points',
 };
 
-const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
+interface DeltaChipProps {
+  delta: Delta;
+  label: string;
+}
+
+const DeltaChip = ({ delta, label }: DeltaChipProps) => {
   const { value, unit, goodWhen } = delta;
   const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
   const direction = value > 0 ? 'up' : value < 0 ? 'down' : 'unchanged';
@@ -210,7 +215,11 @@ const DeltaChip = ({ delta, label }: { delta: Delta; label: string }) => {
   );
 };
 
-const StatusBadge = ({ status }: { status: Deploy['status'] }) => {
+interface StatusBadgeProps {
+  status: Deploy['status'];
+}
+
+const StatusBadge = ({ status }: StatusBadgeProps) => {
   const meta = STATUS_META[status];
   return (
     <Badge variant="outline" className="w-fit">
@@ -227,7 +236,12 @@ const StatusBadge = ({ status }: { status: Deploy['status'] }) => {
   );
 };
 
-const Spark = ({ points, className }: { points: readonly number[]; className?: string }) => {
+interface SparkProps {
+  points: readonly number[];
+  className?: string;
+}
+
+const Spark = ({ points, className }: SparkProps) => {
   const height = 32;
   const max = Math.max(...points);
   const min = Math.min(...points);
@@ -261,7 +275,11 @@ const Divider = () => {
   );
 };
 
-const CellLabel = ({ children }: { children: React.ReactNode }) => {
+interface CellLabelProps {
+  children: React.ReactNode;
+}
+
+const CellLabel = ({ children }: CellLabelProps) => {
   return <span className="text-xs uppercase text-muted-foreground">{children}</span>;
 };
 

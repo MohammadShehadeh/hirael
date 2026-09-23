@@ -7,7 +7,12 @@ import { PillButton } from './primitives';
 
 const HERO_VIDEO = '/media/templates/velorah/hero.mp4';
 
-export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: { videoSrc?: string; posterSrc?: string }) => {
+interface HeroProps {
+  videoSrc?: string;
+  posterSrc?: string;
+}
+
+export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
   const [videoFailed, setVideoFailed] = React.useState(false);
 
   return (

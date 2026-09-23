@@ -56,7 +56,11 @@ const COPY = {
   },
 } satisfies Record<Lang, unknown>;
 
-export const Hero = ({ lang }: { lang: Lang }) => {
+interface HeroProps {
+  lang: Lang;
+}
+
+export const Hero = ({ lang }: HeroProps) => {
   const c = COPY[lang];
 
   return (

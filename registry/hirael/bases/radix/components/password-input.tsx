@@ -123,12 +123,17 @@ const PasswordInput = ({
   );
 };
 
+interface PasswordInputToggleLabel {
+  show: string;
+  hide: string;
+}
+
 interface PasswordInputFieldProps extends Omit<
   React.ComponentProps<'input'>,
   'type' | 'value' | 'defaultValue' | 'onChange' | 'id'
 > {
   showToggle?: boolean;
-  toggleLabel?: { show: string; hide: string };
+  toggleLabel?: PasswordInputToggleLabel;
   className?: string;
 }
 

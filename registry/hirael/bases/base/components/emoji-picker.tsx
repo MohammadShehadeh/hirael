@@ -659,13 +659,11 @@ type EmojiPickerCategoryId = EmojiCategory | 'recent';
 
 interface EmojiPickerContextValue {
   id: string;
-  emojis: readonly EmojiItem[];
   query: string;
   setQuery: (next: string) => void;
   category: EmojiPickerCategoryId;
   setCategory: (next: EmojiPickerCategoryId) => void;
   visible: readonly EmojiItem[];
-  recent: readonly EmojiItem[];
   hasRecent: boolean;
   skinTone: EmojiSkinTone;
   setSkinTone: (next: EmojiSkinTone) => void;
@@ -812,13 +810,11 @@ const EmojiPicker = ({
   const ctx = React.useMemo<EmojiPickerContextValue>(
     () => ({
       id,
-      emojis,
       query,
       setQuery,
       category,
       setCategory,
       visible,
-      recent,
       hasRecent: Boolean(recentKey),
       skinTone,
       setSkinTone,
@@ -832,13 +828,11 @@ const EmojiPicker = ({
     }),
     [
       id,
-      emojis,
       query,
       setQuery,
       category,
       setCategory,
       visible,
-      recent,
       recentKey,
       skinTone,
       setSkinTone,
@@ -953,7 +947,8 @@ const EmojiPickerCategories = ({ labels, className, ...props }: EmojiPickerCateg
             aria-pressed={active}
             aria-label={label}
             title={label}
-            tabIndex={active ? 0 : -1}
+            // Searching clears the pressed state, but the current tab stays the group's tab stop.
+            tabIndex={ctx.category === tab.id ? 0 : -1}
             data-slot="emoji-picker-category"
             data-category={tab.id}
             data-active={active || undefined}

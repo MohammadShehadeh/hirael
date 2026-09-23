@@ -245,10 +245,9 @@ const YearPickerTrigger = ({
           type="button"
           disabled={ctx.disabled}
           data-slot="year-picker-trigger"
-          data-state={ctx.open ? 'open' : 'closed'}
           className={cn(
             'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm font-mono tabular-nums outline-none transition-colors',
-            'hover:border-ring/60 focus-visible:border-ring data-open:border-ring',
+            'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
             empty && 'text-muted-foreground font-sans',
             'disabled:cursor-not-allowed disabled:opacity-50',
             className,
@@ -277,8 +276,9 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
   const years = Array.from({ length: YEARS_PER_VIEW }, (_, i) => ctx.decadeStart + i);
   const today = new Date().getFullYear();
 
-  const canPrev = ctx.decadeStart - YEARS_PER_VIEW >= ctx.minYear - 1;
-  const canNext = ctx.decadeStart + YEARS_PER_VIEW <= ctx.maxYear + 1;
+  // Page only while the neighbouring view still holds a selectable year.
+  const canPrev = ctx.decadeStart > ctx.minYear;
+  const canNext = ctx.decadeStart + YEARS_PER_VIEW <= ctx.maxYear;
 
   const inBounds = (year: number) => year >= ctx.minYear && year <= ctx.maxYear;
   const selectedYear = ctx.mode === 'single' ? ctx.value : ctx.value?.from;
@@ -318,11 +318,20 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
         next = year + (3 - ((year - ctx.decadeStart) % 4));
         break;
       case 'PageUp':
-        ctx.setDecadeStart(Math.max(ctx.minYear - 1, ctx.decadeStart - YEARS_PER_VIEW));
+      case 'PageDown': {
+        e.preventDefault();
+        const up = e.key === 'PageUp';
+        const start = up
+          ? Math.max(ctx.minYear - 1, ctx.decadeStart - YEARS_PER_VIEW)
+          : Math.min(ctx.maxYear + 1 - YEARS_PER_VIEW, ctx.decadeStart + YEARS_PER_VIEW);
+        const lo = Math.max(ctx.minYear, start);
+        const hi = Math.min(ctx.maxYear, start + YEARS_PER_VIEW - 1);
+        const target = Math.max(lo, Math.min(hi, year + (up ? -YEARS_PER_VIEW : YEARS_PER_VIEW)));
+        ctx.setDecadeStart(start);
+        // The focused cell unmounts with the old view; refocus once the new one renders.
+        requestAnimationFrame(() => focusYear(target));
         return;
-      case 'PageDown':
-        ctx.setDecadeStart(Math.min(ctx.maxYear + 1 - YEARS_PER_VIEW, ctx.decadeStart + YEARS_PER_VIEW));
-        return;
+      }
       default:
         return;
     }

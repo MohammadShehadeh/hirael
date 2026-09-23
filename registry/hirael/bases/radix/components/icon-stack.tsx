@@ -70,7 +70,8 @@ const IconStack = ({ className, children, style, layers = 3, ...props }: IconSta
               key={index}
               x={STEP_X * index}
               y={STEP_Y * index}
-              opacity={0.4 + (0.4 / Math.max(1, count - 1)) * index}
+              // Back layer at 0.4 ramping to 0.8 at the front; a lone layer is the front.
+              opacity={count === 1 ? 0.8 : 0.4 + (0.4 / (count - 1)) * index}
               front={index === count - 1}
             />
           ))}
@@ -130,4 +131,4 @@ const IconStackContent = ({ className, ...props }: React.ComponentProps<'div'>) 
   );
 };
 
-export { IconStack, IconStackContent, IconStackLayer };
+export { IconStack, IconStackContent };

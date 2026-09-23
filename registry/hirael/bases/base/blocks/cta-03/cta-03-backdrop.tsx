@@ -53,7 +53,11 @@ const useReducedMotion = () =>
     () => false,
   );
 
-const Cta03Backdrop = ({ active = false }: { active?: boolean }) => {
+interface Cta03BackdropProps {
+  active?: boolean;
+}
+
+const Cta03Backdrop = ({ active = false }: Cta03BackdropProps) => {
   const palette = usePalette();
   const reduced = useReducedMotion();
   if (!palette) return null;

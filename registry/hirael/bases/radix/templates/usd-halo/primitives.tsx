@@ -6,7 +6,11 @@ import { cn } from '@/lib/utils';
 const LOGO_PATH =
   'M 128.005 191.173 C 128.448 156.208 156.93 128 192 128 L 192 64 L 128 64 C 128 99.346 99.346 128 64 128 L 64 192 L 128 192 Z M 192 256 L 64 256 C 28.654 256 0 227.346 0 192 L 0 64 L 64 64 L 64 0 L 192 0 C 227.346 0 256 28.654 256 64 L 256 192 L 192 192 Z';
 
-export const LogoIcon = ({ className }: { className?: string }) => {
+interface LogoIconProps {
+  className?: string;
+}
+
+export const LogoIcon = ({ className }: LogoIconProps) => {
   return (
     <svg
       viewBox="0 0 256 256"

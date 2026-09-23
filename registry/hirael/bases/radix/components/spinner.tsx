@@ -54,8 +54,6 @@ const Spinner = ({ variant = 'circle', size = 'md', label = 'Loading', className
       data-slot="spinner"
       data-variant={variant}
       role="status"
-      aria-live="polite"
-      aria-label={label}
       className={cn('inline-flex items-center justify-center', className)}
       {...props}
     >

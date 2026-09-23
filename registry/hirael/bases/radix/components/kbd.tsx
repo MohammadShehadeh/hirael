@@ -3,6 +3,7 @@ import { cn } from '@/lib/utils';
 const Kbd = ({ className, ...props }: React.ComponentProps<'button'>) => {
   return (
     <button
+      type="button"
       data-slot="kbd"
       className={cn(
         'relative inline-flex select-none touch-manipulation items-center justify-center overflow-hidden',

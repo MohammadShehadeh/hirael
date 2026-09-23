@@ -45,21 +45,19 @@ export const DataTableSkeleton = ({
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {Array.from({ length: 1 }).map((_, i) => (
-              <TableRow key={i} className="hover:bg-transparent">
-                {Array.from({ length: columnCount }).map((_, j) => (
-                  <TableHead
-                    key={j}
-                    style={{
-                      width: cozyCellWidths[j],
-                      minWidth: shrinkZero ? cozyCellWidths[j] : 'auto',
-                    }}
-                  >
-                    <Skeleton className="h-6 w-full" />
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
+            <TableRow className="hover:bg-transparent">
+              {Array.from({ length: columnCount }).map((_, j) => (
+                <TableHead
+                  key={j}
+                  style={{
+                    width: cozyCellWidths[j],
+                    minWidth: shrinkZero ? cozyCellWidths[j] : 'auto',
+                  }}
+                >
+                  <Skeleton className="h-6 w-full" />
+                </TableHead>
+              ))}
+            </TableRow>
           </TableHeader>
           <TableBody>
             {Array.from({ length: rowCount }).map((_, i) => (

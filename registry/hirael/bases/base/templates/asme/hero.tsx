@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { ArrowRight, Globe } from 'lucide-react';
+import { motion, useReducedMotion } from 'motion/react';
 
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Field, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
@@ -23,85 +24,26 @@ const SOCIAL_LINKS: {
   { label: 'Website', Icon: Globe },
 ];
 
-export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: string; posterSrc?: string }) => {
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-  const rafRef = React.useRef<number | null>(null);
+interface HeroProps {
+  videoSrc?: string;
+  posterSrc?: string;
+}
+
+export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: HeroProps) => {
+  const reduced = useReducedMotion();
   const restartTimerRef = React.useRef<number | null>(null);
-  const hasStartedRef = React.useRef(false);
-  const isFadingOutRef = React.useRef(false);
+  const [isVisible, setIsVisible] = React.useState(false);
   const [videoFailed, setVideoFailed] = React.useState(false);
 
-  React.useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+  const play = (video: HTMLVideoElement) => {
+    void video.play()?.catch(() => undefined);
+  };
 
-    const play = () => {
-      const attempt = video.play();
-      if (attempt) attempt.catch(() => {});
-    };
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      video.loop = true;
-      video.style.opacity = '1';
-      play();
-      return;
-    }
-
-    const animateOpacity = (from: number, to: number, onDone?: () => void) => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      const start = performance.now();
-      const step = (now: number) => {
-        const t = Math.min((now - start) / FADE_MS, 1);
-        video.style.opacity = String(from + (to - from) * t);
-        if (t >= 1) {
-          rafRef.current = null;
-          onDone?.();
-        } else {
-          rafRef.current = requestAnimationFrame(step);
-        }
-      };
-      rafRef.current = requestAnimationFrame(step);
-    };
-
-    const handleCanPlay = () => {
-      if (hasStartedRef.current) return;
-      hasStartedRef.current = true;
-      play();
-      animateOpacity(0, 1);
-    };
-
-    const handleTimeUpdate = () => {
-      if (isFadingOutRef.current) return;
-      if (!Number.isFinite(video.duration)) return;
-      const remaining = video.duration - video.currentTime;
-      if (remaining <= FADE_OUT_LEAD_S) {
-        isFadingOutRef.current = true;
-        const current = Number.parseFloat(video.style.opacity || '1');
-        animateOpacity(current, 0);
-      }
-    };
-
-    const handleEnded = () => {
-      video.style.opacity = '0';
-      restartTimerRef.current = window.setTimeout(() => {
-        video.currentTime = 0;
-        play();
-        isFadingOutRef.current = false;
-        animateOpacity(0, 1);
-      }, RESTART_DELAY_MS);
-    };
-
-    video.addEventListener('canplay', handleCanPlay);
-    video.addEventListener('timeupdate', handleTimeUpdate);
-    video.addEventListener('ended', handleEnded);
-    if (video.readyState >= 3) handleCanPlay();
-
+  // A video that buffered before hydration has already fired `canplay`; catch it on attach.
+  const attachVideo = React.useCallback((video: HTMLVideoElement | null) => {
+    if (video && video.readyState >= 3) setIsVisible(true);
     return () => {
-      video.removeEventListener('canplay', handleCanPlay);
-      video.removeEventListener('timeupdate', handleTimeUpdate);
-      video.removeEventListener('ended', handleEnded);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-      if (restartTimerRef.current) clearTimeout(restartTimerRef.current);
+      if (restartTimerRef.current) window.clearTimeout(restartTimerRef.current);
     };
   }, []);
 
@@ -114,8 +56,8 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: stri
           style={posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined}
         />
       ) : (
-        <video
-          ref={videoRef}
+        <motion.video
+          ref={attachVideo}
           className="absolute inset-0 h-full w-full object-cover object-bottom"
           src={videoSrc}
           poster={posterSrc}
@@ -125,7 +67,28 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: { videoSrc?: stri
           preload="auto"
           aria-hidden
           tabIndex={-1}
-          style={{ opacity: 0 }}
+          loop={reduced ?? false}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isVisible ? 1 : 0 }}
+          transition={{ duration: reduced ? 0 : FADE_MS / 1000, ease: 'linear' }}
+          onCanPlay={(event) => {
+            if (isVisible) return;
+            play(event.currentTarget);
+            setIsVisible(true);
+          }}
+          onTimeUpdate={(event) => {
+            const video = event.currentTarget;
+            if (reduced || !isVisible || !Number.isFinite(video.duration)) return;
+            if (video.duration - video.currentTime <= FADE_OUT_LEAD_S) setIsVisible(false);
+          }}
+          onEnded={(event) => {
+            const video = event.currentTarget;
+            restartTimerRef.current = window.setTimeout(() => {
+              video.currentTime = 0;
+              play(video);
+              setIsVisible(true);
+            }, RESTART_DELAY_MS);
+          }}
           onError={() => setVideoFailed(true)}
         />
       )}

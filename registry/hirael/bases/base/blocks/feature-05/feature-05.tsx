@@ -57,7 +57,11 @@ const Title = () => {
   );
 };
 
-const DottedGlow = ({ className }: { className?: string }) => {
+interface DottedGlowProps {
+  className?: string;
+}
+
+const DottedGlow = ({ className }: DottedGlowProps) => {
   return (
     <div
       aria-hidden
@@ -70,7 +74,12 @@ const DottedGlow = ({ className }: { className?: string }) => {
   );
 };
 
-const ValueCard = ({ value, index }: { value: Value; index: number }) => {
+interface ValueCardProps {
+  value: Value;
+  index: number;
+}
+
+const ValueCard = ({ value, index }: ValueCardProps) => {
   return (
     <article
       data-slot="feature-card"

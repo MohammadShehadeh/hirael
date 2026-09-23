@@ -207,12 +207,7 @@ const ComingSoon01 = () => {
     <ComingSoon data-slot="coming-soon-01-block">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
       />
 
       <div className="mx-auto w-full max-w-2xl px-6 md:px-10">

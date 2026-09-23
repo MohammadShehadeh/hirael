@@ -87,11 +87,7 @@ const Feature03 = () => {
           >
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0"
-              style={{
-                backgroundImage:
-                  'radial-gradient(90% 70% at 100% 0%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 60%)',
-              }}
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(90%_70%_at_100%_0%,color-mix(in_oklch,var(--primary)_10%,transparent),transparent_60%)]"
             />
             <div className="relative z-10 flex flex-col gap-2">
               <span className="text-xs uppercase text-muted-foreground">Source you own</span>

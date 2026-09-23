@@ -294,7 +294,12 @@ const TOOL_STATUS: Record<MessageToolCallStatus, { dot: string; label: string }>
   error: { dot: 'bg-destructive', label: 'failed' },
 };
 
-const ToolSection = ({ label, children }: { label: string; children: string }) => {
+interface ToolSectionProps {
+  label: string;
+  children: string;
+}
+
+const ToolSection = ({ label, children }: ToolSectionProps) => {
   return (
     <div className="flex flex-col gap-1">
       <span className="text-xs text-muted-foreground uppercase">{label}</span>
@@ -540,7 +545,12 @@ const SWAP =
 
 type Feedback = 'up' | 'down' | null;
 
-const FeedbackActions = ({ copyText, onRegenerate }: { copyText: string; onRegenerate?: () => void }) => {
+interface FeedbackActionsProps {
+  copyText: string;
+  onRegenerate?: () => void;
+}
+
+const FeedbackActions = ({ copyText, onRegenerate }: FeedbackActionsProps) => {
   const [feedback, setFeedback] = React.useState<Feedback>(null);
   return (
     <MessageActions>
@@ -569,7 +579,12 @@ const FeedbackActions = ({ copyText, onRegenerate }: { copyText: string; onRegen
 };
 
 /** Remount (change the key) to replay. */
-const StreamedMessage = ({ text, onReplay }: { text: string; onReplay: () => void }) => {
+interface StreamedMessageProps {
+  text: string;
+  onReplay: () => void;
+}
+
+const StreamedMessage = ({ text, onReplay }: StreamedMessageProps) => {
   const tokens = text.match(/\S+\s*/g) ?? [];
   const [count, setCount] = React.useState(0);
   const done = count >= tokens.length;

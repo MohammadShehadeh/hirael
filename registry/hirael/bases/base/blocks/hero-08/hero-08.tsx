@@ -74,24 +74,12 @@ const Hero08 = () => {
       <div
         data-slot="hero-backdrop"
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-80"
-        style={{
-          backgroundImage: [
-            'radial-gradient(120% 90% at 50% -12%, color-mix(in oklch, var(--primary) 30%, transparent), transparent 56%)',
-            'radial-gradient(80% 70% at 84% 110%, color-mix(in oklch, var(--accent-cool) 26%, transparent), transparent 62%)',
-            'radial-gradient(70% 60% at 8% 78%, color-mix(in oklch, var(--warm) 18%, transparent), transparent 66%)',
-          ].join(', '),
-        }}
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_-12%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_56%),radial-gradient(80%_70%_at_84%_110%,color-mix(in_oklch,var(--accent-cool)_26%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_78%,color-mix(in_oklch,var(--warm)_18%,transparent),transparent_66%)] opacity-80"
       />
       <div
         data-slot="hero-grid"
         aria-hidden
-        className="pointer-events-none absolute inset-0 opacity-40 mask-[radial-gradient(ellipse_at_center,black_25%,transparent_75%)]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)',
-          backgroundSize: '56px 56px',
-        }}
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[56px_56px] opacity-40 mask-[radial-gradient(ellipse_at_center,black_25%,transparent_75%)]"
       />
 
       <div data-slot="hero-content" className="relative z-10 px-6">

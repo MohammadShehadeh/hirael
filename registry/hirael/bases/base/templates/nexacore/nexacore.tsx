@@ -11,10 +11,12 @@ import { Trusted } from './trusted';
 const Nexacore = () => {
   return (
     <div
-      className={cn('nexacore', jakarta.variable, 'relative min-h-svh bg-background text-foreground antialiased')}
-      style={{
-        fontFamily: 'var(--font-nexacore-sans), ui-sans-serif, system-ui, sans-serif',
-      }}
+      className={cn(
+        'nexacore',
+        jakarta.variable,
+        'relative min-h-svh bg-background text-foreground antialiased',
+        '[font-family:var(--font-nexacore-sans),ui-sans-serif,system-ui,sans-serif]',
+      )}
     >
       <NexacoreStyles />
       <main>

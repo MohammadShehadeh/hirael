@@ -49,13 +49,11 @@ export interface FileDropzoneError {
 
 interface Ctx {
   files: File[];
-  setFiles: (next: File[]) => void;
   accept?: string;
   maxSize?: number;
   multiple: boolean;
   disabled?: boolean;
   errors: FileDropzoneError[];
-  setErrors: (next: FileDropzoneError[]) => void;
   addFiles: (incoming: FileList | File[]) => void;
   removeAt: (index: number) => void;
   inputRef: React.RefObject<HTMLInputElement | null>;
@@ -152,18 +150,16 @@ const FileDropzone = ({
   const ctx = React.useMemo<Ctx>(
     () => ({
       files,
-      setFiles,
       accept,
       maxSize,
       multiple,
       disabled,
       errors,
-      setErrors,
       addFiles,
       removeAt,
       inputRef,
     }),
-    [files, setFiles, accept, maxSize, multiple, disabled, errors, addFiles, removeAt],
+    [files, accept, maxSize, multiple, disabled, errors, addFiles, removeAt],
   );
 
   return (

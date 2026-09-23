@@ -20,7 +20,9 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
 
 type Category = 'audio' | 'wearables' | 'travel' | 'everyday';
 
-const FILTERS: { value: Category | 'all'; label: string }[] = [
+type CategoryFilter = Category | 'all';
+
+const FILTERS: { value: CategoryFilter; label: string }[] = [
   { value: 'all', label: 'All' },
   { value: 'audio', label: 'Audio' },
   { value: 'wearables', label: 'Wearables' },
@@ -132,7 +134,7 @@ const CATEGORY_LABELS: Record<Category, string> = {
 const ADDED_FEEDBACK_MS = 1600;
 
 const Ecommerce01 = () => {
-  const [filter, setFilter] = React.useState<Category | 'all'>('all');
+  const [filter, setFilter] = React.useState<CategoryFilter>('all');
   const [saved, setSaved] = React.useState<readonly string[]>([]);
   const [cart, setCart] = React.useState<Readonly<Record<string, number>>>({});
   const [hasFiltered, setHasFiltered] = React.useState(false);

@@ -66,12 +66,9 @@ export interface AvatarUploadErrorInfo {
 interface AvatarUploadContextValue {
   id: string;
   value: string | null;
-  setValue: (next: string | null) => void;
   shape: AvatarUploadShape;
   size: number;
   accept: string;
-  maxSize?: number;
-  outputSize: number;
   disabled?: boolean;
   dragging: boolean;
   error: AvatarUploadErrorInfo | null;
@@ -112,7 +109,7 @@ export interface AvatarUploadProps extends Omit<
   accept?: string;
   /** Edge of the exported square, in px. */
   outputSize?: number;
-  /** Skip the crop dialog and use the file as-is. */
+  /** Set false to skip the crop dialog and use the file as-is. */
   crop?: boolean;
   disabled?: boolean;
   onError?: (error: AvatarUploadErrorInfo) => void;
@@ -219,12 +216,9 @@ const AvatarUpload = ({
     () => ({
       id: rootId,
       value,
-      setValue,
       shape,
       size,
       accept,
-      maxSize,
-      outputSize,
       disabled,
       dragging,
       error,
@@ -240,12 +234,9 @@ const AvatarUpload = ({
     [
       rootId,
       value,
-      setValue,
       shape,
       size,
       accept,
-      maxSize,
-      outputSize,
       disabled,
       dragging,
       error,

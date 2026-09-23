@@ -52,7 +52,12 @@ const ROW_TWO: readonly Logo[] = [
   { name: 'Perihelion', icon: Orbit },
 ];
 
-const LogoRow = ({ logos, reverse }: { logos: readonly Logo[]; reverse?: boolean }) => (
+interface LogoRowProps {
+  logos: readonly Logo[];
+  reverse?: boolean;
+}
+
+const LogoRow = ({ logos, reverse }: LogoRowProps) => (
   <Marquee reverse={reverse} pauseOnHover duration={reverse ? 34 : 28} gap="3rem">
     {logos.map((logo) => (
       <span

@@ -194,7 +194,11 @@ const compile = (gl: WebGLRenderingContext, type: number, source: string) => {
   return shader;
 };
 
-const Hero09Backdrop = ({ className }: { className?: string }) => {
+interface Hero09BackdropProps {
+  className?: string;
+}
+
+const Hero09Backdrop = ({ className }: Hero09BackdropProps) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const [themeTick, setThemeTick] = React.useState(0);
 

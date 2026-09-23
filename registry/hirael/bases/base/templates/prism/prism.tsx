@@ -19,10 +19,8 @@ const Prism = () => {
         barlow.variable,
         instrumentSerif.variable,
         'relative min-h-svh bg-background text-foreground antialiased',
+        '[font-family:var(--font-prism-sans),ui-sans-serif,sans-serif]',
       )}
-      style={{
-        fontFamily: 'var(--font-prism-sans), ui-sans-serif, sans-serif',
-      }}
     >
       <PrismStyles />
       <Navbar />

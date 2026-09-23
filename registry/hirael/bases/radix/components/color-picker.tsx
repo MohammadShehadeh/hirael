@@ -37,8 +37,6 @@ interface ColorPickerContextValue {
   setFormat: (f: ColorFormat) => void;
   swatches: string[];
   pushSwatch: (hex: string) => void;
-  open: boolean;
-  setOpen: (open: boolean) => void;
   disabled?: boolean;
 }
 
@@ -247,8 +245,11 @@ const ColorPicker = ({
 
   const setHsvAndPropagate = React.useCallback(
     (next: HSV) => {
+      const hex = rgbToHex(hsvToRgb(next));
       setHsv(next);
-      setValue(rgbToHex(hsvToRgb(next)));
+      // Marks the echo as seen so it is not re-derived: greys and black lose hue/saturation in hex.
+      setLastValue(hex);
+      setValue(hex);
     },
     [setValue],
   );
@@ -286,11 +287,9 @@ const ColorPicker = ({
       setFormat,
       swatches,
       pushSwatch,
-      open,
-      setOpen,
       disabled,
     }),
-    [hsv, setHsvAndPropagate, value, setValue, format, setFormat, swatches, pushSwatch, open, setOpen, disabled],
+    [hsv, setHsvAndPropagate, value, setValue, format, setFormat, swatches, pushSwatch, disabled],
   );
 
   return (
@@ -302,15 +301,17 @@ const ColorPicker = ({
   );
 };
 
+interface ColorPickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
+  placeholder?: string;
+  children?: React.ReactNode;
+}
+
 const ColorPickerTrigger = ({
   placeholder = 'Pick a color',
   className,
   children,
   ...props
-}: Omit<React.ComponentProps<'button'>, 'children'> & {
-  placeholder?: string;
-  children?: React.ReactNode;
-}) => {
+}: ColorPickerTriggerProps) => {
   const ctx = useColorPicker();
   return (
     <PopoverTrigger asChild>
@@ -318,9 +319,6 @@ const ColorPickerTrigger = ({
         type="button"
         disabled={ctx.disabled}
         data-slot="color-picker-trigger"
-        data-state={ctx.open ? 'open' : 'closed'}
-        aria-haspopup="dialog"
-        aria-expanded={ctx.open}
         className={cn(
           'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums uppercase outline-none transition-colors',
           'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
@@ -359,34 +357,6 @@ const ColorPickerArea = ({ className, ref, ...props }: React.ComponentProps<'div
     ctx.setHsv({ h: ctx.hsv.h, s: x * 100, v: (1 - y) * 100 });
   };
 
-  const updateRef = React.useRef(updateFromPointer);
-  React.useEffect(() => {
-    updateRef.current = updateFromPointer;
-  });
-
-  const commitRef = React.useRef(() => {});
-  React.useEffect(() => {
-    commitRef.current = () => ctx.pushSwatch(ctx.hex.toLowerCase());
-  });
-
-  React.useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      if (!draggingRef.current) return;
-      updateRef.current(e.clientX, e.clientY);
-    };
-    const onUp = () => {
-      if (!draggingRef.current) return;
-      draggingRef.current = false;
-      commitRef.current();
-    };
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
-    return () => {
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onUp);
-    };
-  }, []);
-
   const pureHue = rgbToHex(hsvToRgb({ h: ctx.hsv.h, s: 100, v: 100 }));
 
   return (
@@ -405,9 +375,20 @@ const ColorPickerArea = ({ className, ref, ...props }: React.ComponentProps<'div
         props.onPointerDown?.(e);
         if (e.defaultPrevented) return;
         e.preventDefault();
-        (e.target as HTMLElement).setPointerCapture(e.pointerId);
+        // Pointer capture routes the rest of the drag to this element, even outside it.
+        e.currentTarget.setPointerCapture(e.pointerId);
         draggingRef.current = true;
         updateFromPointer(e.clientX, e.clientY);
+      }}
+      onPointerMove={(e) => {
+        props.onPointerMove?.(e);
+        if (draggingRef.current) updateFromPointer(e.clientX, e.clientY);
+      }}
+      onPointerUp={(e) => {
+        props.onPointerUp?.(e);
+        if (!draggingRef.current) return;
+        draggingRef.current = false;
+        ctx.pushSwatch(ctx.hex.toLowerCase());
       }}
       onKeyDown={(e) => {
         props.onKeyDown?.(e);
@@ -471,34 +452,6 @@ const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps
     ctx.setHsv({ h: x * 360, s: ctx.hsv.s, v: ctx.hsv.v });
   };
 
-  const updateRef = React.useRef(updateFromPointer);
-  React.useEffect(() => {
-    updateRef.current = updateFromPointer;
-  });
-
-  const commitRef = React.useRef(() => {});
-  React.useEffect(() => {
-    commitRef.current = () => ctx.pushSwatch(ctx.hex.toLowerCase());
-  });
-
-  React.useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      if (!draggingRef.current) return;
-      updateRef.current(e.clientX);
-    };
-    const onUp = () => {
-      if (!draggingRef.current) return;
-      draggingRef.current = false;
-      commitRef.current();
-    };
-    window.addEventListener('pointermove', onMove);
-    window.addEventListener('pointerup', onUp);
-    return () => {
-      window.removeEventListener('pointermove', onMove);
-      window.removeEventListener('pointerup', onUp);
-    };
-  }, []);
-
   return (
     <div
       ref={composedRef}
@@ -514,9 +467,20 @@ const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps
         props.onPointerDown?.(e);
         if (e.defaultPrevented) return;
         e.preventDefault();
-        (e.target as HTMLElement).setPointerCapture(e.pointerId);
+        // Pointer capture routes the rest of the drag to this element, even outside it.
+        e.currentTarget.setPointerCapture(e.pointerId);
         draggingRef.current = true;
         updateFromPointer(e.clientX);
+      }}
+      onPointerMove={(e) => {
+        props.onPointerMove?.(e);
+        if (draggingRef.current) updateFromPointer(e.clientX);
+      }}
+      onPointerUp={(e) => {
+        props.onPointerUp?.(e);
+        if (!draggingRef.current) return;
+        draggingRef.current = false;
+        ctx.pushSwatch(ctx.hex.toLowerCase());
       }}
       onKeyDown={(e) => {
         props.onKeyDown?.(e);
@@ -532,12 +496,9 @@ const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps
         ctx.setHsv({ h, s: ctx.hsv.s, v: ctx.hsv.v });
       }}
       className={cn(
-        'relative h-3 w-full cursor-pointer touch-none rounded-full border border-border outline-none focus-visible:ring-2 focus-visible:ring-ring',
+        'relative h-3 w-full cursor-pointer touch-none rounded-full border border-border bg-[linear-gradient(to_right,#f00_0%,#ff0_17%,#0f0_33%,#0ff_50%,#00f_67%,#f0f_83%,#f00_100%)] outline-none focus-visible:ring-2 focus-visible:ring-ring',
         className,
       )}
-      style={{
-        background: 'linear-gradient(to right, #f00 0%, #ff0 17%, #0f0 33%, #0ff 50%, #00f 67%, #f0f 83%, #f00 100%)',
-      }}
     >
       <span
         aria-hidden

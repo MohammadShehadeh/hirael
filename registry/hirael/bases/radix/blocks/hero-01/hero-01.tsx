@@ -41,14 +41,7 @@ const Hero01 = () => {
           <div
             aria-hidden
             data-slot="hero-wash"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage: [
-                'radial-gradient(75% 55% at 16% 4%, color-mix(in oklch, var(--primary) 28%, transparent), transparent 62%)',
-                'radial-gradient(65% 60% at 90% 94%, color-mix(in oklch, var(--accent-cool) 26%, transparent), transparent 66%)',
-                'radial-gradient(95% 70% at 50% 112%, color-mix(in oklch, var(--warm) 18%, transparent), transparent 70%)',
-              ].join(', '),
-            }}
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_55%_at_16%_4%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_62%),radial-gradient(65%_60%_at_90%_94%,color-mix(in_oklch,var(--accent-cool)_26%,transparent),transparent_66%),radial-gradient(95%_70%_at_50%_112%,color-mix(in_oklch,var(--warm)_18%,transparent),transparent_70%)]"
           />
           <div
             aria-hidden
@@ -106,18 +99,15 @@ const Hero01 = () => {
             <div
               data-slot="hero-actions"
               style={stagger(3)}
-              className={cn(
-                ENTER,
-                'mt-10 flex flex-col items-center gap-3 rounded-3xl bg-background/40 p-1.5 backdrop-blur-sm sm:flex-row md:rounded-full',
-              )}
+              className={cn(ENTER, 'mt-10 flex flex-col items-center gap-3 sm:flex-row')}
             >
-              <Button asChild size="lg" className="group h-12">
+              <Button asChild size="lg" className="group">
                 <a href="#">
                   Start building
                   <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                 </a>
               </Button>
-              <Button asChild size="lg" variant="ghost" className="h-12">
+              <Button asChild size="lg" variant="outline">
                 <a href="#">Read the docs</a>
               </Button>
             </div>

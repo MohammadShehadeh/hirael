@@ -203,7 +203,11 @@ const UNIT_WORD: Record<Kpi['unit'], string> = {
   s: 'seconds',
 };
 
-const DeltaChip = ({ kpi }: { kpi: Kpi }) => {
+interface DeltaChipProps {
+  kpi: Kpi;
+}
+
+const DeltaChip = ({ kpi }: DeltaChipProps) => {
   const { delta, unit, label } = kpi;
   const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
   const direction = delta > 0 ? 'up' : delta < 0 ? 'down' : 'unchanged';
@@ -226,7 +230,11 @@ const DeltaChip = ({ kpi }: { kpi: Kpi }) => {
   );
 };
 
-const Sparkline = ({ points }: { points: readonly number[] }) => {
+interface SparklineProps {
+  points: readonly number[];
+}
+
+const Sparkline = ({ points }: SparklineProps) => {
   const max = Math.max(...points);
   const min = Math.min(...points);
   const span = max - min || 1;
@@ -334,10 +342,9 @@ const Dashboard02 = () => {
 
         <div
           data-slot="dashboard-metrics"
-          style={{ animationDelay: '60ms' }}
           className={cn(
             ENTER,
-            'mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
+            'delay-60 mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
           )}
         >
           {kpis.map((k) => (
@@ -356,10 +363,7 @@ const Dashboard02 = () => {
           ))}
         </div>
 
-        <div
-          style={{ animationDelay: '120ms' }}
-          className={cn(ENTER, 'mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}
-        >
+        <div className={cn(ENTER, 'delay-120 mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}>
           <Card data-slot="dashboard-chart" className="lg:col-span-2">
             <CardHeader>
               <div className="flex items-start justify-between gap-3">

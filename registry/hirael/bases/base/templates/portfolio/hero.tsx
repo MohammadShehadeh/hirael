@@ -25,12 +25,7 @@ const Logo = () => {
       className="group relative flex size-9 shrink-0 items-center justify-center rounded-full transition-transform duration-300 hover:scale-110"
     >
       <span className="accent-gradient absolute inset-0 rounded-full" />
-      <span
-        className="absolute inset-0 rounded-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-        style={{
-          backgroundImage: 'linear-gradient(270deg, #89AACC 0%, #4E85BF 100%)',
-        }}
-      />
+      <span className="absolute inset-0 rounded-full bg-[linear-gradient(270deg,#89AACC_0%,#4E85BF_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <span className="absolute inset-[1.5px] rounded-full bg-[hsl(var(--bg))]" />
       <span className="relative font-display text-[13px] italic leading-none">JD</span>
     </a>
@@ -108,7 +103,11 @@ const Navbar = () => {
   );
 };
 
-export const Hero = ({ start = true }: { start?: boolean }) => {
+interface HeroProps {
+  start?: boolean;
+}
+
+export const Hero = ({ start = true }: HeroProps) => {
   const rootRef = React.useRef<HTMLElement>(null);
   const [roleIndex, setRoleIndex] = React.useState(0);
 

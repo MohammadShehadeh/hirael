@@ -15,7 +15,11 @@ export const fadeUp = (delay = 0): MotionProps => {
   };
 };
 
-export const RivrMark = ({ className }: { className?: string }) => {
+interface RivrMarkProps {
+  className?: string;
+}
+
+export const RivrMark = ({ className }: RivrMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={className}>
       <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="1.4" opacity="0.3" />
@@ -25,17 +29,16 @@ export const RivrMark = ({ className }: { className?: string }) => {
   );
 };
 
-export const PillButton = ({
-  label,
-  href = '#',
-  variant = 'solid',
-  className,
-}: {
+type PillButtonVariant = 'solid' | 'outline';
+
+interface PillButtonProps {
   label: string;
   href?: string;
-  variant?: 'solid' | 'outline';
+  variant?: PillButtonVariant;
   className?: string;
-}) => {
+}
+
+export const PillButton = ({ label, href = '#', variant = 'solid', className }: PillButtonProps) => {
   return (
     <Button
       render={<a href={href} />}

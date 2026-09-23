@@ -5,7 +5,11 @@ import { Marquee } from '@/registry/hirael/bases/base/components/marquee';
 
 const brands = ['Vercel', 'Linear', 'Stripe', 'Supabase', 'Raycast', 'Framer', 'Resend', 'Clerk'];
 
-const Chip = ({ children }: { children: React.ReactNode }) => {
+interface ChipProps {
+  children: React.ReactNode;
+}
+
+const Chip = ({ children }: ChipProps) => {
   return (
     <span className="inline-flex items-center rounded-md border border-border bg-card px-4 py-2 text-sm font-medium text-foreground">
       {children}

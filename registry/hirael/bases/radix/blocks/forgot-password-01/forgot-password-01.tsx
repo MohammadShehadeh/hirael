@@ -19,7 +19,11 @@ const stagger = (index: number, step = 60): React.CSSProperties => ({
   animationDelay: `${index * step}ms`,
 });
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -29,11 +33,13 @@ const BrandMark = ({ className }: { className?: string }) => {
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+type SendStatus = 'idle' | 'sending' | 'sent';
+
 const ForgotPassword01 = () => {
   const [email, setEmail] = React.useState('');
   const [error, setError] = React.useState<string | null>(null);
-  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
-  const [resend, setResend] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = React.useState<SendStatus>('idle');
+  const [resend, setResend] = React.useState<SendStatus>('idle');
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,19 +70,13 @@ const ForgotPassword01 = () => {
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-        }}
+        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] bg-size-[32px_32px] opacity-[0.35] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)]"
       />
 
       <div className="mx-auto w-full max-w-md px-6">
         <div
           data-slot="forgot-password-card"
-          className={cn(ENTER, 'rounded-sm border border-border bg-card')}
-          style={{ boxShadow: '8px 8px 0 0 var(--border)' }}
+          className={cn(ENTER, 'rounded-sm border border-border bg-card shadow-[8px_8px_0_0_var(--border)]')}
         >
           {status === 'sent' ? (
             <div

@@ -48,13 +48,16 @@ const DeliveryGlyph = () => {
   );
 };
 
-const PillarChip = ({ label, small }: { label: string; small?: boolean }) => {
+interface PillarChipProps {
+  label: string;
+  small?: boolean;
+}
+
+const PillarChip = ({ label, small }: PillarChipProps) => {
   return (
     <span
-      className="inline-flex items-center gap-2 font-medium text-[var(--nexa-navy)]"
+      className="inline-flex items-center gap-2 rounded-[20px] bg-[linear-gradient(135deg,rgb(255,255,255),rgba(255,255,255,0.6))] font-medium text-[var(--nexa-navy)]"
       style={{
-        background: 'linear-gradient(135deg, rgb(255, 255, 255), rgba(255, 255, 255, 0.6))',
-        borderRadius: 20,
         fontSize: small ? 15 : 18,
         padding: small ? '10px 18px' : '0.972vw 1.736vw',
       }}
@@ -78,7 +81,7 @@ const PillarChip = ({ label, small }: { label: string; small?: boolean }) => {
 
 const DesktopStaircase = () => {
   return (
-    <div className="relative hidden sm:block" style={{ width: '82.292vw', height: '31.94vw' }}>
+    <div className="relative hidden h-[31.94vw] w-[82.292vw] sm:block">
       {PILLARS.map((pillar) => (
         <div
           key={pillar.label}
@@ -89,26 +92,11 @@ const DesktopStaircase = () => {
           }}
         >
           <PillarChip label={pillar.label} />
-          <div className="relative" style={{ marginTop: 8 }}>
-            <div className="nexa-grad-line-bg" style={{ width: 1, height: '14.24vw' }} />
-            <div
-              className="flex flex-col text-[var(--nexa-navy)]"
-              style={{
-                position: 'absolute',
-                top: '0.56vw',
-                insetInlineStart: '1.94vw',
-                gap: 4,
-              }}
-            >
+          <div className="relative mt-[8px]">
+            <div className="nexa-grad-line-bg h-[14.24vw] w-px" />
+            <div className="absolute start-[1.94vw] top-[0.56vw] flex flex-col gap-[4px] text-[var(--nexa-navy)]">
               {pillar.items.map((item) => (
-                <span
-                  key={item}
-                  style={{
-                    fontSize: 16,
-                    padding: '0.69vw 1.04vw',
-                    whiteSpace: 'nowrap',
-                  }}
-                >
+                <span key={item} className="px-[1.04vw] py-[0.69vw] text-[16px] whitespace-nowrap">
                   {item}
                 </span>
               ))}
@@ -129,17 +117,10 @@ const MobileStack = () => {
           <div key={pillar.label} className={end ? 'flex flex-col items-end' : 'flex flex-col items-start'}>
             <PillarChip label={pillar.label} small />
             <div className="mt-4 flex gap-4" style={{ flexDirection: end ? 'row-reverse' : 'row' }}>
-              <div className="nexa-grad-line-bg shrink-0" style={{ width: 1, minHeight: 120 }} />
+              <div className="nexa-grad-line-bg min-h-[120px] w-px shrink-0" />
               <div className="flex flex-col" style={{ alignItems: end ? 'flex-end' : 'flex-start' }}>
                 {pillar.items.map((item) => (
-                  <span
-                    key={item}
-                    style={{
-                      fontSize: 14,
-                      color: 'rgb(100, 80, 160)',
-                      padding: '8px 0',
-                    }}
-                  >
+                  <span key={item} className="py-[8px] text-[14px] text-[rgb(100,80,160)]">
                     {item}
                   </span>
                 ))}
@@ -157,51 +138,26 @@ export const Precision = () => {
     <section
       id="thinking"
       data-slot="precision"
-      className="flex flex-col items-center text-center"
-      style={{
-        backgroundImage: `url(${PRECISION_BG})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        padding: 'clamp(48px, 8vw, 120px) clamp(16px, 4vw, 60px) clamp(48px, 5.56vw, 80px)',
-        gap: 'clamp(32px, 4vw, 56px)',
-      }}
+      className="flex flex-col items-center gap-[clamp(32px,4vw,56px)] bg-cover bg-center bg-no-repeat px-[clamp(16px,4vw,60px)] pt-[clamp(48px,8vw,120px)] pb-[clamp(48px,5.56vw,80px)] text-center"
+      style={{ backgroundImage: `url(${PRECISION_BG})` }}
     >
       <div className="flex flex-col items-center">
-        <span
-          className="inline-flex items-center gap-2 font-medium text-[var(--nexa-navy)]"
-          style={{
-            background: 'rgb(249, 249, 249)',
-            borderRadius: 36,
-            padding: 'clamp(8px, 0.9vw, 14px) clamp(12px, 1.25vw, 20px)',
-            fontSize: 'clamp(14px, 1.1vw, 18px)',
-          }}
-        >
+        <span className="inline-flex items-center gap-2 rounded-[36px] bg-[rgb(249,249,249)] px-[clamp(12px,1.25vw,20px)] py-[clamp(8px,0.9vw,14px)] text-[length:clamp(14px,1.1vw,18px)] font-medium text-[var(--nexa-navy)]">
           <DeliveryGlyph />
           Structured Delivery
         </span>
 
-        <h2
-          className="font-medium text-[var(--nexa-navy)]"
-          style={{
-            maxWidth: 'clamp(700px, 60vw, 900px)',
-            marginTop: 22,
-            fontSize: 'clamp(28px, 4vw, 56px)',
-            lineHeight: 1.15,
-          }}
-        >
+        <h2 className="mt-[22px] max-w-[clamp(700px,60vw,900px)] text-[length:clamp(28px,4vw,56px)] font-medium leading-[1.15] text-[var(--nexa-navy)]">
           <span className="block sm:whitespace-nowrap">One integrated, end-to-end system.</span>
-          <GradientText className="block" style={{ paddingBottom: '0.3vw' }}>
-            Compounding operational value.
-          </GradientText>
+          <GradientText className="block pb-[0.3vw]">Compounding operational value.</GradientText>
         </h2>
 
-        <p className="mt-6 text-[var(--nexa-lavender)]" style={{ fontSize: 'clamp(15px, 1.2vw, 20px)' }}>
+        <p className="mt-6 text-[length:clamp(15px,1.2vw,20px)] text-[var(--nexa-lavender)]">
           NexaCore teams capture, align, validate and deliver exactly what keeps your programs on track.
         </p>
       </div>
 
-      <div className="w-full" style={{ maxWidth: '82.292vw' }}>
+      <div className="w-full max-w-[82.292vw]">
         <DesktopStaircase />
         <MobileStack />
       </div>

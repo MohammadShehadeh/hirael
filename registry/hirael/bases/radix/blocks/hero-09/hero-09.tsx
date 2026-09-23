@@ -31,7 +31,11 @@ const STATS = [
   { value: '$0', label: 'to start building' },
 ];
 
-const BrandMark = ({ className }: { className?: string }) => {
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
       <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
@@ -84,17 +88,7 @@ const Hero09 = () => {
       <HeroZoom className="sticky top-2.5 mx-2.5 flex min-h-200 origin-top flex-col overflow-hidden rounded-[18px] bg-card will-change-transform lg:h-[calc(100svh-20px)]">
         <div aria-hidden className="absolute inset-0">
           {/* First frame, and the fallback wherever WebGL is unavailable. */}
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: [
-                'radial-gradient(95% 65% at 50% -12%, color-mix(in oklch, var(--primary) 34%, transparent), transparent 62%)',
-                'radial-gradient(70% 60% at 8% 104%, color-mix(in oklch, var(--accent-cool) 30%, transparent), transparent 66%)',
-                'radial-gradient(60% 55% at 96% 26%, color-mix(in oklch, var(--chart-2) 20%, transparent), transparent 68%)',
-                'radial-gradient(80% 50% at 50% 108%, color-mix(in oklch, var(--warm) 18%, transparent), transparent 70%)',
-              ].join(', '),
-            }}
-          />
+          <div className="absolute inset-0 bg-[radial-gradient(95%_65%_at_50%_-12%,color-mix(in_oklch,var(--primary)_34%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_104%,color-mix(in_oklch,var(--accent-cool)_30%,transparent),transparent_66%),radial-gradient(60%_55%_at_96%_26%,color-mix(in_oklch,var(--chart-2)_20%,transparent),transparent_68%),radial-gradient(80%_50%_at_50%_108%,color-mix(in_oklch,var(--warm)_18%,transparent),transparent_70%)]" />
           <Hero09Backdrop className="absolute inset-0 size-full" />
 
           {/* Grain keeps the wide gradients from banding on large displays. */}

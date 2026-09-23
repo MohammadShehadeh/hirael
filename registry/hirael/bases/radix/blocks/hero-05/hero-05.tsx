@@ -43,14 +43,7 @@ const Hero05 = () => {
           <div
             aria-hidden
             data-slot="hero-wash"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              backgroundImage: [
-                'linear-gradient(160deg, color-mix(in oklch, var(--accent-cool) 26%, transparent), transparent 48%)',
-                'radial-gradient(70% 60% at 84% 2%, color-mix(in oklch, var(--primary) 32%, transparent), transparent 62%)',
-                'radial-gradient(85% 60% at 38% 110%, color-mix(in oklch, var(--warm) 22%, transparent), transparent 70%)',
-              ].join(', '),
-            }}
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,color-mix(in_oklch,var(--accent-cool)_26%,transparent),transparent_48%),radial-gradient(70%_60%_at_84%_2%,color-mix(in_oklch,var(--primary)_32%,transparent),transparent_62%),radial-gradient(85%_60%_at_38%_110%,color-mix(in_oklch,var(--warm)_22%,transparent),transparent_70%)]"
           />
           <div
             aria-hidden
@@ -128,13 +121,13 @@ const Hero05 = () => {
                 style={stagger(4)}
                 className={cn(ENTER, 'mt-9 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center')}
               >
-                <Button asChild size="lg" className="group h-12">
+                <Button asChild size="lg" className="group">
                   <a href="#">
                     Try it free
                     <ArrowRight className="size-4 transition-transform duration-150 group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                   </a>
                 </Button>
-                <Button asChild size="lg" variant="ghost" className="h-12">
+                <Button asChild size="lg" variant="outline">
                   <a href="#">See how it works</a>
                 </Button>
               </div>

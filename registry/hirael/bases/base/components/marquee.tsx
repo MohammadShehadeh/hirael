@@ -82,6 +82,8 @@ const Marquee = ({
           key={i}
           data-slot="marquee-track"
           aria-hidden={i > 0}
+          // Clones are decorative; inert keeps their links and buttons out of the tab order.
+          inert={i > 0 || undefined}
           style={trackStyle}
           className={cn(
             'flex shrink-0 justify-around motion-reduce:[animation-play-state:paused]',

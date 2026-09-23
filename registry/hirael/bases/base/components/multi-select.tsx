@@ -27,7 +27,6 @@ interface MultiSelectContextValue {
   value: string[];
   setValue: (next: string[]) => void;
   options: MultiSelectOption[];
-  setOptions: React.Dispatch<React.SetStateAction<MultiSelectOption[]>>;
   open: boolean;
   setOpen: (open: boolean) => void;
   search: string;
@@ -70,7 +69,7 @@ const MultiSelect = ({
   value: valueProp,
   defaultValue,
   onValueChange,
-  options: optionsProp = [],
+  options = [],
   maxCount,
   disabled,
   loading,
@@ -100,9 +99,6 @@ const MultiSelect = ({
     [openProp, onOpenChange],
   );
 
-  const [extraOptions, setExtraOptions] = React.useState<MultiSelectOption[]>([]);
-  const options = React.useMemo(() => [...optionsProp, ...extraOptions], [optionsProp, extraOptions]);
-
   const [search, setSearch] = React.useState('');
 
   const toggle = React.useCallback(
@@ -120,7 +116,11 @@ const MultiSelect = ({
 
   const remove = React.useCallback((v: string) => setValue(value.filter((x) => x !== v)), [value, setValue]);
 
-  const clear = React.useCallback(() => setValue([]), [setValue]);
+  // Disabled options can't be toggled back on, so clearing keeps them.
+  const clear = React.useCallback(
+    () => setValue(value.filter((v) => options.some((o) => o.value === v && o.disabled))),
+    [value, setValue, options],
+  );
 
   const listboxId = React.useId();
 
@@ -129,7 +129,6 @@ const MultiSelect = ({
       value,
       setValue,
       options,
-      setOptions: setExtraOptions,
       open,
       setOpen,
       search,
@@ -253,9 +252,10 @@ const MultiSelectContent = ({
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const enabled = ctx.options.filter((o) => !o.disabled);
+  const locked = ctx.options.filter((o) => o.disabled && ctx.value.includes(o.value)).map((o) => o.value);
   const allSelected = enabled.length > 0 && enabled.every((o) => ctx.value.includes(o.value));
   const showSelectAllItem = showSelectAll && enabled.length > 0;
-  const showClearItem = showClear && ctx.value.length > 0 && !(showSelectAllItem && allSelected);
+  const showClearItem = showClear && ctx.value.length > locked.length && !(showSelectAllItem && allSelected);
 
   const groups = React.useMemo(() => {
     const map = new Map<string | undefined, MultiSelectOption[]>();
@@ -305,8 +305,8 @@ const MultiSelectContent = ({
                           if (allSelected) {
                             ctx.clear();
                           } else {
-                            const next = enabled.map((o) => o.value).slice(0, ctx.maxCount ?? Infinity);
-                            ctx.setValue(next);
+                            const room = Math.max(0, (ctx.maxCount ?? Infinity) - locked.length);
+                            ctx.setValue([...locked, ...enabled.map((o) => o.value).slice(0, room)]);
                           }
                         }}
                         className="justify-between"
@@ -368,44 +368,6 @@ const MultiSelectItem = ({ option, children, className, ...props }: MultiSelectI
       </span>
     </CommandItem>
   );
-};
-
-export const useAsyncOptions = <T,>(
-  loader: (query: string) => Promise<T[]>,
-  map: (item: T) => MultiSelectOption,
-  { debounce = 200 }: { debounce?: number } = {},
-) => {
-  const [query, setQuery] = React.useState('');
-  const [options, setOptions] = React.useState<MultiSelectOption[]>([]);
-  const [loading, setLoading] = React.useState(false);
-  const [error, setError] = React.useState<unknown>(null);
-  const reqId = React.useRef(0);
-
-  const loaderRef = React.useRef(loader);
-  const mapRef = React.useRef(map);
-  React.useEffect(() => {
-    loaderRef.current = loader;
-    mapRef.current = map;
-  });
-
-  React.useEffect(() => {
-    const id = ++reqId.current;
-    const t = setTimeout(async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const result = await loaderRef.current(query);
-        if (id === reqId.current) setOptions(result.map(mapRef.current));
-      } catch (e) {
-        if (id === reqId.current) setError(e);
-      } finally {
-        if (id === reqId.current) setLoading(false);
-      }
-    }, debounce);
-    return () => clearTimeout(t);
-  }, [query, debounce]);
-
-  return { query, setQuery, options, loading, error };
 };
 
 export { MultiSelect, MultiSelectTrigger, MultiSelectContent, MultiSelectItem };

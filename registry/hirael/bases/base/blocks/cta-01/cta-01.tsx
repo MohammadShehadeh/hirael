@@ -20,18 +20,14 @@ const Cta01 = () => {
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div
           data-slot="cta-panel"
-          className={cn(ENTER, 'relative overflow-hidden rounded-[2rem] border border-border bg-card')}
-          style={{
-            boxShadow: '0 30px 70px -40px color-mix(in oklch, var(--foreground) 30%, transparent)',
-          }}
+          className={cn(
+            ENTER,
+            'relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_30px_70px_-40px_color-mix(in_oklch,var(--foreground)_30%,transparent)]',
+          )}
         >
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(120% 120% at 100% 0%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 60%)',
-            }}
+            className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_100%_0%,color-mix(in_oklch,var(--primary)_10%,transparent),transparent_60%)]"
           />
 
           <div className="relative grid grid-cols-1 gap-10 p-8 sm:p-12 lg:grid-cols-12 lg:items-center lg:gap-16 lg:p-14">

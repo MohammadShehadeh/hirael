@@ -34,7 +34,14 @@ const useCountUp = (target: number, active: boolean, duration = 1400) => {
   return value;
 };
 
-const Stat = ({ value, suffix, label, active }: { value: number; suffix: string; label: string; active: boolean }) => {
+interface StatProps {
+  value: number;
+  suffix: string;
+  label: string;
+  active: boolean;
+}
+
+const Stat = ({ value, suffix, label, active }: StatProps) => {
   const count = useCountUp(value, active);
   return (
     <div className="flex flex-col items-center border-t border-[hsl(var(--stroke))] pt-8 text-center sm:items-start sm:text-start">

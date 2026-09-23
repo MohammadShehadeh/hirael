@@ -188,7 +188,12 @@ const COMPACT: Record<string, { en: string; ar: string }> = {
   'c-4': { en: 'Webhook retries', ar: 'إعادة محاولات Webhook' },
 };
 
-const CompactCard = ({ id, children }: { id: string; children: React.ReactNode }) => {
+interface CompactCardProps {
+  id: string;
+  children: React.ReactNode;
+}
+
+const CompactCard = ({ id, children }: CompactCardProps) => {
   return (
     <KanbanCard id={id} className="flex-row items-center">
       <KanbanCardHandle />

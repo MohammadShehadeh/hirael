@@ -8,7 +8,11 @@ const DURATION = 2700;
 const WORD_INTERVAL = 900;
 const EXIT_DELAY = 400;
 
-export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
+interface LoadingScreenProps {
+  onComplete: () => void;
+}
+
+export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   const [count, setCount] = React.useState(0);
   const [wordIndex, setWordIndex] = React.useState(0);
   const [exiting, setExiting] = React.useState(false);
@@ -84,11 +88,8 @@ export const LoadingScreen = ({ onComplete }: { onComplete: () => void }) => {
 
       <div className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--stroke))]/50">
         <div
-          className="accent-gradient h-full"
-          style={{
-            width: `${count}%`,
-            boxShadow: '0 0 8px rgba(137, 170, 204, 0.35)',
-          }}
+          className="accent-gradient h-full shadow-[0_0_8px_rgba(137,170,204,0.35)]"
+          style={{ width: `${count}%` }}
         />
       </div>
     </motion.div>

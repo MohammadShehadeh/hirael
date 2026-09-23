@@ -10,7 +10,6 @@ export type TagValidator = (candidate: string, current: string[]) => true | stri
 
 interface Ctx {
   value: string[];
-  setValue: (next: string[]) => void;
   draft: string;
   setDraft: (next: string) => void;
   error: string | null;
@@ -20,9 +19,6 @@ interface Ctx {
   remove: (index: number) => void;
   disabled?: boolean;
   readOnly?: boolean;
-  maxTags?: number;
-  caseSensitive: boolean;
-  validate?: TagValidator;
   commitKeys: string[];
   splitOn: RegExp;
   inputRef: React.RefObject<HTMLInputElement | null>;
@@ -92,6 +88,7 @@ const TagInput = ({
       const list = Array.isArray(candidates) ? candidates : [candidates];
       const next = [...value];
       let anyAdded = false;
+      let anyDuplicate = false;
       let batchError: string | null = null;
       for (const raw of list) {
         const tag = raw.trim();
@@ -102,7 +99,10 @@ const TagInput = ({
         }
         if (unique) {
           const haystack = next.map(norm);
-          if (haystack.includes(norm(tag))) continue;
+          if (haystack.includes(norm(tag))) {
+            anyDuplicate = true;
+            continue;
+          }
         }
         if (validate) {
           const result = validate(tag, next);
@@ -120,7 +120,8 @@ const TagInput = ({
       } else if (anyAdded) {
         setError(null);
       }
-      return anyAdded;
+      // A duplicate is already there, so it counts as handled and the draft clears.
+      return anyAdded || (anyDuplicate && !batchError);
     },
     [disabled, readOnly, value, maxTags, unique, norm, validate, setValue],
   );
@@ -138,7 +139,6 @@ const TagInput = ({
   const ctx = React.useMemo<Ctx>(
     () => ({
       value,
-      setValue,
       draft,
       setDraft,
       error,
@@ -148,29 +148,11 @@ const TagInput = ({
       remove,
       disabled,
       readOnly,
-      maxTags,
-      caseSensitive,
-      validate,
       commitKeys,
       splitOn,
       inputRef,
     }),
-    [
-      value,
-      setValue,
-      draft,
-      error,
-      errorId,
-      add,
-      remove,
-      disabled,
-      readOnly,
-      maxTags,
-      caseSensitive,
-      validate,
-      commitKeys,
-      splitOn,
-    ],
+    [value, draft, error, errorId, add, remove, disabled, readOnly, commitKeys, splitOn],
   );
 
   return (

@@ -17,8 +17,6 @@ export interface KanbanMove {
 
 interface CardEntry {
   node: HTMLElement;
-  columnId: string;
-  disabled: boolean;
 }
 
 interface ColumnEntry {
@@ -36,6 +34,12 @@ interface DragState {
   ghost: HTMLElement;
 }
 
+interface PressState {
+  id: string;
+  x: number;
+  y: number;
+}
+
 interface KanbanCtx {
   value: KanbanValue;
   disabled: boolean;
@@ -47,7 +51,7 @@ interface KanbanCtx {
   registerCard: (id: string, entry: CardEntry) => () => void;
   startPress: (e: React.PointerEvent, id: string) => void;
   handlePointerMove: (e: React.PointerEvent, id: string) => void;
-  handlePointerEnd: (e: React.PointerEvent, id: string, cancel: boolean) => void;
+  handlePointerEnd: (e: React.PointerEvent, id: string) => void;
   handleKeyDown: (e: React.KeyboardEvent, id: string) => void;
   handleBlur: (id: string) => void;
 }
@@ -76,12 +80,14 @@ const useKanbanColumn = () => {
   return ctx;
 };
 
+type KanbanItemState = 'idle' | 'grabbed';
+
 interface KanbanCardCtx {
   id: string;
   disabled: boolean;
   hasHandle: boolean;
   setHasHandle: (has: boolean) => void;
-  state: 'idle' | 'grabbed';
+  state: KanbanItemState;
 }
 
 const KanbanCardContext = React.createContext<KanbanCardCtx | null>(null);
@@ -95,6 +101,9 @@ const useKanbanCard = () => {
 };
 
 const DRAG_THRESHOLD = 5;
+
+// Presses that start on these keep their own behavior instead of starting a card drag.
+const INTERACTIVE_SELECTOR = 'button, a, input, textarea, select, [role="button"]';
 
 const findCard = (value: KanbanValue, cardId: string) => {
   for (const columnId of Object.keys(value)) {
@@ -163,7 +172,7 @@ const Kanban = ({
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const columnsRef = React.useRef(new Map<string, ColumnEntry>());
   const cardsRef = React.useRef(new Map<string, CardEntry>());
-  const pressRef = React.useRef<{ id: string; x: number; y: number } | null>(null);
+  const pressRef = React.useRef<PressState | null>(null);
   const dropRef = React.useRef<DropTarget | null>(null);
   const dragRef = React.useRef<DragState | null>(null);
   const snapshotRef = React.useRef<KanbanValue | null>(null);
@@ -413,7 +422,10 @@ const Kanban = ({
         snapshotRef.current = null;
         if (snapshot) {
           pendingFocusRef.current = id;
-          commit(snapshot);
+          // Arrow steps already reported their moves; report the revert too so consumers stay in sync.
+          const from = findCard(valueRef.current, id);
+          const to = findCard(snapshot, id);
+          commit(snapshot, from && to ? { cardId: id, from, to } : undefined);
         }
         announce(`Move cancelled. ${cardLabel(id)} returned to its original position.`);
         return;
@@ -512,7 +524,12 @@ const Kanban = ({
   );
 };
 
-const KanbanDragOverlay = ({ drag, offset }: { drag: DragState; offset: { x: number; y: number } }) => {
+interface KanbanDragOverlayProps {
+  drag: DragState;
+  offset: { x: number; y: number };
+}
+
+const KanbanDragOverlay = ({ drag, offset }: KanbanDragOverlayProps) => {
   const ref = React.useRef<HTMLDivElement | null>(null);
   const { ghost } = drag;
 
@@ -678,13 +695,13 @@ const KanbanCard = ({ id, disabled: disabledProp = false, className, style, ...p
   React.useLayoutEffect(() => {
     const node = ref.current;
     if (!node) return;
-    return registerCard(id, { node, columnId, disabled });
-  }, [id, columnId, disabled, registerCard]);
+    return registerCard(id, { node });
+  }, [id, registerCard]);
 
   const visible = (value[columnId] ?? []).filter((v) => v !== dragId);
   const index = visible.indexOf(id);
   const isDragging = dragId === id;
-  const state: 'idle' | 'grabbed' = isDragging || grabbedId === id ? 'grabbed' : 'idle';
+  const state: KanbanItemState = isDragging || grabbedId === id ? 'grabbed' : 'idle';
 
   const cardCtx = React.useMemo<KanbanCardCtx>(
     () => ({ id, disabled, hasHandle, setHasHandle, state }),
@@ -704,13 +721,28 @@ const KanbanCard = ({ id, disabled: disabledProp = false, className, style, ...p
         data-disabled={disabled || undefined}
         aria-roledescription="draggable card"
         tabIndex={interactive ? 0 : undefined}
-        hidden={isDragging}
         style={{ ...style, order: index === -1 ? undefined : index * 2 + 2 }}
-        onPointerDown={interactive ? (e) => startPress(e, id) : undefined}
+        onPointerDown={
+          interactive
+            ? (e) => {
+                const hit = (e.target as HTMLElement).closest(INTERACTIVE_SELECTOR);
+                if (hit && hit !== e.currentTarget && e.currentTarget.contains(hit)) return;
+                startPress(e, id);
+              }
+            : undefined
+        }
         onPointerMove={disabled ? undefined : (e) => handlePointerMove(e, id)}
-        onPointerUp={disabled ? undefined : (e) => handlePointerEnd(e, id, false)}
-        onPointerCancel={disabled ? undefined : (e) => handlePointerEnd(e, id, true)}
-        onKeyDown={interactive ? (e) => handleKeyDown(e, id) : undefined}
+        onPointerUp={disabled ? undefined : (e) => handlePointerEnd(e, id)}
+        onPointerCancel={disabled ? undefined : (e) => handlePointerEnd(e, id)}
+        onKeyDown={
+          interactive
+            ? (e) => {
+                // Keys typed into inner controls bubble here; only the focused card itself moves.
+                if (e.target !== e.currentTarget) return;
+                handleKeyDown(e, id);
+              }
+            : undefined
+        }
         onBlur={interactive ? () => handleBlur(id) : undefined}
         className={cn(
           'group/kanban-card relative flex shrink-0 select-none flex-col gap-2 rounded-md border border-border bg-card p-3 text-sm text-card-foreground shadow-xs outline-none transition-[box-shadow,border-color,transform] motion-reduce:transition-none',
@@ -747,8 +779,8 @@ const KanbanCardHandle = ({ className, children, ...props }: React.ComponentProp
       aria-pressed={state === 'grabbed'}
       onPointerDown={(e) => startPress(e, id)}
       onPointerMove={(e) => handlePointerMove(e, id)}
-      onPointerUp={(e) => handlePointerEnd(e, id, false)}
-      onPointerCancel={(e) => handlePointerEnd(e, id, true)}
+      onPointerUp={(e) => handlePointerEnd(e, id)}
+      onPointerCancel={(e) => handlePointerEnd(e, id)}
       onKeyDown={(e) => handleKeyDown(e, id)}
       onBlur={() => handleBlur(id)}
       className={cn(

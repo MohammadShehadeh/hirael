@@ -8,10 +8,7 @@ export const InfoSection = () => {
       <div className="mx-auto max-w-[88rem]">
         <div className="mb-16 grid grid-cols-1 items-start gap-12 md:grid-cols-2">
           <div>
-            <h2
-              className="mb-8 text-4xl font-medium leading-tight text-black md:text-5xl"
-              style={{ letterSpacing: '-0.03em' }}
-            >
+            <h2 className="mb-8 text-4xl font-medium leading-tight tracking-[-0.03em] text-black md:text-5xl">
               Meet USD Halo.
             </h2>
             <PillButton label="Discover it" />
@@ -24,18 +21,11 @@ export const InfoSection = () => {
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div
-            className="relative flex min-h-80 flex-col justify-between overflow-hidden rounded-2xl p-7 lg:col-span-2"
-            style={{
-              backgroundImage: `url(${CARD_IMAGE})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-            }}
+            className="relative flex min-h-80 flex-col justify-between overflow-hidden rounded-2xl bg-cover bg-center p-7 lg:col-span-2"
+            style={{ backgroundImage: `url(${CARD_IMAGE})` }}
           >
             <div aria-hidden className="pointer-events-none absolute inset-0 bg-white/30" />
-            <h3
-              className="relative z-10 text-2xl font-medium leading-snug text-black"
-              style={{ letterSpacing: '-0.02em' }}
-            >
+            <h3 className="relative z-10 text-2xl font-medium leading-snug tracking-[-0.02em] text-black">
               Savings that bloom
             </h3>
             <p className="relative z-10 max-w-xs text-base text-black/70">
@@ -44,7 +34,7 @@ export const InfoSection = () => {
           </div>
 
           <div className="flex min-h-80 flex-col justify-between rounded-2xl bg-[#2B2644] p-7">
-            <h3 className="text-2xl font-medium leading-snug text-white" style={{ letterSpacing: '-0.02em' }}>
+            <h3 className="text-2xl font-medium leading-snug tracking-[-0.02em] text-white">
               Always fluid,
               <br />
               always pegged.
@@ -55,7 +45,7 @@ export const InfoSection = () => {
           </div>
 
           <div className="flex min-h-80 flex-col justify-between rounded-2xl bg-[#2B2644] p-7">
-            <h3 className="text-2xl font-medium leading-snug text-white" style={{ letterSpacing: '-0.02em' }}>
+            <h3 className="text-2xl font-medium leading-snug tracking-[-0.02em] text-white">
               Fully
               <br />
               automated

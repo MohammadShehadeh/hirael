@@ -35,9 +35,7 @@ export const Navbar = () => {
         >
           <a href="#home" className="flex items-center gap-2">
             <Logo />
-            <span className="font-medium text-[var(--nexa-navy)]" style={{ fontSize: 22, letterSpacing: '-0.02em' }}>
-              NexaCore
-            </span>
+            <span className="text-[22px] font-medium tracking-[-0.02em] text-[var(--nexa-navy)]">NexaCore</span>
           </a>
 
           <div className={cn('hidden items-center md:flex', scrolled ? 'gap-0' : 'gap-1')}>

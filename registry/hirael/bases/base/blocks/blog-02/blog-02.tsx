@@ -140,7 +140,12 @@ const FILTERS: readonly Filter[] = ['All', ...CATEGORIES];
 const countFor = (filter: Filter) =>
   filter === 'All' ? POSTS.length : POSTS.filter((post) => post.category === filter).length;
 
-const PostRow = ({ post, index }: { post: Post; index: number }) => {
+interface PostRowProps {
+  post: Post;
+  index: number;
+}
+
+const PostRow = ({ post, index }: PostRowProps) => {
   return (
     <li data-slot="blog-post" style={stagger(index, 50)} className={cn(SWAP, 'border-b border-border')}>
       <a

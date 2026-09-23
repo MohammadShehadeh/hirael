@@ -20,25 +20,15 @@ const Cta02 = () => {
     <section data-slot="cta" className="relative isolate overflow-hidden bg-background py-24 md:py-32">
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-px"
-        style={{
-          background: 'linear-gradient(to right, transparent, var(--border) 20%, var(--border) 80%, transparent)',
-        }}
+        className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(to_right,transparent,var(--border)_20%,var(--border)_80%,transparent)]"
       />
       <div
         aria-hidden
-        className="absolute inset-x-0 bottom-0 h-px"
-        style={{
-          background: 'linear-gradient(to right, transparent, var(--border) 20%, var(--border) 80%, transparent)',
-        }}
+        className="absolute inset-x-0 bottom-0 h-px bg-[linear-gradient(to_right,transparent,var(--border)_20%,var(--border)_80%,transparent)]"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-50"
-        style={{
-          backgroundImage:
-            'radial-gradient(ellipse 80% 50% at 50% 50%, color-mix(in oklch, var(--primary) 12%, transparent), transparent 70%)',
-        }}
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_50%_at_50%_50%,color-mix(in_oklch,var(--primary)_12%,transparent),transparent_70%)] opacity-50"
       />
 
       <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-7 px-6 text-center md:px-10">

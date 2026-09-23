@@ -72,6 +72,10 @@ const toAttachment = (file: File): PromptAttachment => {
   };
 };
 
+interface PromptSubmitOptions {
+  attachments: PromptAttachment[];
+}
+
 interface PromptInputProps extends Omit<React.ComponentProps<'form'>, 'onSubmit' | 'defaultValue' | 'value'> {
   value?: string;
   defaultValue?: string;
@@ -83,7 +87,7 @@ interface PromptInputProps extends Omit<React.ComponentProps<'form'>, 'onSubmit'
    * uncontrolled mode the text clears afterwards; when `value` is
    * controlled, clear it yourself here. Attachments always clear.
    */
-  onSubmit?: (value: string, options: { attachments: PromptAttachment[] }) => void;
+  onSubmit?: (value: string, options: PromptSubmitOptions) => void;
   disabled?: boolean;
   /** Turns the submit button into a Stop button that calls `onStop`. */
   isStreaming?: boolean;
@@ -561,7 +565,11 @@ const SEED_ATTACHMENTS: PromptAttachment[] = [
   },
 ];
 
-const CharacterCounter = ({ max }: { max: number }) => {
+interface CharacterCounterProps {
+  max: number;
+}
+
+const CharacterCounter = ({ max }: CharacterCounterProps) => {
   const { value } = usePromptInput();
   const over = value.length > max;
   return (
@@ -594,7 +602,7 @@ const PromptInputBlock = () => {
     setIsStreaming(false);
   };
 
-  const handleSubmit = (text: string, { attachments }: { attachments: PromptAttachment[] }) => {
+  const handleSubmit = (text: string, { attachments }: PromptSubmitOptions) => {
     setLastSent({ text, attachments: attachments.length, model });
     setIsStreaming(true);
     timer.current = window.setTimeout(() => setIsStreaming(false), 2500);

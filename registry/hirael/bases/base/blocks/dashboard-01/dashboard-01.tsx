@@ -227,7 +227,11 @@ const deltaTone = ({ delta, goodWhen }: Metric) => {
   return improving ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive';
 };
 
-const DeltaChip = ({ metric }: { metric: Metric }) => {
+interface DeltaChipProps {
+  metric: Metric;
+}
+
+const DeltaChip = ({ metric }: DeltaChipProps) => {
   const { delta, unit, label } = metric;
   const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
   const direction = delta > 0 ? 'up' : delta < 0 ? 'down' : 'unchanged';
@@ -335,10 +339,9 @@ const Dashboard01 = () => {
 
         <div
           data-slot="dashboard-metrics"
-          style={{ animationDelay: '60ms' }}
           className={cn(
             ENTER,
-            'mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
+            'delay-60 mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-md border border-border bg-border lg:grid-cols-4',
           )}
         >
           {metrics.map((m) => (
@@ -352,10 +355,7 @@ const Dashboard01 = () => {
           ))}
         </div>
 
-        <div
-          style={{ animationDelay: '120ms' }}
-          className={cn(ENTER, 'mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}
-        >
+        <div className={cn(ENTER, 'delay-120 mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3 lg:items-start')}>
           <Card data-slot="dashboard-chart" className="lg:col-span-2">
             <CardHeader>
               <CardDescription>

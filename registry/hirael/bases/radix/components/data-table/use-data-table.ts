@@ -96,6 +96,11 @@ const getFilterFn = <TData extends RowData>(variant: FilterVariant | undefined):
         if (max != null && max !== '' && num > Number(max)) return false;
         return true;
       }
+      case 'number': {
+        const target = Number(filterValue);
+        if (Number.isNaN(target)) return true;
+        return Number(value) === target;
+      }
       case 'date':
       case 'dateRange': {
         const rowTime = toTime(value);
@@ -121,8 +126,13 @@ const getFilterFn = <TData extends RowData>(variant: FilterVariant | undefined):
   };
 };
 
+// Mirrors TanStack's constructColumn: dotted accessor keys become `a_b` ids.
 const getColumnId = <TData extends RowData>(column: ColumnDef<DataTableFeatures, TData>): string => {
-  return column.id ?? ('accessorKey' in column ? String(column.accessorKey) : '');
+  if (column.id !== undefined) return column.id;
+  if ('accessorKey' in column && column.accessorKey !== undefined) {
+    return String(column.accessorKey).split('.').join('_');
+  }
+  return typeof column.header === 'string' ? column.header : '';
 };
 
 const serializeFilterValue = (value: unknown): string => {
@@ -381,7 +391,7 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
       ...tableProps.defaultColumn,
       enableColumnFilter: false,
     },
-    enableRowSelection: true,
+    enableRowSelection: tableProps.enableRowSelection ?? true,
     onRowSelectionChange,
     onPaginationChange,
     onSortingChange,

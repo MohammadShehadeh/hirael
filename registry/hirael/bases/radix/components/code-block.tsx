@@ -178,9 +178,9 @@ interface CodeBlockContextValue {
   wrap: boolean;
   maxHeight?: number;
   copyable: boolean;
-  expanded: boolean;
-  setExpanded: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+const NO_LINES: number[] = [];
 
 const CodeBlockContext = React.createContext<CodeBlockContextValue | null>(null);
 
@@ -214,9 +214,9 @@ const CodeBlock = ({
   filename,
   highlight = true,
   showLineNumbers = true,
-  highlightLines = [],
-  addedLines = [],
-  removedLines = [],
+  highlightLines = NO_LINES,
+  addedLines = NO_LINES,
+  removedLines = NO_LINES,
   wrap = false,
   maxHeight,
   copyable = true,
@@ -224,8 +224,6 @@ const CodeBlock = ({
   children,
   ...props
 }: CodeBlockProps) => {
-  const [expanded, setExpanded] = React.useState(false);
-
   const rawCode = (code ?? (typeof children === 'string' ? children : '')).replace(/\n$/, '');
   const hasCustomChildren = children != null && typeof children !== 'string';
   const showHeader = Boolean(filename || language || copyable);
@@ -243,8 +241,6 @@ const CodeBlock = ({
       wrap,
       maxHeight,
       copyable,
-      expanded,
-      setExpanded,
     }),
     [
       rawCode,
@@ -258,7 +254,6 @@ const CodeBlock = ({
       wrap,
       maxHeight,
       copyable,
-      expanded,
     ],
   );
 
@@ -315,19 +310,9 @@ const CodeBlockHeader = ({ className, children, ...props }: React.ComponentProps
 };
 
 const CodeBlockContent = ({ className, ...props }: React.ComponentProps<'div'>) => {
-  const {
-    code,
-    language,
-    highlight,
-    showLineNumbers,
-    highlightLines,
-    addedLines,
-    removedLines,
-    wrap,
-    maxHeight,
-    expanded,
-    setExpanded,
-  } = useCodeBlock();
+  const { code, language, highlight, showLineNumbers, highlightLines, addedLines, removedLines, wrap, maxHeight } =
+    useCodeBlock();
+  const [expanded, setExpanded] = React.useState(false);
   const preRef = React.useRef<HTMLPreElement>(null);
   const [overflowing, setOverflowing] = React.useState(false);
 

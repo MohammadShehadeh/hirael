@@ -127,8 +127,11 @@ const parseField = (raw: string, field: CronField): CronFieldValue => {
       hi = max;
     } else if (base.includes('-')) {
       const [a, b] = base.split('-');
-      const pa = parseNumber(a, field);
-      const pb = parseNumber(b, field);
+      // Day-of-week 7 is Sunday; keep it as 7 while bounding so `5-7` is not read as backwards.
+      const parseBound = (t: string) =>
+        field === 'dayOfWeek' && /^\d+$/.test(t) && Number(t) === 7 ? 7 : parseNumber(t, field);
+      const pa = parseBound(a);
+      const pb = parseBound(b);
       if (pa === null || pb === null) {
         throw new Error(`Cannot read "${part}"`);
       }
@@ -141,7 +144,7 @@ const parseField = (raw: string, field: CronField): CronFieldValue => {
       lo = n;
       hi = stepStr ? max : n;
     }
-    for (let i = lo; i <= hi; i += step) allowed.add(i);
+    for (let i = lo; i <= hi; i += step) allowed.add(field === 'dayOfWeek' && i === 7 ? 0 : i);
   }
 
   const values = Array.from(allowed).sort((a, b) => a - b);
@@ -385,13 +388,15 @@ const CronEditor = ({
 
   const setField = React.useCallback(
     (field: CronField, patch: Partial<Pick<CronFieldValue, 'mode' | 'values' | 'step'>>) => {
-      const next = {
-        ...parsed.fields,
-        [field]: { ...parsed.fields[field], ...patch },
-      };
-      setValue(formatCron(next));
+      // Keep the other fields as typed; reformatting them would expand ranges and turn invalid tokens into `*`.
+      const tokens = value.trim().split(/\s+/);
+      const next = CRON_FIELDS.map((f, i) => {
+        if (f === field) return formatCronField({ ...parsed.fields[f], ...patch });
+        return tokens.length === CRON_FIELDS.length ? tokens[i] : parsed.fields[f].raw;
+      });
+      setValue(next.join(' '));
     },
-    [parsed, setValue],
+    [value, parsed, setValue],
   );
 
   const ctx = React.useMemo<CronEditorContextValue>(
@@ -592,7 +597,7 @@ const CronEditorField = ({
             className="h-8 w-16 font-mono text-xs"
             onChange={(e) => {
               const n = Number(e.target.value);
-              if (Number.isFinite(n) && n >= 1) {
+              if (Number.isInteger(n) && n >= 1) {
                 ctx.setField(field, { mode: 'step', step: Math.min(n, max) });
               }
             }}

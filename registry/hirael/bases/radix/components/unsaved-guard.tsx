@@ -24,6 +24,7 @@ interface UnsavedGuardContextValue {
   register: (id: string, options: UnsavedGuardOptions) => void;
   unregister: (id: string) => void;
   confirmLeave: (options?: Partial<UnsavedGuardOptions>) => Promise<boolean>;
+  proceedUnguarded: (proceed?: () => void | Promise<void>) => Promise<void>;
 }
 
 const UnsavedGuardContext = React.createContext<UnsavedGuardContextValue | null>(null);
@@ -55,7 +56,7 @@ const useUnsavedGuard = (options: UnsavedGuardOptions): GuardNavigation => {
       }
       return ctx.confirmLeave(current).then((ok) => {
         if (!ok) return false;
-        return Promise.resolve(proceed?.()).then(() => true);
+        return ctx.proceedUnguarded(proceed).then(() => true);
       });
     },
     [ctx],
@@ -100,8 +101,9 @@ const UnsavedGuardInner = ({
   Pick<UnsavedGuardProviderProps, 'onProceed' | 'defaultOptions' | 'children'>) => {
   const confirm = useConfirm();
   const guardsRef = React.useRef(new Map<string, UnsavedGuardOptions>());
-  const blockedRef = React.useRef(false);
   const activeRef = React.useRef<UnsavedGuardOptions | null>(null);
+  // Set while leaving after the user already confirmed, so beforeunload doesn't ask a second time.
+  const bypassRef = React.useRef(false);
   const wrapperRef = React.useRef<HTMLDivElement>(null);
 
   const {
@@ -119,7 +121,6 @@ const UnsavedGuardInner = ({
         break;
       }
     }
-    blockedRef.current = active !== null;
     activeRef.current = active;
   }, []);
 
@@ -152,10 +153,19 @@ const UnsavedGuardInner = ({
     [confirm, defTitle, defDescription, defConfirmText, defCancelText],
   );
 
+  const proceedUnguarded = React.useCallback(async (proceed?: () => void | Promise<void>) => {
+    bypassRef.current = true;
+    try {
+      await proceed?.();
+    } finally {
+      bypassRef.current = false;
+    }
+  }, []);
+
   React.useEffect(() => {
     if (!beforeUnload) return;
     const handler = (event: BeforeUnloadEvent) => {
-      if (!blockedRef.current) return;
+      if (activeRef.current === null || bypassRef.current) return;
       event.preventDefault();
       event.returnValue = '';
     };
@@ -167,7 +177,7 @@ const UnsavedGuardInner = ({
     const root = wrapperRef.current;
     if (!root) return;
     const onClick = (event: MouseEvent) => {
-      if (!blockedRef.current || event.defaultPrevented) return;
+      if (activeRef.current === null || event.defaultPrevented) return;
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
         return;
       }
@@ -189,25 +199,27 @@ const UnsavedGuardInner = ({
       event.stopPropagation();
       void confirmLeave(activeRef.current ?? undefined).then((ok) => {
         if (!ok) return;
-        if (onProceed) {
-          onProceed(url.href);
-        } else {
-          window.location.assign(url.href);
-        }
+        void proceedUnguarded(() => {
+          if (onProceed) {
+            onProceed(url.href);
+          } else {
+            window.location.assign(url.href);
+          }
+        });
       });
     };
     root.addEventListener('click', onClick, true);
     return () => root.removeEventListener('click', onClick, true);
-  }, [confirmLeave, onProceed]);
+  }, [confirmLeave, onProceed, proceedUnguarded]);
 
   const value = React.useMemo<UnsavedGuardContextValue>(
-    () => ({ register, unregister, confirmLeave }),
-    [register, unregister, confirmLeave],
+    () => ({ register, unregister, confirmLeave, proceedUnguarded }),
+    [register, unregister, confirmLeave, proceedUnguarded],
   );
 
   return (
     <UnsavedGuardContext.Provider value={value}>
-      <div ref={wrapperRef} style={{ display: 'contents' }}>
+      <div ref={wrapperRef} className="contents">
         {children}
       </div>
     </UnsavedGuardContext.Provider>

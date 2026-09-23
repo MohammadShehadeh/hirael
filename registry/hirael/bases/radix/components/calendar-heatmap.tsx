@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { addDays, addMonthsClamped, startOfDay } from '@/registry/hirael/bases/radix/components/calendar-utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/registry/hirael/bases/radix/ui/tooltip';
 
 const CELL_SIZES = { sm: 10, md: 12, lg: 16 } as const;
@@ -16,33 +17,37 @@ const defaultClassForLevel = (level: number, levels: number) => {
 };
 
 const toLocalDate = (input: Date | string): Date => {
-  if (input instanceof Date) {
-    return new Date(input.getFullYear(), input.getMonth(), input.getDate());
-  }
+  if (input instanceof Date) return startOfDay(input);
   const match = /^(\d{4})-(\d{2})-(\d{2})/.exec(input);
   if (match) {
     return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
   }
-  const parsed = new Date(input);
-  return new Date(parsed.getFullYear(), parsed.getMonth(), parsed.getDate());
-};
-
-const addDays = (date: Date, days: number): Date => {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
-};
-
-const addMonthsClamped = (date: Date, months: number): Date => {
-  const year = date.getFullYear();
-  const month = date.getMonth() + months;
-  const lastDay = new Date(year, month + 1, 0).getDate();
-  return new Date(year, month, Math.min(date.getDate(), lastDay));
+  return startOfDay(new Date(input));
 };
 
 const dayKey = (date: Date): number => {
   return date.getFullYear() * 10000 + (date.getMonth() + 1) * 100 + date.getDate();
 };
 
-const resolveCellSize = (cellSize: 'sm' | 'md' | 'lg' | number): number => {
+const fromDayKey = (key: number): Date => {
+  return new Date(Math.floor(key / 10000), (Math.floor(key / 100) % 100) - 1, key % 100);
+};
+
+// "Today" is read on the client only: a prerendered page would otherwise freeze the build date into the HTML.
+const subscribeNever = () => () => {};
+const getTodayKey = () => dayKey(new Date());
+const getServerTodayKey = () => null;
+
+interface CalendarHeatmapCell {
+  date: Date;
+  value: number;
+  level: number;
+  inRange: boolean;
+}
+
+type CalendarHeatmapCellSize = 'sm' | 'md' | 'lg' | number;
+
+const resolveCellSize = (cellSize: CalendarHeatmapCellSize): number => {
   return typeof cellSize === 'number' ? cellSize : CELL_SIZES[cellSize];
 };
 
@@ -60,7 +65,7 @@ interface CalendarHeatmapProps extends Omit<React.ComponentProps<'div'>, 'onSele
   levels?: number;
   thresholds?: number[];
   classForLevel?: (level: number) => string;
-  cellSize?: 'sm' | 'md' | 'lg' | number;
+  cellSize?: CalendarHeatmapCellSize;
   gap?: number;
   locale?: string;
   showMonthLabels?: boolean;
@@ -89,10 +94,24 @@ const CalendarHeatmap = ({
   ...props
 }: CalendarHeatmapProps) => {
   const size = resolveCellSize(cellSize);
-  const today = React.useMemo(() => toLocalDate(new Date()), []);
+  const todayKey = React.useSyncExternalStore(subscribeNever, getTodayKey, getServerTodayKey);
 
   const { cells, weekCount, monthLabels, weekdayLabels } = React.useMemo(() => {
-    const rangeEnd = endDate ? toLocalDate(endDate) : today;
+    const dayFormatter = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+    const monthFormatter = new Intl.DateTimeFormat(locale, { month: 'short' });
+
+    const weekdays = Array.from({ length: 7 }, (_, row) => {
+      const day = (weekStartsOn + row) % 7;
+      return {
+        label: dayFormatter.format(new Date(2024, 0, 7 + day)),
+        visible: day === 1 || day === 3 || day === 5,
+      };
+    });
+
+    const rangeEnd = endDate ? toLocalDate(endDate) : todayKey === null ? null : fromDayKey(todayKey);
+    if (!rangeEnd) {
+      return { cells: [] as CalendarHeatmapCell[], weekCount: 0, monthLabels: [], weekdayLabels: weekdays };
+    }
     const rangeStart = startDate ? toLocalDate(startDate) : addDays(addMonthsClamped(rangeEnd, -months), 1);
 
     const values = new Map<number, number>();
@@ -127,15 +146,7 @@ const CalendarHeatmap = ({
       return Math.min(level, levels - 1);
     };
 
-    const dayFormatter = new Intl.DateTimeFormat(locale, { weekday: 'short' });
-    const monthFormatter = new Intl.DateTimeFormat(locale, { month: 'short' });
-
-    const grid: {
-      date: Date;
-      value: number;
-      level: number;
-      inRange: boolean;
-    }[] = [];
+    const grid: CalendarHeatmapCell[] = [];
     for (let i = 0; i < weeks * 7; i++) {
       const date = addDays(gridStart, i);
       const inRange = date >= rangeStart && date <= rangeEnd;
@@ -162,21 +173,13 @@ const CalendarHeatmap = ({
       return !next || next.weekIndex - candidate.weekIndex >= 3;
     });
 
-    const weekdays = Array.from({ length: 7 }, (_, row) => {
-      const day = (weekStartsOn + row) % 7;
-      return {
-        label: dayFormatter.format(new Date(2024, 0, 7 + day)),
-        visible: day === 1 || day === 3 || day === 5,
-      };
-    });
-
     return {
       cells: grid,
       weekCount: weeks,
       monthLabels: labels,
       weekdayLabels: weekdays,
     };
-  }, [data, endDate, startDate, months, weekStartsOn, levels, thresholds, locale, today]);
+  }, [data, endDate, startDate, months, weekStartsOn, levels, thresholds, locale, todayKey]);
 
   const resolveLevelClass = classForLevel ?? ((level: number) => defaultClassForLevel(level, levels));
 
@@ -199,13 +202,13 @@ const CalendarHeatmap = ({
   const [focusedIndex, setFocusedIndex] = React.useState<number | null>(null);
 
   const defaultTabbableIndex = React.useMemo(() => {
-    const todayIndex = cells.findIndex((cell) => cell.inRange && dayKey(cell.date) === dayKey(today));
+    const todayIndex = cells.findIndex((cell) => cell.inRange && dayKey(cell.date) === todayKey);
     if (todayIndex !== -1) return todayIndex;
     for (let i = cells.length - 1; i >= 0; i--) {
       if (cells[i].inRange) return i;
     }
     return -1;
-  }, [cells, today]);
+  }, [cells, todayKey]);
 
   const tabbableIndex = focusedIndex !== null && cells[focusedIndex]?.inRange ? focusedIndex : defaultTabbableIndex;
 
@@ -365,7 +368,7 @@ const CalendarHeatmap = ({
 interface CalendarHeatmapLegendProps extends React.ComponentProps<'div'> {
   levels?: number;
   classForLevel?: (level: number) => string;
-  cellSize?: 'sm' | 'md' | 'lg' | number;
+  cellSize?: CalendarHeatmapCellSize;
   gap?: number;
   lessLabel?: React.ReactNode;
   moreLabel?: React.ReactNode;

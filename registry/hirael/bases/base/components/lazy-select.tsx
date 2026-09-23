@@ -198,11 +198,10 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: L
             aria-haspopup="listbox"
             disabled={ctx.disabled}
             data-slot="lazy-select-trigger"
-            data-state={ctx.open ? 'open' : 'closed'}
             className={cn(
               'group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm outline-none transition-colors',
               'hover:border-ring/60 focus-visible:border-ring',
-              'data-open:border-ring',
+              'data-popup-open:border-ring',
               'disabled:cursor-not-allowed disabled:opacity-50',
               className,
             )}
@@ -360,11 +359,21 @@ export type LazyPage<T> = {
   hasMore: boolean;
 };
 
+interface LazySelectLoaderParams {
+  query: string;
+  page: number;
+}
+
+interface UseLazySelectOptionsOptions {
+  debounce?: number;
+  enabled?: boolean;
+}
+
 /** Fetches nothing until `enabled`; wire it to the open state to load on open. */
 export const useLazySelectOptions = <T,>(
-  loader: (params: { query: string; page: number }) => Promise<LazyPage<T>>,
+  loader: (params: LazySelectLoaderParams) => Promise<LazyPage<T>>,
   map: (item: T) => LazySelectOption,
-  { debounce = 250, enabled = true }: { debounce?: number; enabled?: boolean } = {},
+  { debounce = 250, enabled = true }: UseLazySelectOptionsOptions = {},
 ) => {
   const [query, setQuery] = React.useState('');
   const [options, setOptions] = React.useState<LazySelectOption[]>([]);

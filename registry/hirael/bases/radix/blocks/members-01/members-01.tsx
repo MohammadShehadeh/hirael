@@ -565,7 +565,7 @@ const MEMBERS: readonly Member[] = [
   {
     id: 'm1',
     name: 'Mohammad Shehadeh',
-    email: 'mohammad@hirael.com',
+    email: 'hello@mohammadshehadeh.com',
     role: 'Owner',
     status: 'Active',
     joined: 'Jan 12, 2025',

@@ -85,11 +85,13 @@ const validate = (state: FormState): FormErrors => {
   return errors;
 };
 
+type SendStatus = 'idle' | 'sending' | 'sent';
+
 const Contact01 = () => {
   const [state, setState] = React.useState<FormState>(INITIAL);
   const [errors, setErrors] = React.useState<FormErrors>({});
   const [touched, setTouched] = React.useState(false);
-  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = React.useState<SendStatus>('idle');
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setState((s) => ({ ...s, [key]: value }));

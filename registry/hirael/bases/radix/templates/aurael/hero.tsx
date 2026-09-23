@@ -53,17 +53,14 @@ const COPY = {
   },
 } satisfies Record<Lang, unknown>;
 
-export const Hero = ({
-  lang,
-  setLang,
-  scene: selected,
-  setScene,
-}: {
+interface HeroProps {
   lang: Lang;
   setLang: (lang: Lang) => void;
   scene: Scene;
   setScene: (scene: Scene) => void;
-}) => {
+}
+
+export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) => {
   const [displayScene, setDisplayScene] = React.useState<Scene | null>(null);
   const [menuOpen, setMenuOpen] = React.useState(false);
   const reduced = useReducedMotion();

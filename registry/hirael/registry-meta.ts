@@ -128,7 +128,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'tag-input',
     title: 'Tag Input',
-    description: 'Chip input with paste-to-split, dedupe, validation hook, max tags. Compound and single-prop APIs.',
+    description: 'Chip input with paste-to-split, dedupe, validation hook and max tags.',
     category: 'inputs',
     files: [{ path: 'components/tag-input.tsx' }],
     registryDependencies: ['badge', 'compose-refs'],
@@ -208,7 +208,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'password-input',
     title: 'Password Input',
-    description: 'Show/hide toggle with an optional pluggable strength meter. Compound and single-prop APIs.',
+    description: 'Password field with a show/hide toggle and an optional pluggable strength meter.',
     category: 'inputs',
     files: [{ path: 'components/password-input.tsx' }],
     registryDependencies: ['input-group'],
@@ -245,8 +245,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'stat-card',
     title: 'Stat Card',
-    description:
-      'Compact metric card with label, value, and an up/down/flat trend chip. Compound and single-prop APIs.',
+    description: 'Compact metric card with label, value, and an up/down/flat trend chip.',
     category: 'data',
     files: [{ path: 'components/stat-card.tsx' }],
     registryDependencies: [],
@@ -1851,7 +1850,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     name: 'kpi-grid',
     title: 'KPI Grid',
     description:
-      'Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a dependency-free sparkline. Ships composable parts.',
+      'Hairline-joined grid of KPI tiles with label, value, an up/down/flat delta chip and a sparkline. Ships composable parts.',
     blockTagline: 'KPI tiles, period toggle, sparkline',
     category: 'blocks',
     blockKind: 'widgets',

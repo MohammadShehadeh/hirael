@@ -29,12 +29,12 @@ const CopyButtonDemo = () => {
         </CopyButton>
       </div>
 
-      <div className="grid gap-2">
+      <div className="grid min-w-0 gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'In a code snippet', ar: 'ضمن مقتطف شيفرة' })}
         </p>
-        <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-card px-3 py-2">
-          <code className="truncate font-mono text-xs text-foreground">
+        <div className="flex min-w-0 items-center justify-between gap-3 rounded-md border border-border bg-card px-3 py-2">
+          <code className="min-w-0 truncate font-mono text-xs text-foreground">
             npx shadcn@latest add https://hirael.com/r/copy-button.json
           </code>
           <CopyButton value="npx shadcn@latest add https://hirael.com/r/copy-button.json" />

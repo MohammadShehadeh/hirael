@@ -29,7 +29,7 @@ const RatingDemo = () => {
             step={0.5}
             aria-label={t({ en: 'Half-step rating', ar: 'تقييم بنصف خطوة' })}
           />
-          <span className="font-mono text-sm text-muted-foreground tabular-nums">{value.toFixed(1)}</span>
+          <span className="text-sm text-muted-foreground tabular-nums">{value.toFixed(1)}</span>
         </div>
       </div>
 
@@ -47,7 +47,7 @@ const RatingDemo = () => {
 
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
-        <div className="flex items-center gap-6">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
           <Rating defaultValue={3} size="sm" aria-label={t({ en: 'Small', ar: 'صغير' })} />
           <Rating defaultValue={3} size="md" aria-label={t({ en: 'Medium', ar: 'متوسط' })} />
           <Rating defaultValue={3} size="lg" aria-label={t({ en: 'Large', ar: 'كبير' })} />

@@ -46,52 +46,56 @@ export const Navbar = ({ lang, setLang }: NavbarProps) => {
   const c = COPY[lang];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 h-18 border-b border-border bg-background/90 backdrop-blur-sm">
-      <div className="relative mx-auto flex h-full max-w-[1400px] items-center px-6">
-        <a href="#intro" aria-label={c.home} className="relative z-10 inline-flex items-center">
-          <Wordmark />
-        </a>
+    <>
+      <header className="fixed inset-x-0 top-0 z-50 h-18 border-b border-border bg-background/90 backdrop-blur-sm">
+        <div className="relative mx-auto flex h-full max-w-[1400px] items-center px-6">
+          <a href="#intro" aria-label={c.home} className="relative z-10 inline-flex items-center">
+            <Wordmark />
+          </a>
 
-        <nav className="absolute start-1/2 hidden h-full -translate-x-1/2 md:block rtl:translate-x-1/2">
-          <ul className="flex h-full items-stretch border-s border-border">
-            {SECTION_IDS.map((id) => (
-              <li key={id} className="border-e border-border">
-                <a
-                  href={`#${id}`}
-                  aria-current={active === id ? 'true' : undefined}
-                  className={cn(
-                    'flex h-full items-center px-7 text-[10px] font-medium tracking-[0.3em] uppercase transition-colors',
-                    'rtl:text-sm rtl:tracking-normal',
-                    active === id ? 'bg-accent text-accent-foreground' : 'text-foreground/50 hover:text-foreground',
-                  )}
-                >
-                  {c.nav[id]}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+          <nav className="absolute start-1/2 hidden h-full -translate-x-1/2 md:block rtl:translate-x-1/2">
+            <ul className="flex h-full items-stretch border-s border-border">
+              {SECTION_IDS.map((id) => (
+                <li key={id} className="border-e border-border">
+                  <a
+                    href={`#${id}`}
+                    aria-current={active === id ? 'true' : undefined}
+                    className={cn(
+                      'flex h-full items-center px-7 text-[10px] font-medium tracking-[0.3em] uppercase transition-colors',
+                      'rtl:text-sm rtl:tracking-normal',
+                      active === id ? 'bg-accent text-accent-foreground' : 'text-foreground/50 hover:text-foreground',
+                    )}
+                  >
+                    {c.nav[id]}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-        <div className="ms-auto flex items-center gap-1">
-          <Button type="button" variant="ghost" size="sm" onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}>
-            <Languages className="size-4" />
-            <span className="hidden text-sm font-medium sm:inline">{c.toLang}</span>
-          </Button>
+          <div className="ms-auto flex items-center gap-1">
+            <Button type="button" variant="ghost" size="sm" onClick={() => setLang(lang === 'en' ? 'ar' : 'en')}>
+              <Languages className="size-4" />
+              <span className="hidden text-sm font-medium sm:inline">{c.toLang}</span>
+            </Button>
 
-          <Button
-            type="button"
-            variant="ghost"
-            size="icon"
-            aria-label={c.openMenu}
-            aria-expanded={open}
-            onClick={() => setOpen(true)}
-            className="md:hidden"
-          >
-            <Menu className="size-5" />
-          </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon"
+              aria-label={c.openMenu}
+              aria-expanded={open}
+              onClick={() => setOpen(true)}
+              className="md:hidden"
+            >
+              <Menu className="size-5" />
+            </Button>
+          </div>
         </div>
-      </div>
+      </header>
 
+      {/* Outside the header: its backdrop-filter would make it the containing block for these fixed layers,
+          squeezing the drawer into the header's height. */}
       <div
         aria-hidden={!open}
         className={cn(
@@ -104,10 +108,12 @@ export const Navbar = ({ lang, setLang }: NavbarProps) => {
         role="dialog"
         aria-modal={open}
         aria-label={c.menuTitle}
-        aria-hidden={!open}
+        // Closed, the drawer still sits past the viewport edge; inert and invisible take it out of focus order,
+        // the accessibility tree and hit testing. visibility is transitioned so the slide-out still plays.
+        inert={!open}
         className={cn(
-          'fixed inset-y-0 end-0 z-50 flex w-72 max-w-[80vw] flex-col border-s border-border bg-background transition-transform duration-300 md:hidden',
-          open ? 'translate-x-0' : 'translate-x-full rtl:-translate-x-full',
+          'fixed inset-y-0 end-0 z-50 flex w-72 max-w-[80vw] flex-col border-s border-border bg-background transition-[translate,visibility] duration-300 md:hidden',
+          open ? 'visible translate-x-0' : 'invisible translate-x-full rtl:-translate-x-full',
         )}
       >
         <div className="flex h-18 items-center justify-between border-b border-border px-5">
@@ -123,7 +129,6 @@ export const Navbar = ({ lang, setLang }: NavbarProps) => {
             <a
               key={id}
               href={`#${id}`}
-              tabIndex={open ? undefined : -1}
               onClick={() => setOpen(false)}
               data-slot="novael-display"
               className={cn(
@@ -136,6 +141,6 @@ export const Navbar = ({ lang, setLang }: NavbarProps) => {
           ))}
         </nav>
       </div>
-    </header>
+    </>
   );
 };

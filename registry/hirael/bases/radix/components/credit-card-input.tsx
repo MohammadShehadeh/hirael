@@ -380,7 +380,7 @@ const CreditCardInputNumber = ({
         aria-invalid={invalid || undefined}
         aria-label="Card number"
         data-slot="credit-card-input-number-field"
-        className={cn('pe-16 font-mono tracking-[0.06em]', ctx.variant === 'row' && ROW_INPUT, className)}
+        className={cn('pe-16 tracking-[0.06em] tabular-nums', ctx.variant === 'row' && ROW_INPUT, className)}
         onChange={(e) => {
           ctx.setField('number', e.target.value);
           if (digitsOnly(e.target.value).length >= maxLength && ctx.spec.lengths.length === 1) {
@@ -433,7 +433,7 @@ const CreditCardInputExpiry = ({
       aria-invalid={invalid || undefined}
       aria-label="Expiry date"
       data-slot="credit-card-input-expiry"
-      className={cn('font-mono', ctx.variant === 'row' && cn(ROW_INPUT, 'w-20 border-s border-input'), className)}
+      className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-20 border-s border-input'), className)}
       onChange={(e) => {
         ctx.setField('expiry', e.target.value);
         if (digitsOnly(e.target.value).length >= 4) ctx.focusField('cvc');
@@ -486,7 +486,7 @@ const CreditCardInputCvc = ({
       aria-invalid={invalid || undefined}
       aria-label="Security code"
       data-slot="credit-card-input-cvc"
-      className={cn('font-mono', ctx.variant === 'row' && cn(ROW_INPUT, 'w-16 border-s border-input'), className)}
+      className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-16 border-s border-input'), className)}
       onChange={(e) => ctx.setField('cvc', e.target.value)}
       onKeyDown={(e) => {
         if (e.key === 'Backspace' && ctx.value.cvc === '') {

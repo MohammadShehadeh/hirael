@@ -2,7 +2,7 @@ import { ArrowUpRight, Play } from 'lucide-react';
 
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-import { BlurText, GlassButton, GlassPill, VideoBackdrop } from './primitives';
+import { GlassButton, GlassPill, RiseText, VideoBackdrop } from './primitives';
 
 const HERO_VIDEO = '/media/templates/prism/hero.mp4';
 
@@ -26,10 +26,10 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
         </p>
 
         <h1 className="mt-6 max-w-3xl [font-family:var(--font-prism-serif)] text-6xl leading-[0.85] tracking-[-2px] text-foreground italic md:text-7xl lg:text-[5.5rem] lg:tracking-[-4px]">
-          <BlurText text="The Website Your Brand Deserves" />
+          <RiseText text="The Website Your Brand Deserves" />
         </h1>
 
-        <p className="rise mt-6 max-w-2xl text-sm leading-relaxed font-light text-foreground [animation-delay:0.8s] md:text-base">
+        <p className="rise-still mt-6 max-w-2xl text-sm leading-relaxed font-light text-foreground [animation-delay:0.8s] md:text-base">
           Stunning design. Blazing performance. Built by AI, refined by experts. This is web design, wildly reimagined.
         </p>
 

@@ -24,11 +24,16 @@ const AKOR_CSS = `
 .akor ::selection {
   background: hsl(119 99% 46% / 0.35);
 }
-.akor .fade-up {
+.akor .fade-up,
+.akor .rise {
   animation-name: akor-fade-up;
   animation-duration: 0.6s;
   animation-timing-function: ease-out;
   animation-fill-mode: both;
+}
+/* Headline text keeps full opacity: a fade from 0 holds back Largest Contentful Paint. */
+.akor .rise {
+  animation-name: akor-rise;
 }
 @keyframes akor-fade-up {
   from {
@@ -40,8 +45,17 @@ const AKOR_CSS = `
     transform: translateY(0);
   }
 }
+@keyframes akor-rise {
+  from {
+    transform: translateY(16px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .akor .fade-up {
+  .akor .fade-up,
+  .akor .rise {
     animation: none;
   }
 }

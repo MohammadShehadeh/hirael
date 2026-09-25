@@ -112,8 +112,9 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
       className="relative isolate flex min-h-[680px] w-full flex-col overflow-hidden bg-background text-foreground transition-colors duration-500 md:min-h-svh"
     >
       <div data-slot="hero-backdrop" className="absolute inset-0 -z-10 overflow-hidden">
+        {/* Only the visible scene is fetched at high priority; the blurred layer beneath would compete with it. */}
         <div aria-hidden className="absolute inset-0 scale-[1.2] blur-2xl">
-          <Image src={SCENE_IMAGE[other]} alt="" fill priority sizes="100vw" className="object-cover object-center" />
+          <Image src={SCENE_IMAGE[other]} alt="" fill sizes="100vw" className="object-cover object-center" />
         </div>
         <motion.div
           className="absolute inset-0"
@@ -125,7 +126,8 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
             src={SCENE_IMAGE[scene]}
             alt={c.alt[scene]}
             fill
-            priority
+            loading="eager"
+            fetchPriority="high"
             sizes="100vw"
             className="object-cover object-center"
           />

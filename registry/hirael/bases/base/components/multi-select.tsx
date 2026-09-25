@@ -219,7 +219,7 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
       </span>
       <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
         {selected.length > 0 && (
-          <span className="font-mono text-[10px] tabular-nums">
+          <span className="text-[10px] tabular-nums">
             {selected.length}
             {ctx.maxCount ? `/${ctx.maxCount}` : ''}
           </span>
@@ -318,7 +318,7 @@ const MultiSelectContent = ({
                         className="justify-between"
                       >
                         <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
-                        <span className="font-mono text-[10px] text-muted-foreground tabular-nums">
+                        <span className="text-[10px] text-muted-foreground tabular-nums">
                           {ctx.value.length} / {enabled.length}
                         </span>
                       </CommandItem>

@@ -16,6 +16,8 @@ const jetBrainsMono = JetBrains_Mono({
   variable: '--font-jet-brains-mono',
   subsets: ['latin'],
   weight: ['400', '500', '600'],
+  // Code and install commands are never the first paint, so this font shouldn't compete with CSS for bandwidth.
+  preload: false,
 });
 
 const cormorant = Cormorant_Garamond({

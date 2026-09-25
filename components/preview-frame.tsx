@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Check, CircleAlert, Copy, EllipsisVertical, ExternalLink, Moon, Package, RefreshCw, Sun } from 'lucide-react';
 
 import { useTheme } from '@/components/active-theme';
+import { useDeferredMount } from '@/hooks/use-deferred-mount';
 import { useMounted } from '@/hooks/use-mounted';
 import type { ThemeMode } from '@/lib/customizer';
 import { SITE } from '@/lib/site';
@@ -270,6 +271,8 @@ export interface PreviewFrameProps extends Omit<React.ComponentProps<'iframe'>, 
   initialHeight: number;
   minHeight: number;
   maxHeight: number;
+  /** Load with the page instead of after it, for the one preview a page is about. */
+  eager?: boolean;
 }
 
 export const PreviewFrame = ({
@@ -279,6 +282,7 @@ export const PreviewFrame = ({
   initialHeight,
   minHeight,
   maxHeight,
+  eager = false,
   className,
   style,
   onLoad,
@@ -286,7 +290,9 @@ export const PreviewFrame = ({
 }: PreviewFrameProps) => {
   const [height, setHeight] = React.useState<number | null>(null);
   const frameRef = React.useRef<HTMLIFrameElement>(null);
+  const placeholderRef = React.useRef<HTMLDivElement>(null);
   const observerRef = React.useRef<ResizeObserver | null>(null);
+  const shouldMount = useDeferredMount(placeholderRef, { eager });
 
   const follow = (frame: HTMLIFrameElement) => {
     observerRef.current?.disconnect();
@@ -304,7 +310,18 @@ export const PreviewFrame = ({
     followMounted(frame);
 
     return () => observerRef.current?.disconnect();
-  }, [refreshKey, src, minHeight, maxHeight]);
+  }, [refreshKey, src, minHeight, maxHeight, shouldMount]);
+
+  if (!shouldMount) {
+    return (
+      <div
+        ref={placeholderRef}
+        aria-hidden
+        className={cn('block bg-background', className)}
+        style={{ ...style, height: initialHeight }}
+      />
+    );
+  }
 
   return (
     <iframe
@@ -312,7 +329,6 @@ export const PreviewFrame = ({
       ref={frameRef}
       src={src}
       title={title}
-      loading="lazy"
       onLoad={(event) => {
         follow(event.currentTarget);
         onLoad?.(event);

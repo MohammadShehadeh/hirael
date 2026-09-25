@@ -166,7 +166,7 @@ const NumberRangeInput = ({ bound, className, onFocus, onBlur, onKeyDown, ...pro
   return (
     <div data-slot="number-range-input" className="relative">
       {ctx.prefix && (
-        <span className="pointer-events-none absolute start-2 top-1/2 -translate-y-1/2 font-mono text-xs text-muted-foreground">
+        <span className="pointer-events-none absolute start-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
           {ctx.prefix}
         </span>
       )}
@@ -205,11 +205,11 @@ const NumberRangeInput = ({ bound, className, onFocus, onBlur, onKeyDown, ...pro
           }
         }}
         data-slot="number-range-field"
-        className={cn('font-mono tabular-nums', ctx.prefix && 'ps-6', ctx.suffix && 'pe-8', className)}
+        className={cn('tabular-nums', ctx.prefix && 'ps-6', ctx.suffix && 'pe-8', className)}
         {...props}
       />
       {ctx.suffix && (
-        <span className="pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 font-mono text-xs text-muted-foreground">
+        <span className="pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
           {ctx.suffix}
         </span>
       )}
@@ -229,7 +229,7 @@ const NumberRangeInputs = ({ className, separator = '–', ...props }: NumberRan
       {...props}
     >
       <NumberRangeInput bound="min" aria-label="Minimum value" />
-      <span className="font-mono text-xs text-muted-foreground select-none">{separator}</span>
+      <span className="text-xs text-muted-foreground select-none">{separator}</span>
       <NumberRangeInput bound="max" aria-label="Maximum value" />
     </div>
   );

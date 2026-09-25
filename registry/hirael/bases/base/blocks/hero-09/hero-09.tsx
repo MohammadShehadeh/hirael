@@ -45,6 +45,9 @@ const BrandMark = ({ className }: BrandMarkProps) => {
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const ENTER_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
@@ -132,7 +135,7 @@ const Hero09 = () => {
               data-slot="hero-title"
               style={stagger(1)}
               className={cn(
-                ENTER,
+                ENTER_TEXT,
                 'font-serif text-5xl leading-[1.05] font-medium tracking-tight text-balance md:text-6xl lg:text-7xl',
               )}
             >
@@ -142,7 +145,10 @@ const Hero09 = () => {
             <p
               data-slot="hero-description"
               style={stagger(2)}
-              className={cn(ENTER, 'max-w-2xl text-base leading-relaxed text-pretty text-muted-foreground md:text-lg')}
+              className={cn(
+                ENTER_TEXT,
+                'max-w-2xl text-base leading-relaxed text-pretty text-muted-foreground md:text-lg',
+              )}
             >
               Design workflows on a canvas, keep them in sync with YAML, and watch every run move step by step through
               the same graph.

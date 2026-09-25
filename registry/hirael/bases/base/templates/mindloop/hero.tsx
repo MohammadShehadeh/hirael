@@ -31,12 +31,15 @@ export const Hero = () => {
           <span className="text-sm text-muted-foreground">7,000+ people already subscribed</span>
         </motion.div>
 
-        <motion.h1 {...fade(0.1)} className="mt-6 w-full text-5xl font-medium tracking-[-2px] md:text-7xl lg:text-8xl">
+        <motion.h1
+          {...fade(0.1, { fade: false })}
+          className="mt-6 w-full text-5xl font-medium tracking-[-2px] md:text-7xl lg:text-8xl"
+        >
           Get <Serif>Inspired</Serif> with Us
         </motion.h1>
 
         <motion.p
-          {...fade(0.2)}
+          {...fade(0.2, { fade: false })}
           className="mt-6 w-full max-w-xl text-lg"
           style={{ color: 'hsl(var(--hero-subtitle))' }}
         >

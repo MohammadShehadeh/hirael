@@ -58,7 +58,7 @@ const StatCardDemo = () => {
             </StatCardDelta>
           </div>
           <StatCardValue>
-            <span className="font-mono text-muted-foreground">$</span>
+            <span className="text-muted-foreground">$</span>
             48,250
           </StatCardValue>
           <p className="text-[11px] text-muted-foreground">

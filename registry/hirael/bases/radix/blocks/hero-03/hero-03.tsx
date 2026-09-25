@@ -6,6 +6,9 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const ENTER_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
@@ -60,7 +63,7 @@ const Hero03 = () => {
         <h1
           style={stagger(1)}
           className={cn(
-            ENTER,
+            ENTER_TEXT,
             'max-w-3xl font-serif text-5xl leading-[1.02] font-medium tracking-tight sm:text-6xl md:text-7xl',
           )}
         >
@@ -69,7 +72,7 @@ const Hero03 = () => {
 
         <p
           style={stagger(2)}
-          className={cn(ENTER, 'max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg')}
+          className={cn(ENTER_TEXT, 'max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg')}
         >
           Plan, build, and ship from one workspace your whole team will actually enjoy using. No tab sprawl, no
           busywork.

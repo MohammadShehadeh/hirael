@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation';
 
 import { DEFAULT_BASE, isRegistryBase } from '@/registry/hirael/registry-meta';
 
-import { BlockEmbed, blockEmbedMetadata, blockEmbedParams, nestedEmbedBases } from '../../../../embed-routes';
+import { BlockEmbed } from '../../../../block-embed';
+import { blockEmbedMetadata, blockEmbedParams, nestedEmbedBases } from '../../../../embed-routes';
 
 export const dynamicParams = false;
 

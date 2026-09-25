@@ -7,6 +7,9 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const RISE_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
@@ -28,13 +31,14 @@ const Hero10 = () => {
       className="relative z-0 min-h-180 overflow-hidden rounded-sm border border-border bg-background pt-30"
     >
       <Image
-        src="/media/blocks/hero-10/fractal-maze.jpg"
+        src="/media/blocks/hero-10/fractal-maze.webp"
         alt="Fractal maze of interlocking paths"
-        width={1920}
-        height={1080}
+        fill
+        loading="eager"
+        fetchPriority="high"
+        sizes="100vw"
         quality={75}
-        priority
-        className="absolute inset-0 h-full w-full object-cover blur-[1px] md:blur-[2px]"
+        className="object-cover blur-[1px] md:blur-[2px]"
       />
       <div
         aria-hidden
@@ -58,7 +62,7 @@ const Hero10 = () => {
             style={stagger(1)}
             className={cn(
               'relative text-5xl leading-14 font-semibold text-balance text-white md:text-6xl lg:text-7xl xl:leading-16',
-              RISE,
+              RISE_TEXT,
             )}
           >
             The visual control plane for your pipelines
@@ -68,7 +72,7 @@ const Hero10 = () => {
             style={stagger(2)}
             className={cn(
               'mx-auto mt-8 w-full text-base tracking-tight text-white/75 sm:text-lg md:text-balance',
-              RISE,
+              RISE_TEXT,
             )}
           >
             Arrange build, test, and deploy steps on a canvas, see which one failed and why, and have every change

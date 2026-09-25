@@ -45,11 +45,11 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
       <Navbar />
 
       <div className="relative z-10 flex flex-col items-center justify-center px-6 pt-[28px] pb-40 text-center">
-        <h1 className="animate-fade-rise max-w-7xl [font-family:var(--font-velorah-serif)] text-5xl leading-[0.95] font-normal tracking-[-2.46px] text-foreground sm:text-7xl md:text-8xl">
+        <h1 className="animate-rise max-w-7xl [font-family:var(--font-velorah-serif)] text-5xl leading-[0.95] font-normal tracking-[-2.46px] text-foreground sm:text-7xl md:text-8xl">
           Where <em className="not-italic">dreams</em> rise <em className="not-italic">through the silence.</em>
         </h1>
 
-        <p className="animate-fade-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-foreground sm:text-lg">
+        <p className="animate-rise-delay mt-8 max-w-2xl text-base leading-relaxed text-foreground sm:text-lg">
           We&apos;re designing tools for deep thinkers, bold creators, and quiet rebels. Amid the chaos, we build
           digital spaces for sharp focus and inspired work.
         </p>

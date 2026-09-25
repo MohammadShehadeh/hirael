@@ -213,7 +213,7 @@ const CurrencyInputPrefix = ({ className, children, ...props }: CurrencyInputPre
 
   return (
     <InputGroupAddon data-slot="currency-input-prefix" align="inline-start" className={className} {...props}>
-      <InputGroupText className="font-mono">{children ?? ctx.symbol}</InputGroupText>
+      <InputGroupText>{children ?? ctx.symbol}</InputGroupText>
     </InputGroupAddon>
   );
 };
@@ -227,7 +227,7 @@ const CurrencyInputSuffix = ({ className, children, ...props }: CurrencyInputSuf
 
   return (
     <InputGroupAddon data-slot="currency-input-suffix" align="inline-end" className={className} {...props}>
-      <InputGroupText className="font-mono">{children ?? ctx.symbol}</InputGroupText>
+      <InputGroupText>{children ?? ctx.symbol}</InputGroupText>
     </InputGroupAddon>
   );
 };

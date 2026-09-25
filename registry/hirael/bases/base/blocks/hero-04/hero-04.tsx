@@ -7,6 +7,9 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const ENTER_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
@@ -17,10 +20,11 @@ const Hero04 = () => {
       className="dark relative isolate flex min-h-[640px] w-full flex-col overflow-hidden bg-background text-foreground"
     >
       <Image
-        src="/media/blocks/hero-04/earth.jpg"
+        src="/media/blocks/hero-04/earth.webp"
         alt="Earth seen from orbit against deep space"
         fill
-        priority
+        loading="eager"
+        fetchPriority="high"
         sizes="100vw"
         className="-z-20 object-cover"
       />
@@ -57,14 +61,17 @@ const Hero04 = () => {
           <h1
             style={stagger(2)}
             className={cn(
-              ENTER,
+              ENTER_TEXT,
               'mt-6 max-w-2xl font-serif text-5xl leading-[1.03] font-medium tracking-tight text-foreground sm:text-6xl md:text-7xl',
             )}
           >
             Launch with confidence.
           </h1>
 
-          <p style={stagger(3)} className={cn(ENTER, 'mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground')}>
+          <p
+            style={stagger(3)}
+            className={cn(ENTER_TEXT, 'mt-5 max-w-xl text-lg leading-relaxed text-muted-foreground')}
+          >
             Watch every deploy, error rate, and rollback on one screen, and catch a bad release before most of your
             users see it.
           </p>

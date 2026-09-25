@@ -53,7 +53,7 @@ const SparklineDemo = () => {
               <div className="grid gap-1">
                 <p className="text-xs text-muted-foreground uppercase">{tile.label}</p>
                 <p className="text-2xl font-semibold tracking-[-0.03em]">{tile.value}</p>
-                <p className="font-mono text-[11px] text-muted-foreground">{tile.delta}</p>
+                <p className="text-xs text-muted-foreground tabular-nums">{tile.delta}</p>
               </div>
               {tile.chart}
             </div>

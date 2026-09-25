@@ -1,6 +1,6 @@
 import { Marquee, type MarqueeBrand, PillButton } from './primitives';
 
-const HERO_IMAGE = '/media/templates/usd-halo/hero.jpg';
+const HERO_IMAGE = '/media/templates/usd-halo/hero.webp';
 
 const HERO_BRANDS: MarqueeBrand[] = [
   {
@@ -35,8 +35,8 @@ const HERO_BRANDS: MarqueeBrand[] = [
   {
     name: 'Aave',
     style: {
-      fontFamily: "'Courier New', monospace",
-      fontWeight: 700,
+      fontFamily: "'Avenir Next', Avenir, 'Segoe UI', sans-serif",
+      fontWeight: 600,
       letterSpacing: '0.12em',
       fontSize: '13px',
       textTransform: 'uppercase',
@@ -75,7 +75,17 @@ export const HeroSection = () => {
   return (
     <section className="flex flex-1 items-end px-6 pt-20 pb-6">
       <div className="relative mx-auto h-[calc(100dvh-96px)] w-full max-w-[88rem] overflow-hidden rounded-2xl">
-        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${HERO_IMAGE})` }} />
+        {/* eslint-disable-next-line @next/next/no-img-element -- unlike a CSS background, an img is found by the preload scanner and fetched first for Largest Contentful Paint */}
+        <img
+          src={HERO_IMAGE}
+          alt=""
+          width={1920}
+          height={1280}
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 size-full object-cover object-center"
+        />
         <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/10" />
         <div
           aria-hidden

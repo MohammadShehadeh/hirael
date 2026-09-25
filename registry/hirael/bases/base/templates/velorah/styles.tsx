@@ -49,16 +49,16 @@ const VELORAH_CSS = `
   mask-composite: exclude;
   pointer-events: none;
 }
-.velorah .animate-fade-rise,
-.velorah .animate-fade-rise-delay,
-.velorah .animate-fade-rise-delay-2 {
-  animation: velorah-fade-rise 0.8s ease-out both;
+/* The headline and lead only rise: text that starts at opacity 0 holds back Largest Contentful Paint. */
+.velorah .animate-rise,
+.velorah .animate-rise-delay {
+  animation: velorah-rise 0.8s ease-out both;
 }
-.velorah .animate-fade-rise-delay {
+.velorah .animate-rise-delay {
   animation-delay: 0.2s;
 }
 .velorah .animate-fade-rise-delay-2 {
-  animation-delay: 0.4s;
+  animation: velorah-fade-rise 0.8s ease-out 0.4s both;
 }
 @keyframes velorah-fade-rise {
   from {
@@ -70,9 +70,17 @@ const VELORAH_CSS = `
     transform: translateY(0);
   }
 }
+@keyframes velorah-rise {
+  from {
+    transform: translateY(24px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
-  .velorah .animate-fade-rise,
-  .velorah .animate-fade-rise-delay,
+  .velorah .animate-rise,
+  .velorah .animate-rise-delay,
   .velorah .animate-fade-rise-delay-2 {
     animation: none;
   }

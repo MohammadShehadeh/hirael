@@ -20,7 +20,7 @@ const MorphingDialogDemo = () => {
       <MorphingDialog>
         <MorphingDialogTrigger className="w-72">
           <div className="flex items-center gap-3 p-4">
-            <div className="flex size-10 items-center justify-center rounded-md bg-foreground/10 font-mono text-sm font-medium text-foreground">
+            <div className="flex size-10 items-center justify-center rounded-md bg-foreground/10 text-sm font-medium text-foreground">
               HL
             </div>
             <div className="flex flex-col">
@@ -32,7 +32,7 @@ const MorphingDialogDemo = () => {
         </MorphingDialogTrigger>
         <MorphingDialogContent className="w-[22rem]">
           <div className="flex flex-col gap-3 p-6">
-            <div className="flex size-12 items-center justify-center rounded-md bg-foreground/10 font-mono text-base font-medium text-foreground">
+            <div className="flex size-12 items-center justify-center rounded-md bg-foreground/10 text-base font-medium text-foreground">
               HL
             </div>
             <MorphingDialogTitle>Halo Layouts</MorphingDialogTitle>

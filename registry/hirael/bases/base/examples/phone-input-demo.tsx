@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { useT } from '@/lib/demo-locale';
-import { Field, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import {
   PhoneInput,
   PhoneInputCountrySelect,
@@ -29,7 +29,12 @@ const PhoneInputDemo = () => {
           <PhoneInputCountrySelect />
           <PhoneInputField placeholder={t({ en: 'Phone number', ar: 'رقم الهاتف' })} />
         </PhoneInput>
-        <p className="font-mono text-[11px] text-muted-foreground">E.164: {basic || '-'}</p>
+        <FieldDescription>
+          {t({
+            en: 'We text a sign-in code to this number.',
+            ar: 'نرسل رمز الدخول إلى هذا الرقم.',
+          })}
+        </FieldDescription>
       </Field>
 
       <Field className="gap-2">
@@ -43,7 +48,12 @@ const PhoneInputDemo = () => {
           <PhoneInputCountrySelect />
           <PhoneInputField placeholder="20 7183 8750" />
         </PhoneInput>
-        <p className="font-mono text-[11px] text-muted-foreground">E.164: {composed || '-'}</p>
+        <FieldDescription>
+          {t({ en: 'Saved as', ar: 'يُحفظ بالصيغة' })}{' '}
+          <bdi className="text-foreground tabular-nums">
+            {composed || t({ en: 'an international number', ar: 'رقم دولي' })}
+          </bdi>
+        </FieldDescription>
       </Field>
     </FieldGroup>
   );

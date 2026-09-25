@@ -79,9 +79,16 @@ const PRISM_CSS = `
   animation-timing-function: ease-out;
   animation-fill-mode: both;
 }
-.prism .blur-in {
+/* Headline words and the lead only move: text that starts at opacity 0 or blurred holds back Largest Contentful Paint. */
+.prism .rise-still {
+  animation-name: prism-rise-still;
+  animation-duration: 0.6s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+.prism .word-rise {
   display: inline-block;
-  animation-name: prism-blur-in;
+  animation-name: prism-word-rise;
   animation-duration: 0.7s;
   animation-timing-function: ease-out;
   animation-fill-mode: both;
@@ -96,26 +103,29 @@ const PRISM_CSS = `
     transform: translateY(0);
   }
 }
-@keyframes prism-blur-in {
+@keyframes prism-rise-still {
+  from {
+    transform: translateY(20px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes prism-word-rise {
   0% {
-    filter: blur(10px);
-    opacity: 0;
     transform: translateY(50px);
   }
   50% {
-    filter: blur(5px);
-    opacity: 0.5;
     transform: translateY(-5px);
   }
   100% {
-    filter: blur(0);
-    opacity: 1;
     transform: translateY(0);
   }
 }
 @media (prefers-reduced-motion: reduce) {
   .prism .rise,
-  .prism .blur-in {
+  .prism .rise-still,
+  .prism .word-rise {
     animation: none;
   }
 }

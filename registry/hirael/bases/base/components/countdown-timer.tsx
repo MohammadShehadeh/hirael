@@ -101,7 +101,7 @@ const CountdownTimerValue = ({ value, className, ...props }: React.ComponentProp
   return (
     <span
       data-slot="countdown-timer-value"
-      className={cn('inline-flex overflow-hidden font-mono tabular-nums', className)}
+      className={cn('inline-flex overflow-hidden tabular-nums', className)}
       {...props}
     >
       <span
@@ -193,11 +193,7 @@ const CountdownTimer = ({
     content = units.map((unit, index) => (
       <React.Fragment key={unit}>
         {index > 0 ? (
-          <span
-            data-slot="countdown-timer-separator"
-            aria-hidden
-            className="font-mono text-xl font-medium text-muted-foreground"
-          >
+          <span data-slot="countdown-timer-separator" aria-hidden className="text-xl font-medium text-muted-foreground">
             :
           </span>
         ) : null}
@@ -206,7 +202,7 @@ const CountdownTimer = ({
     ));
   } else {
     content = (
-      <span data-slot="countdown-timer-display" className="font-mono tabular-nums">
+      <span data-slot="countdown-timer-display" className="tabular-nums">
         {units.map((unit, index) => (
           <React.Fragment key={unit}>
             {index > 0 ? <span aria-hidden>:</span> : null}

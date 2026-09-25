@@ -233,7 +233,7 @@ const DateCalendar = ({
                   onKeyDown={(e) => handleKey(e, d)}
                   tabIndex={sameDay(d, tabbable) ? 0 : -1}
                   className={cn(
-                    'relative size-8 rounded-sm font-mono text-xs tabular-nums transition-colors outline-none',
+                    'relative size-8 rounded-sm text-xs tabular-nums transition-colors outline-none',
                     'hover:bg-accent hover:text-accent-foreground',
                     'focus-visible:ring-2 focus-visible:ring-ring',
                     'disabled:opacity-30 disabled:hover:bg-transparent',
@@ -368,7 +368,7 @@ const DatePickerTrigger = ({
           disabled={ctx.disabled}
           data-slot="date-picker-trigger"
           className={cn(
-            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start font-mono text-sm tabular-nums transition-colors outline-none',
+            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
             !ctx.value && 'font-sans text-muted-foreground',
             'disabled:cursor-not-allowed disabled:opacity-50',

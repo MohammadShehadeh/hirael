@@ -248,6 +248,62 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
     description:
       'Dashboard widgets that slot into any app shell: KPI grids, quick actions, notifications, activity feeds, inspectors and workspace switchers.',
   },
+  {
+    slug: 'bento',
+    group: 'marketing',
+    title: 'Bento Grids',
+    blockKind: 'bento',
+    description:
+      'Bento feature grids where each tile shows the product doing something: a live chart, a toggle that works, a search that filters, laid out in mixed spans that hold together on a phone.',
+  },
+  {
+    slug: 'charts',
+    group: 'app',
+    title: 'Charts',
+    blockKind: 'charts',
+    description:
+      'Chart cards built on the shadcn chart primitive: bar, area, donut and funnel, each with a range or series control that swaps the data and a summary that reads the numbers for you.',
+  },
+  {
+    slug: 'chat',
+    group: 'app',
+    title: 'Chat',
+    blockKind: 'chat',
+    description:
+      'Messaging between people: a two-pane messenger, a support widget, a group thread with replies and reactions, and an inbox. Composers send, threads scroll and unread counts clear.',
+  },
+  {
+    slug: 'page-header',
+    group: 'app',
+    title: 'Page Headers',
+    blockKind: 'page-header',
+    description:
+      'The top of an app page: breadcrumbs, title and status, actions, tabs, a filter toolbar or a metric strip, sitting above the content they control.',
+  },
+  {
+    slug: 'empty-states',
+    group: 'app',
+    title: 'Empty States',
+    blockKind: 'empty-state',
+    description:
+      'What a page shows when there is nothing to show yet: a first run, a search with no matches, data that failed to load, a team with no members. Each one leads to the next step.',
+  },
+  {
+    slug: 'search',
+    group: 'app',
+    title: 'Search',
+    blockKind: 'search',
+    description:
+      'Search surfaces that work on real data: faceted results with live counts, autocomplete with recent searches, a results page with type tabs and a help center search.',
+  },
+  {
+    slug: 'survey',
+    group: 'app',
+    title: 'Surveys',
+    blockKind: 'survey',
+    description:
+      'Feedback surveys: an NPS score with a follow-up, a multi-step form, a cancellation survey and a one-question-per-screen flow with keyboard shortcuts.',
+  },
 ];
 
 export const CATEGORY_BY_SLUG = Object.fromEntries(

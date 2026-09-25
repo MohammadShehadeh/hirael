@@ -10,8 +10,9 @@ const FADE_EASE: Transition['ease'] = 'easeOut';
 export const useFadeUp = () => {
   const reduce = useReducedMotion();
 
-  return (delay = 0): MotionProps => ({
-    initial: reduce ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 },
+  // `fade: false` keeps a headline at full opacity so it counts as painted for Largest Contentful Paint.
+  return (delay = 0, { fade = true } = {}): MotionProps => ({
+    initial: reduce ? { opacity: 1, y: 0 } : { opacity: fade ? 0 : 1, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: true, margin: '-100px' },
     transition: reduce ? { duration: 0 } : { duration: 0.6, delay, ease: FADE_EASE },
@@ -41,10 +42,10 @@ export const Logo = ({ size = 'sm' }: LogoProps) => {
       aria-hidden
       className={cn(
         'relative inline-flex shrink-0 items-center justify-center rounded-full border-2 border-foreground/60',
-        size === 'lg' ? 'h-10 w-10' : 'h-7 w-7',
+        size === 'lg' ? 'size-10' : 'size-7',
       )}
     >
-      <span className={cn('rounded-full border border-foreground/60', size === 'lg' ? 'h-5 w-5' : 'h-3 w-3')} />
+      <span className={cn('rounded-full border border-foreground/60', size === 'lg' ? 'size-5' : 'size-3')} />
     </span>
   );
 };
@@ -140,7 +141,7 @@ export const Avatar = ({ tone = 0, className }: AvatarProps) => {
   const id = `mindloop-avatar-${tone}`;
 
   return (
-    <span className={cn('inline-flex h-8 w-8 overflow-hidden rounded-full border-2 border-background', className)}>
+    <span className={cn('inline-flex size-8 overflow-hidden rounded-full border-2 border-background', className)}>
       <svg viewBox="0 0 32 32" className="h-full w-full" aria-hidden>
         <defs>
           <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">

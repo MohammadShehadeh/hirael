@@ -82,7 +82,7 @@ const MasonryDemo = () => {
         <Masonry columns={{ base: 2, sm: 3 }} gap={8}>
           {aspects.map((aspect, i) => (
             <div key={aspect} className={`${aspect} flex items-end rounded-md bg-muted p-2`}>
-              <span className="font-mono text-[10px] text-muted-foreground">{String(i + 1).padStart(2, '0')}</span>
+              <span className="text-[10px] text-muted-foreground tabular-nums">{String(i + 1).padStart(2, '0')}</span>
             </div>
           ))}
         </Masonry>

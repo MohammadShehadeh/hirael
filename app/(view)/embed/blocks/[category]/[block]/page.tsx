@@ -1,6 +1,7 @@
 import { DEFAULT_BASE } from '@/registry/hirael/registry-meta';
 
-import { BlockEmbed, blockEmbedMetadata, blockEmbedParams } from '../../../embed-routes';
+import { BlockEmbed } from '../../../block-embed';
+import { blockEmbedMetadata, blockEmbedParams } from '../../../embed-routes';
 
 export const dynamicParams = false;
 

@@ -14,15 +14,15 @@ const SpinnerDemo = () => {
         <div className="flex items-center gap-10 text-foreground">
           <div className="flex flex-col items-center gap-2">
             <Spinner variant="circle" size="lg" />
-            <span className="font-mono text-[10px] text-muted-foreground">{t({ en: 'circle', ar: 'دائرة' })}</span>
+            <span className="text-xs text-muted-foreground">{t({ en: 'Circle', ar: 'دائرة' })}</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <Spinner variant="dots" size="lg" />
-            <span className="font-mono text-[10px] text-muted-foreground">{t({ en: 'dots', ar: 'نقاط' })}</span>
+            <span className="text-xs text-muted-foreground">{t({ en: 'Dots', ar: 'نقاط' })}</span>
           </div>
           <div className="flex flex-col items-center gap-2">
             <Spinner variant="bars" size="lg" />
-            <span className="font-mono text-[10px] text-muted-foreground">{t({ en: 'bars', ar: 'أعمدة' })}</span>
+            <span className="text-xs text-muted-foreground">{t({ en: 'Bars', ar: 'أعمدة' })}</span>
           </div>
         </div>
       </div>

@@ -7,6 +7,9 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const RISE_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
@@ -91,7 +94,7 @@ const Hero08 = () => {
             style={stagger(1)}
             className={cn(
               'font-serif text-5xl leading-[1.04] font-medium tracking-tight md:text-6xl lg:text-7xl',
-              RISE,
+              RISE_TEXT,
             )}
           >
             One workspace for every <span className="text-muted-foreground italic">moving part</span>
@@ -99,7 +102,7 @@ const Hero08 = () => {
 
           <p
             style={stagger(2)}
-            className={cn('mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg', RISE)}
+            className={cn('mx-auto mt-8 w-full text-base tracking-tight text-muted-foreground sm:text-lg', RISE_TEXT)}
           >
             Build, review, and ship your work from one place. Drag to arrange, connect the pieces, and keep the details
             that matter in view.

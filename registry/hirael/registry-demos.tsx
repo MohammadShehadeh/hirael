@@ -2,91 +2,31 @@
 
 import * as React from 'react';
 
-import { DEFAULT_BASE, REGISTRY, getExamples, type RegistryBase } from '@/registry/hirael/registry-meta';
+import { lazyDemo, LazyDemo, type DemoModule } from '@/registry/hirael/registry-lazy';
+import { DEFAULT_BASE, getExamples, type RegistryBase } from '@/registry/hirael/registry-meta';
 
-// Template-literal `import()`s compile to context modules over `<kind>/<name>/<name>.tsx` and
-// `examples/<slug>.tsx`, so an item following that layout needs no entry here.
+// Template-literal `import()`s compile to context modules over `examples/<slug>.tsx`, so an example following
+// that layout needs no entry here. Blocks and templates load from their own modules because Next preloads the
+// fonts of every chunk a page can reach, and one template import would add every template's fonts to the page.
 const loadExample = (base: RegistryBase, slug: string) =>
-  import(`./bases/${base}/examples/${slug}`) as Promise<{
-    default: React.ComponentType;
-  }>;
-const loadBlock = (base: RegistryBase, name: string) =>
-  import(`./bases/${base}/blocks/${name}/${name}`) as Promise<{
-    default: React.ComponentType;
-  }>;
-const loadTemplate = (base: RegistryBase, name: string) =>
-  import(`./bases/${base}/templates/${name}/${name}`) as Promise<{
-    default: React.ComponentType;
-  }>;
+  import(`./bases/${base}/examples/${slug}`) as Promise<DemoModule>;
 
-// Cached at module scope: a new React.lazy identity per render would remount the preview.
-const lazyCache = new Map<string, React.LazyExoticComponent<React.ComponentType>>();
+export interface RegistryExampleProps {
+  name: string;
+  base?: RegistryBase;
+  fallback?: React.ReactNode;
+}
 
-const lazyFor = (key: string, load: () => Promise<{ default: React.ComponentType }>) => {
-  let Component = lazyCache.get(key);
-  if (!Component) {
-    Component = React.lazy(() => load().catch(() => ({ default: () => null })));
-    lazyCache.set(key, Component);
-  }
-
-  return Component;
-};
-
-const Render = ({
-  Component,
-  fallback,
-}: {
-  Component?: React.LazyExoticComponent<React.ComponentType>;
-  fallback: React.ReactNode;
-}) => {
-  if (!Component) return null;
-
+export const RegistryExample = ({ name, base = DEFAULT_BASE, fallback = null }: RegistryExampleProps) => {
   return (
-    <React.Suspense fallback={fallback}>
-      <Component />
-    </React.Suspense>
+    <LazyDemo Component={lazyDemo(`${base}:example:${name}`, () => loadExample(base, name))} fallback={fallback} />
   );
 };
 
-export const RegistryExample = ({
-  name,
-  base = DEFAULT_BASE,
-  fallback = null,
-}: {
-  name: string;
-  base?: RegistryBase;
-  fallback?: React.ReactNode;
-}) => {
-  return <Render Component={lazyFor(`${base}:example:${name}`, () => loadExample(base, name))} fallback={fallback} />;
-};
-
-export const RegistryDemo = ({
-  name,
-  base = DEFAULT_BASE,
-  fallback = null,
-}: {
-  name: string;
-  base?: RegistryBase;
-  fallback?: React.ReactNode;
-}) => {
-  const entry = REGISTRY.find((e) => e.name === name);
-
-  if (entry?.category === 'blocks') {
-    return <Render Component={lazyFor(`${base}:block:${name}`, () => loadBlock(base, name))} fallback={fallback} />;
-  }
-  if (entry?.category === 'templates') {
-    return (
-      <Render Component={lazyFor(`${base}:template:${name}`, () => loadTemplate(base, name))} fallback={fallback} />
-    );
-  }
-
+/** A component's first example. */
+export const RegistryDemo = ({ name, base = DEFAULT_BASE, fallback = null }: RegistryExampleProps) => {
   const primary = getExamples(name)[0];
   if (!primary) return null;
 
-  return (
-    <Render
-      Component={lazyFor(`${base}:example:${primary.slug}`, () => loadExample(base, primary.slug))}
-      fallback={fallback}
-    />
-  );
+  return <RegistryExample name={primary.slug} base={base} fallback={fallback} />;
 };

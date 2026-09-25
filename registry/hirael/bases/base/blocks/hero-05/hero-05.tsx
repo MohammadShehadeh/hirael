@@ -15,6 +15,9 @@ const Hero05Backdrop = dynamic(() => import('./hero-05-backdrop'), {
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const ENTER_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
@@ -100,7 +103,7 @@ const Hero05 = () => {
               <h1
                 style={stagger(2)}
                 className={cn(
-                  ENTER,
+                  ENTER_TEXT,
                   'mt-7 font-serif text-5xl leading-[1.04] font-medium tracking-tight text-foreground sm:text-6xl md:text-7xl',
                 )}
               >
@@ -109,7 +112,7 @@ const Hero05 = () => {
 
               <p
                 style={stagger(3)}
-                className={cn(ENTER, 'mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground')}
+                className={cn(ENTER_TEXT, 'mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground')}
               >
                 A shared canvas for notes, tasks, and docs, so your team always knows what&apos;s next.
               </p>

@@ -4,9 +4,11 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { useRegistryBase } from '@/components/active-theme';
+import { useDeferredMount } from '@/hooks/use-deferred-mount';
 import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-// Static mode reports the block's own height. The iframe waits for a width so reveal animations start on screen.
+// Static mode reports the block's own height. The iframe waits for a width so reveal animations start on screen,
+// and for the page's load and the card nearing the viewport, since each preview boots a whole app on this thread.
 const SIM_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 const MIN_HEIGHT = 360;
@@ -26,6 +28,7 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
   const [width, setWidth] = React.useState<number | null>(null);
   const [simHeight, setSimHeight] = React.useState(DEFAULT_HEIGHT);
   const [loaded, setLoaded] = React.useState(false);
+  const shouldMount = useDeferredMount(ref);
 
   React.useLayoutEffect(() => {
     const el = ref.current;
@@ -83,11 +86,10 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
       >
         <span className="text-xs text-muted-foreground/70 uppercase">{entry.title}</span>
       </div>
-      {scale !== null && (
+      {shouldMount && scale !== null && (
         <iframe
           src={`${embedHref}?static=1`}
           title={`${entry.title} preview`}
-          loading="lazy"
           tabIndex={-1}
           aria-hidden
           onLoad={handleLoad}

@@ -79,7 +79,7 @@ const Stepper = ({
         data-orientation={orientation}
         className={cn(
           'group/stepper flex',
-          orientation === 'horizontal' ? 'w-full items-center' : 'flex-col',
+          orientation === 'horizontal' ? '@container/stepper w-full items-center' : 'flex-col',
           className,
         )}
         {...props}
@@ -184,6 +184,7 @@ const StepperSeparator = ({ className, ...props }: React.ComponentProps<'div'>) 
 };
 
 const StepperTitle = ({ className, ...props }: React.ComponentProps<'span'>) => {
+  const { orientation } = useStepper();
   const { state } = useStepperItem();
 
   return (
@@ -192,6 +193,10 @@ const StepperTitle = ({ className, ...props }: React.ComponentProps<'span'>) => 
       className={cn(
         'block text-sm leading-tight font-medium transition-colors',
         state === 'inactive' ? 'text-muted-foreground' : 'text-foreground',
+        // A narrow horizontal stepper can't fit every title, so only the active one stays visible.
+        // sr-only rather than hidden keeps each trigger's accessible name.
+        orientation === 'horizontal' &&
+          (state === 'active' ? '@max-lg/stepper:whitespace-nowrap' : '@max-lg/stepper:sr-only'),
         className,
       )}
       {...props}

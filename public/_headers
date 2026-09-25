@@ -39,3 +39,13 @@
 
 /:section/:group/:name/opengraph-image-:hash
   Content-Type: image/png
+
+# Build output under /_next/static is content-hashed, so a URL never changes
+# meaning and browsers can keep it for a year without asking again.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Media keeps its name across edits, and installed items load it from here by
+# absolute URL, so it's cached for a week and refreshed in the background.
+/media/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400

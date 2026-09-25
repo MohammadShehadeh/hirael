@@ -140,11 +140,12 @@ export const Hero = () => {
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
             <HeroBadge />
 
+            {/* The title and lead animate transform only: text that starts at opacity 0 holds back Largest Contentful Paint. */}
             <h1
               data-slot="hero-title"
               style={{ ...delay(100), color: 'var(--hero-title)' }}
               className={cn(
-                'animate-in duration-800 fade-in zoom-in-98',
+                'animate-in duration-800 zoom-in-98',
                 EASE,
                 'font-display mb-4 text-4xl leading-[1.05] font-semibold sm:text-5xl md:text-6xl lg:text-[80px]',
               )}
@@ -155,7 +156,7 @@ export const Hero = () => {
             <p
               style={delay(300)}
               className={cn(
-                'animate-in duration-800 fade-in',
+                'animate-in duration-800 slide-in-from-bottom-3',
                 EASE,
                 'max-w-xl text-base leading-relaxed text-foreground/80 sm:text-lg',
               )}

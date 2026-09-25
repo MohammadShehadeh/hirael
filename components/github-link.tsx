@@ -12,7 +12,7 @@ export const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   );
 };
 
-const formatStars = (count: number): string => {
+export const formatStars = (count: number): string => {
   if (count < 1000) return `${count}`;
 
   return `${(count / 1000).toFixed(count >= 10000 ? 0 : 1)}k`;
@@ -24,17 +24,20 @@ export interface GithubLinkProps {
 
 export const GithubLink = ({ stars }: GithubLinkProps) => {
   return (
-    <Button variant="ghost" size="sm" asChild>
+    <Button variant="outline" size="sm" asChild>
       <a
         href={SITE.githubRepoUrl}
         target="_blank"
         rel="noreferrer"
-        aria-label={`Star ${SITE.name} on GitHub, ${stars?.toLocaleString() ?? 0} stars`}
+        aria-label={
+          stars ? `Star ${SITE.name} on GitHub, ${stars.toLocaleString()} stars` : `Star ${SITE.name} on GitHub`
+        }
       >
         <GithubIcon />
+        <span className="hidden sm:inline">Star</span>
         {stars ? (
-          <span className="hidden items-center gap-1 text-xs tabular-nums sm:inline-flex">
-            <Star className="size-3 fill-current" />
+          <span className="inline-flex items-center gap-1 border-s border-border ps-2 text-xs tabular-nums">
+            <Star className="size-3 fill-primary text-primary" />
             {formatStars(stars)}
           </span>
         ) : null}

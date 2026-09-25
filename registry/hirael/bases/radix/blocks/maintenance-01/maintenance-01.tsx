@@ -209,7 +209,7 @@ const NotifyPopover = () => {
                 type="email"
                 inputMode="email"
                 autoComplete="email"
-                placeholder="you@company.com"
+                placeholder="you@hirael.com"
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);

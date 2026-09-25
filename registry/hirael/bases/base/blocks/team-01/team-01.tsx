@@ -242,7 +242,7 @@ const MEMBERS: readonly Member[] = [
     initials: 'NH',
     role: 'Co-founder, CEO',
     department: 'Leadership',
-    bio: 'Ran platform at a payments company before starting Plinth.',
+    bio: 'Ran platform at a payments company before starting Hirael.',
     github: '#',
     avatar: AVATARS.nadia,
   },

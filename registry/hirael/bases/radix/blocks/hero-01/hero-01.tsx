@@ -56,9 +56,7 @@ const Hero01 = () => {
             data-slot="hero-nav"
             className={cn(ENTER, 'relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10')}
           >
-            <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
-              Aperture
-            </span>
+            <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">Hirael</span>
             <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
               {NAV_LINKS.map((link) => (
                 <a key={link} href="#" className="transition-colors duration-150 hover:text-foreground">

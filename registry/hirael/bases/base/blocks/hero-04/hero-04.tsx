@@ -37,7 +37,7 @@ const Hero04 = () => {
         <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-border bg-card/70 py-2 ps-5 pe-2 backdrop-blur-md">
           <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
             <Orbit aria-hidden className="size-5 text-primary" />
-            Orbit
+            Hirael
           </span>
           <Button render={<a href="#" />} nativeButton={false} size="sm">
             Get started

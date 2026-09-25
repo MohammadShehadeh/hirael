@@ -1,5 +1,4 @@
 import type * as React from 'react';
-import { MessageCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
@@ -69,10 +68,7 @@ const BrandMark = ({ className }: BrandMarkProps) => {
   );
 };
 
-const SOCIALS = [
-  { label: 'GitHub', href: '#', icon: GithubIcon },
-  { label: 'Discord', href: '#', icon: MessageCircle },
-] as const;
+const SOCIALS = [{ label: 'GitHub', href: 'https://github.com/mohammadshehadeh', icon: GithubIcon }] as const;
 
 const Footer01 = () => {
   return (

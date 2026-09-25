@@ -165,7 +165,7 @@ const Signup01 = () => {
                   <FieldLabel htmlFor="signup01-name">Name</FieldLabel>
                   <Input
                     id="signup01-name"
-                    placeholder="Ada Lovelace"
+                    placeholder="Mohammad Shehadeh"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     autoComplete="name"
@@ -180,7 +180,7 @@ const Signup01 = () => {
                   <Input
                     id="signup01-email"
                     type="email"
-                    placeholder="you@studio.com"
+                    placeholder="you@hirael.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     autoComplete="email"

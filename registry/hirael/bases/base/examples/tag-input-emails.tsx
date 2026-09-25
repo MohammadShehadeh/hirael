@@ -41,7 +41,7 @@ const TagInputEmails = () => {
           {emails.map((_, i) => (
             <TagInputTag key={i} index={i} />
           ))}
-          <TagInputField id="email-tags-field" placeholder="you@example.com" />
+          <TagInputField id="email-tags-field" placeholder="you@hirael.com" />
         </TagInputContainer>
         <TagInputError className="mt-1" />
       </TagInput>

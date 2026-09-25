@@ -517,7 +517,7 @@ interface Integration {
 
 const INTEGRATIONS: readonly Integration[] = [
   { id: 'slack', name: 'Slack', off: 'Post comments and mentions to a channel', on: 'Posting to #launch-q4' },
-  { id: 'github', name: 'GitHub', off: 'Link pull requests to cards', on: 'Watching fernhill/web and fernhill/api' },
+  { id: 'github', name: 'GitHub', off: 'Link pull requests to cards', on: 'Watching hirael/web and hirael/api' },
   { id: 'figma', name: 'Figma', off: 'Embed frames that stay up to date', on: 'Syncing 12 embedded frames' },
   { id: 'linear', name: 'Linear', off: 'Turn a card into an issue', on: 'Creating issues in team GROW' },
   { id: 'drive', name: 'Google Drive', off: 'Attach docs and sheets', on: 'Attached files open in a preview' },

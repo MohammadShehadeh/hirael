@@ -147,7 +147,7 @@ const ForgotPassword01 = () => {
                     <Input
                       id="forgot01-email"
                       type="email"
-                      placeholder="you@studio.com"
+                      placeholder="you@hirael.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       autoComplete="email"

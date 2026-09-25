@@ -97,11 +97,11 @@ interface AuditEvent extends AuditSource {
 
 const AUDIT_SOURCES: readonly AuditSource[] = [
   { actor: 'Dana Reyes', action: 'rotated API key', target: 'prod-billing', place: 'Lisbon', kind: 'info' },
-  { actor: 'Okta SCIM', action: 'removed', target: 'k.walsh@fernhill.io', place: 'Directory sync', kind: 'info' },
+  { actor: 'Okta SCIM', action: 'removed', target: 'k.walsh@hirael.com', place: 'Directory sync', kind: 'info' },
   {
     actor: 'Unknown',
     action: 'failed to sign in as',
-    target: 'admin@fernhill.io',
+    target: 'admin@hirael.com',
     place: 'Lagos, 5 tries',
     kind: 'blocked',
   },
@@ -403,10 +403,10 @@ interface Certificate {
 const DAY = 86_400;
 
 const CERTIFICATES: readonly Certificate[] = [
-  { domain: 'fernhill.io', issuer: "Let's Encrypt", expiresIn: 61 * DAY + 4 * 3600 + 12 * 60 },
-  { domain: 'api.fernhill.io', issuer: "Let's Encrypt", expiresIn: 5 * DAY + 3 * 3600 + 41 * 60 + 9 },
-  { domain: 'sso.fernhill.io', issuer: 'DigiCert', expiresIn: 23 * DAY + 17 * 3600 + 5 * 60 },
-  { domain: 'status.fernhill.io', issuer: "Let's Encrypt", expiresIn: -2 * DAY - 6 * 3600 },
+  { domain: 'hirael.com', issuer: "Let's Encrypt", expiresIn: 61 * DAY + 4 * 3600 + 12 * 60 },
+  { domain: 'api.hirael.com', issuer: "Let's Encrypt", expiresIn: 5 * DAY + 3 * 3600 + 41 * 60 + 9 },
+  { domain: 'sso.hirael.com', issuer: 'DigiCert', expiresIn: 23 * DAY + 17 * 3600 + 5 * 60 },
+  { domain: 'status.hirael.com', issuer: "Let's Encrypt", expiresIn: -2 * DAY - 6 * 3600 },
 ];
 
 const RENEW_TO = 90 * DAY;

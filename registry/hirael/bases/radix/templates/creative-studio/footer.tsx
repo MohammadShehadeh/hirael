@@ -19,7 +19,7 @@ const LINK_COLUMNS = [
   },
   {
     heading: 'Connect',
-    links: ['Inquiries', 'Instagram', 'Vimeo', 'LinkedIn'],
+    links: ['Inquiries', 'X', 'GitHub', 'LinkedIn'],
   },
 ];
 
@@ -70,7 +70,7 @@ export const Footer = () => {
             <p className="text-sm leading-relaxed text-(--cs-cream)/70">
               Berlin, Paris and worldwide.
               <br />
-              hello@hirael.studio
+              hello@hirael.com
             </p>
           </div>
         </nav>

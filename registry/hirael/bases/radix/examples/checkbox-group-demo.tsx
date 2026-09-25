@@ -18,7 +18,7 @@ const CHANNELS = [
   {
     id: 'email',
     label: { en: 'Email', ar: 'البريد الإلكتروني' },
-    description: { en: 'Sent to maya@fernhill.io', ar: 'تُرسل إلى maya@fernhill.io' },
+    description: { en: 'Sent to hello@mohammadshehadeh.com', ar: 'تُرسل إلى hello@mohammadshehadeh.com' },
     items: [
       { id: 'comments', label: { en: 'Comments on your posts', ar: 'التعليقات على منشوراتك' } },
       { id: 'mentions', label: { en: 'Mentions', ar: 'الإشارات' } },

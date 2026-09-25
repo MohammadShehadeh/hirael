@@ -163,7 +163,7 @@ const ResourceStatusBlock = () => {
         <ResourceStatusBanner state="degraded">Some systems degraded</ResourceStatusBanner>
         <ResourceStatusList>
           <ResourceStatusItem name="API" description="REST and GraphQL" state="operational" uptime="99.98%" />
-          <ResourceStatusItem name="Dashboard" description="app.example.com" state="operational" uptime="99.95%" />
+          <ResourceStatusItem name="Dashboard" description="app.hirael.com" state="operational" uptime="99.95%" />
           <ResourceStatusItem
             name="Webhooks"
             description="Elevated delivery latency"

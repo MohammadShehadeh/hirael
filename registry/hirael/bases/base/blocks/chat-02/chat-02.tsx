@@ -654,7 +654,7 @@ const TOPICS: { id: Topic; label: string }[] = [
 
 const DONE: { id: Topic; label: string } = { id: 'done', label: 'That is all, thanks' };
 
-const ORDER_PATTERN = /\bKC-?(\d{4,6})\b/i;
+const ORDER_PATTERN = /\bHR-?(\d{4,6})\b/i;
 
 interface Reply {
   topic?: Topic;
@@ -667,7 +667,7 @@ const answer = (input: string, awaitingOrder: boolean): Reply => {
   const text = input.toLowerCase();
   const order = input.match(ORDER_PATTERN);
   if (order) {
-    const number = `KC-${order[1]}`;
+    const number = `HR-${order[1]}`;
 
     return {
       topic: 'track',
@@ -680,14 +680,14 @@ const answer = (input: string, awaitingOrder: boolean): Reply => {
   if (awaitingOrder) {
     return {
       awaitOrder: true,
-      text: ['I could not find an order number in that. It looks like KC-20931 and it is in your confirmation email.'],
+      text: ['I could not find an order number in that. It looks like HR-20931 and it is in your confirmation email.'],
     };
   }
   if (/track|where|status|arriv|shipp/.test(text)) {
     return {
       topic: 'track',
       awaitOrder: true,
-      text: ['Happy to check. What is your order number? It starts with KC, like KC-20931.'],
+      text: ['Happy to check. What is your order number? It starts with HR, like HR-20931.'],
     };
   }
   if (/address|move|moving|redirect/.test(text)) {
@@ -712,7 +712,7 @@ const answer = (input: string, awaitingOrder: boolean): Reply => {
     return {
       topic: 'damaged',
       text: [
-        'Sorry about that. Send a photo of the bag to help@kettle.co with your order number.',
+        'Sorry about that. Send a photo of the bag to support@hirael.com with your order number.',
         'We will send a fresh bag the same day, or refund it if you prefer.',
       ],
     };
@@ -741,7 +741,7 @@ const clock = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: 
 
 // The automatic greeting has no timestamp: it isn't a message anyone sent at a moment in time.
 const GREETING: Message[] = [
-  { id: 'g1', from: 'agent', text: `Hi, I am ${AGENT.firstName} from Kettle & Co.`, time: '' },
+  { id: 'g1', from: 'agent', text: `Hi, I am ${AGENT.firstName} from Hirael.`, time: '' },
   { id: 'g2', from: 'agent', text: 'Ask me about an order, a delivery or your subscription.', time: '' },
 ];
 
@@ -885,7 +885,7 @@ const Chat02 = () => {
   };
 
   const suggestions = awaitingOrder
-    ? [{ id: 'track' as Topic, label: 'KC-20931' }]
+    ? [{ id: 'track' as Topic, label: 'HR-20931' }]
     : [...TOPICS.filter((topic) => !used.includes(topic.id)), ...(used.length > 0 ? [DONE] : [])];
 
   const runs = groupRuns(messages);

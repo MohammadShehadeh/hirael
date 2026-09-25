@@ -243,7 +243,7 @@ const ARTICLES: readonly Article[] = [
 
 const POPULAR_TOPICS: readonly string[] = ['Reset password', 'Invoices', 'Slack', 'Spam', 'Export data'];
 
-const SUPPORT_EMAIL = 'support@relayhq.com';
+const SUPPORT_EMAIL = 'support@hirael.com';
 
 // Every term must appear; title hits rank above excerpt and category hits.
 const searchArticles = (query: string) => {
@@ -291,7 +291,7 @@ const Search04 = () => {
               How can we help?
             </h2>
             <p style={stagger(1, 80)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground')}>
-              Search {ARTICLES.length} articles on setting up, billing and fixing problems in Relay.
+              Search {ARTICLES.length} articles on setting up, billing and fixing problems in Hirael.
             </p>
           </div>
 

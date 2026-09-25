@@ -180,7 +180,7 @@ const RECORDS: readonly Result[] = [
     name: 'Maya Chen',
     role: 'People partner for onboarding',
     team: 'People',
-    email: 'maya.chen@northwind.dev',
+    email: 'maya.chen@hirael.com',
   },
   {
     kind: 'person',
@@ -188,7 +188,7 @@ const RECORDS: readonly Result[] = [
     name: 'Grace Liu',
     role: 'Onboarding specialist',
     team: 'Customer success',
-    email: 'grace.liu@northwind.dev',
+    email: 'grace.liu@hirael.com',
   },
   {
     kind: 'person',
@@ -196,7 +196,7 @@ const RECORDS: readonly Result[] = [
     name: 'Omar Farouk',
     role: 'Engineering manager',
     team: 'Platform',
-    email: 'omar.farouk@northwind.dev',
+    email: 'omar.farouk@hirael.com',
   },
   {
     kind: 'person',
@@ -204,7 +204,7 @@ const RECORDS: readonly Result[] = [
     name: 'Elena Petrova',
     role: 'Controller',
     team: 'Finance',
-    email: 'elena.petrova@northwind.dev',
+    email: 'elena.petrova@hirael.com',
   },
   {
     kind: 'person',
@@ -212,7 +212,7 @@ const RECORDS: readonly Result[] = [
     name: 'Kwame Mensah',
     role: 'Security lead',
     team: 'Security',
-    email: 'kwame.mensah@northwind.dev',
+    email: 'kwame.mensah@hirael.com',
   },
   {
     kind: 'person',
@@ -220,7 +220,7 @@ const RECORDS: readonly Result[] = [
     name: 'Lucas Moreau',
     role: 'Account executive',
     team: 'Sales',
-    email: 'lucas.moreau@northwind.dev',
+    email: 'lucas.moreau@hirael.com',
   },
   {
     kind: 'person',
@@ -228,7 +228,7 @@ const RECORDS: readonly Result[] = [
     name: 'Ines Duarte',
     role: 'IT support engineer',
     team: 'IT',
-    email: 'ines.duarte@northwind.dev',
+    email: 'ines.duarte@hirael.com',
   },
   {
     kind: 'person',
@@ -236,7 +236,7 @@ const RECORDS: readonly Result[] = [
     name: 'Ravi Kapoor',
     role: 'Staff engineer',
     team: 'Platform',
-    email: 'ravi.kapoor@northwind.dev',
+    email: 'ravi.kapoor@hirael.com',
   },
   {
     kind: 'person',
@@ -244,7 +244,7 @@ const RECORDS: readonly Result[] = [
     name: 'Nora Lindqvist',
     role: 'Recruiter',
     team: 'People',
-    email: 'nora.lindqvist@northwind.dev',
+    email: 'nora.lindqvist@hirael.com',
   },
   {
     kind: 'file',
@@ -563,7 +563,7 @@ const Search03 = () => {
             id="search-03-heading"
             className={cn(ENTER, 'text-3xl font-semibold tracking-tight text-balance sm:text-4xl')}
           >
-            Search Northwind
+            Search Hirael
           </h2>
           <p style={stagger(1, 80)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground')}>
             Docs, people and files across the whole company, in one place.

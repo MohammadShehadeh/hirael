@@ -126,11 +126,11 @@ export const Explorations = () => {
           </p>
           <div className="pointer-events-auto mt-7 flex justify-center">
             <RingLink
-              href="https://dribbble.com/"
+              href="https://github.com/mohammadshehadeh"
               target="_blank"
               innerClassName="bg-[hsl(var(--surface))] px-5 py-2.5 text-sm text-[hsl(var(--text))] backdrop-blur-md"
             >
-              Dribbble
+              GitHub
               <ArrowUpRight className="size-3.5 rtl:-scale-x-100" />
             </RingLink>
           </div>

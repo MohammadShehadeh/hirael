@@ -57,7 +57,7 @@ const TILES: readonly Tile[] = [
     src: IMG.a,
   },
   {
-    client: 'Northwind',
+    client: 'Hirael',
     project: 'Checkout',
     year: '2026',
     type: 'Product',
@@ -93,7 +93,7 @@ const TILES: readonly Tile[] = [
     src: IMG.c,
   },
   {
-    client: 'Plinth',
+    client: 'Hirael Docs',
     project: 'Field guide',
     year: '2025',
     type: 'Editorial',

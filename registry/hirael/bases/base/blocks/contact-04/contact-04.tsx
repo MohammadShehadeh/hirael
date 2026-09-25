@@ -67,9 +67,9 @@ const CHANNELS = [
   {
     icon: Mail,
     label: 'Email',
-    detail: 'support@example.com',
+    detail: 'support@hirael.com',
     note: 'Best for anything with screenshots or files.',
-    href: 'mailto:support@example.com',
+    href: 'mailto:support@hirael.com',
   },
   {
     icon: MessagesSquare,
@@ -81,7 +81,7 @@ const CHANNELS = [
   {
     icon: Activity,
     label: 'Status page',
-    detail: 'status.example.com',
+    detail: 'status.hirael.com',
     note: 'Check here first if something stopped working.',
     href: '#',
   },
@@ -409,7 +409,7 @@ const Contact04 = () => {
                       id="contact-04-email"
                       type="email"
                       autoComplete="email"
-                      placeholder="you@company.com"
+                      placeholder="you@hirael.com"
                       value={form.email}
                       disabled={sending}
                       aria-invalid={Boolean(errors.email) || undefined}

@@ -164,16 +164,16 @@ const Team02 = () => {
           >
             <GridPattern />
             <div className="relative mb-4">
-              <h3 className="mb-1 text-2xl font-semibold text-foreground md:text-3xl">Layla Haddad</h3>
+              <h3 className="mb-1 text-2xl font-semibold text-foreground md:text-3xl">Mohammad Shehadeh</h3>
               <p className="text-muted-foreground">Design systems lead, Hirael</p>
             </div>
             <div className="relative flex flex-col gap-3">
               <p className="leading-relaxed text-pretty text-muted-foreground">
-                Layla spent a decade turning one-off screens into systems that other engineers actually reach for. She
-                led the token migration at two product companies before starting Hirael.
+                Mohammad spent a decade turning one-off screens into systems that other engineers actually reach for,
+                and led the token migration at two product companies before starting Hirael.
               </p>
               <p className="leading-relaxed text-pretty text-muted-foreground">
-                She reviews every component before it ships, usually in Arabic first, because if the RTL layout holds,
+                Every component gets a review before it ships, usually in Arabic first, because if the RTL layout holds,
                 the rest tends to follow.
               </p>
             </div>

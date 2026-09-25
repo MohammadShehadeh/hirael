@@ -538,18 +538,18 @@ export {
 
 const MODELS: PromptInputModel[] = [
   {
-    id: 'plinth-2-pro',
-    label: 'Plinth 2 Pro',
+    id: 'hirael-2-pro',
+    label: 'Hirael 2 Pro',
     hint: 'Slower and more careful, for hard problems',
   },
   {
-    id: 'plinth-2-flash',
-    label: 'Plinth 2 Flash',
+    id: 'hirael-2-flash',
+    label: 'Hirael 2 Flash',
     hint: 'Fast and good enough for most work',
   },
   {
-    id: 'plinth-mini',
-    label: 'Plinth Mini',
+    id: 'hirael-mini',
+    label: 'Hirael Mini',
     hint: 'Cheapest, for short tasks',
   },
 ];

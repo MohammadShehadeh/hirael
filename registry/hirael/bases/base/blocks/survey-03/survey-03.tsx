@@ -285,7 +285,7 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
                 <QuestionnaireChoice key={option.value} value={option.value} onChange={pick('pause', option.value)}>
                   Pause for {option.label}
                   <QuestionnaireChoiceDescription>
-                    Relay resumes on{' '}
+                    Hirael resumes on{' '}
                     <span className="tabular-nums">{formatDate(addMonths(PLAN.renews, Number(option.value)))}</span>
                   </QuestionnaireChoiceDescription>
                 </QuestionnaireChoice>
@@ -405,7 +405,7 @@ const Survey03 = () => {
             Plan
           </h2>
           <p style={stagger(1)} className={cn(ENTER, 'text-sm text-muted-foreground')}>
-            Your subscription for the Northwind Support workspace.
+            Your subscription for the Hirael workspace.
           </p>
         </div>
 

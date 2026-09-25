@@ -203,7 +203,7 @@ const SECTION_FIELDS: Record<SectionId, readonly Field[]> = {
       kind: 'toggle',
       id: 'vercel',
       label: 'Vercel',
-      hint: 'plinth-labs',
+      hint: 'hirael',
       onLabel: 'Deploys on push',
       offLabel: 'Disconnected',
       enabled: true,
@@ -486,7 +486,7 @@ const AppShell02 = () => {
           <span className="flex gap-1.5 text-xs text-muted-foreground uppercase">
             <span>workspace</span>
             <span className="text-border">|</span>
-            <span>plinth labs</span>
+            <span>hirael</span>
           </span>
           <h1 className="text-2xl font-semibold tracking-[-0.02em]">Settings</h1>
           <p className="text-sm text-muted-foreground">

@@ -105,7 +105,7 @@ const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
 const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-300 ${EASE} fill-mode-both motion-reduce:animate-none`;
 
-const PRODUCT = 'Relay';
+const PRODUCT = 'Hirael';
 
 const SCORES = Array.from({ length: 11 }, (_, score) => ({ value: String(score) }));
 

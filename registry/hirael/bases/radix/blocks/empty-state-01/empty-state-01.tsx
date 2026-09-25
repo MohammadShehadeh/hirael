@@ -55,10 +55,10 @@ interface Repo {
 }
 
 const REPOS: readonly Repo[] = [
-  { fullName: 'northwind/storefront', description: 'Next.js shop front', updated: 'Updated 2 hours ago' },
-  { fullName: 'northwind/api-gateway', description: 'Edge routing and auth', updated: 'Updated yesterday' },
-  { fullName: 'northwind/docs', description: 'Public docs site', updated: 'Updated 4 days ago' },
-  { fullName: 'northwind/design-tokens', description: 'Shared colors and type scale', updated: 'Updated Sep 2' },
+  { fullName: 'hirael/storefront', description: 'Next.js shop front', updated: 'Updated 2 hours ago' },
+  { fullName: 'hirael/api-gateway', description: 'Edge routing and auth', updated: 'Updated yesterday' },
+  { fullName: 'hirael/docs', description: 'Public docs site', updated: 'Updated 4 days ago' },
+  { fullName: 'hirael/design-tokens', description: 'Shared colors and type scale', updated: 'Updated Sep 2' },
 ];
 
 const TIPS = [
@@ -185,7 +185,7 @@ const ImportDialog = ({ trigger, imported, taken, onCreate }: ImportDialogProps)
         <form onSubmit={submit} className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle>Import from GitHub</DialogTitle>
-            <DialogDescription>Pick a repository from the northwind organization.</DialogDescription>
+            <DialogDescription>Pick a repository from the hirael organization.</DialogDescription>
           </DialogHeader>
 
           <RadioGroup
@@ -249,7 +249,7 @@ const EmptyState01 = () => {
               <h2 className="text-sm font-medium text-foreground">Projects</h2>
               <p className="text-xs text-muted-foreground">
                 <span className="tabular-nums">{projects.length}</span> {projects.length === 1 ? 'project' : 'projects'}{' '}
-                in Northwind Labs
+                in Hirael
               </p>
             </div>
             {projects.length > 0 ? (

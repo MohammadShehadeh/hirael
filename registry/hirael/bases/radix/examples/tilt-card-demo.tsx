@@ -16,7 +16,7 @@ const TiltCardDemo = () => {
           </div>
           <div className="text-lg tracking-[0.12em] text-foreground tabular-nums">•••• 8021</div>
           <div className="flex items-end justify-between">
-            <span className="text-sm font-medium text-foreground">{t({ en: 'A. Khoury', ar: 'أ. خوري' })}</span>
+            <span className="text-sm font-medium text-foreground">{t({ en: 'M. Shehadeh', ar: 'م. شحادة' })}</span>
             <span className="text-xs text-muted-foreground tabular-nums">09 / 28</span>
           </div>
         </div>

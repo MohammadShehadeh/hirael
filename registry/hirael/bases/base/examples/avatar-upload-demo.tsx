@@ -89,7 +89,7 @@ const AvatarUploadDemo = () => {
             outputSize={256}
             accept="image/png,image/svg+xml,image/jpeg"
           >
-            <AvatarUploadPreview fallback="AC" alt={t({ en: 'Workspace logo', ar: 'شعار مساحة العمل' })}>
+            <AvatarUploadPreview fallback="HI" alt={t({ en: 'Workspace logo', ar: 'شعار مساحة العمل' })}>
               <AvatarUploadRemove aria-label={t({ en: 'Remove logo', ar: 'إزالة الشعار' })} />
             </AvatarUploadPreview>
             <AvatarUploadInput />
@@ -100,7 +100,7 @@ const AvatarUploadDemo = () => {
             </AvatarUploadTrigger>
           </AvatarUpload>
           <div className="grid gap-1">
-            <p className="text-sm font-medium text-foreground">Acme Cloud</p>
+            <p className="text-sm font-medium text-foreground">Hirael</p>
             <p className="text-[11px] text-muted-foreground">
               {t({
                 en: 'Shown in the sidebar and on invoices. Square works best.',

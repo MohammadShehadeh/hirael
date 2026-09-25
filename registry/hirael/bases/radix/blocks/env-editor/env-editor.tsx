@@ -739,14 +739,14 @@ const SAMPLE: EnvVar[] = [
   {
     id: 'database-url',
     key: 'DATABASE_URL',
-    value: 'postgres://app:s3cr3t@db.internal:5432/relay',
+    value: 'postgres://hirael:s3cr3t@db.hirael.internal:5432/hirael',
     secret: true,
     environments: ['production'],
   },
   {
     id: 'redis-url',
     key: 'REDIS_URL',
-    value: 'redis://cache.internal:6379/0',
+    value: 'redis://cache.hirael.internal:6379/0',
     environments: ['production', 'preview'],
   },
   {
@@ -759,7 +759,7 @@ const SAMPLE: EnvVar[] = [
   {
     id: 'next-public-app-url',
     key: 'NEXT_PUBLIC_APP_URL',
-    value: 'https://app.relay.dev',
+    value: 'https://app.hirael.com',
     environments: ['production', 'preview', 'development'],
   },
   {

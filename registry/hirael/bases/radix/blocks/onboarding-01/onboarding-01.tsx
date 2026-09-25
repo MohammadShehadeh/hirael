@@ -334,7 +334,7 @@ const slugify = (value: string) => {
 };
 
 /** Seeded so the first step opens with an enabled primary action. */
-const DEMO_WORKSPACE = 'Northwind';
+const DEMO_WORKSPACE = 'Hirael';
 
 const Onboarding01 = () => {
   const [step, setStep] = React.useState(0);
@@ -422,7 +422,7 @@ const Onboarding01 = () => {
                         id="onboarding-workspace"
                         value={workspace}
                         onChange={(e) => setWorkspace(e.target.value)}
-                        placeholder="Plinth Labs"
+                        placeholder="Hirael Labs"
                         autoComplete="organization"
                         autoFocus
                       />
@@ -431,7 +431,7 @@ const Onboarding01 = () => {
                       <FieldLabel htmlFor="onboarding-slug">Workspace URL</FieldLabel>
                       <InputGroup>
                         <InputGroupAddon align="inline-start">
-                          <span className="text-muted-foreground">hirael.app/</span>
+                          <span className="text-muted-foreground">hirael.com/</span>
                         </InputGroupAddon>
                         <InputGroupInput
                           id="onboarding-slug"
@@ -440,7 +440,7 @@ const Onboarding01 = () => {
                             setSlugTouched(true);
                             setSlug(slugify(e.target.value));
                           }}
-                          placeholder="plinth-labs"
+                          placeholder="hirael-labs"
                           spellCheck={false}
                           autoComplete="off"
                         />
@@ -448,7 +448,7 @@ const Onboarding01 = () => {
                       <FieldDescription>
                         {effectiveSlug ? (
                           <>
-                            Your team signs in at <span className="text-foreground">hirael.app/{effectiveSlug}</span>.
+                            Your team signs in at <span className="text-foreground">hirael.com/{effectiveSlug}</span>.
                           </>
                         ) : (
                           'Lowercase letters, numbers, and dashes. Derived from the name until you edit it.'
@@ -521,7 +521,7 @@ const Onboarding01 = () => {
                             aria-invalid={invalid || undefined}
                             onChange={(e) => setInvites((list) => list.map((v, j) => (j === i ? e.target.value : v)))}
                             placeholder={
-                              ['lena@company.com', 'omar@company.com', 'priya@company.com'][i] ?? 'name@company.com'
+                              ['lena@hirael.com', 'omar@hirael.com', 'priya@hirael.com'][i] ?? 'name@hirael.com'
                             }
                             autoComplete="off"
                             autoFocus={i === 0}

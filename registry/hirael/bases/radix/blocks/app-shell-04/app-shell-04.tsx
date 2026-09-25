@@ -72,8 +72,8 @@ interface Workspace {
 }
 
 const WORKSPACES: readonly Workspace[] = [
-  { name: 'Plinth Labs', tier: 'Pro workspace' },
-  { name: 'Northbeam', tier: 'Team workspace' },
+  { name: 'Hirael', tier: 'Pro workspace' },
+  { name: 'Hirael Labs', tier: 'Team workspace' },
   { name: 'Personal', tier: 'Free workspace' },
 ];
 
@@ -109,7 +109,7 @@ const BOARD: readonly { stage: string; cards: readonly BoardCard[] }[] = [
     cards: [
       { title: 'Onboarding drip, week 2', channel: 'Email', owner: 'MS', due: 'Sep 18' },
       { title: 'Retargeting ads for trial users', channel: 'Paid', owner: 'AL', due: 'Sep 20' },
-      { title: 'Case study: Northbeam rollout', channel: 'Blog', owner: 'JP', due: 'Sep 22' },
+      { title: 'Case study: Hirael Labs rollout', channel: 'Blog', owner: 'JP', due: 'Sep 22' },
     ],
   },
   {

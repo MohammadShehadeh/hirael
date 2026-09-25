@@ -326,14 +326,14 @@ export { TenantSwitcher, TenantSwitcherTrigger, TenantSwitcherContent, TenantSwi
 
 const TENANT_WORKSPACES: Tenant[] = [
   { value: 'personal', label: 'Personal', caption: 'Free', group: 'Personal' },
-  { value: 'fieldnote', label: 'Fieldnote Labs', caption: 'Pro plan', group: 'Teams' },
-  { value: 'kestrel', label: 'Kestrel Health', caption: 'Enterprise', group: 'Teams' },
-  { value: 'harbor', label: 'Harbor Analytics', caption: 'Pro plan', group: 'Teams' },
+  { value: 'hirael', label: 'Hirael', caption: 'Pro plan', group: 'Teams' },
+  { value: 'hirael-labs', label: 'Hirael Labs', caption: 'Enterprise', group: 'Teams' },
+  { value: 'hirael-studio', label: 'Hirael Studio', caption: 'Pro plan', group: 'Teams' },
 ];
 
 const TenantSwitcherBlock = () => {
   const [tenants, setTenants] = React.useState(TENANT_WORKSPACES);
-  const [workspace, setWorkspace] = React.useState<string | undefined>('fieldnote');
+  const [workspace, setWorkspace] = React.useState<string | undefined>('hirael');
   const [open, setOpen] = React.useState(false);
   const [creating, setCreating] = React.useState(false);
   const [name, setName] = React.useState('');
@@ -405,7 +405,7 @@ const TenantSwitcherBlock = () => {
               <Input
                 id="tenant-switcher-name"
                 value={name}
-                placeholder="Acme Studio"
+                placeholder="Hirael Cloud"
                 autoComplete="off"
                 onChange={(event) => {
                   setName(event.target.value);

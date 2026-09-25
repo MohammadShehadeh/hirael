@@ -124,7 +124,7 @@ const Login03 = () => {
             <span aria-hidden className="text-border">
               |
             </span>
-            <span>Northwind</span>
+            <span>Hirael</span>
           </figcaption>
         </figure>
       </aside>

@@ -213,7 +213,7 @@ const Blog02 = () => {
               Writing
             </h2>
             <p style={stagger(2, 80)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground')}>
-              How we build Relay, why it looks the way it does, and what the company is up to.
+              How we build Hirael, why it looks the way it does, and what the company is up to.
             </p>
           </div>
 

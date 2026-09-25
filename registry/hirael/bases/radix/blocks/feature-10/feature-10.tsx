@@ -79,16 +79,16 @@ const Feature10 = () => {
             </CardContent>
             <CardFooter className="mt-auto">
               <Avatar aria-hidden className="me-3">
-                <AvatarFallback>PB</AvatarFallback>
+                <AvatarFallback>MS</AvatarFallback>
               </Avatar>
               <div className="flex min-w-0 flex-col">
-                <cite className="text-sm font-medium not-italic">Priya Banerjee</cite>
+                <cite className="text-sm font-medium not-italic">Mohammad Shehadeh</cite>
                 <span className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase">
                   <span>Design systems</span>
                   <span aria-hidden className="text-border">
                     |
                   </span>
-                  <span>Helios Lab</span>
+                  <span>Hirael</span>
                 </span>
               </div>
             </CardFooter>

@@ -3,7 +3,7 @@ import { SITE } from '@/lib/site';
 export interface Sponsor {
   name: string;
   href: string;
-  /** Path under `public/`, e.g. `/brand-logos/acme.svg`. */
+  /** Path under `public/`, e.g. `/brand-logos/sahabti.svg`. */
   logo: string;
   /** Monochrome dark logos read on the dark canvas only once inverted. */
   invertOnDark?: boolean;

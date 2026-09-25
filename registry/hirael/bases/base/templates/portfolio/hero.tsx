@@ -27,7 +27,7 @@ const Logo = () => {
       <span className="accent-gradient absolute inset-0 rounded-full" />
       <span className="absolute inset-0 rounded-full bg-[linear-gradient(270deg,#89AACC_0%,#4E85BF_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <span className="absolute inset-[1.5px] rounded-full bg-[hsl(var(--bg))]" />
-      <span className="font-display relative text-[13px] leading-none italic">JD</span>
+      <span className="font-display relative text-[13px] leading-none italic">MS</span>
     </a>
   );
 };
@@ -176,7 +176,7 @@ export const Hero = ({ start = true }: HeroProps) => {
           Collection &rsquo;26
         </span>
         <h1 className="name-reveal font-display mb-6 [transform:translateY(50px)] text-6xl leading-[0.9] tracking-tight italic motion-reduce:[transform:none] md:text-8xl lg:text-9xl">
-          John Doe
+          Mohammad Shehadeh
         </h1>
         <p className="lead-rise mb-3 [transform:translateY(20px)] text-lg text-[hsl(var(--text))] motion-reduce:[transform:none] sm:text-xl">
           A{' '}

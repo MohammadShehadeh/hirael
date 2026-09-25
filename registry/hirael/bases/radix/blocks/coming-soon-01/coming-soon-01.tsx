@@ -83,7 +83,7 @@ export interface ComingSoonFormProps extends Omit<React.ComponentProps<'form'>, 
 
 const ComingSoonForm = ({
   onSubscribe,
-  placeholder = 'you@studio.com',
+  placeholder = 'you@hirael.com',
   buttonLabel = 'Notify me',
   successMessage = "You're on the list.",
   className,

@@ -176,7 +176,7 @@ const Contact01 = () => {
                           id="contact-name"
                           name="name"
                           autoComplete="name"
-                          placeholder="Mira Kovac"
+                          placeholder="Mohammad Shehadeh"
                           value={state.name}
                           onChange={(e) => set('name', e.target.value)}
                           aria-invalid={Boolean(errors.name) || undefined}
@@ -191,7 +191,7 @@ const Contact01 = () => {
                           name="email"
                           type="email"
                           autoComplete="email"
-                          placeholder="mira@plinth.dev"
+                          placeholder="hello@mohammadshehadeh.com"
                           value={state.email}
                           onChange={(e) => set('email', e.target.value)}
                           aria-invalid={Boolean(errors.email) || undefined}
@@ -210,7 +210,7 @@ const Contact01 = () => {
                           id="contact-company"
                           name="company"
                           autoComplete="organization"
-                          placeholder="Plinth Labs"
+                          placeholder="Hirael"
                           value={state.company}
                           onChange={(e) => set('company', e.target.value)}
                         />

@@ -575,7 +575,7 @@ type AssigneeFilter = 'all' | Assignee | 'unassigned';
 type Mode = 'reply' | 'note';
 
 const TEAM: Record<Assignee, { name: string; initials: string }> = {
-  me: { name: 'Sam Rivera', initials: 'SR' },
+  me: { name: 'Mohammad Shehadeh', initials: 'MS' },
   ana: { name: 'Ana Lima', initials: 'AL' },
   tom: { name: 'Tom Becker', initials: 'TB' },
 };
@@ -653,8 +653,8 @@ const CONVERSATIONS: Conversation[] = [
     id: 'vat',
     customer: {
       name: 'Olivia Grant',
-      email: 'olivia@brightpath.io',
-      company: 'Brightpath',
+      email: 'olivia@hirael.com',
+      company: 'Hirael Labs',
       plan: 'Business, 24 seats',
       since: 'March 2024',
     },
@@ -708,8 +708,8 @@ const CONVERSATIONS: Conversation[] = [
     id: 'sso',
     customer: {
       name: 'Marcus Lee',
-      email: 'marcus@fernway.co',
-      company: 'Fernway',
+      email: 'marcus@hirael.com',
+      company: 'Hirael Studio',
       plan: 'Business, 60 seats',
       since: 'June 2023',
     },
@@ -724,15 +724,15 @@ const CONVERSATIONS: Conversation[] = [
         day: 'Today',
         time: '08:47',
       },
-      { id: 's2', kind: 'customer', text: 'Workspace is fernway, Business plan.', day: 'Today', time: '08:48' },
+      { id: 's2', kind: 'customer', text: 'Workspace is hirael-studio, Business plan.', day: 'Today', time: '08:48' },
     ],
   },
   {
     id: 'annual',
     customer: {
       name: 'Priya Shah',
-      email: 'priya@loomhq.com',
-      company: 'Loom HQ',
+      email: 'priya@hirael.com',
+      company: 'Hirael Cloud',
       plan: 'Team, 8 seats',
       since: 'January 2025',
     },
@@ -764,8 +764,8 @@ const CONVERSATIONS: Conversation[] = [
     id: 'webhooks',
     customer: {
       name: 'Diego Ramos',
-      email: 'diego@parcelhub.mx',
-      company: 'Parcelhub',
+      email: 'diego@hirael.com',
+      company: 'Hirael Docs',
       plan: 'Business, 15 seats',
       since: 'October 2024',
     },
@@ -796,8 +796,8 @@ const CONVERSATIONS: Conversation[] = [
     id: 'export',
     customer: {
       name: 'Jonas Keller',
-      email: 'jonas@keller.studio',
-      company: 'Keller Studio',
+      email: 'jonas@hirael.com',
+      company: 'Hirael Design',
       plan: 'Team, 5 seats',
       since: 'May 2025',
     },
@@ -830,8 +830,8 @@ const CONVERSATIONS: Conversation[] = [
     id: 'seats',
     customer: {
       name: 'Emma Wilson',
-      email: 'emma@northdesk.com',
-      company: 'Northdesk',
+      email: 'emma@hirael.com',
+      company: 'Hirael',
       plan: 'Business, 32 seats',
       since: 'August 2022',
     },

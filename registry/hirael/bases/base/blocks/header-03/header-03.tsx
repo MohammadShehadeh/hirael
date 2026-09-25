@@ -108,7 +108,7 @@ const GROUPS: readonly MenuGroup[] = [
     ],
     feature: {
       label: 'Customer story',
-      title: 'Halden cut deploy time to 90 seconds',
+      title: 'Hirael cut deploy time to 90 seconds',
       body: 'A 40 person retail team moved 12 storefronts over in a weekend and stopped scheduling release nights.',
       date: 'Aug 21, 2026',
       dateTime: '2026-08-21',
@@ -164,7 +164,7 @@ const Wordmark = ({ className }: WordmarkProps) => {
         className,
       )}
     >
-      Northbeam
+      Hirael
     </a>
   );
 };

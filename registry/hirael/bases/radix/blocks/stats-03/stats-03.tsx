@@ -131,8 +131,8 @@ const Stats03 = () => {
             Eighteen months, 8,412 seats
           </h2>
           <p style={stagger(2, 70)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground')}>
-            We sent the first invoice in March 2025 to a team of six. Today 1,140 companies pay for Northbeam, and most
-            of them started on the free plan with fewer than ten people before rolling it out to other departments.
+            We sent the first invoice in March 2025 to a team of six. Today 1,140 companies pay for Hirael, and most of
+            them started on the free plan with fewer than ten people before rolling it out to other departments.
           </p>
           <a
             href="#"

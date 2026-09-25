@@ -109,7 +109,7 @@ const TRANSACTIONS: readonly Txn[] = [
   {
     initials: 'LV',
     name: 'Lena Voss',
-    email: 'lena@northbeam.io',
+    email: 'lena@hirael.com',
     status: 'paid',
     date: 'Apr 28',
     amount: 249,
@@ -117,7 +117,7 @@ const TRANSACTIONS: readonly Txn[] = [
   {
     initials: 'DR',
     name: 'Dario Reyes',
-    email: 'dario@quantfold.com',
+    email: 'dario@hirael.com',
     status: 'paid',
     date: 'Apr 27',
     amount: 1188,
@@ -125,7 +125,7 @@ const TRANSACTIONS: readonly Txn[] = [
   {
     initials: 'PB',
     name: 'Priya Banerjee',
-    email: 'priya@helioslab.dev',
+    email: 'priya@hirael.com',
     status: 'open',
     date: 'Apr 27',
     amount: 96,
@@ -133,7 +133,7 @@ const TRANSACTIONS: readonly Txn[] = [
   {
     initials: 'TW',
     name: 'Tomas Weber',
-    email: 'tomas@arcadia.app',
+    email: 'tomas@hirael.com',
     status: 'refunded',
     date: 'Apr 26',
     amount: -249,
@@ -141,7 +141,7 @@ const TRANSACTIONS: readonly Txn[] = [
   {
     initials: 'AK',
     name: 'Amara Keita',
-    email: 'amara@stackline.co',
+    email: 'amara@hirael.com',
     status: 'paid',
     date: 'Apr 25',
     amount: 468,
@@ -149,7 +149,7 @@ const TRANSACTIONS: readonly Txn[] = [
   {
     initials: 'HS',
     name: 'Hana Suzuki',
-    email: 'hana@driftwork.com',
+    email: 'hana@hirael.com',
     status: 'paid',
     date: 'Apr 24',
     amount: 96,

@@ -45,7 +45,7 @@ const MEMBERS: readonly Member[] = [
     department: 'engineering',
     city: 'Lisbon',
     timeZone: 'Europe/Lisbon',
-    email: 'ines@example.com',
+    email: 'ines@hirael.com',
     avatar: '/media/blocks/team-03/avatar-2.jpg',
   },
   {
@@ -54,7 +54,7 @@ const MEMBERS: readonly Member[] = [
     department: 'engineering',
     city: 'Nairobi',
     timeZone: 'Africa/Nairobi',
-    email: 'daniel@example.com',
+    email: 'daniel@hirael.com',
   },
   {
     name: 'Priya Raman',
@@ -62,7 +62,7 @@ const MEMBERS: readonly Member[] = [
     department: 'engineering',
     city: 'Singapore',
     timeZone: 'Asia/Singapore',
-    email: 'priya@example.com',
+    email: 'priya@hirael.com',
   },
   {
     name: 'Jonas Weber',
@@ -70,7 +70,7 @@ const MEMBERS: readonly Member[] = [
     department: 'engineering',
     city: 'Berlin',
     timeZone: 'Europe/Berlin',
-    email: 'jonas@example.com',
+    email: 'jonas@hirael.com',
     avatar: '/media/blocks/team-03/avatar-1.jpg',
   },
   {
@@ -79,7 +79,7 @@ const MEMBERS: readonly Member[] = [
     department: 'design',
     city: 'Dubai',
     timeZone: 'Asia/Dubai',
-    email: 'omar@example.com',
+    email: 'omar@hirael.com',
     avatar: '/media/blocks/team-03/avatar-3.jpg',
   },
   {
@@ -88,7 +88,7 @@ const MEMBERS: readonly Member[] = [
     department: 'design',
     city: 'Toronto',
     timeZone: 'America/Toronto',
-    email: 'maya@example.com',
+    email: 'maya@hirael.com',
   },
   {
     name: 'Lena Fischer',
@@ -96,7 +96,7 @@ const MEMBERS: readonly Member[] = [
     department: 'design',
     city: 'Berlin',
     timeZone: 'Europe/Berlin',
-    email: 'lena@example.com',
+    email: 'lena@hirael.com',
   },
   {
     name: 'Hannah Kelly',
@@ -104,7 +104,7 @@ const MEMBERS: readonly Member[] = [
     department: 'support',
     city: 'Toronto',
     timeZone: 'America/Toronto',
-    email: 'hannah@example.com',
+    email: 'hannah@hirael.com',
     avatar: '/media/blocks/team-03/avatar-4.jpg',
   },
   {
@@ -113,7 +113,7 @@ const MEMBERS: readonly Member[] = [
     department: 'support',
     city: 'Nairobi',
     timeZone: 'Africa/Nairobi',
-    email: 'amara@example.com',
+    email: 'amara@hirael.com',
   },
   {
     name: 'Wei Ling Tan',
@@ -121,7 +121,7 @@ const MEMBERS: readonly Member[] = [
     department: 'support',
     city: 'Singapore',
     timeZone: 'Asia/Singapore',
-    email: 'weiling@example.com',
+    email: 'weiling@hirael.com',
   },
 ];
 

@@ -22,7 +22,7 @@ const CONTACT = {
   location: 'Dubai, UAE',
 };
 
-const PLACEHOLDERS = ['you@company.com', 'Get release notes by email', 'One email per release'];
+const PLACEHOLDERS = ['you@hirael.com', 'Get release notes by email', 'One email per release'];
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

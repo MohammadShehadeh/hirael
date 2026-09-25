@@ -728,7 +728,7 @@ const AiChat01 = () => {
 
   const shareChat = async () => {
     try {
-      await navigator.clipboard.writeText(`https://chat.plinth.dev/share/${activeId ?? 'draft'}`);
+      await navigator.clipboard.writeText(`https://chat.hirael.com/share/${activeId ?? 'draft'}`);
     } catch {
       return;
     }
@@ -844,7 +844,7 @@ const AiChat01 = () => {
               </h1>
             )}
             <Badge variant="outline" className="hidden sm:inline-flex">
-              plinth-2-pro
+              hirael-2-pro
             </Badge>
             <Button variant="ghost" size="sm" aria-label={copied ? 'Link copied' : 'Share chat'} onClick={shareChat}>
               {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
@@ -905,7 +905,7 @@ const AiChat01 = () => {
               className={cn(SWAP, 'flex flex-1 flex-col items-center justify-center gap-6 p-6 text-center')}
             >
               <div className="flex flex-col items-center gap-2">
-                <span className="text-xs text-muted-foreground uppercase">plinth-2-pro</span>
+                <span className="text-xs text-muted-foreground uppercase">hirael-2-pro</span>
                 <h2 className="font-serif text-3xl font-medium tracking-tight sm:text-4xl">What are you working on?</h2>
                 <p className="max-w-sm text-sm text-muted-foreground">
                   Ask a question, paste an error, or start from one of these.

@@ -26,7 +26,7 @@ const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const WAITLIST = {
   joined: 3902,
   position: 1284,
-  referralUrl: 'https://relay.app/r/k7m2q',
+  referralUrl: 'https://hirael.com/join/k7m2q',
   invites: 0,
 } as const;
 
@@ -69,7 +69,7 @@ const Newsletter02 = () => {
     event.preventDefault();
     if (status === 'loading') return;
     if (!EMAIL_PATTERN.test(email.trim())) {
-      setError('Enter an email address like you@company.com.');
+      setError('Enter an email address like you@hirael.com.');
       inputRef.current?.focus();
 
       return;
@@ -186,7 +186,7 @@ const Newsletter02 = () => {
                 Get in before the public launch
               </h2>
               <p style={stagger(2, 80)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground')}>
-                Relay opens to everyone in November. Until then we let people in by their place on the list, a few
+                Hirael opens to everyone in November. Until then we let people in by their place on the list, a few
                 hundred each week.
               </p>
             </div>
@@ -211,7 +211,7 @@ const Newsletter02 = () => {
                     type="email"
                     inputMode="email"
                     autoComplete="email"
-                    placeholder="you@company.com"
+                    placeholder="you@hirael.com"
                     value={email}
                     disabled={loading}
                     onChange={(event) => {

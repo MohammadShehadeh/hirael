@@ -269,7 +269,7 @@ const RECORDS: readonly DocRecord[] = [
     title: 'Bill customers for usage',
     type: 'guide',
     area: 'billing',
-    snippet: 'Report metered events from your backend and let Relay turn them into line items on each invoice.',
+    snippet: 'Report metered events from your backend and let Hirael turn them into line items on each invoice.',
     updated: '2026-09-10',
   },
   {
@@ -334,7 +334,7 @@ const RECORDS: readonly DocRecord[] = [
     title: 'Event types reference',
     type: 'doc',
     area: 'webhooks',
-    snippet: 'Every event Relay sends, with its payload shape and when it fires, from invoice.paid to user.deleted.',
+    snippet: 'Every event Hirael sends, with its payload shape and when it fires, from invoice.paid to user.deleted.',
     updated: '2026-09-23',
   },
   {
@@ -379,10 +379,10 @@ const RECORDS: readonly DocRecord[] = [
   },
   {
     id: 'cli-install',
-    title: 'Install the Relay CLI',
+    title: 'Install the Hirael CLI',
     type: 'guide',
     area: 'cli',
-    snippet: 'Install with Homebrew, npm or a single binary, then sign in with relay login.',
+    snippet: 'Install with Homebrew, npm or a single binary, then sign in with hirael login.',
     updated: '2026-09-20',
   },
   {
@@ -398,7 +398,7 @@ const RECORDS: readonly DocRecord[] = [
     title: 'Forward webhooks to localhost',
     type: 'guide',
     area: 'cli',
-    snippet: 'Run relay listen to receive live webhook events on your machine while you build.',
+    snippet: 'Run hirael listen to receive live webhook events on your machine while you build.',
     updated: '2026-09-17',
   },
   {
@@ -414,7 +414,7 @@ const RECORDS: readonly DocRecord[] = [
     title: 'CLI command reference',
     type: 'api',
     area: 'cli',
-    snippet: 'Every command and flag, with examples, from relay deploy to relay logs --follow.',
+    snippet: 'Every command and flag, with examples, from hirael deploy to hirael logs --follow.',
     updated: '2026-07-29',
   },
 ];
@@ -594,7 +594,7 @@ const Search01 = () => {
             Search the docs
           </h2>
           <p style={stagger(1, 80)} className={cn(ENTER, 'text-base leading-relaxed text-muted-foreground')}>
-            Guides, API reference and release notes for every part of Relay.
+            Guides, API reference and release notes for every part of Hirael.
           </p>
         </header>
 

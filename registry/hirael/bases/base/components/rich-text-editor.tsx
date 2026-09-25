@@ -422,7 +422,7 @@ const RichTextEditorLinkPopover = () => {
           <Input
             ref={inputRef}
             type="url"
-            placeholder="https://example.com"
+            placeholder="https://hirael.com"
             value={url}
             onChange={(e) => setUrl(e.target.value)}
             className="h-8 text-sm"
@@ -641,7 +641,7 @@ const RichTextEditorLinkBubble = () => {
             ref={inputRef}
             type="url"
             dir="ltr"
-            placeholder="https://example.com"
+            placeholder="https://hirael.com"
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
             className="h-8 w-56 text-sm"

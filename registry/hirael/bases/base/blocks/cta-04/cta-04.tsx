@@ -10,7 +10,7 @@ const ENTER =
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
-const EMAIL = 'hello@lenaparks.dev';
+const EMAIL = 'hello@mohammadshehadeh.com';
 
 const GithubIcon = (props: React.SVGProps<SVGSVGElement>) => {
   return (
@@ -35,8 +35,8 @@ const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => {
 };
 
 const socials = [
-  { label: 'GitHub', href: '#', icon: GithubIcon },
-  { label: 'LinkedIn', href: '#', icon: LinkedinIcon },
+  { label: 'GitHub', href: 'https://github.com/mohammadshehadeh', icon: GithubIcon },
+  { label: 'LinkedIn', href: 'https://linkedin.com/in/mohammadshhadeh', icon: LinkedinIcon },
 ];
 
 const Cta04 = () => {

@@ -10,7 +10,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/b
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
-const MASKED_EMAIL = 'a•••@studio.com';
+const MASKED_EMAIL = 'h•••@mohammadshehadeh.com';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';

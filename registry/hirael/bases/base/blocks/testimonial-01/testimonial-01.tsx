@@ -43,16 +43,16 @@ const Testimonial01 = () => {
                 aria-hidden
                 className="inline-flex size-12 items-center justify-center rounded-full border border-border bg-muted text-sm font-medium text-foreground"
               >
-                MR
+                MS
               </span>
               <span className="flex flex-col items-center gap-0.5">
-                <span className="text-sm font-semibold tracking-[-0.01em]">Maya Renner</span>
+                <span className="text-sm font-semibold tracking-[-0.01em]">Mohammad Shehadeh</span>
                 <span className="flex items-center gap-2 text-xs text-muted-foreground uppercase">
                   <span>Staff engineer</span>
                   <span aria-hidden className="text-border">
                     |
                   </span>
-                  <span>Plinth Labs</span>
+                  <span>Hirael</span>
                 </span>
               </span>
             </figcaption>

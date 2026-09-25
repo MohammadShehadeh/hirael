@@ -21,10 +21,10 @@ const MorphingDialogDemo = () => {
         <MorphingDialogTrigger className="w-72">
           <div className="flex items-center gap-3 p-4">
             <div className="flex size-10 items-center justify-center rounded-md bg-foreground/10 text-sm font-medium text-foreground">
-              HL
+              HI
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-medium text-foreground">Halo Layouts</span>
+              <span className="text-sm font-medium text-foreground">Hirael</span>
               <span className="text-xs text-muted-foreground">{t({ en: 'Design system', ar: 'نظام تصميم' })}</span>
             </div>
             <Plus className="ms-auto size-4 text-muted-foreground" />
@@ -33,9 +33,9 @@ const MorphingDialogDemo = () => {
         <MorphingDialogContent className="w-[22rem]">
           <div className="flex flex-col gap-3 p-6">
             <div className="flex size-12 items-center justify-center rounded-md bg-foreground/10 text-base font-medium text-foreground">
-              HL
+              HI
             </div>
-            <MorphingDialogTitle>Halo Layouts</MorphingDialogTitle>
+            <MorphingDialogTitle>Hirael</MorphingDialogTitle>
             <MorphingDialogDescription>
               {t({
                 en: 'A token-driven design system for dense product UIs: 200+ variables, dark-first, and a CLI that copies source straight into your repo.',

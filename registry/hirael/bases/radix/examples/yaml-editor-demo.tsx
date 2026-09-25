@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: api
-          image: "registry.example.com/api:2.4.0"
+          image: "registry.hirael.com/api:2.4.0"
           ports:
             - containerPort: 8080
           env:

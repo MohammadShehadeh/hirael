@@ -104,27 +104,27 @@ interface Account {
 
 const ROWS: readonly Account[] = [
   {
-    name: 'Plinth Labs',
+    name: 'Hirael Labs',
     plan: 'Pro',
     mrr: 2480,
     status: 'Active',
-    initials: 'PL',
+    initials: 'HL',
   },
-  { name: 'Helix', plan: 'Team', mrr: 6120, status: 'Active', initials: 'HX' },
-  { name: 'Brella', plan: 'Hobby', mrr: 0, status: 'Trial', initials: 'BR' },
+  { name: 'Hirael Studio', plan: 'Team', mrr: 6120, status: 'Active', initials: 'HS' },
+  { name: 'Hirael Cloud', plan: 'Hobby', mrr: 0, status: 'Trial', initials: 'HC' },
   {
-    name: 'Verbit',
+    name: 'Hirael Docs',
     plan: 'Pro',
     mrr: 1860,
     status: 'Past due',
-    initials: 'VB',
+    initials: 'HD',
   },
   {
-    name: 'Mercado',
+    name: 'Hirael',
     plan: 'Team',
     mrr: 5400,
     status: 'Active',
-    initials: 'MC',
+    initials: 'HR',
   },
 ];
 
@@ -282,7 +282,7 @@ const AppShell01 = () => {
                 <div className="grid flex-1 text-start leading-tight">
                   <span className="truncate text-sm font-semibold tracking-[-0.01em]">Hirael</span>
                   <span className="flex gap-1.5 truncate text-xs text-muted-foreground uppercase">
-                    <span>plinth labs</span>
+                    <span>hirael</span>
                     <span className="text-border">|</span>
                     <span>pro</span>
                   </span>
@@ -352,7 +352,7 @@ const AppShell01 = () => {
                       <span className="flex gap-1.5 truncate text-xs text-muted-foreground uppercase">
                         <span>admin</span>
                         <span className="text-border">|</span>
-                        <span>plinth labs</span>
+                        <span>hirael</span>
                       </span>
                     </div>
                     <ChevronsUpDown className="ms-auto size-3.5 shrink-0 text-muted-foreground" />

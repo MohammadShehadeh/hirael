@@ -234,7 +234,7 @@ const StorageBrowserBlock = () => {
           <StorageBrowserHeader>
             <StorageBreadcrumb>
               <StorageBreadcrumbItem current={path.length === 0} onClick={() => navigate([])}>
-                my-bucket
+                hirael-assets
               </StorageBreadcrumbItem>
               {path.map((segment, i) => (
                 <StorageBreadcrumbItem

@@ -70,25 +70,25 @@ interface DeployLine {
 }
 
 const DEPLOY_LINES: readonly DeployLine[] = [
-  { at: '00:00', text: 'Cloning fernhill/storefront at 8f3c2a1', delay: 450 },
+  { at: '00:00', text: 'Cloning hirael/storefront at 8f3c2a1', delay: 450 },
   { at: '00:01', text: 'Restored build cache from the last deploy', delay: 650 },
   { at: '00:04', text: 'Installed 412 packages in 2.9s', delay: 850 },
   { at: '00:05', text: 'Running next build', delay: 500 },
   { at: '00:19', text: 'Compiled 38 routes in 13.6s', delay: 1100 },
   { at: '00:21', text: 'Uploaded 18.4 MB to 6 regions', delay: 800 },
   { at: '00:23', text: 'Health check passed on /api/health', delay: 600 },
-  { at: '00:24', text: 'Live at storefront.kestrel.app', delay: 500 },
+  { at: '00:24', text: 'Live at storefront.hirael.com', delay: 500 },
 ];
 
 const PREVIOUS_LINES: readonly Omit<DeployLine, 'delay'>[] = [
-  { at: '00:00', text: 'Cloning fernhill/storefront at 3d91b07' },
+  { at: '00:00', text: 'Cloning hirael/storefront at 3d91b07' },
   { at: '00:01', text: 'Restored build cache from the last deploy' },
   { at: '00:04', text: 'Installed 409 packages in 3.1s' },
   { at: '00:05', text: 'Running next build' },
   { at: '00:21', text: 'Compiled 38 routes in 15.2s' },
   { at: '00:23', text: 'Uploaded 18.1 MB to 6 regions' },
   { at: '00:25', text: 'Health check passed on /api/health' },
-  { at: '00:26', text: 'Live at storefront.kestrel.app' },
+  { at: '00:26', text: 'Live at storefront.hirael.com' },
 ];
 
 interface Release {
@@ -518,15 +518,15 @@ const UptimeStrip = (props: UptimeStripProps) => {
 };
 
 const PACKAGE_MANAGERS = [
-  { id: 'npm', command: 'npm install -g kestrel' },
-  { id: 'pnpm', command: 'pnpm add -g kestrel' },
-  { id: 'yarn', command: 'yarn global add kestrel' },
-  { id: 'bun', command: 'bun add -g kestrel' },
+  { id: 'npm', command: 'npm install -g hirael' },
+  { id: 'pnpm', command: 'pnpm add -g hirael' },
+  { id: 'yarn', command: 'yarn global add hirael' },
+  { id: 'bun', command: 'bun add -g hirael' },
 ] as const;
 
 type PackageManager = (typeof PACKAGE_MANAGERS)[number]['id'];
 
-const NEXT_STEPS = ['Install the CLI', 'Run kestrel login', 'Run kestrel deploy in your project'] as const;
+const NEXT_STEPS = ['Install the CLI', 'Run hirael login', 'Run hirael deploy in your project'] as const;
 
 type InstallCommandProps = Omit<BentoTileProps, 'title' | 'description' | 'action' | 'children'>;
 

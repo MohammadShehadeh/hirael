@@ -44,8 +44,8 @@ interface ChoiceQuestion {
 
 const USE: ChoiceQuestion = {
   id: 'use',
-  summary: 'Using Relay for',
-  title: 'What will you use Relay for?',
+  summary: 'Using Hirael for',
+  title: 'What will you use Hirael for?',
   options: [
     { value: 'support', label: 'Customer support' },
     { value: 'sales', label: 'Sales conversations' },
@@ -57,7 +57,7 @@ const USE: ChoiceQuestion = {
 const TEAM: ChoiceQuestion = {
   id: 'team',
   summary: 'Who uses it',
-  title: 'Who will be working in Relay?',
+  title: 'Who will be working in Hirael?',
   options: [
     { value: 'solo', label: 'Just me' },
     { value: 'team', label: 'My team' },
@@ -198,7 +198,7 @@ const Survey04 = () => {
       className="relative isolate flex min-h-[40rem] flex-col overflow-hidden bg-background"
     >
       <h2 id="survey-04-heading" className="sr-only">
-        Set up Relay
+        Set up Hirael
       </h2>
 
       {answers ? (

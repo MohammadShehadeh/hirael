@@ -67,11 +67,11 @@ const Testimonial03 = () => {
           style={stagger(3)}
           className={cn(ENTER, 'mt-8 flex items-center justify-center gap-2 text-xs text-muted-foreground uppercase')}
         >
-          <span>Priya Anand</span>
+          <span>Mohammad Shehadeh</span>
           <span aria-hidden className="text-border">
             |
           </span>
-          <span>Product lead, Tidewater</span>
+          <span>Product lead, Hirael</span>
         </figcaption>
       </figure>
     </section>

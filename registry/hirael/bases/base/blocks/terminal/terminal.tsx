@@ -160,7 +160,7 @@ interface TerminalEntry {
   text: string;
 }
 
-const TERMINAL_USER = 'deploy@edge';
+const TERMINAL_USER = 'mohammadshehadeh@hirael';
 const MAX_ENTRIES = 200;
 
 const TerminalBlock = () => {

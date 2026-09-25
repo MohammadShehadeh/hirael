@@ -649,7 +649,7 @@ const MessageThreadBlock = () => {
         <div className="flex items-center justify-between gap-3 border-b border-border bg-card px-4 py-2">
           <span className="flex flex-wrap items-center gap-x-3 text-xs text-muted-foreground uppercase">
             <span>Latency regression</span>
-            <span>plinth-2-pro</span>
+            <span>hirael-assistant</span>
           </span>
           <Button variant="outline" size="xs" onClick={replay}>
             <RefreshCw aria-hidden />
@@ -660,7 +660,7 @@ const MessageThreadBlock = () => {
         <MessageThread className="h-[520px]">
           <Message role="system">
             <MessageBody>
-              <MessageContent>Conversation started with Plinth 2 Pro</MessageContent>
+              <MessageContent>Conversation started with Hirael Assistant</MessageContent>
             </MessageBody>
           </Message>
 

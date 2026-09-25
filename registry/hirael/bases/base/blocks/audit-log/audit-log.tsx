@@ -193,7 +193,7 @@ const AuditLogBlock = () => {
               <AuditLogTime className="ms-0">14:20 UTC</AuditLogTime>
             </AuditLogTrigger>
             <AuditLogDetail>
-              <AuditLogField label="Actor">lena.park@acme.co</AuditLogField>
+              <AuditLogField label="Actor">lena.park@hirael.com</AuditLogField>
               <AuditLogField label="IP">192.0.2.51</AuditLogField>
               <AuditLogField label="Location">Lisbon, PT</AuditLogField>
               <AuditLogField label="Plan">Pro to Scale</AuditLogField>

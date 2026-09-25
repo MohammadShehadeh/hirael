@@ -46,8 +46,8 @@ const ShippingMedia = () => {
 };
 
 const BRANCHES = [
-  { branch: 'checkout-redesign', url: 'checkout-redesign.preview.app', database: 'Copied 2 min ago' },
-  { branch: 'team-invites', url: 'team-invites.preview.app', database: 'Copied yesterday' },
+  { branch: 'checkout-redesign', url: 'checkout-redesign.preview.hirael.com', database: 'Copied 2 min ago' },
+  { branch: 'team-invites', url: 'team-invites.preview.hirael.com', database: 'Copied yesterday' },
 ];
 
 const CollaborationMedia = () => {

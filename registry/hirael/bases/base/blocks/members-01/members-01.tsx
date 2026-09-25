@@ -446,7 +446,7 @@ const MembersInviteDialog = ({
               >
                 <TagInputContainer>
                   <TagInputTags />
-                  <TagInputField id={emailsId} autoComplete="off" placeholder="name@company.com, another@company.com" />
+                  <TagInputField id={emailsId} autoComplete="off" placeholder="name@hirael.com, another@hirael.com" />
                 </TagInputContainer>
                 <TagInputError />
               </TagInput>
@@ -670,7 +670,7 @@ const PENDING: readonly PendingInvite[] = [
     role: 'Member',
     invited: '2 days ago',
   },
-  { id: 'p2', email: 'jules@acme.co', role: 'Viewer', invited: '6 days ago' },
+  { id: 'p2', email: 'jules@hirael.com', role: 'Viewer', invited: '6 days ago' },
 ];
 
 const CURRENT_USER_ID = 'm1';
@@ -725,7 +725,7 @@ const Members01 = () => {
           <MembersHeader
             title="Members"
             count={members.length}
-            description="Everyone with access to the Plinth Labs workspace."
+            description="Everyone with access to the Hirael workspace."
             className={ENTER}
           >
             <InputGroup className="h-8 w-full sm:w-56">

@@ -799,7 +799,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: [],
-    dependencies: ['lucide-react'],
+    dependencies: [],
   },
   {
     name: 'not-found-01',

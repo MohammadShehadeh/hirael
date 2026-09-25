@@ -108,7 +108,8 @@ const validate = (state: FormState): FormErrors => {
   if (!state.email.trim()) errors.email = 'Add an email so we can reply.';
   else if (!EMAIL_PATTERN.test(state.email.trim())) errors.email = 'That email is missing something.';
   if (!state.portfolio.trim()) errors.portfolio = 'Add a link to your portfolio.';
-  else if (!isUrl(state.portfolio.trim())) errors.portfolio = 'That link does not look right. Try nadia.design.';
+  else if (!isUrl(state.portfolio.trim()))
+    errors.portfolio = 'That link does not look right. Try mohammadshehadeh.com.';
   if (state.cv.length === 0) errors.cv = 'Attach your CV as a PDF.';
   if (state.note.length > NOTE_MAX) errors.note = `Keep the note under ${NOTE_MAX} characters.`;
 
@@ -233,7 +234,7 @@ const ApplyForm = () => {
             id="careers-02-name"
             data-field="name"
             autoComplete="name"
-            placeholder="Nadia Rahman"
+            placeholder="Mohammad Shehadeh"
             value={state.name}
             disabled={submitting}
             onChange={(event) => set('name', event.target.value)}
@@ -250,7 +251,7 @@ const ApplyForm = () => {
             data-field="email"
             type="email"
             autoComplete="email"
-            placeholder="nadia@rahman.studio"
+            placeholder="hello@mohammadshehadeh.com"
             value={state.email}
             disabled={submitting}
             onChange={(event) => set('email', event.target.value)}
@@ -269,7 +270,7 @@ const ApplyForm = () => {
             inputMode="url"
             autoComplete="url"
             dir="ltr"
-            placeholder="https://nadia.design"
+            placeholder="https://mohammadshehadeh.com"
             value={state.portfolio}
             disabled={submitting}
             onChange={(event) => set('portfolio', event.target.value)}

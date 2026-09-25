@@ -11,15 +11,15 @@ const MentionInputDemo = () => {
   const TEAM: MentionItem[] = [
     {
       id: '1',
-      label: 'john.doe',
+      label: 'lena.park',
       description: t({
-        en: 'John Doe · Design lead',
-        ar: 'John Doe · قائد التصميم',
+        en: 'Lena Park · Design lead',
+        ar: 'Lena Park · قائد التصميم',
       }),
     },
     {
       id: '2',
-      label: 'mohammad.shehadeh',
+      label: 'mohammadshehadeh',
       description: t({
         en: 'Mohammad Shehadeh · Frontend',
         ar: 'Mohammad Shehadeh · واجهة أمامية',
@@ -27,23 +27,23 @@ const MentionInputDemo = () => {
     },
     {
       id: '3',
-      label: 'jane.doe',
-      description: t({ en: 'Jane Doe · Product', ar: 'Jane Doe · المنتج' }),
+      label: 'omar.farouk',
+      description: t({ en: 'Omar Farouk · Product', ar: 'Omar Farouk · المنتج' }),
     },
     {
       id: '4',
-      label: 'richard.roe',
+      label: 'priya.nair',
       description: t({
-        en: 'Richard Roe · Backend',
-        ar: 'Richard Roe · واجهة خلفية',
+        en: 'Priya Nair · Backend',
+        ar: 'Priya Nair · واجهة خلفية',
       }),
     },
     {
       id: '5',
-      label: 'mary.major',
+      label: 'nadia.rahman',
       description: t({
-        en: 'Mary Major · QA',
-        ar: 'Mary Major · ضمان الجودة',
+        en: 'Nadia Rahman · QA',
+        ar: 'Nadia Rahman · ضمان الجودة',
       }),
     },
   ];

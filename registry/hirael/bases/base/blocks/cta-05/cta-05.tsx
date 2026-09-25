@@ -15,7 +15,7 @@ const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
-const email = 'projects@northlane.studio';
+const email = 'projects@hirael.com';
 const phone = '+1 (555) 012 3456';
 
 const glow = (w: number, h: number) =>

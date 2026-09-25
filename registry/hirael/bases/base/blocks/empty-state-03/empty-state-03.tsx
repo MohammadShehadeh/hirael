@@ -123,7 +123,7 @@ const EmptyState03 = () => {
     }, LOAD_MS);
   };
 
-  const supportHref = `mailto:support@shipyard.dev?subject=${encodeURIComponent(`Deployments failed to load (${errorRef})`)}`;
+  const supportHref = `mailto:support@hirael.com?subject=${encodeURIComponent(`Deployments failed to load (${errorRef})`)}`;
 
   return (
     <section data-slot="empty-state-03" className="bg-background">

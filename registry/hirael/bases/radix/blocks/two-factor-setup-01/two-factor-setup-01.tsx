@@ -364,7 +364,7 @@ const TwoFactorSetupFooter = ({ className, ...props }: React.ComponentProps<'div
   );
 };
 
-const ACCOUNT = 'ada@studio.com';
+const ACCOUNT = 'hello@mohammadshehadeh.com';
 const ISSUER = 'Hirael';
 const SECRET = 'JBSWY3DPEHPK3PXP';
 const OTPAUTH_URI = `otpauth://totp/${encodeURIComponent(ISSUER)}:${encodeURIComponent(

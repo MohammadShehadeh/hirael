@@ -18,9 +18,9 @@ const RESPONSE = {
   customer: {
     id: 'cus_41kz',
     name: 'Layla Mansour',
-    email: 'layla@example.com',
+    email: 'layla@hirael.com',
     verified: true,
-    company: null,
+    company: 'Hirael',
   },
   items: [
     { sku: 'TEE-BLK-M', qty: 2, price: 32 },

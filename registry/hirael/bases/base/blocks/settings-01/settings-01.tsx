@@ -241,7 +241,7 @@ const WEEK_STARTS = [
 
 const PROFILE = {
   name: 'Mohammad Shehadeh',
-  username: 'mohammad',
+  username: 'mohammadshehadeh',
   bio: 'Building Hirael, a registry of the parts shadcn/ui leaves out.',
 };
 
@@ -523,7 +523,7 @@ const Settings01 = () => {
                   <Input
                     id="settings-recovery"
                     type="email"
-                    placeholder="you@personal.com"
+                    placeholder="you@hirael.com"
                     value={recovery}
                     onChange={(e) => setRecovery(e.target.value)}
                     autoComplete="off"

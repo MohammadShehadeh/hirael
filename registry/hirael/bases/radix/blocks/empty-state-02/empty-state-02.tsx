@@ -42,18 +42,18 @@ interface Customer {
 }
 
 const CUSTOMERS: readonly Customer[] = [
-  { name: 'Northwind Traders', email: 'billing@northwind.com', plan: 'Enterprise', status: 'Active', mrr: 4200 },
-  { name: 'Northstar Studio', email: 'hello@northstar.studio', plan: 'Pro', status: 'Active', mrr: 290 },
-  { name: 'Lumen Health', email: 'ops@lumenhealth.io', plan: 'Enterprise', status: 'Past due', mrr: 3800 },
-  { name: 'Halcyon Bikes', email: 'accounts@halcyonbikes.com', plan: 'Pro', status: 'Active', mrr: 190 },
-  { name: 'Brightwater Farms', email: 'finance@brightwater.farm', plan: 'Free', status: 'Active', mrr: 0 },
-  { name: 'Kestrel Logistics', email: 'ap@kestrel-logistics.com', plan: 'Enterprise', status: 'Active', mrr: 5600 },
-  { name: 'Marlow and Finch', email: 'office@marlowfinch.co', plan: 'Pro', status: 'Past due', mrr: 290 },
-  { name: 'Quarry Coffee', email: 'team@quarry.coffee', plan: 'Free', status: 'Canceled', mrr: 0 },
-  { name: 'Tidewell Apparel', email: 'billing@tidewell.shop', plan: 'Pro', status: 'Active', mrr: 490 },
-  { name: 'Oakridge Dental', email: 'admin@oakridgedental.com', plan: 'Pro', status: 'Canceled', mrr: 0 },
-  { name: 'Vantage Robotics', email: 'finance@vantagerobotics.ai', plan: 'Enterprise', status: 'Active', mrr: 7200 },
-  { name: 'Pinecrest Books', email: 'store@pinecrestbooks.com', plan: 'Free', status: 'Active', mrr: 0 },
+  { name: 'Hirael Design', email: 'design@hirael.com', plan: 'Enterprise', status: 'Active', mrr: 4200 },
+  { name: 'Hirael Desktop', email: 'desktop@hirael.com', plan: 'Pro', status: 'Active', mrr: 290 },
+  { name: 'Hirael Cloud', email: 'cloud@hirael.com', plan: 'Enterprise', status: 'Past due', mrr: 3800 },
+  { name: 'Hirael Labs', email: 'labs@hirael.com', plan: 'Pro', status: 'Active', mrr: 190 },
+  { name: 'Hirael Docs', email: 'docs@hirael.com', plan: 'Free', status: 'Active', mrr: 0 },
+  { name: 'Hirael Commerce', email: 'commerce@hirael.com', plan: 'Enterprise', status: 'Active', mrr: 5600 },
+  { name: 'Hirael Studio', email: 'studio@hirael.com', plan: 'Pro', status: 'Past due', mrr: 290 },
+  { name: 'Hirael Academy', email: 'academy@hirael.com', plan: 'Free', status: 'Canceled', mrr: 0 },
+  { name: 'Hirael Store', email: 'store@hirael.com', plan: 'Pro', status: 'Active', mrr: 490 },
+  { name: 'Hirael Mobile', email: 'mobile@hirael.com', plan: 'Pro', status: 'Canceled', mrr: 0 },
+  { name: 'Hirael Analytics', email: 'analytics@hirael.com', plan: 'Enterprise', status: 'Active', mrr: 7200 },
+  { name: 'Hirael Blog', email: 'blog@hirael.com', plan: 'Free', status: 'Active', mrr: 0 },
 ];
 
 const STATUS_DOT: Record<Status, string> = {
@@ -87,7 +87,7 @@ const levenshtein = (a: string, b: string) => {
   return previous[b.length];
 };
 
-// Scores each word of a name, so "nortwind" still finds "Northwind Traders"; a shared 3-letter prefix is a weaker hit.
+// Scores each word of a name, so "desing" still finds "Hirael Design"; a shared 3-letter prefix is a weaker hit.
 const suggest = (query: string, customers: readonly Customer[], limit = 2) => {
   const q = query.trim().toLowerCase();
   if (q.length < 3) return [];
@@ -109,7 +109,7 @@ const suggest = (query: string, customers: readonly Customer[], limit = 2) => {
 };
 
 const EmptyState02 = () => {
-  const [query, setQuery] = React.useState('nortwind');
+  const [query, setQuery] = React.useState('desing');
   const [plans, setPlans] = React.useState<string[]>(['Pro']);
   const [statuses, setStatuses] = React.useState<string[]>(['Active']);
   const searchRef = React.useRef<HTMLInputElement>(null);

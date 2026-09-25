@@ -66,7 +66,7 @@ const Hero05 = () => {
           >
             <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
               <Cloud aria-hidden className="size-5 text-primary" />
-              Nimbus
+              Hirael
             </span>
             <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
               {NAV_LINKS.map((link) => (

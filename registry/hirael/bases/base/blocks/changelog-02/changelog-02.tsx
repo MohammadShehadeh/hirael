@@ -70,7 +70,7 @@ const ITEMS: readonly RoadmapItem[] = [
     id: 'scim',
     column: 'now',
     title: 'SCIM provisioning',
-    description: 'Add and remove seats from Okta or Entra ID without touching Relay.',
+    description: 'Add and remove seats from Okta or Entra ID without touching Hirael.',
     tag: 'Admin',
     votes: 164,
     added: '2026-04-30',

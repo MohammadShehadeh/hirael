@@ -41,8 +41,8 @@ const LinkedinIcon = (props: React.SVGProps<SVGSVGElement>) => {
 const EMAIL = 'hello@hirael.com';
 
 const SOCIAL_LINKS = [
-  { icon: GithubIcon, href: '#', label: 'GitHub' },
-  { icon: LinkedinIcon, href: '#', label: 'LinkedIn' },
+  { icon: GithubIcon, href: 'https://github.com/mohammadshehadeh', label: 'GitHub' },
+  { icon: LinkedinIcon, href: 'https://linkedin.com/in/mohammadshhadeh', label: 'LinkedIn' },
 ] as const;
 
 interface CopyEmailProps {

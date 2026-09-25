@@ -268,7 +268,7 @@ interface Milestone {
   detail: string;
 }
 
-const OWNER: Person = { name: 'Maya Okafor', initials: 'MO' };
+const OWNER: Person = { name: 'Mohammad Shehadeh', initials: 'MS' };
 
 // Placeholder photos served from hirael.com. Swap them for your own assets.
 const CONTRIBUTORS: readonly Person[] = [
@@ -378,7 +378,7 @@ const PageHeader01 = () => {
             <Breadcrumb className="hidden sm:block">
               <BreadcrumbList>
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="#">Northwind</BreadcrumbLink>
+                  <BreadcrumbLink href="#">Hirael</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem className="md:hidden">

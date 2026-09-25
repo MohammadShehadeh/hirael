@@ -279,7 +279,7 @@ const downloadCsv = (range: Range) => {
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
-  link.download = `northwind-analytics-${range}.csv`;
+  link.download = `hirael-analytics-${range}.csv`;
   link.click();
   URL.revokeObjectURL(url);
 };
@@ -298,7 +298,7 @@ const PageHeader04 = () => {
             <AnalyticsHeaderContent>
               <AnalyticsHeaderTitle className={ENTER}>Analytics</AnalyticsHeaderTitle>
               <AnalyticsHeaderDescription style={stagger(1, 80)} className={ENTER}>
-                Orders and revenue for the Northwind online store. Figures update every hour.
+                Orders and revenue for the Hirael online store. Figures update every hour.
               </AnalyticsHeaderDescription>
             </AnalyticsHeaderContent>
             <AnalyticsHeaderActions style={stagger(2, 80)} className={ENTER}>

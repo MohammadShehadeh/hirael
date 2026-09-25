@@ -27,7 +27,7 @@ const ROLES = ['Admin', 'Member', 'Viewer'] as const;
 type Role = (typeof ROLES)[number];
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const OWNER_EMAIL = 'maya@harbor-analytics.com';
+const OWNER_EMAIL = 'hello@mohammadshehadeh.com';
 
 interface Invite {
   email: string;
@@ -96,7 +96,7 @@ const InviteForm = ({ taken, onInvite, inputRef }: InviteFormProps) => {
             value={value}
             autoComplete="off"
             spellCheck={false}
-            placeholder="name@company.com"
+            placeholder="name@hirael.com"
             aria-label="Email addresses"
             aria-invalid={error ? true : undefined}
             aria-describedby={error ? errorId : hintId}
@@ -177,7 +177,7 @@ const EmptyState04 = () => {
           >
             <div className="flex min-w-0 flex-col">
               <h2 className="text-sm font-medium text-foreground">Members</h2>
-              <p className="truncate text-xs text-muted-foreground">Harbor Analytics</p>
+              <p className="truncate text-xs text-muted-foreground">Hirael</p>
             </div>
             <p className="text-xs text-muted-foreground tabular-nums">
               1 member
@@ -197,8 +197,8 @@ const EmptyState04 = () => {
                 </EmptyMedia>
                 <EmptyTitle>No team members yet</EmptyTitle>
                 <EmptyDescription>
-                  Only you can see Harbor Analytics. Invite teammates to share dashboards and reports. Invites expire
-                  after 7 days.
+                  Only you can see Hirael. Invite teammates to share dashboards and reports. Invites expire after 7
+                  days.
                 </EmptyDescription>
               </EmptyHeader>
               <EmptyContent className="max-w-lg">

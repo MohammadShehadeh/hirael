@@ -20,7 +20,7 @@ workers = 4
 timeout = 30
 
 [database]
-url = "postgres://localhost:5432/app"
+url = "postgres://localhost:5432/hirael"
 pool_size = 10
 ssl = false
 
@@ -46,13 +46,13 @@ timeout = 30
 keepalive = 65
 
 [database]
-url = "postgres://db.internal:5432/app"
+url = "postgres://db.hirael.internal:5432/hirael"
 pool_size = 20
 ssl = true
 
 [cache]
 driver = "redis"
-url = "redis://cache.internal:6379"
+url = "redis://cache.hirael.internal:6379"
 ttl = 600
 
 [logging]

@@ -150,11 +150,11 @@ interface Member {
 }
 
 const INITIAL_MEMBERS: readonly Member[] = [
-  { name: 'Maya Okafor', email: 'maya@northwind.dev', role: 'Owner' },
-  { name: 'Daniel Reyes', email: 'daniel@northwind.dev', role: 'Admin' },
-  { name: 'Priya Natarajan', email: 'priya@northwind.dev', role: 'Member' },
-  { name: 'Tomas Ferreira', email: 'tomas@northwind.dev', role: 'Member' },
-  { name: 'Lena Vogel', email: 'lena@northwind.dev', role: 'Member' },
+  { name: 'Mohammad Shehadeh', email: 'hello@mohammadshehadeh.com', role: 'Owner' },
+  { name: 'Daniel Reyes', email: 'daniel@hirael.com', role: 'Admin' },
+  { name: 'Priya Natarajan', email: 'priya@hirael.com', role: 'Member' },
+  { name: 'Tomas Ferreira', email: 'tomas@hirael.com', role: 'Member' },
+  { name: 'Lena Vogel', email: 'lena@hirael.com', role: 'Member' },
 ];
 
 const SEAT_PRICE = 12;
@@ -168,7 +168,7 @@ const INVOICES = [
 const ACTIVITY = [
   { who: 'Daniel Reyes', what: 'created the project Checkout redesign', when: '2 hours ago' },
   { who: 'Priya Natarajan', what: 'uploaded 14 files to Brand assets', when: 'Yesterday' },
-  { who: 'Maya Okafor', what: 'changed the plan to Team', when: 'Sep 1' },
+  { who: 'Mohammad Shehadeh', what: 'changed the plan to Team', when: 'Sep 1' },
 ] as const;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -189,7 +189,7 @@ const StatLabel = ({ children }: { children: React.ReactNode }) => (
 
 const PageHeader02 = () => {
   const [tab, setTab] = useHashTab(TABS, 'overview');
-  const [workspace, setWorkspace] = React.useState('Northwind Labs');
+  const [workspace, setWorkspace] = React.useState('Hirael');
   const [members, setMembers] = React.useState<readonly Member[]>(INITIAL_MEMBERS);
   const [focusInvite, setFocusInvite] = React.useState(false);
   const inviteRef = React.useRef<HTMLInputElement>(null);
@@ -335,7 +335,7 @@ const MembersPanel = ({ members, pending, inviteRef, autoFocus, onInvite, onRevo
     event.preventDefault();
     const value = email.trim().toLowerCase();
     if (!EMAIL_PATTERN.test(value)) {
-      setError('Enter an email address like name@company.com.');
+      setError('Enter an email address like you@hirael.com.');
 
       return;
     }
@@ -361,7 +361,7 @@ const MembersPanel = ({ members, pending, inviteRef, autoFocus, onInvite, onRevo
               type="email"
               autoComplete="off"
               autoFocus={autoFocus}
-              placeholder="name@company.com"
+              placeholder="you@hirael.com"
               value={email}
               aria-invalid={Boolean(error) || undefined}
               onChange={(event) => {

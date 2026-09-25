@@ -15,7 +15,7 @@ const LINK_COLUMNS = [
   },
   {
     heading: 'Connect',
-    links: ['Start a project', 'Book a call', 'Instagram', 'LinkedIn'],
+    links: ['Start a project', 'Book a call', 'X', 'LinkedIn'],
   },
 ];
 
@@ -48,10 +48,10 @@ export const Footer = () => {
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center lg:flex-col lg:items-end">
             <OrangeButton label="Start a project" />
             <a
-              href="mailto:hello@hirael.studio"
+              href="mailto:hello@hirael.com"
               className="text-[14px] text-gray-400 transition-colors duration-300 hover:text-white"
             >
-              hello@hirael.studio
+              hello@hirael.com
             </a>
           </div>
         </div>

@@ -188,7 +188,7 @@ const ChangelogSubscribe = ({ className, children = 'Subscribe', ...props }: Cha
                   type="email"
                   inputMode="email"
                   autoComplete="email"
-                  placeholder="you@company.com"
+                  placeholder="you@hirael.com"
                   value={email}
                   onChange={(event) => {
                     setEmail(event.target.value);
@@ -485,7 +485,7 @@ const Changelog01Block = () => {
         <div className="flex flex-col gap-3">
           <ChangelogTitle className={ENTER}>Changelog</ChangelogTitle>
           <ChangelogDescription className={cn(ENTER, 'delay-70')}>
-            What shipped in Relay, most recent first. Releases go out every other Tuesday.
+            What shipped in Hirael, most recent first. Releases go out every other Tuesday.
           </ChangelogDescription>
         </div>
         <div className={cn(ENTER, 'flex flex-wrap items-center gap-2 delay-140')}>

@@ -26,26 +26,26 @@ interface Account {
 
 const DAY = 86_400_000;
 const CUSTOMERS = [
-  ['Apex Studio', 'billing@apex.studio'],
-  ['Nimbus Labs', 'ops@nimbus.dev'],
-  ['Vela Goods', 'ar@velagoods.com'],
-  ['Orbit Media', 'finance@orbit.media'],
-  ['Pine & Co', 'hello@pine.co'],
-  ['Harbor Eight', 'accounts@harbor8.io'],
-  ['Sable Type', 'team@sabletype.com'],
-  ['Mara Health', 'admin@marahealth.org'],
+  ['Hirael', 'billing@hirael.com'],
+  ['Hirael Labs', 'labs@hirael.com'],
+  ['Hirael Studio', 'studio@hirael.com'],
+  ['Hirael Cloud', 'cloud@hirael.com'],
+  ['Hirael Docs', 'docs@hirael.com'],
+  ['Hirael Pay', 'pay@hirael.com'],
+  ['Hirael Media', 'media@hirael.com'],
+  ['Hirael Health', 'health@hirael.com'],
 ];
 
 const STATUSES: Account['status'][] = ['active', 'trial', 'past_due', 'canceled'];
 const PLANS: Account['plan'][] = ['free', 'pro', 'enterprise'];
 
 const DATA: Account[] = Array.from({ length: 37 }, (_, i) => {
-  const [customer, email] = CUSTOMERS[i % CUSTOMERS.length] ?? ['Acme', 'a@b.c'];
+  const [customer, email] = CUSTOMERS[i % CUSTOMERS.length] ?? ['Hirael', 'billing@hirael.com'];
 
   return {
     id: `ACC-${(3072 + i).toString()}`,
-    customer: customer ?? 'Acme',
-    email: email ?? 'a@b.c',
+    customer: customer ?? 'Hirael',
+    email: email ?? 'billing@hirael.com',
     status: STATUSES[i % STATUSES.length] ?? 'active',
     plan: PLANS[i % PLANS.length] ?? 'free',
     mrr: Math.round(((i * 173) % 1400) + 30),

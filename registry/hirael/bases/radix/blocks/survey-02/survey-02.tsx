@@ -38,7 +38,7 @@ interface Answers {
 }
 
 const QUESTIONS: readonly { name: QuestionId; title: string; required: boolean }[] = [
-  { name: 'source', title: 'How did you first hear about Relay?', required: true },
+  { name: 'source', title: 'How did you first hear about Hirael?', required: true },
   { name: 'features', title: 'Which features does your team use most?', required: true },
   { name: 'setup', title: 'How easy was it to set up your workspace?', required: true },
   { name: 'notes', title: 'Anything else we should know?', required: false },
@@ -192,7 +192,7 @@ const Survey02 = () => {
                   className="flex items-center gap-4 border-b border-border px-6 py-4"
                 >
                   <h2 id="survey-02-heading" className="shrink-0 text-sm font-medium">
-                    Relay feedback
+                    Hirael feedback
                   </h2>
                   <QuestionnaireProgress
                     className="flex-1"

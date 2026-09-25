@@ -6,7 +6,7 @@ import { Cell, Pie, PieChart } from 'recharts';
 
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/registry/hirael/bases/radix/ui/card';
-import { ChartContainer, ChartTooltip, type ChartConfig } from '@/registry/hirael/bases/radix/ui/chart';
+import { ChartContainer, type ChartConfig } from '@/registry/hirael/bases/radix/ui/chart';
 import { useDirection } from '@/registry/hirael/bases/radix/ui/direction';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
 
@@ -130,7 +130,6 @@ const toRows = (period: Period): ChannelRow[] => {
   })).sort((a, b) => b.value - a.value);
 };
 
-const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 const usdCompact = new Intl.NumberFormat('en-US', {
   style: 'currency',
   currency: 'USD',
@@ -154,40 +153,6 @@ const summarize = (period: Period, rows: ChannelRow[]) => {
       : `${top.label} leads with ${top.shareRounded}%, and ${fastest.label} grew fastest at ${signed(fastest.change)}.`;
 
   return `Revenue was ${usdCompact.format(total)} ${current}, ${trend} on ${previous}. ${lead}`;
-};
-
-interface TooltipBodyProps {
-  active?: boolean;
-  payload?: readonly { payload?: ChannelRow }[];
-}
-
-const TooltipBody = ({ active, payload }: TooltipBodyProps) => {
-  const row = payload?.[0]?.payload;
-  if (!active || !row) return null;
-
-  return (
-    <div
-      data-slot="channel-chart-tooltip"
-      className="grid min-w-40 gap-1 rounded-lg border border-border bg-popover px-3 py-2 text-xs text-popover-foreground shadow-md"
-    >
-      <div className="flex items-center gap-2">
-        <span
-          aria-hidden
-          className="h-0.5 w-3 shrink-0 rounded-full"
-          style={{ backgroundColor: `var(--color-${row.key})` }}
-        />
-        <span className="font-medium">{row.label}</span>
-      </div>
-      <div className="flex items-center justify-between gap-4">
-        <span className="text-muted-foreground">Revenue</span>
-        <span className="font-medium tabular-nums">{usd.format(row.value)}</span>
-      </div>
-      <div className="flex items-center justify-between gap-4">
-        <span className="text-muted-foreground">Share</span>
-        <span className="font-medium tabular-nums">{row.share.toFixed(1)}%</span>
-      </div>
-    </div>
-  );
 };
 
 interface ChannelLegendRowProps {
@@ -298,12 +263,6 @@ const Chart03 = () => {
               <div data-slot="channel-chart-donut" className="relative mx-auto aspect-square w-full max-w-56">
                 <ChartContainer config={chartConfig} className="size-full">
                   <PieChart>
-                    <ChartTooltip
-                      cursor={false}
-                      content={({ active, payload }) => (
-                        <TooltipBody active={active} payload={payload as TooltipBodyProps['payload']} />
-                      )}
-                    />
                     <Pie
                       data={rows}
                       dataKey="value"

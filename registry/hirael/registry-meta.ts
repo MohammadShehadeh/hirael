@@ -1566,8 +1566,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'GitHub-style contribution heatmap with month and weekday labels, tooltips, configurable intensity scale and a legend.',
     category: 'data',
     files: [{ path: 'components/calendar-heatmap.tsx' }],
-    registryDependencies: ['tooltip', 'calendar-utils'],
-    dependencies: [],
+    registryDependencies: ['tooltip'],
+    dependencies: ['date-fns'],
   },
   {
     name: 'code-block',
@@ -4801,17 +4801,6 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     type: 'registry:component',
     categories: ['primitives'],
     files: [{ path: 'components/compose-refs.ts' }],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: 'calendar-utils',
-    title: 'Calendar Utils',
-    description:
-      'Dependency-free date helpers (month grids, day math, keyboard-grid navigation) shared by date-picker and date-range-picker.',
-    type: 'registry:component',
-    categories: ['primitives'],
-    files: [{ path: 'components/calendar-utils.ts' }],
     registryDependencies: [],
     dependencies: [],
   },

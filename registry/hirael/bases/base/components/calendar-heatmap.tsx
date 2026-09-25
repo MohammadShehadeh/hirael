@@ -1,9 +1,9 @@
 'use client';
 
 import * as React from 'react';
+import { addDays, addMonths, startOfDay } from 'date-fns';
 
 import { cn } from '@/lib/utils';
-import { addDays, addMonthsClamped, startOfDay } from '@/registry/hirael/bases/base/components/calendar-utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/registry/hirael/bases/base/ui/tooltip';
 
 const CELL_SIZES = { sm: 10, md: 12, lg: 16 } as const;
@@ -116,7 +116,7 @@ const CalendarHeatmap = ({
     if (!rangeEnd) {
       return { cells: [] as CalendarHeatmapCell[], weekCount: 0, monthLabels: [], weekdayLabels: weekdays };
     }
-    const rangeStart = startDate ? toLocalDate(startDate) : addDays(addMonthsClamped(rangeEnd, -months), 1);
+    const rangeStart = startDate ? toLocalDate(startDate) : addDays(addMonths(rangeEnd, -months), 1);
 
     const values = new Map<number, number>();
     for (const datum of data) {

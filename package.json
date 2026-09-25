@@ -55,6 +55,7 @@
     "cmdk": "^1.1.1",
     "cn": "^0.4.0",
     "colord": "^2.10.0",
+    "date-fns": "^4.4.0",
     "diff": "^9.0.0",
     "embla-carousel-react": "^8.6.0",
     "frimousse": "^0.4.0",

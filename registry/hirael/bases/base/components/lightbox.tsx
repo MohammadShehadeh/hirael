@@ -27,6 +27,8 @@ interface LightboxContextValue {
 
 const LightboxContext = React.createContext<LightboxContextValue | null>(null);
 
+const wrap = (i: number, count: number) => ((i % count) + count) % count;
+
 const useLightbox = () => {
   const ctx = React.useContext(LightboxContext);
   if (!ctx) {
@@ -85,8 +87,7 @@ const Lightbox = ({
   const goTo = React.useCallback(
     (i: number) => {
       if (count === 0) return;
-      const next = loop ? ((i % count) + count) % count : Math.min(Math.max(i, 0), count - 1);
-      setIndex(next);
+      setIndex(loop ? wrap(i, count) : Math.min(Math.max(i, 0), count - 1));
       setZoomed(false);
     },
     [count, loop, setIndex],
@@ -101,7 +102,7 @@ const Lightbox = ({
   React.useEffect(() => {
     if (!open || count === 0) return;
     for (const i of [index - 1, index + 1]) {
-      const item = items[loop ? ((i % count) + count) % count : i];
+      const item = items[loop ? wrap(i, count) : i];
       if (item) {
         const img = new window.Image();
         img.src = item.src;
@@ -110,17 +111,7 @@ const Lightbox = ({
   }, [open, index, items, count, loop]);
 
   const value = React.useMemo<LightboxContextValue>(
-    () => ({
-      items,
-      index,
-      zoomed,
-      setZoomed,
-      goTo,
-      next,
-      prev,
-      canPrev,
-      canNext,
-    }),
+    () => ({ items, index, zoomed, setZoomed, goTo, next, prev, canPrev, canNext }),
     [items, index, zoomed, goTo, next, prev, canPrev, canNext],
   );
 
@@ -263,31 +254,20 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
     onKeyDown?.(event);
     if (event.defaultPrevented || isEditableTarget(event.target)) return;
     const rtl = isRtl(event.currentTarget);
-    switch (event.key) {
-      case 'ArrowRight':
-        event.preventDefault();
-        if (rtl) prev();
-        else next();
-        break;
-      case 'ArrowLeft':
-        event.preventDefault();
-        if (rtl) next();
-        else prev();
-        break;
-      case 'Home':
-        event.preventDefault();
-        goTo(0);
-        break;
-      case 'End':
-        event.preventDefault();
-        goTo(items.length - 1);
-        break;
-      case 'z':
-      case 'Z':
-        event.preventDefault();
-        setZoomed(!zoomed);
-        break;
-    }
+    const toggleZoom = () => setZoomed(!zoomed);
+    const action = (
+      {
+        ArrowRight: rtl ? prev : next,
+        ArrowLeft: rtl ? next : prev,
+        Home: () => goTo(0),
+        End: () => goTo(items.length - 1),
+        z: toggleZoom,
+        Z: toggleZoom,
+      } as Record<string, () => void>
+    )[event.key];
+    if (!action) return;
+    event.preventDefault();
+    action();
   }
 
   function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
@@ -320,14 +300,8 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
     setDragging(false);
     const dx = event.clientX - drag.startX;
     if (!zoomed && Math.abs(dx) > 64) {
-      const rtl = isRtl(event.currentTarget);
-      if (dx < 0) {
-        if (rtl) prev();
-        else next();
-      } else {
-        if (rtl) next();
-        else prev();
-      }
+      if (dx < 0 !== isRtl(event.currentTarget)) next();
+      else prev();
 
       return;
     }
@@ -361,14 +335,13 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
       <div
         ref={viewportRef}
         data-slot="lightbox-viewport"
-        className="flex min-h-0 w-full flex-1 touch-none items-center justify-center overflow-hidden px-14 py-14 select-none"
+        className="flex min-h-0 w-full flex-1 touch-none items-center justify-center overflow-hidden p-14 select-none"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
       >
-        {item ? (
-          // eslint-disable-next-line @next/next/no-img-element
+        {item && ( // eslint-disable-next-line @next/next/no-img-element
           <img
             ref={imageRef}
             data-slot="lightbox-image"
@@ -384,16 +357,16 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
               transform: zoomed ? `translate(${pan.x}px, ${pan.y}px) scale(${ZOOM_SCALE})` : undefined,
             }}
           />
-        ) : null}
+        )}
       </div>
-      {item?.caption ? (
+      {item?.caption && (
         <p
           data-slot="lightbox-caption"
           className="mx-auto mb-3 max-w-prose rounded-md bg-background/60 px-3 py-1.5 text-center text-sm text-foreground backdrop-blur-sm"
         >
           {item.caption}
         </p>
-      ) : null}
+      )}
       {children}
       <span
         data-slot="lightbox-counter"
@@ -416,7 +389,7 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
           <X className="size-4" />
         </DialogPrimitive.Close>
       </div>
-      {canPrev ? (
+      {canPrev && (
         <button
           type="button"
           data-slot="lightbox-prev"
@@ -426,8 +399,8 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
         >
           <ChevronLeft className="size-5 rtl:rotate-180" />
         </button>
-      ) : null}
-      {canNext ? (
+      )}
+      {canNext && (
         <button
           type="button"
           data-slot="lightbox-next"
@@ -437,7 +410,7 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
         >
           <ChevronRight className="size-5 rtl:rotate-180" />
         </button>
-      ) : null}
+      )}
     </DialogPrimitive.Popup>
   );
 
@@ -464,11 +437,7 @@ const LightboxThumbnails = ({ getLabel = defaultThumbnailLabel, className, ...pr
 
   React.useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    refs.current[index]?.scrollIntoView({
-      block: 'nearest',
-      inline: 'nearest',
-      behavior: reduce ? 'auto' : 'smooth',
-    });
+    refs.current[index]?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
   }, [index]);
 
   return (

@@ -422,37 +422,16 @@ const NumberFieldInput = ({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(e);
     if (e.defaultPrevented || e.nativeEvent.isComposing) return;
-    let handled = false;
-    switch (e.key) {
-      case 'ArrowUp':
-        ctx.stepBy(1, e.shiftKey ? ctx.largeStep : ctx.step);
-        handled = true;
-        break;
-      case 'ArrowDown':
-        ctx.stepBy(-1, e.shiftKey ? ctx.largeStep : ctx.step);
-        handled = true;
-        break;
-      case 'PageUp':
-        ctx.stepBy(1, ctx.largeStep);
-        handled = true;
-        break;
-      case 'PageDown':
-        ctx.stepBy(-1, ctx.largeStep);
-        handled = true;
-        break;
-      case 'Home':
-        handled = ctx.setToBound('min');
-        break;
-      case 'End':
-        handled = ctx.setToBound('max');
-        break;
-      case 'Enter':
-        // Flush so an implicit form submit on this Enter reads the committed value.
-        if (!ctx.readOnly) flushSync(ctx.commit);
-        break;
-      case 'Escape':
-        handled = ctx.revert();
-        break;
+    const up = e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'Home';
+    let handled = true;
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') ctx.stepBy(up ? 1 : -1, e.shiftKey ? ctx.largeStep : ctx.step);
+    else if (e.key === 'PageUp' || e.key === 'PageDown') ctx.stepBy(up ? 1 : -1, ctx.largeStep);
+    else if (e.key === 'Home' || e.key === 'End') handled = ctx.setToBound(up ? 'min' : 'max');
+    else if (e.key === 'Escape') handled = ctx.revert();
+    else {
+      handled = false;
+      // Flush so an implicit form submit on this Enter reads the committed value.
+      if (e.key === 'Enter' && !ctx.readOnly) flushSync(ctx.commit);
     }
     if (handled) e.preventDefault();
   };
@@ -466,7 +445,6 @@ const NumberFieldInput = ({
     <InputGroupInput
       ref={composedRef}
       id={ctx.inputId}
-      type="text"
       role="spinbutton"
       inputMode={resolvedInputMode}
       autoComplete="off"
@@ -616,13 +594,11 @@ const NumberFieldStepButton = ({
   return <InputGroupAddon align={increment ? 'inline-end' : 'inline-start'}>{button}</InputGroupAddon>;
 };
 
-type NumberFieldIncrementProps = Omit<NumberFieldStepButtonProps, 'direction'>;
+type NumberFieldStepProps = Omit<NumberFieldStepButtonProps, 'direction'>;
 
-const NumberFieldIncrement = (props: NumberFieldIncrementProps) => <NumberFieldStepButton direction={1} {...props} />;
+const NumberFieldIncrement = (props: NumberFieldStepProps) => <NumberFieldStepButton direction={1} {...props} />;
 
-type NumberFieldDecrementProps = Omit<NumberFieldStepButtonProps, 'direction'>;
-
-const NumberFieldDecrement = (props: NumberFieldDecrementProps) => <NumberFieldStepButton direction={-1} {...props} />;
+const NumberFieldDecrement = (props: NumberFieldStepProps) => <NumberFieldStepButton direction={-1} {...props} />;
 
 const NumberFieldStepper = ({ className, children, ...props }: React.ComponentProps<'div'>) => (
   <NumberFieldStepperContext.Provider value={true}>

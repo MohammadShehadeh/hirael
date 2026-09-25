@@ -170,13 +170,13 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       <AlertDialog open={open} onOpenChange={handleOpenChange}>
         <AlertDialogContent data-tone={tone} {...(hasDescription ? {} : { 'aria-describedby': undefined })}>
           <AlertDialogHeader>
-            {options.icon != null ? (
+            {options.icon != null && (
               <AlertDialogMedia className={cn(tone === 'destructive' && 'bg-destructive/10 text-destructive')}>
                 {options.icon}
               </AlertDialogMedia>
-            ) : null}
+            )}
             <AlertDialogTitle>{options.title ?? DEFAULT_TITLE}</AlertDialogTitle>
-            {hasDescription ? <AlertDialogDescription>{options.description}</AlertDialogDescription> : null}
+            {hasDescription && <AlertDialogDescription>{options.description}</AlertDialogDescription>}
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel disabled={pending}>{options.cancelText}</AlertDialogCancel>
@@ -188,7 +188,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
               disabled={pending}
               onClick={handleConfirm}
             >
-              {pending ? <ConfirmSpinner /> : null}
+              {pending && <ConfirmSpinner />}
               {options.confirmText}
             </Button>
           </AlertDialogFooter>

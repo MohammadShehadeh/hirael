@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import {
   InputGroup,
   InputGroupAddon,
@@ -47,44 +46,19 @@ const resolveDecimalSeparator = (locale: string): string => {
 };
 
 const sanitizeInput = (raw: string, decimals: number, decimalSeparator: string): string => {
-  if (!raw) return '';
-  let str = '';
-  for (const ch of raw) {
-    if ((ch >= '0' && ch <= '9') || ch === '-' || ch === decimalSeparator) {
-      str += ch;
-    }
-  }
-  const negative = str.startsWith('-');
-  str = str.replace(/-/g, '');
-  const firstSep = str.indexOf(decimalSeparator);
-  if (firstSep !== -1) {
-    str =
-      str.slice(0, firstSep + 1) +
-      str
-        .slice(firstSep + 1)
-        .split(decimalSeparator)
-        .join('');
-  }
-  if (decimals === 0) {
-    str = str.split(decimalSeparator).join('');
-  } else if (firstSep !== -1) {
-    const whole = str.slice(0, firstSep);
-    const frac = str.slice(firstSep + 1);
-    str = `${whole}${decimalSeparator}${frac.slice(0, decimals)}`;
-  }
+  const kept = [...raw].filter((ch) => (ch >= '0' && ch <= '9') || ch === '-' || ch === decimalSeparator).join('');
+  const [whole, ...fraction] = kept.replace(/-/g, '').split(decimalSeparator);
+  const sign = kept.startsWith('-') ? '-' : '';
 
-  return negative ? `-${str}` : str;
+  return decimals > 0 && fraction.length > 0
+    ? `${sign}${whole}${decimalSeparator}${fraction.join('').slice(0, decimals)}`
+    : `${sign}${whole}`;
 };
 
 const parseToNumber = (view: string, decimalSeparator: string): number | null => {
-  if (!view) return null;
-  const normalized = view.split(decimalSeparator).join('.');
-  if (normalized === '-' || normalized === '.' || normalized === '-.') {
-    return null;
-  }
-  const n = Number(normalized);
+  const n = Number(view.replace(decimalSeparator, '.'));
 
-  return Number.isFinite(n) ? n : null;
+  return view && Number.isFinite(n) ? n : null;
 };
 
 interface Ctx {
@@ -191,12 +165,7 @@ const CurrencyInput = ({
 
   return (
     <CurrencyInputContext.Provider value={ctx}>
-      <InputGroup
-        data-slot="currency-input"
-        data-disabled={disabled || undefined}
-        className={cn(disabled && 'opacity-60', className)}
-        {...props}
-      >
+      <InputGroup data-slot="currency-input" data-disabled={disabled} className={className} {...props}>
         {children}
         {name && <input type="hidden" name={name} value={value ?? ''} />}
       </InputGroup>
@@ -204,32 +173,24 @@ const CurrencyInput = ({
   );
 };
 
-interface CurrencyInputPrefixProps extends Omit<React.ComponentProps<typeof InputGroupAddon>, 'align' | 'children'> {
-  children?: React.ReactNode;
-}
+type CurrencyInputAffixProps = Omit<React.ComponentProps<typeof InputGroupAddon>, 'align'>;
 
-const CurrencyInputPrefix = ({ className, children, ...props }: CurrencyInputPrefixProps) => {
+const CurrencyInputAffix = ({ children, ...props }: React.ComponentProps<typeof InputGroupAddon>) => {
   const ctx = useCurrencyInput();
 
   return (
-    <InputGroupAddon data-slot="currency-input-prefix" align="inline-start" className={className} {...props}>
+    <InputGroupAddon {...props}>
       <InputGroupText>{children ?? ctx.symbol}</InputGroupText>
     </InputGroupAddon>
   );
 };
 
-interface CurrencyInputSuffixProps extends Omit<React.ComponentProps<typeof InputGroupAddon>, 'align' | 'children'> {
-  children?: React.ReactNode;
-}
+const CurrencyInputPrefix = (props: CurrencyInputAffixProps) => {
+  return <CurrencyInputAffix data-slot="currency-input-prefix" align="inline-start" {...props} />;
+};
 
-const CurrencyInputSuffix = ({ className, children, ...props }: CurrencyInputSuffixProps) => {
-  const ctx = useCurrencyInput();
-
-  return (
-    <InputGroupAddon data-slot="currency-input-suffix" align="inline-end" className={className} {...props}>
-      <InputGroupText>{children ?? ctx.symbol}</InputGroupText>
-    </InputGroupAddon>
-  );
+const CurrencyInputSuffix = (props: CurrencyInputAffixProps) => {
+  return <CurrencyInputAffix data-slot="currency-input-suffix" align="inline-end" {...props} />;
 };
 
 type CurrencyInputFieldProps = Omit<
@@ -249,7 +210,6 @@ const CurrencyInputField = ({
   return (
     <InputGroupInput
       id={ctx.id}
-      type="text"
       inputMode={inputMode}
       dir="ltr"
       value={ctx.view}
@@ -264,12 +224,7 @@ const CurrencyInputField = ({
       }}
       onFocus={(e) => {
         onFocus?.(e);
-        if (ctx.value === null) return;
-        const raw =
-          ctx.decimals > 0
-            ? ctx.value.toFixed(ctx.decimals).replace('.', ctx.decimalSeparator)
-            : String(Math.trunc(ctx.value));
-        ctx.setView(raw);
+        if (ctx.value !== null) ctx.setView(ctx.value.toFixed(ctx.decimals).replace('.', ctx.decimalSeparator));
       }}
       onBlur={(e) => {
         onBlur?.(e);

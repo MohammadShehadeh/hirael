@@ -49,8 +49,14 @@ const useTimePicker = () => {
   return ctx;
 };
 
-const pad2 = (n: number) => {
-  return n.toString().padStart(2, '0');
+const pad2 = (n: number) => n.toString().padStart(2, '0');
+
+const to12Hour = (hour: number) => ((hour + 11) % 12) + 1;
+
+const stepValues = (step: number) => {
+  const size = Math.max(1, step);
+
+  return Array.from({ length: Math.ceil(60 / size) }, (_, i) => i * size);
 };
 
 export interface TimePickerProps {
@@ -58,8 +64,6 @@ export interface TimePickerProps {
   defaultValue?: TimeValue;
   /** Reports every change, including `null` when the value is cleared. */
   onValueChange?: (v: TimeValue | null) => void;
-  /** Side-effect hook for the clear button. State still arrives via `onValueChange`. */
-  onClear?: () => void;
   clearable?: boolean;
   format?: TimeFormat;
   /** Labels for the 12-hour clock halves, in the trigger and the AM/PM switch. */
@@ -78,7 +82,6 @@ const TimePicker = ({
   value: valueProp,
   defaultValue,
   onValueChange,
-  onClear,
   clearable = false,
   format = '24h',
   meridiemLabels = DEFAULT_MERIDIEM_LABELS,
@@ -115,8 +118,7 @@ const TimePicker = ({
   const clearValue = React.useCallback(() => {
     if (valueProp === undefined) setInternal(null);
     onValueChange?.(null);
-    onClear?.();
-  }, [valueProp, onValueChange, onClear]);
+  }, [valueProp, onValueChange]);
 
   const ctx = React.useMemo<TimePickerContextValue>(
     () => ({
@@ -163,10 +165,8 @@ const formatTimeValue = (v: TimeValue, format: TimeFormat, showSeconds: boolean,
   if (format === '24h') {
     return `${pad2(v.hour)}:${pad2(v.minute)}${tail}`;
   }
-  const meridiem = v.hour >= 12 ? labels.pm : labels.am;
-  const h12 = ((v.hour + 11) % 12) + 1;
 
-  return `${pad2(h12)}:${pad2(v.minute)}${tail} ${meridiem}`;
+  return `${pad2(to12Hour(v.hour))}:${pad2(v.minute)}${tail} ${v.hour >= 12 ? labels.pm : labels.am}`;
 };
 
 const TimePickerTrigger = ({
@@ -190,7 +190,7 @@ const TimePickerTrigger = ({
         className={cn(
           'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
           'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
-          !ctx.value && 'font-sans text-muted-foreground',
+          !ctx.value && 'text-muted-foreground',
           'disabled:cursor-not-allowed disabled:opacity-50',
           className,
         )}
@@ -233,23 +233,14 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
   }, [selected]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
-    let nextIndex: number;
-    switch (e.key) {
-      case 'ArrowDown':
-        nextIndex = Math.min(displayValues.length - 1, index + 1);
-        break;
-      case 'ArrowUp':
-        nextIndex = Math.max(0, index - 1);
-        break;
-      case 'Home':
-        nextIndex = 0;
-        break;
-      case 'End':
-        nextIndex = displayValues.length - 1;
-        break;
-      default:
-        return;
-    }
+    const last = displayValues.length - 1;
+    const nextIndex = (
+      { ArrowDown: Math.min(last, index + 1), ArrowUp: Math.max(0, index - 1), Home: 0, End: last } as Record<
+        string,
+        number
+      >
+    )[e.key];
+    if (nextIndex === undefined) return;
     e.preventDefault();
     const n = displayValues[nextIndex];
     onSelect(n);
@@ -281,8 +272,7 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
               onKeyDown={(e) => handleKeyDown(e, index)}
               className={cn(
                 'h-8 snap-center text-center text-sm tabular-nums transition-colors outline-none',
-                'hover:bg-accent',
-                'focus-visible:bg-accent',
+                'hover:bg-accent focus-visible:bg-accent',
                 active ? 'font-semibold text-foreground' : 'text-muted-foreground',
               )}
             >
@@ -303,63 +293,26 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
 const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof PopoverContent>) => {
   const ctx = useTimePicker();
   const isAM = (ctx.value?.hour ?? 0) < 12;
-  const baseValue: TimeValue = ctx.value ?? {
-    hour: 0,
-    minute: 0,
-    second: ctx.showSeconds ? 0 : undefined,
-  };
+  const twelve = ctx.format === '12h';
+  const baseValue: TimeValue = ctx.value ?? { hour: 0, minute: 0, second: ctx.showSeconds ? 0 : undefined };
 
-  const hourValues = React.useMemo(() => {
-    if (ctx.format === '24h') {
-      return Array.from({ length: 24 }, (_, i) => i);
-    }
+  const hourValues = React.useMemo(
+    () => Array.from({ length: twelve ? 12 : 24 }, (_, i) => (twelve ? i + 1 : i)),
+    [twelve],
+  );
+  const minuteValues = React.useMemo(() => stepValues(ctx.minuteStep), [ctx.minuteStep]);
+  const secondValues = React.useMemo(() => stepValues(ctx.secondStep), [ctx.secondStep]);
 
-    return Array.from({ length: 12 }, (_, i) => i + 1);
-  }, [ctx.format]);
-
-  const minuteValues = React.useMemo(() => {
-    const step = Math.max(1, ctx.minuteStep);
-    const count = Math.ceil(60 / step);
-
-    return Array.from({ length: count }, (_, i) => i * step);
-  }, [ctx.minuteStep]);
-
-  const secondValues = React.useMemo(() => {
-    const step = Math.max(1, ctx.secondStep);
-    const count = Math.ceil(60 / step);
-
-    return Array.from({ length: count }, (_, i) => i * step);
-  }, [ctx.secondStep]);
-
-  const displayHour = ctx.value
-    ? ctx.format === '24h'
-      ? ctx.value.hour
-      : ((ctx.value.hour + 11) % 12) + 1
-    : undefined;
+  const displayHour = ctx.value ? (twelve ? to12Hour(ctx.value.hour) : ctx.value.hour) : undefined;
 
   const setHour = (h: number) => {
-    let nextHour: number;
-    if (ctx.format === '24h') {
-      nextHour = h;
-    } else {
-      const base = h === 12 ? 0 : h;
-      nextHour = isAM ? base : base + 12;
-    }
-    ctx.setValue({ ...baseValue, hour: nextHour });
-  };
-
-  const setMinute = (m: number) => {
-    ctx.setValue({ ...baseValue, minute: m });
-  };
-
-  const setSecond = (s: number) => {
-    ctx.setValue({ ...baseValue, second: s });
+    const hour = twelve ? (h % 12) + (isAM ? 0 : 12) : h;
+    ctx.setValue({ ...baseValue, hour });
   };
 
   const setMeridiem = (next: 'AM' | 'PM') => {
-    if ((next === 'AM' && isAM) || (next === 'PM' && !isAM)) return;
-    const base = baseValue.hour % 12;
-    ctx.setValue({ ...baseValue, hour: next === 'AM' ? base : base + 12 });
+    if ((next === 'AM') === isAM) return;
+    ctx.setValue({ ...baseValue, hour: (baseValue.hour % 12) + (next === 'AM' ? 0 : 12) });
   };
 
   return (
@@ -369,7 +322,12 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
         <span aria-hidden className="flex items-center text-sm text-muted-foreground">
           :
         </span>
-        <ScrollColumn values={minuteValues} selected={ctx.value?.minute} onSelect={setMinute} ariaLabel="Minute" />
+        <ScrollColumn
+          values={minuteValues}
+          selected={ctx.value?.minute}
+          onSelect={(minute) => ctx.setValue({ ...baseValue, minute })}
+          ariaLabel="Minute"
+        />
         {ctx.showSeconds && (
           <>
             <span aria-hidden className="flex items-center text-sm text-muted-foreground">
@@ -378,13 +336,13 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
             <ScrollColumn
               values={secondValues}
               selected={ctx.value ? (ctx.value.second ?? 0) : undefined}
-              onSelect={setSecond}
+              onSelect={(second) => ctx.setValue({ ...baseValue, second })}
               ariaLabel="Second"
             />
           </>
         )}
       </div>
-      {ctx.format === '12h' && (
+      {twelve && (
         <Tabs value={isAM ? 'AM' : 'PM'} onValueChange={(v) => setMeridiem(v as 'AM' | 'PM')} className="mt-3">
           <TabsList className="w-full">
             <TabsTrigger value="AM" className="text-xs uppercase">
@@ -403,7 +361,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
             variant="ghost"
             size="xs"
             data-slot="time-picker-clear"
-            onClick={() => ctx.clearValue()}
+            onClick={ctx.clearValue}
             className="text-xs font-normal uppercase"
           >
             <X className="size-3" />

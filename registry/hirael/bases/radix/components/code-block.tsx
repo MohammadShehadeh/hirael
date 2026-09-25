@@ -300,7 +300,7 @@ const CodeBlockHeader = ({ className, children, ...props }: React.ComponentProps
               data-slot="code-block-filename"
               className="flex items-center gap-1.5 font-mono text-xs text-foreground"
             >
-              <FileCode className="size-3.5 text-muted-foreground" aria-hidden />
+              <FileCode className="size-3.5 text-muted-foreground" />
               {filename}
             </span>
           )}
@@ -444,7 +444,7 @@ const CodeBlockContent = ({
             className="h-7 gap-1 text-xs text-muted-foreground hover:text-foreground"
           >
             {expanded ? showLessLabel : showMoreLabel}
-            {expanded ? <ChevronUp aria-hidden /> : <ChevronDown aria-hidden />}
+            {expanded ? <ChevronUp /> : <ChevronDown />}
           </Button>
         </div>
       )}

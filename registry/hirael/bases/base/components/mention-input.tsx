@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Spinner } from '@/registry/hirael/bases/base/components/spinner';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 
 export interface MentionItem {
@@ -42,12 +42,8 @@ const MIRROR_PROPS = [
   'direction',
 ] as const;
 
-const escapeForCharClass = (ch: string) => {
-  return ch.replace(/[\\\]^-]/g, '\\$&');
-};
-
 const triggerCharClass = (triggers: string[]) => {
-  return triggers.map(escapeForCharClass).join('');
+  return triggers.map((ch) => ch.replace(/[\\\]^-]/g, '\\$&')).join('');
 };
 
 export const getMentions = (value: string, trigger: string | string[] = '@'): string[] => {
@@ -94,11 +90,10 @@ const measureCaret = (textarea: HTMLTextAreaElement, index: number) => {
   marker.textContent = '​';
   mirror.appendChild(marker);
   (textarea.parentElement ?? document.body).appendChild(mirror);
-  const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.2;
   const rect = {
     top: marker.offsetTop,
     left: marker.offsetLeft,
-    height: lineHeight,
+    height: parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.2,
   };
   mirror.remove();
 
@@ -230,10 +225,7 @@ const MentionInput = ({
   const [asyncItems, setAsyncItems] = React.useState<MentionItem[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [selectedLabels, setSelectedLabels] = React.useState<string[]>([]);
-  const [pos, setPos] = React.useState<MentionPosition>({
-    top: 0,
-    left: 0,
-  });
+  const [pos, setPos] = React.useState<MentionPosition>({ top: 0, left: 0 });
 
   const wrapperRef = React.useRef<HTMLDivElement | null>(null);
   const composedWrapperRef = React.useMemo(() => composeRefs(wrapperRef, ref), [ref]);
@@ -295,14 +287,10 @@ const MentionInput = ({
     setLoading(true);
     const t = setTimeout(() => {
       onSearchRef.current!(activeQuery, activeTrigger)
+        .catch(() => [])
         .then((res) => {
           if (cancelled) return;
           setAsyncItems(res);
-          setLoading(false);
-        })
-        .catch(() => {
-          if (cancelled) return;
-          setAsyncItems([]);
           setLoading(false);
         });
     }, 200);
@@ -348,10 +336,7 @@ const MentionInput = ({
     if (popRect.height > spaceBelow && wrapRect.top + caretTop - popRect.height - 4 > 0) {
       top = caretTop - popRect.height - 4;
     }
-    let left = caretLeft;
-    left = Math.min(left, wrap.clientWidth - popRect.width);
-    left = Math.max(0, left);
-    setPos({ top, left });
+    setPos({ top, left: Math.max(0, Math.min(caretLeft, wrap.clientWidth - popRect.width)) });
   }, [mention, filtered.length, loading]);
 
   React.useEffect(() => {
@@ -422,12 +407,10 @@ const MentionInput = ({
       if (!open) return;
       // Enter confirming an IME composition must not pick a suggestion.
       if (e.nativeEvent.isComposing || e.keyCode === 229) return;
-      if (e.key === 'ArrowDown') {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-        setActiveIndex(filtered.length ? (active + 1) % filtered.length : 0);
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setActiveIndex(filtered.length ? (active - 1 + filtered.length) % filtered.length : 0);
+        const n = filtered.length;
+        setActiveIndex(n ? (active + (e.key === 'ArrowDown' ? 1 : -1) + n) % n : 0);
       } else if (e.key === 'Enter' || e.key === 'Tab') {
         const item = filtered[active];
         if (item) {
@@ -603,19 +586,15 @@ const MentionInputTextarea = ({
           'pointer-events-none absolute inset-0 overflow-hidden border-transparent text-transparent',
         )}
       >
-        {segments.map((seg, i) =>
-          seg.mention ? (
-            <span
-              key={i}
-              data-slot="mention-input-mention"
-              className="rounded-[3px] bg-primary/15 box-decoration-clone"
-            >
-              {seg.text}
-            </span>
-          ) : (
-            <span key={i}>{seg.text}</span>
-          ),
-        )}
+        {segments.map((seg, i) => (
+          <span
+            key={i}
+            data-slot={seg.mention ? 'mention-input-mention' : undefined}
+            className={seg.mention ? 'rounded-[3px] bg-primary/15 box-decoration-clone' : undefined}
+          >
+            {seg.text}
+          </span>
+        ))}
         {'​'}
       </div>
       <textarea
@@ -677,7 +656,7 @@ const MentionInputList = ({ className, style, children, ref, ...props }: React.C
             data-slot="mention-input-loading"
             className="flex items-center gap-2 px-2 py-2 text-xs text-muted-foreground"
           >
-            <Spinner size="sm" />
+            <Spinner />
             {ctx.loadingMessage}
           </div>
         ) : ctx.filteredItems.length === 0 ? (

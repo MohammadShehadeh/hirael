@@ -1,10 +1,11 @@
 'use client';
 
 import * as React from 'react';
+import { colord } from 'colord';
 import { Pipette } from 'lucide-react';
+import { HexColorPicker } from 'react-colorful';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
@@ -12,25 +13,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/ta
 
 export type ColorFormat = 'hex' | 'rgb' | 'hsl';
 
-interface RGB {
-  r: number;
-  g: number;
-  b: number;
-}
-interface HSV {
-  h: number;
-  s: number;
-  v: number;
-}
-interface HSL {
-  h: number;
-  s: number;
-  l: number;
-}
-
 interface ColorPickerContextValue {
-  hsv: HSV;
-  setHsv: (h: HSV) => void;
   hex: string;
   setHex: (hex: string) => void;
   format: ColorFormat;
@@ -49,119 +32,6 @@ const useColorPicker = () => {
   }
 
   return ctx;
-};
-
-const clamp = (n: number, lo: number, hi: number) => {
-  return Math.max(lo, Math.min(hi, n));
-};
-
-const hexToRgb = (hex: string): RGB | null => {
-  const m = hex.replace(/^#/, '');
-  if (m.length === 3) {
-    const r = parseInt(m[0] + m[0], 16);
-    const g = parseInt(m[1] + m[1], 16);
-    const b = parseInt(m[2] + m[2], 16);
-    if ([r, g, b].some(Number.isNaN)) return null;
-
-    return { r, g, b };
-  }
-  if (m.length === 6) {
-    const r = parseInt(m.slice(0, 2), 16);
-    const g = parseInt(m.slice(2, 4), 16);
-    const b = parseInt(m.slice(4, 6), 16);
-    if ([r, g, b].some(Number.isNaN)) return null;
-
-    return { r, g, b };
-  }
-
-  return null;
-};
-
-const rgbToHex = ({ r, g, b }: RGB): string => {
-  const h = (n: number) => clamp(Math.round(n), 0, 255).toString(16).padStart(2, '0');
-
-  return `#${h(r)}${h(g)}${h(b)}`;
-};
-
-const rgbToHsv = ({ r, g, b }: RGB): HSV => {
-  const rn = r / 255;
-  const gn = g / 255;
-  const bn = b / 255;
-  const max = Math.max(rn, gn, bn);
-  const min = Math.min(rn, gn, bn);
-  const d = max - min;
-  const v = max;
-  const s = max === 0 ? 0 : d / max;
-  let h = 0;
-  if (d !== 0) {
-    switch (max) {
-      case rn:
-        h = ((gn - bn) / d) % 6;
-        break;
-      case gn:
-        h = (bn - rn) / d + 2;
-        break;
-      case bn:
-        h = (rn - gn) / d + 4;
-        break;
-    }
-    h *= 60;
-    if (h < 0) h += 360;
-  }
-
-  return { h, s: s * 100, v: v * 100 };
-};
-
-const hsvToRgb = ({ h, s, v }: HSV): RGB => {
-  const sn = s / 100;
-  const vn = v / 100;
-  const c = vn * sn;
-  const hp = h / 60;
-  const x = c * (1 - Math.abs((hp % 2) - 1));
-  let r = 0;
-  let g = 0;
-  let b = 0;
-  if (hp >= 0 && hp < 1) [r, g, b] = [c, x, 0];
-  else if (hp < 2) [r, g, b] = [x, c, 0];
-  else if (hp < 3) [r, g, b] = [0, c, x];
-  else if (hp < 4) [r, g, b] = [0, x, c];
-  else if (hp < 5) [r, g, b] = [x, 0, c];
-  else [r, g, b] = [c, 0, x];
-  const m = vn - c;
-
-  return {
-    r: (r + m) * 255,
-    g: (g + m) * 255,
-    b: (b + m) * 255,
-  };
-};
-
-const rgbToHsl = ({ r, g, b }: RGB): HSL => {
-  const rn = r / 255;
-  const gn = g / 255;
-  const bn = b / 255;
-  const max = Math.max(rn, gn, bn);
-  const min = Math.min(rn, gn, bn);
-  const d = max - min;
-  const l = (max + min) / 2;
-  let h = 0;
-  let s = 0;
-  if (d !== 0) {
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case rn:
-        h = ((gn - bn) / d + (gn < bn ? 6 : 0)) * 60;
-        break;
-      case gn:
-        h = ((bn - rn) / d + 2) * 60;
-        break;
-      case bn:
-        h = ((rn - gn) / d + 4) * 60;
-        break;
-    }
-  }
-
-  return { h, s: s * 100, l: l * 100 };
 };
 
 const DEFAULT_SWATCHES = ['#0ea5e9', '#22c55e', '#a855f7', '#f43f5e', '#f97316', '#facc15', '#14b8a6', '#64748b'];
@@ -197,18 +67,15 @@ const ColorPicker = ({
   onOpenChange,
   children,
 }: ColorPickerProps) => {
-  const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp ?? openInternal;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setOpenInternal(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
-
-  const [internal, setInternal] = React.useState<string>(defaultValue);
+  const [internal, setInternal] = React.useState(defaultValue);
   const value = valueProp ?? internal;
+  const setValue = React.useCallback(
+    (hex: string) => {
+      if (valueProp === undefined) setInternal(hex);
+      onValueChange?.(hex);
+    },
+    [valueProp, onValueChange],
+  );
 
   const [formatInternal, setFormatInternal] = React.useState<ColorFormat>(defaultFormat);
   const format = formatProp ?? formatInternal;
@@ -221,86 +88,30 @@ const ColorPicker = ({
   );
 
   const [recent, setRecent] = React.useState<string[]>([]);
-
-  const [hsv, setHsv] = React.useState<HSV>(() => rgbToHsv(hexToRgb(value) ?? { r: 14, g: 165, b: 233 }));
-
-  const [lastValue, setLastValue] = React.useState(value);
-  if (value !== lastValue) {
-    setLastValue(value);
-    const rgb = hexToRgb(value);
-    if (rgb) {
-      const parsed = rgbToHsv(rgb);
-      setHsv((prev) => {
-        const next = {
-          h: parsed.s === 0 || parsed.v === 0 ? prev.h : parsed.h,
-          s: parsed.v === 0 ? prev.s : parsed.s,
-          v: parsed.v,
-        };
-
-        return Math.abs(prev.h - next.h) < 0.5 && Math.abs(prev.s - next.s) < 0.5 && Math.abs(prev.v - next.v) < 0.5
-          ? prev
-          : next;
-      });
-    }
-  }
-
-  const setValue = React.useCallback(
-    (hex: string) => {
-      if (valueProp === undefined) setInternal(hex);
-      onValueChange?.(hex);
-    },
-    [valueProp, onValueChange],
-  );
-
-  const setHsvAndPropagate = React.useCallback(
-    (next: HSV) => {
-      const hex = rgbToHex(hsvToRgb(next));
-      setHsv(next);
-      // Marks the echo as seen so it is not re-derived: greys and black lose hue/saturation in hex.
-      setLastValue(hex);
-      setValue(hex);
-    },
-    [setValue],
-  );
-
   const pushSwatch = React.useCallback(
-    (hex: string) => {
-      setRecent((prev) => {
-        const filtered = prev.filter((c) => c.toLowerCase() !== hex.toLowerCase());
-
-        return [hex, ...filtered].slice(0, recentLimit);
-      });
-    },
+    (hex: string) =>
+      setRecent((prev) => [hex, ...prev.filter((c) => c.toLowerCase() !== hex.toLowerCase())].slice(0, recentLimit)),
     [recentLimit],
   );
 
+  const [openInternal, setOpenInternal] = React.useState(defaultOpen);
+  const open = openProp ?? openInternal;
+  const setOpen = (next: boolean) => {
+    if (openProp === undefined) setOpenInternal(next);
+    onOpenChange?.(next);
+    // Remember the colour the popover closes on, not every step of a drag.
+    if (!next) pushSwatch(value.toLowerCase());
+  };
+
   const swatches = React.useMemo(() => {
     const merged = swatchesProp ? [...swatchesProp, ...recent] : [...recent, ...DEFAULT_SWATCHES];
-    const seen = new Set<string>();
-    const unique: string[] = [];
-    for (const c of merged) {
-      const key = c.toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-      unique.push(c);
-    }
 
-    return unique.slice(0, 16);
+    return merged.filter((c, i) => merged.findIndex((o) => o.toLowerCase() === c.toLowerCase()) === i).slice(0, 16);
   }, [swatchesProp, recent]);
 
   const ctx = React.useMemo<ColorPickerContextValue>(
-    () => ({
-      hsv,
-      setHsv: setHsvAndPropagate,
-      hex: value,
-      setHex: setValue,
-      format,
-      setFormat,
-      swatches,
-      pushSwatch,
-      disabled,
-    }),
-    [hsv, setHsvAndPropagate, value, setValue, format, setFormat, swatches, pushSwatch, disabled],
+    () => ({ hex: value, setHex: setValue, format, setFormat, swatches, pushSwatch, disabled }),
+    [value, setValue, format, setFormat, swatches, pushSwatch, disabled],
   );
 
   return (
@@ -354,193 +165,17 @@ const ColorPickerTrigger = ({
   );
 };
 
-const ColorPickerArea = ({ className, ref, ...props }: React.ComponentProps<'div'>) => {
+/** Saturation, brightness and hue in one control. */
+const ColorPickerArea = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useColorPicker();
-  const areaRef = React.useRef<HTMLDivElement>(null);
-  const composedRef = React.useMemo(() => composeRefs(areaRef, ref), [ref]);
-  const draggingRef = React.useRef(false);
-
-  const updateFromPointer = (clientX: number, clientY: number) => {
-    const el = areaRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = clamp((clientX - rect.left) / rect.width, 0, 1);
-    const y = clamp((clientY - rect.top) / rect.height, 0, 1);
-    ctx.setHsv({ h: ctx.hsv.h, s: x * 100, v: (1 - y) * 100 });
-  };
-
-  // A cancelled or lost capture (touch scroll, alt-tab) ends the drag too, or the thumb would follow a hovering pointer.
-  const endDrag = () => {
-    if (!draggingRef.current) return;
-    draggingRef.current = false;
-    ctx.pushSwatch(ctx.hex.toLowerCase());
-  };
-
-  const pureHue = rgbToHex(hsvToRgb({ h: ctx.hsv.h, s: 100, v: 100 }));
 
   return (
     <div
-      ref={composedRef}
       data-slot="color-picker-area"
-      role="slider"
-      aria-valuetext={`saturation ${Math.round(ctx.hsv.s)}%, brightness ${Math.round(ctx.hsv.v)}%`}
-      aria-valuenow={Math.round(ctx.hsv.s)}
-      aria-valuemin={0}
-      aria-valuemax={100}
-      tabIndex={0}
+      className={cn('[&_.react-colorful]:w-full', ctx.disabled && 'pointer-events-none opacity-50', className)}
       {...props}
-      aria-label={props['aria-label'] ?? 'Saturation and brightness'}
-      onPointerDown={(e) => {
-        props.onPointerDown?.(e);
-        if (e.defaultPrevented) return;
-        e.preventDefault();
-        e.currentTarget.setPointerCapture(e.pointerId);
-        draggingRef.current = true;
-        updateFromPointer(e.clientX, e.clientY);
-      }}
-      onPointerMove={(e) => {
-        props.onPointerMove?.(e);
-        if (draggingRef.current) updateFromPointer(e.clientX, e.clientY);
-      }}
-      onPointerUp={(e) => {
-        props.onPointerUp?.(e);
-        endDrag();
-      }}
-      onPointerCancel={(e) => {
-        props.onPointerCancel?.(e);
-        endDrag();
-      }}
-      onLostPointerCapture={(e) => {
-        props.onLostPointerCapture?.(e);
-        endDrag();
-      }}
-      onKeyDown={(e) => {
-        props.onKeyDown?.(e);
-        if (e.defaultPrevented) return;
-        const step = e.shiftKey ? 10 : 2;
-        let { s, v } = ctx.hsv;
-        switch (e.key) {
-          case 'ArrowLeft':
-            s -= step;
-            break;
-          case 'ArrowRight':
-            s += step;
-            break;
-          case 'ArrowUp':
-            v += step;
-            break;
-          case 'ArrowDown':
-            v -= step;
-            break;
-          default:
-            return;
-        }
-        e.preventDefault();
-        ctx.setHsv({ h: ctx.hsv.h, s: clamp(s, 0, 100), v: clamp(v, 0, 100) });
-      }}
-      className={cn(
-        'relative h-40 w-full cursor-crosshair touch-none rounded-sm border border-border outline-none focus-visible:ring-2 focus-visible:ring-ring',
-        className,
-      )}
-      style={{
-        background: `
-          linear-gradient(to top, #000, transparent),
-          linear-gradient(to right, #fff, ${pureHue})
-        `,
-      }}
     >
-      <span
-        aria-hidden
-        data-slot="color-picker-area-thumb"
-        className="pointer-events-none absolute size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.5)]"
-        style={{
-          left: `${ctx.hsv.s}%`,
-          top: `${100 - ctx.hsv.v}%`,
-        }}
-      />
-    </div>
-  );
-};
-
-const ColorPickerHueSlider = ({ className, ref, ...props }: React.ComponentProps<'div'>) => {
-  const ctx = useColorPicker();
-  const trackRef = React.useRef<HTMLDivElement>(null);
-  const composedRef = React.useMemo(() => composeRefs(trackRef, ref), [ref]);
-  const draggingRef = React.useRef(false);
-
-  const updateFromPointer = (clientX: number) => {
-    const el = trackRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const x = clamp((clientX - rect.left) / rect.width, 0, 1);
-    ctx.setHsv({ h: x * 360, s: ctx.hsv.s, v: ctx.hsv.v });
-  };
-
-  const endDrag = () => {
-    if (!draggingRef.current) return;
-    draggingRef.current = false;
-    ctx.pushSwatch(ctx.hex.toLowerCase());
-  };
-
-  return (
-    <div
-      ref={composedRef}
-      data-slot="color-picker-hue-slider"
-      role="slider"
-      aria-valuemin={0}
-      aria-valuemax={360}
-      aria-valuenow={Math.round(ctx.hsv.h)}
-      tabIndex={0}
-      {...props}
-      aria-label={props['aria-label'] ?? 'Hue'}
-      onPointerDown={(e) => {
-        props.onPointerDown?.(e);
-        if (e.defaultPrevented) return;
-        e.preventDefault();
-        e.currentTarget.setPointerCapture(e.pointerId);
-        draggingRef.current = true;
-        updateFromPointer(e.clientX);
-      }}
-      onPointerMove={(e) => {
-        props.onPointerMove?.(e);
-        if (draggingRef.current) updateFromPointer(e.clientX);
-      }}
-      onPointerUp={(e) => {
-        props.onPointerUp?.(e);
-        endDrag();
-      }}
-      onPointerCancel={(e) => {
-        props.onPointerCancel?.(e);
-        endDrag();
-      }}
-      onLostPointerCapture={(e) => {
-        props.onLostPointerCapture?.(e);
-        endDrag();
-      }}
-      onKeyDown={(e) => {
-        props.onKeyDown?.(e);
-        if (e.defaultPrevented) return;
-        const step = e.shiftKey ? 24 : 6;
-        let h = ctx.hsv.h;
-        if (e.key === 'ArrowLeft') h -= step;
-        else if (e.key === 'ArrowRight') h += step;
-        else return;
-        e.preventDefault();
-        if (h < 0) h += 360;
-        if (h > 360) h -= 360;
-        ctx.setHsv({ h, s: ctx.hsv.s, v: ctx.hsv.v });
-      }}
-      className={cn(
-        'relative h-3 w-full cursor-pointer touch-none rounded-full border border-border bg-[linear-gradient(to_right,#f00_0%,#ff0_17%,#0f0_33%,#0ff_50%,#00f_67%,#f0f_83%,#f00_100%)] outline-none focus-visible:ring-2 focus-visible:ring-ring',
-        className,
-      )}
-    >
-      <span
-        aria-hidden
-        data-slot="color-picker-hue-slider-thumb"
-        className="pointer-events-none absolute top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(0,0,0,0.5)]"
-        style={{ left: `${(ctx.hsv.h / 360) * 100}%` }}
-      />
+      <HexColorPicker color={ctx.hex} onChange={ctx.setHex} />
     </div>
   );
 };
@@ -550,7 +185,6 @@ const ColorPickerFormatTabs = ({
   ...props
 }: Omit<React.ComponentProps<typeof Tabs>, 'value' | 'onValueChange'>) => {
   const ctx = useColorPicker();
-  const formats: ColorFormat[] = ['hex', 'rgb', 'hsl'];
 
   return (
     <Tabs
@@ -561,7 +195,7 @@ const ColorPickerFormatTabs = ({
       className={className}
     >
       <TabsList className="w-full">
-        {formats.map((f) => (
+        {(['hex', 'rgb', 'hsl'] as const).map((f) => (
           <TabsTrigger key={f} value={f} className="text-xs uppercase">
             {f}
           </TabsTrigger>
@@ -581,17 +215,11 @@ interface ChannelInputProps {
 // Keeps the raw text while editing, so clearing a field doesn't snap it to 0; out-of-range input clamps on blur or Enter.
 const ChannelInput = ({ value, max, onCommit, 'aria-label': ariaLabel }: ChannelInputProps) => {
   const [draft, setDraft] = React.useState<string | null>(null);
-
-  const parse = (raw: string) => {
-    if (!/^\d+$/.test(raw.trim())) return null;
-
-    return parseInt(raw, 10);
-  };
+  const parse = (raw: string) => (/^\d+$/.test(raw.trim()) ? Number(raw) : null);
 
   const commit = () => {
-    if (draft === null) return;
-    const n = parse(draft);
-    if (n !== null) onCommit(clamp(n, 0, max));
+    const n = draft === null ? null : parse(draft);
+    if (n !== null) onCommit(Math.min(max, n));
     setDraft(null);
   };
 
@@ -599,9 +227,8 @@ const ChannelInput = ({ value, max, onCommit, 'aria-label': ariaLabel }: Channel
     <Input
       value={draft ?? String(Math.round(value))}
       onChange={(e) => {
-        const raw = e.target.value;
-        setDraft(raw);
-        const n = parse(raw);
+        setDraft(e.target.value);
+        const n = parse(e.target.value);
         if (n !== null && n <= max) onCommit(n);
       }}
       onBlur={commit}
@@ -610,59 +237,38 @@ const ChannelInput = ({ value, max, onCommit, 'aria-label': ariaLabel }: Channel
       }}
       inputMode="numeric"
       aria-label={ariaLabel}
-      className="h-8 px-2 text-center font-mono text-xs tabular-nums"
+      className="h-8 px-2 text-center text-xs tabular-nums"
     />
   );
 };
 
 const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useColorPicker();
-  const rgb = hexToRgb(ctx.hex) ?? { r: 0, g: 0, b: 0 };
-  const hsl = rgbToHsl(rgb);
-
-  const [hexDraft, setHexDraft] = React.useState(ctx.hex.toUpperCase());
-  const [hexFocused, setHexFocused] = React.useState(false);
-  const hexDisplay = hexFocused ? hexDraft : ctx.hex.toUpperCase();
-
-  const parseHex = (raw: string) => {
-    const v = raw.trim();
-    if (!/^#?[0-9a-fA-F]{6}$/.test(v)) return null;
-
-    return (v.startsWith('#') ? v : `#${v}`).toLowerCase();
-  };
-
-  const commitHexDraft = () => {
-    const next = parseHex(hexDraft);
-    if (next) {
-      ctx.setHex(next);
-      ctx.pushSwatch(next);
-      setHexDraft(next.toUpperCase());
-    } else {
-      setHexDraft(ctx.hex.toUpperCase());
-    }
-  };
+  const color = colord(ctx.hex);
+  const [hexDraft, setHexDraft] = React.useState<string | null>(null);
 
   if (ctx.format === 'hex') {
+    const commitHex = () => {
+      const next = hexDraft && colord(hexDraft.startsWith('#') ? hexDraft : `#${hexDraft}`);
+      if (next && next.isValid()) {
+        ctx.setHex(next.toHex());
+        ctx.pushSwatch(next.toHex());
+      }
+      setHexDraft(null);
+    };
+
     return (
       <div {...props} data-slot="color-picker-format-inputs" className={className}>
         <Input
-          value={hexDisplay}
+          value={hexDraft ?? ctx.hex.toUpperCase()}
           onChange={(e) => {
-            const raw = e.target.value;
-            setHexDraft(raw.toUpperCase());
-            const next = parseHex(raw);
-            if (next) ctx.setHex(next);
+            setHexDraft(e.target.value.toUpperCase());
+            const next = colord(e.target.value.startsWith('#') ? e.target.value : `#${e.target.value}`);
+            if (/^#?[0-9a-f]{6}$/i.test(e.target.value.trim()) && next.isValid()) ctx.setHex(next.toHex());
           }}
-          onFocus={() => {
-            setHexDraft(ctx.hex.toUpperCase());
-            setHexFocused(true);
-          }}
-          onBlur={() => {
-            setHexFocused(false);
-            commitHexDraft();
-          }}
+          onBlur={commitHex}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') commitHexDraft();
+            if (e.key === 'Enter') commitHex();
           }}
           aria-label="Hex color"
           className="h-8 text-xs uppercase tabular-nums"
@@ -670,43 +276,31 @@ const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'
       </div>
     );
   }
-  if (ctx.format === 'rgb') {
-    const setChannel = (k: keyof RGB, n: number) => {
-      ctx.setHex(rgbToHex({ ...rgb, [k]: n }));
-    };
 
-    return (
-      <div {...props} data-slot="color-picker-format-inputs" className={cn('grid grid-cols-3 gap-1.5', className)}>
-        {(['r', 'g', 'b'] as const).map((k) => (
-          <ChannelInput
-            key={k}
-            value={rgb[k]}
-            max={255}
-            onCommit={(n) => setChannel(k, n)}
-            aria-label={`${k.toUpperCase()} channel`}
-          />
-        ))}
-      </div>
-    );
-  }
-  const setHslChannel = (k: keyof HSL, n: number) => {
-    const next = { ...hsl, [k]: n };
-    const v = next.l / 100;
-    const sn = next.s / 100;
-    const max2 = v + sn * Math.min(v, 1 - v);
-    const hsvS = max2 === 0 ? 0 : 2 * (1 - v / max2);
-    ctx.setHsv({ h: next.h, s: hsvS * 100, v: max2 * 100 });
-  };
+  const channels =
+    ctx.format === 'rgb'
+      ? (['r', 'g', 'b'] as const).map((k) => ({
+          k,
+          value: color.toRgb()[k],
+          max: 255,
+          commit: (n: number) => ctx.setHex(colord({ ...color.toRgb(), [k]: n }).toHex()),
+        }))
+      : (['h', 's', 'l'] as const).map((k) => ({
+          k,
+          value: color.toHsl()[k],
+          max: k === 'h' ? 360 : 100,
+          commit: (n: number) => ctx.setHex(colord({ ...color.toHsl(), [k]: n }).toHex()),
+        }));
 
   return (
     <div {...props} data-slot="color-picker-format-inputs" className={cn('grid grid-cols-3 gap-1.5', className)}>
-      {(['h', 's', 'l'] as const).map((k) => (
+      {channels.map((c) => (
         <ChannelInput
-          key={k}
-          value={hsl[k]}
-          max={k === 'h' ? 360 : 100}
-          onCommit={(n) => setHslChannel(k, n)}
-          aria-label={`${k.toUpperCase()} channel`}
+          key={c.k}
+          value={c.value}
+          max={c.max}
+          onCommit={c.commit}
+          aria-label={`${c.k.toUpperCase()} channel`}
         />
       ))}
     </div>
@@ -801,12 +395,9 @@ const ColorPickerContent = ({ className, children, ...props }: React.ComponentPr
             <span
               aria-hidden
               data-slot="color-picker-preview"
-              className="inline-block size-8 shrink-0 rounded-sm border border-border"
+              className="inline-block h-8 flex-1 rounded-sm border border-border"
               style={{ backgroundColor: ctx.hex }}
             />
-            <div className="flex-1">
-              <ColorPickerHueSlider />
-            </div>
             <ColorPickerEyedropper />
           </div>
           <ColorPickerFormatTabs />
@@ -823,7 +414,6 @@ export {
   ColorPickerTrigger,
   ColorPickerContent,
   ColorPickerArea,
-  ColorPickerHueSlider,
   ColorPickerFormatTabs,
   ColorPickerFormatInputs,
   ColorPickerEyedropper,

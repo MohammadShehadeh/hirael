@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { AsYouType, parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js';
 import { Check, ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -24,18 +25,12 @@ import {
 export { COUNTRIES };
 export type { Country };
 
-const digitsOnly = (input: string): string => {
-  return input.replace(/\D/g, '');
-};
-
-// Italy keeps its leading 0 internationally; elsewhere it's a national trunk prefix.
-const KEEPS_TRUNK_ZERO = new Set(['IT']);
-
 const toE164 = (country: Country, national: string): string => {
-  const digits = digitsOnly(national);
-  const subscriber = KEEPS_TRUNK_ZERO.has(country.iso2) ? digits : digits.replace(/^0/, '');
+  // AsYouType knows each country's trunk prefix: the UK drops its leading 0, Italy keeps it.
+  const typer = new AsYouType(country.iso2 as CountryCode);
+  typer.input(national);
 
-  return subscriber ? `${country.dialCode}${subscriber}` : '';
+  return typer.getNumberValue() ?? '';
 };
 
 interface ParsedE164 {
@@ -44,33 +39,20 @@ interface ParsedE164 {
 }
 
 const parseE164 = (value: string | undefined, fallback: Country): ParsedE164 => {
-  if (!value) return { country: fallback, national: '' };
-  const trimmed = value.trim();
-  if (!trimmed.startsWith('+')) {
-    return { country: fallback, national: digitsOnly(trimmed) };
-  }
-  // Longest dial code wins; on a shared code (+1 is US and CA) prefer the fallback country.
-  const sorted = [...COUNTRIES].sort(
-    (a, b) => b.dialCode.length - a.dialCode.length || Number(b === fallback) - Number(a === fallback),
-  );
-  for (const c of sorted) {
-    if (trimmed.startsWith(c.dialCode)) {
-      return {
-        country: c,
-        national: digitsOnly(trimmed.slice(c.dialCode.length)),
-      };
-    }
-  }
+  const parsed = value ? parsePhoneNumberFromString(value, fallback.iso2 as CountryCode) : undefined;
+  const dialCode = parsed && `+${parsed.countryCallingCode}`;
+  // An unrecognised number still has a dial code; on a shared one (+1 is US and CA) prefer the fallback.
+  const country =
+    COUNTRIES.find((c) => c.iso2 === parsed?.country) ??
+    (fallback.dialCode === dialCode ? fallback : COUNTRIES.find((c) => c.dialCode === dialCode)) ??
+    fallback;
 
-  return { country: fallback, national: digitsOnly(trimmed) };
+  return { country, national: parsed?.nationalNumber ?? value?.replace(/\D/g, '') ?? '' };
 };
 
-interface Ctx {
+interface Ctx extends ParsedE164 {
   id: string;
-  country: Country;
-  setCountry: (next: Country) => void;
-  national: string;
-  setNational: (next: string) => void;
+  update: (next: ParsedE164) => void;
   disabled?: boolean;
 }
 
@@ -116,73 +98,34 @@ const PhoneInput = ({
     [defaultCountry],
   );
 
-  const [country, setCountryState] = React.useState<Country>(
-    () => parseE164(valueProp ?? defaultValue, fallback).country,
-  );
-  const [national, setNationalState] = React.useState<string>(
-    () => parseE164(valueProp ?? defaultValue, fallback).national,
-  );
-  const isControlled = valueProp !== undefined;
+  const [phone, setPhone] = React.useState(() => parseE164(valueProp ?? defaultValue, fallback));
 
   // Re-parse only when the parent's value differs from what the typed digits
   // already produce, so an echo of our own change keeps the user's spacing.
   const [prevValue, setPrevValue] = React.useState(valueProp);
-  if (isControlled && valueProp !== prevValue) {
+  if (valueProp !== undefined && valueProp !== prevValue) {
     setPrevValue(valueProp);
-    if (valueProp !== toE164(country, national)) {
-      const parsed = parseE164(valueProp, fallback);
-      setCountryState(parsed.country);
-      setNationalState(parsed.national);
-    }
+    if (valueProp !== toE164(phone.country, phone.national)) setPhone(parseE164(valueProp, fallback));
   }
 
-  const emit = React.useCallback(
-    (c: Country, n: string) => {
-      onValueChange?.(toE164(c, n));
+  const update = React.useCallback(
+    (next: ParsedE164) => {
+      setPhone(next);
+      onValueChange?.(toE164(next.country, next.national));
     },
     [onValueChange],
   );
 
-  const setCountry = React.useCallback(
-    (next: Country) => {
-      setCountryState(next);
-      emit(next, national);
-    },
-    [emit, national],
-  );
-
-  const setNational = React.useCallback(
-    (next: string) => {
-      setNationalState(next);
-      emit(country, next);
-    },
-    [emit, country],
-  );
-
   const ctx = React.useMemo<Ctx>(
-    () => ({
-      id: fieldId,
-      country,
-      setCountry,
-      national,
-      setNational,
-      disabled,
-    }),
-    [fieldId, country, setCountry, national, setNational, disabled],
+    () => ({ id: fieldId, ...phone, update, disabled }),
+    [fieldId, phone, update, disabled],
   );
-
-  const e164 = isControlled ? valueProp : toE164(country, national);
 
   return (
     <PhoneInputContext.Provider value={ctx}>
-      <InputGroup
-        data-slot="phone-input"
-        data-disabled={disabled || undefined}
-        className={cn(disabled && 'opacity-60', className)}
-        {...props}
-      >
+      <InputGroup data-slot="phone-input" data-disabled={disabled} className={className} {...props}>
         {children}
-        {name && <input type="hidden" name={name} value={e164} />}
+        {name && <input type="hidden" name={name} value={toE164(phone.country, phone.national)} />}
       </InputGroup>
     </PhoneInputContext.Provider>
   );
@@ -233,7 +176,7 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
                     key={c.iso2}
                     value={`${c.name} ${c.iso2} ${c.dialCode}`}
                     onSelect={() => {
-                      ctx.setCountry(c);
+                      ctx.update({ country: c, national: ctx.national });
                       setOpen(false);
                     }}
                     className="justify-between"
@@ -280,14 +223,11 @@ const PhoneInputField = ({
       disabled={ctx.disabled}
       data-slot="phone-input-field"
       className={cn('rtl:text-right', className)}
-      onChange={(e) => {
-        const cleaned = e.target.value.replace(/[^\d\s]/g, '');
-        ctx.setNational(cleaned);
-      }}
+      onChange={(e) => ctx.update({ country: ctx.country, national: e.target.value.replace(/[^\d\s]/g, '') })}
       onBlur={(e) => {
         onBlur?.(e);
         const normalized = ctx.national.replace(/\s+/g, ' ').trim();
-        if (normalized !== ctx.national) ctx.setNational(normalized);
+        if (normalized !== ctx.national) ctx.update({ country: ctx.country, national: normalized });
       }}
       {...props}
     />

@@ -401,7 +401,6 @@ const TriStateCheckbox = ({ id, scope, invalid, describedBy, controls }: TriStat
       />
       {scope.state === 'indeterminate' && (
         <MinusIcon
-          aria-hidden
           data-slot="checkbox-group-indeterminate"
           className="pointer-events-none absolute inset-0 m-auto size-3.5 text-primary-foreground"
         />

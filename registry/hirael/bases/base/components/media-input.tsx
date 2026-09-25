@@ -264,7 +264,7 @@ const MediaInputFile = ({ className, ...props }: React.ComponentProps<'p'>) => {
   return (
     <p
       data-slot="media-input-file"
-      className={cn('min-w-0 truncate font-mono text-xs text-muted-foreground', className)}
+      className={cn('min-w-0 truncate text-xs text-muted-foreground', className)}
       {...props}
     >
       {value.file.name}
@@ -300,7 +300,7 @@ const MediaInputClear = ({
         if (!event.defaultPrevented) clear();
       }}
     >
-      {children ?? <X aria-hidden className="size-3.5" />}
+      {children ?? <X className="size-3.5" />}
     </Button>
   );
 };

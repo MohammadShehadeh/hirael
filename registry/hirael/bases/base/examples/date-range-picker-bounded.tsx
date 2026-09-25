@@ -22,13 +22,7 @@ const DateRangePickerBounded = () => {
   return (
     <Field className="max-w-md gap-2">
       <FieldLabel htmlFor="drp-bounded">{t({ en: 'Booking window', ar: 'نافذة الحجز' })}</FieldLabel>
-      <DateRangePicker
-        value={bounded}
-        onValueChange={setBounded}
-        min={new Date(2026, 5, 1)}
-        max={new Date(2026, 7, 31)}
-        disabledDate={(d) => d.getDay() === 0 || d.getDay() === 6}
-      >
+      <DateRangePicker value={bounded} onValueChange={setBounded}>
         <DateRangePickerTrigger
           id="drp-bounded"
           placeholder={t({
@@ -36,7 +30,13 @@ const DateRangePickerBounded = () => {
             ar: 'اختر أيام العمل فقط',
           })}
         />
-        <DateRangePickerContent numberOfMonths={1} showPresets={false} />
+        <DateRangePickerContent
+          numberOfMonths={1}
+          presets={[]}
+          startMonth={new Date(2026, 5)}
+          endMonth={new Date(2026, 7)}
+          disabled={[{ before: new Date(2026, 5, 1) }, { after: new Date(2026, 7, 31) }, { dayOfWeek: [0, 6] }]}
+        />
       </DateRangePicker>
       <p className="text-xs text-muted-foreground uppercase">{print(bounded)}</p>
     </Field>

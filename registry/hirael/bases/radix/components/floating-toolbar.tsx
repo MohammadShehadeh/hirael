@@ -22,8 +22,7 @@ const FloatingToolbar = ({ className, onKeyDown, ...props }: FloatingToolbarProp
         if (index === -1) return;
         event.preventDefault();
         const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
-        let delta = event.key === 'ArrowRight' ? 1 : -1;
-        if (rtl) delta = -delta;
+        const delta = (event.key === 'ArrowRight') !== rtl ? 1 : -1;
         items[(index + delta + items.length) % items.length]?.focus();
       }}
       className={cn(

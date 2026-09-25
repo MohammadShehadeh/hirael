@@ -72,13 +72,14 @@ const groupOptions = (options: AutocompleteOption[]) => {
   return groups;
 };
 
-const completionFor = (option: AutocompleteOption | undefined, typed: string) => {
-  if (!option || option.disabled || !typed) return '';
-  if (option.value.length <= typed.length) return '';
-  if (!option.value.toLowerCase().startsWith(typed.toLowerCase())) return '';
-
-  return option.value.slice(typed.length);
-};
+const completionFor = (option: AutocompleteOption | undefined, typed: string) =>
+  option &&
+  !option.disabled &&
+  typed &&
+  option.value.length > typed.length &&
+  option.value.toLowerCase().startsWith(typed.toLowerCase())
+    ? option.value.slice(typed.length)
+    : '';
 
 interface AutocompleteContextValue {
   id: string;
@@ -510,7 +511,6 @@ const AutocompleteInput = ({
       )}
       <InputGroupInput
         ref={composedRef}
-        type="text"
         role="combobox"
         autoComplete="off"
         aria-autocomplete={inlineComplete ? 'both' : 'list'}
@@ -563,6 +563,12 @@ const AutocompleteContent = ({
 }: AutocompleteContentProps) => {
   const ctx = useAutocomplete();
   const message = { idle: null, loading: loadingMessage, empty: emptyMessage, error: errorMessage }[ctx.status];
+  const renderEntries = (entries: AutocompleteEntry[]) =>
+    entries.map(({ option, index }) => (
+      <AutocompleteItem key={`${index}-${option.value}`} option={option} index={index}>
+        {renderOption?.(option)}
+      </AutocompleteItem>
+    ));
 
   return (
     <PopoverContent
@@ -604,18 +610,10 @@ const AutocompleteContent = ({
               >
                 {group.label}
               </div>
-              {group.entries.map(({ option, index }) => (
-                <AutocompleteItem key={`${index}-${option.value}`} option={option} index={index}>
-                  {renderOption?.(option)}
-                </AutocompleteItem>
-              ))}
+              {renderEntries(group.entries)}
             </div>
           ) : (
-            group.entries.map(({ option, index }) => (
-              <AutocompleteItem key={`${index}-${option.value}`} option={option} index={index}>
-                {renderOption?.(option)}
-              </AutocompleteItem>
-            ))
+            renderEntries(group.entries)
           ),
         )}
       </div>

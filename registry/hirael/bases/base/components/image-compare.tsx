@@ -245,29 +245,18 @@ const ImageCompareHandle = ({
     onKeyDown?.(event);
     if (event.defaultPrevented || disabled) return;
     const step = event.shiftKey ? 10 : 1;
-    let next: number | null = null;
-    switch (event.key) {
-      case 'ArrowRight':
-        next = position + (rtl ? -step : step);
-        break;
-      case 'ArrowLeft':
-        next = position + (rtl ? step : -step);
-        break;
-      // Up raises the announced value; vertically that value is measured from the bottom.
-      case 'ArrowUp':
-        next = position + (vertical ? -step : step);
-        break;
-      case 'ArrowDown':
-        next = position + (vertical ? step : -step);
-        break;
-      case 'Home':
-        next = vertical ? 100 : 0;
-        break;
-      case 'End':
-        next = vertical ? 0 : 100;
-        break;
-    }
-    if (next === null) return;
+    // Up raises the announced value; vertically that value is measured from the bottom.
+    const next = (
+      {
+        ArrowRight: position + (rtl ? -step : step),
+        ArrowLeft: position + (rtl ? step : -step),
+        ArrowUp: position + (vertical ? -step : step),
+        ArrowDown: position + (vertical ? step : -step),
+        Home: vertical ? 100 : 0,
+        End: vertical ? 0 : 100,
+      } as Record<string, number>
+    )[event.key];
+    if (next === undefined) return;
     event.preventDefault();
     setPosition(next);
   };
@@ -326,7 +315,7 @@ const ImageCompareHandle = ({
             dragging && 'scale-110',
           )}
         >
-          <ChevronsLeftRight aria-hidden className={cn('size-4', vertical && 'rotate-90')} />
+          <ChevronsLeftRight className={cn('size-4', vertical && 'rotate-90')} />
         </span>
       )}
     </div>

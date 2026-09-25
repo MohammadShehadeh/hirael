@@ -20,7 +20,7 @@ import {
   ComboboxList,
   ComboboxValue,
   useComboboxAnchor,
-} from '@/registry/hirael/bases/radix/components/combobox';
+} from '@/registry/hirael/bases/radix/ui/combobox';
 
 const FRAMEWORKS = ['Next.js', 'SvelteKit', 'Nuxt.js', 'Remix', 'Astro', 'Gatsby'];
 

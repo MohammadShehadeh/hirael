@@ -8,13 +8,20 @@ import {
   PasswordInput,
   PasswordInputField,
   PasswordInputStrength,
+  type PasswordScorer,
 } from '@/registry/hirael/bases/radix/components/password-input';
 
 const PasswordInputDemo = () => {
   const t = useT();
 
   const [basic, setBasic] = React.useState('');
-  const [composed, setComposed] = React.useState('hunter2');
+  const [passphrase, setPassphrase] = React.useState('correct horse');
+
+  const wordScorer: PasswordScorer = (value) => {
+    const score = Math.min(value.trim().split(/\s+/).filter(Boolean).length, 4);
+
+    return { score, label: t({ en: `${score} of 4 words`, ar: `${score} من 4 كلمات` }) };
+  };
 
   return (
     <FieldGroup className="max-w-md gap-8">
@@ -32,26 +39,12 @@ const PasswordInputDemo = () => {
       </Field>
 
       <Field className="gap-2">
-        <FieldLabel htmlFor="pw-composed">
-          {t({
-            en: 'Password · custom strength hint',
-            ar: 'كلمة المرور · تلميح قوة مخصص',
-          })}
+        <FieldLabel htmlFor="pw-passphrase">
+          {t({ en: 'Passphrase · custom scorer', ar: 'عبارة مرور · مقياس مخصص' })}
         </FieldLabel>
-        <PasswordInput id="pw-composed" value={composed} onValueChange={setComposed}>
-          <PasswordInputField
-            placeholder={t({
-              en: 'Type to see strength',
-              ar: 'اكتب لرؤية القوة',
-            })}
-          />
-          <PasswordInputStrength
-            renderMeta={(s) => (
-              <p className="text-xs text-muted-foreground uppercase">
-                {t({ en: 'score', ar: 'النتيجة' })} {s.score} / 4 · {s.label}
-              </p>
-            )}
-          />
+        <PasswordInput id="pw-passphrase" value={passphrase} onValueChange={setPassphrase} scorer={wordScorer}>
+          <PasswordInputField placeholder={t({ en: 'Four or more words', ar: 'أربع كلمات أو أكثر' })} />
+          <PasswordInputStrength />
         </PasswordInput>
       </Field>
     </FieldGroup>

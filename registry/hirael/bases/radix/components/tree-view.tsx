@@ -246,7 +246,6 @@ const TreeItem = ({
   const labelRow = (
     <>
       <ChevronRight
-        aria-hidden
         className={cn(
           'size-3.5 shrink-0 text-muted-foreground transition-transform duration-150',
           hasChildren ? 'group-data-[state=open]:rotate-90 rtl:group-data-[state=closed]:rotate-180' : 'invisible',

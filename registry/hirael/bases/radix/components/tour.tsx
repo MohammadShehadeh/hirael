@@ -216,6 +216,13 @@ interface CardPosition {
   left: number;
 }
 
+const padRect = (rect: Rect, padding: number): Rect => ({
+  top: rect.top - padding,
+  left: rect.left - padding,
+  width: rect.width + padding * 2,
+  height: rect.height + padding * 2,
+});
+
 const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, labels }: TourOverlayProps) => {
   const current = steps[step];
   const side = current?.side ?? 'bottom';
@@ -223,10 +230,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
 
   const cardRef = React.useRef<HTMLDivElement>(null);
   const [rect, setRect] = React.useState<Rect | null>(null);
-  const [viewport, setViewport] = React.useState(() => ({
-    w: window.innerWidth,
-    h: window.innerHeight,
-  }));
+  const [viewport, setViewport] = React.useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
   const [pos, setPos] = React.useState<CardPosition | null>(null);
   const titleId = React.useId();
   const descriptionId = React.useId();
@@ -260,10 +264,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
       });
     };
     window.addEventListener('resize', schedule, { passive: true });
-    window.addEventListener('scroll', schedule, {
-      passive: true,
-      capture: true,
-    });
+    window.addEventListener('scroll', schedule, { passive: true, capture: true });
     const el = resolveTarget(target);
     const observer = el && typeof ResizeObserver !== 'undefined' ? new ResizeObserver(schedule) : null;
     if (el) observer?.observe(el);
@@ -283,47 +284,22 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     const h = card.offsetHeight;
     const gap = 12;
     const edge = 16;
-    const box = {
-      top: rect.top - padding,
-      left: rect.left - padding,
-      width: rect.width + padding * 2,
-      height: rect.height + padding * 2,
-    };
-    const coords = (s: NonNullable<TourStep['side']>) => {
-      switch (s) {
-        case 'top':
-          return {
-            top: box.top - gap - h,
-            left: box.left + box.width / 2 - w / 2,
-          };
-        case 'bottom':
-          return {
-            top: box.top + box.height + gap,
-            left: box.left + box.width / 2 - w / 2,
-          };
-        case 'left':
-          return {
-            top: box.top + box.height / 2 - h / 2,
-            left: box.left - gap - w,
-          };
-        case 'right':
-          return {
-            top: box.top + box.height / 2 - h / 2,
-            left: box.left + box.width + gap,
-          };
-      }
-    };
+    const box = padRect(rect, padding);
+    const midTop = box.top + box.height / 2 - h / 2;
+    const midLeft = box.left + box.width / 2 - w / 2;
+    const coords = (s: NonNullable<TourStep['side']>) =>
+      ({
+        top: { top: box.top - gap - h, left: midLeft },
+        bottom: { top: box.top + box.height + gap, left: midLeft },
+        left: { top: midTop, left: box.left - gap - w },
+        right: { top: midTop, left: box.left + box.width + gap },
+      })[s];
     const fits = (s: NonNullable<TourStep['side']>) => {
       const c = coords(s);
 
       return c.top >= edge && c.left >= edge && c.top + h <= viewport.h - edge && c.left + w <= viewport.w - edge;
     };
-    const opposite = {
-      top: 'bottom',
-      bottom: 'top',
-      left: 'right',
-      right: 'left',
-    } as const;
+    const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' } as const;
     const placed = !fits(side) && fits(opposite[side]) ? opposite[side] : side;
     const c = coords(placed);
     setPos({
@@ -347,12 +323,8 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
       if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
       e.preventDefault();
       const rtl = cardRef.current ? getComputedStyle(cardRef.current).direction === 'rtl' : false;
-      const forward = e.key === 'ArrowRight' ? !rtl : rtl;
-      if (forward) {
-        next();
-      } else {
-        back();
-      }
+      if ((e.key === 'ArrowRight') !== rtl) next();
+      else back();
     };
     document.addEventListener('keydown', onKeyDown);
 
@@ -384,17 +356,10 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     }
   };
 
-  const spotlight = rect
-    ? {
-        x: rect.left - padding,
-        y: rect.top - padding,
-        w: rect.width + padding * 2,
-        h: rect.height + padding * 2,
-      }
-    : null;
-  const radius = spotlight ? Math.min(8, spotlight.w / 2, spotlight.h / 2) : 0;
+  const spotlight = rect ? padRect(rect, padding) : null;
+  const radius = spotlight ? Math.min(8, spotlight.width / 2, spotlight.height / 2) : 0;
   const scrimPath = spotlight
-    ? `M0 0H${viewport.w}V${viewport.h}H0Z M${spotlight.x + radius} ${spotlight.y}h${spotlight.w - radius * 2}a${radius} ${radius} 0 0 1 ${radius} ${radius}v${spotlight.h - radius * 2}a${radius} ${radius} 0 0 1 ${-radius} ${radius}h${-(spotlight.w - radius * 2)}a${radius} ${radius} 0 0 1 ${-radius} ${-radius}v${-(spotlight.h - radius * 2)}a${radius} ${radius} 0 0 1 ${radius} ${-radius}Z`
+    ? `M0 0H${viewport.w}V${viewport.h}H0Z M${spotlight.left + radius} ${spotlight.top}h${spotlight.width - radius * 2}a${radius} ${radius} 0 0 1 ${radius} ${radius}v${spotlight.height - radius * 2}a${radius} ${radius} 0 0 1 ${-radius} ${radius}h${-(spotlight.width - radius * 2)}a${radius} ${radius} 0 0 1 ${-radius} ${-radius}v${-(spotlight.height - radius * 2)}a${radius} ${radius} 0 0 1 ${radius} ${-radius}Z`
     : `M0 0H${viewport.w}V${viewport.h}H0Z`;
 
   const available = steps.flatMap((s, i) => (resolveTarget(s.target) ? [i] : []));
@@ -418,12 +383,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
           data-slot="tour-spotlight"
           aria-hidden
           className="pointer-events-none absolute rounded-lg ring-2 ring-ring/60"
-          style={{
-            top: spotlight.y,
-            left: spotlight.x,
-            width: spotlight.w,
-            height: spotlight.h,
-          }}
+          style={spotlight}
         />
       )}
       <div
@@ -449,7 +409,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
         <h2 id={titleId} data-slot="tour-title" className="mt-1.5 text-sm leading-tight font-semibold">
           {current?.title}
         </h2>
-        {current?.description ? (
+        {current?.description && (
           <p
             id={descriptionId}
             data-slot="tour-description"
@@ -457,7 +417,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
           >
             {current.description}
           </p>
-        ) : null}
+        )}
         <div data-slot="tour-controls" className="mt-4 flex items-center justify-between gap-2">
           <Button data-slot="tour-skip" variant="ghost" size="sm" onClick={stop}>
             {labels?.skip ?? 'Skip'}

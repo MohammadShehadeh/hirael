@@ -1,17 +1,11 @@
 'use client';
 
 import * as React from 'react';
+import SignaturePadLib from 'signature_pad';
 import { Eraser, Undo2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-
-interface Point {
-  x: number;
-  y: number;
-  w: number;
-}
-type Stroke = Point[];
 
 interface SignaturePadDataURLOptions {
   backgroundColor?: string;
@@ -44,38 +38,18 @@ const useSignaturePad = () => {
   return ctx;
 };
 
-const midpoint = (a: Point, b: Point) => {
-  return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
-};
+// Redraws `source`'s strokes through `target` (the same pad, or one on an export canvas) in one ink.
+const paint = (canvas: HTMLCanvasElement, source: SignaturePadLib, target: SignaturePadLib, ink: string) => {
+  const dpr = Math.max(window.devicePixelRatio || 1, 1);
+  canvas.getContext('2d')?.setTransform(dpr, 0, 0, dpr, 0, 0);
+  target.penColor = ink;
+  target.fromData(source.toData().map((group) => ({ ...group, penColor: ink })));
 
-const drawSegment = (ctx: CanvasRenderingContext2D, points: Stroke, i: number) => {
-  const prev = points[i - 1];
-  const curr = points[i];
-  const start = i > 1 ? midpoint(points[i - 2], prev) : prev;
-  const end = midpoint(prev, curr);
-  ctx.beginPath();
-  ctx.moveTo(start.x, start.y);
-  ctx.quadraticCurveTo(prev.x, prev.y, end.x, end.y);
-  ctx.lineWidth = curr.w;
-  ctx.stroke();
-};
-
-const drawStroke = (ctx: CanvasRenderingContext2D, points: Stroke) => {
-  if (points.length === 0) return;
-  if (points.length === 1) {
-    const p = points[0];
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, Math.max(p.w / 2, 0.5), 0, Math.PI * 2);
-    ctx.fill();
-
-    return;
-  }
-  for (let i = 1; i < points.length; i++) {
-    drawSegment(ctx, points, i);
-  }
+  return target;
 };
 
 export interface SignaturePadProps extends Omit<React.ComponentProps<'div'>, 'onChange' | 'ref'> {
+  /** Ink while drawing. Defaults to the current text color, so it follows the theme. */
   penColor?: string;
   /** Ink used by `toDataURL`. Defaults to `penColor`, else black, so a dark-theme signature doesn't export white. */
   exportColor?: string;
@@ -104,12 +78,8 @@ const SignaturePad = ({
   ...props
 }: SignaturePadProps) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const strokesRef = React.useRef<Stroke[]>([]);
-  // Non-null while a stroke is in progress.
-  const activePointerRef = React.useRef<number | null>(null);
-  const lastTimeRef = React.useRef(0);
+  const padRef = React.useRef<SignaturePadLib | null>(null);
   const [empty, setEmpty] = React.useState(true);
-  const emptyRef = React.useRef(true);
 
   const onChangeRef = React.useRef(onChange);
   const onStrokeEndRef = React.useRef(onStrokeEnd);
@@ -119,169 +89,80 @@ const SignaturePad = ({
   });
 
   const setEmptyState = React.useCallback((next: boolean) => {
-    if (emptyRef.current === next) return;
-    emptyRef.current = next;
-    setEmpty(next);
-    onChangeRef.current?.(next);
+    setEmpty((prev) => {
+      if (prev !== next) onChangeRef.current?.(next);
+
+      return next;
+    });
   }, []);
-
-  const resolveInk = React.useCallback(() => {
-    if (penColor) return penColor;
-    const canvas = canvasRef.current;
-    if (!canvas) return '#000';
-
-    return getComputedStyle(canvas).color || '#000';
-  }, [penColor]);
-
-  const getCtx = React.useCallback(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas?.getContext('2d');
-    if (!canvas || !ctx) return null;
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    const ink = resolveInk();
-    ctx.strokeStyle = ink;
-    ctx.fillStyle = ink;
-
-    return ctx;
-  }, [resolveInk]);
-
-  const redraw = React.useCallback(() => {
-    const canvas = canvasRef.current;
-    const ctx = getCtx();
-    if (!canvas || !ctx) return;
-    const dpr = window.devicePixelRatio || 1;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-    for (const stroke of strokesRef.current) {
-      drawStroke(ctx, stroke);
-    }
-  }, [getCtx]);
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const ink = () => penColor ?? (getComputedStyle(canvas).color || '#000');
+    const pad = new SignaturePadLib(canvas, { minWidth: minStrokeWidth, maxWidth: maxStrokeWidth, penColor: ink() });
+    padRef.current = pad;
+    pad.addEventListener('beginStroke', () => setEmptyState(false));
+    pad.addEventListener('endStroke', () => onStrokeEndRef.current?.());
+
     const resize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = Math.max(1, Math.round(rect.width * dpr));
-      canvas.height = Math.max(1, Math.round(rect.height * dpr));
-      redraw();
+      const dpr = Math.max(window.devicePixelRatio || 1, 1);
+      canvas.width = Math.max(1, Math.round(canvas.offsetWidth * dpr));
+      canvas.height = Math.max(1, Math.round(canvas.offsetHeight * dpr));
+      paint(canvas, pad, pad, ink());
     };
     resize();
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas);
-    const mo = new MutationObserver(redraw);
-    mo.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class', 'style'],
-    });
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(canvas);
+    // A theme switch changes the text color the ink follows.
+    const themeObserver = new MutationObserver(() => paint(canvas, pad, pad, ink()));
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style'] });
 
     return () => {
-      ro.disconnect();
-      mo.disconnect();
+      resizeObserver.disconnect();
+      themeObserver.disconnect();
+      pad.off();
+      padRef.current = null;
     };
-  }, [redraw]);
+  }, [penColor, minStrokeWidth, maxStrokeWidth, setEmptyState]);
 
   const clear = React.useCallback(() => {
-    strokesRef.current = [];
-    redraw();
+    padRef.current?.clear();
     setEmptyState(true);
-  }, [redraw, setEmptyState]);
+  }, [setEmptyState]);
 
   const undo = React.useCallback(() => {
-    strokesRef.current = strokesRef.current.slice(0, -1);
-    redraw();
-    setEmptyState(strokesRef.current.length === 0);
-  }, [redraw, setEmptyState]);
+    const pad = padRef.current;
+    if (!pad) return;
+    const strokes = pad.toData();
+    strokes.pop();
+    pad.fromData(strokes);
+    setEmptyState(strokes.length === 0);
+  }, [setEmptyState]);
 
   React.useImperativeHandle(
     ref,
     () => ({
       clear,
       undo,
-      isEmpty: () => strokesRef.current.length === 0,
+      isEmpty: () => padRef.current?.isEmpty() ?? true,
       toDataURL: (type = 'image/png', opts) => {
         const canvas = canvasRef.current;
-        if (!canvas) return '';
+        const pad = padRef.current;
+        if (!canvas || !pad) return '';
         const off = document.createElement('canvas');
         off.width = canvas.width;
         off.height = canvas.height;
-        const ctx = off.getContext('2d');
-        if (!ctx) return '';
-        const dpr = window.devicePixelRatio || 1;
-        if (opts?.backgroundColor) {
-          ctx.fillStyle = opts.backgroundColor;
-          ctx.fillRect(0, 0, off.width, off.height);
-        }
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        const ink = opts?.inkColor ?? exportColor ?? penColor ?? '#000000';
-        ctx.strokeStyle = ink;
-        ctx.fillStyle = ink;
-        for (const stroke of strokesRef.current) {
-          drawStroke(ctx, stroke);
-        }
+        const exporter = new SignaturePadLib(off, { backgroundColor: opts?.backgroundColor });
+        paint(off, pad, exporter, opts?.inkColor ?? exportColor ?? penColor ?? '#000000');
+        const url = exporter.toDataURL(type);
+        exporter.off();
 
-        return off.toDataURL(type);
+        return url;
       },
     }),
     [clear, undo, exportColor, penColor],
   );
-
-  const pointFromEvent = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
-  };
-
-  const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (disabled || !e.isPrimary || activePointerRef.current !== null) return;
-    e.preventDefault();
-    e.currentTarget.setPointerCapture(e.pointerId);
-    activePointerRef.current = e.pointerId;
-    lastTimeRef.current = e.timeStamp;
-    const { x, y } = pointFromEvent(e);
-    const w = (minStrokeWidth + maxStrokeWidth) / 2;
-    strokesRef.current = [...strokesRef.current, [{ x, y, w }]];
-    const ctx = getCtx();
-    if (ctx) {
-      ctx.beginPath();
-      ctx.arc(x, y, Math.max(w / 2, 0.5), 0, Math.PI * 2);
-      ctx.fill();
-    }
-    setEmptyState(false);
-  };
-
-  const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (disabled || e.pointerId !== activePointerRef.current) {
-      return;
-    }
-    const stroke = strokesRef.current[strokesRef.current.length - 1];
-    if (!stroke) return;
-    const prev = stroke[stroke.length - 1];
-    const { x, y } = pointFromEvent(e);
-    const dist = Math.hypot(x - prev.x, y - prev.y);
-    if (dist < 0.5) return;
-    const dt = Math.max(1, e.timeStamp - lastTimeRef.current);
-    lastTimeRef.current = e.timeStamp;
-    const velocity = dist / dt;
-    const target = maxStrokeWidth - (maxStrokeWidth - minStrokeWidth) * Math.min(1, velocity / 3);
-    const w = prev.w + (target - prev.w) * 0.35;
-    stroke.push({ x, y, w });
-    const ctx = getCtx();
-    if (ctx) drawSegment(ctx, stroke, stroke.length - 1);
-  };
-
-  const endStroke = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (e.pointerId !== activePointerRef.current) return;
-    activePointerRef.current = null;
-    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
-      e.currentTarget.releasePointerCapture(e.pointerId);
-    }
-    onStrokeEndRef.current?.();
-  };
 
   const ctxValue = React.useMemo<SignaturePadContextValue>(
     () => ({ clear, undo, empty, disabled }),
@@ -308,10 +189,6 @@ const SignaturePad = ({
           role="img"
           aria-roledescription="signature pad"
           aria-label={ariaLabel ?? 'Signature pad. Draw using a mouse or touch.'}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={endStroke}
-          onPointerCancel={endStroke}
           className="absolute inset-0 size-full cursor-crosshair touch-none"
         />
         <div
@@ -361,7 +238,7 @@ const SignaturePadClear = ({ className, children, onClick, ...props }: React.Com
       className={className}
       {...props}
     >
-      <Eraser aria-hidden />
+      <Eraser />
       {children ?? 'Clear'}
     </Button>
   );
@@ -385,7 +262,7 @@ const SignaturePadUndo = ({ className, children, onClick, ...props }: React.Comp
       className={className}
       {...props}
     >
-      <Undo2 aria-hidden />
+      <Undo2 />
       {children ?? 'Undo'}
     </Button>
   );

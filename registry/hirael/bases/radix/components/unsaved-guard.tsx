@@ -121,14 +121,7 @@ const UnsavedGuardInner = ({
   } = defaultOptions ?? {};
 
   const recompute = React.useCallback(() => {
-    let active: UnsavedGuardOptions | null = null;
-    for (const value of guardsRef.current.values()) {
-      if (value.when) {
-        active = value;
-        break;
-      }
-    }
-    activeRef.current = active;
+    activeRef.current = [...guardsRef.current.values()].find((guard) => guard.when) ?? null;
   }, []);
 
   const register = React.useCallback(
@@ -185,14 +178,10 @@ const UnsavedGuardInner = ({
     const root = wrapperRef.current;
     if (!root) return;
     const onClick = (event: MouseEvent) => {
-      if (activeRef.current === null || event.defaultPrevented) return;
-      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) {
-        return;
-      }
+      if (activeRef.current === null || event.defaultPrevented || event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const anchor = event.target instanceof Element ? event.target.closest('a') : null;
-      if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) {
-        return;
-      }
+      if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) return;
       const href = anchor.getAttribute('href');
       if (!href || href.startsWith('#')) return;
       let url: URL;
@@ -201,8 +190,7 @@ const UnsavedGuardInner = ({
       } catch {
         return;
       }
-      if (url.origin !== window.location.origin) return;
-      if (url.href === window.location.href) return;
+      if (url.origin !== window.location.origin || url.href === window.location.href) return;
       event.preventDefault();
       event.stopPropagation();
       void confirmLeave(activeRef.current ?? undefined).then((ok) => {

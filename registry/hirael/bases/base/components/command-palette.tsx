@@ -30,6 +30,9 @@ const useIsApple = () =>
 
 const NO_RECENTS: CommandPaletteRecent[] = [];
 
+const KBD_CLASS =
+  'ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground';
+
 const isEditableTarget = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) return false;
   if (target.isContentEditable) return true;
@@ -78,9 +81,7 @@ const recentsSnapshot = (key: string): CommandPaletteRecent[] => {
   let raw: string | null = null;
   try {
     raw = window.localStorage.getItem(key);
-  } catch {
-    raw = null;
-  }
+  } catch {}
   const cached = recentsCache.get(key);
   if (cached && cached.raw === raw) return cached.value;
   const value = parseRecents(raw);
@@ -261,10 +262,7 @@ const CommandPaletteTrigger = ({ className, children, onClick, ...props }: React
     >
       {children ?? <span>Search</span>}
       {ctx.shortcutLabel && (
-        <kbd
-          data-slot="command-palette-kbd"
-          className="ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground"
-        >
+        <kbd data-slot="command-palette-kbd" className={KBD_CLASS}>
           {ctx.shortcutLabel}
         </kbd>
       )}
@@ -274,14 +272,10 @@ const CommandPaletteTrigger = ({ className, children, onClick, ...props }: React
 
 export type CommandPaletteDialogProps = Omit<React.ComponentProps<typeof CommandDialog>, 'open' | 'onOpenChange'>;
 
-const CommandPaletteDialog = ({ children, ...props }: CommandPaletteDialogProps) => {
+const CommandPaletteDialog = (props: CommandPaletteDialogProps) => {
   const ctx = usePalette();
 
-  return (
-    <CommandDialog open={ctx.open} onOpenChange={ctx.setOpen} showCloseButton={false} {...props}>
-      {children}
-    </CommandDialog>
-  );
+  return <CommandDialog open={ctx.open} onOpenChange={ctx.setOpen} showCloseButton={false} {...props} />;
 };
 
 const CommandPaletteInput = ({
@@ -412,23 +406,15 @@ const CommandPaletteItem = ({
       onSelect={() => {
         if (recentId) ctx.recordRecent({ id: recentId, label });
         onSelect?.();
-        if (page) {
-          ctx.pushPage(page);
-
-          return;
-        }
-        if (closeOnSelect) ctx.setOpen(false);
+        if (page) ctx.pushPage(page);
+        else if (closeOnSelect) ctx.setOpen(false);
       }}
       className={cn('gap-2', className)}
       {...props}
     >
       {children ?? label}
       {page && <ChevronRight className="ms-auto size-3.5 text-muted-foreground rtl:rotate-180" />}
-      {shortcut && !page && (
-        <kbd className="ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground">
-          {shortcut}
-        </kbd>
-      )}
+      {shortcut && !page && <kbd className={KBD_CLASS}>{shortcut}</kbd>}
     </CommandItem>
   );
 };

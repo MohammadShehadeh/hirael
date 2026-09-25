@@ -37,12 +37,7 @@ import {
   ItemTitle,
 } from '@/registry/hirael/bases/radix/ui/item';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
-import {
-  EmojiPicker,
-  EmojiPickerCategories,
-  EmojiPickerList,
-  EmojiPickerSearch,
-} from '@/registry/hirael/bases/radix/components/emoji-picker';
+import { EmojiPicker, EmojiPickerList, EmojiPickerSearch } from '@/registry/hirael/bases/radix/components/emoji-picker';
 
 export type ChatMessageStatus = 'sent' | 'delivered' | 'read';
 export type ChatAttachmentKind = 'image' | 'file';
@@ -973,7 +968,6 @@ const ComposerEmoji = () => {
         >
           <EmojiPickerSearch placeholder="Search emoji" />
           <EmojiPickerList className="h-48" />
-          <EmojiPickerCategories />
         </EmojiPicker>
       </PopoverContent>
     </Popover>

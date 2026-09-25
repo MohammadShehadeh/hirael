@@ -71,7 +71,8 @@ const collectImports = (base: RegistryBase, entry: RegistryEntry) => {
     for (const specifier of importSpecifiers(readFileSync(file, 'utf8'), sourcePath)) {
       const hiraelItem = HIRAEL_IMPORT_PATTERN.exec(specifier)?.[1];
       if (hiraelItem) {
-        hiraelItems.add(hiraelItem);
+        // An item that ships a primitive (spinner, kbd) imports its own file.
+        if (hiraelItem !== entry.name) hiraelItems.add(hiraelItem);
         continue;
       }
       if (/^(@\/|\.\.?\/)/.test(specifier)) continue;

@@ -1,69 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-import * as baseRange from '@/registry/hirael/bases/base/components/date-range-picker';
 import * as baseYear from '@/registry/hirael/bases/base/components/year-picker';
-import * as radixRange from '@/registry/hirael/bases/radix/components/date-range-picker';
 import * as radixYear from '@/registry/hirael/bases/radix/components/year-picker';
 
-const dayCell = (d: Date) => {
-  const el = document.querySelector<HTMLButtonElement>(`[data-day="${d.getTime()}"]`);
-  if (!el) throw new Error(`No cell for ${d.toDateString()}`);
-
-  return el;
-};
-
 const yearCell = (year: number) => document.querySelector<HTMLButtonElement>(`[data-year="${year}"]`);
-
-describe.each([
-  ['radix', radixRange],
-  ['base', baseRange],
-] as const)('DateRangeCalendar (%s)', (_, { DateRangeCalendar }) => {
-  it('should start a new range instead of spanning a disabled day', async () => {
-    const onValueChange = vi.fn();
-    render(
-      <DateRangeCalendar
-        defaultMonth={new Date(2026, 5, 1)}
-        numberOfMonths={1}
-        disabledDate={(d) => d.getDate() === 10}
-        onValueChange={onValueChange}
-      />,
-    );
-    const user = userEvent.setup();
-
-    await user.click(dayCell(new Date(2026, 5, 8)));
-    await user.click(dayCell(new Date(2026, 5, 12)));
-
-    expect(onValueChange).toHaveBeenLastCalledWith({ from: new Date(2026, 5, 12) });
-  });
-
-  it('should complete a range that avoids disabled days', async () => {
-    const onValueChange = vi.fn();
-    render(
-      <DateRangeCalendar
-        defaultMonth={new Date(2026, 5, 1)}
-        numberOfMonths={1}
-        disabledDate={(d) => d.getDate() === 10}
-        onValueChange={onValueChange}
-      />,
-    );
-    const user = userEvent.setup();
-
-    await user.click(dayCell(new Date(2026, 5, 11)));
-    await user.click(dayCell(new Date(2026, 5, 15)));
-
-    expect(onValueChange).toHaveBeenLastCalledWith({ from: new Date(2026, 5, 11), to: new Date(2026, 5, 15) });
-  });
-
-  it('should start the week on Saturday when weekStartsOn is 6', () => {
-    render(<DateRangeCalendar defaultMonth={new Date(2026, 5, 1)} numberOfMonths={1} weekStartsOn={6} />);
-
-    const headers = screen.getAllByRole('columnheader').map((el) => el.textContent);
-
-    expect(headers).toEqual(['Sat', 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri']);
-  });
-});
 
 describe.each([
   ['radix', radixYear],

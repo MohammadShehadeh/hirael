@@ -145,22 +145,18 @@ interface NumberRangeInputProps extends Omit<React.ComponentProps<typeof Input>,
   bound: 'min' | 'max';
 }
 
-const NumberRangeInput = ({ bound, className, onFocus, onBlur, onKeyDown, ...props }: NumberRangeInputProps) => {
+const NumberRangeInput = ({ bound, className, onBlur, onKeyDown, ...props }: NumberRangeInputProps) => {
   const ctx = useNumberRange();
-  const i = bound === 'min' ? 0 : 1;
-  const current = ctx.value[i];
-  const format = ctx.format;
-
+  const current = ctx.value[bound === 'min' ? 0 : 1];
   const [draft, setDraft] = React.useState<string | null>(null);
-  const shown = draft ?? format(current);
+
+  const setBound = (n: number) => ctx.setValue(bound === 'min' ? [n, ctx.value[1]] : [ctx.value[0], n]);
 
   const commit = (raw: string) => {
     // An emptied field keeps the previous value, whatever a custom parser makes of ''.
     if (raw.trim() === '') return;
     const parsed = ctx.parse(raw);
-    if (!Number.isFinite(parsed)) return;
-    const next: NumberRangeValue = bound === 'min' ? [parsed, ctx.value[1]] : [ctx.value[0], parsed];
-    ctx.setValue(next);
+    if (Number.isFinite(parsed)) setBound(parsed);
   };
 
   return (
@@ -173,13 +169,8 @@ const NumberRangeInput = ({ bound, className, onFocus, onBlur, onKeyDown, ...pro
       <Input
         inputMode="decimal"
         dir="ltr"
-        value={shown}
+        value={draft ?? ctx.format(current)}
         disabled={ctx.disabled}
-        onFocus={(e) => {
-          onFocus?.(e);
-          if (e.defaultPrevented) return;
-          setDraft(format(current));
-        }}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={(e) => {
           onBlur?.(e);
@@ -194,14 +185,9 @@ const NumberRangeInput = ({ bound, className, onFocus, onBlur, onKeyDown, ...pro
             e.currentTarget.blur();
           } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             e.preventDefault();
-            const delta = e.key === 'ArrowUp' ? ctx.step : -ctx.step;
-            const mult = e.shiftKey ? 10 : 1;
-            const next =
-              bound === 'min'
-                ? ([ctx.value[0] + delta * mult, ctx.value[1]] as NumberRangeValue)
-                : ([ctx.value[0], ctx.value[1] + delta * mult] as NumberRangeValue);
-            ctx.setValue(next);
-            setDraft(format(clampPair(next, ctx.min, ctx.max)[i]));
+            const delta = (e.key === 'ArrowUp' ? 1 : -1) * ctx.step * (e.shiftKey ? 10 : 1);
+            setBound(current + delta);
+            setDraft(null);
           }
         }}
         data-slot="number-range-field"

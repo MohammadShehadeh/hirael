@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { diffLines } from 'diff';
 import { ArrowRight, ChevronsUpDown, Columns2, Rows3 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -20,126 +21,32 @@ export interface DiffLine {
 export type DiffViewerMode = 'unified' | 'split';
 
 const splitLines = (text: string) => {
-  if (text === '') return [];
   const lines = text.split(/\r?\n/);
   if (lines[lines.length - 1] === '') lines.pop();
 
   return lines;
 };
 
-/** Edit distances above this fall back to replace-all; the trace grows with its square. */
-const MAX_EDIT_DISTANCE = 1000;
-
-type DiffOp = 'equal' | 'remove' | 'add';
-
-const backtrackOps = (trace: Int32Array[], n: number, m: number) => {
-  const ops: DiffOp[] = [];
-  let x = n;
-  let y = m;
-  for (let d = trace.length - 1; d >= 0; d--) {
-    const snapshot = trace[d];
-    const at = (k: number) => snapshot[k + d + 1];
-    const k = x - y;
-    const prevK = k === -d || (k !== d && at(k - 1) < at(k + 1)) ? k + 1 : k - 1;
-    const prevX = at(prevK);
-    const prevY = prevX - prevK;
-    while (x > prevX && y > prevY) {
-      ops.push('equal');
-      x--;
-      y--;
-    }
-    if (d > 0) ops.push(x === prevX ? 'add' : 'remove');
-    x = prevX;
-    y = prevY;
-  }
-
-  return ops.reverse();
-};
-
-/** Myers' O(ND) shortest edit script, or null when the distance exceeds the cap. */
-const diffOps = (a: readonly string[], b: readonly string[]): DiffOp[] | null => {
-  const n = a.length;
-  const m = b.length;
-  const limit = Math.min(n + m, MAX_EDIT_DISTANCE);
-  const offset = limit + 1;
-  const v = new Int32Array(2 * limit + 3);
-  const trace: Int32Array[] = [];
-  for (let d = 0; d <= limit; d++) {
-    trace.push(v.slice(offset - d - 1, offset + d + 2));
-    for (let k = -d; k <= d; k += 2) {
-      let x =
-        k === -d || (k !== d && v[offset + k - 1] < v[offset + k + 1]) ? v[offset + k + 1] : v[offset + k - 1] + 1;
-      let y = x - k;
-      while (x < n && y < m && a[x] === b[y]) {
-        x++;
-        y++;
-      }
-      v[offset + k] = x;
-      if (x >= n && y >= m) return backtrackOps(trace, n, m);
-    }
-  }
-
-  return null;
-};
-
 const computeLineDiff = (oldValue: string, newValue: string): DiffLine[] => {
-  const a = splitLines(oldValue);
-  const b = splitLines(newValue);
+  // Past the edit cap jsdiff gives up; showing a full replace beats freezing on huge inputs.
+  const changes = diffLines(oldValue, newValue, {
+    stripTrailingCr: true,
+    ignoreNewlineAtEof: true,
+    maxEditLength: 1000,
+  }) ?? [
+    { value: oldValue, removed: true, added: false, count: 0 },
+    { value: newValue, removed: false, added: true, count: 0 },
+  ];
   const out: DiffLine[] = [];
   let oldNo = 1;
   let newNo = 1;
-
-  const equal = (content: string) => {
-    out.push({ type: 'equal', content, oldLine: oldNo++, newLine: newNo++ });
-  };
-  const remove = (content: string) => {
-    out.push({ type: 'remove', content, oldLine: oldNo++, newLine: null });
-  };
-  const add = (content: string) => {
-    out.push({ type: 'add', content, oldLine: null, newLine: newNo++ });
-  };
-
-  let start = 0;
-  while (start < a.length && start < b.length && a[start] === b[start]) {
-    equal(a[start]);
-    start++;
-  }
-  let endA = a.length;
-  let endB = b.length;
-  while (endA > start && endB > start && a[endA - 1] === b[endB - 1]) {
-    endA--;
-    endB--;
-  }
-
-  const ops = diffOps(a.slice(start, endA), b.slice(start, endB));
-  if (ops === null) {
-    for (let i = start; i < endA; i++) remove(a[i]);
-    for (let j = start; j < endB; j++) add(b[j]);
-  } else {
-    // Within a hunk, removals are listed before additions.
-    let i = start;
-    let j = start;
-    let pendingAdds: string[] = [];
-    const flushAdds = () => {
-      pendingAdds.forEach(add);
-      pendingAdds = [];
-    };
-    for (const op of ops) {
-      if (op === 'equal') {
-        flushAdds();
-        equal(a[i]);
-        i++;
-        j++;
-      } else if (op === 'remove') {
-        remove(a[i++]);
-      } else {
-        pendingAdds.push(b[j++]);
-      }
+  for (const change of changes) {
+    for (const content of splitLines(change.value)) {
+      if (change.added) out.push({ type: 'add', content, oldLine: null, newLine: newNo++ });
+      else if (change.removed) out.push({ type: 'remove', content, oldLine: oldNo++, newLine: null });
+      else out.push({ type: 'equal', content, oldLine: oldNo++, newLine: newNo++ });
     }
-    flushAdds();
   }
-
-  for (let k = endA; k < a.length; k++) equal(a[k]);
 
   return out;
 };
@@ -401,7 +308,7 @@ const DiffViewerTitle = ({ className, children, ...props }: React.ComponentProps
         ) : (
           <>
             <span className="truncate text-muted-foreground">{oldTitle}</span>
-            <ArrowRight aria-hidden className="size-3.5 shrink-0 text-muted-foreground rtl:rotate-180" />
+            <ArrowRight className="size-3.5 shrink-0 text-muted-foreground rtl:rotate-180" />
             <span className="truncate">{newTitle}</span>
           </>
         ))}
@@ -457,11 +364,11 @@ const DiffViewerModeToggle = ({
       {...props}
     >
       <ToggleGroupItem value="unified">
-        <Rows3 aria-hidden />
+        <Rows3 />
         <span className="sr-only sm:not-sr-only">{unifiedLabel}</span>
       </ToggleGroupItem>
       <ToggleGroupItem value="split">
-        <Columns2 aria-hidden />
+        <Columns2 />
         <span className="sr-only sm:not-sr-only">{splitLabel}</span>
       </ToggleGroupItem>
     </ToggleGroup>
@@ -501,7 +408,7 @@ const DiffViewerContent = ({
         'hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset',
       )}
     >
-      <ChevronsUpDown aria-hidden className="size-3.5" />
+      <ChevronsUpDown className="size-3.5" />
       {label(item.count)}
     </button>
   );
@@ -605,8 +512,8 @@ const DiffViewerLine = ({
       )}
       {...props}
     >
-      {showLineNumbers ? (
-        side ? (
+      {showLineNumbers &&
+        (side ? (
           <span data-slot="diff-viewer-line-number" className={numberClass}>
             {side === 'old' ? line?.oldLine : line?.newLine}
           </span>
@@ -619,8 +526,7 @@ const DiffViewerLine = ({
               {line?.newLine}
             </span>
           </>
-        )
-      ) : null}
+        ))}
       <span
         data-slot="diff-viewer-line-marker"
         aria-hidden
@@ -632,9 +538,9 @@ const DiffViewerLine = ({
       >
         {marker}
       </span>
-      {type === 'add' || type === 'remove' ? (
+      {(type === 'add' || type === 'remove') && (
         <span className="sr-only">{type === 'add' ? addedLabel : removedLabel}</span>
-      ) : null}
+      )}
       <span
         data-slot="diff-viewer-line-content"
         className={cn('flex-1 pe-3', side ? 'break-all whitespace-pre-wrap' : 'whitespace-pre')}

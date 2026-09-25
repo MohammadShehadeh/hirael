@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useDropzone, type Accept, type DropzoneState, type FileRejection } from 'react-dropzone';
 import { File as FileIcon, FileText, UploadCloud, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -19,40 +20,32 @@ const formatBytes = (bytes: number): string => {
   return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
 };
 
-const matchesAccept = (file: File, accept?: string): boolean => {
-  const tokens = (accept ?? '')
-    .split(',')
-    .map((t) => t.trim().toLowerCase())
-    .filter(Boolean);
-  if (tokens.length === 0) return true;
-  const name = file.name.toLowerCase();
-  const type = file.type.toLowerCase();
-
-  return tokens.some((token) => {
-    if (token.startsWith('.')) return name.endsWith(token);
-    if (token.endsWith('/*')) return type.startsWith(token.slice(0, -1));
-
-    return type === token;
-  });
-};
-
 export interface FileDropzoneError {
   file: File;
-  /** `count`: a single-file dropzone got more than one file, so the extras were left out. */
+  /** Which rule turned the file away. */
   reason: 'size' | 'type' | 'count';
   message: string;
 }
 
+const toError = ({ file, errors: [error] }: FileRejection, maxSize?: number): FileDropzoneError => {
+  if (error?.code === 'file-too-large') {
+    return { file, reason: 'size', message: `"${file.name}" exceeds ${formatBytes(maxSize ?? 0)}.` };
+  }
+  if (error?.code === 'too-many-files') {
+    return { file, reason: 'count', message: `"${file.name}" not added. Only one file is allowed.` };
+  }
+
+  return { file, reason: 'type', message: `"${file.name}" type not allowed.` };
+};
+
 interface Ctx {
   files: File[];
-  accept?: string;
+  accept?: Accept;
   maxSize?: number;
-  multiple: boolean;
   disabled?: boolean;
   errors: FileDropzoneError[];
-  addFiles: (incoming: FileList | File[]) => void;
   removeAt: (index: number) => void;
-  inputRef: React.RefObject<HTMLInputElement | null>;
+  dropzone: DropzoneState;
 }
 
 const FileDropzoneContext = React.createContext<Ctx | null>(null);
@@ -70,7 +63,9 @@ export interface FileDropzoneProps extends Omit<React.ComponentProps<'div'>, 'de
   value?: File[];
   defaultValue?: File[];
   onValueChange?: (files: File[]) => void;
-  accept?: string;
+  /** MIME types mapped to extensions, e.g. `{ 'image/*': [], 'application/pdf': ['.pdf'] }`. */
+  accept?: Accept;
+  /** Largest file in bytes. */
   maxSize?: number;
   multiple?: boolean;
   disabled?: boolean;
@@ -97,78 +92,32 @@ const FileDropzone = ({
     },
     [valueProp, onValueChange],
   );
-
   const [errors, setErrors] = React.useState<FileDropzoneError[]>([]);
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const addFiles = React.useCallback(
-    (incoming: FileList | File[]) => {
-      if (disabled) return;
-      const list = Array.from(incoming);
-      const nextErrors: FileDropzoneError[] = [];
-      const accepted: File[] = [];
-      for (const file of list) {
-        if (!matchesAccept(file, accept)) {
-          nextErrors.push({
-            file,
-            reason: 'type',
-            message: `"${file.name}" type not allowed.`,
-          });
-          continue;
-        }
-        if (maxSize !== undefined && file.size > maxSize) {
-          nextErrors.push({
-            file,
-            reason: 'size',
-            message: `"${file.name}" exceeds ${formatBytes(maxSize)}.`,
-          });
-          continue;
-        }
-        accepted.push(file);
-      }
-      if (!multiple) {
-        for (const file of accepted.slice(1)) {
-          nextErrors.push({
-            file,
-            reason: 'count',
-            message: `"${file.name}" not added. Only one file is allowed.`,
-          });
-        }
-      }
-      if (accepted.length > 0) {
-        const merged = multiple ? [...files, ...accepted] : [accepted[0]];
-        setFiles(merged);
-      }
-      setErrors(nextErrors);
+  const dropzone = useDropzone({
+    accept,
+    maxSize,
+    multiple,
+    disabled,
+    onDrop: (accepted, rejections) => {
+      if (accepted.length > 0) setFiles(multiple ? [...files, ...accepted] : accepted);
+      setErrors(rejections.map((rejection) => toError(rejection, maxSize)));
     },
-    [accept, disabled, files, maxSize, multiple, setFiles],
-  );
+  });
 
   const removeAt = React.useCallback(
     (index: number) => {
-      if (disabled) return;
       const removed = files[index];
-      const next = files.filter((_, i) => i !== index);
-      setFiles(next);
+      setFiles(files.filter((_, i) => i !== index));
       // Errors about this file, or about the one-file limit, no longer apply once it's gone.
       setErrors((prev) => prev.filter((err) => err.file !== removed && err.reason !== 'count'));
     },
-    [disabled, files, setFiles],
+    [files, setFiles],
   );
 
   const ctx = React.useMemo<Ctx>(
-    () => ({
-      files,
-      accept,
-      maxSize,
-      multiple,
-      disabled,
-      errors,
-      addFiles,
-      removeAt,
-      inputRef,
-    }),
-    [files, accept, maxSize, multiple, disabled, errors, addFiles, removeAt],
+    () => ({ files, accept, maxSize, disabled, errors, removeAt, dropzone }),
+    [files, accept, maxSize, disabled, errors, removeAt, dropzone],
   );
 
   return (
@@ -194,106 +143,40 @@ const FileDropzoneZone = ({
   headline = 'Drop files here, or click to browse',
   subline,
   children,
-  onClick,
-  onKeyDown,
   ...props
 }: FileDropzoneZoneProps) => {
   const ctx = useFileDropzone();
-  const [isDragging, setIsDragging] = React.useState(false);
-  const dragCounter = React.useRef(0);
-  const { inputRef } = ctx;
-
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    onClick?.(e);
-    if (e.defaultPrevented || ctx.disabled) return;
-    inputRef.current?.click();
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    onKeyDown?.(e);
-    if (e.defaultPrevented || ctx.disabled) return;
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      inputRef.current?.click();
-    }
-  };
-
-  const resolvedSubline = React.useMemo(() => {
-    if (subline !== undefined) return subline;
-    const parts: string[] = [];
-    if (ctx.accept) parts.push(ctx.accept);
-    if (ctx.maxSize !== undefined) parts.push(`up to ${formatBytes(ctx.maxSize)}`);
-
-    return parts.length > 0 ? parts.join(' · ') : null;
-  }, [subline, ctx.accept, ctx.maxSize]);
+  const { getRootProps, getInputProps, isDragActive } = ctx.dropzone;
+  const types = ctx.accept && Object.entries(ctx.accept).flatMap(([mime, exts]) => (exts.length ? exts : [mime]));
+  const resolvedSubline =
+    subline !== undefined
+      ? subline
+      : [types?.join(', '), ctx.maxSize !== undefined && `up to ${formatBytes(ctx.maxSize)}`]
+          .filter(Boolean)
+          .join(' · ') || null;
 
   return (
     <div
-      role="button"
-      tabIndex={ctx.disabled ? -1 : 0}
-      aria-disabled={ctx.disabled || undefined}
+      {...getRootProps({
+        role: 'button',
+        'aria-disabled': ctx.disabled || undefined,
+        className: cn(
+          'flex min-w-0 flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-6 py-10 text-center transition-colors outline-none',
+          'hover:border-foreground/30 hover:bg-accent/50',
+          'focus-visible:ring-2 focus-visible:ring-ring',
+          isDragActive && 'border-foreground/30 bg-accent/50',
+          ctx.disabled && 'cursor-not-allowed opacity-60',
+          className,
+        ),
+        ...props,
+      })}
       data-slot="file-dropzone-zone"
-      data-dragging={isDragging || undefined}
-      onClick={handleClick}
-      onKeyDown={handleKeyDown}
-      onDragEnter={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (ctx.disabled) return;
-        dragCounter.current += 1;
-        if (dragCounter.current === 1) setIsDragging(true);
-      }}
-      onDragLeave={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        if (ctx.disabled) return;
-        dragCounter.current -= 1;
-        if (dragCounter.current <= 0) {
-          dragCounter.current = 0;
-          setIsDragging(false);
-        }
-      }}
-      onDragOver={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-      onDrop={(e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dragCounter.current = 0;
-        setIsDragging(false);
-        if (ctx.disabled) return;
-        const dropped = e.dataTransfer.files;
-        if (dropped && dropped.length > 0) ctx.addFiles(dropped);
-      }}
-      className={cn(
-        'flex min-w-0 flex-col items-center justify-center gap-2 rounded-md border border-dashed border-border bg-background px-6 py-10 text-center transition-colors outline-none',
-        'hover:border-foreground/30 hover:bg-accent/50',
-        'focus-visible:ring-2 focus-visible:ring-ring',
-        isDragging && 'border-foreground/30 bg-accent/50',
-        ctx.disabled && 'cursor-not-allowed opacity-60',
-        className,
-      )}
-      {...props}
+      data-dragging={isDragActive || undefined}
     >
-      <input
-        ref={inputRef}
-        type="file"
-        accept={ctx.accept}
-        multiple={ctx.multiple}
-        disabled={ctx.disabled}
-        className="sr-only"
-        tabIndex={-1}
-        aria-hidden
-        onChange={(e) => {
-          const list = e.target.files;
-          if (list && list.length > 0) ctx.addFiles(list);
-          e.target.value = '';
-        }}
-      />
+      <input {...getInputProps()} />
       {children ?? (
         <>
-          <UploadCloud className="size-6 text-muted-foreground" aria-hidden />
+          <UploadCloud className="size-6 text-muted-foreground" />
           <p className="text-sm text-foreground">{headline}</p>
           {resolvedSubline && <p className="text-xs text-muted-foreground uppercase">{resolvedSubline}</p>}
         </>
@@ -327,7 +210,7 @@ const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
             data-slot="file-dropzone-item"
             className="flex min-w-0 items-center gap-2 rounded-sm border border-border bg-card px-2.5 py-1.5 text-sm"
           >
-            <Icon className="size-3.5 shrink-0 text-muted-foreground" aria-hidden />
+            <Icon className="size-3.5 shrink-0 text-muted-foreground" />
             <span className="min-w-0 flex-1 truncate" title={file.name}>
               {file.name}
             </span>

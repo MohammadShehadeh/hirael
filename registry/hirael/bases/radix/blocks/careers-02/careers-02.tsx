@@ -284,7 +284,7 @@ const ApplyForm = () => {
         <Field data-invalid={Boolean(errors.cv) || undefined} className="gap-2">
           <FieldLabel id="careers-02-cv-label">CV</FieldLabel>
           <FileDropzone
-            accept=".pdf,application/pdf"
+            accept={{ 'application/pdf': ['.pdf'] }}
             maxSize={CV_MAX_BYTES}
             value={state.cv}
             onValueChange={(files) => set('cv', files)}

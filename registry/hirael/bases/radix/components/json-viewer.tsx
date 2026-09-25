@@ -452,12 +452,12 @@ const JsonViewerNodeImpl = ({
           )}
         >
           <JsonViewerToggle />
-          {name !== undefined ? (
+          {name !== undefined && (
             <>
               <JsonViewerKey>{name}</JsonViewerKey>
               <span className="text-muted-foreground">:</span>
             </>
-          ) : null}
+          )}
           {expandable ? (
             expanded ? (
               <span className="text-muted-foreground">{open}</span>
@@ -468,7 +468,7 @@ const JsonViewerNodeImpl = ({
                   {entries.length}
                 </span>
                 {close}
-                {!isLast ? ',' : null}
+                {!isLast && ','}
               </span>
             )
           ) : circular ? (
@@ -503,7 +503,7 @@ const JsonViewerNodeImpl = ({
             </div>
             <div data-slot="json-viewer-close" className="ps-6 text-muted-foreground">
               {close}
-              {!isLast ? ',' : null}
+              {!isLast && ','}
             </div>
           </>
         ) : null}
@@ -606,7 +606,7 @@ const JsonViewerValue = ({ value, className, ...props }: JsonViewerValueProps) =
       {...props}
     >
       {isText ? `"${shown}` : shown}
-      {truncated ? (
+      {truncated && (
         <>
           <span className="text-muted-foreground">…</span>
           <button
@@ -622,7 +622,7 @@ const JsonViewerValue = ({ value, className, ...props }: JsonViewerValueProps) =
             +{text.length - maxStringLength}
           </button>
         </>
-      ) : null}
+      )}
       {isText ? `"` : null}
     </span>
   );
@@ -655,7 +655,7 @@ const JsonViewerExpandAll = ({ className, children, ...props }: React.ComponentP
       className={cn('font-sans text-muted-foreground', className)}
       {...props}
     >
-      <ChevronsUpDown aria-hidden />
+      <ChevronsUpDown />
       {children ?? 'Expand all'}
     </Button>
   );
@@ -674,7 +674,7 @@ const JsonViewerCollapseAll = ({ className, children, ...props }: React.Componen
       className={cn('font-sans text-muted-foreground', className)}
       {...props}
     >
-      <ChevronsDownUp aria-hidden />
+      <ChevronsDownUp />
       {children ?? 'Collapse all'}
     </Button>
   );

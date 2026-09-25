@@ -23,20 +23,16 @@ export interface ScrollRevealProps extends HTMLMotionProps<'div'> {
 const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const offsetFor = (direction: ScrollRevealDirection, distance: number, rtl: boolean) => {
-  switch (direction) {
-    case 'up':
-      return { x: 0, y: distance };
-    case 'down':
-      return { x: 0, y: -distance };
-    case 'left':
-      return { x: distance, y: 0 };
-    case 'right':
-      return { x: -distance, y: 0 };
-    case 'start':
-      return { x: rtl ? -distance : distance, y: 0 };
-    case 'end':
-      return { x: rtl ? distance : -distance, y: 0 };
-  }
+  const flip = rtl ? -1 : 1;
+
+  return {
+    up: { x: 0, y: distance },
+    down: { x: 0, y: -distance },
+    left: { x: distance, y: 0 },
+    right: { x: -distance, y: 0 },
+    start: { x: flip * distance, y: 0 },
+    end: { x: -flip * distance, y: 0 },
+  }[direction];
 };
 
 type RevealHandler = (inView: boolean) => void;

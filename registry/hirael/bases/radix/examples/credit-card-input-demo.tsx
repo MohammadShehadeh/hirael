@@ -79,7 +79,7 @@ const CreditCardInputDemo = () => {
               )}
             </Field>
             <div className="flex items-center justify-between gap-3">
-              <p className="font-mono text-[11px] text-muted-foreground">
+              <p className="text-xs text-muted-foreground tabular-nums">
                 {t({
                   en: 'Try 4242 4242 4242 4242',
                   ar: 'جرّب 4242 4242 4242 4242',

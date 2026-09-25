@@ -14,6 +14,9 @@ const Hero01Backdrop = dynamic(() => import('./hero-01-backdrop'), {
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const ENTER_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
 
@@ -83,14 +86,17 @@ const Hero01 = () => {
             <h1
               style={stagger(1)}
               className={cn(
-                ENTER,
+                ENTER_TEXT,
                 'max-w-4xl font-serif text-5xl leading-[1.04] font-medium tracking-tight text-foreground sm:text-6xl md:text-7xl',
               )}
             >
               The interface layer your product was missing.
             </h1>
 
-            <p style={stagger(2)} className={cn(ENTER, 'mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground')}>
+            <p
+              style={stagger(2)}
+              className={cn(ENTER_TEXT, 'mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground')}
+            >
               Drop in accessible components and ship a polished UI in an afternoon, no design system required.
             </p>
 

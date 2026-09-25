@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 const rise = 'animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const riseText = 'animate-in slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none';
 
 export interface HeroProps {
   latestRelease: ChangelogEntry | null;
@@ -44,7 +46,7 @@ export const Hero = ({ latestRelease }: HeroProps) => {
         <h1
           className={cn(
             'text-display w-full text-3xl leading-normal tracking-tight text-balance italic delay-[80ms] fill-mode-both sm:text-4xl sm:leading-[0.9] md:text-5xl',
-            rise,
+            riseText,
           )}
         >
           Components, blocks and templates for{' '}
@@ -58,7 +60,9 @@ export const Hero = ({ latestRelease }: HeroProps) => {
           shadcn/ui.
         </h1>
 
-        <p className={cn('max-w-2xl text-base text-muted-foreground delay-[160ms] fill-mode-both sm:text-lg', rise)}>
+        <p
+          className={cn('max-w-2xl text-base text-muted-foreground delay-[160ms] fill-mode-both sm:text-lg', riseText)}
+        >
           A collection of shadcn/ui components, blocks and page templates for building modern, fast and beautiful
           websites. Built on Radix UI and Base UI. Works with the shadcn CLI and any preset, in light, dark and RTL.
         </p>

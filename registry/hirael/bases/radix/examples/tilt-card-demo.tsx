@@ -14,10 +14,10 @@ const TiltCardDemo = () => {
             <span className="text-xs text-muted-foreground uppercase">{t({ en: 'Virtual', ar: 'افتراضية' })}</span>
             <span className="size-6 rounded-full bg-foreground/10" />
           </div>
-          <div className="font-mono text-lg tracking-[0.12em] text-foreground">•••• 8021</div>
+          <div className="text-lg tracking-[0.12em] text-foreground tabular-nums">•••• 8021</div>
           <div className="flex items-end justify-between">
             <span className="text-sm font-medium text-foreground">{t({ en: 'A. Khoury', ar: 'أ. خوري' })}</span>
-            <span className="font-mono text-xs text-muted-foreground">09 / 28</span>
+            <span className="text-xs text-muted-foreground tabular-nums">09 / 28</span>
           </div>
         </div>
       </TiltCard>

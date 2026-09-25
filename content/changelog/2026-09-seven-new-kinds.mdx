@@ -1,0 +1,110 @@
+---
+title: Seven new kinds of blocks and seven new components
+version: '7.1.0'
+date: 2026-09-25
+description: 'Surveys, search, page headers, empty states, charts, chat and bento grids, four of each, plus seven components people kept asking for, clearer names everywhere and a faster site.'
+added:
+  - survey-01
+  - survey-02
+  - survey-03
+  - survey-04
+  - search-01
+  - search-02
+  - search-03
+  - search-04
+  - page-header-01
+  - page-header-02
+  - page-header-03
+  - page-header-04
+  - empty-state-01
+  - empty-state-02
+  - empty-state-03
+  - empty-state-04
+  - chart-01
+  - chart-02
+  - chart-03
+  - chart-04
+  - chat-01
+  - chat-02
+  - chat-03
+  - chat-04
+  - bento-01
+  - bento-02
+  - bento-03
+  - bento-04
+  - not-found-02
+  - number-field
+  - segmented-control
+  - autocomplete
+  - checkbox-group
+  - gauge
+  - meter
+  - text-shimmer
+---
+
+New kinds:
+
+- **Surveys.** An NPS card whose follow-up question changes with the score, a
+  four-step feedback form with a review step, a cancellation survey that offers
+  a discount or a pause depending on the reason, and a one-question-per-screen
+  flow with letter-key answers and a branch that skips a question. All four are
+  built on shadcn's Questionnaire, so they need a current shadcn style (the
+  older `new-york-v4` style doesn't have it).
+- **Search.** Faceted docs search whose counts react to the other filters, a
+  search field with recent searches and full keyboard control, a results page
+  with type tabs and a "Did you mean" correction, and a help center search.
+- **Page headers.** A detail header with copy link, archive and undoable delete,
+  a tabbed header that keeps the tab in the URL, an invoice list header whose
+  toolbar searches, filters, sorts and switches to a grid, and an analytics
+  header whose date range swaps every metric.
+- **Empty states.** A first run that creates your first project, a no-results
+  state that suggests close matches, a failed load that retries, and a members
+  panel you invite people from.
+- **Charts.** Revenue bars you can stack or group, traffic areas with a shared
+  crosshair, a channel donut linked to its ranked list, and a conversion funnel
+  that shows where people drop off. Each one writes a one-line summary from its
+  own numbers.
+- **Chat.** A two-pane messenger, a support widget with quick replies, a team
+  channel with reactions and reply threads, and a shared inbox with snooze,
+  internal notes and saved replies.
+- **Bento grids.** Four grids where every tile works: a deploy log that streams,
+  a kanban you can move, a funnel that follows the segment you pick, and an
+  audit trail you can pause.
+
+New components:
+
+- **Number Field.** Step buttons, arrow keys, hold to repeat, and currency,
+  percent or unit formatting. It submits the raw number.
+- **Segmented Control.** One choice with a sliding thumb, keyboard support that
+  mirrors in RTL, and a full-width mode.
+- **Autocomplete.** Free text with suggestions from a list or an async search,
+  with optional inline completion.
+- **Checkbox Group.** Select all with a mixed state, nested groups, limits and a
+  search that narrows the list.
+- **Gauge**, **Meter** and **Text Shimmer.** A radial reading with threshold
+  bands, a usage bar with segments, and a moving highlight for loading labels.
+
+Also new:
+
+- **Framed 404 Page.** A 404 framed by side rails, with a photo, a way home and
+  a band of popular pages.
+
+Changed:
+
+- **Every block has a real name.** "Survey 3" is now "Cancellation Survey" and
+  "Chart 1" is "Revenue Bar Chart", in the sidebar, on each page and in search.
+  Install names stay the same.
+- **Search finds more.** Common words like price, 404, 2FA, donut, typeahead or
+  inbox now lead to the right items.
+- **Faster pages.** Previews load when they scroll into view, fonts from other
+  pages are no longer fetched, hero images load first, build files are cached
+  for a year, and headlines no longer fade in from nothing.
+- **Sans figures in more places.** Date pickers, avatars, deltas, counts and
+  prices moved off the monospace font. Real code and commands keep it.
+
+Fixed:
+
+- **Copy Button**, **Stepper** and **Rating** demos scrolled sideways on phones.
+- **Auth blocks** asked the site for a page that doesn't exist.
+- **Segmented Control's** thumb stretched while it moved between options of
+  different widths.

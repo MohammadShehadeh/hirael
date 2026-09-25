@@ -189,7 +189,7 @@ const TimePickerTrigger = ({
           disabled={ctx.disabled}
           data-slot="time-picker-trigger"
           className={cn(
-            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start font-mono text-sm tabular-nums transition-colors outline-none',
+            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
             !ctx.value && 'font-sans text-muted-foreground',
             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -282,7 +282,7 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
               onClick={() => onSelect(n)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               className={cn(
-                'h-8 snap-center text-center font-mono text-sm tabular-nums transition-colors outline-none',
+                'h-8 snap-center text-center text-sm tabular-nums transition-colors outline-none',
                 'hover:bg-accent',
                 'focus-visible:bg-accent',
                 active ? 'font-semibold text-foreground' : 'text-muted-foreground',
@@ -368,13 +368,13 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
     <PopoverContent align="start" data-slot="time-picker-content" className={cn('w-auto p-3', className)} {...props}>
       <div data-slot="time-picker-columns" className="flex items-stretch gap-2">
         <ScrollColumn values={hourValues} selected={displayHour} onSelect={setHour} ariaLabel="Hour" />
-        <span aria-hidden className="flex items-center font-mono text-sm text-muted-foreground">
+        <span aria-hidden className="flex items-center text-sm text-muted-foreground">
           :
         </span>
         <ScrollColumn values={minuteValues} selected={ctx.value?.minute} onSelect={setMinute} ariaLabel="Minute" />
         {ctx.showSeconds && (
           <>
-            <span aria-hidden className="flex items-center font-mono text-sm text-muted-foreground">
+            <span aria-hidden className="flex items-center text-sm text-muted-foreground">
               :
             </span>
             <ScrollColumn

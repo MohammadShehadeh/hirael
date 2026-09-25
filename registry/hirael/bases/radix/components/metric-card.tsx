@@ -99,7 +99,7 @@ const MetricCardTrend = ({ direction, tone = 'neutral', className, children, ...
       data-slot="metric-card-trend"
       data-direction={direction}
       data-tone={resolvedTone}
-      className={cn('inline-flex items-center gap-1 font-mono text-xs', toneText[resolvedTone], className)}
+      className={cn('inline-flex items-center gap-1 text-xs tabular-nums', toneText[resolvedTone], className)}
       {...props}
     >
       <Icon className="size-3.5 rtl:-scale-x-100" aria-hidden />

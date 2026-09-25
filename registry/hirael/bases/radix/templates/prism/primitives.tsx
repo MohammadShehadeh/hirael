@@ -80,15 +80,15 @@ export const SectionIntro = ({ kicker, title }: SectionIntroProps) => {
 
 const WORD_DELAY_MS = 100;
 
-interface BlurTextProps {
+interface RiseTextProps {
   text: string;
 }
 
-export const BlurText = ({ text }: BlurTextProps) => {
+export const RiseText = ({ text }: RiseTextProps) => {
   return (
     <span dir="auto" className="inline-flex flex-wrap justify-center gap-x-[0.25em]">
       {text.split(' ').map((word, index) => (
-        <span key={`${word}-${index}`} className="blur-in" style={{ animationDelay: `${index * WORD_DELAY_MS}ms` }}>
+        <span key={`${word}-${index}`} className="word-rise" style={{ animationDelay: `${index * WORD_DELAY_MS}ms` }}>
           {word}
         </span>
       ))}

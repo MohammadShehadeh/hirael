@@ -207,7 +207,7 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
             aria-haspopup="listbox"
             aria-label={`Country code, currently ${ctx.country.name} ${ctx.country.dialCode}`}
             disabled={ctx.disabled}
-            className={cn('gap-1.5 font-mono text-xs', className)}
+            className={cn('gap-1.5 text-xs tabular-nums', className)}
             {...props}
           >
             <span className="font-medium text-foreground">{ctx.country.iso2}</span>
@@ -245,11 +245,11 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
                     className="justify-between"
                   >
                     <span className="flex min-w-0 items-center gap-2">
-                      <span className="shrink-0 font-mono text-xs font-medium">{c.iso2}</span>
+                      <span className="shrink-0 text-xs font-medium">{c.iso2}</span>
                       <span className="min-w-0 truncate">{c.name}</span>
                     </span>
                     <span className="flex shrink-0 items-center gap-1.5">
-                      <span className="font-mono text-xs text-muted-foreground">{c.dialCode}</span>
+                      <span className="text-xs text-muted-foreground tabular-nums">{c.dialCode}</span>
                       {ctx.country.iso2 === c.iso2 && <Check className="size-3.5 text-foreground" strokeWidth={3} />}
                     </span>
                   </CommandItem>

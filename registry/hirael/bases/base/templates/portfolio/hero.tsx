@@ -125,7 +125,7 @@ export const Hero = ({ start = true }: HeroProps) => {
     const ctx = gsap.context(() => {
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduce) {
-        gsap.set(['.name-reveal', '.blur-in'], {
+        gsap.set(['.name-reveal', '.lead-rise', '.blur-in'], {
           opacity: 1,
           y: 0,
           filter: 'blur(0px)',
@@ -133,19 +133,22 @@ export const Hero = ({ start = true }: HeroProps) => {
 
         return;
       }
+      // The name and lead only slide: text that starts at opacity 0 holds back Largest Contentful Paint.
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      tl.fromTo('.name-reveal', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 1.2, delay: 0.1 }).fromTo(
-        '.blur-in',
-        { opacity: 0, y: 20, filter: 'blur(10px)' },
-        {
-          opacity: 1,
-          y: 0,
-          filter: 'blur(0px)',
-          duration: 1,
-          stagger: 0.1,
-        },
-        0.3,
-      );
+      tl.fromTo('.name-reveal', { y: 50 }, { y: 0, duration: 1.2, delay: 0.1 })
+        .fromTo('.lead-rise', { y: 20 }, { y: 0, duration: 1, stagger: 0.1 }, 0.3)
+        .fromTo(
+          '.blur-in',
+          { opacity: 0, y: 20, filter: 'blur(10px)' },
+          {
+            opacity: 1,
+            y: 0,
+            filter: 'blur(0px)',
+            duration: 1,
+            stagger: 0.1,
+          },
+          0.3,
+        );
     }, rootRef);
 
     return () => ctx.revert();
@@ -172,10 +175,10 @@ export const Hero = ({ start = true }: HeroProps) => {
         <span className="mb-8 text-xs tracking-[0.3em] text-[hsl(var(--muted))] uppercase opacity-0 blur-in">
           Collection &rsquo;26
         </span>
-        <h1 className="name-reveal font-display mb-6 text-6xl leading-[0.9] tracking-tight italic opacity-0 md:text-8xl lg:text-9xl">
+        <h1 className="name-reveal font-display mb-6 [transform:translateY(50px)] text-6xl leading-[0.9] tracking-tight italic motion-reduce:[transform:none] md:text-8xl lg:text-9xl">
           John Doe
         </h1>
-        <p className="mb-3 text-lg text-[hsl(var(--text))] opacity-0 blur-in sm:text-xl">
+        <p className="lead-rise mb-3 [transform:translateY(20px)] text-lg text-[hsl(var(--text))] motion-reduce:[transform:none] sm:text-xl">
           A{' '}
           <span
             key={roleIndex}
@@ -185,7 +188,7 @@ export const Hero = ({ start = true }: HeroProps) => {
           </span>{' '}
           lives in Chicago.
         </p>
-        <p className="mb-12 max-w-md text-sm text-[hsl(var(--muted))] opacity-0 blur-in md:text-base">
+        <p className="lead-rise mb-12 max-w-md [transform:translateY(20px)] text-sm text-[hsl(var(--muted))] motion-reduce:[transform:none] md:text-base">
           Designing seamless digital interactions by focusing on the unique nuances which bring systems to life.
         </p>
         <div className="inline-flex flex-wrap items-center justify-center gap-4 opacity-0 blur-in">

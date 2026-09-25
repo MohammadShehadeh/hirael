@@ -42,9 +42,11 @@ const TEMPLATE_MAX_HEIGHT = 700;
 export interface BlockViewerProps {
   entry: RegistryEntryMeta;
   initialHeight?: number;
+  /** Load the preview with the page, for a page about this one item. */
+  eager?: boolean;
 }
 
-export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: BlockViewerProps) => {
+export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager = false }: BlockViewerProps) => {
   const embedHref = entryEmbedHref(entry, useRegistryBase());
   const maxHeight = entry.category === 'templates' ? TEMPLATE_MAX_HEIGHT : BLOCK_MAX_HEIGHT;
   const [viewport, setViewport] = React.useState<Viewport>('desktop');
@@ -106,6 +108,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT }: Bloc
           initialHeight={initialHeight}
           minHeight={MIN_HEIGHT}
           maxHeight={maxHeight}
+          eager={eager}
           className="transition-[width,max-width] duration-300 ease-out"
           style={sizing}
         />

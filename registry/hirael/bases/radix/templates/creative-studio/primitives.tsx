@@ -116,6 +116,8 @@ interface WordsPullUpProps {
   showAsterisk?: boolean;
   startDelay?: number;
   stagger?: number;
+  /** Fade each word in as it rises. Turn off for the page headline so it counts as painted for Largest Contentful Paint. */
+  fade?: boolean;
 }
 
 export const WordsPullUp = ({
@@ -125,6 +127,7 @@ export const WordsPullUp = ({
   showAsterisk = false,
   startDelay = 0,
   stagger = 0.08,
+  fade = true,
 }: WordsPullUpProps) => {
   const ref = React.useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true });
@@ -141,7 +144,7 @@ export const WordsPullUp = ({
           <motion.span
             key={i}
             className={cn('inline-block', wordClassName)}
-            initial={reduce ? false : { y: 20, opacity: 0 }}
+            initial={reduce ? false : { y: 20, opacity: fade ? 0 : 1 }}
             animate={show ? { y: 0, opacity: 1 } : undefined}
             transition={{
               duration: 0.6,

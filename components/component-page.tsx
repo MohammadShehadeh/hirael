@@ -113,7 +113,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
     sections.push({
       id: 'preview',
       label: 'Preview',
-      content: <BlockViewer entry={entry} />,
+      content: <BlockViewer entry={entry} eager />,
     });
   } else {
     sections.push({
@@ -121,8 +121,14 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
       label: exampleList.length > 1 ? 'Examples' : 'Example',
       content: (
         <div className="flex flex-col gap-8">
-          {exampleList.map((example) => (
-            <ExampleBlock key={example.slug} entry={entry} example={example} showTitle={exampleList.length > 1} />
+          {exampleList.map((example, index) => (
+            <ExampleBlock
+              key={example.slug}
+              entry={entry}
+              example={example}
+              showTitle={exampleList.length > 1}
+              eager={index === 0}
+            />
           ))}
         </div>
       ),
@@ -336,6 +342,7 @@ interface ExampleBlockProps {
   entry: RegistryEntryMeta;
   example: ExampleEntry;
   showTitle: boolean;
+  eager: boolean;
 }
 
 // Same floor as the embed shell.
@@ -345,7 +352,7 @@ const EXAMPLE_MAX_HEIGHT = 1200;
 type ExampleView = 'preview' | 'code';
 
 // Framed because a theme or direction class on this page can't reach dialogs and popovers that portal out.
-const ExampleBlock = ({ entry, example, showTitle }: ExampleBlockProps) => {
+const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) => {
   const [view, setView] = React.useState<ExampleView>('preview');
   const [isRtl, setIsRtl] = React.useState(false);
   const [refreshKey, setRefreshKey] = React.useState(0);
@@ -395,6 +402,7 @@ const ExampleBlock = ({ entry, example, showTitle }: ExampleBlockProps) => {
             initialHeight={EXAMPLE_MIN_HEIGHT}
             minHeight={EXAMPLE_MIN_HEIGHT}
             maxHeight={EXAMPLE_MAX_HEIGHT}
+            eager={eager}
             className="w-full"
           />
         ) : example.source ? (

@@ -59,7 +59,7 @@ const BACKERS: MarqueeBrand[] = [
   {
     name: 'NGRAVE',
     style: {
-      fontFamily: "'Courier New', monospace",
+      fontFamily: "'Franklin Gothic Medium', 'Arial Narrow', sans-serif",
       fontWeight: 700,
       letterSpacing: '0.18em',
       fontSize: '14px',

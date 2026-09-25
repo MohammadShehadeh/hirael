@@ -339,7 +339,7 @@ const DurationInputSegment = ({
         }}
         style={{ width: `${width}ch` }}
         className={cn(
-          'rounded-[2px] bg-transparent text-center font-mono tabular-nums outline-none',
+          'rounded-[2px] bg-transparent text-center tabular-nums outline-none',
           'placeholder:text-muted-foreground focus:bg-accent focus:text-accent-foreground disabled:cursor-not-allowed',
           className,
         )}

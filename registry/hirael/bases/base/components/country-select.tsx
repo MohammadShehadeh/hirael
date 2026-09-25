@@ -363,7 +363,7 @@ const CountrySelectValue = ({
       <span data-slot="country-select-value" className={cn('flex min-w-0 items-center gap-2', className)} {...props}>
         <CountrySelectFlag iso2={c.iso2} />
         <span className="truncate">{c.name}</span>
-        {ctx.showDialCode && <span className="font-mono text-xs text-muted-foreground">{c.dialCode}</span>}
+        {ctx.showDialCode && <span className="text-xs text-muted-foreground tabular-nums">{c.dialCode}</span>}
       </span>
     );
   }
@@ -481,7 +481,7 @@ const CountrySelectItem = ({ country, className, children, ...props }: CountrySe
           <CountrySelectFlag iso2={country.iso2} />
           <span className="min-w-0 flex-1 truncate">{country.name}</span>
           {ctx.showDialCode && (
-            <span className="shrink-0 font-mono text-xs text-muted-foreground">{country.dialCode}</span>
+            <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{country.dialCode}</span>
           )}
           <Check
             aria-hidden

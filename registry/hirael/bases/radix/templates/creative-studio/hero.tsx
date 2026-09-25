@@ -17,8 +17,8 @@ interface HeroProps {
 export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
   const reduce = useReducedMotion();
 
-  const fade = (delay: number) => ({
-    initial: reduce ? false : { y: 20, opacity: 0 },
+  const enter = (delay: number, { fade = true } = {}) => ({
+    initial: reduce ? false : { y: 20, opacity: fade ? 0 : 1 },
     animate: { y: 0, opacity: 1 },
     transition: { duration: 0.8, delay, ease: EASE_OUT_EXPO },
   });
@@ -66,13 +66,14 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
           <div className="grid grid-cols-12 items-end gap-6 md:gap-8">
             <div className="col-span-12 lg:col-span-8">
               <h1 className="text-[24vw] leading-[0.85] font-medium tracking-[-0.07em] text-(--cs-cream) sm:text-[22vw] md:text-[20vw] lg:text-[18vw] xl:text-[17vw] 2xl:text-[18vw]">
-                <WordsPullUp text="Hirael" showAsterisk />
+                <WordsPullUp text="Hirael" showAsterisk fade={false} />
               </h1>
             </div>
 
             <div className="col-span-12 flex flex-col gap-4 md:gap-6 lg:col-span-4">
+              {/* The lead only rises: text that starts at opacity 0 holds back Largest Contentful Paint. */}
               <motion.p
-                {...fade(0.5)}
+                {...enter(0.5, { fade: false })}
                 className="max-w-md text-sm text-(--cs-ink)/70 sm:text-base"
                 style={{ lineHeight: 1.3 }}
               >
@@ -80,14 +81,14 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
                 curiosity, not place or title.
               </motion.p>
 
-              <motion.div {...fade(0.7)}>
+              <motion.div {...enter(0.7)}>
                 <a
                   href="#"
                   className="group inline-flex w-fit items-center gap-2 rounded-full bg-(--cs-ink) py-1.5 ps-5 pe-1.5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
                 >
                   Join the lab
-                  <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10">
-                    <ArrowRight className="h-4 w-4 text-(--cs-cream) rtl:rotate-180" />
+                  <span className="flex size-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10">
+                    <ArrowRight className="size-4 text-(--cs-cream) rtl:rotate-180" />
                   </span>
                 </a>
               </motion.div>

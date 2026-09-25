@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { useT } from '@/lib/demo-locale';
+import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Field, FieldDescription, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import {
   CountrySelect,
@@ -44,7 +45,6 @@ const CountrySelectDemo = () => {
             <CountrySelectList emptyLabel={emptyLabel} />
           </CountrySelectContent>
         </CountrySelect>
-        <p className="font-mono text-[11px] text-muted-foreground">ISO: {country || '-'}</p>
       </div>
 
       <div className="grid gap-2">
@@ -77,13 +77,10 @@ const CountrySelectDemo = () => {
         </CountrySelect>
         <div className="flex flex-wrap gap-1.5">
           {markets.map((iso2) => (
-            <span
-              key={iso2}
-              className="inline-flex items-center gap-1 rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[11px] text-foreground"
-            >
+            <Badge key={iso2} variant="secondary">
               <CountrySelectFlag iso2={iso2} className="w-4" />
               {iso2}
-            </span>
+            </Badge>
           ))}
         </div>
       </div>

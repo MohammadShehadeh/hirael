@@ -441,7 +441,7 @@ const SparklineTooltip = ({ format, className, style, children, ...props }: Spar
         <div
           data-slot="sparkline-tooltip"
           className={cn(
-            'absolute top-0 z-10 -mt-1 w-max -translate-y-full rounded-sm border border-border bg-card px-1.5 py-0.5 font-mono text-[11px] leading-tight text-card-foreground shadow-sm',
+            'absolute top-0 z-10 -mt-1 w-max -translate-y-full rounded-sm border border-border bg-card px-1.5 py-0.5 text-[11px] leading-tight text-card-foreground tabular-nums shadow-sm',
             align === 'start' ? 'translate-x-0' : align === 'end' ? '-translate-x-full' : '-translate-x-1/2',
             className,
           )}

@@ -8,6 +8,9 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
+// Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
+const ENTER_TEXT =
+  'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const REVEAL =
   'animate-in fade-in zoom-in-90 duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -71,7 +74,7 @@ const Hero06 = () => {
           </a>
         </Badge>
 
-        <div style={stagger(1)} className={cn(ENTER, 'space-y-4')}>
+        <div style={stagger(1)} className={cn(ENTER_TEXT, 'space-y-4')}>
           <h1 className="mx-auto max-w-3xl font-serif text-4xl leading-[1.06] font-medium tracking-tight sm:text-5xl md:text-6xl">
             Frontend engineer building{' '}
             <span className="text-foreground italic underline decoration-primary decoration-2 underline-offset-8">

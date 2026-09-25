@@ -73,7 +73,7 @@ const AvatarStackItem = ({
     <Comp
       data-slot="avatar-stack-item"
       className={cn(
-        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted font-mono font-medium text-foreground ring-2 ring-background',
+        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted font-medium text-foreground ring-2 ring-background',
         asChild &&
           'transition-transform duration-150 ease-out hover:z-10 hover:scale-105 focus-visible:z-10 focus-visible:ring-ring focus-visible:outline-none',
         className,
@@ -114,7 +114,7 @@ const AvatarStackOverflow = ({
       data-slot="avatar-stack-overflow"
       data-overflow=""
       className={cn(
-        'relative inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-card font-mono font-medium text-muted-foreground tabular-nums ring-2 ring-background',
+        'relative inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-card font-medium text-muted-foreground tabular-nums ring-2 ring-background',
         asChild &&
           'transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
         className,

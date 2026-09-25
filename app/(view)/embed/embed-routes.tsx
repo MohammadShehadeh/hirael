@@ -1,9 +1,6 @@
-import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 
-import { embedDirScript } from '@/lib/embed';
 import { embedMetadata } from '@/lib/seo';
-import { RegistryDemo, RegistryExample } from '@/registry/hirael/registry-demos';
 import {
   COMPONENTS,
   DEFAULT_BASE,
@@ -12,13 +9,8 @@ import {
   REGISTRY_BY_NAME,
   entryCategorySlug,
   getExamples,
-  isComponentEntry,
   type RegistryBase,
 } from '@/registry/hirael/registry-meta';
-
-import { BlockEmbedShell } from './blocks/[category]/[block]/embed-shell';
-import { ExampleEmbedShell } from './components/[component]/[example]/embed-shell';
-import { TemplateEmbedShell } from './templates/[template]/embed-shell';
 
 export const blockEmbedParams = () =>
   REGISTRY.filter((entry) => entry.category === 'blocks').map((entry) => ({
@@ -69,63 +61,4 @@ export const exampleEmbedMetadata = async ({ params }: ExampleEmbedMetadataProps
   const title = entry && ref ? `${entry.title} ${ref.title.toLowerCase()}` : 'Component';
 
   return embedMetadata(`${title} preview`);
-};
-
-export interface BlockEmbedProps {
-  base: RegistryBase;
-  category: string;
-  block: string;
-}
-
-export const BlockEmbed = ({ base, category, block }: BlockEmbedProps) => {
-  const entry = REGISTRY_BY_NAME[block];
-  if (!entry || entry.category !== 'blocks' || entryCategorySlug(entry) !== category) notFound();
-
-  return (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
-      <BlockEmbedShell hasDemoNotice={entry.blockKind === 'login'}>
-        <RegistryDemo name={entry.name} base={base} />
-      </BlockEmbedShell>
-    </>
-  );
-};
-
-export interface TemplateEmbedProps {
-  base: RegistryBase;
-  template: string;
-}
-
-export const TemplateEmbed = ({ base, template }: TemplateEmbedProps) => {
-  const entry = REGISTRY_BY_NAME[template];
-  if (!entry || entry.category !== 'templates') notFound();
-
-  return (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
-      <TemplateEmbedShell>
-        <RegistryDemo name={entry.name} base={base} />
-      </TemplateEmbedShell>
-    </>
-  );
-};
-
-export interface ExampleEmbedProps {
-  base: RegistryBase;
-  component: string;
-  example: string;
-}
-
-export const ExampleEmbed = ({ base, component, example }: ExampleEmbedProps) => {
-  const entry = REGISTRY_BY_NAME[component];
-  if (!entry || !isComponentEntry(entry) || !getExamples(entry.name).some((e) => e.slug === example)) notFound();
-
-  return (
-    <>
-      <script dangerouslySetInnerHTML={{ __html: embedDirScript() }} />
-      <ExampleEmbedShell>
-        <RegistryExample name={example} base={base} />
-      </ExampleEmbedShell>
-    </>
-  );
 };

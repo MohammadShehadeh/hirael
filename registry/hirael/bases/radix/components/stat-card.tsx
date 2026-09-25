@@ -64,7 +64,7 @@ const StatCardDelta = ({ trend, tone = 'neutral', className, children, ...props 
       data-trend={trend}
       data-tone={tone}
       className={cn(
-        'inline-flex w-fit items-center gap-1 rounded-sm bg-accent px-1.5 py-0.5 font-mono text-[11px] leading-none',
+        'inline-flex w-fit items-center gap-1 rounded-sm bg-accent px-1.5 py-0.5 text-[11px] leading-none tabular-nums',
         toneText[tone],
         className,
       )}

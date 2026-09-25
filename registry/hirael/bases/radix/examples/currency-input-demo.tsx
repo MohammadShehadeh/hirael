@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { useT } from '@/lib/demo-locale';
-import { Field, FieldGroup, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
+import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import {
   CurrencyInput,
   CurrencyInputField,
@@ -19,18 +19,18 @@ const CurrencyInputDemo = () => {
   return (
     <FieldGroup className="max-w-md gap-8">
       <Field className="gap-2">
-        <FieldLabel htmlFor="cur-basic">USD</FieldLabel>
+        <FieldLabel htmlFor="cur-basic">{t({ en: 'Invoice amount', ar: 'مبلغ الفاتورة' })}</FieldLabel>
         <CurrencyInput id="cur-basic" value={basic} onValueChange={setBasic} currency="USD" locale="en-US" decimals={2}>
           <CurrencyInputPrefix />
           <CurrencyInputField />
         </CurrencyInput>
-        <p className="font-mono text-[11px] text-muted-foreground">
-          {t({ en: 'parsed:', ar: 'المُحلَّل:' })} {basic === null ? 'null' : basic}
-        </p>
+        <FieldDescription>
+          {t({ en: 'US dollars, before tax.', ar: 'بالدولار الأمريكي، قبل الضريبة.' })}
+        </FieldDescription>
       </Field>
 
       <Field className="gap-2">
-        <FieldLabel htmlFor="cur-composed">EUR (de-DE)</FieldLabel>
+        <FieldLabel htmlFor="cur-composed">{t({ en: 'Monthly budget', ar: 'الميزانية الشهرية' })}</FieldLabel>
         <CurrencyInput
           id="cur-composed"
           value={composed}
@@ -42,9 +42,12 @@ const CurrencyInputDemo = () => {
           <CurrencyInputPrefix />
           <CurrencyInputField placeholder="0,00" />
         </CurrencyInput>
-        <p className="font-mono text-[11px] text-muted-foreground">
-          {t({ en: 'parsed:', ar: 'المُحلَّل:' })} {composed === null ? 'null' : composed}
-        </p>
+        <FieldDescription>
+          {t({
+            en: 'Euros in German format. Saved as a plain number.',
+            ar: 'باليورو بالتنسيق الألماني. يُحفظ كرقم عادي.',
+          })}
+        </FieldDescription>
       </Field>
     </FieldGroup>
   );

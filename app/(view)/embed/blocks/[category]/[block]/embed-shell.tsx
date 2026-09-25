@@ -21,7 +21,14 @@ export const BlockEmbedShell = ({ children, hasDemoNotice = false }: BlockEmbedS
           className="fixed inset-x-0 top-0 z-50 border-b border-border bg-card px-4 py-2 text-center text-xs text-muted-foreground [[data-framed]_&]:hidden"
         >
           Demo from the{' '}
-          <Link href="/" target="_top" className="font-medium text-foreground underline-offset-4 hover:underline">
+          {/* The static export writes the home segment as __next.!KGFwcCk/__PAGE__.txt but the prefetch asks for
+              __next.!KGFwcCk.__PAGE__.txt, so a prefetch here 404s on every auth embed. */}
+          <Link
+            href="/"
+            target="_top"
+            prefetch={false}
+            className="font-medium text-foreground underline-offset-4 hover:underline"
+          >
             Hirael
           </Link>{' '}
           component library. This form doesn&apos;t submit; don&apos;t enter real credentials.

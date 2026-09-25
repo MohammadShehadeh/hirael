@@ -687,7 +687,7 @@ const KanbanColumnCount = ({ className, children, ...props }: React.ComponentPro
     <span
       data-slot="kanban-column-count"
       className={cn(
-        'inline-flex h-5 min-w-5 items-center justify-center rounded-sm bg-accent px-1.5 font-mono text-[11px] text-muted-foreground',
+        'inline-flex h-5 min-w-5 items-center justify-center rounded-sm bg-accent px-1.5 text-[11px] text-muted-foreground tabular-nums',
         className,
       )}
       {...props}

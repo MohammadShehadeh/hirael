@@ -263,7 +263,7 @@ const CommandPaletteTrigger = ({ className, children, onClick, ...props }: React
       {ctx.shortcutLabel && (
         <kbd
           data-slot="command-palette-kbd"
-          className="ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground"
+          className="ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground"
         >
           {ctx.shortcutLabel}
         </kbd>
@@ -425,7 +425,7 @@ const CommandPaletteItem = ({
       {children ?? label}
       {page && <ChevronRight className="ms-auto size-3.5 text-muted-foreground rtl:rotate-180" />}
       {shortcut && !page && (
-        <kbd className="ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+        <kbd className="ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground">
           {shortcut}
         </kbd>
       )}

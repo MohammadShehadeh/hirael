@@ -141,7 +141,7 @@ export const DataTableFacetedFilter = <TData extends RowData, TValue extends Cel
                     {option.icon && <option.icon />}
                     <span className="truncate">{option.label}</span>
                     {option.count != null && option.count > 0 && (
-                      <span className="ms-auto font-mono text-xs">{option.count}</span>
+                      <span className="ms-auto text-xs tabular-nums">{option.count}</span>
                     )}
                   </CommandItem>
                 );

@@ -605,7 +605,7 @@ const CronEditorField = ({
             aria-label={`${label} interval`}
             data-slot="cron-editor-field-step"
             dir="ltr"
-            className="h-8 w-16 font-mono text-xs"
+            className="h-8 w-16 text-xs tabular-nums"
             onChange={(e) => {
               const n = Number(e.target.value);
               if (Number.isInteger(n) && n >= 1) {
@@ -642,7 +642,7 @@ const CronEditorField = ({
                 data-slot="cron-editor-field-value"
                 data-active={on || undefined}
                 className={cn(
-                  'h-6 rounded-sm border border-transparent font-mono text-[10px] text-muted-foreground transition-colors outline-none',
+                  'h-6 rounded-sm border border-transparent text-[10px] text-muted-foreground tabular-nums transition-colors outline-none',
                   'hover:bg-accent hover:text-foreground',
                   'focus-visible:ring-2 focus-visible:ring-ring',
                   on && 'bg-foreground text-background hover:bg-foreground hover:text-background',
@@ -784,7 +784,7 @@ const CronEditorNextRuns = ({
   );
 
   return (
-    <ol data-slot="cron-editor-next-runs" className={cn('grid gap-1 font-mono text-[11px]', className)} {...props}>
+    <ol data-slot="cron-editor-next-runs" className={cn('grid gap-1 text-[11px] tabular-nums', className)} {...props}>
       {runs.length === 0 ? (
         <li className="text-muted-foreground">{emptyLabel}</li>
       ) : (

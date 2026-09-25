@@ -1,6 +1,7 @@
 import { DEFAULT_BASE } from '@/registry/hirael/registry-meta';
 
-import { TemplateEmbed, templateEmbedMetadata, templateEmbedParams } from '../../embed-routes';
+import { templateEmbedMetadata, templateEmbedParams } from '../../embed-routes';
+import { TemplateEmbed } from '../../template-embed';
 
 export const dynamicParams = false;
 

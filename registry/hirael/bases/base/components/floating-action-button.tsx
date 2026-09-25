@@ -186,8 +186,7 @@ const FloatingActionButtonList = ({ className, onKeyDown, ...props }: FloatingAc
       event.currentTarget.querySelectorAll<HTMLElement>('[data-slot="floating-action-button-item"]:not(:disabled)'),
     );
     if (items.length === 0) return;
-    let delta = event.key === nextKey ? 1 : -1;
-    if (side === 'top' || side === 'left') delta = -delta;
+    const delta = (event.key === nextKey) !== (side === 'top' || side === 'left') ? 1 : -1;
     const index = items.indexOf(document.activeElement as HTMLElement);
     const target = index === -1 ? items[0] : items[(index + delta + items.length) % items.length];
     target?.focus();
@@ -219,11 +218,7 @@ const FloatingActionButtonItem = ({ className, onClick, ...props }: FloatingActi
   const { open, setOpen, side, focusTrigger } = useFab();
   const itemVariants: Variants = {
     open: { opacity: 1, x: 0, y: 0, visibility: 'visible' },
-    closed: {
-      opacity: 0,
-      ...closedOffset[side],
-      transitionEnd: { visibility: 'hidden' },
-    },
+    closed: { opacity: 0, ...closedOffset[side], transitionEnd: { visibility: 'hidden' } },
   };
 
   return (

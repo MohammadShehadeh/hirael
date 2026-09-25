@@ -94,12 +94,11 @@ const Dock = ({
           if (index === -1) return;
           event.preventDefault();
           const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
-          let delta = event.key === 'ArrowRight' ? 1 : -1;
-          if (rtl) delta = -delta;
+          const delta = (event.key === 'ArrowRight') !== rtl ? 1 : -1;
           items[(index + delta + items.length) % items.length]?.focus();
         }}
         className={cn(
-          'mx-auto flex items-end gap-3 rounded-2xl border border-border bg-popover/90 px-3 pt-3 pb-3 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-popover/70',
+          'mx-auto flex items-end gap-3 rounded-2xl border border-border bg-popover/90 p-3 shadow-lg backdrop-blur supports-[backdrop-filter]:bg-popover/70',
           className,
         )}
         {...props}
@@ -135,11 +134,7 @@ const DockItem = ({
     return x - center;
   });
   const widthTarget = useTransform(distanceFromMouse, [-distance, 0, distance], [baseSize, magnification, baseSize]);
-  const width = useSpring(widthTarget, {
-    mass: 0.1,
-    stiffness: 170,
-    damping: 14,
-  });
+  const width = useSpring(widthTarget, { mass: 0.1, stiffness: 170, damping: 14 });
 
   const itemCtx = React.useMemo(() => ({ hovered }), [hovered]);
 
@@ -192,7 +187,7 @@ const DockLabel = ({ className, children, ...props }: DockLabelProps) => {
         {children}
       </span>
       <AnimatePresence>
-        {hovered ? (
+        {hovered && (
           <motion.div
             {...props}
             aria-hidden
@@ -208,7 +203,7 @@ const DockLabel = ({ className, children, ...props }: DockLabelProps) => {
           >
             {children}
           </motion.div>
-        ) : null}
+        )}
       </AnimatePresence>
     </>
   );

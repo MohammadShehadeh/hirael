@@ -221,13 +221,11 @@ const CountrySelect = (props: CountrySelectProps) => {
   );
 
   const { priorityList, rest } = React.useMemo(() => {
-    const pinned = new Set(priority.map((p) => p.toUpperCase()));
     const priorityList = priority
       .map((p) => countries.find((c) => c.iso2 === p.toUpperCase()))
       .filter((c): c is Country => Boolean(c));
-    const rest = countries.filter((c) => !pinned.has(c.iso2));
 
-    return { priorityList, rest };
+    return { priorityList, rest: countries.filter((c) => !priorityList.includes(c)) };
   }, [countries, priority]);
 
   const ctx = React.useMemo<CountrySelectContextValue>(
@@ -311,7 +309,6 @@ const CountrySelectTrigger = ({ className, children, variant = 'outline', ...pro
       >
         {children ?? <CountrySelectValue />}
         <ChevronDown
-          aria-hidden
           className={cn(
             'size-4 shrink-0 text-muted-foreground transition-transform duration-150 motion-reduce:transition-none',
             ctx.open && 'rotate-180',
@@ -324,15 +321,12 @@ const CountrySelectTrigger = ({ className, children, variant = 'outline', ...pro
 
 interface CountrySelectValueProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   placeholder?: string;
-  /** How many names to list before collapsing to a count (multiple only). */
-  maxNames?: number;
-  /** Label for the collapsed count, e.g. `(n) => \`${n} countries\``. */
+  /** Label once more than two countries are picked, e.g. `(n) => \`${n} countries\``. */
   countLabel?: (count: number) => string;
 }
 
 const CountrySelectValue = ({
   placeholder = 'Select a country',
-  maxNames = 2,
   countLabel = (n) => `${n} countries`,
   className,
   ...props
@@ -373,7 +367,7 @@ const CountrySelectValue = ({
         ))}
       </span>
       <span className="truncate">
-        {picked.length <= maxNames ? picked.map((c) => c.name).join(', ') : countLabel(picked.length)}
+        {picked.length <= 2 ? picked.map((c) => c.name).join(', ') : countLabel(picked.length)}
       </span>
     </span>
   );
@@ -469,7 +463,6 @@ const CountrySelectItem = ({ country, className, children, ...props }: CountrySe
       keywords={[country.iso2, country.dialCode]}
       onSelect={() => ctx.select(country.iso2)}
       data-slot="country-select-item"
-      data-selected={active || undefined}
       className={cn('gap-2', className)}
       {...props}
     >
@@ -481,7 +474,6 @@ const CountrySelectItem = ({ country, className, children, ...props }: CountrySe
             <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{country.dialCode}</span>
           )}
           <Check
-            aria-hidden
             strokeWidth={3}
             className={cn('size-3.5 shrink-0 text-foreground', active ? 'opacity-100' : 'opacity-0')}
           />

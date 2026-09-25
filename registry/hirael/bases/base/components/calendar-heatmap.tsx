@@ -389,7 +389,7 @@ const CalendarHeatmap = ({
                   }
                 />
                 <TooltipContent>
-                  {activeCell ? (tooltipFormatter ?? defaultFormatter)(activeCell.date, activeCell.value) : null}
+                  {activeCell && (tooltipFormatter ?? defaultFormatter)(activeCell.date, activeCell.value)}
                 </TooltipContent>
               </Tooltip>
             </div>

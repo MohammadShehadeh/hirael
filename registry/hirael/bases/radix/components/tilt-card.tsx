@@ -71,14 +71,14 @@ const TiltCard = ({
         className="relative size-full rounded-lg border border-border bg-card text-card-foreground"
       >
         {children}
-        {glare ? (
+        {glare && (
           <motion.div
             aria-hidden
             data-slot="tilt-card-glare"
             className="pointer-events-none absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             style={{ background: glareBackground }}
           />
-        ) : null}
+        )}
       </motion.div>
     </div>
   );

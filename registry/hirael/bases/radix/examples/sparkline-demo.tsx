@@ -4,6 +4,7 @@ import { useT } from '@/lib/demo-locale';
 import {
   Sparkline,
   SparklineArea,
+  SparklineBars,
   SparklineDot,
   SparklineLine,
   SparklineReference,
@@ -85,11 +86,12 @@ const SparklineDemo = () => {
               {t({ en: 'Requests per minute', ar: 'الطلبات في الدقيقة' })}
             </p>
             <Sparkline data={VISITS} variant="bar" className="h-10 w-48">
+              <SparklineBars />
               <SparklineTooltip>
                 {(v, i) =>
                   t({
-                    en: `${v} req · minute ${i + 1}`,
-                    ar: `${v} طلب · الدقيقة ${i + 1}`,
+                    en: `${v} req, minute ${i + 1}`,
+                    ar: `${v} طلب، الدقيقة ${i + 1}`,
                   })
                 }
               </SparklineTooltip>

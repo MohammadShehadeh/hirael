@@ -1,12 +1,13 @@
 'use client';
 
 import * as React from 'react';
+import { Slot, Slottable } from '@radix-ui/react-slot';
 import { Check, Pencil, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
-import { Spinner } from '@/registry/hirael/bases/radix/components/spinner';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
 import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 
@@ -234,8 +235,6 @@ export interface InlineEditPreviewProps extends React.ComponentProps<'span'> {
   asChild?: boolean;
 }
 
-type PreviewChildProps = React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLElement> };
-
 const InlineEditPreview = ({
   asChild = false,
   className,
@@ -259,64 +258,103 @@ const InlineEditPreview = ({
   const content = (
     <>
       {value === '' ? <span className="text-muted-foreground">{placeholder}</span> : value}
-      <Pencil
-        aria-hidden
-        className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover/preview:opacity-100 group-focus-visible/preview:opacity-100"
-      />
+      <Pencil className="size-3.5 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover/preview:opacity-100 group-focus-visible/preview:opacity-100" />
     </>
   );
 
-  const child = asChild && React.isValidElement<PreviewChildProps>(children) ? children : null;
-
-  const handleClick = (event: React.MouseEvent<HTMLSpanElement>) => {
-    child?.props.onClick?.(event);
-    onClick?.(event);
-    if (event.defaultPrevented) return;
-    startEditing();
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-    child?.props.onKeyDown?.(event);
-    onKeyDown?.(event);
-    if (event.defaultPrevented) return;
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      startEditing();
-    }
-  };
-
-  const sharedProps = {
-    'data-slot': 'inline-edit-preview',
-    role: 'button',
-    tabIndex: disabled ? -1 : 0,
-    'aria-disabled': disabled || undefined,
-    ...props,
-    onClick: handleClick,
-    onKeyDown: handleKeyDown,
-  };
-
-  const sharedClassName = cn(
-    'group/preview inline-flex max-w-full cursor-pointer items-center gap-1.5 rounded-sm px-1.5 py-0.5 transition-colors outline-none',
-    'hover:bg-accent hover:text-accent-foreground',
-    'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
-    disabled && 'pointer-events-none opacity-50',
-    className,
-  );
-
-  if (child) {
-    return React.cloneElement(child, {
-      ...sharedProps,
-      className: cn(sharedClassName, child.props.className),
-      children: content,
-      ref: composeRefs<HTMLElement>(composedRef, child.props.ref),
-    } as PreviewChildProps);
-  }
+  const Comp = asChild ? Slot : 'span';
 
   return (
-    <span {...sharedProps} ref={composedRef} className={sharedClassName}>
+    <Comp
+      data-slot="inline-edit-preview"
+      role="button"
+      tabIndex={disabled ? -1 : 0}
+      aria-disabled={disabled || undefined}
+      {...props}
+      ref={composedRef}
+      onClick={(event: React.MouseEvent<HTMLSpanElement>) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) startEditing();
+      }}
+      onKeyDown={(event: React.KeyboardEvent<HTMLSpanElement>) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        startEditing();
+      }}
+      className={cn(
+        'group/preview inline-flex max-w-full cursor-pointer items-center gap-1.5 rounded-sm px-1.5 py-0.5 transition-colors outline-none',
+        'hover:bg-accent hover:text-accent-foreground',
+        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+        disabled && 'pointer-events-none opacity-50',
+        className,
+      )}
+    >
+      {asChild && <Slottable>{children}</Slottable>}
       {content}
-    </span>
+    </Comp>
   );
+};
+
+type FieldElement = HTMLInputElement | HTMLTextAreaElement;
+
+interface FieldHandlers<T extends FieldElement> {
+  onKeyDown?: React.KeyboardEventHandler<T>;
+  onBlur?: React.FocusEventHandler<T>;
+  onChange?: React.ChangeEventHandler<T>;
+  ref?: React.Ref<T>;
+}
+
+const useInlineEditField = <T extends FieldElement>(
+  { onKeyDown, onBlur, onChange, ref }: FieldHandlers<T>,
+  isSubmitKey: (event: React.KeyboardEvent<T>) => boolean,
+) => {
+  const ctx = useInlineEdit();
+
+  // Once per node: an inline consumer ref re-invokes this every render, and
+  // re-selecting mid-typing would swallow the next keystroke.
+  const focusedRef = React.useRef<T | null>(null);
+  const focusOnMount = React.useCallback(
+    (node: T | null) => {
+      if (!node || node === focusedRef.current) return;
+      focusedRef.current = node;
+      node.focus();
+      if (ctx.selectOnFocus) node.select();
+    },
+    [ctx.selectOnFocus],
+  );
+  const composedRef = React.useCallback((node: T | null) => composeRefs(focusOnMount, ref)(node), [focusOnMount, ref]);
+
+  return {
+    editing: ctx.editing,
+    fieldProps: {
+      value: ctx.draft,
+      placeholder: ctx.placeholder,
+      disabled: ctx.disabled || ctx.pending,
+      'aria-invalid': ctx.error ? true : undefined,
+      'aria-describedby': ctx.error ? ctx.errorId : undefined,
+      onChange: (event: React.ChangeEvent<T>) => {
+        onChange?.(event);
+        if (!event.defaultPrevented) ctx.setDraft(event.target.value);
+      },
+      onKeyDown: (event: React.KeyboardEvent<T>) => {
+        onKeyDown?.(event);
+        if (event.defaultPrevented || event.nativeEvent.isComposing || event.keyCode === 229) return;
+        if (isSubmitKey(event)) {
+          event.preventDefault();
+          ctx.submit();
+        } else if (event.key === 'Escape') {
+          event.preventDefault();
+          ctx.cancel();
+        }
+      },
+      onBlur: (event: React.FocusEvent<T>) => {
+        onBlur?.(event);
+        if (ctx.submitOnBlur && !ctx.pending) ctx.submit();
+      },
+      ref: composedRef,
+    },
+  };
 };
 
 const InlineEditInput = ({
@@ -327,147 +365,23 @@ const InlineEditInput = ({
   ref,
   ...props
 }: React.ComponentProps<typeof Input>) => {
-  const {
-    draft,
-    setDraft,
-    editing,
-    pending,
-    error,
-    errorId,
-    disabled,
-    placeholder,
-    selectOnFocus,
-    submitOnBlur,
-    submit,
-    cancel,
-  } = useInlineEdit();
-
-  // Once per node: an inline consumer ref re-invokes this every render, and
-  // re-selecting mid-typing would swallow the next keystroke.
-  const focusedRef = React.useRef<HTMLInputElement | null>(null);
-  const focusOnMount = React.useCallback(
-    (node: HTMLInputElement | null) => {
-      if (!node || node === focusedRef.current) return;
-      focusedRef.current = node;
-      node.focus();
-      if (selectOnFocus) node.select();
-    },
-    [selectOnFocus],
+  const { editing, fieldProps } = useInlineEditField(
+    { onKeyDown, onBlur, onChange, ref },
+    (event) => event.key === 'Enter',
   );
-
-  const composedRef = React.useMemo(() => composeRefs(focusOnMount, ref), [focusOnMount, ref]);
-
   if (!editing) return null;
 
-  return (
-    <Input
-      data-slot="inline-edit-input"
-      value={draft}
-      placeholder={placeholder}
-      disabled={disabled || pending}
-      aria-invalid={error ? true : undefined}
-      aria-describedby={error ? errorId : undefined}
-      onChange={(event) => {
-        onChange?.(event);
-        if (event.defaultPrevented) return;
-        setDraft(event.target.value);
-      }}
-      onKeyDown={(event) => {
-        onKeyDown?.(event);
-        if (event.defaultPrevented || event.nativeEvent.isComposing || event.keyCode === 229) return;
-        if (event.key === 'Enter') {
-          event.preventDefault();
-          submit();
-        }
-        if (event.key === 'Escape') {
-          event.preventDefault();
-          cancel();
-        }
-      }}
-      onBlur={(event) => {
-        onBlur?.(event);
-        if (submitOnBlur && !pending) submit();
-      }}
-      className={cn('h-8', className)}
-      {...props}
-      ref={composedRef}
-    />
-  );
+  return <Input data-slot="inline-edit-input" className={cn('h-8', className)} {...fieldProps} {...props} />;
 };
 
-const InlineEditTextarea = ({
-  className,
-  onKeyDown,
-  onBlur,
-  onChange,
-  ref,
-  ...props
-}: React.ComponentProps<typeof Textarea>) => {
-  const {
-    draft,
-    setDraft,
-    editing,
-    pending,
-    error,
-    errorId,
-    disabled,
-    placeholder,
-    selectOnFocus,
-    submitOnBlur,
-    submit,
-    cancel,
-  } = useInlineEdit();
-
-  // Focus/select once per mounted node; see InlineEditInput.
-  const focusedRef = React.useRef<HTMLTextAreaElement | null>(null);
-  const focusOnMount = React.useCallback(
-    (node: HTMLTextAreaElement | null) => {
-      if (!node || node === focusedRef.current) return;
-      focusedRef.current = node;
-      node.focus();
-      if (selectOnFocus) node.select();
-    },
-    [selectOnFocus],
+const InlineEditTextarea = ({ onKeyDown, onBlur, onChange, ref, ...props }: React.ComponentProps<typeof Textarea>) => {
+  const { editing, fieldProps } = useInlineEditField(
+    { onKeyDown, onBlur, onChange, ref },
+    (event) => event.key === 'Enter' && (event.metaKey || event.ctrlKey),
   );
-
-  const composedRef = React.useMemo(() => composeRefs(focusOnMount, ref), [focusOnMount, ref]);
-
   if (!editing) return null;
 
-  return (
-    <Textarea
-      data-slot="inline-edit-textarea"
-      value={draft}
-      placeholder={placeholder}
-      disabled={disabled || pending}
-      aria-invalid={error ? true : undefined}
-      aria-describedby={error ? errorId : undefined}
-      onChange={(event) => {
-        onChange?.(event);
-        if (event.defaultPrevented) return;
-        setDraft(event.target.value);
-      }}
-      onKeyDown={(event) => {
-        onKeyDown?.(event);
-        if (event.defaultPrevented || event.nativeEvent.isComposing || event.keyCode === 229) return;
-        if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-          event.preventDefault();
-          submit();
-        }
-        if (event.key === 'Escape') {
-          event.preventDefault();
-          cancel();
-        }
-      }}
-      onBlur={(event) => {
-        onBlur?.(event);
-        if (submitOnBlur && !pending) submit();
-      }}
-      className={className}
-      {...props}
-      ref={composedRef}
-    />
-  );
+  return <Textarea data-slot="inline-edit-textarea" {...fieldProps} {...props} />;
 };
 
 export interface InlineEditControlsProps extends React.ComponentProps<'div'> {
@@ -505,7 +419,7 @@ const InlineEditControls = ({
             onClick={() => submit()}
             className="size-8"
           >
-            {pending ? <Spinner size="sm" /> : <Check aria-hidden />}
+            {pending ? <Spinner /> : <Check />}
           </Button>
           <Button
             type="button"
@@ -516,7 +430,7 @@ const InlineEditControls = ({
             onClick={() => cancel()}
             className="size-8"
           >
-            <X aria-hidden />
+            <X />
           </Button>
         </>
       )}

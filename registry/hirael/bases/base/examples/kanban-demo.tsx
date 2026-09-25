@@ -95,22 +95,26 @@ const KanbanDemo = () => {
                 <KanbanColumnCount />
               </KanbanColumnHeader>
               <KanbanColumnContent className="max-h-80">
-                {board[column.id].map((cardId) => {
-                  const task = TASKS[cardId];
+                {(ids) => (
+                  <>
+                    {ids.map((cardId) => {
+                      const task = TASKS[cardId];
 
-                  return (
-                    <KanbanCard key={cardId} id={cardId}>
-                      <p className="leading-snug font-medium">{t(task.title)}</p>
-                      <div className="flex items-center justify-between gap-2">
-                        <Badge variant="outline">{t(task.tag)}</Badge>
-                        <Avatar size="sm">
-                          <AvatarFallback>{task.assignee}</AvatarFallback>
-                        </Avatar>
-                      </div>
-                    </KanbanCard>
-                  );
-                })}
-                <KanbanEmpty>{t({ en: 'Drop a card here', ar: 'أفلت بطاقة هنا' })}</KanbanEmpty>
+                      return (
+                        <KanbanCard key={cardId} id={cardId}>
+                          <p className="leading-snug font-medium">{t(task.title)}</p>
+                          <div className="flex items-center justify-between gap-2">
+                            <Badge variant="outline">{t(task.tag)}</Badge>
+                            <Avatar size="sm">
+                              <AvatarFallback>{task.assignee}</AvatarFallback>
+                            </Avatar>
+                          </div>
+                        </KanbanCard>
+                      );
+                    })}
+                    <KanbanEmpty>{t({ en: 'Drop a card here', ar: 'أفلت بطاقة هنا' })}</KanbanEmpty>
+                  </>
+                )}
               </KanbanColumnContent>
             </KanbanColumn>
           ))}

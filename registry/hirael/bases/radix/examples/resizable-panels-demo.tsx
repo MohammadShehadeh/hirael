@@ -27,7 +27,7 @@ const ResizablePanelsDemo = () => {
   return (
     <div className="h-72 w-full max-w-2xl overflow-hidden rounded-lg border border-border bg-card">
       <ResizablePanelGroup orientation="horizontal" className="h-full w-full">
-        <ResizablePanel defaultSize={28} minSize={15}>
+        <ResizablePanel defaultSize="28%" minSize="15%">
           <Pane label={t({ en: 'Explorer', ar: 'المستكشف' })}>
             {t({
               en: 'Drag a divider to resize.',
@@ -35,10 +35,10 @@ const ResizablePanelsDemo = () => {
             })}
           </Pane>
         </ResizablePanel>
-        <ResizableHandle />
-        <ResizablePanel defaultSize={72}>
+        <ResizableHandle withHandle />
+        <ResizablePanel defaultSize="72%">
           <ResizablePanelGroup orientation="vertical" className="h-full">
-            <ResizablePanel defaultSize={64} minSize={20}>
+            <ResizablePanel defaultSize="64%" minSize="20%">
               <Pane label={t({ en: 'Editor', ar: 'المحرر' })}>
                 {t({
                   en: "Panels share their space proportionally and clamp to each panel's minimum size.",
@@ -46,8 +46,8 @@ const ResizablePanelsDemo = () => {
                 })}
               </Pane>
             </ResizablePanel>
-            <ResizableHandle />
-            <ResizablePanel defaultSize={36} minSize={15}>
+            <ResizableHandle withHandle />
+            <ResizablePanel defaultSize="36%" minSize="15%">
               <Pane label={t({ en: 'Terminal', ar: 'الطرفية' })}>
                 <span className="font-mono text-xs">$ pnpm dev</span>
               </Pane>

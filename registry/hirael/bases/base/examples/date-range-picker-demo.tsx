@@ -58,7 +58,7 @@ const DateRangePickerDemo = () => {
 
       <Field className="gap-2">
         <FieldLabel htmlFor="drp-composed">{t({ en: 'Composed', ar: 'مركّب' })}</FieldLabel>
-        <DateRangePicker value={composed} onValueChange={setComposed} max={new Date()} locale={locale}>
+        <DateRangePicker value={composed} onValueChange={setComposed} locale={locale}>
           <DateRangePickerTrigger
             id="drp-composed"
             placeholder={t({
@@ -66,7 +66,7 @@ const DateRangePickerDemo = () => {
               ar: 'اختر فترة التقرير',
             })}
           />
-          <DateRangePickerContent presets={presets} numberOfMonths={1} />
+          <DateRangePickerContent presets={presets} numberOfMonths={1} disabled={{ after: new Date() }} />
         </DateRangePicker>
         <p className="text-xs text-muted-foreground uppercase">{print(composed)}</p>
       </Field>

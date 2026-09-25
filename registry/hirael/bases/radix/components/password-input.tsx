@@ -19,29 +19,20 @@ export interface PasswordStrength {
 
 export type PasswordScorer = (value: string) => PasswordStrength;
 
-export const defaultPasswordScorer: PasswordScorer = (value) => {
-  if (!value) return { score: 0, label: 'empty' };
-  let score = 0;
-  if (value.length >= 8) score++;
-  if (value.length >= 12) score++;
-  const classes =
-    Number(/[a-z]/.test(value)) +
-    Number(/[A-Z]/.test(value)) +
-    Number(/\d/.test(value)) +
-    Number(/[^A-Za-z0-9]/.test(value));
-  if (classes >= 2) score++;
-  if (classes >= 3) score++;
-  score = Math.min(score, 4);
-  const labels = ['weak', 'weak', 'fair', 'good', 'strong'] as const;
-  const hints = [
-    '8+ chars, mix character types',
-    'Try a longer passphrase',
-    'Add a number or symbol',
-    'Nearly there, make it longer',
-    'Strong',
-  ] as const;
+const LABELS = ['weak', 'weak', 'fair', 'good', 'strong'];
+const HINTS = [
+  '8+ chars, mix character types',
+  'Try a longer passphrase',
+  'Add a number or symbol',
+  'Nearly there, make it longer',
+  'Strong',
+];
 
-  return { score, label: labels[score], hint: hints[score] };
+export const defaultPasswordScorer: PasswordScorer = (value) => {
+  const classes = [/[a-z]/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].filter((re) => re.test(value)).length;
+  const score = Number(value.length >= 8) + Number(value.length >= 12) + Number(classes >= 2) + Number(classes >= 3);
+
+  return { score, label: LABELS[score], hint: HINTS[score] };
 };
 
 interface Ctx {
@@ -104,15 +95,7 @@ const PasswordInput = ({
   const strength = React.useMemo(() => scorer(value), [scorer, value]);
 
   const ctx = React.useMemo<Ctx>(
-    () => ({
-      id: fieldId,
-      value,
-      setValue,
-      visible,
-      setVisible,
-      disabled,
-      strength,
-    }),
+    () => ({ id: fieldId, value, setValue, visible, setVisible, disabled, strength }),
     [fieldId, value, setValue, visible, disabled, strength],
   );
 
@@ -125,18 +108,11 @@ const PasswordInput = ({
   );
 };
 
-interface PasswordInputToggleLabel {
-  show: string;
-  hide: string;
-}
-
 interface PasswordInputFieldProps extends Omit<
   React.ComponentProps<'input'>,
   'type' | 'value' | 'defaultValue' | 'onChange' | 'id'
 > {
-  showToggle?: boolean;
-  toggleLabel?: PasswordInputToggleLabel;
-  className?: string;
+  toggleLabel?: { show: string; hide: string };
 }
 
 /**
@@ -144,7 +120,6 @@ interface PasswordInputFieldProps extends Omit<
  * `autoComplete="new-password"` for signup / change-password forms.
  */
 const PasswordInputField = ({
-  showToggle = true,
   toggleLabel = { show: 'Show password', hide: 'Hide password' },
   className,
   ...props
@@ -152,11 +127,7 @@ const PasswordInputField = ({
   const ctx = usePasswordContext();
 
   return (
-    <InputGroup
-      data-slot="password-input-field"
-      data-disabled={ctx.disabled || undefined}
-      className={cn(ctx.disabled && 'opacity-60', className)}
-    >
+    <InputGroup data-slot="password-input-field" data-disabled={ctx.disabled} className={className}>
       <InputGroupInput
         id={ctx.id}
         type={ctx.visible ? 'text' : 'password'}
@@ -166,63 +137,55 @@ const PasswordInputField = ({
         autoComplete="current-password"
         {...props}
       />
-      {showToggle && (
-        <InputGroupAddon align="inline-end">
-          <InputGroupButton
-            type="button"
-            size="icon-sm"
-            aria-label={ctx.visible ? toggleLabel.hide : toggleLabel.show}
-            aria-pressed={ctx.visible}
-            disabled={ctx.disabled}
-            onClick={() => ctx.setVisible(!ctx.visible)}
-          >
-            {ctx.visible ? <EyeOff /> : <Eye />}
-          </InputGroupButton>
-        </InputGroupAddon>
-      )}
+      <InputGroupAddon align="inline-end">
+        <InputGroupButton
+          type="button"
+          size="icon-sm"
+          aria-label={ctx.visible ? toggleLabel.hide : toggleLabel.show}
+          aria-pressed={ctx.visible}
+          disabled={ctx.disabled}
+          onClick={() => ctx.setVisible(!ctx.visible)}
+        >
+          {ctx.visible ? <EyeOff /> : <Eye />}
+        </InputGroupButton>
+      </InputGroupAddon>
     </InputGroup>
   );
 };
 
-const STRENGTH_COLORS = ['bg-destructive', 'bg-destructive', 'bg-warning', 'bg-primary', 'bg-success'] as const;
+const STRENGTH_COLORS = ['bg-destructive', 'bg-destructive', 'bg-warning', 'bg-primary', 'bg-success'];
 
-interface PasswordInputStrengthProps extends React.ComponentProps<'div'> {
-  showLabel?: boolean;
-  renderMeta?: (strength: PasswordStrength) => React.ReactNode;
-}
-
-const PasswordInputStrength = ({ showLabel = true, renderMeta, className, ...props }: PasswordInputStrengthProps) => {
-  const ctx = usePasswordContext();
-  const s = ctx.strength;
-  const bar = STRENGTH_COLORS[s.score] ?? STRENGTH_COLORS[0];
+const PasswordInputStrength = ({ className, ...props }: React.ComponentProps<'div'>) => {
+  const { value, strength } = usePasswordContext();
+  const bar = STRENGTH_COLORS[strength.score] ?? STRENGTH_COLORS[0];
 
   return (
     <div data-slot="password-input-strength" className={cn('flex flex-col gap-1.5', className)} {...props}>
       <div
         role="meter"
         aria-label="Password strength"
-        aria-valuenow={s.score}
+        aria-valuenow={strength.score}
         aria-valuemin={0}
         aria-valuemax={4}
-        aria-valuetext={s.label}
+        aria-valuetext={strength.label}
         className="grid grid-cols-4 gap-1"
       >
         {[1, 2, 3, 4].map((tier) => (
           <span
             key={tier}
-            className={cn('h-1 rounded-sm bg-border transition-colors duration-200 ease-out', s.score >= tier && bar)}
+            className={cn(
+              'h-1 rounded-sm bg-border transition-colors duration-200 ease-out',
+              strength.score >= tier && bar,
+            )}
           />
         ))}
       </div>
-      {showLabel &&
-        (renderMeta ? (
-          renderMeta(s)
-        ) : (
-          <div aria-live="polite" className="flex items-center justify-between gap-2">
-            <span className="text-xs text-muted-foreground uppercase">{s.label}</span>
-            {s.hint && <span className="text-[11px] text-muted-foreground">{s.hint}</span>}
-          </div>
-        ))}
+      {value && (
+        <div aria-live="polite" className="flex items-center justify-between gap-2">
+          <span className="text-xs text-muted-foreground uppercase">{strength.label}</span>
+          {strength.hint && <span className="text-[11px] text-muted-foreground">{strength.hint}</span>}
+        </div>
+      )}
     </div>
   );
 };

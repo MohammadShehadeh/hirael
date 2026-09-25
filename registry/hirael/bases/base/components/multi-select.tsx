@@ -29,8 +29,6 @@ interface MultiSelectContextValue {
   options: MultiSelectOption[];
   open: boolean;
   setOpen: (open: boolean) => void;
-  search: string;
-  setSearch: (s: string) => void;
   maxCount?: number;
   disabled?: boolean;
   loading?: boolean;
@@ -102,17 +100,10 @@ const MultiSelect = ({
     [openProp, onOpenChange],
   );
 
-  const [search, setSearch] = React.useState('');
-
   const toggle = React.useCallback(
     (v: string) => {
-      const exists = value.includes(v);
-      if (exists) {
-        setValue(value.filter((x) => x !== v));
-      } else {
-        if (maxCount !== undefined && value.length >= maxCount) return;
-        setValue([...value, v]);
-      }
+      if (value.includes(v)) setValue(value.filter((x) => x !== v));
+      else if (maxCount === undefined || value.length < maxCount) setValue([...value, v]);
     },
     [value, setValue, maxCount],
   );
@@ -134,8 +125,6 @@ const MultiSelect = ({
       options,
       open,
       setOpen,
-      search,
-      setSearch,
       maxCount,
       disabled,
       loading,
@@ -144,7 +133,7 @@ const MultiSelect = ({
       clear,
       listboxId,
     }),
-    [value, setValue, options, open, setOpen, search, maxCount, disabled, loading, toggle, remove, clear, listboxId],
+    [value, setValue, options, open, setOpen, maxCount, disabled, loading, toggle, remove, clear, listboxId],
   );
 
   return (
@@ -234,8 +223,6 @@ interface MultiSelectContentProps extends React.ComponentProps<typeof PopoverCon
   searchPlaceholder?: string;
   emptyMessage?: string;
   loadingMessage?: string;
-  showSelectAll?: boolean;
-  showClear?: boolean;
   selectAllLabel?: string;
   clearLabel?: string;
   children?: React.ReactNode;
@@ -246,8 +233,6 @@ const MultiSelectContent = ({
   searchPlaceholder = 'Search…',
   emptyMessage = 'Nothing found.',
   loadingMessage = 'Loading…',
-  showSelectAll = true,
-  showClear = true,
   selectAllLabel = 'Select all',
   clearLabel = 'Clear',
   children,
@@ -259,19 +244,11 @@ const MultiSelectContent = ({
   const enabled = ctx.options.filter((o) => !o.disabled);
   const locked = ctx.options.filter((o) => o.disabled && ctx.value.includes(o.value)).map((o) => o.value);
   const allSelected = enabled.length > 0 && enabled.every((o) => ctx.value.includes(o.value));
-  const showSelectAllItem = showSelectAll && enabled.length > 0;
-  const showClearItem = showClear && ctx.value.length > locked.length && !(showSelectAllItem && allSelected);
+  const showSelectAllItem = enabled.length > 0;
+  const showClearItem = ctx.value.length > locked.length && !(showSelectAllItem && allSelected);
 
-  const groups = React.useMemo(() => {
-    const map = new Map<string | undefined, MultiSelectOption[]>();
-    for (const opt of ctx.options) {
-      const key = opt.group;
-      if (!map.has(key)) map.set(key, []);
-      map.get(key)!.push(opt);
-    }
-
-    return Array.from(map.entries());
-  }, [ctx.options]);
+  const groups = new Map<string | undefined, MultiSelectOption[]>();
+  for (const opt of ctx.options) groups.set(opt.group, [...(groups.get(opt.group) ?? []), opt]);
 
   return (
     <PopoverContent
@@ -283,7 +260,7 @@ const MultiSelectContent = ({
       {...props}
     >
       <Command shouldFilter loop>
-        <CommandInput ref={inputRef} placeholder={searchPlaceholder} value={ctx.search} onValueChange={ctx.setSearch} />
+        <CommandInput ref={inputRef} placeholder={searchPlaceholder} />
         <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
@@ -294,7 +271,7 @@ const MultiSelectContent = ({
             <>
               <CommandEmpty>{emptyMessage}</CommandEmpty>
               {children ??
-                groups.map(([group, items]) => (
+                [...groups].map(([group, items]) => (
                   <CommandGroup key={group ?? '__default'} heading={group}>
                     {items.map((opt) => (
                       <MultiSelectItem key={opt.value} option={opt} />

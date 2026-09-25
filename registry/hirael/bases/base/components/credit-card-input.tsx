@@ -4,7 +4,6 @@ import * as React from 'react';
 import { CreditCard } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 
 export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'diners' | 'jcb' | 'unknown';
@@ -181,7 +180,6 @@ interface CreditCardInputContextValue {
   touch: (field: CreditCardField) => void;
   setField: (field: CreditCardField, next: string) => void;
   focusField: (field: CreditCardField) => void;
-  register: (field: CreditCardField, el: HTMLInputElement | null) => void;
   variant: CreditCardInputVariant;
   disabled?: boolean;
 }
@@ -244,23 +242,14 @@ const CreditCardInput = ({
   const spec = React.useMemo(() => getCardBrandSpec(brand), [brand]);
   const errors = React.useMemo(() => computeErrors(value, spec, new Date()), [value, spec]);
 
-  const inputs = React.useRef<Record<CreditCardField, HTMLInputElement | null>>({
-    number: null,
-    expiry: null,
-    cvc: null,
-  });
-
-  const register = React.useCallback((field: CreditCardField, el: HTMLInputElement | null) => {
-    inputs.current[field] = el;
-  }, []);
-
-  const focusField = React.useCallback((field: CreditCardField) => {
-    const el = inputs.current[field];
-    if (el) {
-      el.focus();
-      el.select();
-    }
-  }, []);
+  const focusField = React.useCallback(
+    (field: CreditCardField) => {
+      const el = document.getElementById(`${rootId}-${field}`) as HTMLInputElement | null;
+      el?.focus();
+      el?.select();
+    },
+    [rootId],
+  );
 
   const setField = React.useCallback(
     (field: CreditCardField, raw: string) => {
@@ -301,11 +290,10 @@ const CreditCardInput = ({
       touch,
       setField,
       focusField,
-      register,
       variant,
       disabled,
     }),
-    [rootId, value, brand, spec, errors, touched, touch, setField, focusField, register, variant, disabled],
+    [rootId, value, brand, spec, errors, touched, touch, setField, focusField, variant, disabled],
   );
 
   return (
@@ -323,7 +311,6 @@ const CreditCardInput = ({
                 'has-[input[aria-invalid=true]]:border-destructive',
               )
             : 'grid w-full gap-3',
-          disabled && 'opacity-60',
           className,
         )}
         {...props}
@@ -339,6 +326,31 @@ const ROW_INPUT =
 
 type FieldProps = Omit<React.ComponentProps<typeof Input>, 'value' | 'defaultValue' | 'onChange' | 'type' | 'id'>;
 
+// Backspace in an empty field steps back to `previous`.
+const useFieldProps = (
+  field: CreditCardField,
+  { onBlur, onKeyDown }: Pick<FieldProps, 'onBlur' | 'onKeyDown'>,
+  previous?: CreditCardField,
+) => {
+  const ctx = useCreditCardInput();
+
+  return {
+    id: `${ctx.id}-${field}`,
+    inputMode: 'numeric' as const,
+    dir: 'ltr',
+    disabled: ctx.disabled,
+    'aria-invalid': (ctx.touched[field] && ctx.errors.includes(field)) || undefined,
+    onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+      ctx.touch(field);
+      onBlur?.(e);
+    },
+    onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (previous && e.key === 'Backspace' && ctx.value[field] === '') ctx.focusField(previous);
+      onKeyDown?.(e);
+    },
+  };
+};
+
 interface CreditCardInputNumberProps extends FieldProps {
   /** Rendered at the end of the field. Defaults to `<CreditCardInputBrand />`. */
   children?: React.ReactNode;
@@ -350,17 +362,10 @@ const CreditCardInputNumber = ({
   children,
   onBlur,
   onKeyDown,
-  ref,
   ...props
 }: CreditCardInputNumberProps) => {
   const ctx = useCreditCardInput();
-  const { register } = ctx;
-  const composedRef = React.useMemo(
-    () => composeRefs<HTMLInputElement>((el) => register('number', el), ref),
-    [register, ref],
-  );
-  const invalid = ctx.touched.number && ctx.errors.includes('number');
-  const maxLength = Math.max(...ctx.spec.lengths);
+  const fieldProps = useFieldProps('number', { onBlur, onKeyDown });
 
   return (
     <div
@@ -368,30 +373,19 @@ const CreditCardInputNumber = ({
       className={cn('relative min-w-0', ctx.variant === 'row' ? 'flex-1' : undefined)}
     >
       <Input
-        ref={composedRef}
-        id={`${ctx.id}-number`}
-        type="text"
-        inputMode="numeric"
+        {...fieldProps}
         autoComplete="cc-number"
-        dir="ltr"
         placeholder={placeholder}
         value={formatCardNumber(ctx.value.number, ctx.brand)}
-        disabled={ctx.disabled}
-        aria-invalid={invalid || undefined}
         aria-label="Card number"
         data-slot="credit-card-input-number-field"
         className={cn('pe-16 tracking-[0.06em] tabular-nums', ctx.variant === 'row' && ROW_INPUT, className)}
         onChange={(e) => {
           ctx.setField('number', e.target.value);
-          if (digitsOnly(e.target.value).length >= maxLength && ctx.spec.lengths.length === 1) {
+          if (ctx.spec.lengths.length === 1 && digitsOnly(e.target.value).length >= ctx.spec.lengths[0]) {
             ctx.focusField('expiry');
           }
         }}
-        onBlur={(e) => {
-          ctx.touch('number');
-          onBlur?.(e);
-        }}
-        onKeyDown={onKeyDown}
         {...props}
       />
       <span className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2">
@@ -401,36 +395,16 @@ const CreditCardInputNumber = ({
   );
 };
 
-type CreditCardInputExpiryProps = FieldProps;
-
-const CreditCardInputExpiry = ({
-  placeholder = 'MM/YY',
-  className,
-  onBlur,
-  onKeyDown,
-  ref,
-  ...props
-}: CreditCardInputExpiryProps) => {
+const CreditCardInputExpiry = ({ placeholder = 'MM/YY', className, onBlur, onKeyDown, ...props }: FieldProps) => {
   const ctx = useCreditCardInput();
-  const { register } = ctx;
-  const composedRef = React.useMemo(
-    () => composeRefs<HTMLInputElement>((el) => register('expiry', el), ref),
-    [register, ref],
-  );
-  const invalid = ctx.touched.expiry && ctx.errors.includes('expiry');
+  const fieldProps = useFieldProps('expiry', { onBlur, onKeyDown }, 'number');
 
   return (
     <Input
-      ref={composedRef}
-      id={`${ctx.id}-expiry`}
-      type="text"
-      inputMode="numeric"
+      {...fieldProps}
       autoComplete="cc-exp"
-      dir="ltr"
       placeholder={placeholder}
       value={ctx.value.expiry}
-      disabled={ctx.disabled}
-      aria-invalid={invalid || undefined}
       aria-label="Expiry date"
       data-slot="credit-card-input-expiry"
       className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-20 border-s border-input'), className)}
@@ -438,66 +412,26 @@ const CreditCardInputExpiry = ({
         ctx.setField('expiry', e.target.value);
         if (digitsOnly(e.target.value).length >= 4) ctx.focusField('cvc');
       }}
-      onKeyDown={(e) => {
-        if (e.key === 'Backspace' && ctx.value.expiry === '') {
-          ctx.focusField('number');
-        }
-        onKeyDown?.(e);
-      }}
-      onBlur={(e) => {
-        ctx.touch('expiry');
-        onBlur?.(e);
-      }}
       {...props}
     />
   );
 };
 
-type CreditCardInputCvcProps = FieldProps;
-
-const CreditCardInputCvc = ({
-  placeholder = 'CVC',
-  className,
-  onBlur,
-  onKeyDown,
-  ref,
-  ...props
-}: CreditCardInputCvcProps) => {
+const CreditCardInputCvc = ({ placeholder = 'CVC', className, onBlur, onKeyDown, ...props }: FieldProps) => {
   const ctx = useCreditCardInput();
-  const { register } = ctx;
-  const composedRef = React.useMemo(
-    () => composeRefs<HTMLInputElement>((el) => register('cvc', el), ref),
-    [register, ref],
-  );
-  const invalid = ctx.touched.cvc && ctx.errors.includes('cvc');
+  const fieldProps = useFieldProps('cvc', { onBlur, onKeyDown }, 'expiry');
 
   return (
     <Input
-      ref={composedRef}
-      id={`${ctx.id}-cvc`}
-      type="text"
-      inputMode="numeric"
+      {...fieldProps}
       autoComplete="cc-csc"
-      dir="ltr"
       placeholder={placeholder}
       maxLength={ctx.spec.cvcLength}
       value={ctx.value.cvc}
-      disabled={ctx.disabled}
-      aria-invalid={invalid || undefined}
       aria-label="Security code"
       data-slot="credit-card-input-cvc"
       className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-16 border-s border-input'), className)}
       onChange={(e) => ctx.setField('cvc', e.target.value)}
-      onKeyDown={(e) => {
-        if (e.key === 'Backspace' && ctx.value.cvc === '') {
-          ctx.focusField('expiry');
-        }
-        onKeyDown?.(e);
-      }}
-      onBlur={(e) => {
-        ctx.touch('cvc');
-        onBlur?.(e);
-      }}
       {...props}
     />
   );

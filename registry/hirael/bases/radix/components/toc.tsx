@@ -11,48 +11,6 @@ export interface TocItem {
   children?: TocItem[];
 }
 
-type ThrottledFn = (() => void) & { cancel: () => void };
-
-const throttle = (fn: () => void, limit: number): ThrottledFn => {
-  let lastRan = 0;
-  let timer: ReturnType<typeof setTimeout> | null = null;
-
-  const throttled = (() => {
-    const now = Date.now();
-    const remaining = limit - (now - lastRan);
-
-    if (remaining <= 0) {
-      if (timer) {
-        clearTimeout(timer);
-        timer = null;
-      }
-      lastRan = now;
-      fn();
-    } else if (!timer) {
-      timer = setTimeout(() => {
-        lastRan = Date.now();
-        timer = null;
-        fn();
-      }, remaining);
-    }
-  }) as ThrottledFn;
-
-  throttled.cancel = () => {
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
-  };
-
-  return throttled;
-};
-
-const prefersReducedMotion = () => {
-  if (typeof window === 'undefined' || !window.matchMedia) return false;
-
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-};
-
 const TOP_OFFSET = 56;
 
 /** Fraction of the viewport height a heading must scroll past to become active. */
@@ -73,13 +31,11 @@ const useActiveHeading = (idsKey: string, enabled: boolean) => {
       }
 
       const boxes = ids
-        .map((id) => {
+        .flatMap((id) => {
           const el = document.getElementById(id);
-          if (!el) return null;
 
-          return { id, top: el.getBoundingClientRect().top };
+          return el ? [{ id, top: el.getBoundingClientRect().top }] : [];
         })
-        .filter((entry): entry is { id: string; top: number } => entry !== null)
         .sort((a, b) => a.top - b.top);
 
       const { scrollHeight } = document.documentElement;
@@ -96,14 +52,17 @@ const useActiveHeading = (idsKey: string, enabled: boolean) => {
       setActiveId(current);
     };
 
-    const onScroll = throttle(update, 200);
+    let frame = 0;
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(() => ((frame = 0), update()));
+    };
 
     update();
     window.addEventListener('scroll', onScroll, { passive: true });
     window.addEventListener('resize', onScroll, { passive: true });
 
     return () => {
-      onScroll.cancel();
+      cancelAnimationFrame(frame);
       window.removeEventListener('scroll', onScroll);
       window.removeEventListener('resize', onScroll);
     };
@@ -169,7 +128,7 @@ const TableOfContents = ({
     children ??
     (items && items.length > 0 ? (
       <>
-        {label ? <TableOfContentsLabel>{label}</TableOfContentsLabel> : null}
+        {label && <TableOfContentsLabel>{label}</TableOfContentsLabel>}
         <TableOfContentsList items={items} />
       </>
     ) : null);
@@ -228,9 +187,7 @@ const TableOfContentsItem = ({ item, level = 0, className, ...props }: TableOfCo
       <TableOfContentsLink href={`#${item.id}`} level={item.level}>
         {item.text}
       </TableOfContentsLink>
-      {item.children && item.children.length > 0 ? (
-        <TableOfContentsList items={item.children} level={level + 1} />
-      ) : null}
+      {!!item.children?.length && <TableOfContentsList items={item.children} level={level + 1} />}
     </li>
   );
 };
@@ -252,24 +209,15 @@ const TableOfContentsLink = ({
   const isActive = id.length > 0 && activeId === id;
   const isHash = href.startsWith('#') && id.length > 0;
 
-  React.useEffect(() => {
-    if (!isHash) return undefined;
-
-    return registerHeading(id);
-  }, [isHash, id, registerHeading]);
+  React.useEffect(() => (isHash ? registerHeading(id) : undefined), [isHash, id, registerHeading]);
 
   const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
     onClick?.(event);
-    if (event.defaultPrevented) return;
-    if (!id || !href.startsWith('#')) return;
-
-    const target = document.getElementById(id);
+    const target = isHash && !event.defaultPrevented ? document.getElementById(id) : null;
     if (!target) return;
-
     event.preventDefault();
-    target.scrollIntoView({
-      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-    });
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
     window.history.replaceState(null, '', `#${id}`);
   };
 

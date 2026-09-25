@@ -87,7 +87,7 @@ const AvatarUploadDemo = () => {
             shape="square"
             size={72}
             outputSize={256}
-            accept="image/png,image/svg+xml,image/jpeg"
+            accept={{ 'image/png': [], 'image/svg+xml': [], 'image/jpeg': [] }}
           >
             <AvatarUploadPreview fallback="HI" alt={t({ en: 'Workspace logo', ar: 'شعار مساحة العمل' })}>
               <AvatarUploadRemove aria-label={t({ en: 'Remove logo', ar: 'إزالة الشعار' })} />

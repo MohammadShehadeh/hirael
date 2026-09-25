@@ -188,7 +188,6 @@ const LazySelect = ({
 
 interface LazySelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
-  className?: string;
 }
 
 const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: LazySelectTriggerProps) => {
@@ -206,9 +205,8 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: L
           aria-haspopup="listbox"
           disabled={ctx.disabled}
           data-slot="lazy-select-trigger"
-          data-state={ctx.open ? 'open' : 'closed'}
           className={cn(
-            'group flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm transition-colors outline-none',
+            'flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm transition-colors outline-none',
             'hover:border-ring/60 focus-visible:border-ring',
             'data-[state=open]:border-ring',
             'disabled:cursor-not-allowed disabled:opacity-50',
@@ -225,14 +223,12 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: L
           >
             {ctx.selectedLabel ?? placeholder}
           </span>
-          <span className="flex shrink-0 items-center gap-1 text-muted-foreground">
-            <ChevronDown
-              className={cn(
-                'size-3.5 transition-transform duration-150 motion-reduce:transition-none',
-                ctx.open && 'rotate-180',
-              )}
-            />
-          </span>
+          <ChevronDown
+            className={cn(
+              'size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 motion-reduce:transition-none',
+              ctx.open && 'rotate-180',
+            )}
+          />
         </button>
       </PopoverTrigger>
       {showClear && (
@@ -259,7 +255,6 @@ interface LazySelectContentProps extends React.ComponentProps<typeof PopoverCont
   loadingMessage?: string;
   loadingMoreMessage?: string;
   endMessage?: string;
-  children?: React.ReactNode;
 }
 
 const LazySelectContent = ({

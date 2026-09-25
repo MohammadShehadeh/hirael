@@ -2,7 +2,7 @@
 
 import { useT } from '@/lib/demo-locale';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import { Spinner } from '@/registry/hirael/bases/base/components/spinner';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const SpinnerDemo = () => {
   const t = useT();
@@ -10,48 +10,27 @@ const SpinnerDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Variants', ar: 'الأنواع' })}</p>
-        <div className="flex items-center gap-10 text-foreground">
-          <div className="flex flex-col items-center gap-2">
-            <Spinner variant="circle" size="lg" />
-            <span className="text-xs text-muted-foreground">{t({ en: 'Circle', ar: 'دائرة' })}</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Spinner variant="dots" size="lg" />
-            <span className="text-xs text-muted-foreground">{t({ en: 'Dots', ar: 'نقاط' })}</span>
-          </div>
-          <div className="flex flex-col items-center gap-2">
-            <Spinner variant="bars" size="lg" />
-            <span className="text-xs text-muted-foreground">{t({ en: 'Bars', ar: 'أعمدة' })}</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Sizes', ar: 'الأحجام' })}</p>
         <div className="flex items-center gap-6 text-foreground">
-          <Spinner size="sm" />
-          <Spinner size="md" />
-          <Spinner size="lg" />
+          <Spinner />
+          <Spinner className="size-6" />
+          <Spinner className="size-8" />
         </div>
       </div>
 
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
-          {t({
-            en: 'Inherits text color · in context',
-            ar: 'يرث لون النص · ضمن السياق',
-          })}
+          {t({ en: 'Inherits text color · in context', ar: 'يرث لون النص · ضمن السياق' })}
         </p>
         <div className="flex flex-wrap items-center gap-4">
           <span className="text-primary">
             <Spinner />
           </span>
           <span className="text-destructive">
-            <Spinner variant="dots" />
+            <Spinner />
           </span>
           <Button type="button" disabled>
-            <Spinner size="sm" />
+            <Spinner />
             {t({ en: 'Saving…', ar: 'جارٍ الحفظ…' })}
           </Button>
         </div>

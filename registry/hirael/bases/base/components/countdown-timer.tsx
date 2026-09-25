@@ -125,14 +125,14 @@ const CountdownTimerUnit = ({ value, label, className, ...props }: CountdownTime
   return (
     <div data-slot="countdown-timer-unit" className={cn('flex flex-col items-center gap-0.5', className)} {...props}>
       <CountdownTimerValue value={pad(value)} />
-      {label ? (
+      {label && (
         <span
           data-slot="countdown-timer-label"
           className="text-[10px] font-medium tracking-[0.1em] text-muted-foreground uppercase"
         >
           {label}
         </span>
-      ) : null}
+      )}
     </div>
   );
 };
@@ -192,11 +192,11 @@ const CountdownTimer = ({
   } else if (variant === 'inline') {
     content = units.map((unit, index) => (
       <React.Fragment key={unit}>
-        {index > 0 ? (
+        {index > 0 && (
           <span data-slot="countdown-timer-separator" aria-hidden className="text-xl font-medium text-muted-foreground">
             :
           </span>
-        ) : null}
+        )}
         <CountdownTimerUnit value={valueOf(unit)} label={resolvedLabels[unit]} className="text-xl font-semibold" />
       </React.Fragment>
     ));

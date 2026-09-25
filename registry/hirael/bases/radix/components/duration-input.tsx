@@ -4,7 +4,6 @@ import * as React from 'react';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's';
 
@@ -52,8 +51,6 @@ interface DurationInputContextValue {
   clear: () => void;
   draft: DurationDraft | null;
   setDraft: (next: DurationDraft | null) => void;
-  focusUnit: (from: DurationUnit, delta: number) => void;
-  registerSegment: (unit: DurationUnit, el: HTMLInputElement | null) => void;
   disabled?: boolean;
   readOnly?: boolean;
 }
@@ -102,7 +99,6 @@ const DurationInput = ({
   const units = React.useMemo(() => unitsKey.split('') as DurationUnit[], [unitsKey]);
 
   const [draft, setDraft] = React.useState<DurationDraft | null>(null);
-  const segments = React.useRef(new Map<DurationUnit, HTMLInputElement>());
 
   const setSeconds = React.useCallback(
     (next: number | null) => {
@@ -144,23 +140,9 @@ const DurationInput = ({
   );
 
   const clear = React.useCallback(() => {
-    if (disabled || readOnly) return;
     setDraft(null);
     setSeconds(null);
-  }, [disabled, readOnly, setSeconds]);
-
-  const focusUnit = React.useCallback(
-    (from: DurationUnit, delta: number) => {
-      const next = units[units.indexOf(from) + delta];
-      if (next) segments.current.get(next)?.focus();
-    },
-    [units],
-  );
-
-  const registerSegment = React.useCallback((unit: DurationUnit, el: HTMLInputElement | null) => {
-    if (el) segments.current.set(unit, el);
-    else segments.current.delete(unit);
-  }, []);
+  }, [setSeconds]);
 
   const ctx = React.useMemo<DurationInputContextValue>(
     () => ({
@@ -173,12 +155,10 @@ const DurationInput = ({
       clear,
       draft,
       setDraft,
-      focusUnit,
-      registerSegment,
       disabled,
       readOnly,
     }),
-    [seconds, units, parts, maxFor, widthFor, setUnit, clear, draft, focusUnit, registerSegment, disabled, readOnly],
+    [seconds, units, parts, maxFor, widthFor, setUnit, clear, draft, disabled, readOnly],
   );
 
   return (
@@ -240,15 +220,9 @@ const DurationInputSegment = ({
   onKeyDown,
   onFocus,
   onBlur,
-  ref,
   ...props
 }: DurationInputSegmentProps) => {
   const ctx = useDurationInput();
-  const { registerSegment } = ctx;
-  const composedRef = React.useMemo(
-    () => composeRefs<HTMLInputElement>((el) => registerSegment(unit, el), ref),
-    [registerSegment, unit, ref],
-  );
   if (!ctx.units.includes(unit)) return null;
 
   const width = ctx.widthFor(unit);
@@ -257,62 +231,48 @@ const DurationInputSegment = ({
   const editing = draftText !== null;
   const display = editing ? draftText : ctx.seconds === null ? '' : String(ctx.parts[unit]).padStart(2, '0');
 
-  const handleChange = (raw: string) => {
-    if (ctx.disabled || ctx.readOnly) return;
-    const digits = raw.replace(/\D/g, '').slice(-width);
-    const text = digits.replace(/^0+(?=\d)/, '');
+  const focusSibling = (el: HTMLElement, delta: number) => {
+    const next = ctx.units[ctx.units.indexOf(unit) + delta];
+    if (!next) return;
+    el.closest('[data-slot="duration-input"]')?.querySelector<HTMLInputElement>(`[data-unit="${next}"]`)?.focus();
+  };
+
+  const handleChange = (el: HTMLInputElement) => {
+    const text = el.value
+      .replace(/\D/g, '')
+      .slice(-width)
+      .replace(/^0+(?=\d)/, '');
     ctx.setDraft({ unit, text });
-    ctx.setUnit(unit, text === '' ? 0 : Number(text));
+    ctx.setUnit(unit, Number(text));
     if (text !== '' && (text.length >= width || Number(text) * 10 > limit)) {
       ctx.setDraft(null);
-      ctx.focusUnit(unit, 1);
+      focusSibling(el, 1);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(e);
     if (e.defaultPrevented || ctx.disabled || ctx.readOnly) return;
-
-    const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
-    const step = e.shiftKey ? 10 : 1;
     const current = ctx.seconds === null ? 0 : ctx.parts[unit];
 
-    switch (e.key) {
-      case 'ArrowUp':
-        e.preventDefault();
-        ctx.setDraft(null);
-        ctx.setUnit(unit, current + step);
-        break;
-      case 'ArrowDown':
-        e.preventDefault();
-        ctx.setDraft(null);
-        ctx.setUnit(unit, Math.max(0, current - step));
-        break;
-      case 'ArrowRight':
-        e.preventDefault();
-        ctx.focusUnit(unit, rtl ? -1 : 1);
-        break;
-      case 'ArrowLeft':
-        e.preventDefault();
-        ctx.focusUnit(unit, rtl ? 1 : -1);
-        break;
-      case 'Backspace':
-        if (!editing || draftText === '') {
-          e.preventDefault();
-          ctx.setDraft({ unit, text: '' });
-          ctx.setUnit(unit, 0);
-        }
-        break;
-      default:
-        break;
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+      e.preventDefault();
+      ctx.setDraft(null);
+      ctx.setUnit(unit, current + (e.key === 'ArrowUp' ? 1 : -1) * (e.shiftKey ? 10 : 1));
+    } else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
+      focusSibling(e.currentTarget, (e.key === 'ArrowRight') !== rtl ? 1 : -1);
+    } else if (e.key === 'Backspace' && (!editing || draftText === '')) {
+      e.preventDefault();
+      ctx.setDraft({ unit, text: '' });
+      ctx.setUnit(unit, 0);
     }
   };
 
   return (
     <span data-slot="duration-input-part" className="inline-flex items-baseline">
       <input
-        ref={composedRef}
-        type="text"
         inputMode="numeric"
         autoComplete="off"
         spellCheck={false}
@@ -327,7 +287,7 @@ const DurationInputSegment = ({
         placeholder={'-'.repeat(width)}
         disabled={ctx.disabled}
         readOnly={ctx.readOnly}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={(e) => handleChange(e.currentTarget)}
         onKeyDown={handleKeyDown}
         onFocus={(e) => {
           onFocus?.(e);

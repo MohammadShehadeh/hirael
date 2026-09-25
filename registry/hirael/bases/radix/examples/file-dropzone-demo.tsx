@@ -25,7 +25,13 @@ const FileDropzoneDemo = () => {
             ar: 'صور وملفات PDF · حتى 5 ميغابايت',
           })}
         </FieldLabel>
-        <FileDropzone value={basic} onValueChange={setBasic} accept="image/*,.pdf" maxSize={5 * 1024 * 1024} multiple>
+        <FileDropzone
+          value={basic}
+          onValueChange={setBasic}
+          accept={{ 'image/*': [], 'application/pdf': ['.pdf'] }}
+          maxSize={5 * 1024 * 1024}
+          multiple
+        >
           <FileDropzoneZone />
           <FileDropzoneList />
           <FileDropzoneErrors />
@@ -42,7 +48,7 @@ const FileDropzoneDemo = () => {
         <FileDropzone
           value={composed}
           onValueChange={setComposed}
-          accept=".csv,.json,.txt"
+          accept={{ 'text/csv': ['.csv'], 'application/json': ['.json'], 'text/plain': ['.txt'] }}
           maxSize={1 * 1024 * 1024}
           multiple
         >

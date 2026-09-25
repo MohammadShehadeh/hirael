@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { AnimatedNumber } from '@/registry/hirael/bases/radix/components/animated-number';
 import { AvatarStack, AvatarStackItem } from '@/registry/hirael/bases/radix/components/avatar-stack';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
-import { Spinner } from '@/registry/hirael/bases/radix/components/spinner';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
@@ -230,7 +230,7 @@ const Newsletter02 = () => {
                 </FieldError>
               </Field>
               <Button type="submit" size="lg" disabled={loading} className="min-w-28 shrink-0">
-                {loading ? <Spinner size="sm" label="Joining the waitlist" /> : 'Join'}
+                {loading ? <Spinner aria-label="Joining the waitlist" /> : 'Join'}
               </Button>
             </form>
 

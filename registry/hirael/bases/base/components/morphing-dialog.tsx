@@ -115,11 +115,9 @@ const MorphingDialogTrigger = ({
       }}
       onKeyDown={(event) => {
         onKeyDown?.(event);
-        if (event.defaultPrevented) return;
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          open();
-        }
+        if (event.defaultPrevented || (event.key !== 'Enter' && event.key !== ' ')) return;
+        event.preventDefault();
+        open();
       }}
       style={{ borderRadius: 12, ...style }}
       className={cn(
@@ -215,7 +213,7 @@ const MorphingDialogContent = ({ className, children, style, ref, ...props }: Mo
 
   return createPortal(
     <AnimatePresence>
-      {isOpen ? (
+      {isOpen && (
         <div data-slot="morphing-dialog-portal">
           <motion.div
             aria-hidden
@@ -250,7 +248,7 @@ const MorphingDialogContent = ({ className, children, style, ref, ...props }: Mo
             </motion.div>
           </div>
         </div>
-      ) : null}
+      )}
     </AnimatePresence>,
     document.body,
   );

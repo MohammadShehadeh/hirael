@@ -1,11 +1,11 @@
 'use client';
 
 import * as React from 'react';
+import { useDropzone, type Accept, type DropzoneState } from 'react-dropzone';
 import { Camera, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 import {
   Dialog,
   DialogContent,
@@ -33,23 +33,6 @@ const formatBytes = (bytes: number): string => {
   return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
 };
 
-const matchesAccept = (file: File, accept?: string): boolean => {
-  const tokens = (accept ?? '')
-    .split(',')
-    .map((t) => t.trim().toLowerCase())
-    .filter(Boolean);
-  if (tokens.length === 0) return true;
-  const name = file.name.toLowerCase();
-  const type = file.type.toLowerCase();
-
-  return tokens.some((token) => {
-    if (token.startsWith('.')) return name.endsWith(token);
-    if (token.endsWith('/*')) return type.startsWith(token.slice(0, -1));
-
-    return type === token;
-  });
-};
-
 const readAsDataUrl = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -58,6 +41,8 @@ const readAsDataUrl = (file: File): Promise<string> => {
     reader.readAsDataURL(file);
   });
 };
+
+const IMAGE_TYPES: Accept = { 'image/*': [] };
 
 export type AvatarUploadShape = 'circle' | 'square';
 
@@ -71,15 +56,13 @@ interface AvatarUploadContextValue {
   value: string | null;
   shape: AvatarUploadShape;
   size: number;
-  accept: string;
   disabled?: boolean;
   dragging: boolean;
+  getInputProps: DropzoneState['getInputProps'];
   error: AvatarUploadErrorInfo | null;
   pending: string | null;
-  registerInput: (el: HTMLInputElement | null) => void;
   registerCropper: (ref: ImageCropperRef | null) => void;
   openPicker: () => void;
-  addFile: (file: File) => void;
   confirmCrop: () => void;
   cancelCrop: () => void;
   remove: () => void;
@@ -110,7 +93,8 @@ export interface AvatarUploadProps extends Omit<
   size?: number;
   /** Max file size in bytes. */
   maxSize?: number;
-  accept?: string;
+  /** MIME types mapped to extensions. Defaults to any image. */
+  accept?: Accept;
   /** Edge of the exported square, in px. */
   outputSize?: number;
   /** Set false to skip the crop dialog and use the file as-is. */
@@ -127,7 +111,7 @@ const AvatarUpload = ({
   shape = 'circle',
   size = 96,
   maxSize,
-  accept = 'image/*',
+  accept = IMAGE_TYPES,
   outputSize = 512,
   crop = true,
   disabled,
@@ -138,15 +122,12 @@ const AvatarUpload = ({
 }: AvatarUploadProps) => {
   const reactId = React.useId();
   const rootId = id ?? reactId;
-  const inputRef = React.useRef<HTMLInputElement | null>(null);
   const cropperRef = React.useRef<ImageCropperRef | null>(null);
-  const dragDepth = React.useRef(0);
 
   const [internal, setInternal] = React.useState<string | null>(defaultValue);
   const value = valueProp === undefined ? internal : valueProp;
   const [pending, setPending] = React.useState<string | null>(null);
   const [error, setError] = React.useState<AvatarUploadErrorInfo | null>(null);
-  const [dragging, setDragging] = React.useState(false);
   // Only the latest read may land, and never after unmount.
   const readIdRef = React.useRef(0);
   React.useEffect(
@@ -172,50 +153,38 @@ const AvatarUpload = ({
     [onError],
   );
 
-  const addFile = React.useCallback(
-    (file: File) => {
-      if (disabled) return;
-      if (!matchesAccept(file, accept)) {
-        fail({ reason: 'type', message: 'That file type is not supported.' });
+  const readFile = (file: File) => {
+    setError(null);
+    const readId = ++readIdRef.current;
+    readAsDataUrl(file)
+      .then((url) => {
+        if (readId !== readIdRef.current) return;
+        if (crop) setPending(url);
+        else setValue(url);
+      })
+      .catch(() => {
+        if (readId !== readIdRef.current) return;
+        fail({ reason: 'read', message: 'Could not read that file.' });
+      });
+  };
 
-        return;
-      }
-      if (maxSize !== undefined && file.size > maxSize) {
-        fail({
-          reason: 'size',
-          message: `Image must be under ${formatBytes(maxSize)}.`,
-        });
-
-        return;
-      }
-      setError(null);
-      const readId = ++readIdRef.current;
-      readAsDataUrl(file)
-        .then((url) => {
-          if (readId !== readIdRef.current) return;
-          if (crop) setPending(url);
-          else setValue(url);
-        })
-        .catch(() => {
-          if (readId !== readIdRef.current) return;
-          fail({ reason: 'read', message: 'Could not read that file.' });
-        });
-    },
-    [disabled, accept, maxSize, crop, fail, setValue],
-  );
-
-  const registerInput = React.useCallback((el: HTMLInputElement | null) => {
-    inputRef.current = el;
-  }, []);
+  const { getRootProps, getInputProps, open, isDragActive } = useDropzone({
+    accept,
+    maxSize,
+    multiple: false,
+    disabled,
+    noClick: true,
+    noKeyboard: true,
+    onDropAccepted: ([file]) => readFile(file),
+    onDropRejected: ([rejection]) =>
+      rejection.errors[0]?.code === 'file-too-large'
+        ? fail({ reason: 'size', message: `Image must be under ${formatBytes(maxSize ?? 0)}.` })
+        : fail({ reason: 'type', message: 'That file type is not supported.' }),
+  });
 
   const registerCropper = React.useCallback((ref: ImageCropperRef | null) => {
     cropperRef.current = ref;
   }, []);
-
-  const openPicker = React.useCallback(() => {
-    if (disabled) return;
-    inputRef.current?.click();
-  }, [disabled]);
 
   const confirmCrop = React.useCallback(() => {
     const url = cropperRef.current?.getCroppedDataUrl({ size: outputSize });
@@ -237,15 +206,13 @@ const AvatarUpload = ({
       value,
       shape,
       size,
-      accept,
       disabled,
-      dragging,
+      dragging: isDragActive,
+      getInputProps,
       error,
       pending,
-      registerInput,
       registerCropper,
-      openPicker,
-      addFile,
+      openPicker: open,
       confirmCrop,
       cancelCrop,
       remove,
@@ -255,15 +222,13 @@ const AvatarUpload = ({
       value,
       shape,
       size,
-      accept,
       disabled,
-      dragging,
+      isDragActive,
+      getInputProps,
       error,
       pending,
-      registerInput,
       registerCropper,
-      openPicker,
-      addFile,
+      open,
       confirmCrop,
       cancelCrop,
       remove,
@@ -273,35 +238,11 @@ const AvatarUpload = ({
   return (
     <AvatarUploadContext.Provider value={ctx}>
       <div
+        {...getRootProps({ className: cn('inline-grid w-fit justify-items-center gap-2', className), ...props })}
         data-slot="avatar-upload"
         data-shape={shape}
-        data-dragging={dragging || undefined}
+        data-dragging={isDragActive || undefined}
         data-disabled={disabled || undefined}
-        className={cn('inline-grid w-fit justify-items-center gap-2', className)}
-        onDragEnter={(e) => {
-          e.preventDefault();
-          if (disabled) return;
-          dragDepth.current += 1;
-          if (dragDepth.current === 1) setDragging(true);
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault();
-          if (disabled) return;
-          dragDepth.current -= 1;
-          if (dragDepth.current <= 0) {
-            dragDepth.current = 0;
-            setDragging(false);
-          }
-        }}
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={(e) => {
-          e.preventDefault();
-          dragDepth.current = 0;
-          setDragging(false);
-          const file = e.dataTransfer.files?.[0];
-          if (file) addFile(file);
-        }}
-        {...props}
       >
         {children}
       </div>
@@ -398,7 +339,7 @@ const AvatarUploadTrigger = ({
       >
         {children ?? (
           <>
-            <Camera aria-hidden />
+            <Camera />
             {label}
           </>
         )}
@@ -426,34 +367,17 @@ const AvatarUploadTrigger = ({
       )}
       {...props}
     >
-      {children ?? (ctx.value ? <Camera className="size-5" aria-hidden /> : <span className="sr-only">{label}</span>)}
+      {children ?? (ctx.value ? <Camera className="size-5" /> : <span className="sr-only">{label}</span>)}
     </button>
   );
 };
 
-type AvatarUploadInputProps = Omit<React.ComponentProps<'input'>, 'type' | 'accept' | 'onChange' | 'multiple'>;
+type AvatarUploadInputProps = Omit<React.ComponentProps<'input'>, 'type' | 'accept' | 'onChange' | 'multiple' | 'ref'>;
 
-const AvatarUploadInput = ({ className, ref, ...props }: AvatarUploadInputProps) => {
+const AvatarUploadInput = (props: AvatarUploadInputProps) => {
   const ctx = useAvatarUpload();
-  const composedRef = React.useMemo(() => composeRefs(ctx.registerInput, ref), [ctx.registerInput, ref]);
 
-  return (
-    <input
-      ref={composedRef}
-      id={`${ctx.id}-input`}
-      type="file"
-      accept={ctx.accept}
-      disabled={ctx.disabled}
-      data-slot="avatar-upload-input"
-      className={cn('sr-only', className)}
-      onChange={(e) => {
-        const file = e.target.files?.[0];
-        if (file) ctx.addFile(file);
-        e.target.value = '';
-      }}
-      {...props}
-    />
-  );
+  return <input {...ctx.getInputProps({ id: `${ctx.id}-input`, ...props })} data-slot="avatar-upload-input" />;
 };
 
 type AvatarUploadRemoveProps = Omit<React.ComponentProps<'button'>, 'type'>;
@@ -477,7 +401,7 @@ const AvatarUploadRemove = ({ className, children, onClick, ...props }: AvatarUp
       className={cn('absolute -end-1 -top-1 z-10 rounded-full', className)}
       {...props}
     >
-      {children ?? <X className="size-3" aria-hidden />}
+      {children ?? <X className="size-3" />}
     </Button>
   );
 };

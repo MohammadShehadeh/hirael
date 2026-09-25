@@ -89,33 +89,21 @@ const Rating = ({
     onKeyDown?.(e);
     if (e.defaultPrevented || !interactive) return;
     const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
-    let next: number;
-    switch (e.key) {
-      case 'ArrowRight':
-        next = value + (rtl ? -step : step);
-        break;
-      case 'ArrowLeft':
-        next = value + (rtl ? step : -step);
-        break;
-      case 'ArrowUp':
-        next = value + step;
-        break;
-      case 'ArrowDown':
-        next = value - step;
-        break;
-      case 'Home':
-        next = step;
-        break;
-      case 'End':
-        next = max;
-        break;
-      default:
-        return;
-    }
+    const next = (
+      {
+        ArrowRight: value + (rtl ? -step : step),
+        ArrowLeft: value + (rtl ? step : -step),
+        ArrowUp: value + step,
+        ArrowDown: value - step,
+        Home: step,
+        End: max,
+      } as Record<string, number>
+    )[e.key];
+    if (next === undefined) return;
     e.preventDefault();
-    next = Math.min(max, Math.max(step, next));
-    commit(next);
-    e.currentTarget.querySelector<HTMLButtonElement>(`[data-slot="rating-radio"][data-value="${next}"]`)?.focus();
+    const clamped = Math.min(max, Math.max(step, next));
+    commit(clamped);
+    e.currentTarget.querySelector<HTMLButtonElement>(`[data-slot="rating-radio"][data-value="${clamped}"]`)?.focus();
   };
 
   const ctx = React.useMemo<RatingContextValue>(
@@ -201,11 +189,7 @@ const RatingItem = ({ index, className, ...props }: RatingItemProps) => {
       className={cn('relative inline-flex', ctx.interactive && 'cursor-pointer', className)}
       {...props}
     >
-      <Star
-        data-slot="rating-star"
-        className={cn(ctx.iconSize, 'text-muted-foreground/40 transition-colors')}
-        aria-hidden
-      />
+      <Star data-slot="rating-star" className={cn(ctx.iconSize, 'text-muted-foreground/40 transition-colors')} />
       {(filled || half) && (
         <Star
           data-slot="rating-star-fill"
@@ -214,7 +198,6 @@ const RatingItem = ({ index, className, ...props }: RatingItemProps) => {
             'absolute inset-0 fill-warning text-warning transition-[clip-path]',
             half && '[clip-path:inset(0_50%_0_0)] rtl:[clip-path:inset(0_0_0_50%)]',
           )}
-          aria-hidden
         />
       )}
 

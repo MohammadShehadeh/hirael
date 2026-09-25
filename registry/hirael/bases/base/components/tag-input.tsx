@@ -16,7 +16,7 @@ interface Ctx {
   error: string | null;
   setError: (next: string | null) => void;
   errorId: string;
-  add: (candidates: string | string[]) => boolean;
+  add: (candidates: string[]) => boolean;
   remove: (index: number) => void;
   disabled?: boolean;
   readOnly?: boolean;
@@ -46,8 +46,6 @@ export interface TagInputProps extends Omit<React.ComponentProps<'div'>, 'defaul
   disabled?: boolean;
   readOnly?: boolean;
   maxTags?: number;
-  unique?: boolean;
-  caseSensitive?: boolean;
   validate?: TagValidator;
   commitKeys?: string[];
   splitOn?: RegExp;
@@ -61,8 +59,6 @@ const TagInput = ({
   disabled,
   readOnly,
   maxTags,
-  unique = true,
-  caseSensitive = false,
   validate,
   commitKeys = DEFAULT_COMMIT_KEYS,
   splitOn = DEFAULT_SPLIT_ON,
@@ -85,51 +81,37 @@ const TagInput = ({
   const errorId = React.useId();
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const norm = React.useCallback((s: string) => (caseSensitive ? s : s.toLowerCase()), [caseSensitive]);
-
   const add = React.useCallback(
-    (candidates: string | string[]): boolean => {
+    (candidates: string[]): boolean => {
       if (disabled || readOnly) return false;
-      const list = Array.isArray(candidates) ? candidates : [candidates];
       const next = [...value];
-      let anyAdded = false;
-      let anyDuplicate = false;
-      let batchError: string | null = null;
-      for (const raw of list) {
-        const tag = raw.trim();
-        if (!tag) continue;
+      let added = false;
+      let duplicate = false;
+      let failure: string | null = null;
+      for (const tag of candidates.map((c) => c.trim()).filter(Boolean)) {
         if (maxTags !== undefined && next.length >= maxTags) {
-          batchError = `Limit ${maxTags} tag${maxTags === 1 ? '' : 's'}.`;
+          failure = `Limit ${maxTags} tag${maxTags === 1 ? '' : 's'}.`;
           break;
         }
-        if (unique) {
-          const haystack = next.map(norm);
-          if (haystack.includes(norm(tag))) {
-            anyDuplicate = true;
-            continue;
-          }
+        if (next.some((t) => t.toLowerCase() === tag.toLowerCase())) {
+          duplicate = true;
+          continue;
         }
-        if (validate) {
-          const result = validate(tag, next);
-          if (result !== true) {
-            batchError = result;
-            continue;
-          }
+        const result = validate?.(tag, next) ?? true;
+        if (result !== true) {
+          failure = result;
+          continue;
         }
         next.push(tag);
-        anyAdded = true;
+        added = true;
       }
-      if (anyAdded) setValue(next);
-      if (batchError) {
-        setError(batchError);
-      } else if (anyAdded) {
-        setError(null);
-      }
+      if (added) setValue(next);
+      if (added || failure) setError(failure);
 
       // A duplicate is already there, so it counts as handled and the draft clears.
-      return anyAdded || (anyDuplicate && !batchError);
+      return added || (duplicate && !failure);
     },
-    [disabled, readOnly, value, maxTags, unique, norm, validate, setValue],
+    [disabled, readOnly, value, maxTags, validate, setValue],
   );
 
   const remove = React.useCallback(
@@ -203,17 +185,16 @@ const TagInputContainer = ({ className, children, onMouseDown, ...props }: TagIn
 
 interface TagInputTagProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   index: number;
-  children?: React.ReactNode;
 }
 
-const TagInputTag = ({ index, children, className, ...props }: TagInputTagProps) => {
+const TagInputTag = ({ index, className, ...props }: TagInputTagProps) => {
   const ctx = useTagInput();
   const tag = ctx.value[index];
   if (tag === undefined) return null;
 
   return (
     <Badge variant="secondary" data-slot="tag-input-tag" className={cn('gap-1 pe-1 font-normal', className)} {...props}>
-      <span className="min-w-0 truncate">{children ?? tag}</span>
+      <span className="min-w-0 truncate">{tag}</span>
       {!(ctx.disabled || ctx.readOnly) && (
         <button
           type="button"
@@ -234,8 +215,8 @@ const TagInputTags = () => {
 
   return (
     <>
-      {ctx.value.map((_, i) => (
-        <TagInputTag key={`${ctx.value[i]}-${i}`} index={i} />
+      {ctx.value.map((tag, i) => (
+        <TagInputTag key={`${tag}-${i}`} index={i} />
       ))}
     </>
   );
@@ -256,22 +237,20 @@ const TagInputField = ({
   const { inputRef } = ctx;
   const composedRef = React.useMemo(() => composeRefs(inputRef, ref), [inputRef, ref]);
 
+  const commitDraft = () => {
+    if (ctx.draft.trim() && ctx.add([ctx.draft])) ctx.setDraft('');
+  };
+
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     onKeyDown?.(e);
     if (e.defaultPrevented) return;
     // Enter or comma confirming an IME composition must not commit the half-composed draft.
     if (e.nativeEvent.isComposing || e.keyCode === 229) return;
     if (ctx.commitKeys.includes(e.key)) {
-      if (ctx.draft.trim()) {
-        e.preventDefault();
-        if (ctx.add(ctx.draft)) ctx.setDraft('');
-      } else if (e.key !== 'Enter') {
-        e.preventDefault();
-      }
-
-      return;
-    }
-    if (e.key === 'Backspace' && !ctx.draft && ctx.value.length > 0) {
+      // Enter on an empty draft still submits the surrounding form.
+      if (ctx.draft.trim() || e.key !== 'Enter') e.preventDefault();
+      commitDraft();
+    } else if (e.key === 'Backspace' && !ctx.draft && ctx.value.length > 0) {
       e.preventDefault();
       ctx.remove(ctx.value.length - 1);
     }
@@ -279,23 +258,15 @@ const TagInputField = ({
 
   const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     onPaste?.(e);
-    if (e.defaultPrevented) return;
     const text = e.clipboardData.getData('text');
-    if (!text) return;
-    if (ctx.splitOn.test(text)) {
-      e.preventDefault();
-      const parts = text
-        .split(ctx.splitOn)
-        .map((p) => p.trim())
-        .filter(Boolean);
-      ctx.add(parts);
-    }
+    if (e.defaultPrevented || !ctx.splitOn.test(text)) return;
+    e.preventDefault();
+    ctx.add(text.split(ctx.splitOn));
   };
 
   return (
     <input
       ref={composedRef}
-      type="text"
       value={ctx.draft}
       onChange={(e) => {
         ctx.setDraft(e.target.value);
@@ -305,9 +276,7 @@ const TagInputField = ({
       onPaste={handlePaste}
       onBlur={(e) => {
         onBlur?.(e);
-        if (ctx.draft.trim()) {
-          if (ctx.add(ctx.draft)) ctx.setDraft('');
-        }
+        commitDraft();
       }}
       placeholder={ctx.value.length === 0 ? placeholder : undefined}
       disabled={ctx.disabled}

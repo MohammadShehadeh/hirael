@@ -484,7 +484,7 @@ const Settings02 = () => {
                             aria-invalid={passwordErrors.next ? true : undefined}
                             aria-describedby={passwordErrors.next ? 'settings-new-error' : undefined}
                           />
-                          <PasswordInputStrength showLabel={next.length > 0} />
+                          <PasswordInputStrength />
                         </PasswordInput>
                         <FieldError id="settings-new-error">{passwordErrors.next}</FieldError>
                       </Field>

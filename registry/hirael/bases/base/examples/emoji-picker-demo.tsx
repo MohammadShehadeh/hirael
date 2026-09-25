@@ -9,7 +9,6 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 import {
   EmojiPicker,
-  EmojiPickerCategories,
   EmojiPickerFooter,
   EmojiPickerList,
   EmojiPickerSearch,
@@ -39,31 +38,6 @@ const EmojiPickerDemo = () => {
       el.setSelectionRange(start + emoji.length, start + emoji.length);
     });
   };
-
-  const categoryLabels = t({
-    en: {
-      recent: 'Recent',
-      smileys: 'Smileys',
-      people: 'People',
-      animals: 'Animals & nature',
-      food: 'Food & drink',
-      activities: 'Activities',
-      travel: 'Travel & places',
-      objects: 'Objects',
-      symbols: 'Symbols',
-    },
-    ar: {
-      recent: 'الأخيرة',
-      smileys: 'وجوه',
-      people: 'أشخاص',
-      animals: 'حيوانات وطبيعة',
-      food: 'طعام وشراب',
-      activities: 'أنشطة',
-      travel: 'سفر وأماكن',
-      objects: 'أشياء',
-      symbols: 'رموز',
-    },
-  });
 
   return (
     <div className="grid w-full max-w-xl gap-8">
@@ -104,14 +78,12 @@ const EmojiPickerDemo = () => {
               </PopoverTrigger>
               <PopoverContent align="start" className="w-auto">
                 <EmojiPicker
-                  recentKey="hirael-demo-recent-emoji"
                   onEmojiSelect={(emoji) => {
                     insertAtCursor(emoji);
                     setOpen(false);
                   }}
                 >
                   <EmojiPickerSearch placeholder={t({ en: 'Search emoji', ar: 'ابحث عن رمز' })} />
-                  <EmojiPickerCategories labels={categoryLabels} />
                   <EmojiPickerList />
                   <EmojiPickerFooter
                     placeholder={t({
@@ -142,7 +114,6 @@ const EmojiPickerDemo = () => {
           <EmojiPicker columns={6} onEmojiSelect={setReaction} className="w-64">
             <EmojiPickerSearch placeholder={t({ en: 'Search', ar: 'بحث' })} />
             <EmojiPickerList className="h-40" />
-            <EmojiPickerCategories labels={categoryLabels} />
           </EmojiPicker>
           <div className="grid gap-1 text-sm">
             <span className="text-xs text-muted-foreground uppercase">{t({ en: 'Reaction', ar: 'التفاعل' })}</span>

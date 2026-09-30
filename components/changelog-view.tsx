@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 
 import { cn } from '@/lib/utils';
@@ -5,8 +6,34 @@ import { mdxComponents } from '@/components/mdx';
 import { PageHeader } from '@/components/page-header';
 import type { Changelog } from '@/lib/changelog';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
+import { entryHref, REGISTRY_BY_NAME } from '@/registry/hirael/registry-meta';
 
 export type ChangelogViewProps = Changelog;
+
+/** Names that no longer resolve (an item renamed or removed later) are skipped rather than linked to a 404. */
+const ItemLinks = ({ label, names }: { label: string; names: string[] }) => {
+  const entries = names.flatMap((name) => {
+    const entry = REGISTRY_BY_NAME[name];
+
+    return entry ? [entry] : [];
+  });
+  if (entries.length === 0) return null;
+
+  return (
+    <div className="mt-8">
+      <h3 className="text-xs text-muted-foreground uppercase">{label}</h3>
+      <ul className="mt-3 flex flex-wrap gap-2">
+        {entries.map((entry) => (
+          <li key={entry.name}>
+            <Badge variant="outline" asChild>
+              <Link href={entryHref(entry)}>{entry.title}</Link>
+            </Badge>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
 
 export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogViewProps) => {
   return (
@@ -66,6 +93,9 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
                 <div className="mt-7">
                   <MDXRemote source={entry.body} components={mdxComponents} />
                 </div>
+
+                <ItemLinks label="Added" names={entry.added} />
+                <ItemLinks label="Updated" names={entry.updated} />
               </div>
             </section>
           ))}

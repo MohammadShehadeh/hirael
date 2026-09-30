@@ -28,7 +28,6 @@ const TOOLS: readonly Tool[] = [
 
 const MIDDLE = (TOOLS.length - 1) / 2;
 
-// Tiles sit on a shallow arc: the farther from the middle, the lower they hang.
 const drop = (index: number) => `${Math.round((index - MIDDLE) ** 2 * 4.5)}px`;
 
 const Integrations06 = () => {

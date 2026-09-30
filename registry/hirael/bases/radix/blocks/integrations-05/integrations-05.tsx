@@ -1,6 +1,18 @@
-import { Bell, Boxes, Calendar, CreditCard, Database, FileText, Mail, type LucideIcon } from 'lucide-react';
+import { Bell, Calendar, CreditCard, Database, FileText, Mail, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+      <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
+    </svg>
+  );
+};
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -15,7 +27,6 @@ interface Tool {
   href: string;
 }
 
-// Tools on the left send data into the hub, tools on the right receive it back.
 const SOURCES: readonly Tool[] = [
   { name: 'Postgres', icon: Database, href: '#' },
   { name: 'Calendar', icon: Calendar, href: '#' },
@@ -102,7 +113,7 @@ const Integrations05 = () => {
             className="absolute top-1/2 left-1/2 size-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl"
           />
           <div className="absolute top-1/2 left-1/2 z-10 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg sm:size-20">
-            <Boxes aria-hidden className="size-7 sm:size-9" />
+            <BrandMark className="size-7 sm:size-9" />
           </div>
 
           {ROWS.map((y, index) => (

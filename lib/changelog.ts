@@ -12,6 +12,8 @@ export interface ChangelogEntry {
   displayDate: string;
   description: string | null;
   added: string[];
+  /** Existing items that changed in this release. Linked on the page, never dated. */
+  updated: string[];
   body: string;
 }
 
@@ -21,7 +23,7 @@ export interface Changelog {
   latestSlug: string | null;
 }
 
-const addedNames = (value: unknown): string[] =>
+const itemNames = (value: unknown): string[] =>
   Array.isArray(value) ? value.filter((name): name is string => typeof name === 'string') : [];
 
 const CHANGELOG_DIR = path.join(process.cwd(), 'content', 'changelog');
@@ -65,7 +67,8 @@ export const getChangelog = async (): Promise<Changelog> => {
           isoDate,
           displayDate: DATE_FORMATTER.format(parsed),
           description: data.description != null ? String(data.description) : null,
-          added: addedNames(data.added),
+          added: itemNames(data.added),
+          updated: itemNames(data.updated),
           body: content.trim(),
         },
       ];

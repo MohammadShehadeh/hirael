@@ -1215,6 +1215,91 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'integrations-04',
+    title: 'Centered Hub Integrations',
+    description:
+      'Centered integrations section: heading and copy above a hub with 6 linked tool tiles on straight spokes, with pulses travelling in and out along each line.',
+    blockTagline: 'Centered hub, 6 spokes, travelling pulses',
+    category: 'blocks',
+    blockKind: 'integrations',
+    files: [
+      {
+        path: 'blocks/integrations-04/integrations-04.tsx',
+        target: 'components/blocks/integrations-04.tsx',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'integrations-05',
+    title: 'Two-Way Sync Integrations',
+    description:
+      'Centered integrations section with three source tools on one side and three targets on the other, joined to a central hub by curved paths that carry travelling pulses.',
+    blockTagline: 'Curved pipeline, sources to targets, pulses',
+    category: 'blocks',
+    blockKind: 'integrations',
+    files: [
+      {
+        path: 'blocks/integrations-05/integrations-05.tsx',
+        target: 'components/blocks/integrations-05.tsx',
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'integrations-06',
+    title: 'Floating Tiles Integrations',
+    description:
+      'Centered integrations section with a row of tool tiles hung on a shallow arc over a faded grid, each lifting on hover.',
+    blockTagline: 'Arced tile row, faded grid, hover lift',
+    category: 'blocks',
+    blockKind: 'integrations',
+    files: [
+      {
+        path: 'blocks/integrations-06/integrations-06.tsx',
+        target: 'components/blocks/integrations-06.tsx',
+      },
+    ],
+    registryDependencies: [],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'integrations-07',
+    title: 'Featured Tool Integrations',
+    description:
+      'Two-column integrations section with copy and a call to action beside a 3 by 3 tile grid whose featured tile cycles on its own, pauses on hover and focus, and can be picked directly.',
+    blockTagline: 'Copy + 3x3 grid, cycling featured tile',
+    category: 'blocks',
+    blockKind: 'integrations',
+    files: [
+      {
+        path: 'blocks/integrations-07/integrations-07.tsx',
+        target: 'components/blocks/integrations-07.tsx',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'integrations-08',
+    title: 'Logo Row Integrations',
+    description:
+      'Minimal integrations section: a short heading, a single row of tool icons and a link to the full list.',
+    blockTagline: 'Heading, one icon row, link',
+    category: 'blocks',
+    blockKind: 'integrations',
+    files: [
+      {
+        path: 'blocks/integrations-08/integrations-08.tsx',
+        target: 'components/blocks/integrations-08.tsx',
+      },
+    ],
+    registryDependencies: ['button'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'image-gallery-01',
     title: 'Masonry Photo Gallery',
     description:
@@ -3648,6 +3733,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'tooltip'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'status-02',
+    title: 'Service Health Grid',
+    description:
+      'Service health cards in a responsive grid: each with a status dot, a response-time sparkline tinted by state, a status label, and an uptime and response stat pair. One service runs degraded.',
+    blockTagline: 'Card grid, response sparklines, uptime stats',
+    category: 'blocks',
+    blockKind: 'not-found',
+    files: [
+      {
+        path: 'blocks/status-02/status-02.tsx',
+        target: 'components/blocks/status-02.tsx',
+      },
+    ],
+    registryDependencies: ['sparkline'],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },

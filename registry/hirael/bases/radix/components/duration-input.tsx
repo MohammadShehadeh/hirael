@@ -4,6 +4,8 @@ import * as React from 'react';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { InputGroup } from '@/registry/hirael/bases/radix/ui/input-group';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's';
 
@@ -92,8 +94,11 @@ const DurationInput = ({
   children,
   ...props
 }: DurationInputProps) => {
-  const [internalValue, setInternalValue] = React.useState<number | null>(defaultValue);
-  const seconds = valueProp !== undefined ? valueProp : internalValue;
+  const [seconds, setControlledSeconds] = useControllableState<number | null>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const unitsKey = sortUnits(unitsProp ?? ['h', 'm']).join('') || 'hm';
   const units = React.useMemo(() => unitsKey.split('') as DurationUnit[], [unitsKey]);
@@ -103,10 +108,9 @@ const DurationInput = ({
   const setSeconds = React.useCallback(
     (next: number | null) => {
       const clamped = next === null ? null : Math.max(0, max === undefined ? next : Math.min(max, next));
-      if (valueProp === undefined) setInternalValue(clamped);
-      onValueChange?.(clamped);
+      setControlledSeconds(clamped);
     },
-    [valueProp, onValueChange, max],
+    [setControlledSeconds, max],
   );
 
   const parts = React.useMemo(() => splitDuration(seconds ?? 0, units), [seconds, units]);
@@ -178,7 +182,7 @@ const DurationInputContainer = ({ className, children, onMouseDown, ...props }: 
   const ctx = useDurationInput();
 
   return (
-    <div
+    <InputGroup
       data-slot="duration-input-container"
       data-disabled={ctx.disabled || undefined}
       data-readonly={ctx.readOnly || undefined}
@@ -192,15 +196,14 @@ const DurationInputContainer = ({ className, children, onMouseDown, ...props }: 
         first?.focus();
       }}
       className={cn(
-        'flex h-9 w-full items-center gap-0.5 rounded-sm border border-input bg-transparent px-2 text-sm transition-colors outline-none',
-        'focus-within:border-ring',
+        'gap-0.5 px-2 text-sm focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50',
         (ctx.disabled || ctx.readOnly) && 'cursor-not-allowed opacity-60',
         className,
       )}
       {...props}
     >
       {children}
-    </div>
+    </InputGroup>
   );
 };
 
@@ -299,7 +302,7 @@ const DurationInputSegment = ({
         }}
         style={{ width: `${width}ch` }}
         className={cn(
-          'rounded-[2px] bg-transparent text-center tabular-nums outline-none',
+          'rounded-sm bg-transparent text-center tabular-nums outline-none',
           'placeholder:text-muted-foreground focus:bg-accent focus:text-accent-foreground disabled:cursor-not-allowed',
           className,
         )}
@@ -346,7 +349,7 @@ const DurationInputClear = ({ className, children, onClick, ...props }: React.Co
         ctx.clear();
       }}
       className={cn(
-        'ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-[2px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
+        'ms-auto inline-flex size-5 shrink-0 items-center justify-center rounded-sm text-muted-foreground transition-colors hover:bg-accent hover:text-foreground',
         className,
       )}
       {...props}

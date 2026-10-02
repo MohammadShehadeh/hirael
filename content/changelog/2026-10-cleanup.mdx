@@ -1,0 +1,57 @@
+---
+title: Fields that match your inputs
+version: '7.3.0'
+date: 2026-10-02
+description: 'Pickers and selects now use your shadcn Button and InputGroup, every label can be translated, and two duplicate components are gone.'
+updated:
+  - date-picker
+  - date-range-picker
+  - time-picker
+  - month-picker
+  - year-picker
+  - color-picker
+  - lazy-select
+  - multi-select
+  - tag-input
+  - duration-input
+  - number-range
+  - command-palette
+  - currency-input
+  - phone-input
+  - autocomplete
+  - rich-text-editor
+  - data-table
+  - avatar-stack
+  - announcement-bar
+  - image-compare
+  - spotlight-card
+  - cursor-glow
+  - magnetic-button
+  - confirm
+  - file-dropzone
+  - media-input
+  - password-input
+---
+
+Improved:
+
+- **Pickers and selects look like your inputs.** Date, date range, time,
+  month, year and color pickers, Lazy Select and the Command Palette trigger
+  are now your shadcn `Button`. Tag Input, Duration Input, Multi Select and
+  Number Range sit on `InputGroup`. Corners, shadow, focus ring and the
+  invalid state come from your theme.
+- **Focus rings are back** on Currency Input, Phone Input and Autocomplete.
+- **Every label can be translated.** Rich Text Editor and Data Table take a
+  `labels` prop, and the other components take a prop per string.
+- **Avatar Stack is built on shadcn Avatar**, so a broken image falls back to
+  the initials.
+- **Announcement Bar's `primary` tone** uses your primary color.
+- **Date Range Picker** fits on a phone screen.
+- Spinners, keyboard keys and Magnetic Button's default look now come from
+  your shadcn components.
+
+Removed:
+
+- **Resizable Panels.** It only re-exported shadcn Resizable; install
+  `resizable` directly.
+- **Stat Card.** Use Metric Card, which covers the label, value and trend.

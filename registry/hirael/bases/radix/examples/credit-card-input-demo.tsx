@@ -44,8 +44,8 @@ const CreditCardInputDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Checkout row · brand detection',
-            ar: 'صف الدفع · كشف العلامة',
+            en: 'Checkout row',
+            ar: 'صف الدفع',
           })}
         </p>
         <form
@@ -94,9 +94,7 @@ const CreditCardInputDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Stacked · own labels', ar: 'مكدّس · تسميات مخصصة' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Stacked', ar: 'مكدّس' })}</p>
         <div className="rounded-md border border-border bg-card p-4">
           <CreditCardInput variant="stack" defaultValue={{ number: '378282246310005', expiry: '12/29', cvc: '' }}>
             <Field className="gap-1.5">

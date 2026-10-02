@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export interface TourStep {
   target: string | React.RefObject<HTMLElement | null>;
@@ -80,25 +81,17 @@ const Tour = ({
   labels,
   children,
 }: TourProps) => {
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (nextOpen: boolean) => {
-      if (openProp === undefined) setInternalOpen(nextOpen);
-      onOpenChange?.(nextOpen);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
-  const [internalStep, setInternalStep] = React.useState(defaultStep);
-  const step = stepProp ?? internalStep;
-  const setStep = React.useCallback(
-    (nextStep: number) => {
-      if (stepProp === undefined) setInternalStep(nextStep);
-      onStepChange?.(nextStep);
-    },
-    [stepProp, onStepChange],
-  );
+  const [step, setStep] = useControllableState({
+    prop: stepProp,
+    defaultProp: defaultStep,
+    onChange: onStepChange,
+  });
 
   const findResolvable = React.useCallback(
     (from: number, dir: 1 | -1) => {
@@ -153,7 +146,6 @@ const Tour = ({
     if (resolveTarget(steps[step]?.target)) return;
     const idx = findResolvable(step + 1, 1);
     if (idx === -1) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpen(false);
     } else {
       setStep(idx);

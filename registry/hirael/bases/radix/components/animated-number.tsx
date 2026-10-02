@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useReducedMotion } from '@/registry/hirael/bases/radix/components/use-reduced-motion';
 
 export interface AnimatedNumberProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   /** Target value to animate toward. */
@@ -22,20 +23,6 @@ export interface AnimatedNumberProps extends Omit<React.ComponentProps<'span'>, 
 }
 
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
-
-const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
-
-const useReducedMotion = () =>
-  React.useSyncExternalStore(
-    (onStoreChange) => {
-      const query = window.matchMedia(REDUCED_MOTION);
-      query.addEventListener('change', onStoreChange);
-
-      return () => query.removeEventListener('change', onStoreChange);
-    },
-    () => window.matchMedia(REDUCED_MOTION).matches,
-    () => false,
-  );
 
 const AnimatedNumber = ({
   value,

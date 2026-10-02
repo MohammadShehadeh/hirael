@@ -8,6 +8,7 @@ import {
   InputGroupInput,
   InputGroupText,
 } from '@/registry/hirael/bases/radix/ui/input-group';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 const resolveCurrencySymbol = (currency: string, locale: string): string => {
   try {
@@ -119,16 +120,11 @@ const CurrencyInput = ({
   const reactId = React.useId();
   const fieldId = id ?? reactId;
 
-  const [internalValue, setInternalValue] = React.useState<number | null>(defaultValue);
-  const value = valueProp !== undefined ? valueProp : internalValue;
-
-  const setValue = React.useCallback(
-    (next: number | null) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState<number | null>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const symbol = React.useMemo(() => resolveCurrencySymbol(currency, locale), [currency, locale]);
 
@@ -215,7 +211,6 @@ const CurrencyInputField = ({
       value={ctx.view}
       disabled={ctx.disabled}
       placeholder={placeholder}
-      data-slot="currency-input-field"
       onChange={(e) => {
         const sanitized = sanitizeInput(e.target.value, ctx.decimals, ctx.decimalSeparator);
         ctx.setView(sanitized);

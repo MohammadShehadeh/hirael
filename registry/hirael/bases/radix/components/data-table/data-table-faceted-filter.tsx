@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import type { CellData, Column, RowData } from '@tanstack/react-table';
 import { Check, PlusCircle, XCircle } from 'lucide-react';
 import * as React from 'react';
+import { useDataTableLabels } from './data-table-labels';
 
 interface DataTableFacetedFilterProps<TData extends RowData, TValue extends CellData> {
   column?: Column<DataTableFeatures, TData, TValue>;
@@ -34,6 +35,7 @@ export const DataTableFacetedFilter = <TData extends RowData, TValue extends Cel
   options,
   multiple,
 }: DataTableFacetedFilterProps<TData, TValue>) => {
+  const labels = useDataTableLabels();
   const [open, setOpen] = React.useState(false);
 
   const columnFilterValue = column?.getFilterValue();
@@ -74,7 +76,7 @@ export const DataTableFacetedFilter = <TData extends RowData, TValue extends Cel
           <Button
             variant="outline"
             size="sm"
-            aria-label={`Clear ${title} filter`}
+            aria-label={labels.clearFilter(title ?? '')}
             data-slot="data-table-faceted-filter-reset"
             className="rounded-e-none border-e-0 border-dashed px-2"
             onClick={onReset}
@@ -100,7 +102,7 @@ export const DataTableFacetedFilter = <TData extends RowData, TValue extends Cel
                 <div className="hidden items-center gap-1 lg:flex">
                   {selectedValues.size > 2 ? (
                     <Badge variant="secondary" className="rounded-sm px-1 font-normal">
-                      {selectedValues.size} selected
+                      {labels.selectedCount(selectedValues.size)}
                     </Badge>
                   ) : (
                     options
@@ -121,7 +123,7 @@ export const DataTableFacetedFilter = <TData extends RowData, TValue extends Cel
         <Command>
           <CommandInput placeholder={title} />
           <CommandList className="max-h-full">
-            <CommandEmpty>No results found.</CommandEmpty>
+            <CommandEmpty>{labels.noOptions}</CommandEmpty>
             <CommandGroup className="max-h-[300px] scroll-py-1 overflow-x-hidden overflow-y-auto">
               {options.map((option) => {
                 const isSelected = selectedValues.has(option.value);
@@ -150,7 +152,7 @@ export const DataTableFacetedFilter = <TData extends RowData, TValue extends Cel
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem onSelect={() => onReset()} className="justify-center text-center">
-                    Clear filters
+                    {labels.clearFilters}
                   </CommandItem>
                 </CommandGroup>
               </>

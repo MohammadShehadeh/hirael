@@ -44,8 +44,8 @@ const EmojiPickerDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Popover · insert into a message',
-            ar: 'نافذة منبثقة · إدراج في رسالة',
+            en: 'Popover',
+            ar: 'نافذة منبثقة',
           })}
         </p>
         <div className="grid gap-2 rounded-md border border-border bg-card p-3">
@@ -101,8 +101,8 @@ const EmojiPickerDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Inline · compact reaction picker',
-            ar: 'مضمّن · منتقي تفاعل مضغوط',
+            en: 'Inline',
+            ar: 'مضمّن',
           })}
         </p>
         <div className="flex flex-wrap items-start gap-4">

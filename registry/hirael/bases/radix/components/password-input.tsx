@@ -10,6 +10,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/registry/hirael/bases/radix/ui/input-group';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export interface PasswordStrength {
   score: number;
@@ -80,15 +81,11 @@ const PasswordInput = ({
   const reactId = React.useId();
   const fieldId = id ?? reactId;
 
-  const [internalValue, setInternalValue] = React.useState(defaultValue);
-  const value = valueProp ?? internalValue;
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const [visible, setVisible] = React.useState(false);
 
@@ -155,7 +152,12 @@ const PasswordInputField = ({
 
 const STRENGTH_COLORS = ['bg-destructive', 'bg-destructive', 'bg-warning', 'bg-primary', 'bg-success'];
 
-const PasswordInputStrength = ({ className, ...props }: React.ComponentProps<'div'>) => {
+interface PasswordInputStrengthProps extends React.ComponentProps<'div'> {
+  /** Accessible name of the strength meter. */
+  label?: string;
+}
+
+const PasswordInputStrength = ({ label = 'Password strength', className, ...props }: PasswordInputStrengthProps) => {
   const { value, strength } = usePasswordContext();
   const bar = STRENGTH_COLORS[strength.score] ?? STRENGTH_COLORS[0];
 
@@ -163,7 +165,7 @@ const PasswordInputStrength = ({ className, ...props }: React.ComponentProps<'di
     <div data-slot="password-input-strength" className={cn('flex flex-col gap-1.5', className)} {...props}>
       <div
         role="meter"
-        aria-label="Password strength"
+        aria-label={label}
         aria-valuenow={strength.score}
         aria-valuemin={0}
         aria-valuemax={4}

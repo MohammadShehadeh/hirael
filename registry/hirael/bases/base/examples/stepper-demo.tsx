@@ -44,9 +44,7 @@ const StepperDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-10">
       <div className="grid gap-4">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Horizontal · interactive', ar: 'أفقي · تفاعلي' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Horizontal', ar: 'أفقي' })}</p>
         <Stepper value={current} onValueChange={setCurrent}>
           {steps.map(({ step, title }) => (
             <StepperItem key={step} step={step}>
@@ -86,9 +84,7 @@ const StepperDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Vertical · with descriptions', ar: 'عمودي · مع أوصاف' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Vertical', ar: 'عمودي' })}</p>
         <Stepper value={current} onValueChange={setCurrent} orientation="vertical">
           {steps.map(({ step, title, description }) => (
             <StepperItem key={step} step={step}>

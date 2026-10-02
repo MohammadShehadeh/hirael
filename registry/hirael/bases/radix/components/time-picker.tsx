@@ -7,6 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/tabs';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export interface TimeValue {
   hour: number;
@@ -94,31 +95,19 @@ const TimePicker = ({
   onOpenChange,
   children,
 }: TimePickerProps) => {
-  const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp !== undefined ? openProp : openInternal;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setOpenInternal(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
-  const [internal, setInternal] = React.useState<TimeValue | null>(defaultValue ?? null);
-  const value = valueProp !== undefined ? valueProp : internal;
+  const [value, setValue] = useControllableState<TimeValue | null>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? null,
+    onChange: onValueChange,
+  });
 
-  const setValue = React.useCallback(
-    (next: TimeValue) => {
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
-
-  const clearValue = React.useCallback(() => {
-    if (valueProp === undefined) setInternal(null);
-    onValueChange?.(null);
-  }, [valueProp, onValueChange]);
+  const clearValue = React.useCallback(() => setValue(null), [setValue]);
 
   const ctx = React.useMemo<TimePickerContextValue>(
     () => ({
@@ -183,24 +172,20 @@ const TimePickerTrigger = ({
 
   return (
     <PopoverTrigger asChild>
-      <button
+      <Button
         type="button"
+        variant="outline"
         disabled={ctx.disabled}
         data-slot="time-picker-trigger"
-        className={cn(
-          'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
-          'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
-          !ctx.value && 'text-muted-foreground',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          className,
-        )}
+        data-empty={!ctx.value || undefined}
+        className={cn('w-full justify-start font-normal tabular-nums data-empty:text-muted-foreground', className)}
         {...props}
       >
-        <Clock className="size-3.5 shrink-0 text-muted-foreground" />
-        <span data-slot="time-picker-trigger-label" className="flex-1 truncate">
+        <Clock className="text-muted-foreground" />
+        <span data-slot="time-picker-trigger-label" className="flex-1 truncate text-start">
           {children ?? label ?? placeholder}
         </span>
-      </button>
+      </Button>
     </PopoverTrigger>
   );
 };
@@ -290,7 +275,15 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
   );
 };
 
-const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof PopoverContent>) => {
+const DEFAULT_LABELS = { hour: 'Hour', minute: 'Minute', second: 'Second', clear: 'Clear' };
+
+interface TimePickerContentProps extends React.ComponentProps<typeof PopoverContent> {
+  /** Override the column names and the clear button text. */
+  labels?: Partial<typeof DEFAULT_LABELS>;
+}
+
+const TimePickerContent = ({ labels, className, ...props }: TimePickerContentProps) => {
+  const text = { ...DEFAULT_LABELS, ...labels };
   const ctx = useTimePicker();
   const isAM = (ctx.value?.hour ?? 0) < 12;
   const twelve = ctx.format === '12h';
@@ -318,7 +311,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
   return (
     <PopoverContent align="start" data-slot="time-picker-content" className={cn('w-auto p-3', className)} {...props}>
       <div data-slot="time-picker-columns" className="flex items-stretch gap-2">
-        <ScrollColumn values={hourValues} selected={displayHour} onSelect={setHour} ariaLabel="Hour" />
+        <ScrollColumn values={hourValues} selected={displayHour} onSelect={setHour} ariaLabel={text.hour} />
         <span aria-hidden className="flex items-center text-sm text-muted-foreground">
           :
         </span>
@@ -326,7 +319,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
           values={minuteValues}
           selected={ctx.value?.minute}
           onSelect={(minute) => ctx.setValue({ ...baseValue, minute })}
-          ariaLabel="Minute"
+          ariaLabel={text.minute}
         />
         {ctx.showSeconds && (
           <>
@@ -337,7 +330,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
               values={secondValues}
               selected={ctx.value ? (ctx.value.second ?? 0) : undefined}
               onSelect={(second) => ctx.setValue({ ...baseValue, second })}
-              ariaLabel="Second"
+              ariaLabel={text.second}
             />
           </>
         )}
@@ -365,7 +358,7 @@ const TimePickerContent = ({ className, ...props }: React.ComponentProps<typeof 
             className="text-xs font-normal uppercase"
           >
             <X className="size-3" />
-            Clear
+            {text.clear}
           </Button>
         </div>
       )}

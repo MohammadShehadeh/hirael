@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 const INDICATOR_DURATION = 250;
 const INDICATOR_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)';
@@ -106,8 +107,11 @@ const SegmentedControl = ({
   children,
   ...props
 }: SegmentedControlProps) => {
-  const [internalValue, setInternalValue] = React.useState<string | null>(defaultValue);
-  const value = valueProp !== undefined ? valueProp : internalValue;
+  const [value, setValue] = useControllableState<string | null>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const rootRef = React.useRef<HTMLDivElement | null>(null);
   const composedRef = React.useMemo(() => composeRefs(rootRef, ref), [ref]);
@@ -122,10 +126,9 @@ const SegmentedControl = ({
       fromRectRef.current =
         (slideRef.current && currentSlideRect(slideRef.current)) ??
         (indicator ? toThumbRect(indicator.getBoundingClientRect()) : null);
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
+      setValue(next);
     },
-    [disabled, value, valueProp, onValueChange],
+    [disabled, value, setValue],
   );
 
   // Scaling the thumb between options of different widths would stretch its corners, so the slide uses

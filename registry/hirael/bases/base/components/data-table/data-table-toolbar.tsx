@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import type { Column, ReactTable, RowData } from '@tanstack/react-table';
 import { X } from 'lucide-react';
 import type * as React from 'react';
+import { useDataTableLabels } from './data-table-labels';
 
 interface DataTableToolbarProps<TData extends RowData> extends React.ComponentProps<'div'> {
   table: ReactTable<DataTableFeatures, TData>;
@@ -23,6 +24,7 @@ export const DataTableToolbar = <TData extends RowData>({
   className,
   ...props
 }: DataTableToolbarProps<TData>) => {
+  const labels = useDataTableLabels();
   const isFiltered = table.state.columnFilters.length > 0;
 
   const columns = table.getAllColumns().filter((column) => column.getCanFilter());
@@ -44,9 +46,15 @@ export const DataTableToolbar = <TData extends RowData>({
           <DataTableToolbarFilter key={column.id} column={column} />
         ))}
         {isFiltered && (
-          <Button aria-label="Reset filters" variant="outline" size="sm" className="border-dashed" onClick={onReset}>
+          <Button
+            aria-label={labels.resetFiltersLabel}
+            variant="outline"
+            size="sm"
+            className="border-dashed"
+            onClick={onReset}
+          >
             <X />
-            Reset
+            {labels.resetFilters}
           </Button>
         )}
       </div>

@@ -6,6 +6,7 @@ import { ArrowRight, ChevronsUpDown, Columns2, Rows3 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
+import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
 
 export type DiffLineType = 'equal' | 'add' | 'remove';
 
@@ -192,9 +193,12 @@ const DiffViewer = ({
   children,
   ...props
 }: DiffViewerProps) => {
-  const [internalMode, setInternalMode] = React.useState(defaultMode);
   const [expandedGaps, setExpandedGaps] = React.useState<ReadonlySet<number>>(() => new Set());
-  const mode = modeProp ?? internalMode;
+  const [mode, setMode] = useControllableState({
+    prop: modeProp,
+    defaultProp: defaultMode,
+    onChange: onModeChange,
+  });
 
   const lines = React.useMemo(() => computeLineDiff(oldValue, newValue), [oldValue, newValue]);
   // Gaps are keyed by line index, so an expansion from the previous diff would open the wrong hunk.
@@ -214,14 +218,6 @@ const DiffViewer = ({
 
     return { added: a, removed: r };
   }, [lines]);
-
-  const setMode = React.useCallback(
-    (next: DiffViewerMode) => {
-      if (modeProp === undefined) setInternalMode(next);
-      onModeChange?.(next);
-    },
-    [modeProp, onModeChange],
-  );
 
   const expandGap = React.useCallback((start: number) => {
     setExpandedGaps((prev) => {

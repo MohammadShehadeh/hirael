@@ -20,7 +20,7 @@ const SpinnerDemo = () => {
 
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Inherits text color · in context', ar: 'يرث لون النص · ضمن السياق' })}
+          {t({ en: 'Inherits text color', ar: 'يرث لون النص' })}
         </p>
         <div className="flex flex-wrap items-center gap-4">
           <span className="text-primary">

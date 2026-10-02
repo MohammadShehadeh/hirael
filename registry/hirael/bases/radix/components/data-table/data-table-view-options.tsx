@@ -16,6 +16,7 @@ import { cn } from '@/lib/utils';
 import type { ReactTable, RowData } from '@tanstack/react-table';
 import { Check, Settings2 } from 'lucide-react';
 import * as React from 'react';
+import { useDataTableLabels } from './data-table-labels';
 
 interface DataTableViewOptionsProps<TData extends RowData> extends React.ComponentProps<typeof PopoverContent> {
   table: ReactTable<DataTableFeatures, TData>;
@@ -27,6 +28,7 @@ export const DataTableViewOptions = <TData extends RowData>({
   disabled,
   ...props
 }: DataTableViewOptionsProps<TData>) => {
+  const labels = useDataTableLabels();
   const columns = React.useMemo(
     () => table.getAllColumns().filter((column) => typeof column.accessorFn !== 'undefined' && column.getCanHide()),
     [table],
@@ -36,7 +38,7 @@ export const DataTableViewOptions = <TData extends RowData>({
     <Popover>
       <PopoverTrigger asChild>
         <Button
-          aria-label="Toggle columns"
+          aria-label={labels.toggleColumns}
           role="combobox"
           variant="outline"
           size="sm"
@@ -45,14 +47,14 @@ export const DataTableViewOptions = <TData extends RowData>({
           disabled={disabled}
         >
           <Settings2 className="text-muted-foreground" />
-          View
+          {labels.view}
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-44 p-0" {...props}>
         <Command>
-          <CommandInput placeholder="Search columns..." />
+          <CommandInput placeholder={labels.searchColumns} />
           <CommandList>
-            <CommandEmpty>No columns found.</CommandEmpty>
+            <CommandEmpty>{labels.noColumns}</CommandEmpty>
             <CommandGroup>
               {columns.map((column) => (
                 <CommandItem key={column.id} onSelect={() => column.toggleVisibility(!column.getIsVisible())}>

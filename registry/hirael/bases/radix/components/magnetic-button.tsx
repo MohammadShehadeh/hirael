@@ -5,6 +5,7 @@ import { Slot } from '@radix-ui/react-slot';
 import { type HTMLMotionProps, motion, useReducedMotion, useSpring } from 'motion/react';
 
 import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/registry/hirael/bases/radix/ui/button';
 
 const MotionSlot = motion.create(Slot);
 
@@ -52,8 +53,9 @@ const MagneticButton = ({
       onPointerLeave={handlePointerLeave}
       style={{ x, y }}
       className={cn(
-        !asChild &&
-          'inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none',
+        !asChild && buttonVariants(),
+        // Motion drives the transform every frame; transition-all would make it lag behind the spring.
+        'transition-[color,background-color,border-color,box-shadow]',
         className,
       )}
       {...props}

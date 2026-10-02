@@ -12,16 +12,12 @@ const RatingDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Interactive · whole stars', ar: 'تفاعلي · نجوم كاملة' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Interactive', ar: 'تفاعلي' })}</p>
         <Rating defaultValue={4} aria-label={t({ en: 'Overall rating', ar: 'التقييم العام' })} />
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Controlled · half steps', ar: 'متحكَّم به · أنصاف خطوات' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Controlled', ar: 'متحكَّم به' })}</p>
         <div className="flex items-center gap-3">
           <Rating
             value={value}
@@ -40,7 +36,7 @@ const RatingDemo = () => {
         <div className="flex items-center gap-2">
           <Rating value={4.5} step={0.5} readOnly size="sm" />
           <span className="text-xs text-muted-foreground">
-            {t({ en: '4.5 · 1,284 reviews', ar: '4.5 · 1,284 مراجعة' })}
+            {t({ en: '4.5 from 1,284 reviews', ar: '4.5 من 1,284 مراجعة' })}
           </span>
         </div>
       </div>

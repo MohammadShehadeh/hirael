@@ -11,6 +11,7 @@ import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
+import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
 
 interface InlineEditCtx {
   value: string;
@@ -87,31 +88,21 @@ const InlineEdit = ({
 }: InlineEditProps) => {
   const errorId = React.useId();
 
-  const [internalValue, setInternalValue] = React.useState(defaultValue);
-  const value = valueProp ?? internalValue;
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
-  const [internalEditing, setInternalEditing] = React.useState(defaultEditing);
-  const editing = editingProp ?? internalEditing;
+  const [editing, setEditing] = useControllableState({
+    prop: editingProp,
+    defaultProp: defaultEditing,
+    onChange: onEditingChange,
+  });
 
   const [draft, setDraft] = React.useState(value);
   const [error, setError] = React.useState<string | null>(null);
   const [pending, setPending] = React.useState(false);
-
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
-
-  const setEditing = React.useCallback(
-    (next: boolean) => {
-      if (editingProp === undefined) setInternalEditing(next);
-      onEditingChange?.(next);
-    },
-    [editingProp, onEditingChange],
-  );
 
   const [prevEditing, setPrevEditing] = React.useState(editing);
   if (editing !== prevEditing) {

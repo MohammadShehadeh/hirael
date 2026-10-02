@@ -10,6 +10,8 @@ export interface CursorGlowProps extends React.ComponentProps<'div'> {
   size?: number;
   /** Glow color. Defaults to a soft tint of the foreground token. */
   color?: string;
+  /** Soften the glow's edge. Turn off for a crisper spotlight. */
+  blur?: boolean;
 }
 
 const CursorGlow = ({
@@ -17,6 +19,7 @@ const CursorGlow = ({
   children,
   size = 400,
   color = 'color-mix(in oklch, var(--foreground) 12%, transparent)',
+  blur = true,
   onPointerMove: onPointerMoveProp,
   ...props
 }: CursorGlowProps) => {
@@ -45,7 +48,10 @@ const CursorGlow = ({
         <motion.div
           aria-hidden
           data-slot="cursor-glow-layer"
-          className="pointer-events-none absolute inset-0 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100"
+          className={cn(
+            'pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100',
+            blur && 'blur-2xl',
+          )}
           style={{ background }}
         />
       )}

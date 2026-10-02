@@ -21,8 +21,8 @@ const PhoneInputDemo = () => {
       <Field className="gap-2">
         <FieldLabel htmlFor="ph-basic">
           {t({
-            en: 'Phone · default US',
-            ar: 'الهاتف · الولايات المتحدة افتراضيًا',
+            en: 'Phone, default US',
+            ar: 'الهاتف، الولايات المتحدة افتراضيًا',
           })}
         </FieldLabel>
         <PhoneInput id="ph-basic" value={basic} onValueChange={setBasic} defaultCountry="US">
@@ -40,8 +40,8 @@ const PhoneInputDemo = () => {
       <Field className="gap-2">
         <FieldLabel htmlFor="ph-composed">
           {t({
-            en: 'Phone · pre-filled UK number',
-            ar: 'الهاتف · رقم بريطاني مُعبّأ مسبقًا',
+            en: 'Phone, pre-filled UK number',
+            ar: 'الهاتف، رقم بريطاني مُعبّأ مسبقًا',
           })}
         </FieldLabel>
         <PhoneInput id="ph-composed" value={composed} onValueChange={setComposed} defaultCountry="GB">

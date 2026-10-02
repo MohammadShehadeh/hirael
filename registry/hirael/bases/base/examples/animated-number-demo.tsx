@@ -21,8 +21,8 @@ const AnimatedNumberDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Metric cards · live values',
-            ar: 'بطاقات المقاييس · قيم حيّة',
+            en: 'Metric cards',
+            ar: 'بطاقات المقاييس',
           })}
         </p>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">

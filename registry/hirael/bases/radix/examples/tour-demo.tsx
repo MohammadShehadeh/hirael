@@ -58,9 +58,7 @@ const TourDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-4">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Spotlight tour · 4 steps', ar: 'جولة مضيئة · 4 خطوات' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Spotlight tour', ar: 'جولة مضيئة' })}</p>
         <Tour steps={steps} labels={tourLabels} onFinish={() => setCompleted(true)}>
           <div className="grid gap-4">
             <div className="flex items-center justify-between">
@@ -72,7 +70,7 @@ const TourDemo = () => {
             <div className="grid gap-3 sm:grid-cols-2">
               <div id="tour-demo-profile" className="rounded-md border border-border bg-card p-4 sm:col-span-2">
                 <p className="text-sm font-medium">{t({ en: 'Profile', ar: 'الملف الشخصي' })}</p>
-                <p className="mt-1 text-xs text-muted-foreground">Mohammad Shehadeh · hello@mohammadshehadeh.com</p>
+                <p className="mt-1 text-xs text-muted-foreground">Mohammad Shehadeh, hello@mohammadshehadeh.com</p>
                 <Button variant="secondary" size="sm" className="mt-3">
                   {t({ en: 'Edit profile', ar: 'تعديل الملف الشخصي' })}
                 </Button>
@@ -81,8 +79,8 @@ const TourDemo = () => {
                 <p className="text-sm font-medium">{t({ en: 'Notifications', ar: 'الإشعارات' })}</p>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {t({
-                    en: 'Weekly digest · mentions only',
-                    ar: 'موجز أسبوعي · الإشارات فقط',
+                    en: 'Weekly digest, mentions only',
+                    ar: 'موجز أسبوعي، الإشارات فقط',
                   })}
                 </p>
               </div>

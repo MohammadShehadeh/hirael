@@ -66,8 +66,8 @@ const LazySelectDemo = () => {
     <Field className="max-w-md gap-2">
       <FieldLabel htmlFor="lazy-assignee">
         {t({
-          en: 'Assignee · lazy-loaded on open, paged on scroll',
-          ar: 'المسؤول · يُحمّل عند الفتح، ويُقسّم صفحات عند التمرير',
+          en: 'Assignee',
+          ar: 'المسؤول',
         })}
       </FieldLabel>
       <LazySelect
@@ -104,7 +104,7 @@ const LazySelectDemo = () => {
         />
       </LazySelect>
       <p className="text-xs text-muted-foreground uppercase">
-        value = {value ? `"${value}"` : '-'} · loaded = {options.length}
+        value = {value ? `"${value}"` : '-'}, loaded = {options.length}
       </p>
     </Field>
   );

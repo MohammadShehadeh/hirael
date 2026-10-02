@@ -50,9 +50,7 @@ const ImageCompareDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Drag to compare · labels', ar: 'اسحب للمقارنة · تسميات' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Drag to compare', ar: 'اسحب للمقارنة' })}</p>
         <ImageCompare className="aspect-video">
           <ImageCompareBefore>
             <Image
@@ -116,8 +114,8 @@ const ImageCompareDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Follow pointer · wireframe vs styled',
-            ar: 'تتبّع المؤشر · مخطط مقابل مُنسّق',
+            en: 'Follow pointer',
+            ar: 'تتبّع المؤشر',
           })}
         </p>
         <ImageCompare followPointer className="aspect-video">

@@ -3,8 +3,14 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { Input } from '@/registry/hirael/bases/base/ui/input';
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  InputGroupText,
+} from '@/registry/hirael/bases/base/ui/input-group';
 import { Slider } from '@/registry/hirael/bases/base/ui/slider';
+import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
 
 export type NumberRangeValue = [number, number];
 
@@ -84,15 +90,17 @@ const NumberRange = ({
   children,
   ...props
 }: NumberRangeProps) => {
-  const [internal, setInternal] = React.useState<NumberRangeValue>(defaultValue ?? [min, max]);
-  const value = valueProp ?? internal;
+  const [value, setControlledValue] = useControllableState<NumberRangeValue>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? [min, max],
+    onChange: onValueChange,
+  });
   const setValue = React.useCallback(
     (next: NumberRangeValue) => {
       const clamped = clampPair(next, min, max);
-      if (valueProp === undefined) setInternal(clamped);
-      onValueChange?.(clamped);
+      setControlledValue(clamped);
     },
-    [valueProp, onValueChange, min, max],
+    [setControlledValue, min, max],
   );
 
   const ctx = React.useMemo<NumberRangeContextValue>(
@@ -141,7 +149,7 @@ const NumberRangeSlider = ({
   );
 };
 
-interface NumberRangeInputProps extends Omit<React.ComponentProps<typeof Input>, 'value' | 'onChange' | 'type'> {
+interface NumberRangeInputProps extends Omit<React.ComponentProps<'input'>, 'value' | 'onChange' | 'type'> {
   bound: 'min' | 'max';
 }
 
@@ -160,13 +168,13 @@ const NumberRangeInput = ({ bound, className, onBlur, onKeyDown, ...props }: Num
   };
 
   return (
-    <div data-slot="number-range-input" className="relative">
+    <InputGroup data-slot="number-range-input" data-disabled={ctx.disabled} className={className}>
       {ctx.prefix && (
-        <span className="pointer-events-none absolute start-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-          {ctx.prefix}
-        </span>
+        <InputGroupAddon>
+          <InputGroupText>{ctx.prefix}</InputGroupText>
+        </InputGroupAddon>
       )}
-      <Input
+      <InputGroupInput
         inputMode="decimal"
         dir="ltr"
         value={draft ?? ctx.format(current)}
@@ -190,33 +198,42 @@ const NumberRangeInput = ({ bound, className, onBlur, onKeyDown, ...props }: Num
             setDraft(null);
           }
         }}
-        data-slot="number-range-field"
-        className={cn('tabular-nums', ctx.prefix && 'ps-6', ctx.suffix && 'pe-8', className)}
+        className="tabular-nums"
         {...props}
       />
       {ctx.suffix && (
-        <span className="pointer-events-none absolute end-2 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
-          {ctx.suffix}
-        </span>
+        <InputGroupAddon align="inline-end">
+          <InputGroupText>{ctx.suffix}</InputGroupText>
+        </InputGroupAddon>
       )}
-    </div>
+    </InputGroup>
   );
 };
 
 interface NumberRangeInputsProps extends React.ComponentProps<'div'> {
   separator?: React.ReactNode;
+  /** Accessible name of the lower-bound field. */
+  minLabel?: string;
+  /** Accessible name of the upper-bound field. */
+  maxLabel?: string;
 }
 
-const NumberRangeInputs = ({ className, separator = '–', ...props }: NumberRangeInputsProps) => {
+const NumberRangeInputs = ({
+  className,
+  separator = '–',
+  minLabel = 'Minimum value',
+  maxLabel = 'Maximum value',
+  ...props
+}: NumberRangeInputsProps) => {
   return (
     <div
       data-slot="number-range-inputs"
       className={cn('grid grid-cols-[1fr_auto_1fr] items-center gap-2', className)}
       {...props}
     >
-      <NumberRangeInput bound="min" aria-label="Minimum value" />
+      <NumberRangeInput bound="min" aria-label={minLabel} />
       <span className="text-xs text-muted-foreground select-none">{separator}</span>
-      <NumberRangeInput bound="max" aria-label="Maximum value" />
+      <NumberRangeInput bound="max" aria-label={maxLabel} />
     </div>
   );
 };

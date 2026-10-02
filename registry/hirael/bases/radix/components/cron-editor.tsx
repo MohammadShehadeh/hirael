@@ -7,6 +7,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { NativeSelect, NativeSelectOption } from '@/registry/hirael/bases/radix/ui/native-select';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export type CronField = 'minute' | 'hour' | 'dayOfMonth' | 'month' | 'dayOfWeek';
 
@@ -380,16 +381,11 @@ const CronEditor = ({
 }: CronEditorProps) => {
   const reactId = React.useId();
   const editorId = id ?? reactId;
-  const [internal, setInternal] = React.useState(defaultValue);
-  const value = valueProp ?? internal;
-
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const parsed = React.useMemo(() => parseCron(value), [value]);
 

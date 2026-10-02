@@ -21,8 +21,8 @@ const FileDropzoneDemo = () => {
       <Field className="gap-2">
         <FieldLabel>
           {t({
-            en: 'Images & PDFs · up to 5 MB',
-            ar: 'صور وملفات PDF · حتى 5 ميغابايت',
+            en: 'Images & PDFs, up to 5 MB',
+            ar: 'صور وملفات PDF، حتى 5 ميغابايت',
           })}
         </FieldLabel>
         <FileDropzone
@@ -41,8 +41,8 @@ const FileDropzoneDemo = () => {
       <Field className="gap-2">
         <FieldLabel>
           {t({
-            en: 'Data files · custom layout',
-            ar: 'ملفات البيانات · تخطيط مخصص',
+            en: 'Data files',
+            ar: 'ملفات البيانات',
           })}
         </FieldLabel>
         <FileDropzone
@@ -55,8 +55,8 @@ const FileDropzoneDemo = () => {
           <FileDropzoneZone
             headline={t({ en: 'Drop data files', ar: 'أسقط ملفات البيانات' })}
             subline={t({
-              en: 'csv, json, txt · max 1 MB each',
-              ar: 'csv، json، txt · بحد أقصى 1 ميغابايت لكل ملف',
+              en: 'csv, json, txt, max 1 MB each',
+              ar: 'csv، json، txt، بحد أقصى 1 ميغابايت لكل ملف',
             })}
           />
           <FileDropzoneErrors />

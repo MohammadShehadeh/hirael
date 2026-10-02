@@ -39,8 +39,8 @@ const CronEditorDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Full editor · presets, fields, expression, preview',
-            ar: 'المحرر الكامل · إعدادات مسبقة، حقول، تعبير، معاينة',
+            en: 'Full editor',
+            ar: 'المحرر الكامل',
           })}
         </p>
         <CronEditor value={schedule} onValueChange={setSchedule}>
@@ -90,8 +90,8 @@ const CronEditorDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Compact · presets and expression only',
-            ar: 'مضغوط · إعدادات مسبقة وتعبير فقط',
+            en: 'Compact',
+            ar: 'مضغوط',
           })}
         </p>
         <div className="max-w-md rounded-md border border-border bg-card p-4">

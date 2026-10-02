@@ -4,6 +4,7 @@ import * as React from 'react';
 import { type HTMLMotionProps, type Variants, MotionConfig, motion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
+import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
 
 export type FabSide = 'top' | 'bottom' | 'left' | 'right';
 
@@ -63,17 +64,12 @@ const FloatingActionButton = ({
   onKeyDown,
   ...props
 }: FloatingActionButtonProps) => {
-  const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
-  const open = openProp ?? uncontrolled;
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen ?? false,
+    onChange: onOpenChange,
+  });
   const rootRef = React.useRef<HTMLDivElement>(null);
-
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setUncontrolled(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
 
   React.useEffect(() => {
     if (!open) return;

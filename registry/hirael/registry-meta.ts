@@ -103,7 +103,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Chip-based multi-select with command-palette dropdown, search, select-all and a loading state. Compound and single-prop APIs.',
     category: 'inputs',
     files: [{ path: 'components/multi-select.tsx' }],
-    registryDependencies: ['popover', 'command', 'badge'],
+    registryDependencies: ['popover', 'command', 'badge', 'spinner', 'input-group', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -113,7 +113,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Two-thumb slider paired with synced number inputs. Min/max/step, currency or unit formatting, keyboard-first.',
     category: 'inputs',
     files: [{ path: 'components/number-range.tsx' }],
-    registryDependencies: ['slider', 'input'],
+    registryDependencies: ['slider', 'input-group', 'use-controllable-state'],
     dependencies: [],
   },
   {
@@ -122,7 +122,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: 'Decade-grid year picker with keyboard nav, min/max bounds, single or range mode.',
     category: 'pickers',
     files: [{ path: 'components/year-picker.tsx' }],
-    registryDependencies: ['button', 'popover'],
+    registryDependencies: ['button', 'popover', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -131,7 +131,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: 'Chip input with paste-to-split, dedupe, validation hook and max tags.',
     category: 'inputs',
     files: [{ path: 'components/tag-input.tsx' }],
-    registryDependencies: ['badge', 'compose-refs'],
+    registryDependencies: ['badge', 'compose-refs', 'input-group', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -141,7 +141,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Segmented duration field over days, hours, minutes and seconds. Digits auto-advance, arrows step, and the value stays a plain number of seconds.',
     category: 'inputs',
     files: [{ path: 'components/duration-input.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['input-group', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -151,7 +151,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Number input with step buttons, arrow-key and hold-to-repeat stepping, min and max, and Intl formatting for currency, percent or units. Submits the raw number.',
     category: 'inputs',
     files: [{ path: 'components/number-field.tsx' }],
-    registryDependencies: ['input-group', 'compose-refs'],
+    registryDependencies: ['input-group', 'compose-refs', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -161,7 +161,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Single-choice control with a sliding thumb. Keyboard works like a radio group and mirrors in RTL. Two sizes, icons, disabled options and a full-width mode.',
     category: 'inputs',
     files: [{ path: 'components/segmented-control.tsx' }],
-    registryDependencies: ['compose-refs'],
+    registryDependencies: ['compose-refs', 'use-controllable-state'],
   },
 
   {
@@ -181,8 +181,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'A free-text input with suggestions from a local list or an async search, with optional inline completion, groups and recent entries. The value is whatever you type.',
     category: 'inputs',
     files: [{ path: 'components/autocomplete.tsx' }],
-    registryDependencies: ['input-group', 'popover', 'compose-refs'],
-    dependencies: ['lucide-react'],
+    registryDependencies: ['input-group', 'popover', 'compose-refs', 'spinner', 'use-controllable-state'],
+    dependencies: [],
   },
   {
     name: 'checkbox-group',
@@ -191,7 +191,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'A group of checkboxes with a select-all parent, nested groups, min and max limits, and an optional search that narrows the list.',
     category: 'inputs',
     files: [{ path: 'components/checkbox-group.tsx' }],
-    registryDependencies: ['checkbox', 'input-group', 'label'],
+    registryDependencies: ['checkbox', 'input-group', 'label', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
 
@@ -202,7 +202,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Autocomplete single-select that defers loading until open and pages through results on scroll. Debounced server-side search with a pluggable lazy paginator hook.',
     category: 'inputs',
     files: [{ path: 'components/lazy-select.tsx' }],
-    registryDependencies: ['popover', 'command'],
+    registryDependencies: ['popover', 'command', 'spinner', 'button', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -211,7 +211,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: 'Password field with a show/hide toggle and an optional pluggable strength meter.',
     category: 'inputs',
     files: [{ path: 'components/password-input.tsx' }],
-    registryDependencies: ['input-group'],
+    registryDependencies: ['input-group', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -220,7 +220,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: 'Locale-aware grouping with currency-symbol prefix and configurable decimal precision.',
     category: 'inputs',
     files: [{ path: 'components/currency-input.tsx' }],
-    registryDependencies: ['input-group'],
+    registryDependencies: ['input-group', 'use-controllable-state'],
     dependencies: [],
   },
   {
@@ -239,17 +239,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Drag-and-drop or click upload zone on react-dropzone, with a file list, type and size validation, and readable rejection messages.',
     category: 'files',
     files: [{ path: 'components/file-dropzone.tsx' }],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'format-bytes', 'use-controllable-state'],
     dependencies: ['lucide-react', 'react-dropzone'],
-  },
-  {
-    name: 'stat-card',
-    title: 'Stat Card',
-    description: 'Compact metric card with label, value, and an up/down/flat trend chip.',
-    category: 'data',
-    files: [{ path: 'components/stat-card.tsx' }],
-    registryDependencies: [],
-    dependencies: ['lucide-react'],
   },
   {
     name: 'rating',
@@ -257,7 +248,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: 'Star rating with hover preview, half-star precision, read-only mode and sm / md / lg sizes.',
     category: 'inputs',
     files: [{ path: 'components/rating.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -308,7 +299,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: 'Fixed reading progress bar. Tracks document scroll by default or a scoped container ref.',
     category: 'display',
     files: [{ path: 'components/scroll-progress.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: [],
   },
   {
@@ -823,7 +814,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: '4×3 month grid with year stepper, keyboard nav, min/max bounds, single or range mode.',
     category: 'pickers',
     files: [{ path: 'components/month-picker.tsx' }],
-    registryDependencies: ['button', 'popover'],
+    registryDependencies: ['button', 'popover', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -832,7 +823,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     description: 'Hour, minute and optional second scroll columns with 12/24h modes, step intervals and keyboard nav.',
     category: 'pickers',
     files: [{ path: 'components/time-picker.tsx' }],
-    registryDependencies: ['button', 'popover', 'tabs'],
+    registryDependencies: ['button', 'popover', 'tabs', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -842,7 +833,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Color picker on react-colorful with HEX / RGB / HSL inputs (colord), an eyedropper where supported, and recent swatches.',
     category: 'pickers',
     files: [{ path: 'components/color-picker.tsx' }],
-    registryDependencies: ['button', 'input', 'popover', 'tabs'],
+    registryDependencies: ['button', 'input', 'popover', 'tabs', 'use-controllable-state'],
     dependencies: ['colord', 'lucide-react', 'react-colorful'],
   },
   {
@@ -852,7 +843,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Overlapping avatar group with size (sm/md/lg) and spacing (tight/normal/loose) variants, image or fallback support, numeric overflow chip, and asChild on items/overflow so each avatar can render as a link or button.',
     category: 'data',
     files: [{ path: 'components/avatar-stack.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['avatar'],
     dependencies: ['@radix-ui/react-slot', 'class-variance-authority'],
   },
   {
@@ -1480,7 +1471,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Collapsible nested tree for file explorers and hierarchical data, with auto folder/file icons, depth indentation, selection and keyboard focus.',
     category: 'data',
     files: [{ path: 'components/tree-view.tsx' }],
-    registryDependencies: ['collapsible'],
+    registryDependencies: ['collapsible', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1490,7 +1481,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Count-up number that tweens to its target with easing, Intl formatting (currency, compact, percent), prefix/suffix and reduced-motion support.',
     category: 'data',
     files: [{ path: 'components/animated-number.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['use-reduced-motion'],
     dependencies: [],
   },
   {
@@ -1500,7 +1491,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Multi-step progress indicator with horizontal and vertical orientation, completed / active / inactive states, clickable steps and a compound API.',
     category: 'navigation',
     files: [{ path: 'components/stepper.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1510,7 +1501,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Drag-to-reorder list on dnd-kit: pointer and keyboard sorting, handle or whole-item dragging, and controls inside items that stay clickable.',
     category: 'data',
     files: [{ path: 'components/sortable.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['use-controllable-state'],
     dependencies: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities', 'lucide-react'],
   },
   {
@@ -1520,7 +1511,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Single-date picker: a trigger that formats the date, opening shadcn Calendar in a popover. Takes react-day-picker matchers for bounds and disabled days.',
     category: 'pickers',
     files: [{ path: 'components/date-picker.tsx' }],
-    registryDependencies: ['calendar', 'popover'],
+    registryDependencies: ['calendar', 'popover', 'button', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1530,7 +1521,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Range picker on shadcn Calendar: preset column, one or two months, and react-day-picker matchers for bounds and disabled days.',
     category: 'pickers',
     files: [{ path: 'components/date-range-picker.tsx' }],
-    registryDependencies: ['button', 'calendar', 'popover'],
+    registryDependencies: ['button', 'calendar', 'popover', 'use-controllable-state'],
     dependencies: ['lucide-react', 'react-day-picker'],
   },
   {
@@ -1540,7 +1531,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       '@-mention textarea with caret-anchored autocomplete, highlighted mention chips, async search and multiple trigger characters.',
     category: 'inputs',
     files: [{ path: 'components/mention-input.tsx' }],
-    registryDependencies: ['spinner', 'compose-refs'],
+    registryDependencies: ['spinner', 'compose-refs', 'use-controllable-state'],
     dependencies: [],
   },
   {
@@ -1570,7 +1561,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Click-to-edit text with preview, validation, async submit and confirm/cancel controls. Input and textarea modes.',
     category: 'inputs',
     files: [{ path: 'components/inline-edit.tsx' }],
-    registryDependencies: ['button', 'input', 'spinner', 'textarea', 'compose-refs'],
+    registryDependencies: ['button', 'input', 'spinner', 'textarea', 'compose-refs', 'use-controllable-state'],
     dependencies: ['@radix-ui/react-slot', 'lucide-react'],
   },
   {
@@ -1590,7 +1581,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Pan-and-zoom image cropper on react-easy-crop: rect or round mask, fixed aspect, zoom slider and canvas export via ref.',
     category: 'files',
     files: [{ path: 'components/image-cropper.tsx' }],
-    registryDependencies: ['slider'],
+    registryDependencies: ['slider', 'use-controllable-state'],
     dependencies: ['react-easy-crop'],
   },
   {
@@ -1610,7 +1601,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Fullscreen image lightbox on Radix Dialog with gallery navigation, zoom and pan, swipe gestures, captions and a thumbnail strip.',
     category: 'display',
     files: [{ path: 'components/lightbox.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['use-controllable-state'],
     dependencies: ['@radix-ui/react-dialog', 'lucide-react'],
   },
   {
@@ -1620,7 +1611,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Count-down-to-date timer with boxed / inline / minimal variants, a useCountdown hook, digit animation and completion content.',
     category: 'data',
     files: [{ path: 'components/countdown-timer.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['use-reduced-motion'],
     dependencies: [],
   },
   {
@@ -1670,7 +1661,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'True masonry layout that balances children into the shortest column by measured height, order-preserving, responsive, dependency-free.',
     category: 'display',
     files: [{ path: 'components/masonry.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: [],
   },
   {
@@ -1700,7 +1691,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Local media file picker that previews via an object URL; empty-state prompt, replace and clear, size validation. Nothing leaves the browser.',
     category: 'files',
     files: [{ path: 'components/media-input.tsx' }],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'format-bytes', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1710,7 +1701,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Onboarding spotlight that dims the page around a target element and walks users through steps with a positioned coach-mark card.',
     category: 'navigation',
     files: [{ path: 'components/tour.tsx' }],
-    registryDependencies: ['button'],
+    registryDependencies: ['button', 'use-controllable-state'],
     dependencies: [],
   },
   {
@@ -1755,7 +1746,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Reveals content with a blur, fade and lift as it scrolls into view. Configurable delay, duration and threshold; respects reduced-motion.',
     category: 'animation',
     files: [{ path: 'components/blur-reveal.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['reveal-observer'],
     dependencies: ['motion'],
   },
   {
@@ -1765,7 +1756,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Staggered text entrance that masks and slides each word, character or line into place on scroll. Respects reduced-motion.',
     category: 'animation',
     files: [{ path: 'components/text-reveal.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['reveal-observer'],
     dependencies: ['motion'],
   },
   {
@@ -1784,18 +1775,18 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Fades and slides content in from any direction as it enters the viewport. Configurable distance, delay and replay; respects reduced-motion.',
     category: 'animation',
     files: [{ path: 'components/scroll-reveal.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['reveal-observer'],
     dependencies: ['motion'],
   },
   {
     name: 'spotlight-card',
     title: 'Spotlight Card',
     description:
-      'Card surface with a soft spotlight that tracks the cursor and fades in on hover. Built on design tokens, no hard-coded colors.',
+      'Card surface with a crisp spotlight that tracks the cursor and fades in on hover. Built on Cursor Glow and design tokens.',
     category: 'animation',
     files: [{ path: 'components/spotlight-card.tsx' }],
-    registryDependencies: [],
-    dependencies: ['motion'],
+    registryDependencies: ['cursor-glow'],
+    dependencies: [],
   },
   {
     name: 'magnetic-button',
@@ -1804,7 +1795,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Button that pulls toward the cursor and springs back on leave. Adjustable strength, asChild to wrap a link, respects reduced-motion.',
     category: 'animation',
     files: [{ path: 'components/magnetic-button.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['button'],
     dependencies: ['@radix-ui/react-slot', 'motion'],
   },
   {
@@ -1844,7 +1835,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'A trigger card that morphs into a centered dialog via shared-layout animation, with focus trapping, scroll lock, Esc to close and reduced-motion support.',
     category: 'animation',
     files: [{ path: 'components/morphing-dialog.tsx' }],
-    registryDependencies: ['button', 'compose-refs'],
+    registryDependencies: ['button', 'compose-refs', 'use-controllable-state'],
     dependencies: ['lucide-react', 'motion'],
   },
   {
@@ -1864,7 +1855,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Expanding speed-dial FAB: a primary trigger that rotates open to stagger a stack of secondary actions on any side. Compound API.',
     category: 'navigation',
     files: [{ path: 'components/floating-action-button.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['use-controllable-state'],
     dependencies: ['motion'],
   },
   {
@@ -1884,16 +1875,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Two-pane master/detail layout with a draggable, keyboard-accessible divider and min/max bounds, built on shadcn Resizable.',
     category: 'navigation',
     files: [{ path: 'components/split-view.tsx' }],
-    registryDependencies: ['resizable'],
-    dependencies: [],
-  },
-  {
-    name: 'resizable-panels',
-    title: 'Resizable Panels',
-    description:
-      'Nestable horizontal or vertical panel groups with draggable, keyboard-accessible handles and per-panel minimums, built on shadcn Resizable.',
-    category: 'navigation',
-    files: [{ path: 'components/resizable-panels.tsx' }],
     registryDependencies: ['resizable'],
     dependencies: [],
   },
@@ -3081,7 +3062,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Imperative confirmation dialog: a root provider plus a useConfirm hook that resolves a promise on confirm or cancel. Default or destructive tone, an optional icon, and an async confirm action with a pending spinner.',
     category: 'display',
     files: [{ path: 'components/confirm.tsx' }],
-    registryDependencies: ['alert-dialog', 'button'],
+    registryDependencies: ['alert-dialog', 'button', 'spinner'],
     dependencies: [],
   },
   {
@@ -3164,6 +3145,11 @@ export const REGISTRY: RegistryEntryMeta[] = [
       {
         path: 'components/data-table/data-table-utils.ts',
         target: 'components/data-table/data-table-utils.ts',
+        type: 'registry:lib',
+      },
+      {
+        path: 'components/data-table/data-table-labels.ts',
+        target: 'components/data-table/data-table-labels.ts',
         type: 'registry:lib',
       },
     ],
@@ -3962,7 +3948,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Board of columns and cards on dnd-kit: pointer and keyboard drag-and-drop across columns, a drag overlay, an empty-column hint, and one commit per move.',
     category: 'data',
     files: [{ path: 'components/kanban.tsx' }],
-    registryDependencies: ['sortable'],
+    registryDependencies: ['sortable', 'use-controllable-state'],
     dependencies: ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities', 'lucide-react'],
   },
   {
@@ -4013,7 +3999,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Line diff of two texts on jsdiff. Unified or split layout, +N / -N stats, context lines with expandable gaps.',
     category: 'display',
     files: [{ path: 'components/diff-viewer.tsx' }],
-    registryDependencies: ['toggle-group'],
+    registryDependencies: ['toggle-group', 'use-controllable-state'],
     dependencies: ['diff', 'lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
@@ -4024,7 +4010,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Visual cron builder kept in sync with the raw expression. Presets, per-field modes, validation, a plain-English preview, and the next run times.',
     category: 'inputs',
     files: [{ path: 'components/cron-editor.tsx' }],
-    registryDependencies: ['button', 'field', 'input', 'native-select'],
+    registryDependencies: ['button', 'field', 'input', 'native-select', 'use-controllable-state'],
     dependencies: [],
   },
   {
@@ -4034,7 +4020,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Searchable country picker with flag emoji, pinned countries, optional dial codes, and single or multiple selection. Search by name or ISO code.',
     category: 'inputs',
     files: [{ path: 'components/country-select.tsx' }],
-    registryDependencies: ['button', 'command', 'popover'],
+    registryDependencies: ['button', 'command', 'popover', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -4044,7 +4030,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Keyboard-first command menu with a platform shortcut, nested pages, remembered recents and shortcut hints on each row.',
     category: 'navigation',
     files: [{ path: 'components/command-palette.tsx' }],
-    registryDependencies: ['command'],
+    registryDependencies: ['command', 'kbd', 'button', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {
@@ -4054,7 +4040,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Postal address field group that follows the selected country: which fields appear, the order they sit in, and what they are called.',
     category: 'inputs',
     files: [{ path: 'components/address-input.tsx' }],
-    registryDependencies: ['field', 'input', 'country-select'],
+    registryDependencies: ['field', 'input', 'country-select', 'use-controllable-state'],
     dependencies: [],
   },
   {
@@ -4084,7 +4070,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Click or drop an image, crop it to a circle or square with zoom, and preview the result. Initials fallback, size and type limits, remove control.',
     category: 'files',
     files: [{ path: 'components/avatar-upload.tsx' }],
-    registryDependencies: ['button', 'dialog', 'image-cropper'],
+    registryDependencies: ['button', 'dialog', 'image-cropper', 'format-bytes'],
     dependencies: ['lucide-react', 'react-dropzone'],
   },
   {
@@ -4903,6 +4889,48 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     type: 'registry:component',
     categories: ['primitives'],
     files: [{ path: 'components/compose-refs.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'use-controllable-state',
+    title: 'Use Controllable State',
+    description:
+      'A value that is either controlled through a prop or kept internally, with one setter that updates both and reports the change.',
+    type: 'registry:component',
+    categories: ['primitives'],
+    files: [{ path: 'components/use-controllable-state.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'use-reduced-motion',
+    title: 'Use Reduced Motion',
+    description: 'Live prefers-reduced-motion match that renders false on the server, so hydration never mismatches.',
+    type: 'registry:component',
+    categories: ['primitives'],
+    files: [{ path: 'components/use-reduced-motion.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'reveal-observer',
+    title: 'Reveal Observer',
+    description:
+      'One shared IntersectionObserver per threshold for scroll reveals, so a page of reveal components costs a handful of observers.',
+    type: 'registry:component',
+    categories: ['primitives'],
+    files: [{ path: 'components/reveal-observer.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'format-bytes',
+    title: 'Format Bytes',
+    description: 'Human-readable file sizes in binary steps, such as 1.5 KB or 12.0 MB.',
+    type: 'registry:component',
+    categories: ['primitives'],
+    files: [{ path: 'components/format-bytes.ts' }],
     registryDependencies: [],
     dependencies: [],
   },

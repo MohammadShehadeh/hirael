@@ -8,6 +8,7 @@ import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 interface MorphingDialogContextValue {
   isOpen: boolean;
@@ -44,20 +45,15 @@ export interface MorphingDialogProps {
 }
 
 const MorphingDialog = ({ children, open: openProp, defaultOpen, onOpenChange }: MorphingDialogProps) => {
-  const [uncontrolled, setUncontrolled] = React.useState(defaultOpen ?? false);
-  const isOpen = openProp ?? uncontrolled;
+  const [isOpen, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen ?? false,
+    onChange: onOpenChange,
+  });
   const reactId = React.useId();
   const triggerRef = React.useRef<HTMLDivElement | null>(null);
   const [hasTitle, setHasTitle] = React.useState(false);
   const [hasDescription, setHasDescription] = React.useState(false);
-
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setUncontrolled(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
 
   const open = React.useCallback(() => setOpen(true), [setOpen]);
   const close = React.useCallback(() => setOpen(false), [setOpen]);

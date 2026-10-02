@@ -47,8 +47,8 @@ const MediaInputDemo = () => {
       <div className="grid gap-4">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Audio · feeds the audio player',
-            ar: 'صوت · يغذّي مشغّل الصوت',
+            en: 'Audio',
+            ar: 'صوت',
           })}
         </p>
         <MediaInput accept="audio/*">
@@ -80,7 +80,7 @@ const MediaInputDemo = () => {
 
       <div className="grid gap-4">
         <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Image · max 5 MB', ar: 'صورة · بحد أقصى 5 ميجابايت' })}
+          {t({ en: 'Image, max 5 MB', ar: 'صورة، بحد أقصى 5 ميجابايت' })}
         </p>
         <MediaInput accept="image/*" maxSize={5 * 1024 * 1024}>
           <MediaInputEmpty>

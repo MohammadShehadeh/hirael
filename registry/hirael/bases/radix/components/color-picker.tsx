@@ -10,6 +10,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/tabs';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export type ColorFormat = 'hex' | 'rgb' | 'hsl';
 
@@ -67,25 +68,17 @@ const ColorPicker = ({
   onOpenChange,
   children,
 }: ColorPickerProps) => {
-  const [internal, setInternal] = React.useState(defaultValue);
-  const value = valueProp ?? internal;
-  const setValue = React.useCallback(
-    (hex: string) => {
-      if (valueProp === undefined) setInternal(hex);
-      onValueChange?.(hex);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
-  const [formatInternal, setFormatInternal] = React.useState<ColorFormat>(defaultFormat);
-  const format = formatProp ?? formatInternal;
-  const setFormat = React.useCallback(
-    (next: ColorFormat) => {
-      if (formatProp === undefined) setFormatInternal(next);
-      onFormatChange?.(next);
-    },
-    [formatProp, onFormatChange],
-  );
+  const [format, setFormat] = useControllableState<ColorFormat>({
+    prop: formatProp,
+    defaultProp: defaultFormat,
+    onChange: onFormatChange,
+  });
 
   const [recent, setRecent] = React.useState<string[]>([]);
   const pushSwatch = React.useCallback(
@@ -94,11 +87,13 @@ const ColorPicker = ({
     [recentLimit],
   );
 
-  const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp ?? openInternal;
+  const [open, setControlledOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
   const setOpen = (next: boolean) => {
-    if (openProp === undefined) setOpenInternal(next);
-    onOpenChange?.(next);
+    setControlledOpen(next);
     // Remember the colour the popover closes on, not every step of a drag.
     if (!next) pushSwatch(value.toLowerCase());
   };
@@ -138,16 +133,12 @@ const ColorPickerTrigger = ({
 
   return (
     <PopoverTrigger asChild>
-      <button
+      <Button
         type="button"
+        variant="outline"
         disabled={ctx.disabled}
         data-slot="color-picker-trigger"
-        className={cn(
-          'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm uppercase tabular-nums transition-colors outline-none',
-          'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          className,
-        )}
+        className={cn('w-full justify-between font-normal uppercase tabular-nums', className)}
         {...props}
       >
         {children ?? (
@@ -160,7 +151,7 @@ const ColorPickerTrigger = ({
             <span>{ctx.hex || placeholder}</span>
           </span>
         )}
-      </button>
+      </Button>
     </PopoverTrigger>
   );
 };
@@ -242,7 +233,21 @@ const ChannelInput = ({ value, max, onCommit, 'aria-label': ariaLabel }: Channel
   );
 };
 
-const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'div'>) => {
+interface ColorPickerFormatInputsProps extends React.ComponentProps<'div'> {
+  /** Accessible name of the hex field. */
+  hexLabel?: string;
+  /** Accessible name of an RGB or HSL channel field. */
+  channelLabel?: (channel: string) => string;
+}
+
+const defaultChannelLabel = (channel: string) => `${channel.toUpperCase()} channel`;
+
+const ColorPickerFormatInputs = ({
+  hexLabel = 'Hex color',
+  channelLabel = defaultChannelLabel,
+  className,
+  ...props
+}: ColorPickerFormatInputsProps) => {
   const ctx = useColorPicker();
   const color = colord(ctx.hex);
   const [hexDraft, setHexDraft] = React.useState<string | null>(null);
@@ -270,7 +275,7 @@ const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'
           onKeyDown={(e) => {
             if (e.key === 'Enter') commitHex();
           }}
-          aria-label="Hex color"
+          aria-label={hexLabel}
           className="h-8 text-xs uppercase tabular-nums"
         />
       </div>
@@ -295,13 +300,7 @@ const ColorPickerFormatInputs = ({ className, ...props }: React.ComponentProps<'
   return (
     <div {...props} data-slot="color-picker-format-inputs" className={cn('grid grid-cols-3 gap-1.5', className)}>
       {channels.map((c) => (
-        <ChannelInput
-          key={c.k}
-          value={c.value}
-          max={c.max}
-          onCommit={c.commit}
-          aria-label={`${c.k.toUpperCase()} channel`}
-        />
+        <ChannelInput key={c.k} value={c.value} max={c.max} onCommit={c.commit} aria-label={channelLabel(c.k)} />
       ))}
     </div>
   );
@@ -313,6 +312,7 @@ interface EyeDropperResult {
 type EyeDropperCtor = new () => { open: () => Promise<EyeDropperResult> };
 
 const ColorPickerEyedropper = ({
+  'aria-label': ariaLabel = 'Pick color from screen',
   className,
   ...props
 }: Omit<React.ComponentProps<'button'>, 'onClick' | 'children'>) => {
@@ -332,7 +332,7 @@ const ColorPickerEyedropper = ({
       variant="outline"
       size="icon-sm"
       data-slot="color-picker-eyedropper"
-      aria-label="Pick color from screen"
+      aria-label={ariaLabel}
       onClick={async () => {
         try {
           const Ctor = (window as unknown as { EyeDropper: EyeDropperCtor }).EyeDropper;
@@ -350,7 +350,14 @@ const ColorPickerEyedropper = ({
   );
 };
 
-const ColorPickerSwatches = ({ className, ...props }: React.ComponentProps<'div'>) => {
+interface ColorPickerSwatchesProps extends React.ComponentProps<'div'> {
+  /** Accessible name of a swatch button. */
+  swatchLabel?: (color: string) => string;
+}
+
+const defaultSwatchLabel = (color: string) => `Use ${color}`;
+
+const ColorPickerSwatches = ({ swatchLabel = defaultSwatchLabel, className, ...props }: ColorPickerSwatchesProps) => {
   const ctx = useColorPicker();
   if (ctx.swatches.length === 0) return null;
 
@@ -364,7 +371,7 @@ const ColorPickerSwatches = ({ className, ...props }: React.ComponentProps<'div'
             key={s}
             type="button"
             data-slot="color-picker-swatch"
-            aria-label={`Use ${s}`}
+            aria-label={swatchLabel(s)}
             aria-pressed={active}
             onClick={() => {
               ctx.setHex(s.toLowerCase());

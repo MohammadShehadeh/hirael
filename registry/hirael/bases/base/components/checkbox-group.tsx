@@ -12,6 +12,7 @@ import {
   InputGroupInput,
 } from '@/registry/hirael/bases/base/ui/input-group';
 import { Label } from '@/registry/hirael/bases/base/ui/label';
+import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
 
 interface ItemEntry {
   value: string;
@@ -112,17 +113,19 @@ const CheckboxGroup = ({
   'aria-invalid': ariaInvalid,
   ...props
 }: CheckboxGroupProps) => {
-  const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue ?? []);
-  const value = valueProp ?? internalValue;
+  const [value, setControlledValue] = useControllableState<string[]>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? [],
+    onChange: onValueChange,
+  });
   const [touched, setTouched] = React.useState(false);
 
   const setValue = React.useCallback(
     (next: string[]) => {
       setTouched(true);
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
+      setControlledValue(next);
     },
-    [valueProp, onValueChange],
+    [setControlledValue],
   );
 
   const [items, setItems] = React.useState<Map<string, ItemEntry>>(() => new Map());

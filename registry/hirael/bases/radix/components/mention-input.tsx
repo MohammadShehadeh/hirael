@@ -5,6 +5,7 @@ import * as React from 'react';
 import { cn } from '@/lib/utils';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export interface MentionItem {
   id: string;
@@ -210,15 +211,11 @@ const MentionInput = ({
 
   const triggers = React.useMemo(() => (Array.isArray(trigger) ? trigger : [trigger]), [trigger]);
 
-  const [internalValue, setInternalValue] = React.useState(defaultValue ?? '');
-  const value = valueProp ?? internalValue;
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue ?? '',
+    onChange: onValueChange,
+  });
 
   const [mention, setMention] = React.useState<ActiveMention | null>(null);
   const [activeIndex, setActiveIndex] = React.useState(0);

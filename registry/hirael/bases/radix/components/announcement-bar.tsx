@@ -27,7 +27,7 @@ const announcementBarVariants = cva(
     variants: {
       tone: {
         default: 'border-border bg-card text-card-foreground',
-        primary: 'border-foreground/15 bg-foreground text-background',
+        primary: 'border-primary bg-primary text-primary-foreground',
         muted: 'border-border bg-muted text-foreground',
       },
     },
@@ -116,7 +116,7 @@ const AnnouncementBar = ({
           aria-label={dismissLabel}
           className={cn(
             'absolute end-2 size-7',
-            isPrimary && 'text-background/70 hover:bg-background/10 hover:text-background',
+            isPrimary && 'text-primary-foreground/70 hover:bg-primary-foreground/10 hover:text-primary-foreground',
           )}
         >
           <X className="size-3.5" />

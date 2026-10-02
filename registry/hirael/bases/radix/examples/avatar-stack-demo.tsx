@@ -65,12 +65,12 @@ const AvatarStackDemo = () => {
             {t({
               en: (
                 <>
-                  <span className="font-medium text-foreground">9 collaborators</span> · last active 2m ago
+                  <span className="font-medium text-foreground">9 collaborators</span>, last active 2m ago
                 </>
               ),
               ar: (
                 <>
-                  <span className="font-medium text-foreground">9 متعاونين</span> · آخر نشاط قبل دقيقتين
+                  <span className="font-medium text-foreground">9 متعاونين</span>، آخر نشاط قبل دقيقتين
                 </>
               ),
             })}
@@ -79,9 +79,7 @@ const AvatarStackDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Clickable · asChild', ar: 'قابل للنقر · asChild' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Clickable', ar: 'قابل للنقر' })}</p>
         <AvatarStack>
           <AvatarStackItem asChild>
             <a href="#" aria-label={t({ en: 'Maya Renner', ar: 'سارة رينر' })}>

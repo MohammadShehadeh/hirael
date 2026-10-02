@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
 
 export interface MasonryColumns {
   base?: number;
@@ -66,14 +67,7 @@ const Masonry = ({
   const rafRef = React.useRef(0);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  const setContainerRef = React.useCallback(
-    (node: HTMLDivElement | null) => {
-      containerRef.current = node;
-      if (typeof ref === 'function') ref(node);
-      else if (ref) ref.current = node;
-    },
-    [ref],
-  );
+  const setContainerRef = React.useMemo(() => composeRefs(containerRef, ref), [ref]);
 
   // Layout effect so a client render settles on the measured column count before paint.
   React.useLayoutEffect(() => {

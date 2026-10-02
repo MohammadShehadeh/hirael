@@ -14,7 +14,7 @@ const KbdButton = ({ className, ...props }: React.ComponentProps<'button'>) => {
         '[-webkit-tap-highlight-color:transparent]',
         'shadow-[0_1px_0_1px_var(--border),0_2px_4px_-1px_color-mix(in_oklch,var(--foreground)_14%,transparent),0_4px_6px_-2px_color-mix(in_oklch,var(--foreground)_8%,transparent)]',
         'before:pointer-events-none before:absolute before:inset-x-[2px] before:top-[2px] before:h-[40%] before:rounded-t-md before:bg-linear-to-b before:from-primary/20 before:to-transparent',
-        'transition-all duration-100 ease-out',
+        'transition-[translate,box-shadow,filter] duration-100 ease-out',
         'hover:brightness-105',
         'hover:shadow-[0_1px_0_1px_var(--border),0_3px_6px_-1px_color-mix(in_oklch,var(--foreground)_17%,transparent),0_6px_10px_-2px_color-mix(in_oklch,var(--foreground)_10%,transparent)]',
         'active:translate-y-[2px] active:brightness-95',

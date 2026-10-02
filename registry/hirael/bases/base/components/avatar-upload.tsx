@@ -19,19 +19,7 @@ import {
   ImageCropperZoom,
   type ImageCropperRef,
 } from '@/registry/hirael/bases/base/components/image-cropper';
-
-const formatBytes = (bytes: number): string => {
-  if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'] as const;
-  let i = 0;
-  let n = bytes;
-  while (n >= 1024 && i < units.length - 1) {
-    n /= 1024;
-    i++;
-  }
-
-  return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
-};
+import { formatBytes } from '@/registry/hirael/bases/base/components/format-bytes';
 
 const readAsDataUrl = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -484,7 +472,7 @@ const AvatarUploadErrorMessage = ({ messages, className, ...props }: AvatarUploa
       role="alert"
       data-slot="avatar-upload-error"
       data-reason={ctx.error.reason}
-      className={cn('text-center text-[11px] text-destructive', className)}
+      className={cn('text-center text-sm text-destructive', className)}
       {...props}
     >
       {messages?.[ctx.error.reason] ?? ctx.error.message}

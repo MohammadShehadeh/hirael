@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
 
 type Orientation = 'horizontal' | 'vertical';
 type StepState = 'active' | 'completed' | 'inactive';
@@ -58,16 +59,11 @@ const Stepper = ({
   className,
   ...props
 }: StepperProps) => {
-  const [internal, setInternal] = React.useState(defaultValue);
-  const value = valueProp ?? internal;
-
-  const setValue = React.useCallback(
-    (step: number) => {
-      if (valueProp === undefined) setInternal(step);
-      onValueChange?.(step);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const ctx = React.useMemo<StepperCtx>(() => ({ value, setValue, orientation }), [value, setValue, orientation]);
 

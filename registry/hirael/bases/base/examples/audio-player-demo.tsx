@@ -60,9 +60,7 @@ const AudioPlayerDemo = () => {
       </MediaInput>
 
       <div className="grid gap-4">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Full player · composed', ar: 'مشغّل كامل · مركّب' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Full player', ar: 'مشغّل كامل' })}</p>
         <div className="rounded-md border border-border bg-card p-3">
           <AudioPlayer src={src}>
             <AudioPlayerSkip seconds={-15} />
@@ -78,9 +76,7 @@ const AudioPlayerDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Podcast row · minimal', ar: 'صفّ بودكاست · مبسّط' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Podcast row', ar: 'صفّ بودكاست' })}</p>
         <AudioPlayer src={src}>
           <AudioPlayerPlay />
           <AudioPlayerSeek />
@@ -89,9 +85,7 @@ const AudioPlayerDemo = () => {
       </div>
 
       <div className="grid gap-4">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Custom · useAudioPlayer', ar: 'مخصّص · useAudioPlayer' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Custom', ar: 'مخصّص' })}</p>
         <div className="rounded-md border border-border bg-card p-3">
           <AudioPlayer src={src}>
             <AudioPlayerPlay />

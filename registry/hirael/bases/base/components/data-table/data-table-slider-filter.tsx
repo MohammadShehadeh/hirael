@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils';
 import type { Column, RowData } from '@tanstack/react-table';
 import { PlusCircle, XCircle } from 'lucide-react';
 import * as React from 'react';
+import { useDataTableLabels } from './data-table-labels';
 
 type RangeValue = [number, number];
 
@@ -42,6 +43,7 @@ interface DataTableSliderFilterProps<TData extends RowData> {
 }
 
 export const DataTableSliderFilter = <TData extends RowData>({ column, title }: DataTableSliderFilterProps<TData>) => {
+  const labels = useDataTableLabels();
   const id = React.useId();
 
   const columnFilterValue = parseValuesAsNumbers(column.getFilterValue());
@@ -138,7 +140,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
           <Button
             variant="outline"
             size="sm"
-            aria-label={`Clear ${title} filter`}
+            aria-label={labels.clearFilter(title ?? '')}
             data-slot="data-table-slider-filter-reset"
             className="rounded-e-none border-e-0 border-dashed px-2"
             onClick={onReset}
@@ -175,7 +177,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
           <div className="flex items-center gap-4">
             <Field className="w-auto">
               <FieldLabel htmlFor={`${id}-from`} className="sr-only">
-                From
+                {labels.rangeFrom}
               </FieldLabel>
               <div className="relative">
                 <Input
@@ -208,7 +210,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
             </Field>
             <Field className="w-auto">
               <FieldLabel htmlFor={`${id}-to`} className="sr-only">
-                to
+                {labels.rangeTo}
               </FieldLabel>
               <div className="relative">
                 <Input
@@ -242,7 +244,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
           </div>
           <Field>
             <FieldLabel htmlFor={`${id}-slider`} className="sr-only">
-              {title} slider
+              {labels.rangeSlider(title ?? '')}
             </FieldLabel>
             <Slider
               id={`${id}-slider`}
@@ -254,8 +256,8 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
             />
           </Field>
         </FieldSet>
-        <Button aria-label={`Clear ${title} filter`} variant="outline" size="sm" onClick={onReset}>
-          Clear
+        <Button aria-label={labels.clearFilter(title ?? '')} variant="outline" size="sm" onClick={onReset}>
+          {labels.clearRange}
         </Button>
       </PopoverContent>
     </Popover>

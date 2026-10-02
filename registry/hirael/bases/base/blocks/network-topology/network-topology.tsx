@@ -26,7 +26,7 @@ const nodeDot: Record<NodeStatus, string> = {
 
 // Keyframes ship inline so copied edges animate without globals.css edits.
 const TOPOLOGY_KEYFRAMES = `
-@keyframes msh-network-dash {
+@keyframes hirael-network-dash {
   to { stroke-dashoffset: -14; }
 }
 `;
@@ -88,7 +88,7 @@ const NetworkEdge = ({ from, to, status = 'idle', animated, className, style, ..
       style={
         isAnimated
           ? {
-              animationName: 'msh-network-dash',
+              animationName: 'hirael-network-dash',
               animationDuration: '1s',
               animationTimingFunction: 'linear',
               animationIterationCount: 'infinite',

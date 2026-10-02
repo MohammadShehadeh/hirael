@@ -227,7 +227,6 @@ const PhoneInputField = ({
       value={ctx.national}
       placeholder={placeholder}
       disabled={ctx.disabled}
-      data-slot="phone-input-field"
       className={cn('rtl:text-right', className)}
       onChange={(e) => ctx.update({ country: ctx.country, national: e.target.value.replace(/[^\d\s]/g, '') })}
       onBlur={(e) => {

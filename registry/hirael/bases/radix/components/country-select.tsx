@@ -15,6 +15,7 @@ import {
   CommandSeparator,
 } from '@/registry/hirael/bases/radix/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
+import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
 
 export interface Country {
   iso2: string;
@@ -186,15 +187,11 @@ const CountrySelect = (props: CountrySelectProps) => {
   const [internal, setInternal] = React.useState<string[]>(() => toList(defaultValue));
   const selected = React.useMemo(() => (valueProp === undefined ? internal : toList(valueProp)), [valueProp, internal]);
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const onValueChange = props.onValueChange as ((value: string | string[]) => void) | undefined;
 

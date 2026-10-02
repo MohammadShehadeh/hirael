@@ -101,6 +101,38 @@ const clearFakeSelection = (editor: Editor) => {
   editor.view.dispatch(editor.state.tr.setMeta(fakeSelectionPluginKey, 'clear'));
 };
 
+const DEFAULT_LABELS = {
+  undo: 'Undo',
+  redo: 'Redo',
+  paragraph: 'Paragraph',
+  heading1: 'Heading 1',
+  heading2: 'Heading 2',
+  heading3: 'Heading 3',
+  bold: 'Bold',
+  italic: 'Italic',
+  underline: 'Underline',
+  strikethrough: 'Strikethrough',
+  code: 'Code',
+  highlight: 'Highlight',
+  alignLeft: 'Align left',
+  alignCenter: 'Align center',
+  alignRight: 'Align right',
+  justify: 'Justify',
+  bulletList: 'Bullet list',
+  orderedList: 'Ordered list',
+  blockquote: 'Blockquote',
+  horizontalRule: 'Horizontal rule',
+  link: 'Link',
+  applyLink: 'Apply link',
+  editLink: 'Edit link',
+  removeLink: 'Remove link',
+  cancel: 'Cancel',
+};
+
+export type RichTextEditorLabels = typeof DEFAULT_LABELS;
+
+const RichTextEditorLabelsContext = React.createContext<RichTextEditorLabels>(DEFAULT_LABELS);
+
 const RichTextEditorContext = React.createContext<Editor | null>(null);
 
 const useRichTextEditor = (): Editor => {
@@ -143,6 +175,8 @@ export interface RichTextEditorProps extends Omit<React.ComponentProps<'div'>, '
   onFocus?: () => void;
   onBlur?: () => void;
   className?: string;
+  /** Override the toolbar and link text, e.g. for another language. */
+  labels?: Partial<RichTextEditorLabels>;
   children?: React.ReactNode;
 }
 
@@ -157,9 +191,11 @@ const RichTextEditor = ({
   onFocus,
   onBlur,
   className,
+  labels,
   children,
   ...props
 }: RichTextEditorProps) => {
+  const resolvedLabels = React.useMemo(() => ({ ...DEFAULT_LABELS, ...labels }), [labels]);
   const isEditable = editable && !disabled;
 
   const onChangeRef = React.useRef(onValueChange ?? onChange);
@@ -254,24 +290,26 @@ const RichTextEditor = ({
 
   return (
     <RichTextEditorContext.Provider value={editor}>
-      <div
-        data-slot="rich-text-editor"
-        aria-disabled={disabled || undefined}
-        className={cn(
-          'rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40',
-          disabled && 'cursor-not-allowed opacity-50',
-          className,
-        )}
-        {...props}
-      >
-        {children ?? (
-          <>
-            {isEditable && <RichTextEditorToolbar />}
-            <RichTextEditorContent />
-            {isEditable && <RichTextEditorLinkBubble />}
-          </>
-        )}
-      </div>
+      <RichTextEditorLabelsContext.Provider value={resolvedLabels}>
+        <div
+          data-slot="rich-text-editor"
+          aria-disabled={disabled || undefined}
+          className={cn(
+            'rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40',
+            disabled && 'cursor-not-allowed opacity-50',
+            className,
+          )}
+          {...props}
+        >
+          {children ?? (
+            <>
+              {isEditable && <RichTextEditorToolbar />}
+              <RichTextEditorContent />
+              {isEditable && <RichTextEditorLinkBubble />}
+            </>
+          )}
+        </div>
+      </RichTextEditorLabelsContext.Provider>
     </RichTextEditorContext.Provider>
   );
 };
@@ -354,6 +392,7 @@ const RichTextEditorSeparator = ({ className, ...props }: React.ComponentProps<t
 };
 
 const RichTextEditorLinkPopover = () => {
+  const labels = React.useContext(RichTextEditorLabelsContext);
   const editor = useRichTextEditor();
   const [open, setOpen] = React.useState(false);
   const [url, setUrl] = React.useState('');
@@ -397,13 +436,15 @@ const RichTextEditorLinkPopover = () => {
         <TooltipTrigger
           render={
             <PopoverTrigger
-              render={<Toggle data-slot="rich-text-editor-link-trigger" size="sm" pressed={isLink} aria-label="Link" />}
+              render={
+                <Toggle data-slot="rich-text-editor-link-trigger" size="sm" pressed={isLink} aria-label={labels.link} />
+              }
             />
           }
         >
           <LinkIcon className="size-4" />
         </TooltipTrigger>
-        <TooltipContent side="top">Link</TooltipContent>
+        <TooltipContent side="top">{labels.link}</TooltipContent>
       </Tooltip>
 
       <PopoverContent
@@ -427,11 +468,11 @@ const RichTextEditorLinkPopover = () => {
             onChange={(e) => setUrl(e.target.value)}
             className="h-8 text-sm"
           />
-          <Button type="submit" variant="ghost" size="icon-sm" aria-label="Apply link">
+          <Button type="submit" variant="ghost" size="icon-sm" aria-label={labels.applyLink}>
             <Check className="size-4" />
           </Button>
           {isLink && (
-            <Button type="button" variant="ghost" size="icon-sm" aria-label="Remove link" onClick={removeLink}>
+            <Button type="button" variant="ghost" size="icon-sm" aria-label={labels.removeLink} onClick={removeLink}>
               <Trash2 className="size-4 text-destructive" />
             </Button>
           )}
@@ -447,6 +488,7 @@ interface LinkTarget {
 }
 
 const RichTextEditorLinkBubble = () => {
+  const labels = React.useContext(RichTextEditorLabelsContext);
   const editor = useRichTextEditor();
   const [target, setTarget] = React.useState<LinkTarget | null>(null);
   const [editing, setEditing] = React.useState(false);
@@ -611,7 +653,7 @@ const RichTextEditorLinkBubble = () => {
     <div
       data-slot="rich-text-editor-link-bubble"
       role="dialog"
-      aria-label="Link"
+      aria-label={labels.link}
       onMouseEnter={clearHide}
       onMouseLeave={scheduleHide}
       onKeyDown={(e) => {
@@ -646,10 +688,16 @@ const RichTextEditorLinkBubble = () => {
             onChange={(e) => setDraft(e.target.value)}
             className="h-8 w-56 text-sm"
           />
-          <Button type="submit" variant="ghost" size="icon-sm" aria-label="Apply">
+          <Button type="submit" variant="ghost" size="icon-sm" aria-label={labels.applyLink}>
             <Check className="size-4" />
           </Button>
-          <Button type="button" variant="ghost" size="icon-sm" aria-label="Cancel" onClick={() => setEditing(false)}>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label={labels.cancel}
+            onClick={() => setEditing(false)}
+          >
             <X className="size-4" />
           </Button>
         </form>
@@ -670,7 +718,7 @@ const RichTextEditorLinkBubble = () => {
             type="button"
             variant="ghost"
             size="icon-sm"
-            aria-label="Edit link"
+            aria-label={labels.editLink}
             onClick={() => {
               setDraft(target.href);
               setEditing(true);
@@ -678,7 +726,7 @@ const RichTextEditorLinkBubble = () => {
           >
             <Pencil className="size-4" />
           </Button>
-          <Button type="button" variant="ghost" size="icon-sm" aria-label="Remove link" onClick={removeLink}>
+          <Button type="button" variant="ghost" size="icon-sm" aria-label={labels.removeLink} onClick={removeLink}>
             <Unlink className="size-4" />
           </Button>
         </>
@@ -689,6 +737,7 @@ const RichTextEditorLinkBubble = () => {
 };
 
 const DefaultToolbar = () => {
+  const labels = React.useContext(RichTextEditorLabelsContext);
   const editor = useRichTextEditor();
   const state = useEditorState({
     editor,
@@ -718,14 +767,14 @@ const DefaultToolbar = () => {
   return (
     <>
       <RichTextEditorButton
-        tooltip="Undo"
+        tooltip={labels.undo}
         onPressedChange={() => editor.chain().focus().undo().run()}
         disabled={!state.canUndo}
       >
         <Undo className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Redo"
+        tooltip={labels.redo}
         onPressedChange={() => editor.chain().focus().redo().run()}
         disabled={!state.canRedo}
       >
@@ -735,28 +784,28 @@ const DefaultToolbar = () => {
       <RichTextEditorSeparator />
 
       <RichTextEditorButton
-        tooltip="Paragraph"
+        tooltip={labels.paragraph}
         pressed={state.isParagraph}
         onPressedChange={() => editor.chain().focus().setParagraph().run()}
       >
         <Pilcrow className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Heading 1"
+        tooltip={labels.heading1}
         pressed={state.isHeading1}
         onPressedChange={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
       >
         <Heading1 className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Heading 2"
+        tooltip={labels.heading2}
         pressed={state.isHeading2}
         onPressedChange={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
       >
         <Heading2 className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Heading 3"
+        tooltip={labels.heading3}
         pressed={state.isHeading3}
         onPressedChange={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
       >
@@ -766,42 +815,42 @@ const DefaultToolbar = () => {
       <RichTextEditorSeparator />
 
       <RichTextEditorButton
-        tooltip="Bold"
+        tooltip={labels.bold}
         pressed={state.isBold}
         onPressedChange={() => editor.chain().focus().toggleBold().run()}
       >
         <Bold className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Italic"
+        tooltip={labels.italic}
         pressed={state.isItalic}
         onPressedChange={() => editor.chain().focus().toggleItalic().run()}
       >
         <Italic className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Underline"
+        tooltip={labels.underline}
         pressed={state.isUnderline}
         onPressedChange={() => editor.chain().focus().toggleUnderline().run()}
       >
         <UnderlineIcon className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Strikethrough"
+        tooltip={labels.strikethrough}
         pressed={state.isStrike}
         onPressedChange={() => editor.chain().focus().toggleStrike().run()}
       >
         <Strikethrough className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Code"
+        tooltip={labels.code}
         pressed={state.isCode}
         onPressedChange={() => editor.chain().focus().toggleCode().run()}
       >
         <Code className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Highlight"
+        tooltip={labels.highlight}
         pressed={state.isHighlight}
         onPressedChange={() => editor.chain().focus().toggleHighlight().run()}
       >
@@ -815,28 +864,28 @@ const DefaultToolbar = () => {
       <RichTextEditorSeparator />
 
       <RichTextEditorButton
-        tooltip="Align left"
+        tooltip={labels.alignLeft}
         pressed={state.isAlignLeft}
         onPressedChange={() => editor.chain().focus().setTextAlign('left').run()}
       >
         <AlignLeft className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Align center"
+        tooltip={labels.alignCenter}
         pressed={state.isAlignCenter}
         onPressedChange={() => editor.chain().focus().setTextAlign('center').run()}
       >
         <AlignCenter className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Align right"
+        tooltip={labels.alignRight}
         pressed={state.isAlignRight}
         onPressedChange={() => editor.chain().focus().setTextAlign('right').run()}
       >
         <AlignRight className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Justify"
+        tooltip={labels.justify}
         pressed={state.isAlignJustify}
         onPressedChange={() => editor.chain().focus().setTextAlign('justify').run()}
       >
@@ -846,28 +895,28 @@ const DefaultToolbar = () => {
       <RichTextEditorSeparator />
 
       <RichTextEditorButton
-        tooltip="Bullet list"
+        tooltip={labels.bulletList}
         pressed={state.isBulletList}
         onPressedChange={() => editor.chain().focus().toggleBulletList().run()}
       >
         <List className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Ordered list"
+        tooltip={labels.orderedList}
         pressed={state.isOrderedList}
         onPressedChange={() => editor.chain().focus().toggleOrderedList().run()}
       >
         <ListOrdered className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Blockquote"
+        tooltip={labels.blockquote}
         pressed={state.isBlockquote}
         onPressedChange={() => editor.chain().focus().toggleBlockquote().run()}
       >
         <Quote className="size-4" />
       </RichTextEditorButton>
       <RichTextEditorButton
-        tooltip="Horizontal rule"
+        tooltip={labels.horizontalRule}
         onPressedChange={() => editor.chain().focus().setHorizontalRule().run()}
       >
         <Minus className="size-4" />

@@ -21,9 +21,7 @@ const TagInputEmails = () => {
 
   return (
     <Field className="max-w-md gap-2">
-      <FieldLabel htmlFor="email-tags-field">
-        {t({ en: 'Email tags · validated', ar: 'وسوم بريد · مُتحقق منها' })}
-      </FieldLabel>
+      <FieldLabel htmlFor="email-tags-field">{t({ en: 'Email tags', ar: 'وسوم بريد' })}</FieldLabel>
       <TagInput
         value={emails}
         onValueChange={setEmails}

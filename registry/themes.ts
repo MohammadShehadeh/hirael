@@ -15,6 +15,29 @@ export const HIRAEL_THEME: ThemeItem = {
   cssVars: { light: {}, dark: {} },
 };
 
+// Picker swatches can't read Hirael's colors from the live CSS variables, since those change to whatever theme is picked.
+// So they copy the values from app/globals.css, and a test keeps the two in sync.
+export const HIRAEL_SWATCH_TOKENS: ThemeItem['cssVars'] = {
+  light: {
+    primary: 'oklch(0.78 0.14 78)',
+    'muted-foreground': 'oklch(0.495 0.029 263.2)',
+    'chart-1': 'oklch(0.72 0.14 75)',
+    'chart-2': 'oklch(0.5 0.2 260)',
+    'chart-3': 'oklch(0.656 0.024 256.8)',
+    'chart-4': 'oklch(0.61 0.021 80.1)',
+    'chart-5': 'oklch(0.434 0.023 262.9)',
+  },
+  dark: {
+    primary: 'oklch(0.82 0.135 78)',
+    'muted-foreground': 'oklch(0.704 0.021 263)',
+    'chart-1': 'oklch(0.82 0.135 78)',
+    'chart-2': 'oklch(0.62 0.19 260)',
+    'chart-3': 'oklch(0.656 0.024 256.8)',
+    'chart-4': 'oklch(0.61 0.021 80.1)',
+    'chart-5': 'oklch(0.434 0.023 262.9)',
+  },
+};
+
 export const THEMES: ThemeItem[] = [
   HIRAEL_THEME,
   {

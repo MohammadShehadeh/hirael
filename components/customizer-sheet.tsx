@@ -5,9 +5,10 @@ import { RotateCcw, SlidersHorizontal } from 'lucide-react';
 
 import { BASES, ICON_LIBRARIES, RADII, formatThemeCss, type CustomizerConfig } from '@/lib/customizer';
 import { FONTS } from '@/lib/fonts';
+import { themeSwatch, type SwatchKind } from '@/lib/theme-swatch';
 import { getShadcnInitCommand, usePackageManager } from '@/lib/package-managers';
 import { BASE_COLORS, getThemesForBaseColor, isBaseColor } from '@/registry/base-colors';
-import type { ThemeItem } from '@/registry/themes';
+
 import { useTheme } from '@/components/active-theme';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
@@ -53,7 +54,7 @@ export const CustomizerTrigger = ({ className }: CustomizerTriggerProps) => {
 };
 
 const CustomizerBody = () => {
-  const { config, tokens, isDefault, setConfig, reset } = useTheme();
+  const { config, tokens, isDefault, mode, setConfig, reset } = useTheme();
   const { packageManager } = usePackageManager();
 
   const themes = getThemesForBaseColor(config.baseColor);
@@ -61,11 +62,11 @@ const CustomizerBody = () => {
   const initCommand = getShadcnInitCommand(packageManager, `--base ${config.base}`);
   const setup = `${initCommand}\n\n// components.json\n"iconLibrary": "${config.iconLibrary}"`;
 
-  const buildThemeItems = (getSwatch: (theme: ThemeItem) => string): PickerItem[] =>
+  const buildThemeItems = (kind: SwatchKind): PickerItem[] =>
     themes.map((theme, index) => ({
       value: theme.name,
       label: theme.title,
-      swatch: getSwatch(theme),
+      swatch: themeSwatch(theme, kind, mode),
       separatorAfter: index === 0 && isBaseColor(theme.name),
     }));
 
@@ -131,7 +132,7 @@ const CustomizerBody = () => {
                 items={BASE_COLORS.map((baseColor) => ({
                   value: baseColor.name,
                   label: baseColor.title,
-                  swatch: baseColor.cssVars.light.background ?? 'var(--background)',
+                  swatch: themeSwatch(baseColor, 'base', mode),
                 }))}
               />
             </Row>
@@ -140,7 +141,7 @@ const CustomizerBody = () => {
                 ariaLabel="Theme"
                 value={config.theme}
                 onValueChange={(theme) => setConfig({ theme })}
-                items={buildThemeItems((theme) => theme.cssVars.light.primary ?? 'var(--primary)')}
+                items={buildThemeItems('theme')}
               />
             </Row>
             <Row label="Chart color">
@@ -148,7 +149,7 @@ const CustomizerBody = () => {
                 ariaLabel="Chart color"
                 value={config.chartColor}
                 onValueChange={(chartColor) => setConfig({ chartColor })}
-                items={buildThemeItems((theme) => theme.cssVars.light['chart-1'] ?? 'var(--chart-1)')}
+                items={buildThemeItems('chart')}
               />
             </Row>
             <Row label="Font">

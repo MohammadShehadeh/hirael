@@ -38,7 +38,7 @@ import {
 } from '@/registry/hirael/bases/radix/ui/item';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import { EmojiPicker, EmojiPickerList, EmojiPickerSearch } from '@/registry/hirael/bases/radix/components/emoji-picker';
-import { formatBytes } from '@/registry/hirael/bases/radix/components/format-bytes';
+import { formatBytes } from '@/registry/hirael/lib/format-bytes';
 
 export type ChatMessageStatus = 'sent' | 'delivered' | 'read';
 export type ChatAttachmentKind = 'image' | 'file';

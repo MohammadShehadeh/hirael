@@ -6,7 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface YearRange {
   from: number;

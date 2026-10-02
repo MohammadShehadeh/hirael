@@ -3,8 +3,8 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 const INDICATOR_DURATION = 250;
 const INDICATOR_EASING = 'cubic-bezier(0.22, 1, 0.36, 1)';

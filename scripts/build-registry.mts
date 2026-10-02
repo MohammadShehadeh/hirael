@@ -23,6 +23,8 @@ import { ALL_ENTRIES, BRAND, REGISTRY_BASE_URL, ROOT, isShowcased, jsonText, typ
 const registryJsonPath = (base: RegistryBase) =>
   path.join(ROOT, base === 'radix' ? 'registry.json' : `registry.${base}.json`);
 const COMPONENTS_DIR = 'components/';
+const HOOKS_DIR = 'hooks/';
+const LIB_DIR = 'lib/';
 
 const ITEM_NAMES = new Set(ALL_ENTRIES.map((entry) => entry.name));
 
@@ -33,9 +35,11 @@ const deriveType = (entry: RegistryEntry): RegistryItem['type'] => {
   if (!isShowcased(entry)) return entry.type;
   if (isComposite(entry)) return 'registry:block';
   const files = entry.files ?? [];
-  const isOwnComponent = files.length > 0 && files.every((f) => f.path.startsWith(COMPONENTS_DIR));
+  const allUnder = (dir: string) => files.length > 0 && files.every((f) => f.path.startsWith(dir));
+  if (allUnder(HOOKS_DIR)) return 'registry:hook';
+  if (allUnder(LIB_DIR)) return 'registry:lib';
 
-  return isOwnComponent ? 'registry:component' : 'registry:ui';
+  return allUnder(COMPONENTS_DIR) ? 'registry:component' : 'registry:ui';
 };
 
 const deriveCategories = (entry: RegistryEntry): string[] => {
@@ -49,9 +53,11 @@ const deriveCategories = (entry: RegistryEntry): string[] => {
   return [entry.category];
 };
 
-// Hirael components keep their sub-path so multi-file kits install as folders.
+// Hirael components, hooks and utilities keep their sub-path so multi-file kits install as folders.
 const deriveTarget = (sourcePath: string) =>
-  sourcePath.startsWith(COMPONENTS_DIR) ? sourcePath : `components/ui/${path.basename(sourcePath)}`;
+  [COMPONENTS_DIR, HOOKS_DIR, LIB_DIR].some((dir) => sourcePath.startsWith(dir))
+    ? sourcePath
+    : `components/ui/${path.basename(sourcePath)}`;
 
 // shadcn primitives stay bare so consumers keep their own copy; hirael deps point at the same base's payloads.
 const resolveDependency = (base: RegistryBase, dep: string) =>

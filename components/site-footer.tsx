@@ -24,6 +24,7 @@ const FOOTER_LINKS: FooterLinkGroup[] = [
       { href: '/components', label: 'Components' },
       { href: '/blocks', label: 'Blocks' },
       { href: '/templates', label: 'Templates' },
+      { href: '/utilities', label: 'Hooks & utilities' },
     ],
   },
   {
@@ -56,6 +57,7 @@ const COMPACT_LINKS: FooterLink[] = [
   { href: '/components', label: 'Components' },
   { href: '/blocks', label: 'Blocks' },
   { href: '/templates', label: 'Templates' },
+  { href: '/utilities', label: 'Utilities' },
   { href: '/changelog', label: 'Changelog' },
   { href: '/llms.txt', label: 'llms.txt', isExternal: true },
 ];

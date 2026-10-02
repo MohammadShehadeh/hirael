@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { animate, type HTMLMotionProps, motion, useReducedMotion } from 'motion/react';
-import { observeReveal } from '@/registry/hirael/bases/radix/components/reveal-observer';
+import { observeReveal } from '@/registry/hirael/lib/reveal-observer';
 
 export type ScrollRevealDirection = 'up' | 'down' | 'left' | 'right' | 'start' | 'end';
 

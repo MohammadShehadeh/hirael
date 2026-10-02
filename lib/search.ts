@@ -195,7 +195,11 @@ export const buildSearchIndex = (entries: RegistryEntryMeta[]): SearchDoc[] =>
       kindLabel,
       entry.blockKind ?? '',
       entry.category === 'blocks' ? 'block section' : '',
-      entry.category === 'templates' ? 'template page' : 'component',
+      entry.category === 'templates'
+        ? 'template page'
+        : entry.category === 'utilities'
+          ? 'react hook utility helper'
+          : 'component',
     ].join(' ');
 
     return {

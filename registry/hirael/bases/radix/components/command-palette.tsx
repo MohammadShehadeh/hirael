@@ -15,7 +15,7 @@ import {
   CommandSeparator,
 } from '@/registry/hirael/bases/radix/ui/command';
 import { Kbd } from '@/registry/hirael/bases/radix/ui/kbd';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface CommandPaletteRecent {
   id: string;

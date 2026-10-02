@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 type Orientation = 'horizontal' | 'vertical';
 type StepState = 'active' | 'completed' | 'inactive';

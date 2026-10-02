@@ -5,7 +5,7 @@ import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface LightboxItem {
   src: string;

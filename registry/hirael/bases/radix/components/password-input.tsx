@@ -10,7 +10,7 @@ import {
   InputGroupButton,
   InputGroupInput,
 } from '@/registry/hirael/bases/radix/ui/input-group';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface PasswordStrength {
   score: number;

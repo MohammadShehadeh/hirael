@@ -10,7 +10,7 @@ import {
   InputGroupText,
 } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Slider } from '@/registry/hirael/bases/radix/ui/slider';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type NumberRangeValue = [number, number];
 

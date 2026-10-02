@@ -5,7 +5,7 @@ import { ChevronRight, File, Folder, FolderOpen } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/registry/hirael/bases/base/ui/collapsible';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface TreeCtx {
   selected: string | undefined;

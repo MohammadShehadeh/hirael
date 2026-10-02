@@ -18,7 +18,7 @@ import { GripVertical } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useSortableSensors } from '@/registry/hirael/bases/base/components/sortable';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type KanbanValue = Record<string, string[]>;
 

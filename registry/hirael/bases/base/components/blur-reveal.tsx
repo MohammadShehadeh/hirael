@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { animate, type HTMLMotionProps, motion, useReducedMotion } from 'motion/react';
-import { observeReveal } from '@/registry/hirael/bases/base/components/reveal-observer';
+import { observeReveal } from '@/registry/hirael/lib/reveal-observer';
 
 export interface BlurRevealProps extends HTMLMotionProps<'div'> {
   /** Delay before the reveal starts, in ms. */

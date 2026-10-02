@@ -14,7 +14,7 @@ import {
   InputGroupTextarea,
 } from '@/registry/hirael/bases/base/ui/input-group';
 import { Rating } from '@/registry/hirael/bases/base/components/rating';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type ChatMessageStatus = 'sent' | 'delivered' | 'read';
 

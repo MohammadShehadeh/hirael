@@ -8,7 +8,7 @@ import {
   InputGroupInput,
   InputGroupText,
 } from '@/registry/hirael/bases/base/ui/input-group';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 const resolveCurrencySymbol = (currency: string, locale: string): string => {
   try {

@@ -12,7 +12,7 @@ import {
 } from '@/registry/hirael/bases/radix/components/country-select';
 import { Field, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type AddressField = 'line1' | 'line2' | 'city' | 'region' | 'postalCode';
 

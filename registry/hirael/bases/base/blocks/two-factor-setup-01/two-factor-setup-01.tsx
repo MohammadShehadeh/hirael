@@ -11,7 +11,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/b
 import { CopyButton } from '@/registry/hirael/bases/base/components/copy-button';
 import { QRCode } from '@/registry/hirael/bases/base/components/qr-code';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';

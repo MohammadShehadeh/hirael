@@ -5,7 +5,10 @@ const setRef = <T>(ref: React.Ref<T> | undefined, node: T | null) => {
   if (ref) ref.current = node;
 };
 
-/** Merges refs, returning React 19 callback-ref cleanups so consumer refs are torn down, not called with null. */
+/**
+ * Merges refs, returning React 19 callback-ref cleanups so consumer refs are torn down, not called with null.
+ * @param refs Object or callback refs to receive the node; `undefined` entries are skipped.
+ */
 export const composeRefs =
   <T>(...refs: (React.Ref<T> | undefined)[]): React.RefCallback<T> =>
   (node) => {

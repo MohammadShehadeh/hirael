@@ -6,7 +6,7 @@ import { ArrowRight, ChevronsUpDown, Columns2, Rows3 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type DiffLineType = 'equal' | 'add' | 'remove';
 

@@ -20,7 +20,7 @@ const exportedNames = (code: string): string[] => {
 /** Must match `deriveTarget` in scripts/build-registry.mts. */
 export const installTarget = (file: RegistryFileMeta): string => {
   if (file.target) return file.target;
-  if (file.path.startsWith('components/')) return file.path;
+  if (['components/', 'hooks/', 'lib/'].some((dir) => file.path.startsWith(dir))) return file.path;
 
   return `components/ui/${file.path.split('/').pop()}`;
 };
@@ -39,8 +39,10 @@ export const buildUsageCode = (
     const code = readCode(file.path);
     if (!code) continue;
     const exported = exportedNames(code);
+    // Hooks and utilities document every export; components list their parts and any hooks.
+    const isShared = file.path.startsWith('hooks/') || file.path.startsWith('lib/');
     const components = exported.filter((name) => (documented.size ? documented.has(name) : isComponent(name)));
-    const names = [...components, ...exported.filter(isHook)];
+    const names = isShared ? exported : [...new Set([...components, ...exported.filter(isHook)])];
     if (!names.length) continue;
 
     const specifier = `@/${installTarget(file).replace(/\.tsx?$/, '')}`;

@@ -44,6 +44,10 @@ primitive is touched, otherwise `asChild` → `render`, `data-[state=…]` →
 Positioner + Popup, menu `onSelect` → `onClick`. Never change one tree only
 unless the difference is deliberate.
 
+Hooks and utilities touch no primitive, so they live once in
+`registry/hirael/hooks/` and `registry/hirael/lib/` and build into both
+registries. They may not import from either base; `check:registry` enforces it.
+
 ## Item shape
 
 - **Compound API.** Flat parts, no namespacing; the bare `Name` holds state.

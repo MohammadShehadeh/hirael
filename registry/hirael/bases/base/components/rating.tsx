@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Star } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface RatingContextValue {
   value: number;

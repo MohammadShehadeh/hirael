@@ -9,8 +9,8 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface InlineEditCtx {
   value: string;

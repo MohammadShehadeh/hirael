@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Calendar } from '@/registry/hirael/bases/radix/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface DatePickerContextValue {
   value: Date | undefined;

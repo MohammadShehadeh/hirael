@@ -8,7 +8,7 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from '@/registry/hirael/bases/base/ui/command';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface LazySelectOption {
   value: string;

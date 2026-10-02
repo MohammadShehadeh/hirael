@@ -4,8 +4,8 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface MentionItem {
   id: string;

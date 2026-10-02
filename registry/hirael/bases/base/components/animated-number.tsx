@@ -3,7 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { useReducedMotion } from '@/registry/hirael/bases/base/components/use-reduced-motion';
+import { useReducedMotion } from '@/registry/hirael/hooks/use-reduced-motion';
 
 export interface AnimatedNumberProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   /** Target value to animate toward. */

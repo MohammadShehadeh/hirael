@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/radix/ui/tabs';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface TimeValue {
   hour: number;

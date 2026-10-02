@@ -10,7 +10,7 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/base/ui/tabs';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type ColorFormat = 'hex' | 'rgb' | 'hsl';
 

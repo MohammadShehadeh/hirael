@@ -6,9 +6,9 @@ import { AnimatePresence, type HTMLMotionProps, MotionConfig, motion } from 'mot
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface MorphingDialogContextValue {
   isOpen: boolean;

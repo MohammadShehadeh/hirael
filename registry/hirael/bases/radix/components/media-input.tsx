@@ -5,8 +5,8 @@ import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { formatBytes } from '@/registry/hirael/bases/radix/components/format-bytes';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { formatBytes } from '@/registry/hirael/lib/format-bytes';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface MediaInputValue {
   file: File;

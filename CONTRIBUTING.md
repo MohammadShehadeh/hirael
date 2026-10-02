@@ -77,6 +77,11 @@ Most files are identical in both folders. They only differ where a Radix or
 Base UI primitive is used directly. You write the Radix version first, then
 port it. [Porting to Base UI](#porting-to-base-ui) lists the usual changes.
 
+Hooks and utilities, such as `useControllableState` or `formatBytes`, don't
+use any primitive, so they are written once in `registry/hirael/hooks/` or
+`registry/hirael/lib/` and published for both. They can't import anything from
+`bases/`.
+
 ### Folder structure
 
 ```text
@@ -87,6 +92,8 @@ registry/hirael/
     blocks/          page sections (heroes, pricing tables, dashboards, ...)
     templates/       complete pages
     examples/        the demos shown on the website
+  hooks/             hooks shared by both versions
+  lib/               plain helpers shared by both versions
   registry-meta.ts   the list of everything Hirael publishes
   tests/             component tests
 content/changelog/   one file per release

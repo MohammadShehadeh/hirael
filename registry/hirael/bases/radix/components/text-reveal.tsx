@@ -4,7 +4,7 @@ import * as React from 'react';
 import { animate, stagger as staggerDelay, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
-import { observeReveal } from '@/registry/hirael/bases/radix/components/reveal-observer';
+import { observeReveal } from '@/registry/hirael/lib/reveal-observer';
 
 export type TextRevealBy = 'word' | 'char' | 'line';
 

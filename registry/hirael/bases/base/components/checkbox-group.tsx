@@ -12,7 +12,7 @@ import {
   InputGroupInput,
 } from '@/registry/hirael/bases/base/ui/input-group';
 import { Label } from '@/registry/hirael/bases/base/ui/label';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface ItemEntry {
   value: string;

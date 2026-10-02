@@ -12,7 +12,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/base/ui/dropdown-menu';
-import { formatBytes } from '@/registry/hirael/bases/base/components/format-bytes';
+import { formatBytes } from '@/registry/hirael/lib/format-bytes';
 
 export interface PromptAttachment {
   id: string;

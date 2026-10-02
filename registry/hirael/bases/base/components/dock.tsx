@@ -13,7 +13,7 @@ import {
 } from 'motion/react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
 interface DockContextValue {
   mouseX: MotionValue<number>;

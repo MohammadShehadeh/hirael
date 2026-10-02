@@ -4,7 +4,7 @@ import * as React from 'react';
 import { type HTMLMotionProps, type Variants, MotionConfig, motion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type FabSide = 'top' | 'bottom' | 'left' | 'right';
 

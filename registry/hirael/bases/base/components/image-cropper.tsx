@@ -5,7 +5,7 @@ import Cropper, { type Area, type Point } from 'react-easy-crop';
 
 import { cn } from '@/lib/utils';
 import { Slider } from '@/registry/hirael/bases/base/ui/slider';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type ImageCropperCrop = Point;
 

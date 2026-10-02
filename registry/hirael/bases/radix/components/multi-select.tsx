@@ -17,7 +17,7 @@ import {
 } from '@/registry/hirael/bases/radix/ui/command';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { InputGroup } from '@/registry/hirael/bases/radix/ui/input-group';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface MultiSelectOption {
   value: string;

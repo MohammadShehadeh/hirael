@@ -4,10 +4,10 @@ import * as React from 'react';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { InputGroup } from '@/registry/hirael/bases/base/ui/input-group';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type TagValidator = (candidate: string, current: string[]) => true | string;
 

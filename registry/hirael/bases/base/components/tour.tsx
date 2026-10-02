@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface TourStep {
   target: string | React.RefObject<HTMLElement | null>;

@@ -14,7 +14,7 @@ import {
   CommandList,
 } from '@/registry/hirael/bases/radix/ui/command';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface LazySelectOption {
   value: string;

@@ -1,5 +1,14 @@
 export type ComponentCategory =
-  'inputs' | 'pickers' | 'files' | 'data' | 'display' | 'animation' | 'navigation' | 'blocks' | 'templates';
+  | 'inputs'
+  | 'pickers'
+  | 'files'
+  | 'data'
+  | 'display'
+  | 'animation'
+  | 'navigation'
+  | 'utilities'
+  | 'blocks'
+  | 'templates';
 
 export type BlockKind =
   | 'hero'
@@ -4883,6 +4892,46 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ['badge', 'button', 'dropdown-menu', 'input-group', 'sheet', 'alert-dialog'],
     dependencies: ['lucide-react'],
   },
+  {
+    name: 'use-controllable-state',
+    title: 'useControllableState',
+    description:
+      'A value that is controlled through a prop or kept internally, with one setter that updates either and reports the change. The pattern behind value and defaultValue.',
+    category: 'utilities',
+    files: [{ path: 'hooks/use-controllable-state.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'use-reduced-motion',
+    title: 'useReducedMotion',
+    description:
+      'Live prefers-reduced-motion match without an animation library. Renders false on the server, so hydration never mismatches, and updates when the setting changes.',
+    category: 'utilities',
+    files: [{ path: 'hooks/use-reduced-motion.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'compose-refs',
+    title: 'composeRefs',
+    description:
+      'Merges several refs into one callback ref, so a part can keep its own ref and still forward the element. Returns React 19 ref cleanups.',
+    category: 'utilities',
+    files: [{ path: 'lib/compose-refs.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'format-bytes',
+    title: 'formatBytes',
+    description:
+      'Human-readable file sizes in binary steps, such as 1.5 KB or 12.0 MB, for upload lists and storage meters.',
+    category: 'utilities',
+    files: [{ path: 'lib/format-bytes.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
 ];
 
 /** Installable through the registry but not showcased on the site. */
@@ -4890,7 +4939,7 @@ export interface DistributionOnlyEntry {
   name: string;
   title: string;
   description: string;
-  type: 'registry:ui' | 'registry:component' | 'registry:block' | 'registry:theme';
+  type: 'registry:ui' | 'registry:component' | 'registry:lib' | 'registry:block' | 'registry:theme';
   /** Raw registry.json categories. */
   categories: string[];
   /** Optional because a `registry:theme` item ships only `cssVars`. */
@@ -4902,6 +4951,17 @@ export interface DistributionOnlyEntry {
 
 export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
   {
+    name: 'reveal-observer',
+    title: 'Reveal Observer',
+    description:
+      'One shared IntersectionObserver per threshold for scroll reveals, so a page of reveal components costs a handful of observers.',
+    type: 'registry:lib',
+    categories: ['primitives'],
+    files: [{ path: 'lib/reveal-observer.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
     name: 'accordion',
     title: 'Accordion',
     description: 'Radix-powered accordion primitive used by the FAQ blocks. Plus icon rotates to an X on open.',
@@ -4910,59 +4970,6 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
     files: [{ path: 'ui/accordion.tsx' }],
     registryDependencies: [],
     dependencies: ['radix-ui', 'lucide-react'],
-  },
-  {
-    name: 'compose-refs',
-    title: 'Compose Refs',
-    description:
-      'Fans one node out to several refs, so a part can keep its own internal ref while still forwarding the element to the consumer.',
-    type: 'registry:component',
-    categories: ['primitives'],
-    files: [{ path: 'components/compose-refs.ts' }],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: 'use-controllable-state',
-    title: 'Use Controllable State',
-    description:
-      'A value that is either controlled through a prop or kept internally, with one setter that updates both and reports the change.',
-    type: 'registry:component',
-    categories: ['primitives'],
-    files: [{ path: 'components/use-controllable-state.ts' }],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: 'use-reduced-motion',
-    title: 'Use Reduced Motion',
-    description: 'Live prefers-reduced-motion match that renders false on the server, so hydration never mismatches.',
-    type: 'registry:component',
-    categories: ['primitives'],
-    files: [{ path: 'components/use-reduced-motion.ts' }],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: 'reveal-observer',
-    title: 'Reveal Observer',
-    description:
-      'One shared IntersectionObserver per threshold for scroll reveals, so a page of reveal components costs a handful of observers.',
-    type: 'registry:component',
-    categories: ['primitives'],
-    files: [{ path: 'components/reveal-observer.ts' }],
-    registryDependencies: [],
-    dependencies: [],
-  },
-  {
-    name: 'format-bytes',
-    title: 'Format Bytes',
-    description: 'Human-readable file sizes in binary steps, such as 1.5 KB or 12.0 MB.',
-    type: 'registry:component',
-    categories: ['primitives'],
-    files: [{ path: 'components/format-bytes.ts' }],
-    registryDependencies: [],
-    dependencies: [],
   },
   {
     name: 'theme-emerald',
@@ -5001,6 +5008,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   display: 'Display',
   animation: 'Animation',
   navigation: 'Navigation',
+  utilities: 'Hooks & utilities',
   blocks: 'Blocks',
   templates: 'Templates',
 };
@@ -5014,6 +5022,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     display: [],
     animation: [],
     navigation: [],
+    utilities: [],
     blocks: [],
     templates: [],
   };
@@ -5024,8 +5033,38 @@ export const REGISTRY_BY_CATEGORY = (() => {
 
 export const TEMPLATES = REGISTRY_BY_CATEGORY.templates;
 
+export type UtilityKind = 'hooks' | 'utils';
+
+export const UTILITY_KIND_ORDER: UtilityKind[] = ['hooks', 'utils'];
+
+export const UTILITY_KIND_LABELS: Record<UtilityKind, string> = {
+  hooks: 'Hooks',
+  utils: 'Utilities',
+};
+
+export const UTILITY_KIND_DESCRIPTIONS: Record<UtilityKind, string> = {
+  hooks:
+    'React hooks for controlled or uncontrolled state and reduced-motion detection. Each installs to your hooks folder on its own.',
+  utils:
+    'Plain helpers for merging refs and formatting file sizes, with no React state. Each installs to your lib folder.',
+};
+
+/** The folder an entry's files live in decides its kind: `hooks/` or `lib/`. */
+export const utilityKind = (entry: RegistryEntryMeta): UtilityKind =>
+  (entry.files ?? []).every((file) => file.path.startsWith('hooks/')) ? 'hooks' : 'utils';
+
+export const UTILITIES_BY_KIND: Record<UtilityKind, RegistryEntryMeta[]> = {
+  hooks: REGISTRY_BY_CATEGORY.utilities.filter((entry) => utilityKind(entry) === 'hooks'),
+  utils: REGISTRY_BY_CATEGORY.utilities.filter((entry) => utilityKind(entry) === 'utils'),
+};
+
+export const UTILITIES = UTILITY_KIND_ORDER.flatMap((kind) => UTILITIES_BY_KIND[kind]);
+
+export const UTILITIES_DESCRIPTION =
+  'The hooks and helpers the components are built on: controlled or uncontrolled state, reduced-motion detection, ref merging and file sizes. Install one on its own when you write your own components.';
+
 export const isComponentEntry = (entry: RegistryEntryMeta) =>
-  entry.category !== 'blocks' && entry.category !== 'templates';
+  entry.category !== 'blocks' && entry.category !== 'templates' && entry.category !== 'utilities';
 
 export const COMPONENTS = REGISTRY.filter(isComponentEntry);
 
@@ -5040,7 +5079,10 @@ export const BASE_LABELS: Record<RegistryBase, string> = {
 export const isRegistryBase = (value: unknown): value is RegistryBase =>
   typeof value === 'string' && (REGISTRY_BASES as readonly string[]).includes(value);
 export const registryBaseDir = (base: RegistryBase) => `registry/hirael/bases/${base}`;
-export const registryFilePath = (base: RegistryBase, file: string) => `${registryBaseDir(base)}/${file}`;
+/** Hooks and utilities touch no primitive, so one copy in `registry/hirael/{hooks,lib}` serves both bases. */
+export const isSharedRegistryFile = (file: string) => file.startsWith('hooks/') || file.startsWith('lib/');
+export const registryFilePath = (base: RegistryBase, file: string) =>
+  isSharedRegistryFile(file) ? `registry/hirael/${file}` : `${registryBaseDir(base)}/${file}`;
 export const registryItemPath = (base: RegistryBase, name: string) =>
   base === DEFAULT_BASE ? `/r/${name}.json` : `/r/${base}/${name}.json`;
 
@@ -5207,7 +5249,7 @@ export const BLOCK_KIND_ORDER: BlockKind[] = [
   'changelog',
 ];
 
-export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'templates'>[] = [
+export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'templates' | 'utilities'>[] = [
   'inputs',
   'pickers',
   'files',
@@ -5224,13 +5266,13 @@ export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<(typeof COMPONENT_CATEGORY_
     'Date, date range, time, month, year, color and emoji pickers with full keyboard navigation and no date library to add.',
   files:
     'Drag-and-drop upload zones, an image cropper, an avatar uploader and a local media picker, with previews, size limits and clear controls already wired.',
-  data: 'Data tables, kanban boards, sortable lists, tree views, timelines, calendar heatmaps, sparklines and stat cards for showing structured data.',
+  data: 'Data tables, kanban boards, sortable lists, tree views, timelines, calendar heatmaps, sparklines and metric cards for showing structured data.',
   display:
     'Callouts, code blocks, diff and JSON viewers, lightboxes, marquees, QR codes, audio playback and confirm dialogs, styled with your tokens so they match the rest of the UI.',
   animation:
     'Scroll and text reveals, spotlight and tilt cards, magnetic buttons, cursor glow and a morphing dialog. Every effect honors prefers-reduced-motion.',
   navigation:
-    'Steppers, product tours, a command palette, a dock, floating toolbars and action buttons, split views, resizable panels and a table of contents, with keyboard focus that mirrors in RTL.',
+    'Steppers, product tours, a command palette, a dock, floating toolbars and action buttons, split views and a table of contents, with keyboard focus that mirrors in RTL.',
 };
 
 export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
@@ -5274,12 +5316,14 @@ export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {
 
 export const entryCategorySlug = (entry: RegistryEntryMeta): string => {
   if (entry.category === 'blocks' && entry.blockKind) return BLOCK_KIND_SLUGS[entry.blockKind];
+  if (entry.category === 'utilities') return utilityKind(entry);
 
   return entry.category;
 };
 
 export const entryHref = (entry: RegistryEntryMeta): string => {
   if (entry.category === 'templates') return `/templates/${entry.name}`;
+  if (entry.category === 'utilities') return `/utilities/${utilityKind(entry)}/${entry.name}`;
   if (entry.category === 'blocks') return `/blocks/${entryCategorySlug(entry)}/${entry.name}`;
 
   return `/components/${entry.category}/${entry.name}`;
@@ -5310,7 +5354,13 @@ export const COMPONENTS_ORDERED: RegistryEntryMeta[] = COMPONENT_CATEGORY_ORDER.
 export const BLOCKS_ORDERED: RegistryEntryMeta[] = BLOCK_KIND_ORDER.flatMap((kind) => BLOCKS_BY_KIND[kind]);
 
 const catalogListFor = (entry: RegistryEntryMeta): RegistryEntryMeta[] =>
-  entry.category === 'templates' ? TEMPLATES : entry.category === 'blocks' ? BLOCKS_ORDERED : COMPONENTS_ORDERED;
+  entry.category === 'templates'
+    ? TEMPLATES
+    : entry.category === 'blocks'
+      ? BLOCKS_ORDERED
+      : entry.category === 'utilities'
+        ? UTILITIES
+        : COMPONENTS_ORDERED;
 
 export const entryPosition = (entry: RegistryEntryMeta): { index: number; total: number } => {
   const list = catalogListFor(entry);

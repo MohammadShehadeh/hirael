@@ -5,7 +5,7 @@ import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { InputGroup } from '@/registry/hirael/bases/base/ui/input-group';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type DurationUnit = 'd' | 'h' | 'm' | 's';
 

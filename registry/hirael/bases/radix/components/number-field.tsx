@@ -5,14 +5,14 @@ import { flushSync } from 'react-dom';
 import { ChevronDown, ChevronUp, Minus, Plus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from '@/registry/hirael/bases/radix/ui/input-group';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 const HOLD_DELAY = 400;
 const HOLD_INTERVAL = 120;

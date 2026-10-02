@@ -2,7 +2,12 @@
 title: Fields that match your inputs
 version: '7.3.0'
 date: 2026-10-02
-description: 'Pickers and selects now use your shadcn Button and InputGroup, every label can be translated, and two duplicate components are gone.'
+description: 'Pickers and selects now use your shadcn Button and InputGroup, every label can be translated, and the hooks behind the components install on their own.'
+added:
+  - use-controllable-state
+  - use-reduced-motion
+  - compose-refs
+  - format-bytes
 updated:
   - date-picker
   - date-range-picker
@@ -35,6 +40,13 @@ updated:
   - footer-03
   - footer-06
 ---
+
+New:
+
+- **Hooks & utilities.** The helpers the components are built on now have
+  their own pages and install on their own: `useControllableState`,
+  `useReducedMotion`, `composeRefs` and `formatBytes`. Hooks land in your
+  `hooks` folder and helpers in `lib`.
 
 Improved:
 

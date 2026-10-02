@@ -4,11 +4,11 @@ import * as React from 'react';
 import { Popover as PopoverPrimitive } from '@base-ui/react/popover';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/base/ui/input-group';
 import { Popover } from '@/registry/hirael/bases/base/ui/popover';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface AutocompleteOption {
   /** The text written into the input when the suggestion is picked. */

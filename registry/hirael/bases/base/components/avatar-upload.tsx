@@ -19,7 +19,7 @@ import {
   ImageCropperZoom,
   type ImageCropperRef,
 } from '@/registry/hirael/bases/base/components/image-cropper';
-import { formatBytes } from '@/registry/hirael/bases/base/components/format-bytes';
+import { formatBytes } from '@/registry/hirael/lib/format-bytes';
 
 const readAsDataUrl = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {

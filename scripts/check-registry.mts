@@ -18,6 +18,7 @@ import {
   REGISTRY_BY_CATEGORY,
   basePackages,
   getExamples,
+  isSharedRegistryFile,
   registryFilePath,
   type RegistryBase,
 } from '@/registry/hirael/registry-meta';
@@ -25,7 +26,7 @@ import {
 import { ALL_ENTRIES, ROOT, createReporter, isShowcased, type RegistryEntry } from './shared.mts';
 
 const IMPLICIT_PACKAGES = new Set(['react', 'react-dom', 'next']);
-const HIRAEL_IMPORT_PATTERN = /^@\/registry\/hirael\/bases\/[a-z]+\/(?:ui|components)\/([a-z0-9-]+)/;
+const HIRAEL_IMPORT_PATTERN = /^@\/registry\/hirael\/(?:bases\/[a-z]+\/(?:ui|components)|hooks|lib)\/([a-z0-9-]+)/;
 
 const report = createReporter('registry check');
 
@@ -69,6 +70,10 @@ const collectImports = (base: RegistryBase, entry: RegistryEntry) => {
     const file = path.join(ROOT, registryFilePath(base, sourcePath));
     if (!existsSync(file)) continue;
     for (const specifier of importSpecifiers(readFileSync(file, 'utf8'), sourcePath)) {
+      // One copy serves both bases, so it can't lean on either base's primitives.
+      if (isSharedRegistryFile(sourcePath) && specifier.startsWith('@/registry/hirael/bases/')) {
+        report.fail(`"${entry.name}" ${sourcePath} is shared by both bases but imports ${specifier}`);
+      }
       const hiraelItem = HIRAEL_IMPORT_PATTERN.exec(specifier)?.[1];
       if (hiraelItem) {
         // An item that ships a primitive (spinner, kbd) imports its own file.
@@ -211,7 +216,9 @@ checkOrder(
   'COMPONENT_CATEGORY_ORDER',
   'component category',
   COMPONENT_CATEGORY_ORDER,
-  new Set(Object.keys(REGISTRY_BY_CATEGORY).filter((category) => category !== 'blocks' && category !== 'templates')),
+  new Set(
+    Object.keys(REGISTRY_BY_CATEGORY).filter((category) => !['blocks', 'templates', 'utilities'].includes(category)),
+  ),
 );
 
 report.finish(

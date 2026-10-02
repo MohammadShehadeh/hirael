@@ -17,7 +17,7 @@ import {
 } from '@/registry/hirael/bases/base/ui/command';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 import { InputGroup } from '@/registry/hirael/bases/base/ui/input-group';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface MultiSelectOption {
   value: string;

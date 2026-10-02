@@ -12,7 +12,7 @@ import {
   InputGroupInput,
 } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Label } from '@/registry/hirael/bases/radix/ui/label';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface ItemEntry {
   value: string;

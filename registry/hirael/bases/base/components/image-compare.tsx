@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChevronsLeftRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
 type ImageCompareOrientation = 'horizontal' | 'vertical';
 

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { Beam, Shader, Swirl } from 'shaders/react';
-import { useReducedMotion } from '@/registry/hirael/bases/radix/components/use-reduced-motion';
+import { useReducedMotion } from '@/registry/hirael/hooks/use-reduced-motion';
 
 // The shader can't read `var()`, so tokens are resolved to absolute colors through the DOM.
 const resolveColor = (value: string) => {

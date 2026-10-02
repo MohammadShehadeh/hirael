@@ -10,8 +10,8 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
-import { useControllableState } from '@/registry/hirael/bases/base/components/use-controllable-state';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface InlineEditCtx {
   value: string;

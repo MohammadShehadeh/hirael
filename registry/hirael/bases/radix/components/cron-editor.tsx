@@ -7,7 +7,7 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { NativeSelect, NativeSelectOption } from '@/registry/hirael/bases/radix/ui/native-select';
-import { useControllableState } from '@/registry/hirael/bases/radix/components/use-controllable-state';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type CronField = 'minute' | 'hour' | 'dayOfMonth' | 'month' | 'dayOfWeek';
 

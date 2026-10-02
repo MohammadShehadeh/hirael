@@ -32,6 +32,8 @@ describe('buildUsageCode', () => {
     ].join('\n'),
     'components/stat-card.tsx': 'export const StatCard = () => null;\nexport async function loadStats() {}',
     'components/tree.tsx': 'export { TreeRoot as Tree, TreeItem };',
+    'lib/format-bytes.ts': 'export const formatBytes = (bytes: number) => `${bytes} B`;',
+    'hooks/use-flag.ts': 'export const useFlag = () => true;',
   };
   const read = (path: string) => source[path];
 
@@ -64,6 +66,13 @@ describe('buildUsageCode', () => {
     expect(buildUsageCode([{ path: 'components/many.tsx' }], read)).toBe(
       'import {\n  A,\n  B,\n  C,\n  D,\n} from "@/components/many"',
     );
+  });
+
+  it('should import every export of a hook or lib file from its own folder', () => {
+    expect(buildUsageCode([{ path: 'lib/format-bytes.ts' }], read)).toBe(
+      'import { formatBytes } from "@/lib/format-bytes"',
+    );
+    expect(buildUsageCode([{ path: 'hooks/use-flag.ts' }], read)).toBe('import { useFlag } from "@/hooks/use-flag"');
   });
 
   it('should return null when nothing is importable', () => {

@@ -4,13 +4,18 @@ import { ArrowUpRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { NewBadge } from '@/components/new-badge';
 import type { DatedEntry } from '@/lib/freshness';
-import { BLOCK_KIND_LABELS, CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
+import {
+  BLOCK_KIND_LABELS,
+  entryCategoryLabel,
+  entryHref,
+  type RegistryEntryMeta,
+} from '@/registry/hirael/registry-meta';
 
 const collectionLabel = (entry: RegistryEntryMeta) => {
   if (entry.blockKind) return BLOCK_KIND_LABELS[entry.blockKind];
   if (entry.category === 'templates') return 'Template';
 
-  return CATEGORY_LABELS[entry.category];
+  return entryCategoryLabel(entry);
 };
 
 export interface ItemCardsProps {

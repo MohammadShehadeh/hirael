@@ -12,8 +12,12 @@ export const DocsTabsBar = () => {
 
   return (
     <div className="sticky top-0 z-30 h-11 w-full border-b border-border bg-background/70 backdrop-blur-xl">
-      <nav aria-label="Sections" className="mx-auto flex h-full w-full max-w-(--docs-layout-width) items-stretch px-4">
-        <div className="-ms-3 flex items-stretch gap-1">
+      <nav
+        aria-label="Sections"
+        className="mx-auto flex h-full w-full max-w-(--docs-layout-width) [scrollbar-width:none] items-stretch overflow-x-auto px-4 [&::-webkit-scrollbar]:hidden"
+      >
+        {/* Scrolls sideways on narrow screens rather than widening the page. */}
+        <div className="-ms-3 flex shrink-0 items-stretch gap-1">
           {NAV_LINKS.map((link) => {
             const active = isActive(link.href);
 
@@ -23,7 +27,7 @@ export const DocsTabsBar = () => {
                 href={link.href}
                 aria-current={active ? 'page' : undefined}
                 className={cn(
-                  'relative flex items-center px-3 text-sm font-medium transition-colors outline-none focus-visible:text-foreground',
+                  'relative flex shrink-0 items-center px-3 text-sm font-medium whitespace-nowrap transition-colors outline-none focus-visible:text-foreground',
                   active ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
                 )}
               >

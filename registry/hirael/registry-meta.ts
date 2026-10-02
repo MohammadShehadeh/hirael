@@ -5060,6 +5060,10 @@ export const UTILITIES_BY_KIND: Record<UtilityKind, RegistryEntryMeta[]> = {
 
 export const UTILITIES = UTILITY_KIND_ORDER.flatMap((kind) => UTILITIES_BY_KIND[kind]);
 
+/** Category label for cards and search; hooks & utilities show their kind instead. */
+export const entryCategoryLabel = (entry: RegistryEntryMeta): string =>
+  entry.category === 'utilities' ? UTILITY_KIND_LABELS[utilityKind(entry)] : CATEGORY_LABELS[entry.category];
+
 export const UTILITIES_DESCRIPTION =
   'The hooks and helpers the components are built on: controlled or uncontrolled state, reduced-motion detection, ref merging and file sizes. Install one on its own when you write your own components.';
 

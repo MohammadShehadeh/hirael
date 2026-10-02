@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarGroupCount, AvatarImage } from '@/registr
 const avatarStackVariants = cva('flex items-center', {
   variants: {
     size: {
-      sm: '**:data-[slot=avatar-fallback]:text-xs *:data-[slot=avatar-stack-item]:size-6 *:data-[slot=avatar-stack-overflow]:size-6 *:data-[slot=avatar-stack-overflow]:text-xs',
+      sm: '**:data-[slot=avatar-fallback]:text-[10px] *:data-[slot=avatar-stack-item]:size-6 *:data-[slot=avatar-stack-overflow]:size-6 *:data-[slot=avatar-stack-overflow]:text-[10px]',
       md: '**:data-[slot=avatar-fallback]:text-xs *:data-[slot=avatar-stack-item]:size-8 *:data-[slot=avatar-stack-overflow]:size-8 *:data-[slot=avatar-stack-overflow]:text-xs',
       lg: '**:data-[slot=avatar-fallback]:text-sm *:data-[slot=avatar-stack-item]:size-10 *:data-[slot=avatar-stack-overflow]:size-10 *:data-[slot=avatar-stack-overflow]:text-sm',
     },

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, CircleAlert, Loader2 } from 'lucide-react';
+import { ArrowRight, CircleAlert } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
@@ -9,6 +9,7 @@ import { Checkbox } from '@/registry/hirael/bases/base/ui/checkbox';
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSeparator } from '@/registry/hirael/bases/base/ui/field';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { PasswordInput, PasswordInputField } from '@/registry/hirael/bases/base/components/password-input';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -182,7 +183,7 @@ const Login01 = () => {
               <Button type="submit" variant="default" size="lg" disabled={pending} className="group">
                 {pending ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" />
+                    <Spinner />
                     Signing in…
                   </>
                 ) : (

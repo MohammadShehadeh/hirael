@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Loader2 } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -16,6 +16,7 @@ import {
 } from '@/registry/hirael/bases/radix/ui/alert-dialog';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 type SubscriptionPlansProps = React.ComponentProps<'div'>;
 
@@ -247,7 +248,7 @@ const SubscriptionPlansBlock = () => {
                 >
                   {pending ? (
                     <>
-                      <Loader2 aria-hidden className="animate-spin motion-reduce:animate-none" />
+                      <Spinner aria-hidden className="motion-reduce:animate-none" />
                       Switching
                     </>
                   ) : (

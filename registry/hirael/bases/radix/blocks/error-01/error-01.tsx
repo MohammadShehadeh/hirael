@@ -1,12 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronDown, Loader2, RotateCw } from 'lucide-react';
+import { ChevronDown, RotateCw } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/registry/hirael/bases/radix/ui/collapsible';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -89,11 +90,7 @@ const ErrorPageActions = ({
   return (
     <div data-slot="error-page-actions" className={cn('flex flex-wrap items-center gap-3', className)} {...props}>
       <Button type="button" size="lg" onClick={() => void retry()} disabled={retrying}>
-        {retrying ? (
-          <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
-        ) : (
-          <RotateCw className="size-4" />
-        )}
+        {retrying ? <Spinner className="motion-reduce:animate-none" /> : <RotateCw className="size-4" />}
         {retryLabel}
       </Button>
       <Button asChild variant="outline" size="lg">

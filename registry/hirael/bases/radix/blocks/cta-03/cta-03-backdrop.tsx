@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Dither, Shader, Swirl } from 'shaders/react';
+import { useReducedMotion } from '@/registry/hirael/bases/radix/components/use-reduced-motion';
 
 // The shader can't read `var()`, so tokens are resolved to concrete colors through the DOM.
 const resolveColor = (value: string) => {
@@ -39,22 +40,6 @@ const usePalette = () => {
 
   return palette;
 };
-
-const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
-
-const subscribeReducedMotion = (onChange: () => void) => {
-  const media = window.matchMedia(REDUCED_MOTION);
-  media.addEventListener('change', onChange);
-
-  return () => media.removeEventListener('change', onChange);
-};
-
-const useReducedMotion = () =>
-  React.useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(REDUCED_MOTION).matches,
-    () => false,
-  );
 
 interface Cta03BackdropProps {
   active?: boolean;

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Loader2, Pause, Play, RefreshCw } from 'lucide-react';
+import { Check, Pause, Play, RefreshCw } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { AnimatedNumber } from '@/registry/hirael/bases/base/components/animated-number';
@@ -21,6 +21,7 @@ import { Switch } from '@/registry/hirael/bases/base/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/registry/hirael/bases/base/ui/table';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
@@ -500,7 +501,7 @@ const CertificateList = (props: TileProps) => {
                   disabled={busy}
                   onClick={() => renew(cert.domain)}
                 >
-                  {busy ? <Loader2 aria-hidden className="animate-spin" /> : <RefreshCw aria-hidden />}
+                  {busy ? <Spinner aria-hidden /> : <RefreshCw aria-hidden />}
                 </Button>
               ) : (
                 <span className="flex size-8 shrink-0 items-center justify-center text-success">
@@ -806,7 +807,7 @@ const RequestAccess = (props: TileProps) => {
               )}
             </Field>
             <Button type="submit" disabled={status === 'sending'} className="w-full">
-              {status === 'sending' ? <Loader2 aria-hidden className="animate-spin" /> : null}
+              {status === 'sending' ? <Spinner aria-hidden /> : null}
               {status === 'sending' ? 'Sending request' : 'Request access'}
             </Button>
           </FieldGroup>

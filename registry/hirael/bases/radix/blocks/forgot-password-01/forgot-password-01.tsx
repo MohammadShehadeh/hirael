@@ -1,12 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, Loader2, MailCheck } from 'lucide-react';
+import { ArrowRight, MailCheck } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -160,7 +161,7 @@ const ForgotPassword01 = () => {
                   <Button type="submit" variant="default" size="lg" disabled={status === 'sending'} className="group">
                     {status === 'sending' ? (
                       <>
-                        <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+                        <Spinner className="motion-reduce:animate-none" />
                         Sending link…
                       </>
                     ) : (

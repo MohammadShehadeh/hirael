@@ -82,7 +82,7 @@ const SOCIALS = [
 
 const Footer06 = () => {
   return (
-    <footer data-slot="footer" className="w-full rounded-xs border border-input bg-muted/10 p-2">
+    <footer data-slot="footer" className="w-full rounded-xs border border-border bg-muted/10 p-2">
       <div
         data-slot="footer-cta"
         className="relative min-h-72 w-full overflow-hidden rounded-xs border border-border sm:h-80"

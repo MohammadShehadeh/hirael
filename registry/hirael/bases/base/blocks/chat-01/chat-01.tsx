@@ -38,6 +38,7 @@ import {
 } from '@/registry/hirael/bases/base/ui/item';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { EmojiPicker, EmojiPickerList, EmojiPickerSearch } from '@/registry/hirael/bases/base/components/emoji-picker';
+import { formatBytes } from '@/registry/hirael/bases/base/components/format-bytes';
 
 export type ChatMessageStatus = 'sent' | 'delivered' | 'read';
 export type ChatAttachmentKind = 'image' | 'file';
@@ -48,13 +49,6 @@ const SWAP = `animate-in fade-in slide-in-from-bottom-1 duration-250 ${EASE} fil
 
 const prefersReducedMotion = () => {
   return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-};
-
-const formatBytes = (bytes: number) => {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
-
-  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 };
 
 interface ChatAvatarProps extends React.ComponentProps<'span'> {

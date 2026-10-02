@@ -1,18 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import {
-  ArrowRight,
-  BookOpen,
-  Braces,
-  Check,
-  GitBranch,
-  Loader2,
-  Plug,
-  Terminal,
-  Webhook,
-  type LucideIcon,
-} from 'lucide-react';
+import { ArrowRight, BookOpen, Braces, Check, GitBranch, Plug, Terminal, Webhook, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
@@ -21,6 +10,7 @@ import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/base/ui/f
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -145,7 +135,7 @@ const RequestIntegration = () => {
               <FieldError id="integrations-03-tool-error">{error}</FieldError>
             </Field>
             <Button type="submit" size="sm" disabled={pending}>
-              {pending && <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" />}
+              {pending && <Spinner aria-hidden className="size-3.5 motion-reduce:animate-none" />}
               {pending ? 'Sending' : 'Send request'}
             </Button>
           </form>

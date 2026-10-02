@@ -5,6 +5,7 @@ import { CheckCircle2, Clock, GitCommitHorizontal, Loader2, RotateCcw, XCircle }
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 export type DeploymentState = 'success' | 'failed' | 'building' | 'rolled-back' | 'queued';
 
@@ -286,7 +287,7 @@ const DeploymentHistoryBlock = () => {
                       >
                         {step === 'pending' ? (
                           <span role="status" className="flex items-center gap-2 text-xs text-muted-foreground">
-                            <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" />
+                            <Spinner aria-hidden className="size-3.5 motion-reduce:animate-none" />
                             Rolling production back to {deployment.version}
                           </span>
                         ) : (

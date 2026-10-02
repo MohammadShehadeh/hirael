@@ -1,11 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Loader2 } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Progress } from '@/registry/hirael/bases/base/ui/progress';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 type BillingCardProps = React.ComponentProps<'div'>;
 
@@ -210,7 +211,7 @@ const BillingCardBlock = () => {
                 <Button type="button" className="flex-1" disabled={step === 'pending'} onClick={confirmUpgrade}>
                   {step === 'pending' ? (
                     <>
-                      <Loader2 aria-hidden className="animate-spin motion-reduce:animate-none" />
+                      <Spinner aria-hidden className="motion-reduce:animate-none" />
                       Upgrading
                     </>
                   ) : (

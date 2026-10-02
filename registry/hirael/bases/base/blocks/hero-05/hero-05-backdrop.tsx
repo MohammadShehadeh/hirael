@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Aurora, FilmGrain, Shader } from 'shaders/react';
+import { useReducedMotion } from '@/registry/hirael/bases/base/components/use-reduced-motion';
 
 // The shader can't read `var()`, so tokens are resolved to absolute colors through the DOM.
 const resolveColor = (value: string) => {
@@ -36,22 +37,6 @@ const usePalette = () => {
 
   return palette;
 };
-
-const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
-
-const subscribeReducedMotion = (onChange: () => void) => {
-  const media = window.matchMedia(REDUCED_MOTION);
-  media.addEventListener('change', onChange);
-
-  return () => media.removeEventListener('change', onChange);
-};
-
-const useReducedMotion = () =>
-  React.useSyncExternalStore(
-    subscribeReducedMotion,
-    () => window.matchMedia(REDUCED_MOTION).matches,
-    () => false,
-  );
 
 interface Hero05BackdropProps {
   active?: boolean;

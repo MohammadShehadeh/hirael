@@ -326,7 +326,7 @@ const Hero09Backdrop = ({ className }: Hero09BackdropProps) => {
     };
   }, [themeTick]);
 
-  return <canvas ref={canvasRef} aria-hidden className={className} />;
+  return <canvas ref={canvasRef} data-slot="hero-09-backdrop" aria-hidden className={className} />;
 };
 
 export default Hero09Backdrop;

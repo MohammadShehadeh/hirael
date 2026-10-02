@@ -1,13 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, CircleAlert, Loader2, Quote } from 'lucide-react';
+import { ArrowRight, CircleAlert, Quote } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Field, FieldError, FieldGroup, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { PasswordInput, PasswordInputField } from '@/registry/hirael/bases/radix/components/password-input';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -147,7 +148,7 @@ const Login02 = () => {
               <Button type="submit" variant="default" size="lg" disabled={pending} className="group mt-2">
                 {pending ? (
                   <>
-                    <Loader2 className="size-4 animate-spin" />
+                    <Spinner />
                     Signing in…
                   </>
                 ) : (

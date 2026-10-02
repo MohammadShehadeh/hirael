@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Loader2 } from 'lucide-react';
-
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Sparkles } from '@/registry/hirael/bases/radix/components/sparkles';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -73,7 +72,7 @@ const Maintenance02 = () => {
           style={delay(380)}
           className={cn('mt-6 inline-flex items-center gap-2 text-sm text-muted-foreground', RISE)}
         >
-          <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
+          <Spinner aria-hidden className="motion-reduce:animate-none" />
           <span>Check back in a few minutes</span>
         </div>
       </div>

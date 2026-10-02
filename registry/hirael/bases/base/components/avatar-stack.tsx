@@ -73,7 +73,12 @@ interface AvatarStackOverflowProps extends Omit<React.ComponentProps<'div'>, 'ch
   children?: React.ReactNode;
 }
 
-const AvatarStackOverflowCount = ({ render, children }: { render: useRender.RenderProp; children: React.ReactNode }) =>
+interface AvatarStackOverflowCountProps {
+  render: useRender.RenderProp;
+  children: React.ReactNode;
+}
+
+const AvatarStackOverflowCount = ({ render, children }: AvatarStackOverflowCountProps) =>
   useRender({
     defaultTagName: 'span',
     render,

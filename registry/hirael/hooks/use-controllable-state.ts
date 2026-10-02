@@ -13,15 +13,15 @@ interface UseControllableStateParams<T> {
 /** A value that is either controlled through `prop` or kept internally, with one setter for both. */
 export const useControllableState = <T>({ prop, defaultProp, onChange }: UseControllableStateParams<T>) => {
   const [uncontrolled, setUncontrolled] = React.useState(defaultProp);
-  const controlled = prop !== undefined;
-  const value = controlled ? prop : uncontrolled;
+  const isControlled = prop !== undefined;
+  const value = isControlled ? prop : uncontrolled;
 
   const setValue = React.useCallback(
     (next: T) => {
-      if (!controlled) setUncontrolled(next);
+      if (!isControlled) setUncontrolled(next);
       onChange?.(next);
     },
-    [controlled, onChange],
+    [isControlled, onChange],
   );
 
   return [value, setValue] as const;

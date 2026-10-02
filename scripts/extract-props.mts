@@ -137,12 +137,12 @@ const extractFunction = (checker: ts.TypeChecker, symbol: ts.Symbol): Omit<Compo
   );
   const props: PropDoc[] = fn.parameters.map((parameter) => {
     const name = parameter.name.getText();
-    const rest = Boolean(parameter.dotDotDotToken);
+    const isRest = Boolean(parameter.dotDotDotToken);
 
     return {
-      name: rest ? `...${name}` : name,
+      name: isRest ? `...${name}` : name,
       type: typeText(checker, checker.getTypeAtLocation(parameter), parameter),
-      required: !parameter.questionToken && !parameter.initializer && !rest,
+      required: !parameter.questionToken && !parameter.initializer && !isRest,
       default: parameter.initializer?.getText() ?? null,
       description: paramDocs.get(name) ?? null,
     };

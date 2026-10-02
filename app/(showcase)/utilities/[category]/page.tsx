@@ -23,7 +23,7 @@ interface UtilityCategoryRouteProps {
   params: Promise<{ category: string }>;
 }
 
-const isUtilityKind = (value: string): value is UtilityKind => (UTILITY_KIND_ORDER as string[]).includes(value);
+const isUtilityKind = (value: string): value is UtilityKind => UTILITY_KIND_ORDER.some((kind) => kind === value);
 
 export async function generateMetadata({ params }: UtilityCategoryRouteProps): Promise<Metadata> {
   const { category } = await params;

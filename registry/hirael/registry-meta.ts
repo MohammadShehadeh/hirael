@@ -1928,7 +1928,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/tenant-switcher.tsx',
       },
     ],
-    registryDependencies: ['button', 'command', 'popover', 'dialog', 'field', 'input'],
+    registryDependencies: ['button', 'command', 'popover', 'dialog', 'field', 'input', 'use-controllable-state'],
     dependencies: ['lucide-react'],
   },
   {

@@ -65,7 +65,7 @@ export interface RegistryItemDetailProps {
 }
 
 /** The detail page shared by components and hooks & utilities. */
-export async function RegistryItemDetail({ entry, breadcrumb }: RegistryItemDetailProps) {
+export const RegistryItemDetail = async ({ entry, breadcrumb }: RegistryItemDetailProps) => {
   const [sources, examples, extras] = await Promise.all([
     loadSources(entry.files?.map((f) => f.path)),
     loadExamples(entry.name),
@@ -110,4 +110,4 @@ export async function RegistryItemDetail({ entry, breadcrumb }: RegistryItemDeta
       />
     </>
   );
-}
+};

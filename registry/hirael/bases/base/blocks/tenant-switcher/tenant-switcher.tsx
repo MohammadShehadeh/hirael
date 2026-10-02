@@ -26,6 +26,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/registry/hirael/bases/base/ui/command';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface Tenant {
   value: string;
@@ -38,20 +39,6 @@ export interface Tenant {
   group?: string;
   disabled?: boolean;
 }
-
-const useControllableState = <T,>(controlled: T | undefined, defaultValue: T, onChange?: (value: T) => void) => {
-  const [uncontrolled, setUncontrolled] = React.useState(defaultValue);
-  const value = controlled === undefined ? uncontrolled : controlled;
-  const setValue = React.useCallback(
-    (next: T) => {
-      if (controlled === undefined) setUncontrolled(next);
-      onChange?.(next);
-    },
-    [controlled, onChange],
-  );
-
-  return [value, setValue] as const;
-};
 
 interface TenantSwitcherContextValue {
   value: string | undefined;
@@ -130,8 +117,16 @@ const TenantSwitcher = ({
   disabled,
   children,
 }: TenantSwitcherProps) => {
-  const [value, setValue] = useControllableState(valueProp, defaultValue, onValueChange);
-  const [open, setOpen] = useControllableState(openProp, defaultOpen, onOpenChange);
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
   const active = tenants.find((tenant) => tenant.value === value);
 
   const context = React.useMemo<TenantSwitcherContextValue>(

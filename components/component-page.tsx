@@ -484,41 +484,7 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
               </TableHeader>
               <TableBody>
                 {part.props.map((prop) => (
-                  <TableRow key={prop.name} className="align-top">
-                    <TableCell className="px-4 py-2.5 whitespace-normal">
-                      <code className="font-mono text-xs text-foreground">
-                        {prop.name}
-                        {prop.required && (
-                          <span className="text-destructive" title="Required">
-                            *
-                          </span>
-                        )}
-                      </code>
-                      {prop.description && (
-                        <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">{prop.description}</p>
-                      )}
-                    </TableCell>
-                    <TableCell className="px-4 py-2.5 whitespace-normal">
-                      {prop.typeHtml ? (
-                        <code
-                          className="shiki-inline font-mono text-xs"
-                          dangerouslySetInnerHTML={{ __html: prop.typeHtml }}
-                        />
-                      ) : (
-                        <code className="font-mono text-xs text-muted-foreground">{prop.type}</code>
-                      )}
-                    </TableCell>
-                    <TableCell className="px-4 py-2.5 whitespace-normal">
-                      {prop.defaultHtml ? (
-                        <code
-                          className="shiki-inline font-mono text-xs"
-                          dangerouslySetInnerHTML={{ __html: prop.defaultHtml }}
-                        />
-                      ) : (
-                        <code className="font-mono text-xs text-muted-foreground">{prop.default ?? 'none'}</code>
-                      )}
-                    </TableCell>
-                  </TableRow>
+                  <ApiPropRow key={prop.name} prop={prop} />
                 ))}
               </TableBody>
             </Table>
@@ -534,14 +500,7 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
           {part.returns ? (
             <div className="flex flex-wrap items-baseline gap-2 border-t border-border px-4 py-2.5">
               <span className={API_TH_LABEL}>Returns</span>
-              {part.returnsHtml ? (
-                <code
-                  className="shiki-inline font-mono text-xs"
-                  dangerouslySetInnerHTML={{ __html: part.returnsHtml }}
-                />
-              ) : (
-                <code className="font-mono text-xs text-muted-foreground">{part.returns}</code>
-              )}
+              <HighlightedCode html={part.returnsHtml} fallback={part.returns} />
             </div>
           ) : null}
         </section>
@@ -549,3 +508,41 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
     </div>
   );
 };
+
+interface ApiPropRowProps {
+  prop: ApiProp;
+}
+
+const ApiPropRow = ({ prop }: ApiPropRowProps) => (
+  <TableRow className="align-top">
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <code className="font-mono text-xs text-foreground">
+        {prop.name}
+        {prop.required && (
+          <span className="text-destructive" title="Required">
+            *
+          </span>
+        )}
+      </code>
+      {prop.description && <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">{prop.description}</p>}
+    </TableCell>
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <HighlightedCode html={prop.typeHtml} fallback={prop.type} />
+    </TableCell>
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <HighlightedCode html={prop.defaultHtml} fallback={prop.default ?? 'none'} />
+    </TableCell>
+  </TableRow>
+);
+
+interface HighlightedCodeProps {
+  html?: string | null;
+  fallback: string;
+}
+
+const HighlightedCode = ({ html, fallback }: HighlightedCodeProps) =>
+  html ? (
+    <code className="shiki-inline font-mono text-xs" dangerouslySetInnerHTML={{ __html: html }} />
+  ) : (
+    <code className="font-mono text-xs text-muted-foreground">{fallback}</code>
+  );

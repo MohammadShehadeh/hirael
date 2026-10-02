@@ -26,6 +26,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Card, CardContent } from '@/registry/hirael/bases/radix/ui/card';
+import { useDirection } from '@/registry/hirael/bases/radix/ui/direction';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -269,9 +270,12 @@ const AppShell01 = () => {
 
   const sortedColumnLabel = COLUMNS.find((c) => c.key === sortKey)?.label;
 
+  // Sidebar's `side` is physical, so an RTL page pins it to the right.
+  const sidebarSide = useDirection() === 'rtl' ? 'right' : 'left';
+
   return (
     <SidebarProvider>
-      <Sidebar collapsible="icon">
+      <Sidebar side={sidebarSide} collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>

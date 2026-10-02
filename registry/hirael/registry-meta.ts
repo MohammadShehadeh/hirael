@@ -1361,6 +1361,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'badge',
       'button',
       'card',
+      'direction',
       'dropdown-menu',
       'empty',
       'input-group',
@@ -1440,7 +1441,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/app-shell-04.tsx',
       },
     ],
-    registryDependencies: ['button', 'dropdown-menu', 'input-group', 'kbd', 'separator', 'sidebar'],
+    registryDependencies: ['button', 'direction', 'dropdown-menu', 'input-group', 'kbd', 'separator', 'sidebar'],
     dependencies: ['lucide-react'],
   },
   {
@@ -3053,7 +3054,33 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/app-shell-05.tsx',
       },
     ],
-    registryDependencies: ['avatar', 'badge', 'breadcrumb', 'button', 'dropdown-menu', 'separator', 'sidebar'],
+    registryDependencies: [
+      'avatar',
+      'badge',
+      'breadcrumb',
+      'button',
+      'direction',
+      'dropdown-menu',
+      'separator',
+      'sidebar',
+    ],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'app-shell-06',
+    title: 'Nested App Sidebar',
+    description:
+      'A nested app sidebar for shadcn/ui. Open a project or settings and the whole sidebar slides to its own links, like the Vercel dashboard, instead of expanding a dropdown. A back row slides out again, the breadcrumb follows the path, and multi-level menus go as deep as you need. Built from sidebar tokens, so it takes on your theme.',
+    blockTagline: 'Multi-level sidebar that slides to each section',
+    category: 'blocks',
+    blockKind: 'app-shell',
+    files: [
+      {
+        path: 'blocks/app-shell-06/app-shell-06.tsx',
+        target: 'components/blocks/app-shell-06.tsx',
+      },
+    ],
+    registryDependencies: ['breadcrumb', 'direction', 'separator', 'sidebar'],
     dependencies: ['lucide-react'],
   },
   {

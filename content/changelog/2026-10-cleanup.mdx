@@ -4,6 +4,7 @@ version: '7.3.0'
 date: 2026-10-02
 description: 'Pickers and selects now use your shadcn Button and InputGroup, every label can be translated, and the hooks behind the components install on their own.'
 added:
+  - app-shell-06
   - use-controllable-state
   - use-reduced-motion
   - compose-refs
@@ -43,6 +44,10 @@ updated:
 
 New:
 
+- **Nested App Sidebar.** An app sidebar that swaps to a whole
+  new list when you open a project or settings, instead of expanding a
+  dropdown. The list slides in, a row at the top slides back, and it takes on
+  your theme.
 - **Hooks & utilities.** The helpers the components are built on now have
   their own pages and install on their own: `useControllableState`,
   `useReducedMotion`, `composeRefs` and `formatBytes`. Hooks land in your
@@ -66,6 +71,9 @@ Improved:
   your shadcn components, in blocks as well as components.
 - **Activity Feed avatars** are shadcn Avatars, so a broken image falls back to
   the initials.
+- **App shells in right-to-left layouts.** The sidebar in the Sidebar Admin,
+  Workspace Sidebar and Documents app shells now sits on the right instead of
+  covering the page.
 
 Removed:
 

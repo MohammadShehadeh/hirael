@@ -32,8 +32,8 @@ const CountrySelectDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Single · with dial code',
-            ar: 'اختيار مفرد · مع رمز الاتصال',
+            en: 'Single',
+            ar: 'اختيار مفرد',
           })}
         </p>
         <CountrySelect value={country} onValueChange={setCountry} showDialCode>
@@ -50,8 +50,8 @@ const CountrySelectDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Multiple · pinned Gulf markets',
-            ar: 'اختيار متعدد · أسواق الخليج مثبتة',
+            en: 'Multiple',
+            ar: 'اختيار متعدد',
           })}
         </p>
         <CountrySelect
@@ -88,8 +88,8 @@ const CountrySelectDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Form row · label and hint',
-            ar: 'صف نموذج · تسمية وتلميح',
+            en: 'Form row',
+            ar: 'صف نموذج',
           })}
         </p>
         <div className="rounded-md border border-border bg-card p-4">

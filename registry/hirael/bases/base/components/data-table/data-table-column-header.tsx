@@ -12,6 +12,7 @@ import {
 import { cn } from '@/lib/utils';
 import type { CellData, Column, RowData } from '@tanstack/react-table';
 import { ChevronDown, ChevronsUpDown, ChevronUp, EyeOff, X } from 'lucide-react';
+import { useDataTableLabels } from './data-table-labels';
 
 interface DataTableColumnHeaderProps<TData extends RowData, TValue extends CellData> extends React.ComponentProps<
   typeof DropdownMenuTrigger
@@ -26,6 +27,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
   className,
   ...props
 }: DataTableColumnHeaderProps<TData, TValue>) => {
+  const labels = useDataTableLabels();
   if (!column.getCanSort() && !column.getCanHide()) {
     return (
       <div data-slot="data-table-column-header" className={cn(className)} {...(props as React.ComponentProps<'div'>)}>
@@ -63,7 +65,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
               onClick={() => column.toggleSorting(false)}
             >
               <ChevronUp />
-              Asc
+              {labels.sortAscending}
             </DropdownMenuCheckboxItem>
             <DropdownMenuCheckboxItem
               className="relative ps-2 pe-8 [&_svg]:text-muted-foreground [&>span:first-child]:start-auto [&>span:first-child]:end-2"
@@ -71,12 +73,12 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
               onClick={() => column.toggleSorting(true)}
             >
               <ChevronDown />
-              Desc
+              {labels.sortDescending}
             </DropdownMenuCheckboxItem>
             {column.getIsSorted() && (
               <DropdownMenuItem className="ps-2 [&_svg]:text-muted-foreground" onClick={() => column.clearSorting()}>
                 <X />
-                Reset
+                {labels.resetSorting}
               </DropdownMenuItem>
             )}
           </>
@@ -88,7 +90,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
             onClick={() => column.toggleVisibility(false)}
           >
             <EyeOff />
-            Hide
+            {labels.hideColumn}
           </DropdownMenuCheckboxItem>
         )}
       </DropdownMenuContent>

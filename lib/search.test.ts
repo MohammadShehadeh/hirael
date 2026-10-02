@@ -51,6 +51,16 @@ describe('searchIndex', () => {
     expect(names('support')).toContain('contact-04');
   });
 
+  it('should find the nested app sidebar for sidebar, multi-level and drill-down searches', () => {
+    expect(names('nested sidebar')[0]).toBe('app-shell-06');
+    expect(names('app sidebar').slice(0, 3)).toContain('app-shell-06');
+    expect(names('sidebar')).toContain('app-shell-06');
+    expect(names('multi-level sidebar')).toContain('app-shell-06');
+    expect(names('multilevel sidebar')).toContain('app-shell-06');
+    expect(names('drill down sidebar')).toContain('app-shell-06');
+    expect(names('vercel sidebar')[0]).toBe('app-shell-06');
+  });
+
   it('should find empty states for "blank" and "zero state"', () => {
     const emptyStates = ['empty-state-01', 'empty-state-02', 'empty-state-03', 'empty-state-04'];
     expect(names('blank').slice(0, 4)).toEqual(expect.arrayContaining(emptyStates));

@@ -10,6 +10,7 @@ import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/base/ui/f
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
@@ -62,16 +63,11 @@ const Changelog = ({
   children,
   ...props
 }: ChangelogProps) => {
-  const [filterState, setFilterState] = React.useState(defaultFilter);
-  const filter = filterProp ?? filterState;
-
-  const setFilter = React.useCallback(
-    (next: ChangelogFilterValue) => {
-      if (filterProp === undefined) setFilterState(next);
-      onFilterChange?.(next);
-    },
-    [filterProp, onFilterChange],
-  );
+  const [filter, setFilter] = useControllableState({
+    prop: filterProp,
+    defaultProp: defaultFilter,
+    onChange: onFilterChange,
+  });
 
   const value = React.useMemo(() => ({ filter, setFilter }), [filter, setFilter]);
 

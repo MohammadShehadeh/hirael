@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle2, Download, Loader2, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2, Download, ShieldCheck } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
@@ -10,6 +10,8 @@ import { Field, FieldError, FieldLabel } from '@/registry/hirael/bases/base/ui/f
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/base/ui/input-otp';
 import { CopyButton } from '@/registry/hirael/bases/base/components/copy-button';
 import { QRCode } from '@/registry/hirael/bases/base/components/qr-code';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -110,7 +112,7 @@ const TwoFactorSetupSteps = ({ labels, className, ...props }: TwoFactorSetupStep
           >
             <span
               className={cn(
-                'block h-1.5 rounded-full transition-all duration-200 motion-reduce:transition-none',
+                'block h-1.5 rounded-full transition-[width,background-color] duration-200 motion-reduce:transition-none',
                 state === 'active' ? 'w-6 bg-primary' : 'w-1.5',
                 state === 'done' && 'bg-primary/50',
                 state === 'todo' && 'bg-border',
@@ -295,8 +297,11 @@ const TwoFactorSetupRecoveryCodes = ({
   ...props
 }: TwoFactorSetupRecoveryCodesProps) => {
   const id = React.useId();
-  const [internalSaved, setInternalSaved] = React.useState(defaultSaved);
-  const saved = savedProp ?? internalSaved;
+  const [saved, setControlledSaved] = useControllableState({
+    prop: savedProp,
+    defaultProp: defaultSaved,
+    onChange: onSavedChange,
+  });
   const joined = React.useMemo(() => codes.join('\n'), [codes]);
 
   const download = React.useCallback(() => {
@@ -342,8 +347,7 @@ const TwoFactorSetupRecoveryCodes = ({
           checked={saved}
           onCheckedChange={(v) => {
             const next = v === true;
-            if (savedProp === undefined) setInternalSaved(next);
-            onSavedChange?.(next);
+            setControlledSaved(next);
           }}
         />
         <FieldLabel htmlFor={id} className="cursor-pointer">
@@ -549,7 +553,7 @@ const TwoFactorSetup01 = () => {
                     <Button type="submit" form={formId} className={cn(SWAP, 'group')} disabled={verifying}>
                       {verifying ? (
                         <>
-                          <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+                          <Spinner className="motion-reduce:animate-none" />
                           Verifying…
                         </>
                       ) : (

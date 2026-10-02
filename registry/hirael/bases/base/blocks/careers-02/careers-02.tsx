@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -15,6 +15,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/r
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -338,7 +339,7 @@ const ApplyForm = () => {
         <Button type="submit" size="lg" disabled={submitting} className="group w-full">
           {submitting ? (
             <>
-              <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
+              <Spinner aria-hidden className="motion-reduce:animate-none" />
               Sending application
             </>
           ) : (

@@ -20,6 +20,7 @@ import {
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { useDirection } from '@/registry/hirael/bases/radix/ui/direction';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -240,9 +241,12 @@ const AppShell04 = () => {
 
   const activeWorkspace = WORKSPACES.find((w) => w.name === workspace) ?? WORKSPACES[0];
 
+  // Sidebar's `side` is physical, so an RTL page pins it to the right.
+  const sidebarSide = useDirection() === 'rtl' ? 'right' : 'left';
+
   return (
     <SidebarProvider>
-      <Sidebar variant="inset" collapsible="icon">
+      <Sidebar side={sidebarSide} variant="inset" collapsible="icon">
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>

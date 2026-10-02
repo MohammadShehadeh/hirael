@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ChevronsLeftRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
 type ImageCompareOrientation = 'horizontal' | 'vertical';
 
@@ -297,12 +297,12 @@ const ImageCompareHandle = ({
       )}
       {...props}
     >
-      {/* White with a dark halo so the divider reads over any image, in either theme. */}
+      {/* A contrasting ring on both edges keeps the hairline visible over light and dark images alike. */}
       <span
         aria-hidden
         data-slot="image-compare-handle-line"
         className={cn(
-          'absolute bg-white/90 shadow-[0_0_4px_rgba(0,0,0,0.4)]',
+          'absolute bg-background ring-1 ring-foreground/40',
           vertical ? 'inset-x-0 h-px' : 'inset-y-0 w-px',
         )}
       />

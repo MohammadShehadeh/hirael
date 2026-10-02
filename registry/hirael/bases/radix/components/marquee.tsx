@@ -20,11 +20,11 @@ export interface MarqueeProps extends React.ComponentProps<'div'> {
 // Inline keyframes need no globals.css edit. Flex reverses the tracks under RTL, so
 // --marquee-x-dir flips the travel sign (-1 ltr, 1 rtl) so the loop never jumps.
 const MARQUEE_KEYFRAMES = `
-@keyframes msh-marquee-x {
+@keyframes hirael-marquee-x {
   from { transform: translateX(0); }
   to { transform: translateX(calc(var(--marquee-x-dir, -1) * (100% + var(--marquee-gap)))); }
 }
-@keyframes msh-marquee-y {
+@keyframes hirael-marquee-y {
   from { transform: translateY(0); }
   to { transform: translateY(calc(-100% - var(--marquee-gap))); }
 }
@@ -50,7 +50,7 @@ const Marquee = ({
   ...props
 }: MarqueeProps) => {
   const trackStyle: React.CSSProperties = {
-    animationName: vertical ? 'msh-marquee-y' : 'msh-marquee-x',
+    animationName: vertical ? 'hirael-marquee-y' : 'hirael-marquee-x',
     animationDuration: 'var(--marquee-duration)',
     animationTimingFunction: 'linear',
     animationIterationCount: 'infinite',

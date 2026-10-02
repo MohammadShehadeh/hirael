@@ -5,6 +5,7 @@ import { Dialog as DialogPrimitive } from '@base-ui/react/dialog';
 import { ChevronLeft, ChevronRight, X, ZoomIn, ZoomOut } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface LightboxItem {
   src: string;
@@ -61,15 +62,11 @@ const Lightbox = ({
   loop = true,
   children,
 }: LightboxProps) => {
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const count = items.length;
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex);

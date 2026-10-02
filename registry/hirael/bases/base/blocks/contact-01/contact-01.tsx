@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, CheckCircle2, Loader2, Mail, MapPin, MessageCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Mail, MapPin, MessageCircle } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
@@ -12,6 +12,7 @@ import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/base/ui/select';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -290,7 +291,7 @@ const Contact01 = () => {
                       <Button type="submit" size="lg" disabled={status === 'sending'} className="group sm:w-fit">
                         {status === 'sending' ? (
                           <>
-                            <Loader2 className="size-4 animate-spin" />
+                            <Spinner />
                             Sending…
                           </>
                         ) : (
@@ -331,7 +332,7 @@ const Contact01 = () => {
                           </span>
                           <span className="text-sm font-medium text-foreground">{c.value}</span>
                         </span>
-                        <ArrowRight className="size-4 text-muted-foreground transition-all duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+                        <ArrowRight className="size-4 text-muted-foreground transition-[translate,color] duration-150 ease-out group-hover:translate-x-0.5 group-hover:text-foreground rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
                       </a>
                     </li>
                   );

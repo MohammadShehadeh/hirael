@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Star } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface RatingContextValue {
   value: number;
@@ -63,11 +64,13 @@ const Rating = ({
   children,
   ...props
 }: RatingProps) => {
-  const isControlled = valueProp !== undefined;
-  const [internal, setInternal] = React.useState(defaultValue ?? 0);
   const [hover, setHover] = React.useState<number | null>(null);
 
-  const value = isControlled ? (valueProp as number) : internal;
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue ?? 0,
+    onChange: onValueChange,
+  });
   const display = hover ?? value;
 
   const interactive = !readOnly && !disabled;
@@ -76,10 +79,9 @@ const Rating = ({
   const commit = React.useCallback(
     (next: number) => {
       if (readOnly || disabled) return;
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(next);
+      setValue(next);
     },
-    [readOnly, disabled, valueProp, onValueChange],
+    [readOnly, disabled, setValue],
   );
 
   const stepAligned = value > 0 && value <= max && Number.isInteger(value / step);

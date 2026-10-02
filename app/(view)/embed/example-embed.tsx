@@ -14,7 +14,12 @@ export interface ExampleEmbedProps {
 
 export const ExampleEmbed = ({ base, component, example }: ExampleEmbedProps) => {
   const entry = REGISTRY_BY_NAME[component];
-  if (!entry || !isComponentEntry(entry) || !getExamples(entry.name).some((e) => e.slug === example)) notFound();
+  if (
+    !entry ||
+    !(isComponentEntry(entry) || entry.category === 'utilities') ||
+    !getExamples(entry.name).some((e) => e.slug === example)
+  )
+    notFound();
 
   return (
     <>

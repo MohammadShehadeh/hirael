@@ -1,11 +1,14 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronDown, Loader2, X } from 'lucide-react';
+import { Check, ChevronDown, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { Command, CommandEmpty, CommandInput, CommandItem, CommandList } from '@/registry/hirael/bases/base/ui/command';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface LazySelectOption {
   value: string;
@@ -85,8 +88,11 @@ const LazySelect = ({
   name,
   children,
 }: LazySelectProps) => {
-  const [internalValue, setInternalValue] = React.useState<string | undefined>(defaultValue);
-  const value = valueProp !== undefined ? valueProp : internalValue;
+  const [value, setControlledValue] = useControllableState<string | undefined>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const [labelCache, setLabelCache] = React.useState<Record<string, string>>({});
   let pendingLabels: Record<string, string> | null = null;
@@ -104,21 +110,16 @@ const LazySelect = ({
           prev[option.value] === option.label ? prev : { ...prev, [option.value]: option.label },
         );
       }
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
+      setControlledValue(next);
     },
-    [valueProp, onValueChange],
+    [setControlledValue],
   );
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const [search, setSearchState] = React.useState('');
   const setSearch = React.useCallback(
@@ -182,9 +183,16 @@ const LazySelect = ({
 
 interface LazySelectTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
+  /** Accessible name of the clear button. */
+  clearLabel?: string;
 }
 
-const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: LazySelectTriggerProps) => {
+const LazySelectTrigger = ({
+  placeholder = 'Select…',
+  clearLabel = 'Clear',
+  className,
+  ...props
+}: LazySelectTriggerProps) => {
   const ctx = useLazySelect();
   const showClear = ctx.clearable && ctx.value !== undefined && !ctx.disabled;
 
@@ -192,54 +200,51 @@ const LazySelectTrigger = ({ placeholder = 'Select…', className, ...props }: L
     <div data-slot="lazy-select-trigger-wrapper" className="relative w-full">
       <PopoverTrigger
         render={
-          <button
+          <Button
             type="button"
+            variant="outline"
             role="combobox"
             aria-controls={ctx.listboxId}
             aria-expanded={ctx.open}
             aria-haspopup="listbox"
             disabled={ctx.disabled}
             data-slot="lazy-select-trigger"
-            className={cn(
-              'flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2.5 text-start text-sm transition-colors outline-none',
-              'hover:border-ring/60 focus-visible:border-ring',
-              'data-popup-open:border-ring',
-              'disabled:cursor-not-allowed disabled:opacity-50',
-              className,
-            )}
+            className={cn('w-full justify-between font-normal', className)}
             {...props}
           />
         }
       >
         <span
           className={cn(
-            'min-w-0 flex-1 truncate',
+            'min-w-0 flex-1 truncate text-start',
             ctx.selectedLabel === undefined && 'text-muted-foreground',
-            showClear && 'pe-5',
+            showClear && 'pe-7',
           )}
         >
           {ctx.selectedLabel ?? placeholder}
         </span>
         <ChevronDown
           className={cn(
-            'size-3.5 shrink-0 text-muted-foreground transition-transform duration-150 motion-reduce:transition-none',
+            'text-muted-foreground transition-transform duration-150 motion-reduce:transition-none',
             ctx.open && 'rotate-180',
           )}
         />
       </PopoverTrigger>
       {showClear && (
-        <button
+        <Button
           type="button"
-          aria-label="Clear"
+          variant="ghost"
+          size="icon-xs"
+          aria-label={clearLabel}
           data-slot="lazy-select-clear"
           onClick={(e) => {
             e.stopPropagation();
             ctx.setValue(undefined);
           }}
-          className="absolute end-7 top-1/2 inline-flex size-4 -translate-y-1/2 items-center justify-center rounded-[2px] text-muted-foreground hover:bg-accent hover:text-foreground"
+          className="absolute end-8 top-1/2 -translate-y-1/2 text-muted-foreground"
         >
-          <X className="size-3" />
-        </button>
+          <X />
+        </Button>
       )}
     </div>
   );
@@ -288,7 +293,7 @@ const LazySelectContent = ({
       align="start"
       sideOffset={6}
       data-slot="lazy-select-content"
-      className={cn('w-(--anchor-width) min-w-[14rem] p-0', className)}
+      className={cn('w-(--anchor-width) min-w-56 p-0', className)}
       initialFocus={() => inputRef.current}
       {...props}
     >
@@ -297,7 +302,7 @@ const LazySelectContent = ({
         <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
-              <Loader2 className="size-3.5 animate-spin" />
+              <Spinner aria-hidden className="size-3.5" />
               {loadingMessage}
             </div>
           ) : (
@@ -312,7 +317,7 @@ const LazySelectContent = ({
                   data-slot="lazy-select-loader"
                   className="flex items-center justify-center gap-2 py-3 text-xs text-muted-foreground"
                 >
-                  <Loader2 className="size-3.5 animate-spin" />
+                  <Spinner aria-hidden className="size-3.5" />
                   {loadingMoreMessage}
                 </div>
               ) : (

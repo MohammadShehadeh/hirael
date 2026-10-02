@@ -35,7 +35,7 @@ const TimePickerDemo = () => {
 
       <Field className="gap-2">
         <FieldLabel htmlFor="tp-reminder">
-          {t({ en: 'Reminder (12h · seconds)', ar: 'تذكير (12 ساعة · ثوانٍ)' })}
+          {t({ en: 'Reminder (12h, seconds)', ar: 'تذكير (12 ساعة، ثوانٍ)' })}
         </FieldLabel>
         <TimePicker
           value={t12}

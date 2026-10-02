@@ -19,7 +19,7 @@ const TagInputDemo = () => {
 
   return (
     <Field className="max-w-md gap-2">
-      <FieldLabel htmlFor="tags-field">{t({ en: 'Tags · max 6', ar: 'الوسوم · 6 كحد أقصى' })}</FieldLabel>
+      <FieldLabel htmlFor="tags-field">{t({ en: 'Tags, max 6', ar: 'الوسوم، 6 كحد أقصى' })}</FieldLabel>
       <TagInput value={tags} onValueChange={setTags} maxTags={6}>
         <TagInputContainer>
           {tags.map((_, i) => (
@@ -37,8 +37,8 @@ const TagInputDemo = () => {
       </TagInput>
       <p className="text-xs text-muted-foreground uppercase">
         {t({
-          en: <>{tags.length} / 6 · paste &ldquo;a, b, c&rdquo; to split</>,
-          ar: <>{tags.length} / 6 · ألصق &ldquo;a, b, c&rdquo; للتقسيم</>,
+          en: <>{tags.length} / 6. Paste &ldquo;a, b, c&rdquo; to split</>,
+          ar: <>{tags.length} / 6. ألصق &ldquo;a, b, c&rdquo; للتقسيم</>,
         })}
       </p>
     </Field>

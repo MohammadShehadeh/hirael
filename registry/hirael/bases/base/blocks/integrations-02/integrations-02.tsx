@@ -8,7 +8,6 @@ import {
   CreditCard,
   Database,
   GitBranch,
-  Loader2,
   Mail,
   MessageSquare,
   Plus,
@@ -20,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/base/ui/toggle-group';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -177,7 +177,7 @@ const Integrations02 = () => {
                   className="mt-auto w-full"
                 >
                   {isPending ? (
-                    <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" />
+                    <Spinner aria-hidden className="size-3.5 motion-reduce:animate-none" />
                   ) : isConnected ? (
                     <Check aria-hidden className="size-3.5 text-primary" />
                   ) : (

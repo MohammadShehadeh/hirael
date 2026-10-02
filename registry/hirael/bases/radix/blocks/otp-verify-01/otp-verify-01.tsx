@@ -1,12 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, CheckCircle2, Loader2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { FieldError, FieldGroup, FieldLegend, FieldSet } from '@/registry/hirael/bases/radix/ui/field';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/radix/ui/input-otp';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
@@ -169,7 +170,7 @@ const OtpVerify01 = () => {
                   <Button type="submit" variant="default" size="lg" disabled={status === 'verifying'} className="group">
                     {status === 'verifying' ? (
                       <>
-                        <Loader2 className="size-4 animate-spin motion-reduce:animate-none" />
+                        <Spinner className="motion-reduce:animate-none" />
                         Verifying…
                       </>
                     ) : (

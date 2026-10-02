@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface YearRange {
   from: number;
@@ -89,15 +90,11 @@ const YearPicker = (props: YearPickerProps) => {
     onValueChange?: (v: number | YearRange) => void;
   };
 
-  const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp !== undefined ? openProp : openInternal;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setOpenInternal(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const [internal, setInternal] = React.useState(defaultValue ?? undefined);
   const value = valueProp !== undefined ? (valueProp ?? undefined) : internal;
@@ -174,17 +171,13 @@ const YearPickerTrigger = ({
   return (
     <PopoverTrigger
       render={
-        <button
+        <Button
           type="button"
+          variant="outline"
           disabled={ctx.disabled}
           data-slot="year-picker-trigger"
-          className={cn(
-            'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
-            'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
-            empty && 'text-muted-foreground',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            className,
-          )}
+          data-empty={empty || undefined}
+          className={cn('w-full justify-between font-normal tabular-nums data-empty:text-muted-foreground', className)}
           {...props}
         />
       }
@@ -200,7 +193,20 @@ const isInRange = (year: number, range: YearRange | undefined) =>
 const isEndpoint = (year: number, range: YearRange | undefined) =>
   !!range && (year === range.from || year === range.to);
 
-const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof PopoverContent>) => {
+interface YearPickerContentProps extends React.ComponentProps<typeof PopoverContent> {
+  previousLabel?: string;
+  nextLabel?: string;
+  /** Accessible name of the year grid. */
+  gridLabel?: string;
+}
+
+const YearPickerContent = ({
+  previousLabel = 'Previous years',
+  nextLabel = 'Next years',
+  gridLabel = 'Years',
+  className,
+  ...props
+}: YearPickerContentProps) => {
   const ctx = useYearPicker();
   const years = Array.from({ length: YEARS_PER_VIEW }, (_, i) => ctx.decadeStart + i);
   const today = new Date().getFullYear();
@@ -268,7 +274,7 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
       type="button"
       variant="ghost"
       size="icon"
-      aria-label={step < 0 ? 'Previous years' : 'Next years'}
+      aria-label={step < 0 ? previousLabel : nextLabel}
       disabled={step < 0 ? !canPrev : !canNext}
       onClick={() => ctx.setDecadeStart(ctx.decadeStart + step * YEARS_PER_PAGE)}
       className="size-7"
@@ -290,7 +296,7 @@ const YearPickerContent = ({ className, ...props }: React.ComponentProps<typeof 
         </span>
         {navButton(1)}
       </div>
-      <div ref={gridRef} role="grid" aria-label="Years" data-slot="year-picker-grid" className="grid gap-1">
+      <div ref={gridRef} role="grid" aria-label={gridLabel} data-slot="year-picker-grid" className="grid gap-1">
         {Array.from({ length: YEARS_PER_VIEW / 4 }, (_, row) => (
           <div key={row} role="row" className="grid grid-cols-4 gap-1">
             {years.slice(row * 4, row * 4 + 4).map((year) => {

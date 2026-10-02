@@ -24,7 +24,7 @@ const TimelineDemo = () => {
           <TimelineItem>
             <TimelineDot tone="success" />
             <TimelineContent>
-              <TimelineTime>{t({ en: 'Today · 14:02', ar: 'اليوم · 14:02' })}</TimelineTime>
+              <TimelineTime>{t({ en: 'Today, 14:02', ar: 'اليوم، 14:02' })}</TimelineTime>
               <TimelineTitle>
                 {t({
                   en: 'Deployment shipped to production',
@@ -50,7 +50,7 @@ const TimelineDemo = () => {
           <TimelineItem>
             <TimelineDot />
             <TimelineContent>
-              <TimelineTime>{t({ en: 'Today · 13:48', ar: 'اليوم · 13:48' })}</TimelineTime>
+              <TimelineTime>{t({ en: 'Today, 13:48', ar: 'اليوم، 13:48' })}</TimelineTime>
               <TimelineTitle>{t({ en: 'PR #1284 merged', ar: 'تم دمج PR #1284' })}</TimelineTitle>
               <TimelineDescription>
                 {t({
@@ -73,7 +73,7 @@ const TimelineDemo = () => {
           <TimelineItem>
             <TimelineDot tone="warning" />
             <TimelineContent>
-              <TimelineTime>{t({ en: 'Today · 11:12', ar: 'اليوم · 11:12' })}</TimelineTime>
+              <TimelineTime>{t({ en: 'Today, 11:12', ar: 'اليوم، 11:12' })}</TimelineTime>
               <TimelineTitle>{t({ en: 'Slow query detected', ar: 'رُصد استعلام بطيء' })}</TimelineTitle>
               <TimelineDescription>
                 {t({
@@ -94,7 +94,7 @@ const TimelineDemo = () => {
           <TimelineItem>
             <TimelineDot tone="muted" />
             <TimelineContent>
-              <TimelineTime>{t({ en: 'Yesterday · 17:30', ar: 'أمس · 17:30' })}</TimelineTime>
+              <TimelineTime>{t({ en: 'Yesterday, 17:30', ar: 'أمس، 17:30' })}</TimelineTime>
               <TimelineTitle>
                 {t({
                   en: 'Release notes drafted',
@@ -138,8 +138,8 @@ const TimelineDemo = () => {
             <TimelineContent>
               <TimelineTitle>
                 {t({
-                  en: 'Branch cut · release/1.4',
-                  ar: 'إنشاء فرع · release/1.4',
+                  en: 'Branch cut, release/1.4',
+                  ar: 'إنشاء فرع، release/1.4',
                 })}
               </TimelineTitle>
             </TimelineContent>

@@ -14,8 +14,7 @@ const TreeViewDemo = () => {
     <div className="grid w-full max-w-md gap-8">
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'File explorer · selected', ar: 'مستعرض الملفات · المحدد' })}{' '}
-          <span className="text-foreground">{selected}</span>
+          {t({ en: 'File explorer', ar: 'مستعرض الملفات' })} <span className="text-foreground">{selected}</span>
         </p>
         <div className="rounded-md border border-border bg-card/40 p-2">
           <TreeView value={selected} onValueChange={setSelected}>

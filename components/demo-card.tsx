@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useRegistryBase } from '@/components/active-theme';
 import { NewBadge } from '@/components/new-badge';
 import { RegistryDemo } from '@/registry/hirael/registry-demos';
-import { CATEGORY_LABELS, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
+import { entryCategoryLabel, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
 export interface DemoCardProps {
   entry: RegistryEntryMeta;
@@ -52,7 +52,7 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
             {compact && <NewBadge addedAt={addedAt} />}
           </h3>
           {!compact && (
-            <span className="shrink-0 text-xs text-muted-foreground uppercase">{CATEGORY_LABELS[entry.category]}</span>
+            <span className="shrink-0 text-xs text-muted-foreground uppercase">{entryCategoryLabel(entry)}</span>
           )}
         </div>
         {!compact && (

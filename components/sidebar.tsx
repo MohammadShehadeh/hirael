@@ -4,6 +4,7 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  Anchor,
   CalendarDays,
   Compass,
   Eye,
@@ -17,6 +18,7 @@ import {
   Table2,
   TextCursorInput,
   type LucideIcon,
+  Wrench,
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -28,10 +30,14 @@ import {
   COMPONENT_CATEGORY_ORDER,
   REGISTRY_BY_CATEGORY,
   TEMPLATES,
+  UTILITIES_BY_KIND,
+  UTILITY_KIND_LABELS,
+  UTILITY_KIND_ORDER,
+  type UtilityKind,
   entryHref,
 } from '@/registry/hirael/registry-meta';
 
-type Section = 'components' | 'blocks' | 'templates' | 'changelog';
+type Section = 'components' | 'blocks' | 'templates' | 'utilities' | 'changelog';
 
 const COMPONENT_CATEGORY_ICONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number], LucideIcon> = {
   inputs: TextCursorInput,
@@ -43,6 +49,11 @@ const COMPONENT_CATEGORY_ICONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number]
   navigation: Compass,
 };
 
+const UTILITY_KIND_ICONS: Record<UtilityKind, LucideIcon> = {
+  hooks: Anchor,
+  utils: Wrench,
+};
+
 const BLOCK_GROUP_ICONS: Record<CategoryGroup, LucideIcon> = {
   marketing: Megaphone,
   site: Globe,
@@ -52,6 +63,7 @@ const BLOCK_GROUP_ICONS: Record<CategoryGroup, LucideIcon> = {
 const sectionForPath = (pathname: string): Section => {
   if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
   if (pathname === '/templates' || pathname.startsWith('/templates/')) return 'templates';
+  if (pathname === '/utilities' || pathname.startsWith('/utilities/')) return 'utilities';
   if (pathname === '/changelog') return 'changelog';
 
   return 'components';
@@ -99,6 +111,7 @@ export const DocsSidebarNav = ({ releases, className, onNavigate }: DocsSidebarN
         {section === 'components' && <ComponentTree pathname={pathname} />}
         {section === 'blocks' && <BlockTree pathname={pathname} />}
         {section === 'templates' && <TemplateTree pathname={pathname} />}
+        {section === 'utilities' && <UtilityTree pathname={pathname} />}
         {section === 'changelog' && <ReleaseTree releases={releases} onNavigate={onNavigate} />}
       </div>
     </nav>
@@ -279,6 +292,29 @@ const TemplateTree = ({ pathname }: SectionTreeProps) => {
           );
         })}
       </Folder>
+    </>
+  );
+};
+
+const UtilityTree = ({ pathname }: SectionTreeProps) => {
+  return (
+    <>
+      <RootPageLink href="/utilities" isCurrent={pathname === '/utilities'}>
+        Overview
+      </RootPageLink>
+      {UTILITY_KIND_ORDER.map((kind) => (
+        <Folder key={kind} icon={UTILITY_KIND_ICONS[kind]} label={UTILITY_KIND_LABELS[kind]}>
+          {UTILITIES_BY_KIND[kind].map((entry) => {
+            const href = entryHref(entry);
+
+            return (
+              <FolderPageLink key={entry.name} href={href} isCurrent={isCurrentPath(pathname, href)}>
+                {entry.title}
+              </FolderPageLink>
+            );
+          })}
+        </Folder>
+      ))}
     </>
   );
 };

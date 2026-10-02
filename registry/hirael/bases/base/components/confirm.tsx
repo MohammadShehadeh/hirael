@@ -14,6 +14,7 @@ import {
   AlertDialogTitle,
 } from '@/registry/hirael/bases/base/ui/alert-dialog';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 export type ConfirmTone = 'default' | 'destructive';
 
@@ -188,23 +189,13 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
               disabled={pending}
               onClick={handleConfirm}
             >
-              {pending && <ConfirmSpinner />}
+              {pending && <Spinner />}
               {options.confirmText}
             </Button>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
     </ConfirmContext.Provider>
-  );
-};
-
-const ConfirmSpinner = () => {
-  return (
-    <span
-      data-slot="confirm-spinner"
-      aria-hidden
-      className="size-4 animate-spin rounded-full border-2 border-current border-e-transparent"
-    />
   );
 };
 

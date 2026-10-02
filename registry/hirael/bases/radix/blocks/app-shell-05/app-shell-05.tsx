@@ -26,6 +26,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/registry/hirael/bases/radix/ui/breadcrumb';
+import { useDirection } from '@/registry/hirael/bases/radix/ui/direction';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -230,8 +231,11 @@ const AppSidebar = ({ active, onNavigate }: AppSidebarProps) => {
     onNavigate(label);
   };
 
+  // Sidebar's `side` is physical, so an RTL page pins it to the right.
+  const sidebarSide = useDirection() === 'rtl' ? 'right' : 'left';
+
   return (
-    <Sidebar variant="inset" collapsible="icon">
+    <Sidebar side={sidebarSide} variant="inset" collapsible="icon">
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>

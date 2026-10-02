@@ -12,6 +12,7 @@ import type { Column, RowData } from '@tanstack/react-table';
 import { CalendarIcon, XCircle } from 'lucide-react';
 import * as React from 'react';
 import type { DateRange } from 'react-day-picker';
+import { useDataTableLabels } from './data-table-labels';
 
 type DateSelection = Date[] | DateRange;
 
@@ -63,6 +64,7 @@ export const DataTableDateFilter = <TData extends RowData>({
   multiple,
   locale = 'en-US',
 }: DataTableDateFilterProps<TData>) => {
+  const labels = useDataTableLabels();
   const columnFilterValue = column.getFilterValue();
 
   const selectedDates = React.useMemo<DateSelection>(() => {
@@ -137,7 +139,7 @@ export const DataTableDateFilter = <TData extends RowData>({
       if (!getIsDateRange(selectedDates)) return null;
 
       const hasSelectedDates = selectedDates.from || selectedDates.to;
-      const dateText = hasSelectedDates ? formatDateRange(selectedDates) : 'Select date range';
+      const dateText = hasSelectedDates ? formatDateRange(selectedDates) : labels.selectDateRange;
 
       return (
         <span className="flex items-center gap-2">
@@ -155,7 +157,7 @@ export const DataTableDateFilter = <TData extends RowData>({
     if (getIsDateRange(selectedDates)) return null;
 
     const hasSelectedDate = selectedDates.length > 0;
-    const dateText = hasSelectedDate ? formatDate(selectedDates[0], {}, locale) : 'Select date';
+    const dateText = hasSelectedDate ? formatDate(selectedDates[0], {}, locale) : labels.selectDate;
 
     return (
       <span className="flex items-center gap-2">
@@ -168,7 +170,7 @@ export const DataTableDateFilter = <TData extends RowData>({
         )}
       </span>
     );
-  }, [selectedDates, multiple, formatDateRange, title, locale]);
+  }, [selectedDates, multiple, formatDateRange, title, locale, labels]);
 
   return (
     <Popover>
@@ -177,7 +179,7 @@ export const DataTableDateFilter = <TData extends RowData>({
           <Button
             variant="outline"
             size="sm"
-            aria-label={`Clear ${title} filter`}
+            aria-label={labels.clearFilter(title ?? '')}
             data-slot="data-table-date-filter-reset"
             className="rounded-e-none border-e-0 border-dashed px-2"
             onClick={onReset}

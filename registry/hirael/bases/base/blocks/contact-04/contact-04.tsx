@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Activity, ArrowRight, CheckCircle2, Loader2, Mail, MessagesSquare } from 'lucide-react';
+import { Activity, ArrowRight, CheckCircle2, Mail, MessagesSquare } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -15,6 +15,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/r
 import { Input } from '@/registry/hirael/bases/base/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/base/ui/select';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -509,7 +510,7 @@ const Contact04 = () => {
                   <Button type="submit" disabled={sending} className="group sm:min-w-36">
                     {sending ? (
                       <span key="sending" className={cn(SWAP, 'inline-flex items-center gap-2')}>
-                        <Loader2 aria-hidden className="animate-spin" />
+                        <Spinner aria-hidden />
                         Sending
                       </span>
                     ) : (

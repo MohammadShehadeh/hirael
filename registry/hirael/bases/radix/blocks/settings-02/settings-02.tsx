@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, Laptop, Loader2, MonitorSmartphone, ShieldCheck, Smartphone, type LucideIcon } from 'lucide-react';
+import { Check, Laptop, MonitorSmartphone, ShieldCheck, Smartphone, type LucideIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import {
@@ -33,6 +33,7 @@ import {
   PasswordInputField,
   PasswordInputStrength,
 } from '@/registry/hirael/bases/radix/components/password-input';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -525,7 +526,7 @@ const Settings02 = () => {
                   >
                     {passwordStatus === 'pending' ? (
                       <>
-                        <Loader2 aria-hidden className="animate-spin motion-reduce:animate-none" />
+                        <Spinner aria-hidden className="motion-reduce:animate-none" />
                         Updating
                       </>
                     ) : (

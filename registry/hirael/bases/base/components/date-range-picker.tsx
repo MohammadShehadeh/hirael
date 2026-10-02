@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Calendar } from '@/registry/hirael/bases/base/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type { DateRange };
 
@@ -54,25 +55,17 @@ const DateRangePicker = ({
   disabled,
   children,
 }: DateRangePickerProps) => {
-  const [internalValue, setInternalValue] = React.useState(defaultValue);
-  const value = valueProp ?? internalValue;
-  const setValue = React.useCallback(
-    (next: DateRange | undefined) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const ctx = React.useMemo<DateRangePickerContextValue>(
     () => ({ value, setValue, setOpen, locale, disabled }),
@@ -105,23 +98,19 @@ const DateRangePickerTrigger = ({
   return (
     <PopoverTrigger
       render={
-        <button
+        <Button
           type="button"
+          variant="outline"
           disabled={ctx.disabled}
           data-slot="date-range-picker-trigger"
-          className={cn(
-            'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
-            'hover:border-ring/60 focus-visible:border-ring data-popup-open:border-ring',
-            !ctx.value?.from && 'text-muted-foreground',
-            'disabled:cursor-not-allowed disabled:opacity-50',
-            className,
-          )}
+          data-empty={!ctx.value?.from || undefined}
+          className={cn('w-full justify-start font-normal tabular-nums data-empty:text-muted-foreground', className)}
           {...props}
         />
       }
     >
-      <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
-      <span data-slot="date-range-picker-trigger-label" className="flex-1 truncate">
+      <CalendarIcon className="text-muted-foreground" />
+      <span data-slot="date-range-picker-trigger-label" className="flex-1 truncate text-start">
         {children ??
           (ctx.value?.from
             ? `${fmt.format(ctx.value.from)} – ${ctx.value.to ? fmt.format(ctx.value.to) : '…'}`
@@ -181,7 +170,11 @@ const DateRangePickerContent = ({
   const ctx = useDateRangePicker();
 
   return (
-    <PopoverContent align={align} data-slot="date-range-picker-content" className="w-auto p-0">
+    <PopoverContent
+      align={align}
+      data-slot="date-range-picker-content"
+      className="w-auto max-w-(--available-width) p-0"
+    >
       <div className="flex flex-col sm:flex-row">
         {presets.length > 0 && (
           <div

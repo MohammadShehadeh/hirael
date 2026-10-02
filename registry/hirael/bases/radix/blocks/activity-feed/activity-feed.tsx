@@ -5,6 +5,7 @@ import { GitMerge, UserPlus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
+import { Avatar, AvatarFallback, AvatarImage } from '@/registry/hirael/bases/radix/ui/avatar';
 
 type ActivityFeedProps = React.ComponentProps<'ul'>;
 
@@ -29,28 +30,17 @@ const ActivityFeedItem = ({ className, ...props }: ActivityFeedItemProps) => {
   );
 };
 
-interface ActivityFeedAvatarProps extends React.ComponentProps<'span'> {
+interface ActivityFeedAvatarProps extends Omit<React.ComponentProps<typeof Avatar>, 'size'> {
   src?: string;
   alt?: string;
 }
 
 const ActivityFeedAvatar = ({ src, alt, className, children, ...props }: ActivityFeedAvatarProps) => {
   return (
-    <span
-      data-slot="activity-feed-avatar"
-      className={cn(
-        'relative z-10 inline-flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-muted text-[11px] font-medium text-muted-foreground [&_svg]:size-4',
-        className,
-      )}
-      {...props}
-    >
-      {src ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={alt ?? ''} loading="lazy" className="size-full object-cover" />
-      ) : (
-        children
-      )}
-    </span>
+    <Avatar data-slot="activity-feed-avatar" className={cn('z-10', className)} {...props}>
+      {src && <AvatarImage src={src} alt={alt ?? ''} loading="lazy" />}
+      <AvatarFallback>{children}</AvatarFallback>
+    </Avatar>
   );
 };
 
@@ -259,7 +249,7 @@ const ActivityFeedBlock = () => {
                     return (
                       <ActivityFeedItem key={event.id}>
                         <ActivityFeedAvatar>
-                          {Icon ? <Icon aria-hidden className="text-foreground" /> : event.initials}
+                          {Icon ? <Icon aria-hidden className="size-4 text-foreground" /> : event.initials}
                         </ActivityFeedAvatar>
                         <ActivityFeedContent>
                           <ActivityFeedHeader>

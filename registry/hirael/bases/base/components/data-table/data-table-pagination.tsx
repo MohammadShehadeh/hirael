@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn } from '@/lib/utils';
 import type { ReactTable, RowData } from '@tanstack/react-table';
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react';
+import { useDataTableLabels } from './data-table-labels';
 
 interface DataTablePaginationProps<TData extends RowData> extends React.ComponentProps<'div'> {
   table: ReactTable<DataTableFeatures, TData>;
@@ -19,6 +20,7 @@ export const DataTablePagination = <TData extends RowData>({
   className,
   ...props
 }: DataTablePaginationProps<TData>) => {
+  const labels = useDataTableLabels();
   const pageSize = table.state.pagination.pageSize;
   const sizes = pageSizeOptions.includes(pageSize)
     ? pageSizeOptions
@@ -34,11 +36,11 @@ export const DataTablePagination = <TData extends RowData>({
       {...props}
     >
       <div className="flex-1 text-sm whitespace-nowrap text-muted-foreground">
-        {table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s) selected.
+        {labels.rowsSelected(table.getFilteredSelectedRowModel().rows.length, table.getFilteredRowModel().rows.length)}
       </div>
       <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">
         <div className="flex items-center gap-2">
-          <p className="text-sm font-medium whitespace-nowrap">Rows per page</p>
+          <p className="text-sm font-medium whitespace-nowrap">{labels.rowsPerPage}</p>
           <Select
             value={`${pageSize}`}
             onValueChange={(value) => {
@@ -58,11 +60,11 @@ export const DataTablePagination = <TData extends RowData>({
           </Select>
         </div>
         <div className="flex items-center justify-center text-sm font-medium">
-          Page {table.state.pagination.pageIndex + 1} of {table.getPageCount()}
+          {labels.page(table.state.pagination.pageIndex + 1, table.getPageCount())}
         </div>
         <div className="flex items-center gap-2">
           <Button
-            aria-label="Go to first page"
+            aria-label={labels.firstPage}
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"
@@ -72,7 +74,7 @@ export const DataTablePagination = <TData extends RowData>({
             <ChevronsLeft className="rtl:rotate-180" />
           </Button>
           <Button
-            aria-label="Go to previous page"
+            aria-label={labels.previousPage}
             variant="outline"
             size="icon"
             className="size-8"
@@ -82,7 +84,7 @@ export const DataTablePagination = <TData extends RowData>({
             <ChevronLeft className="rtl:rotate-180" />
           </Button>
           <Button
-            aria-label="Go to next page"
+            aria-label={labels.nextPage}
             variant="outline"
             size="icon"
             className="size-8"
@@ -92,7 +94,7 @@ export const DataTablePagination = <TData extends RowData>({
             <ChevronRight className="rtl:rotate-180" />
           </Button>
           <Button
-            aria-label="Go to last page"
+            aria-label={labels.lastPage}
             variant="outline"
             size="icon"
             className="hidden size-8 lg:flex"

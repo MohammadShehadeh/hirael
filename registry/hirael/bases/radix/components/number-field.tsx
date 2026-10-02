@@ -5,13 +5,14 @@ import { flushSync } from 'react-dom';
 import { ChevronDown, ChevronUp, Minus, Plus } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
   InputGroupInput,
 } from '@/registry/hirael/bases/radix/ui/input-group';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 const HOLD_DELAY = 400;
 const HOLD_INTERVAL = 120;
@@ -209,8 +210,11 @@ const NumberField = ({
   const inputRef = React.useRef<HTMLInputElement | null>(null);
   const largeStep = largeStepProp ?? step * 10;
 
-  const [internalValue, setInternalValue] = React.useState<number | null>(defaultValue);
-  const value = valueProp !== undefined ? valueProp : internalValue;
+  const [value, setValue] = useControllableState<number | null>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const optionsKey = JSON.stringify(resolveFormatOptions(formatOptions, precision, step, largeStep));
   const format = React.useMemo(() => createNumberFormat(locale, JSON.parse(optionsKey)), [locale, optionsKey]);
@@ -228,10 +232,9 @@ const NumberField = ({
     (next: number | null) => {
       setInputValue(format.format(next));
       if (Object.is(next, value)) return;
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
+      setValue(next);
     },
-    [format, value, valueProp, onValueChange],
+    [format, value, setValue],
   );
 
   const clamp = React.useCallback(

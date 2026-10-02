@@ -4,6 +4,7 @@ import * as React from 'react';
 import { ChevronRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
   CommandDialog,
   CommandEmpty,
@@ -13,6 +14,8 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/registry/hirael/bases/base/ui/command';
+import { Kbd } from '@/registry/hirael/bases/base/ui/kbd';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface CommandPaletteRecent {
   id: string;
@@ -29,9 +32,6 @@ const useIsApple = () =>
   );
 
 const NO_RECENTS: CommandPaletteRecent[] = [];
-
-const KBD_CLASS =
-  'ms-auto rounded-[3px] border border-border px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground';
 
 const isEditableTarget = (target: EventTarget | null) => {
   if (!(target instanceof HTMLElement)) return false;
@@ -142,8 +142,11 @@ const CommandPalette = ({
   maxRecents = 5,
   children,
 }: CommandPaletteProps) => {
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const [query, setQuery] = React.useState('');
   const [pages, setPages] = React.useState<string[]>([]);
@@ -164,14 +167,6 @@ const CommandPalette = ({
     subscribeRecents,
     () => (recentsKey ? recentsSnapshot(recentsKey) : NO_RECENTS),
     () => NO_RECENTS,
-  );
-
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
   );
 
   React.useEffect(() => {
@@ -246,27 +241,25 @@ const CommandPaletteTrigger = ({ className, children, onClick, ...props }: React
   const ctx = usePalette();
 
   return (
-    <button
+    <Button
       type="button"
+      variant="outline"
       data-slot="command-palette-trigger"
       onClick={(e) => {
         onClick?.(e);
         if (e.defaultPrevented) return;
         ctx.setOpen(true);
       }}
-      className={cn(
-        'inline-flex h-9 w-full max-w-xs items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-sm text-muted-foreground transition-colors hover:border-ring hover:text-foreground',
-        className,
-      )}
+      className={cn('w-full max-w-xs justify-start font-normal text-muted-foreground', className)}
       {...props}
     >
       {children ?? <span>Search</span>}
       {ctx.shortcutLabel && (
-        <kbd data-slot="command-palette-kbd" className={KBD_CLASS}>
+        <Kbd data-slot="command-palette-kbd" className="ms-auto">
           {ctx.shortcutLabel}
-        </kbd>
+        </Kbd>
       )}
-    </button>
+    </Button>
   );
 };
 
@@ -414,7 +407,7 @@ const CommandPaletteItem = ({
     >
       {children ?? label}
       {page && <ChevronRight className="ms-auto size-3.5 text-muted-foreground rtl:rotate-180" />}
-      {shortcut && !page && <kbd className={KBD_CLASS}>{shortcut}</kbd>}
+      {shortcut && !page && <Kbd className="ms-auto">{shortcut}</Kbd>}
     </CommandItem>
   );
 };

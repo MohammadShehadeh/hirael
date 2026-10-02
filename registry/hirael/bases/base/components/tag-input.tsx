@@ -4,8 +4,10 @@ import * as React from 'react';
 import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/base/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
+import { InputGroup } from '@/registry/hirael/bases/base/ui/input-group';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type TagValidator = (candidate: string, current: string[]) => true | string;
 
@@ -28,6 +30,8 @@ interface Ctx {
 const DEFAULT_COMMIT_KEYS = ['Enter', ','];
 const DEFAULT_SPLIT_ON = /[,\n\t]+/;
 
+const defaultLimitMessage = (max: number) => `Limit ${max} tag${max === 1 ? '' : 's'}.`;
+
 const TagInputContext = React.createContext<Ctx | null>(null);
 
 const useTagInput = () => {
@@ -46,6 +50,8 @@ export interface TagInputProps extends Omit<React.ComponentProps<'div'>, 'defaul
   disabled?: boolean;
   readOnly?: boolean;
   maxTags?: number;
+  /** Error shown when `maxTags` is reached. */
+  limitMessage?: (max: number) => string;
   validate?: TagValidator;
   commitKeys?: string[];
   splitOn?: RegExp;
@@ -59,6 +65,7 @@ const TagInput = ({
   disabled,
   readOnly,
   maxTags,
+  limitMessage = defaultLimitMessage,
   validate,
   commitKeys = DEFAULT_COMMIT_KEYS,
   splitOn = DEFAULT_SPLIT_ON,
@@ -66,15 +73,11 @@ const TagInput = ({
   children,
   ...props
 }: TagInputProps) => {
-  const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue ?? []);
-  const value = valueProp ?? internalValue;
-  const setValue = React.useCallback(
-    (next: string[]) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState<string[]>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? [],
+    onChange: onValueChange,
+  });
 
   const [draft, setDraft] = React.useState('');
   const [error, setError] = React.useState<string | null>(null);
@@ -90,7 +93,7 @@ const TagInput = ({
       let failure: string | null = null;
       for (const tag of candidates.map((c) => c.trim()).filter(Boolean)) {
         if (maxTags !== undefined && next.length >= maxTags) {
-          failure = `Limit ${maxTags} tag${maxTags === 1 ? '' : 's'}.`;
+          failure = limitMessage(maxTags);
           break;
         }
         if (next.some((t) => t.toLowerCase() === tag.toLowerCase())) {
@@ -111,7 +114,7 @@ const TagInput = ({
       // A duplicate is already there, so it counts as handled and the draft clears.
       return added || (duplicate && !failure);
     },
-    [disabled, readOnly, value, maxTags, validate, setValue],
+    [disabled, readOnly, value, maxTags, limitMessage, validate, setValue],
   );
 
   const remove = React.useCallback(
@@ -157,7 +160,7 @@ const TagInputContainer = ({ className, children, onMouseDown, ...props }: TagIn
   const ctx = useTagInput();
 
   return (
-    <div
+    <InputGroup
       data-slot="tag-input-container"
       data-disabled={ctx.disabled || undefined}
       data-readonly={ctx.readOnly || undefined}
@@ -170,24 +173,26 @@ const TagInputContainer = ({ className, children, onMouseDown, ...props }: TagIn
         }
       }}
       className={cn(
-        'flex min-h-9 w-full flex-wrap items-center gap-1 rounded-sm border border-input bg-transparent px-1.5 py-1 text-sm transition-colors outline-none',
-        'focus-within:border-ring',
-        ctx.error && 'border-destructive focus-within:border-destructive',
+        'h-auto min-h-9 flex-wrap gap-1 px-1.5 py-1 text-sm focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50',
         (ctx.disabled || ctx.readOnly) && 'cursor-not-allowed opacity-60',
         className,
       )}
       {...props}
     >
       {children}
-    </div>
+    </InputGroup>
   );
 };
 
 interface TagInputTagProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   index: number;
+  /** Accessible name of the remove button. */
+  removeLabel?: (tag: string) => string;
 }
 
-const TagInputTag = ({ index, className, ...props }: TagInputTagProps) => {
+const defaultRemoveLabel = (tag: string) => `Remove ${tag}`;
+
+const TagInputTag = ({ index, removeLabel = defaultRemoveLabel, className, ...props }: TagInputTagProps) => {
   const ctx = useTagInput();
   const tag = ctx.value[index];
   if (tag === undefined) return null;
@@ -199,7 +204,7 @@ const TagInputTag = ({ index, className, ...props }: TagInputTagProps) => {
         <button
           type="button"
           tabIndex={-1}
-          aria-label={`Remove ${tag}`}
+          aria-label={removeLabel(tag)}
           onClick={() => ctx.remove(index)}
           className="inline-flex size-3.5 items-center justify-center rounded-[2px] text-secondary-foreground/70 transition-colors hover:bg-secondary-foreground/20 hover:text-secondary-foreground"
         >
@@ -302,7 +307,7 @@ const TagInputError = ({ className, ...props }: React.ComponentProps<'p'>) => {
       role="alert"
       id={ctx.errorId}
       data-slot="tag-input-error"
-      className={cn('text-[11px] text-destructive', className)}
+      className={cn('text-sm text-destructive', className)}
       {...props}
     >
       {ctx.error}

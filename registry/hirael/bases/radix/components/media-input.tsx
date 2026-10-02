@@ -5,6 +5,8 @@ import { X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
+import { formatBytes } from '@/registry/hirael/lib/format-bytes';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface MediaInputValue {
   file: File;
@@ -26,19 +28,6 @@ const useMediaInput = () => {
   if (!ctx) throw new Error('useMediaInput must be used within <MediaInput>');
 
   return ctx;
-};
-
-const formatBytes = (bytes: number): string => {
-  if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'] as const;
-  let i = 0;
-  let n = bytes;
-  while (n >= 1024 && i < units.length - 1) {
-    n /= 1024;
-    i++;
-  }
-
-  return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
 };
 
 const matchesAccept = (file: File, accept?: string): boolean => {
@@ -70,6 +59,8 @@ export interface MediaInputProps extends Omit<React.ComponentProps<'div'>, 'onEr
   defaultValue?: MediaInputValue | null;
   onValueChange?: (value: MediaInputValue | null) => void;
   onError?: (message: string) => void;
+  /** Override the rejection message per reason, e.g. for another language. */
+  messages?: Partial<Record<'type' | 'size', string>>;
 }
 
 const MediaInput = ({
@@ -81,13 +72,17 @@ const MediaInput = ({
   defaultValue = null,
   onValueChange,
   onError,
+  messages,
   className,
   children,
   ...props
 }: MediaInputProps) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [internalValue, setInternalValue] = React.useState<MediaInputValue | null>(defaultValue);
-  const value = valueProp !== undefined ? valueProp : internalValue;
+  const [value, setValue] = useControllableState<MediaInputValue | null>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
   const [error, setError] = React.useState<string | null>(null);
   const createdUrlsRef = React.useRef(new Set<string>());
 
@@ -116,14 +111,6 @@ const MediaInput = ({
     if (!disabled) inputRef.current?.click();
   }, [disabled]);
 
-  const setValue = React.useCallback(
-    (next: MediaInputValue | null) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
-
   const clear = React.useCallback(() => {
     // Emptied here, not on change, so a named input still submits its file and re-picking the same file fires change.
     if (inputRef.current) inputRef.current.value = '';
@@ -150,12 +137,12 @@ const MediaInput = ({
   const handleFile = (file: File | undefined) => {
     if (!file) return;
     if (!matchesAccept(file, accept)) {
-      reject('That file type is not supported.');
+      reject(messages?.type ?? 'That file type is not supported.');
 
       return;
     }
     if (maxSize != null && file.size > maxSize) {
-      reject(`File is larger than ${formatBytes(maxSize)}.`);
+      reject(messages?.size ?? `File is larger than ${formatBytes(maxSize)}.`);
 
       return;
     }
@@ -268,10 +255,7 @@ const MediaInputFile = ({ className, ...props }: React.ComponentProps<'p'>) => {
       {...props}
     >
       {value.file.name}
-      <span className="text-muted-foreground/70">
-        {' · '}
-        {formatBytes(value.file.size)}
-      </span>
+      <span className="ms-2 text-muted-foreground/70">{formatBytes(value.file.size)}</span>
     </p>
   );
 };

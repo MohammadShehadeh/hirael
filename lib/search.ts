@@ -1,4 +1,4 @@
-import { BLOCK_KIND_LABELS, CATEGORY_LABELS, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
+import { BLOCK_KIND_LABELS, entryCategoryLabel, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
 // Each alias is an extra exact word to look for, so point it at words that sit in the
 // target's name or title. Numeric keys work because `words` normalizes digits.
@@ -83,6 +83,11 @@ const ALIASES: Record<string, string[]> = {
   topbar: ['header'],
   nav: ['header', 'navigation'],
   sidebar: ['shell', 'split'],
+  drilldown: ['nested'],
+  drill: ['nested'],
+  multilevel: ['nested'],
+  submenu: ['nested'],
+  vercel: ['nested'],
   admin: ['shell', 'dashboard'],
   layout: ['shell'],
   cmdk: ['command'],
@@ -185,7 +190,7 @@ export const entryKindLabel = (entry: RegistryEntryMeta) => {
   if (entry.category === 'templates') return 'Template';
   if (entry.category === 'blocks') return entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : 'Block';
 
-  return CATEGORY_LABELS[entry.category];
+  return entryCategoryLabel(entry);
 };
 
 export const buildSearchIndex = (entries: RegistryEntryMeta[]): SearchDoc[] =>
@@ -195,7 +200,11 @@ export const buildSearchIndex = (entries: RegistryEntryMeta[]): SearchDoc[] =>
       kindLabel,
       entry.blockKind ?? '',
       entry.category === 'blocks' ? 'block section' : '',
-      entry.category === 'templates' ? 'template page' : 'component',
+      entry.category === 'templates'
+        ? 'template page'
+        : entry.category === 'utilities'
+          ? 'react hook utility helper'
+          : 'component',
     ].join(' ');
 
     return {

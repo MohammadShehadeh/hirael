@@ -11,8 +11,8 @@ const CopyButtonDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Icon only · ghost & outline',
-            ar: 'أيقونة فقط · شفاف ومحدّد',
+            en: 'Icon only',
+            ar: 'أيقونة فقط',
           })}
         </p>
         <div className="flex items-center gap-3">

@@ -25,8 +25,8 @@ const MarqueeDemo = () => {
       <div className="grid min-w-0 gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Pause on hover · edge fade',
-            ar: 'إيقاف عند المرور · تلاشٍ عند الحواف',
+            en: 'Pause on hover, edge fade',
+            ar: 'إيقاف عند المرور، تلاشٍ عند الحواف',
           })}
         </p>
         <div className="relative w-full min-w-0 overflow-hidden py-1">

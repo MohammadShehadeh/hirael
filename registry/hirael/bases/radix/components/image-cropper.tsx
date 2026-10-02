@@ -5,6 +5,7 @@ import Cropper, { type Area, type Point } from 'react-easy-crop';
 
 import { cn } from '@/lib/utils';
 import { Slider } from '@/registry/hirael/bases/radix/ui/slider';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type ImageCropperCrop = Point;
 
@@ -78,25 +79,17 @@ const ImageCropper = ({
   children,
   ...props
 }: ImageCropperProps) => {
-  const [internalZoom, setInternalZoom] = React.useState(defaultZoom);
-  const zoom = zoomProp ?? internalZoom;
-  const setZoom = React.useCallback(
-    (next: number) => {
-      if (zoomProp === undefined) setInternalZoom(next);
-      onZoomChange?.(next);
-    },
-    [zoomProp, onZoomChange],
-  );
+  const [zoom, setZoom] = useControllableState({
+    prop: zoomProp,
+    defaultProp: defaultZoom,
+    onChange: onZoomChange,
+  });
 
-  const [internalCrop, setInternalCrop] = React.useState(defaultCrop);
-  const crop = cropProp ?? internalCrop;
-  const setCrop = React.useCallback(
-    (next: ImageCropperCrop) => {
-      if (cropProp === undefined) setInternalCrop(next);
-      onCropChange?.(next);
-    },
-    [cropProp, onCropChange],
-  );
+  const [crop, setCrop] = useControllableState({
+    prop: cropProp,
+    defaultProp: defaultCrop,
+    onChange: onCropChange,
+  });
 
   const areaRef = React.useRef<Area | null>(null);
   const imageRef = React.useRef<HTMLImageElement | null>(null);

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronDown, X, Loader2 } from 'lucide-react';
+import { Check, ChevronDown, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
@@ -15,6 +15,9 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/registry/hirael/bases/radix/ui/command';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
+import { InputGroup } from '@/registry/hirael/bases/radix/ui/input-group';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface MultiSelectOption {
   value: string;
@@ -80,25 +83,17 @@ const MultiSelect = ({
   name,
   children,
 }: MultiSelectProps) => {
-  const [internalValue, setInternalValue] = React.useState<string[]>(defaultValue ?? []);
-  const value = valueProp ?? internalValue;
-  const setValue = React.useCallback(
-    (next: string[]) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState<string[]>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? [],
+    onChange: onValueChange,
+  });
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const toggle = React.useCallback(
     (v: string) => {
@@ -150,9 +145,19 @@ const MultiSelect = ({
 interface MultiSelectTriggerProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   placeholder?: string;
   disabled?: boolean;
+  /** Accessible name of a chip's remove button. */
+  removeLabel?: (label: string) => string;
 }
 
-const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ...props }: MultiSelectTriggerProps) => {
+const defaultRemoveLabel = (label: string) => `Remove ${label}`;
+
+const MultiSelectTrigger = ({
+  placeholder = 'Select…',
+  removeLabel = defaultRemoveLabel,
+  className,
+  disabled,
+  ...props
+}: MultiSelectTriggerProps) => {
   const ctx = useMultiSelect();
   const selected = ctx.options.filter((o) => ctx.value.includes(o.value));
   const isDisabled = ctx.disabled || disabled;
@@ -164,7 +169,7 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
         if (isDisabled) event.preventDefault();
       }}
     >
-      <div
+      <InputGroup
         role="combobox"
         aria-controls={ctx.listboxId}
         aria-expanded={ctx.open}
@@ -179,9 +184,7 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
           event.currentTarget.click();
         }}
         className={cn(
-          'group flex min-h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-2 py-1 text-start text-sm transition-colors outline-none',
-          'focus-within:border-ring hover:border-ring/60',
-          'data-[state=open]:border-ring',
+          'group h-auto min-h-9 cursor-pointer justify-between gap-2 px-2 py-1 text-start text-sm focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
           isDisabled && 'cursor-not-allowed opacity-50',
           className,
         )}
@@ -200,9 +203,9 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
                   <button
                     type="button"
                     data-slot="multi-select-chip-remove"
-                    aria-label={`Remove ${opt.label}`}
+                    aria-label={removeLabel(opt.label)}
                     onClick={() => ctx.remove(opt.value)}
-                    className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-[2px] text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
+                    className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-sm text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
                   >
                     <X className="size-2.5" />
                   </button>
@@ -216,14 +219,14 @@ const MultiSelectTrigger = ({ placeholder = 'Select…', className, disabled, ..
         </span>
         <span className="flex shrink-0 items-center gap-1.5 text-muted-foreground">
           {selected.length > 0 && (
-            <span className="text-[10px] tabular-nums">
+            <span className="text-xs tabular-nums">
               {selected.length}
               {ctx.maxCount ? `/${ctx.maxCount}` : ''}
             </span>
           )}
           <ChevronDown className="size-3.5 transition-transform duration-150 group-data-[state=open]:rotate-180 motion-reduce:transition-none" />
         </span>
-      </div>
+      </InputGroup>
     </PopoverTrigger>
   );
 };
@@ -276,7 +279,7 @@ const MultiSelectContent = ({
         <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
-              <Loader2 className="size-3.5 animate-spin" />
+              <Spinner aria-hidden className="size-3.5" />
               {loadingMessage}
             </div>
           ) : (
@@ -307,7 +310,7 @@ const MultiSelectContent = ({
                         className="justify-between"
                       >
                         <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
-                        <span className="text-[10px] text-muted-foreground tabular-nums">
+                        <span className="text-xs text-muted-foreground tabular-nums">
                           {ctx.value.length} / {enabled.length}
                         </span>
                       </CommandItem>
@@ -355,7 +358,7 @@ const MultiSelectItem = ({ option, children, className, ...props }: MultiSelectI
       <span
         aria-hidden
         className={cn(
-          'flex size-4 items-center justify-center rounded-[2px] border border-border transition-colors',
+          'flex size-4 items-center justify-center rounded-sm border border-border transition-colors',
           selected && 'border-primary bg-primary text-primary-foreground',
         )}
       >

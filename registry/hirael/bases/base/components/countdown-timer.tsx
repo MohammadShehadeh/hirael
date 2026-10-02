@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { useReducedMotion } from '@/registry/hirael/hooks/use-reduced-motion';
 
 export type CountdownUnit = 'days' | 'hours' | 'minutes' | 'seconds';
 
@@ -80,20 +81,6 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
 
   return state;
 };
-
-const REDUCED_MOTION = '(prefers-reduced-motion: reduce)';
-
-const useReducedMotion = () =>
-  React.useSyncExternalStore(
-    (onStoreChange) => {
-      const query = window.matchMedia(REDUCED_MOTION);
-      query.addEventListener('change', onStoreChange);
-
-      return () => query.removeEventListener('change', onStoreChange);
-    },
-    () => window.matchMedia(REDUCED_MOTION).matches,
-    () => false,
-  );
 
 const CountdownTimerValue = ({ value, className, ...props }: React.ComponentProps<'span'> & { value: string }) => {
   const reduceMotion = useReducedMotion();

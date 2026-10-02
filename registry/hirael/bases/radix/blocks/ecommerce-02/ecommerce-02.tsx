@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Image from 'next/image';
-import { ArrowRight, CircleCheck, Loader2, Minus, Plus, X } from 'lucide-react';
+import { ArrowRight, CircleCheck, Minus, Plus, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -15,6 +15,7 @@ import {
   InputGroupInput,
 } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -401,7 +402,7 @@ const Ecommerce02 = () => {
                   >
                     {pending ? (
                       <span key="pending" className={cn(SWAP, 'inline-flex items-center gap-2')}>
-                        <Loader2 aria-hidden className="size-4 animate-spin motion-reduce:animate-none" />
+                        <Spinner aria-hidden className="motion-reduce:animate-none" />
                         Placing order…
                       </span>
                     ) : (

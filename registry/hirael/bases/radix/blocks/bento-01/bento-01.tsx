@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, GitCommitHorizontal, Loader2, Rocket } from 'lucide-react';
+import { Check, GitCommitHorizontal, Rocket } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { AnimatedNumber } from '@/registry/hirael/bases/radix/components/animated-number';
@@ -15,6 +15,7 @@ import {
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/toggle-group';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const ENTER = `animate-in fade-in slide-in-from-bottom-4 duration-500 ${EASE} fill-mode-both motion-reduce:animate-none`;
@@ -140,7 +141,7 @@ const DeployLog = (props: DeployLogProps) => {
       description="Every push to main builds, checks and goes live. Press Deploy to watch one."
       action={
         <Button size="sm" onClick={() => setShown(0)} disabled={running}>
-          {running ? <Loader2 aria-hidden className="animate-spin" /> : <Rocket aria-hidden />}
+          {running ? <Spinner aria-hidden /> : <Rocket aria-hidden />}
           {running ? 'Deploying' : done ? 'Deploy again' : 'Deploy'}
         </Button>
       }

@@ -24,6 +24,9 @@ interface ComponentDoc {
   name: string;
   props: PropDoc[];
   extendsNative: boolean;
+  /** `function` for hooks and utilities: rows are parameters and `returns` is set. */
+  kind?: 'component' | 'function';
+  returns?: string;
 }
 
 const createProgram = (rootNames: string[]) => {
@@ -101,6 +104,53 @@ const extractComponent = (checker: ts.TypeChecker, symbol: ts.Symbol): Omit<Comp
   return { props, extendsNative };
 };
 
+const typeText = (checker: ts.TypeChecker, type: ts.Type, node: ts.Node) => {
+  const text = checker.typeToString(
+    type,
+    node,
+    ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope,
+  );
+
+  return text.length > MAX_TYPE_LENGTH ? `${text.slice(0, MAX_TYPE_LENGTH)}…` : text;
+};
+
+// A single options object documents its fields; anything else documents its positional parameters.
+const extractFunction = (checker: ts.TypeChecker, symbol: ts.Symbol): Omit<ComponentDoc, 'name'> | null => {
+  const declaration = declarationOf(symbol);
+  const fn = functionOf(declaration);
+  if (!declaration || !fn) return null;
+  const [signature] = checker.getTypeOfSymbolAtLocation(symbol, declaration).getCallSignatures();
+  if (!signature) return null;
+  // A written return annotation reads better than the inferred, fully expanded type.
+  const returns = fn.type?.getText() ?? typeText(checker, signature.getReturnType(), declaration);
+  const [first] = fn.parameters;
+  if (fn.parameters.length === 1 && first && ts.isObjectBindingPattern(first.name)) {
+    const options = extractComponent(checker, symbol);
+
+    return options && { ...options, kind: 'function', returns };
+  }
+  const paramDocs = new Map(
+    ts
+      .getJSDocTags(fn.parent && ts.isVariableDeclaration(fn.parent) ? fn.parent : fn)
+      .filter(ts.isJSDocParameterTag)
+      .map((tag) => [tag.name.getText(), ts.getTextOfJSDocComment(tag.comment) ?? null] as const),
+  );
+  const props: PropDoc[] = fn.parameters.map((parameter) => {
+    const name = parameter.name.getText();
+    const isRest = Boolean(parameter.dotDotDotToken);
+
+    return {
+      name: isRest ? `...${name}` : name,
+      type: typeText(checker, checker.getTypeAtLocation(parameter), parameter),
+      required: !parameter.questionToken && !parameter.initializer && !isRest,
+      default: parameter.initializer?.getText() ?? null,
+      description: paramDocs.get(name) ?? null,
+    };
+  });
+
+  return { props, extendsNative: false, kind: 'function', returns };
+};
+
 const entries = REGISTRY.filter((entry) => entry.category !== 'blocks');
 const program = createProgram(
   entries.flatMap((entry) =>
@@ -116,12 +166,13 @@ for (const entry of entries) {
     const sourceFile = program.getSourceFile(path.join(ROOT, registryFilePath(DEFAULT_BASE, file.path)));
     const moduleSymbol = sourceFile && checker.getSymbolAtLocation(sourceFile);
     if (!moduleSymbol) continue;
+    const isUtility = entry.category === 'utilities';
     for (const exported of checker.getExportsOfModule(moduleSymbol)) {
       const name = exported.getName();
-      if (!/^[A-Z]/.test(name)) continue;
+      if (!isUtility && !/^[A-Z]/.test(name)) continue;
       const resolved = resolveAlias(checker, exported);
       if (!(resolved.flags & ts.SymbolFlags.Value)) continue;
-      const api = extractComponent(checker, resolved);
+      const api = isUtility ? extractFunction(checker, resolved) : extractComponent(checker, resolved);
       if (api) components.push({ name, ...api });
     }
   }

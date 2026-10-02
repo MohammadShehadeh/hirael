@@ -35,9 +35,7 @@ const SortableDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid gap-4">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Tasks · drag handle', ar: 'المهام · مقبض السحب' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Tasks', ar: 'المهام' })}</p>
         <Sortable value={taskOrder} onValueChange={setTaskOrder}>
           {Object.entries(tasks).map(([id, title]) => (
             <SortableItem key={id} value={id}>
@@ -53,8 +51,8 @@ const SortableDemo = () => {
       <div className="grid gap-4">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Tags · horizontal, whole item drags',
-            ar: 'الوسوم · أفقي، يُسحب العنصر بالكامل',
+            en: 'Tags',
+            ar: 'الوسوم',
           })}
         </p>
         <Sortable orientation="horizontal" value={tagOrder} onValueChange={setTagOrder}>
@@ -70,8 +68,8 @@ const SortableDemo = () => {
       <div className="grid gap-4">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Disabled item · skipped while sorting',
-            ar: 'عنصر معطّل · يُتخطّى أثناء الترتيب',
+            en: 'Disabled item',
+            ar: 'عنصر معطّل',
           })}
         </p>
         <Sortable defaultValue={['draft', 'locked', 'review', 'published']} className="max-w-sm">

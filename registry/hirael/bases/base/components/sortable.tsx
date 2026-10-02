@@ -24,6 +24,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { GripVertical } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 type Orientation = 'vertical' | 'horizontal';
 
@@ -97,8 +98,11 @@ const Sortable = ({
   children,
   ...props
 }: SortableProps) => {
-  const [internal, setInternal] = React.useState<string[]>(defaultValue ?? []);
-  const order = valueProp ?? internal;
+  const [order, setOrder] = useControllableState<string[]>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? [],
+    onChange: onValueChange,
+  });
   const id = React.useId();
 
   const sensors = useSortableSensors();
@@ -106,8 +110,7 @@ const Sortable = ({
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     if (!over || active.id === over.id) return;
     const next = arrayMove(order, order.indexOf(String(active.id)), order.indexOf(String(over.id)));
-    if (valueProp === undefined) setInternal(next);
-    onValueChange?.(next);
+    setOrder(next);
   };
 
   const ctx = React.useMemo(() => ({ order }), [order]);

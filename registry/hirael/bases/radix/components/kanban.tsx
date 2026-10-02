@@ -18,6 +18,7 @@ import { GripVertical } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { useSortableSensors } from '@/registry/hirael/bases/radix/components/sortable';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type KanbanValue = Record<string, string[]>;
 
@@ -89,8 +90,11 @@ const Kanban = ({
   children,
   ...props
 }: KanbanProps) => {
-  const [internal, setInternal] = React.useState<KanbanValue>(defaultValue ?? {});
-  const committed = valueProp ?? internal;
+  const [committed, setCommitted] = useControllableState<KanbanValue>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? {},
+    onChange: onValueChange,
+  });
   // The board mid-drag: cards hop columns here, and only the drop commits it.
   const [preview, setPreview] = React.useState<KanbanValue | null>(null);
   const [active, setActive] = React.useState<{ className?: string; children: React.ReactNode } | null>(null);
@@ -147,8 +151,7 @@ const Kanban = ({
     const from = { columnId: fromColumn, index: committed[fromColumn].indexOf(cardId) };
     const to = { columnId: column, index: next[column].indexOf(cardId) };
     if (from.columnId === to.columnId && from.index === to.index) return;
-    if (valueProp === undefined) setInternal(next);
-    onValueChange?.(next);
+    setCommitted(next);
     onCardMove?.({ cardId, from, to });
   };
 

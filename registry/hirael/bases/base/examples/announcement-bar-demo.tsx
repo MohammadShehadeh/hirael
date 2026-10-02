@@ -15,9 +15,7 @@ const AnnouncementBarDemo = () => {
   return (
     <div className="grid w-full max-w-3xl gap-6">
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Default · dismissible', ar: 'افتراضي · قابل للإغلاق' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Default', ar: 'افتراضي' })}</p>
         <div className="overflow-hidden rounded-md border border-b-0 empty:hidden">
           <AnnouncementBar dismissible>
             <AnnouncementBarBadge>{t({ en: 'new', ar: 'جديد' })}</AnnouncementBarBadge>
@@ -55,13 +53,13 @@ const AnnouncementBarDemo = () => {
       </div>
 
       <div className="grid gap-2">
-        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Muted · simple', ar: 'هادئ · بسيط' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Muted', ar: 'هادئ' })}</p>
         <div className="overflow-hidden rounded-md empty:hidden">
           <AnnouncementBar tone="muted">
             <span className="text-muted-foreground">
               {t({
-                en: 'Scheduled maintenance on May 28, 02:00 UTC · ~15 min downtime.',
-                ar: 'صيانة مجدولة في 28 مايو، 02:00 بتوقيت UTC · توقف لنحو 15 دقيقة.',
+                en: 'Scheduled maintenance on May 28, 02:00 UTC, about 15 minutes of downtime.',
+                ar: 'صيانة مجدولة في 28 مايو، 02:00 بتوقيت UTC، توقف لنحو 15 دقيقة.',
               })}
             </span>
           </AnnouncementBar>

@@ -4,8 +4,10 @@ import * as React from 'react';
 import { CalendarIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Calendar } from '@/registry/hirael/bases/radix/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface DatePickerContextValue {
   value: Date | undefined;
@@ -50,25 +52,17 @@ const DatePicker = ({
   disabled,
   children,
 }: DatePickerProps) => {
-  const [internalValue, setInternalValue] = React.useState(defaultValue);
-  const value = valueProp ?? internalValue;
-  const setValue = React.useCallback(
-    (next: Date | undefined) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const ctx = React.useMemo<DatePickerContextValue>(
     () => ({ value, setValue, setOpen, locale, disabled }),
@@ -95,24 +89,20 @@ const DatePickerTrigger = ({ placeholder = 'Pick a date', className, children, .
 
   return (
     <PopoverTrigger asChild>
-      <button
+      <Button
         type="button"
+        variant="outline"
         disabled={ctx.disabled}
         data-slot="date-picker-trigger"
-        className={cn(
-          'inline-flex h-9 w-full items-center gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
-          'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
-          !ctx.value && 'text-muted-foreground',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          className,
-        )}
+        data-empty={!ctx.value || undefined}
+        className={cn('w-full justify-start font-normal tabular-nums data-empty:text-muted-foreground', className)}
         {...props}
       >
-        <CalendarIcon className="size-3.5 shrink-0 text-muted-foreground" />
-        <span data-slot="date-picker-trigger-label" className="flex-1 truncate">
+        <CalendarIcon className="text-muted-foreground" />
+        <span data-slot="date-picker-trigger-label" className="flex-1 truncate text-start">
           {children ?? (ctx.value ? fmt.format(ctx.value) : placeholder)}
         </span>
-      </button>
+      </Button>
     </PopoverTrigger>
   );
 };

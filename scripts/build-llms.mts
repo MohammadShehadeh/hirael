@@ -13,6 +13,7 @@ import {
   REGISTRY,
   REGISTRY_BY_CATEGORY,
   TEMPLATES,
+  UTILITIES,
   entryHref,
   type RegistryEntryMeta,
 } from '@/registry/hirael/registry-meta';
@@ -41,6 +42,10 @@ const blocks = BLOCK_KIND_ORDER.flatMap((kind) =>
 
 const templates = TEMPLATES.map((entry) => itemLine(entry, 'Full-page template. '));
 
+const utilities = UTILITIES.map((entry) =>
+  itemLine(entry, entry.name.startsWith('use-') ? 'React hook. ' : 'Utility. '),
+);
+
 const docs = [
   line(
     'Full catalog JSON (Radix UI)',
@@ -55,6 +60,11 @@ const docs = [
   line('Components overview', `${REGISTRY_BASE_URL}/components`, 'All components with live previews'),
   line('Blocks overview', `${REGISTRY_BASE_URL}/blocks`, 'Block categories and schematic index'),
   line('Templates overview', `${REGISTRY_BASE_URL}/templates`, 'Full-page templates with framed previews'),
+  line(
+    'Hooks & utilities overview',
+    `${REGISTRY_BASE_URL}/utilities`,
+    'Standalone hooks and helpers the components use',
+  ),
   line('Changelog', `${REGISTRY_BASE_URL}/changelog`, 'Release notes'),
   line('GitHub', BRAND.repoUrl, 'Source repository'),
 ];
@@ -78,6 +88,9 @@ const output = [
   '',
   '## Templates',
   ...templates,
+  '',
+  '## Hooks & utilities',
+  ...utilities,
   '',
   '## Docs',
   ...docs,

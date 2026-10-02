@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { embedMetadata } from '@/lib/seo';
 import {
   COMPONENTS,
+  UTILITIES,
   DEFAULT_BASE,
   REGISTRY,
   REGISTRY_BASES,
@@ -24,7 +25,7 @@ export const templateEmbedParams = () =>
   }));
 
 export const exampleEmbedParams = () =>
-  COMPONENTS.flatMap((entry) =>
+  [...COMPONENTS, ...UTILITIES].flatMap((entry) =>
     getExamples(entry.name).map((example) => ({ component: entry.name, example: example.slug })),
   );
 

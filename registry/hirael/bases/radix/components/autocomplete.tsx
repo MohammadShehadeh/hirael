@@ -1,12 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { Loader2Icon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { composeRefs } from '@/registry/hirael/bases/radix/components/compose-refs';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
 import { Popover, PopoverAnchor, PopoverContent } from '@/registry/hirael/bases/radix/ui/popover';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface AutocompleteOption {
   /** The text written into the input when the suggestion is picked. */
@@ -177,15 +178,11 @@ const Autocomplete = ({
   const anchorRef = React.useRef<HTMLDivElement | null>(null);
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const [internalValue, setInternalValue] = React.useState(defaultValue ?? '');
-  const value = valueProp ?? internalValue;
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (valueProp === undefined) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue ?? '',
+    onChange: onValueChange,
+  });
 
   const [open, setOpen] = React.useState(false);
   const [activeIndex, setActiveIndex] = React.useState(-1);
@@ -519,7 +516,6 @@ const AutocompleteInput = ({
         aria-activedescendant={activeIndex >= 0 ? `${id}-option-${activeIndex}` : undefined}
         // Ghost text only lines up when the input and overlay share the typed text's direction.
         dir={inlineComplete && value ? 'auto' : undefined}
-        data-slot="autocomplete-input"
         name={name}
         value={value}
         disabled={isDisabled}
@@ -532,7 +528,7 @@ const AutocompleteInput = ({
       />
       {loading && (
         <InputGroupAddon align="inline-end" data-slot="autocomplete-spinner">
-          <Loader2Icon className="animate-spin" />
+          <Spinner aria-hidden />
         </InputGroupAddon>
       )}
     </InputGroup>
@@ -624,7 +620,7 @@ const AutocompleteContent = ({
           data-status={ctx.status}
           className="flex items-center justify-center gap-2 px-2 py-5 text-sm text-muted-foreground"
         >
-          {ctx.status === 'loading' && <Loader2Icon className="size-4 animate-spin" />}
+          {ctx.status === 'loading' && <Spinner aria-hidden />}
           {message}
         </div>
       )}

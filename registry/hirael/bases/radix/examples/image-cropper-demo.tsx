@@ -22,8 +22,8 @@ const ImageCropperDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Round avatar · zoom + export',
-            ar: 'صورة دائرية · تكبير + تصدير',
+            en: 'Round avatar',
+            ar: 'صورة دائرية',
           })}
         </p>
         <ImageCropper
@@ -62,8 +62,8 @@ const ImageCropperDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: '16/9 banner · rule-of-thirds grid',
-            ar: 'لافتة 16/9 · شبكة أثلاث',
+            en: '16/9 banner',
+            ar: 'لافتة 16/9',
           })}
         </p>
         <ImageCropper

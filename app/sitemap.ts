@@ -3,7 +3,15 @@ import type { MetadataRoute } from 'next';
 import { CATEGORY_REGISTRY } from '@/components/block-categories';
 import { getChangelog, getReleaseDates } from '@/lib/changelog';
 import { SITE } from '@/lib/site';
-import { COMPONENT_CATEGORY_ORDER, COMPONENTS, REGISTRY, TEMPLATES, entryHref } from '@/registry/hirael/registry-meta';
+import {
+  COMPONENT_CATEGORY_ORDER,
+  COMPONENTS,
+  REGISTRY,
+  TEMPLATES,
+  UTILITIES,
+  UTILITY_KIND_ORDER,
+  entryHref,
+} from '@/registry/hirael/registry-meta';
 
 export const dynamic = 'force-static';
 
@@ -18,6 +26,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/components`, lastModified: latest, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE.url}/blocks`, lastModified: latest, changeFrequency: 'weekly', priority: 0.9 },
     { url: `${SITE.url}/templates`, lastModified: latest, changeFrequency: 'weekly', priority: 0.9 },
+    { url: `${SITE.url}/utilities`, lastModified: latest, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE.url}/changelog`, lastModified: latest, changeFrequency: 'weekly', priority: 0.5 },
   ];
 
@@ -58,6 +67,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const utilityCategoryRoutes: MetadataRoute.Sitemap = UTILITY_KIND_ORDER.map((kind) => ({
+    url: `${SITE.url}/utilities/${kind}`,
+    lastModified: latest,
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }));
+
+  const utilityRoutes: MetadataRoute.Sitemap = UTILITIES.map((entry) => ({
+    url: `${SITE.url}${entryHref(entry)}`,
+    lastModified: shipped(entry.name),
+    changeFrequency: 'monthly',
+    priority: 0.6,
+  }));
+
   return [
     ...staticRoutes,
     ...componentCategoryRoutes,
@@ -65,5 +88,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...blockCategoryRoutes,
     ...blockRoutes,
     ...templateRoutes,
+    ...utilityCategoryRoutes,
+    ...utilityRoutes,
   ];
 }

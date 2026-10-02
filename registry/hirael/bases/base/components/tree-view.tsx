@@ -5,6 +5,7 @@ import { ChevronRight, File, Folder, FolderOpen } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/registry/hirael/bases/base/ui/collapsible';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 interface TreeCtx {
   selected: string | undefined;
@@ -41,19 +42,14 @@ export interface TreeViewProps extends Omit<React.ComponentProps<'div'>, 'defaul
 }
 
 const TreeView = ({ value: valueProp, defaultValue, onValueChange, className, ...props }: TreeViewProps) => {
-  const [internal, setInternal] = React.useState<string | undefined>(defaultValue);
-  const selected = valueProp ?? internal;
+  const [selected, setSelected] = useControllableState<string | undefined>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
 
   const itemsRef = React.useRef(new Map<string, HTMLButtonElement>());
   const [tabbable, setTabbable] = React.useState<string | null>(null);
-
-  const setSelected = React.useCallback(
-    (next: string) => {
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
 
   const getVisibleItems = React.useCallback(
     () =>
@@ -144,16 +140,11 @@ const TreeItem = ({
   const depth = React.useContext(TreeDepthContext);
   const parentTriggerRef = React.useContext(TreeParentContext);
   const triggerRef = React.useRef<HTMLButtonElement>(null);
-  const [internalOpen, setInternalOpen] = React.useState(defaultExpanded);
-  const open = expandedProp ?? internalOpen;
-
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (expandedProp === undefined) setInternalOpen(next);
-      onExpandedChange?.(next);
-    },
-    [expandedProp, onExpandedChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: expandedProp,
+    defaultProp: defaultExpanded,
+    onChange: onExpandedChange,
+  });
 
   const hasChildren = React.Children.count(children) > 0;
   const isSelected = !hasChildren && selected === value;
@@ -269,6 +260,7 @@ const TreeItem = ({
           <div
             data-slot="tree-item"
             role="treeitem"
+            aria-selected={false}
             aria-expanded={open}
             aria-level={depth + 1}
             className={className}

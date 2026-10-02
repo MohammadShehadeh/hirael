@@ -28,8 +28,8 @@ const PasswordInputDemo = () => {
       <Field className="gap-2">
         <FieldLabel htmlFor="pw-basic">
           {t({
-            en: 'Password · with strength meter',
-            ar: 'كلمة المرور · مع مقياس القوة',
+            en: 'Password with strength meter',
+            ar: 'كلمة المرور مع مقياس القوة',
           })}
         </FieldLabel>
         <PasswordInput id="pw-basic" value={basic} onValueChange={setBasic}>
@@ -39,9 +39,7 @@ const PasswordInputDemo = () => {
       </Field>
 
       <Field className="gap-2">
-        <FieldLabel htmlFor="pw-passphrase">
-          {t({ en: 'Passphrase · custom scorer', ar: 'عبارة مرور · مقياس مخصص' })}
-        </FieldLabel>
+        <FieldLabel htmlFor="pw-passphrase">{t({ en: 'Passphrase', ar: 'عبارة مرور' })}</FieldLabel>
         <PasswordInput id="pw-passphrase" value={passphrase} onValueChange={setPassphrase} scorer={wordScorer}>
           <PasswordInputField placeholder={t({ en: 'Four or more words', ar: 'أربع كلمات أو أكثر' })} />
           <PasswordInputStrength />

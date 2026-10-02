@@ -13,37 +13,37 @@ const MentionInputDemo = () => {
       id: '1',
       label: 'lena.park',
       description: t({
-        en: 'Lena Park · Design lead',
-        ar: 'Lena Park · قائد التصميم',
+        en: 'Lena Park, Design lead',
+        ar: 'Lena Park، قائد التصميم',
       }),
     },
     {
       id: '2',
       label: 'mohammadshehadeh',
       description: t({
-        en: 'Mohammad Shehadeh · Frontend',
-        ar: 'Mohammad Shehadeh · واجهة أمامية',
+        en: 'Mohammad Shehadeh, Frontend',
+        ar: 'Mohammad Shehadeh، واجهة أمامية',
       }),
     },
     {
       id: '3',
       label: 'omar.farouk',
-      description: t({ en: 'Omar Farouk · Product', ar: 'Omar Farouk · المنتج' }),
+      description: t({ en: 'Omar Farouk, Product', ar: 'Omar Farouk، المنتج' }),
     },
     {
       id: '4',
       label: 'priya.nair',
       description: t({
-        en: 'Priya Nair · Backend',
-        ar: 'Priya Nair · واجهة خلفية',
+        en: 'Priya Nair, Backend',
+        ar: 'Priya Nair، واجهة خلفية',
       }),
     },
     {
       id: '5',
       label: 'nadia.rahman',
       description: t({
-        en: 'Nadia Rahman · QA',
-        ar: 'Nadia Rahman · ضمان الجودة',
+        en: 'Nadia Rahman, QA',
+        ar: 'Nadia Rahman، ضمان الجودة',
       }),
     },
   ];
@@ -109,8 +109,8 @@ const MentionInputDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Team mentions · controlled',
-            ar: 'إشارات الفريق · متحكَّم بها',
+            en: 'Team mentions',
+            ar: 'إشارات الفريق',
           })}
         </p>
         <MentionInput
@@ -132,8 +132,8 @@ const MentionInputDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Multiple triggers · @ people + # channels',
-            ar: 'محفّزات متعددة · @ للأشخاص + # للقنوات',
+            en: 'Multiple triggers',
+            ar: 'محفّزات متعددة',
           })}
         </p>
         <MentionInput
@@ -151,8 +151,8 @@ const MentionInputDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Async search · debounced with spinner',
-            ar: 'بحث غير متزامن · مؤجَّل مع مؤشر تحميل',
+            en: 'Async search',
+            ar: 'بحث غير متزامن',
           })}
         </p>
         <MentionInput

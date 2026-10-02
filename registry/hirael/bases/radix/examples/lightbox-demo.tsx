@@ -85,8 +85,8 @@ const LightboxDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Gallery · captions · thumbnail strip',
-            ar: 'معرض · تعليقات · شريط مصغّرات',
+            en: 'Gallery',
+            ar: 'معرض',
           })}
         </p>
         <Lightbox items={photos}>
@@ -111,8 +111,8 @@ const LightboxDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Single image · asChild trigger',
-            ar: 'صورة واحدة · مشغّل asChild',
+            en: 'Single image',
+            ar: 'صورة واحدة',
           })}
         </p>
         <Lightbox items={single}>

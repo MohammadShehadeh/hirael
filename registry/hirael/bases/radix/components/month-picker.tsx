@@ -6,6 +6,7 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface MonthValue {
   year: number;
@@ -116,15 +117,11 @@ const MonthPicker = (props: MonthPickerProps) => {
     onValueChange?: (v: MonthValue | MonthRange) => void;
   };
 
-  const [openInternal, setOpenInternal] = React.useState(defaultOpen);
-  const open = openProp !== undefined ? openProp : openInternal;
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setOpenInternal(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
 
   const minYearValue = minProp?.year ?? minYear;
   const minMonthValue = minProp?.month ?? 0;
@@ -218,21 +215,17 @@ const MonthPickerTrigger = ({
 
   return (
     <PopoverTrigger asChild>
-      <button
+      <Button
         type="button"
+        variant="outline"
         disabled={ctx.disabled}
         data-slot="month-picker-trigger"
-        className={cn(
-          'inline-flex h-9 w-full items-center justify-between gap-2 rounded-sm border border-input bg-transparent px-3 text-start text-sm tabular-nums transition-colors outline-none',
-          'hover:border-ring/60 focus-visible:border-ring data-[state=open]:border-ring',
-          empty && 'text-muted-foreground',
-          'disabled:cursor-not-allowed disabled:opacity-50',
-          className,
-        )}
+        data-empty={empty || undefined}
+        className={cn('w-full justify-between font-normal tabular-nums data-empty:text-muted-foreground', className)}
         {...props}
       >
         {children ?? formatMonthValue(ctx, placeholder, fmt)}
-      </button>
+      </Button>
     </PopoverTrigger>
   );
 };
@@ -246,7 +239,22 @@ const isInRange = (v: MonthValue, range: MonthRange | undefined) => {
 const isEndpoint = (v: MonthValue, range: MonthRange | undefined) =>
   !!range && (monthEq(v, range.from) || monthEq(v, range.to));
 
-const MonthPickerContent = ({ className, ...props }: React.ComponentProps<typeof PopoverContent>) => {
+interface MonthPickerContentProps extends React.ComponentProps<typeof PopoverContent> {
+  previousLabel?: string;
+  nextLabel?: string;
+  /** Accessible name of the month grid. */
+  gridLabel?: (year: number) => string;
+}
+
+const defaultGridLabel = (year: number) => `Months in ${year}`;
+
+const MonthPickerContent = ({
+  previousLabel = 'Previous year',
+  nextLabel = 'Next year',
+  gridLabel = defaultGridLabel,
+  className,
+  ...props
+}: MonthPickerContentProps) => {
   const ctx = useMonthPicker();
   const today = currentMonth();
 
@@ -311,7 +319,7 @@ const MonthPickerContent = ({ className, ...props }: React.ComponentProps<typeof
       type="button"
       variant="ghost"
       size="icon"
-      aria-label={step < 0 ? 'Previous year' : 'Next year'}
+      aria-label={step < 0 ? previousLabel : nextLabel}
       disabled={step < 0 ? !canPrev : !canNext}
       onClick={() => ctx.setDisplayYear(ctx.displayYear + step)}
       className="size-7"
@@ -336,7 +344,7 @@ const MonthPickerContent = ({ className, ...props }: React.ComponentProps<typeof
       <div
         ref={gridRef}
         role="grid"
-        aria-label={`Months in ${ctx.displayYear}`}
+        aria-label={gridLabel(ctx.displayYear)}
         data-slot="month-picker-grid"
         className="grid gap-1"
       >

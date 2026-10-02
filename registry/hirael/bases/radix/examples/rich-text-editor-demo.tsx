@@ -84,8 +84,8 @@ const RichTextEditorDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Default toolbar · hover a link',
-            ar: 'شريط الأدوات الافتراضي · مرّر فوق رابط',
+            en: 'Default toolbar',
+            ar: 'شريط الأدوات الافتراضي',
           })}
         </p>
         <RichTextEditor defaultValue={initialHtml} placeholder={t({ en: 'Write something…', ar: 'اكتب شيئًا…' })} />
@@ -94,8 +94,8 @@ const RichTextEditorDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Custom toolbar · controlled',
-            ar: 'شريط أدوات مخصّص · متحكَّم به',
+            en: 'Custom toolbar',
+            ar: 'شريط أدوات مخصّص',
           })}
         </p>
         <RichTextEditor

@@ -29,8 +29,8 @@ const ColorPickerDemo = () => {
       <Field className="gap-2">
         <FieldLabel htmlFor="color-brand">
           {t({
-            en: 'Brand color · custom swatches',
-            ar: 'لون العلامة · عيّنات مخصصة',
+            en: 'Brand color',
+            ar: 'لون العلامة',
           })}
         </FieldLabel>
         <ColorPicker

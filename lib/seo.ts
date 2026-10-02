@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { SITE } from '@/lib/site';
 import {
   BLOCK_KIND_LABELS,
-  CATEGORY_LABELS,
+  entryCategoryLabel,
   DEFAULT_BASE,
   entryHref,
   registryItemPath,
@@ -75,7 +75,7 @@ export const breadcrumbJsonLd = (crumbs: Crumb[]): object => ({
 });
 
 const collectionName = (entry: RegistryEntryMeta) =>
-  entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : CATEGORY_LABELS[entry.category];
+  entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : entryCategoryLabel(entry);
 
 const KEYWORD_SHAPES = [
   (title: string) => `${title} react component`,

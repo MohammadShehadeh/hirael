@@ -14,6 +14,7 @@ import {
   InputGroupTextarea,
 } from '@/registry/hirael/bases/base/ui/input-group';
 import { Rating } from '@/registry/hirael/bases/base/components/rating';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type ChatMessageStatus = 'sent' | 'delivered' | 'read';
 
@@ -467,17 +468,12 @@ const SupportWidget = ({
   className,
   ...props
 }: SupportWidgetProps) => {
-  const [internalOpen, setInternalOpen] = React.useState(defaultOpen);
-  const open = openProp ?? internalOpen;
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
   const panelId = React.useId();
-
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (openProp === undefined) setInternalOpen(next);
-      onOpenChange?.(next);
-    },
-    [openProp, onOpenChange],
-  );
 
   const context = React.useMemo(() => ({ open, setOpen, panelId }), [open, setOpen, panelId]);
 

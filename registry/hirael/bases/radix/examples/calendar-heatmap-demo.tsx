@@ -57,8 +57,8 @@ const CalendarHeatmapDemo = () => {
     }).format(date);
 
     return t({
-      en: `${value} contribution${value === 1 ? '' : 's'} · ${formatted}`,
-      ar: `${value} مساهمة · ${formatted}`,
+      en: `${value} contribution${value === 1 ? '' : 's'} on ${formatted}`,
+      ar: `${value} مساهمة في ${formatted}`,
     });
   };
 
@@ -67,8 +67,8 @@ const CalendarHeatmapDemo = () => {
       <div className="grid gap-3">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Commit activity · 12 months',
-            ar: 'نشاط الالتزامات · 12 شهرًا',
+            en: 'Commit activity, 12 months',
+            ar: 'نشاط الالتزامات، 12 شهرًا',
           })}
         </p>
         <div className="grid gap-2 overflow-x-auto pb-1">
@@ -80,8 +80,8 @@ const CalendarHeatmapDemo = () => {
       <div className="grid gap-3">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Compact · 6 months · week starts Monday',
-            ar: 'مدمج · 6 أشهر · يبدأ الأسبوع الإثنين',
+            en: 'Compact',
+            ar: 'مدمج',
           })}
         </p>
         <div className="grid gap-2 overflow-x-auto pb-1">

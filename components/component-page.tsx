@@ -59,6 +59,10 @@ export interface ApiPart {
   name: string;
   props: ApiProp[];
   extendsNative: boolean;
+  /** `function` for hooks and utilities: rows are parameters and `returns` is set. */
+  kind?: 'component' | 'function';
+  returns?: string;
+  returnsHtml?: string | null;
 }
 
 export interface ExampleEntry {
@@ -85,6 +89,7 @@ export interface ComponentPageProps {
 
 export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb, extras }: ComponentPageProps) => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
+  const isUtility = entry.category === 'utilities';
   const treeView = isComposite || (entry.files ?? []).length > 1;
   const base = useRegistryBase();
   const source = sources[base];
@@ -150,7 +155,8 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
           <InlineCodeBlock code={usage.code} html={usage.html} />
           <p className="text-xs text-muted-foreground">
             Paths assume the default <code className="font-mono">@/</code> alias from your{' '}
-            <code className="font-mono">components.json</code>. The example above shows the parts composed.
+            <code className="font-mono">components.json</code>.
+            {isUtility ? null : ' The example above shows the parts composed.'}
           </p>
         </div>
       ),
@@ -175,7 +181,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
           }
         : {
             id: 'component-source',
-            label: 'Component source',
+            label: isUtility ? 'Source' : 'Component source',
             content: <CodeBlock tabs={codeTabs} layout={treeView ? 'tree' : 'tabs'} collapsible />,
           },
     );
@@ -454,7 +460,9 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
       {parts.map((part) => (
         <section key={part.name} className="overflow-hidden rounded-sm border border-border bg-card">
           <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border px-4 py-2.5">
-            <h3 className="font-mono text-xs text-foreground">{`<${part.name} />`}</h3>
+            <h3 className="font-mono text-xs text-foreground">
+              {part.kind === 'function' ? `${part.name}()` : `<${part.name} />`}
+            </h3>
             {part.extendsNative && (
               <span className="text-xs text-muted-foreground uppercase">+ native element props</span>
             )}
@@ -464,7 +472,7 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
               <TableHeader>
                 <TableRow>
                   <TableHead className={API_TH}>
-                    <span className={API_TH_LABEL}>Prop</span>
+                    <span className={API_TH_LABEL}>{part.kind === 'function' ? 'Parameter' : 'Prop'}</span>
                   </TableHead>
                   <TableHead className={API_TH}>
                     <span className={API_TH_LABEL}>Type</span>
@@ -476,53 +484,65 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
               </TableHeader>
               <TableBody>
                 {part.props.map((prop) => (
-                  <TableRow key={prop.name} className="align-top">
-                    <TableCell className="px-4 py-2.5 whitespace-normal">
-                      <code className="font-mono text-xs text-foreground">
-                        {prop.name}
-                        {prop.required && (
-                          <span className="text-destructive" title="Required">
-                            *
-                          </span>
-                        )}
-                      </code>
-                      {prop.description && (
-                        <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">{prop.description}</p>
-                      )}
-                    </TableCell>
-                    <TableCell className="px-4 py-2.5 whitespace-normal">
-                      {prop.typeHtml ? (
-                        <code
-                          className="shiki-inline font-mono text-xs"
-                          dangerouslySetInnerHTML={{ __html: prop.typeHtml }}
-                        />
-                      ) : (
-                        <code className="font-mono text-xs text-muted-foreground">{prop.type}</code>
-                      )}
-                    </TableCell>
-                    <TableCell className="px-4 py-2.5 whitespace-normal">
-                      {prop.defaultHtml ? (
-                        <code
-                          className="shiki-inline font-mono text-xs"
-                          dangerouslySetInnerHTML={{ __html: prop.defaultHtml }}
-                        />
-                      ) : (
-                        <code className="font-mono text-xs text-muted-foreground">{prop.default ?? 'none'}</code>
-                      )}
-                    </TableCell>
-                  </TableRow>
+                  <ApiPropRow key={prop.name} prop={prop} />
                 ))}
               </TableBody>
             </Table>
           ) : (
             <p className="px-4 py-3 text-xs text-muted-foreground">
-              {part.extendsNative
-                ? 'No props of its own; forwards everything to the underlying element.'
-                : 'No configurable props.'}
+              {part.kind === 'function'
+                ? 'Takes no arguments.'
+                : part.extendsNative
+                  ? 'No props of its own; forwards everything to the underlying element.'
+                  : 'No configurable props.'}
             </p>
           )}
+          {part.returns ? (
+            <div className="flex flex-wrap items-baseline gap-2 border-t border-border px-4 py-2.5">
+              <span className={API_TH_LABEL}>Returns</span>
+              <HighlightedCode html={part.returnsHtml} fallback={part.returns} />
+            </div>
+          ) : null}
         </section>
       ))}
     </div>
   );
 };
+
+interface ApiPropRowProps {
+  prop: ApiProp;
+}
+
+const ApiPropRow = ({ prop }: ApiPropRowProps) => (
+  <TableRow className="align-top">
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <code className="font-mono text-xs text-foreground">
+        {prop.name}
+        {prop.required && (
+          <span className="text-destructive" title="Required">
+            *
+          </span>
+        )}
+      </code>
+      {prop.description && <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">{prop.description}</p>}
+    </TableCell>
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <HighlightedCode html={prop.typeHtml} fallback={prop.type} />
+    </TableCell>
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <HighlightedCode html={prop.defaultHtml} fallback={prop.default ?? 'none'} />
+    </TableCell>
+  </TableRow>
+);
+
+interface HighlightedCodeProps {
+  html?: string | null;
+  fallback: string;
+}
+
+const HighlightedCode = ({ html, fallback }: HighlightedCodeProps) =>
+  html ? (
+    <code className="shiki-inline font-mono text-xs" dangerouslySetInnerHTML={{ __html: html }} />
+  ) : (
+    <code className="font-mono text-xs text-muted-foreground">{fallback}</code>
+  );

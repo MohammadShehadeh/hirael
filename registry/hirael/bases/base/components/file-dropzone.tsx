@@ -6,19 +6,8 @@ import { File as FileIcon, FileText, UploadCloud, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-
-const formatBytes = (bytes: number): string => {
-  if (!Number.isFinite(bytes) || bytes < 0) return '0 B';
-  const units = ['B', 'KB', 'MB', 'GB', 'TB'] as const;
-  let i = 0;
-  let n = bytes;
-  while (n >= 1024 && i < units.length - 1) {
-    n /= 1024;
-    i++;
-  }
-
-  return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${units[i]}`;
-};
+import { formatBytes } from '@/registry/hirael/lib/format-bytes';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export interface FileDropzoneError {
   file: File;
@@ -83,15 +72,11 @@ const FileDropzone = ({
   children,
   ...props
 }: FileDropzoneProps) => {
-  const [internalFiles, setInternalFiles] = React.useState<File[]>(defaultValue ?? []);
-  const files = valueProp ?? internalFiles;
-  const setFiles = React.useCallback(
-    (next: File[]) => {
-      if (valueProp === undefined) setInternalFiles(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const [files, setFiles] = useControllableState<File[]>({
+    prop: valueProp,
+    defaultProp: defaultValue ?? [],
+    onChange: onValueChange,
+  });
   const [errors, setErrors] = React.useState<FileDropzoneError[]>([]);
 
   const dropzone = useDropzone({
@@ -153,7 +138,7 @@ const FileDropzoneZone = ({
       ? subline
       : [types?.join(', '), ctx.maxSize !== undefined && `up to ${formatBytes(ctx.maxSize)}`]
           .filter(Boolean)
-          .join(' · ') || null;
+          .join(', ') || null;
 
   return (
     <div
@@ -193,9 +178,14 @@ const iconForFile = (file: File) => {
   return FileIcon;
 };
 
-type FileDropzoneListProps = React.ComponentProps<'ul'>;
+interface FileDropzoneListProps extends React.ComponentProps<'ul'> {
+  /** Accessible name of a file's remove button. */
+  removeLabel?: (file: File) => string;
+}
 
-const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
+const defaultRemoveLabel = (file: File) => `Remove ${file.name}`;
+
+const FileDropzoneList = ({ removeLabel = defaultRemoveLabel, className, ...props }: FileDropzoneListProps) => {
   const ctx = useFileDropzone();
   if (ctx.files.length === 0) return null;
 
@@ -220,7 +210,7 @@ const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
                 type="button"
                 variant="ghost"
                 size="icon-xs"
-                aria-label={`Remove ${file.name}`}
+                aria-label={removeLabel(file)}
                 onClick={() => ctx.removeAt(index)}
                 className="shrink-0"
               >
@@ -234,9 +224,12 @@ const FileDropzoneList = ({ className, ...props }: FileDropzoneListProps) => {
   );
 };
 
-type FileDropzoneErrorsProps = React.ComponentProps<'ul'>;
+interface FileDropzoneErrorsProps extends React.ComponentProps<'ul'> {
+  /** Override the message per reason, e.g. for another language. */
+  messages?: Partial<Record<FileDropzoneError['reason'], (file: File) => string>>;
+}
 
-const FileDropzoneErrors = ({ className, ...props }: FileDropzoneErrorsProps) => {
+const FileDropzoneErrors = ({ messages, className, ...props }: FileDropzoneErrorsProps) => {
   const ctx = useFileDropzone();
   if (ctx.errors.length === 0) return null;
 
@@ -251,9 +244,9 @@ const FileDropzoneErrors = ({ className, ...props }: FileDropzoneErrorsProps) =>
         <li
           key={`${err.file.name}-${i}`}
           data-slot="file-dropzone-error"
-          className="text-[11px] break-words text-destructive"
+          className="text-sm break-words text-destructive"
         >
-          {err.message}
+          {messages?.[err.reason]?.(err.file) ?? err.message}
         </li>
       ))}
     </ul>

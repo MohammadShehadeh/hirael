@@ -47,8 +47,8 @@ const AvatarUploadDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Profile photo · initials fallback, circle crop',
-            ar: 'صورة الملف الشخصي · أحرف بديلة، قص دائري',
+            en: 'Profile photo',
+            ar: 'صورة الملف الشخصي',
           })}
         </p>
         <div className="flex items-center gap-5 rounded-md border border-border bg-card p-4">
@@ -76,8 +76,8 @@ const AvatarUploadDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Workspace logo · square, button trigger',
-            ar: 'شعار مساحة العمل · مربع، زر رفع',
+            en: 'Workspace logo',
+            ar: 'شعار مساحة العمل',
           })}
         </p>
         <div className="grid gap-4 rounded-md border border-border bg-card p-4 sm:grid-cols-[auto_1fr] sm:items-center">

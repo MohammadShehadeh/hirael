@@ -32,8 +32,8 @@ const QrCodeDemo = () => {
       <div className="grid gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Error correction · L vs H',
-            ar: 'تصحيح الأخطاء · L مقابل H',
+            en: 'Error correction, L vs H',
+            ar: 'تصحيح الأخطاء، L مقابل H',
           })}
         </p>
         <div className="flex items-end gap-6">

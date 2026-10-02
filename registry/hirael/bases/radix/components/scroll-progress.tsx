@@ -3,22 +3,18 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
 export interface ScrollProgressProps extends React.ComponentProps<'div'> {
+  /** Scroll container to track. Defaults to the page. */
   target?: React.RefObject<HTMLElement | null>;
+  /** Viewport edge the bar sticks to. */
   position?: 'top' | 'bottom';
 }
 
 const ScrollProgress = ({ className, style, target, position = 'top', ref, ...props }: ScrollProgressProps) => {
   const barRef = React.useRef<HTMLDivElement | null>(null);
-  const setBarRef = React.useCallback(
-    (node: HTMLDivElement | null) => {
-      barRef.current = node;
-      if (typeof ref === 'function') ref(node);
-      else if (ref) ref.current = node;
-    },
-    [ref],
-  );
+  const setBarRef = React.useMemo(() => composeRefs(barRef, ref), [ref]);
 
   React.useEffect(() => {
     const bar = barRef.current;

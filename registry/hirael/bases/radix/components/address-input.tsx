@@ -12,6 +12,7 @@ import {
 } from '@/registry/hirael/bases/radix/components/country-select';
 import { Field, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type AddressField = 'line1' | 'line2' | 'city' | 'region' | 'postalCode';
 
@@ -155,17 +156,19 @@ const AddressInput = ({
   children,
   ...props
 }: AddressInputProps) => {
-  const [internalValue, setInternalValue] = React.useState<AddressValue>({ ...EMPTY_ADDRESS, ...defaultValue });
-  const value = valueProp ?? internalValue;
+  const [value, setValue] = useControllableState<AddressValue>({
+    prop: valueProp,
+    defaultProp: { ...EMPTY_ADDRESS, ...defaultValue },
+    onChange: onValueChange,
+  });
   const id = React.useId();
 
   const setField = React.useCallback(
     (field: AddressField | 'country', next: string) => {
       const updated = { ...value, [field]: next };
-      if (valueProp === undefined) setInternalValue(updated);
-      onValueChange?.(updated);
+      setValue(updated);
     },
-    [value, valueProp, onValueChange],
+    [value, setValue],
   );
 
   const format = React.useMemo(() => formatForCountry(value.country), [value.country]);

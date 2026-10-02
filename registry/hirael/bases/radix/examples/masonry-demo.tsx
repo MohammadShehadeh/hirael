@@ -57,9 +57,7 @@ const MasonryDemo = () => {
   return (
     <div className="grid w-full max-w-2xl gap-8">
       <div className="grid min-w-0 gap-2">
-        <p className="text-xs text-muted-foreground uppercase">
-          {t({ en: 'Cards · default columns', ar: 'بطاقات · أعمدة افتراضية' })}
-        </p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Cards', ar: 'بطاقات' })}</p>
         <Masonry>
           {cards.map((card) => (
             <MasonryItem key={card.title}>
@@ -75,8 +73,8 @@ const MasonryDemo = () => {
       <div className="grid min-w-0 gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Media · varied aspect ratios',
-            ar: 'وسائط · نِسب أبعاد متنوّعة',
+            en: 'Media',
+            ar: 'وسائط',
           })}
         </p>
         <Masonry columns={{ base: 2, sm: 3 }} gap={8}>
@@ -91,8 +89,8 @@ const MasonryDemo = () => {
       <div className="grid min-w-0 gap-2">
         <p className="text-xs text-muted-foreground uppercase">
           {t({
-            en: 'Compact · columns 2 / sm 4',
-            ar: 'مدمج · عمودان / sm أربعة',
+            en: 'Compact',
+            ar: 'مدمج',
           })}
         </p>
         <Masonry columns={{ base: 2, sm: 4 }} gap={8}>

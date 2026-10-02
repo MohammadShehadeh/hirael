@@ -3,13 +3,14 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { Slot } from '@radix-ui/react-slot';
 
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarGroupCount, AvatarImage } from '@/registry/hirael/bases/radix/ui/avatar';
 
 const avatarStackVariants = cva('flex items-center', {
   variants: {
     size: {
-      sm: '*:data-[slot=avatar-stack-item]:size-6 *:data-[slot=avatar-stack-item]:text-[10px] *:data-[slot=avatar-stack-overflow]:size-6 *:data-[slot=avatar-stack-overflow]:text-[10px]',
-      md: '*:data-[slot=avatar-stack-item]:size-8 *:data-[slot=avatar-stack-item]:text-xs *:data-[slot=avatar-stack-overflow]:size-8 *:data-[slot=avatar-stack-overflow]:text-xs',
-      lg: '*:data-[slot=avatar-stack-item]:size-10 *:data-[slot=avatar-stack-item]:text-sm *:data-[slot=avatar-stack-overflow]:size-10 *:data-[slot=avatar-stack-overflow]:text-sm',
+      sm: '**:data-[slot=avatar-fallback]:text-[10px] *:data-[slot=avatar-stack-item]:size-6 *:data-[slot=avatar-stack-overflow]:size-6 *:data-[slot=avatar-stack-overflow]:text-[10px]',
+      md: '**:data-[slot=avatar-fallback]:text-xs *:data-[slot=avatar-stack-item]:size-8 *:data-[slot=avatar-stack-overflow]:size-8 *:data-[slot=avatar-stack-overflow]:text-xs',
+      lg: '**:data-[slot=avatar-fallback]:text-sm *:data-[slot=avatar-stack-item]:size-10 *:data-[slot=avatar-stack-overflow]:size-10 *:data-[slot=avatar-stack-overflow]:text-sm',
     },
     spacing: {
       tight: '*:data-[slot=avatar-stack-item]:not-first:-ms-3 *:data-[slot=avatar-stack-overflow]:not-first:-ms-3',
@@ -42,9 +43,10 @@ const withSlotContent = (child: React.ReactNode, renderInner: (inner: React.Reac
   return React.cloneElement(child, undefined, renderInner(child.props.children));
 };
 
-interface AvatarStackItemProps extends Omit<React.ComponentProps<'span'>, 'children'> {
+interface AvatarStackItemProps extends Omit<React.ComponentProps<typeof Avatar>, 'children' | 'size'> {
   src?: string;
   alt?: string;
+  /** Shown while the image loads, if it fails, or when there is no `src`. */
   fallback?: React.ReactNode;
   /** Render as the child element (e.g. an anchor or button); `src` and `fallback` still fill it. */
   asChild?: boolean;
@@ -60,20 +62,19 @@ const AvatarStackItem = ({
   children,
   ...props
 }: AvatarStackItemProps) => {
-  const Comp = asChild ? Slot : 'span';
-  const renderContent = (inner: React.ReactNode) =>
-    src ? (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src={src} alt={alt ?? ''} loading="lazy" className="absolute inset-0 size-full object-cover" />
-    ) : (
-      (fallback ?? inner)
-    );
+  const renderContent = (inner: React.ReactNode) => (
+    <>
+      {src && <AvatarImage src={src} alt={alt ?? ''} loading="lazy" className="object-cover" />}
+      <AvatarFallback>{fallback ?? inner}</AvatarFallback>
+    </>
+  );
 
   return (
-    <Comp
+    <Avatar
+      asChild={asChild}
       data-slot="avatar-stack-item"
       className={cn(
-        'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-muted font-medium text-foreground ring-2 ring-background',
+        'ring-2 ring-background',
         asChild &&
           'transition-transform duration-150 ease-out hover:z-10 hover:scale-105 focus-visible:z-10 focus-visible:ring-ring focus-visible:outline-none',
         className,
@@ -81,13 +82,14 @@ const AvatarStackItem = ({
       {...props}
     >
       {asChild ? withSlotContent(children, renderContent) : renderContent(children)}
-    </Comp>
+    </Avatar>
   );
 };
 
-interface AvatarStackOverflowProps extends Omit<React.ComponentProps<'span'>, 'children'> {
+interface AvatarStackOverflowProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   count: number;
   prefix?: string;
+  /** Render the count as the child element (e.g. a button) inside the count circle. */
   asChild?: boolean;
   children?: React.ReactNode;
 }
@@ -100,7 +102,6 @@ const AvatarStackOverflow = ({
   children,
   ...props
 }: AvatarStackOverflowProps) => {
-  const Comp = asChild ? Slot : 'span';
   const renderCount = (inner: React.ReactNode) =>
     inner ?? (
       <>
@@ -110,19 +111,20 @@ const AvatarStackOverflow = ({
     );
 
   return (
-    <Comp
+    <AvatarGroupCount
       data-slot="avatar-stack-overflow"
       data-overflow=""
-      className={cn(
-        'relative inline-flex shrink-0 items-center justify-center rounded-full border border-border bg-card font-medium text-muted-foreground tabular-nums ring-2 ring-background',
-        asChild &&
-          'transition-colors hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
-        className,
-      )}
+      className={cn('tabular-nums', className)}
       {...props}
     >
-      {asChild ? withSlotContent(children, renderCount) : renderCount(children)}
-    </Comp>
+      {asChild ? (
+        <Slot className="flex size-full items-center justify-center rounded-full transition-colors outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring">
+          {withSlotContent(children, renderCount)}
+        </Slot>
+      ) : (
+        renderCount(children)
+      )}
+    </AvatarGroupCount>
   );
 };
 

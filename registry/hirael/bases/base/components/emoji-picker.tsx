@@ -39,7 +39,7 @@ const EmojiPickerSearch = ({ className, ...props }: React.ComponentProps<typeof 
       <Search className="pointer-events-none absolute start-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
       <EmojiPickerPrimitive.Search
         className={cn(
-          'h-8 w-full rounded-md border border-input bg-transparent ps-8 pe-2 text-sm outline-none placeholder:text-muted-foreground',
+          'h-8 w-full rounded-md border border-input bg-transparent ps-8 pe-2 text-sm shadow-xs outline-none placeholder:text-muted-foreground',
           'focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:bg-input/30',
           className,
         )}

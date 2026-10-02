@@ -122,11 +122,14 @@ const CopyButton = ({
       >
         <span className="relative inline-flex items-center justify-center">
           <Check
-            className={cn('transition-all duration-150', copied ? 'scale-100 opacity-100' : 'scale-50 opacity-0')}
+            className={cn(
+              'transition-[opacity,scale] duration-150',
+              copied ? 'scale-100 opacity-100' : 'scale-50 opacity-0',
+            )}
           />
           <Copy
             className={cn(
-              'absolute transition-all duration-150',
+              'absolute transition-[opacity,scale] duration-150',
               copied ? 'scale-50 opacity-0' : 'scale-100 opacity-100',
             )}
           />

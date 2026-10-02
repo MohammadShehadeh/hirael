@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, Loader2, MailCheck } from 'lucide-react';
+import { ArrowRight, MailCheck } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -20,6 +20,7 @@ import {
   PasswordInputField,
   PasswordInputStrength,
 } from '@/registry/hirael/bases/radix/components/password-input';
+import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -230,7 +231,7 @@ const Signup01 = () => {
                 <Button type="submit" variant="default" size="lg" disabled={pending} className="group">
                   {pending ? (
                     <>
-                      <Loader2 className="size-4 animate-spin" />
+                      <Spinner />
                       Creating account…
                     </>
                   ) : (

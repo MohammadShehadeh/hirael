@@ -1,11 +1,12 @@
 'use client';
 
 import * as React from 'react';
-import { ChevronLeft, Loader2 } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { motion, useReducedMotion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
+import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -169,11 +170,7 @@ const Login03 = () => {
               onClick={onContinue}
               className="w-full"
             >
-              {redirecting ? (
-                <Loader2 aria-hidden className="size-4 animate-spin" />
-              ) : (
-                <GithubIcon className="size-4" />
-              )}
+              {redirecting ? <Spinner aria-hidden /> : <GithubIcon className="size-4" />}
               {redirecting ? 'Redirecting to GitHub…' : 'Continue with GitHub'}
             </Button>
             <span role="status" className="sr-only">

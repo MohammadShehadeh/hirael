@@ -7,7 +7,7 @@ import { SectionLabel } from '@/components/page-header';
 import { BLOCKS_BY_KIND } from '@/registry/hirael/registry-meta';
 
 const CARD_SHELL =
-  'group relative flex aspect-video size-full flex-col overflow-hidden rounded-md border border-border bg-card/55 shadow-xs outline-none transition-colors hover:border-warm/45 focus-visible:border-warm focus-visible:ring-[3px] focus-visible:ring-ring/40 xl:aspect-[1.8/1] dark:bg-[radial-gradient(90%_120%_at_50%_0%,color-mix(in_oklch,var(--foreground)_8%,transparent),transparent)]';
+  'group relative flex aspect-video size-full flex-col overflow-hidden rounded-md border border-border bg-card/55 shadow-xs outline-none transition-colors hover:border-warm/45 focus-visible:border-warm focus-visible:ring-[3px] focus-visible:ring-ring/40 xl:aspect-auto xl:h-32 dark:bg-[radial-gradient(90%_120%_at_50%_0%,color-mix(in_oklch,var(--foreground)_8%,transparent),transparent)]';
 
 interface BarProps {
   className?: string;
@@ -95,7 +95,10 @@ const ART: Record<string, React.ReactNode> = {
   team: (
     <div className="flex size-full items-center justify-center gap-2.5">
       {[0, 1, 2, 3, 4].map((i) => (
-        <div key={i} className="flex flex-col items-center gap-1.5">
+        <div
+          key={i}
+          className={cn('flex flex-col items-center gap-1.5', (i === 0 || i === 4) && '@max-[12rem]:hidden')}
+        >
           <span className={cn('rounded-full', i === 2 ? 'size-8 bg-warm' : 'size-6 bg-foreground/12')} />
           <Bar className="h-0.5 w-6 bg-foreground/6" />
         </div>
@@ -156,9 +159,9 @@ const ART: Record<string, React.ReactNode> = {
   cta: (
     <div className="flex size-full items-center">
       <div className="flex w-full items-center justify-between gap-4 border-y border-border warm-tint px-5 py-4">
-        <div className="flex flex-col gap-1.5">
-          <Bar className="h-2 w-24" />
-          <Bar className="h-1 w-16 bg-foreground/6" />
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <Bar className="h-2 w-full max-w-24" />
+          <Bar className="h-1 w-2/3 max-w-16 bg-foreground/6" />
         </div>
         <div className="h-5 w-12 shrink-0 rounded-sm bg-warm" />
       </div>
@@ -222,14 +225,14 @@ const ART: Record<string, React.ReactNode> = {
     <div className="flex size-full flex-col">
       <div className="flex items-center gap-2.5 border-b border-border px-3 py-3">
         <span className="size-3 shrink-0 rounded-sm bg-foreground/25" />
-        <Bar className="h-1.5 w-7 bg-foreground/20" />
+        <Bar className="h-1.5 w-7 bg-foreground/20 @max-[12rem]:hidden" />
         <div className="ms-2 flex items-center gap-2.5">
           <div className="flex flex-col items-center gap-1">
             <Bar className="h-1 w-6 bg-warm" />
             <span className="h-px w-6 bg-warm" />
           </div>
           <Bar className="h-1 w-5" />
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 @max-[12rem]:hidden">
             <Bar className="h-1 w-6" />
             <span className="size-1 rotate-45 border-e border-b border-foreground/30" />
           </div>
@@ -533,6 +536,193 @@ const ART: Record<string, React.ReactNode> = {
       ))}
     </div>
   ),
+
+  bento: (
+    <div className="grid size-full grid-cols-4 grid-rows-2 gap-1.5 p-2.5">
+      <div className="col-span-2 row-span-2 flex items-end gap-1 rounded-sm border border-border p-2">
+        {[40, 65, 50, 85, 60].map((height, i) => (
+          <div
+            key={i}
+            className={cn('flex-1 rounded-t-xs', i === 3 ? 'bg-warm' : 'bg-foreground/12')}
+            style={{ height: `${height}%` }}
+          />
+        ))}
+      </div>
+      <div className="col-span-2 flex items-center justify-between gap-2 rounded-sm border border-border px-2">
+        <Bar className="h-1 w-10" />
+        <span className="flex h-2.5 w-4.5 shrink-0 items-center justify-end rounded-full warm-tint px-px">
+          <span className="size-2 rounded-full bg-warm" />
+        </span>
+      </div>
+      <div className="flex items-center rounded-sm border border-border px-1.5">
+        <Bar className="h-1 w-full bg-foreground/8" />
+      </div>
+      <div className="flex items-center justify-center rounded-sm border border-border">
+        <span className="size-2.5 rounded-full bg-foreground/15" />
+      </div>
+    </div>
+  ),
+
+  charts: (
+    <div className="flex size-full items-center gap-5 px-6">
+      <svg viewBox="0 0 36 36" aria-hidden className="h-3/5 shrink-0 -rotate-90">
+        <circle cx="18" cy="18" r="14" fill="none" strokeWidth="5" className="stroke-foreground/10" />
+        <circle
+          cx="18"
+          cy="18"
+          r="14"
+          fill="none"
+          strokeWidth="5"
+          pathLength="100"
+          strokeDasharray="42 58"
+          className="stroke-warm"
+        />
+        <circle
+          cx="18"
+          cy="18"
+          r="14"
+          fill="none"
+          strokeWidth="5"
+          pathLength="100"
+          strokeDasharray="24 76"
+          strokeDashoffset="-44"
+          className="stroke-foreground/25"
+        />
+      </svg>
+      <div className="flex flex-1 flex-col gap-2">
+        {['42%', '24%', '34%'].map((share, i) => (
+          <div key={share} className="flex items-center gap-2">
+            <span
+              className={cn(
+                'size-1.5 shrink-0 rounded-full',
+                i === 0 ? 'bg-warm' : i === 1 ? 'bg-foreground/25' : 'bg-foreground/10',
+              )}
+            />
+            <Bar className="h-1 flex-1 bg-foreground/8" />
+            <span className={cn('text-[9px] tabular-nums', i === 0 ? 'text-warm' : 'text-foreground/40')}>{share}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+
+  chat: (
+    <div className="flex size-full gap-3 p-3">
+      <div className="flex w-[28%] flex-col justify-center gap-1 border-e border-border pe-2">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className={cn('flex items-center gap-1.5 rounded-sm px-1 py-0.5', i === 0 && 'warm-tint')}>
+            <span className="size-3 shrink-0 rounded-full bg-foreground/12" />
+            <Bar className="h-1 min-w-0 flex-1 bg-foreground/10" />
+            {i === 1 && <span className="size-1.5 shrink-0 rounded-full bg-warm" />}
+          </div>
+        ))}
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5">
+        <div className="flex items-end gap-1.5">
+          <span className="size-3 shrink-0 rounded-full bg-foreground/12" />
+          <div className="w-3/5 rounded-md rounded-es-xs bg-foreground/8 px-2 py-1">
+            <Bar className="h-1 w-full bg-foreground/20" />
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <div className="w-1/2 rounded-md rounded-ee-xs bg-warm px-2 py-1">
+            <Bar className="h-1 w-full bg-warm-foreground/30" />
+          </div>
+        </div>
+        <div className="mt-1 flex h-4 items-center gap-1 rounded-full border border-border px-1.5">
+          <Bar className="h-1 flex-1 bg-foreground/6" />
+          <span className="size-2 shrink-0 rounded-full bg-foreground/20" />
+        </div>
+      </div>
+    </div>
+  ),
+
+  'page-header': (
+    <div className="flex size-full flex-col justify-center gap-2 px-4 py-3">
+      <div className="flex items-center gap-1">
+        <Bar className="h-0.5 w-6 bg-foreground/15" />
+        <span className="size-1 rotate-45 border-e border-t border-foreground/30" />
+        <Bar className="h-0.5 w-8 bg-foreground/15" />
+      </div>
+      <div className="flex items-center gap-2">
+        <Bar className="h-2 max-w-20 min-w-0 flex-1" />
+        <span className="h-2.5 w-6 shrink-0 rounded-full border border-warm/60 warm-tint" />
+        <div className="ms-auto flex shrink-0 gap-1">
+          <span className="h-4 w-6 rounded-sm border border-border" />
+          <span className="h-4 w-8 rounded-sm bg-warm" />
+        </div>
+      </div>
+      <div className="flex gap-3 border-b border-border">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className={cn('-mb-px border-b pb-1.5', i === 0 ? 'border-warm' : 'border-transparent')}>
+            <Bar className={cn('h-1 w-7', i === 0 ? 'bg-warm' : 'bg-foreground/10')} />
+          </div>
+        ))}
+      </div>
+    </div>
+  ),
+
+  'empty-states': (
+    <div className="flex size-full items-center justify-center p-2.5">
+      <div className="flex size-full flex-col items-center justify-center gap-1 rounded-sm border border-dashed border-foreground/15">
+        <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-dashed border-foreground/25">
+          <span className="relative size-2">
+            <span className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-foreground/40" />
+            <span className="absolute inset-y-0 left-1/2 w-px -translate-x-1/2 bg-foreground/40" />
+          </span>
+        </span>
+        <Bar className="mt-0.5 h-1 w-1/4 shrink-0" />
+        <div className="mt-0.5 h-3.5 w-10 shrink-0 rounded-sm bg-warm" />
+      </div>
+    </div>
+  ),
+
+  search: (
+    <div className="flex size-full flex-col justify-center gap-2.5 px-6">
+      <div className="flex h-5 items-center gap-1.5 rounded-sm border border-warm/60 px-1.5">
+        <span className="relative size-2.5 shrink-0">
+          <span className="absolute inset-s-0 top-0 size-1.75 rounded-full border border-foreground/40" />
+          <span className="absolute inset-e-0 bottom-0 h-px w-1 origin-center rotate-45 bg-foreground/40 rtl:-rotate-45" />
+        </span>
+        <Bar className="h-1 w-10 bg-foreground/25" />
+        <span className="h-2.5 w-px bg-warm" />
+      </div>
+      {[
+        ['w-6', 'w-10'],
+        ['w-4', 'w-14'],
+        ['w-8', 'w-8'],
+      ].map(([before, after], i) => (
+        <div key={i} className="flex items-center gap-1 ps-1">
+          <Bar className={cn('h-1 bg-foreground/10', before)} />
+          <Bar className="h-1.5 w-6 rounded-xs bg-warm/80" />
+          <Bar className={cn('h-1 bg-foreground/10', after)} />
+        </div>
+      ))}
+    </div>
+  ),
+
+  survey: (
+    <div className="flex size-full flex-col justify-center gap-2.5 px-5">
+      <div className="flex gap-1">
+        {[0, 1, 2].map((i) => (
+          <span key={i} className={cn('h-0.5 flex-1 rounded-full', i === 0 ? 'bg-warm' : 'bg-foreground/10')} />
+        ))}
+      </div>
+      <Bar className="h-1.5 w-3/5" />
+      <div className="grid grid-cols-11 gap-0.5">
+        {Array.from({ length: 11 }).map((_, score) => (
+          <span
+            key={score}
+            className={cn('aspect-square rounded-xs', score === 9 ? 'bg-warm' : 'border border-border')}
+          />
+        ))}
+      </div>
+      <div className="flex justify-between">
+        <Bar className="h-0.5 w-10 bg-foreground/6" />
+        <Bar className="h-0.5 w-10 bg-foreground/6" />
+      </div>
+    </div>
+  ),
 };
 
 const FALLBACK_ART = (
@@ -574,7 +764,7 @@ export const BlockShowcase = () => {
                       <h3 className="truncate text-sm font-medium tracking-tight">{category.title}</h3>
                       <span className="ms-auto text-[11px] text-muted-foreground tabular-nums">{count}</span>
                     </div>
-                    <div className="relative z-10 flex-1 overflow-hidden border-t border-border/70">
+                    <div className="@container relative z-10 flex-1 overflow-hidden border-t border-border/70">
                       {ART[category.slug] ?? FALLBACK_ART}
                     </div>
                   </Link>

@@ -65,6 +65,18 @@ type Direction = 'none' | 'forward' | 'back';
 
 const WORKSPACE = 'Hirael';
 
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+      <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
+    </svg>
+  );
+};
+
 const projectNode = (name: string, label: string, icon: LucideIcon): NavNode => ({
   id: name,
   label,
@@ -179,8 +191,8 @@ const AppShell06 = () => {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton size="lg" tooltip={WORKSPACE} onClick={() => handleBack(0)}>
-                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-md bg-sidebar-primary text-sm font-semibold text-sidebar-primary-foreground">
-                  {WORKSPACE.slice(0, 1)}
+                <span className="flex aspect-square size-8 shrink-0 items-center justify-center rounded-sm text-sidebar-foreground">
+                  <BrandMark className="size-5" />
                 </span>
                 <span className="grid min-w-0 flex-1 text-start leading-tight">
                   <span className="truncate font-semibold">{WORKSPACE}</span>

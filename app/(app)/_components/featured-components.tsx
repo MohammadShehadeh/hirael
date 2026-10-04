@@ -10,7 +10,7 @@ const FEATURED_COMPONENTS = [
   'multi-select',
   'date-range-picker',
   'tag-input',
-  'combobox',
+  'autocomplete',
   'currency-input',
   'rating',
 ] as const;

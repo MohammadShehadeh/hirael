@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ArrowDown, ArrowUp, CornerDownLeft, FileText, History, Search, TrendingUp, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Kbd } from '@/registry/hirael/bases/base/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/base/ui/kbd';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/base/ui/avatar';
 import {
   InputGroup,

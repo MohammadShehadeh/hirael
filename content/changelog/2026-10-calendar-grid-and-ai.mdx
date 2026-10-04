@@ -1,0 +1,87 @@
+---
+title: Event calendar, data grid, AI parts and 28 more
+version: '7.4.0'
+date: 2026-10-04
+description: 'A scheduling calendar, an editable data grid, a Linear-style filter bar, a date and time picker, a new AI category, maps, flow and PDF viewers, mobile gestures and three hooks. Spinner, Combobox and Kbd now come straight from shadcn.'
+added:
+  - event-calendar
+  - filter-builder
+  - date-time-picker
+  - responsive-dialog
+  - theme-toggle
+  - data-grid
+  - description-list
+  - markdown
+  - availability-editor
+  - time-slot-picker
+  - masked-input
+  - tree-select
+  - transfer-list
+  - gantt
+  - map
+  - flow-canvas
+  - pdf-viewer
+  - reasoning
+  - tool-call
+  - sources
+  - model-selector
+  - comment-thread
+  - language-switcher
+  - expandable-text
+  - virtual-list
+  - bottom-nav
+  - swipe-actions
+  - pull-to-refresh
+  - upload-queue
+  - file-card
+  - kbd-button
+  - use-media-query
+  - use-debounce
+  - use-copy-to-clipboard
+updated:
+  - app-shell-01
+  - app-shell-04
+  - search-02
+  - survey-01
+  - survey-04
+---
+
+New, for scheduling:
+
+- **Event Calendar.** Month, week, day and agenda views. Drag an event to
+  another day or time, drag its bottom edge to change how long it runs, or
+  click an empty slot to add one.
+- **Date Time Picker.** A calendar beside hour and minute columns in one field,
+  with a 12-hour clock option and minute steps.
+- **Availability Editor** for weekly working hours, and **Time Slot Picker**
+  for booking a meeting time.
+- **Gantt Chart** with draggable, resizable bars and day, week and month zoom.
+
+New, for data:
+
+- **Filter Builder.** A Linear-style filter bar with option, multi-select, text,
+  number and date filters, plus `applyFilters` for client-side lists.
+- **Data Grid.** An editable grid on TanStack Table and TanStack Virtual:
+  arrow keys, typing to edit, paste from a spreadsheet, sorting and resizable
+  columns.
+- **Virtual List**, **Description List**, **Comment Thread**, **Map** on
+  MapLibre and **Flow Canvas** on React Flow, all following your theme in
+  light and dark.
+
+New category, **AI**: **Reasoning**, **Tool Call** with an approval step,
+**Sources** with citation previews, and **Model Selector**. **Markdown**
+renders AI answers and keeps them tidy while they stream.
+
+Also new: **Responsive Dialog**, **Theme Toggle**, **Language Switcher**,
+**Masked Input**, **Tree Select**, **Transfer List**, **Expandable Text**,
+**PDF Viewer**, **Upload Queue**, **File Card**, a mobile **Bottom
+Navigation**, **Swipe Actions** and **Pull to Refresh**, and three hooks:
+**useMediaQuery**, **useDebounce** and **useCopyToClipboard**.
+
+Changed:
+
+- **Spinner** and **Combobox** are no longer Hirael items, because shadcn/ui
+  ships both. Blocks and components that use them now install your own copy
+  from shadcn instead of overwriting it.
+- **Kbd** is now **Kbd Button**: only the pressable keycap, beside shadcn's own
+  Kbd and KbdGroup. Blocks that show shortcuts use shadcn's Kbd directly.

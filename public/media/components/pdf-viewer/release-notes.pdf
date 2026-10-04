@@ -1,0 +1,120 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+3 0 obj
+<< /Type /Pages /Kids [5 0 R 7 0 R 9 0 R] /Count 3 >>
+endobj
+4 0 obj
+<< /Length 405 >>
+stream
+BT
+/F2 24 Tf
+72 720 Td
+(Hirael Release Notes) Tj
+/F1 13 Tf
+0 -30 Td
+() Tj
+0 -20 Td
+(Version 7.4, October 2026) Tj
+0 -20 Td
+() Tj
+0 -20 Td
+(This release adds an event calendar, a filter builder,) Tj
+0 -20 Td
+(a date and time picker and a data grid.) Tj
+0 -20 Td
+() Tj
+0 -20 Td
+(Every component ships for Radix UI and Base UI,) Tj
+0 -20 Td
+(adopts your shadcn theme, and works right to left.) Tj
+0 -20 Td
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 4 0 R >>
+endobj
+6 0 obj
+<< /Length 446 >>
+stream
+BT
+/F2 24 Tf
+72 720 Td
+(What's new) Tj
+/F1 13 Tf
+0 -30 Td
+() Tj
+0 -20 Td
+(- Event Calendar: month, week, day and agenda views) Tj
+0 -20 Td
+(- Filter Builder: Linear-style filters with applyFilters) Tj
+0 -20 Td
+(- Data Grid: editable cells, sorting and paste) Tj
+0 -20 Td
+(- Map: MapLibre with light and dark basemaps) Tj
+0 -20 Td
+(- Flow Canvas: React Flow with your tokens) Tj
+0 -20 Td
+(- PDF Viewer: the viewer you are using now) Tj
+0 -20 Td
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 6 0 R >>
+endobj
+8 0 obj
+<< /Length 315 >>
+stream
+BT
+/F2 24 Tf
+72 720 Td
+(Install) Tj
+/F1 13 Tf
+0 -30 Td
+() Tj
+0 -20 Td
+(npx shadcn add https://hirael.com/r/pdf-viewer.json) Tj
+0 -20 Td
+() Tj
+0 -20 Td
+(Each item copies its source into your project,) Tj
+0 -20 Td
+(so you own and can change every line.) Tj
+0 -20 Td
+() Tj
+0 -20 Td
+(Thanks for reading.) Tj
+0 -20 Td
+ET
+endstream
+endobj
+9 0 obj
+<< /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 8 0 R >>
+endobj
+10 0 obj
+<< /Type /Catalog /Pages 3 0 R >>
+endobj
+xref
+0 11
+0000000000 65535 f 
+0000000009 00000 n 
+0000000079 00000 n 
+0000000154 00000 n 
+0000000223 00000 n 
+0000000679 00000 n 
+0000000815 00000 n 
+0000001312 00000 n 
+0000001448 00000 n 
+0000001814 00000 n 
+0000001950 00000 n 
+trailer
+<< /Size 11 /Root 10 0 R >>
+startxref
+2000
+%%EOF

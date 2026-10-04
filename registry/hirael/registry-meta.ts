@@ -6,6 +6,7 @@ export type ComponentCategory =
   | 'display'
   | 'animation'
   | 'navigation'
+  | 'ai'
   | 'utilities'
   | 'blocks'
   | 'templates';
@@ -174,16 +175,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
 
   {
-    name: 'combobox',
-    title: 'Combobox',
-    description:
-      "shadcn's Base UI combobox: searchable single or multiple selection with chips, grouped options and a clear button.",
-    category: 'inputs',
-    files: [{ path: 'ui/combobox.tsx' }],
-    registryDependencies: ['button', 'input-group'],
-    dependencies: ['@base-ui/react', 'lucide-react'],
-  },
-  {
     name: 'autocomplete',
     title: 'Autocomplete',
     description:
@@ -271,12 +262,12 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['class-variance-authority'],
   },
   {
-    name: 'kbd',
-    title: 'Kbd',
+    name: 'kbd-button',
+    title: 'Kbd Button',
     description:
-      'Keyboard keys: Kbd for inline shortcuts (a <kbd>, like shadcn), KbdButton for a pressable 3D keycap with hover lift and pressed states, and KbdGroup for chords.',
+      "A pressable 3D keycap with hover lift and a pressed state, for shortcut legends and keyboard-driven UIs. Pairs with shadcn's Kbd and KbdGroup for inline shortcuts and chords.",
     category: 'display',
-    files: [{ path: 'ui/kbd.tsx' }, { path: 'components/kbd.tsx' }],
+    files: [{ path: 'components/kbd-button.tsx' }],
     registryDependencies: [],
     dependencies: [],
   },
@@ -1442,16 +1433,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['button', 'direction', 'dropdown-menu', 'input-group', 'kbd', 'separator', 'sidebar'],
-    dependencies: ['lucide-react'],
-  },
-  {
-    name: 'spinner',
-    title: 'Spinner',
-    description:
-      "shadcn's loading spinner: an animated icon with an accessible status label that inherits the current text color.",
-    category: 'display',
-    files: [{ path: 'ui/spinner.tsx' }],
-    registryDependencies: [],
     dependencies: ['lucide-react'],
   },
   {
@@ -4959,6 +4940,350 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: [],
     dependencies: [],
   },
+  {
+    name: 'use-media-query',
+    title: 'useMediaQuery',
+    description:
+      'Live match for any CSS media query, like a breakpoint, dark mode or a touch screen. Renders a fixed value on the server so hydration never mismatches, then follows the real match.',
+    category: 'utilities',
+    files: [{ path: 'hooks/use-media-query.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'use-debounce',
+    title: 'useDebounce',
+    description:
+      'useDebouncedValue holds a value back until it stops changing, for search as you type. useDebouncedCallback returns a stable function with cancel and flush, for autosave.',
+    category: 'utilities',
+    files: [{ path: 'hooks/use-debounce.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'use-copy-to-clipboard',
+    title: 'useCopyToClipboard',
+    description:
+      'Copies text and reports copied for a moment, so a copy button can swap to a check mark. Returns false instead of throwing when the browser refuses.',
+    category: 'utilities',
+    files: [{ path: 'hooks/use-copy-to-clipboard.ts' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'description-list',
+    title: 'Description List',
+    description:
+      'Label and value pairs for detail pages, like an invoice, a user or a server. Terms sit beside their values when there is room and stack on narrow screens, with optional columns, dividers and icons.',
+    category: 'data',
+    files: [{ path: 'components/description-list.tsx' }],
+    registryDependencies: [],
+    dependencies: [],
+  },
+  {
+    name: 'expandable-text',
+    title: 'Expandable Text',
+    description:
+      'Long text clamped to a set number of lines with a Show more toggle. The toggle only appears when the text actually overflows, and it re-measures when the container resizes.',
+    category: 'display',
+    files: [{ path: 'components/expandable-text.tsx' }],
+    registryDependencies: ['use-controllable-state'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'theme-toggle',
+    title: 'Theme Toggle',
+    description:
+      'Light and dark mode controls on next-themes: a one-click toggle, a Light / Dark / System menu, and a three-way switcher with arrow-key support. Icons swap with CSS, so the button is right before hydration.',
+    category: 'navigation',
+    files: [{ path: 'components/theme-toggle.tsx' }],
+    registryDependencies: ['button', 'dropdown-menu'],
+    dependencies: ['lucide-react', 'next-themes'],
+    docs: 'Wrap your app in ThemeProvider from next-themes with attribute="class", as in the shadcn dark mode guide.',
+  },
+  {
+    name: 'language-switcher',
+    title: 'Language Switcher',
+    description:
+      'Locale menu that lists each language in its own script, with the translated name beside it. The trigger shows the name, the short code or just an icon, and changes report the text direction so the page can flip to RTL.',
+    category: 'navigation',
+    files: [{ path: 'components/language-switcher.tsx' }],
+    registryDependencies: ['button', 'dropdown-menu', 'use-controllable-state'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'responsive-dialog',
+    title: 'Responsive Dialog',
+    description:
+      'A centered Dialog on wide screens and a bottom Drawer on phones, behind one set of parts. Open state lives in the root, so resizing across the breakpoint keeps it open. The breakpoint is a media query you can change.',
+    category: 'display',
+    files: [{ path: 'components/responsive-dialog.tsx' }],
+    registryDependencies: ['dialog', 'drawer', 'use-controllable-state', 'use-media-query'],
+    dependencies: [],
+  },
+  {
+    name: 'date-time-picker',
+    title: 'Date Time Picker',
+    description:
+      'One field for a day and a time: a calendar beside hour and minute columns, with an AM/PM column on a 12-hour clock. Picking a day keeps the time, minutes snap to a step, and the value is a single Date.',
+    category: 'pickers',
+    files: [{ path: 'components/date-time-picker.tsx' }],
+    registryDependencies: ['button', 'calendar', 'popover', 'use-controllable-state'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'masked-input',
+    title: 'Masked Input',
+    description:
+      'A shadcn Input that formats as you type, for IBANs, postcodes, dates, licence plates or your own pattern. Reports the masked text, the bare characters and whether the mask is complete. Ships presets for common formats.',
+    category: 'inputs',
+    files: [{ path: 'components/masked-input.tsx' }],
+    registryDependencies: ['input', 'compose-refs'],
+    dependencies: ['@react-input/mask'],
+  },
+  {
+    name: 'transfer-list',
+    title: 'Transfer List',
+    description:
+      'Two lists side by side for moving items between available and chosen, like permissions or columns. Each side has a filter, check-all with a mixed state and a count, and the panels stack on narrow screens.',
+    category: 'inputs',
+    files: [{ path: 'components/transfer-list.tsx' }],
+    registryDependencies: ['button', 'checkbox', 'input-group', 'use-controllable-state'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'tree-select',
+    title: 'Tree Select',
+    description:
+      'A select for nested options, like regions, categories or folders. Search keeps the ancestors of every match in view, the trigger shows the full path, and multiple mode checks every leaf under a branch with a mixed state. Full tree keyboard support, mirrored in RTL.',
+    category: 'inputs',
+    files: [{ path: 'components/tree-select.tsx' }],
+    registryDependencies: ['badge', 'button', 'checkbox', 'input-group', 'popover', 'use-controllable-state'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'filter-builder',
+    title: 'Filter Builder',
+    description:
+      'A Linear-style filter bar for lists and tables: pick a field, then an option, and get a chip with an operator menu and a value editor. Handles options, multi-select, text, number ranges and date ranges, keeps every filter in one array you can save to the URL, and ships applyFilters for client-side lists.',
+    category: 'inputs',
+    files: [{ path: 'components/filter-builder.tsx' }],
+    registryDependencies: [
+      'button',
+      'calendar',
+      'command',
+      'dropdown-menu',
+      'input',
+      'popover',
+      'use-controllable-state',
+    ],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'event-calendar',
+    title: 'Event Calendar',
+    description:
+      'A scheduling calendar with month, week, day and agenda views. Drag an event to another day or time, drag its bottom edge to change how long it runs, or click an empty slot to add one. Overlapping events share the column, all-day events get their own row, and a line marks the current time.',
+    category: 'data',
+    files: [{ path: 'components/event-calendar.tsx' }],
+    registryDependencies: ['button', 'tabs', 'use-controllable-state'],
+    dependencies: ['@dnd-kit/core', 'date-fns', 'lucide-react'],
+  },
+  {
+    name: 'data-grid',
+    title: 'Data Grid',
+    description:
+      'An editable spreadsheet-style grid on TanStack Table and TanStack Virtual. Thousands of rows scroll smoothly, arrow keys move between cells, Enter or typing edits, Delete clears, and a block pasted from a spreadsheet fills the cells. Text, number, select and checkbox columns, with sorting and resizable columns.',
+    category: 'data',
+    files: [{ path: 'components/data-grid.tsx' }],
+    registryDependencies: ['checkbox'],
+    dependencies: ['@tanstack/react-table', '@tanstack/react-virtual', 'lucide-react'],
+  },
+  {
+    name: 'markdown',
+    title: 'Markdown',
+    description:
+      'Renders markdown with your theme: headings, lists, tables, task lists, quotes and code blocks with a copy button. In streaming mode it closes half-written code fences, bold text and links, so an AI answer stays tidy while it arrives, with a caret at the end.',
+    category: 'display',
+    files: [{ path: 'components/markdown.tsx' }],
+    registryDependencies: ['use-copy-to-clipboard'],
+    dependencies: ['lucide-react', 'react-markdown', 'remark-gfm'],
+  },
+  {
+    name: 'reasoning',
+    title: 'Reasoning',
+    description:
+      'A collapsible panel for a model\'s thinking. It opens while the reasoning streams in with a shimmering label, times itself, then folds away into "Thought for 6s" once the answer starts, unless the reader opened it.',
+    category: 'ai',
+    files: [{ path: 'components/reasoning.tsx' }],
+    registryDependencies: ['collapsible', 'text-shimmer'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'tool-call',
+    title: 'Tool Call',
+    description:
+      'Shows a tool the model called: its name, a status from pending to done, the input and output as formatted JSON, and errors. Calls that need a human get Allow and Deny buttons and stay open until answered.',
+    category: 'ai',
+    files: [{ path: 'components/tool-call.tsx' }],
+    registryDependencies: ['badge', 'button', 'collapsible', 'use-controllable-state'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'sources',
+    title: 'Sources',
+    description:
+      'Citations for AI answers: numbered inline chips that preview their page on hover or focus, and a "Used 4 sources" line that opens into a list of links with their sites.',
+    category: 'ai',
+    files: [{ path: 'components/sources.tsx' }],
+    registryDependencies: ['collapsible', 'hover-card'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'model-selector',
+    title: 'Model Selector',
+    description:
+      "A searchable model picker grouped by provider, showing each model's context size, a short description and what it can do: read images, use tools, reason or read files. Fits in a prompt toolbar.",
+    category: 'ai',
+    files: [{ path: 'components/model-selector.tsx' }],
+    registryDependencies: ['button', 'command', 'popover', 'use-controllable-state'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'comment-thread',
+    title: 'Comment Thread',
+    description:
+      'A discussion thread for documents, designs or issues: comments with avatars, emoji reactions you can toggle, indented replies, a composer that sends with Ctrl or ⌘ + Enter, and a resolve button that folds the thread away.',
+    category: 'data',
+    files: [{ path: 'components/comment-thread.tsx' }],
+    registryDependencies: ['avatar', 'button', 'popover', 'textarea'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'virtual-list',
+    title: 'Virtual List',
+    description:
+      'A list that renders only the rows in view, so thousands of items scroll smoothly. Rows can be any height and are measured as they render, and it asks for the next page as the reader nears the end, with a loading row and an empty state.',
+    category: 'data',
+    files: [{ path: 'components/virtual-list.tsx' }],
+    registryDependencies: [],
+    dependencies: ['@tanstack/react-virtual'],
+  },
+  {
+    name: 'availability-editor',
+    title: 'Availability Editor',
+    description:
+      'Weekly working hours like a booking tool: switch each day on or off, give it one or more time ranges, and copy a day to the rest of the week. Overlapping or backwards ranges are flagged as you edit.',
+    category: 'pickers',
+    files: [{ path: 'components/availability-editor.tsx' }],
+    registryDependencies: ['button', 'native-select', 'switch', 'use-controllable-state'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'time-slot-picker',
+    title: 'Time Slot Picker',
+    description:
+      'Pick a meeting time: a calendar where days without free slots are disabled, beside the times for the chosen day. Booked slots show crossed out, and arrow keys skip over them.',
+    category: 'pickers',
+    files: [{ path: 'components/time-slot-picker.tsx' }],
+    registryDependencies: ['calendar', 'use-controllable-state'],
+    dependencies: [],
+  },
+  {
+    name: 'gantt',
+    title: 'Gantt Chart',
+    description:
+      'A project timeline with a task list beside it. Drag a bar to move a task, drag its end to change its length, or use the arrow keys. Zoom between days, weeks and months, with weekends shaded, progress fills and a line for today.',
+    category: 'data',
+    files: [{ path: 'components/gantt.tsx' }],
+    registryDependencies: [],
+    dependencies: ['date-fns'],
+  },
+  {
+    name: 'map',
+    title: 'Map',
+    description:
+      'An interactive MapLibre map that switches between light and dark basemaps with your theme. Markers and popups are React components styled with your tokens, and the zoom, north and location buttons are your shadcn Buttons. Uses free CARTO tiles with no API key.',
+    category: 'data',
+    files: [{ path: 'components/map.tsx' }],
+    registryDependencies: ['button'],
+    dependencies: ['lucide-react', 'maplibre-gl'],
+  },
+  {
+    name: 'flow-canvas',
+    title: 'Flow Canvas',
+    description:
+      'A node editor on React Flow for workflow and agent builders. The canvas, edges, handles, controls and minimap take your theme and follow dark mode, and a card node shows an icon, a title, a status dot and a description. Takes every React Flow prop.',
+    category: 'data',
+    files: [{ path: 'components/flow-canvas.tsx' }],
+    registryDependencies: [],
+    dependencies: ['@xyflow/react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'pdf-viewer',
+    title: 'PDF Viewer',
+    description:
+      'Shows a PDF in your page on react-pdf: page arrows and a page number field, zoom steps, fit to width and a download button. Text can be selected and links work, and the arrow keys turn pages.',
+    category: 'files',
+    files: [{ path: 'components/pdf-viewer.tsx' }],
+    registryDependencies: ['button', 'input', 'skeleton'],
+    dependencies: ['lucide-react', 'react-pdf'],
+  },
+  {
+    name: 'file-card',
+    title: 'File Card',
+    description:
+      'A file as a row for lists or a tile for grids: an icon picked from the type, or an image preview, with the name, size and your own actions. FileIcon and fileKindOf are exported for your own layouts.',
+    category: 'files',
+    files: [{ path: 'components/file-card.tsx' }],
+    registryDependencies: ['format-bytes'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'upload-queue',
+    title: 'Upload Queue',
+    description:
+      'Uploads files a few at a time with progress for each and overall, plus cancel, retry and clear finished. useUploadQueue takes your upload function, so it works with S3, a signed URL or your own API, and pairs with File Dropzone.',
+    category: 'files',
+    files: [{ path: 'components/upload-queue.tsx' }],
+    registryDependencies: ['button', 'progress', 'file-card', 'format-bytes'],
+    dependencies: ['lucide-react'],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'bottom-nav',
+    title: 'Bottom Navigation',
+    description:
+      'A mobile tab bar with icons, labels, an active pill and count or dot badges. Items can be your router links, it can pin to the bottom clear of the home indicator, and it mirrors in RTL.',
+    category: 'navigation',
+    files: [{ path: 'components/bottom-nav.tsx' }],
+    registryDependencies: ['use-controllable-state'],
+    dependencies: ['@radix-ui/react-slot'],
+  },
+  {
+    name: 'swipe-actions',
+    title: 'Swipe Actions',
+    description:
+      'List rows that slide aside to reveal actions, like archive or delete in a mail app. Works with a finger or the mouse, leaves vertical scrolling alone, snaps open or shut, mirrors in RTL, and tabbing to an action slides it into view.',
+    category: 'navigation',
+    files: [{ path: 'components/swipe-actions.tsx' }],
+    registryDependencies: [],
+    dependencies: [],
+    cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'pull-to-refresh',
+    title: 'Pull to Refresh',
+    description:
+      'A scroll area that refreshes when pulled down from the top, with a rubber-band feel, an arrow that flips when letting go will refresh, and your shadcn Spinner while it loads. Keeps the page from bouncing underneath.',
+    category: 'navigation',
+    files: [{ path: 'components/pull-to-refresh.tsx' }],
+    registryDependencies: ['spinner'],
+    dependencies: ['lucide-react'],
+  },
 ];
 
 /** Installable through the registry but not showcased on the site. */
@@ -5035,6 +5360,7 @@ export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   display: 'Display',
   animation: 'Animation',
   navigation: 'Navigation',
+  ai: 'AI',
   utilities: 'Hooks & utilities',
   blocks: 'Blocks',
   templates: 'Templates',
@@ -5049,6 +5375,7 @@ export const REGISTRY_BY_CATEGORY = (() => {
     display: [],
     animation: [],
     navigation: [],
+    ai: [],
     utilities: [],
     blocks: [],
     templates: [],
@@ -5071,7 +5398,7 @@ export const UTILITY_KIND_LABELS: Record<UtilityKind, string> = {
 
 export const UTILITY_KIND_DESCRIPTIONS: Record<UtilityKind, string> = {
   hooks:
-    'React hooks for controlled or uncontrolled state and reduced-motion detection. Each installs to your hooks folder on its own.',
+    'React hooks for controlled or uncontrolled state, media queries, debouncing, copying to the clipboard and reduced-motion detection. Each installs to your hooks folder on its own.',
   utils:
     'Plain helpers for merging refs and formatting file sizes, with no React state. Each installs to your lib folder.',
 };
@@ -5092,7 +5419,7 @@ export const entryCategoryLabel = (entry: RegistryEntryMeta): string =>
   entry.category === 'utilities' ? UTILITY_KIND_LABELS[utilityKind(entry)] : CATEGORY_LABELS[entry.category];
 
 export const UTILITIES_DESCRIPTION =
-  'The hooks and helpers the components are built on: controlled or uncontrolled state, reduced-motion detection, ref merging and file sizes. Install one on its own when you write your own components.';
+  'The hooks and helpers the components are built on: controlled or uncontrolled state, media queries, debouncing, clipboard copies, reduced-motion detection, ref merging and file sizes. Install one on its own when you write your own components.';
 
 export const isComponentEntry = (entry: RegistryEntryMeta) =>
   entry.category !== 'blocks' && entry.category !== 'templates' && entry.category !== 'utilities';
@@ -5288,22 +5615,24 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'te
   'display',
   'animation',
   'navigation',
+  'ai',
 ];
 
 export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number], string> = {
   inputs:
-    'Multi-select, combobox, tag, phone, currency, address and credit card inputs, plus rich text, mentions and a signature pad. Each handles keyboard, RTL and validation states like a shadcn Input, so it drops into an existing form.',
+    'Multi-select, autocomplete, tag, phone, currency, masked, address and credit card inputs, a tree select, a transfer list and a Linear-style filter builder, plus rich text, mentions and a signature pad. Each handles keyboard, RTL and validation states like a shadcn Input, so it drops into an existing form.',
   pickers:
-    'Date, date range, time, month, year, color and emoji pickers with full keyboard navigation and no date library to add.',
+    'Date, date and time, date range, time, month, year, color and emoji pickers, plus weekly working hours and a booking slot picker, with full keyboard navigation.',
   files:
-    'Drag-and-drop upload zones, an image cropper, an avatar uploader and a local media picker, with previews, size limits and clear controls already wired.',
-  data: 'Data tables, kanban boards, sortable lists, tree views, timelines, calendar heatmaps, sparklines and metric cards for showing structured data.',
+    'Drag-and-drop upload zones, an upload queue with progress and retry, file cards, a PDF viewer, an image cropper, an avatar uploader and a local media picker, with previews, size limits and clear controls already wired.',
+  data: 'Data tables and an editable data grid, an event calendar, a Gantt chart, a map, a flow canvas, kanban boards, virtual lists, comment threads, description lists, tree views, timelines, sparklines and metric cards for showing structured data.',
   display:
-    'Callouts, code blocks, diff and JSON viewers, lightboxes, marquees, QR codes, audio playback and confirm dialogs, styled with your tokens so they match the rest of the UI.',
+    'Callouts, markdown, code blocks, diff and JSON viewers, expandable text, a responsive dialog, lightboxes, marquees, QR codes, audio playback and confirm dialogs, styled with your tokens so they match the rest of the UI.',
   animation:
     'Scroll and text reveals, spotlight and tilt cards, magnetic buttons, cursor glow and a morphing dialog. Every effect honors prefers-reduced-motion.',
   navigation:
-    'Steppers, product tours, a command palette, a dock, floating toolbars and action buttons, split views and a table of contents, with keyboard focus that mirrors in RTL.',
+    'Steppers, product tours, a command palette, theme and language switchers, a mobile tab bar, swipe actions, pull to refresh, a dock, floating toolbars, split views and a table of contents, with keyboard focus that mirrors in RTL.',
+  ai: 'Parts for AI chat and agent UIs: a reasoning panel that times itself, tool calls with an approval step, citations with hover previews, and a model picker with capabilities and context size.',
 };
 
 export const BLOCK_KIND_SLUGS: Record<BlockKind, string> = {

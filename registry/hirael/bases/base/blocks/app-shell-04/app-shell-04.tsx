@@ -31,7 +31,7 @@ import {
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/base/ui/dropdown-menu';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/base/ui/input-group';
-import { Kbd, KbdGroup } from '@/registry/hirael/bases/base/components/kbd';
+import { Kbd, KbdGroup } from '@/registry/hirael/bases/base/ui/kbd';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import {
   Sidebar,

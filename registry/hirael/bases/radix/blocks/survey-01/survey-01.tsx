@@ -5,7 +5,7 @@ import { Questionnaire as QuestionnairePrimitive } from '@shadcn/react/questionn
 import { RotateCcw } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Kbd } from '@/registry/hirael/bases/radix/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/radix/ui/kbd';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import {
   Questionnaire,

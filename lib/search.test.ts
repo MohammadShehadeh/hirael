@@ -21,9 +21,9 @@ describe('searchIndex', () => {
     expect(names('wizard')).toContain('stepper');
   });
 
-  it('should rank the real autocomplete component above its combobox alias', () => {
+  it('should rank the autocomplete component first for its own name', () => {
     expect(names('autocomplete')[0]).toBe('autocomplete');
-    expect(names('typeahead')).toEqual(expect.arrayContaining(['autocomplete', 'combobox']));
+    expect(names('typeahead')).toEqual(expect.arrayContaining(['autocomplete', 'lazy-select']));
   });
 
   it('should find the search blocks and the command palette for "search"', () => {
@@ -77,7 +77,7 @@ describe('searchIndex', () => {
   it('should resolve control synonyms to the component that implements them', () => {
     expect(names('spinbutton')).toContain('number-field');
     expect(names('stepper input')).toContain('number-field');
-    expect(names('toggle')[0]).toBe('segmented-control');
+    expect(names('toggle')).toEqual(expect.arrayContaining(['theme-toggle', 'segmented-control']));
     expect(names('tabs')).toContain('segmented-control');
     expect(names('skeleton text')[0]).toBe('text-shimmer');
     expect(names('checkboxes')[0]).toBe('checkbox-group');

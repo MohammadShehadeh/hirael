@@ -6,7 +6,7 @@ import { Search } from 'lucide-react';
 
 import { useIsApple } from '@/hooks/use-is-apple';
 import { cn } from '@/lib/utils';
-import { Kbd } from '@/registry/hirael/bases/radix/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/radix/ui/kbd';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { REGISTRY } from '@/registry/hirael/registry-meta';
 

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Anchor,
+  Bot,
   CalendarDays,
   Compass,
   Eye,
@@ -47,6 +48,7 @@ const COMPONENT_CATEGORY_ICONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number]
   display: Eye,
   animation: Sparkles,
   navigation: Compass,
+  ai: Bot,
 };
 
 const UTILITY_KIND_ICONS: Record<UtilityKind, LucideIcon> = {

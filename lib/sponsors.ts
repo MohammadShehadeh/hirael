@@ -22,6 +22,18 @@ export const SPONSORS: Sponsor[] = [
     invertOnDark: true,
     showName: true,
   },
+  {
+    name: '404 skill',
+    href: 'https://404skill.com/',
+    logo: '/brand-logos/404skill.svg',
+    showName: true,
+  },
+  {
+    name: 'Mohammad Shehadeh',
+    href: 'https://mohammadshehadeh.com/',
+    logo: '/brand-logos/mohammadshehadeh.svg',
+    invertOnDark: true,
+  },
 ];
 
 export const sponsorHref = (href: string) => {

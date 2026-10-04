@@ -144,7 +144,7 @@ Hirael is free and MIT licensed. If it saved you a few hours:
 - **[Sponsor the work](https://github.com/sponsors/MohammadShehadeh)** to keep new components coming.
 - **[Request a component](https://github.com/MohammadShehadeh/hirael/issues/new?template=feature_request.yml)** shadcn/ui doesn't have.
 
-Sponsored by [Sahabti](https://sahabti.com/en).
+Sponsored by [Sahabti](https://sahabti.com/en), [404 skill](https://404skill.com/) and [Mohammad Shehadeh](https://mohammadshehadeh.com/).
 
 <a href="https://star-history.com/#MohammadShehadeh/hirael&Date">
   <picture>

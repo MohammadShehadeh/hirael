@@ -1,12 +1,15 @@
 'use client';
 
 import * as React from 'react';
-import { type HTMLMotionProps, type Variants, MotionConfig, motion } from 'motion/react';
+import { type HTMLMotionProps, type Transition, type Variants, MotionConfig, motion } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
 export type FabSide = 'top' | 'bottom' | 'left' | 'right';
+
+const TRIGGER_SELECTOR = '[data-slot="floating-action-button-trigger"]';
+const ITEM_SELECTOR = '[data-slot="floating-action-button-item"]:not(:disabled)';
 
 interface FabContextValue {
   open: boolean;
@@ -35,17 +38,25 @@ const listSideClasses: Record<FabSide, string> = {
   right: 'left-full top-1/2 ml-3 -translate-y-1/2 flex-row rtl:flex-row-reverse',
 };
 
-const closedOffset: Record<FabSide, { x?: number; y?: number }> = {
-  top: { y: 12 },
-  bottom: { y: -12 },
-  left: { x: 12 },
-  right: { x: -12 },
-};
-
 const listVariants: Variants = {
   open: { transition: { staggerChildren: 0.04, delayChildren: 0.02 } },
   closed: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
 };
+
+const itemVariant = (offset: { x?: number; y?: number }): Variants => ({
+  open: { opacity: 1, x: 0, y: 0, visibility: 'visible' },
+  closed: { opacity: 0, ...offset, transitionEnd: { visibility: 'hidden' } },
+});
+
+const itemVariants: Record<FabSide, Variants> = {
+  top: itemVariant({ y: 12 }),
+  bottom: itemVariant({ y: -12 }),
+  left: itemVariant({ x: 12 }),
+  right: itemVariant({ x: -12 }),
+};
+
+const triggerTransition: Transition = { duration: 0.2, ease: [0.22, 1, 0.36, 1] };
+const itemTransition: Transition = { type: 'spring', stiffness: 300, damping: 24 };
 
 export interface FloatingActionButtonProps extends React.ComponentProps<'div'> {
   open?: boolean;
@@ -56,7 +67,7 @@ export interface FloatingActionButtonProps extends React.ComponentProps<'div'> {
 
 const FloatingActionButton = ({
   open: openProp,
-  defaultOpen,
+  defaultOpen = false,
   onOpenChange,
   side = 'top',
   className,
@@ -66,35 +77,38 @@ const FloatingActionButton = ({
 }: FloatingActionButtonProps) => {
   const [open, setOpen] = useControllableState({
     prop: openProp,
-    defaultProp: defaultOpen ?? false,
+    defaultProp: defaultOpen,
     onChange: onOpenChange,
   });
+
   const rootRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (!open) return;
+
     const onPointerDown = (event: PointerEvent) => {
       const root = rootRef.current;
-      if (root && event.target instanceof Node && !root.contains(event.target)) {
+      const target = event.target as Node;
+
+      if (root && !root.contains(target)) {
         setOpen(false);
       }
     };
+
     document.addEventListener('pointerdown', onPointerDown);
 
     return () => document.removeEventListener('pointerdown', onPointerDown);
   }, [open, setOpen]);
 
   const focusTrigger = React.useCallback(() => {
-    rootRef.current?.querySelector<HTMLElement>('[data-slot="floating-action-button-trigger"]')?.focus();
+    rootRef.current?.querySelector<HTMLElement>(TRIGGER_SELECTOR)?.focus();
   }, []);
 
   // Items stay `visibility: hidden` until the open animation starts, so focus waits a few frames for them.
   const focusFirstItem = React.useCallback(() => {
     let frames = 3;
     const attempt = () => {
-      const item = rootRef.current?.querySelector<HTMLElement>(
-        '[data-slot="floating-action-button-item"]:not(:disabled)',
-      );
+      const item = rootRef.current?.querySelector<HTMLElement>(ITEM_SELECTOR);
       item?.focus();
       frames -= 1;
       if (item && document.activeElement !== item && frames > 0) requestAnimationFrame(attempt);
@@ -135,8 +149,15 @@ const FloatingActionButton = ({
 
 export type FloatingActionButtonTriggerProps = HTMLMotionProps<'button'>;
 
-const FloatingActionButtonTrigger = ({ className, children, onClick, ...props }: FloatingActionButtonTriggerProps) => {
+const FloatingActionButtonTrigger = ({ className, onClick, ...props }: FloatingActionButtonTriggerProps) => {
   const { open, setOpen, focusFirstItem } = useFab();
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+    setOpen(!open);
+    if (!open) focusFirstItem();
+  };
 
   return (
     <motion.button
@@ -146,21 +167,14 @@ const FloatingActionButtonTrigger = ({ className, children, onClick, ...props }:
       aria-expanded={open}
       aria-haspopup="menu"
       animate={{ rotate: open ? 45 : 0 }}
-      transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+      transition={triggerTransition}
       className={cn(
         'inline-flex size-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:outline-none [&_svg]:size-5',
         className,
       )}
       {...props}
-      onClick={(event) => {
-        onClick?.(event);
-        if (event.defaultPrevented) return;
-        setOpen(!open);
-        if (!open) focusFirstItem();
-      }}
-    >
-      {children}
-    </motion.button>
+      onClick={handleClick}
+    />
   );
 };
 
@@ -171,21 +185,35 @@ const FloatingActionButtonList = ({ className, onKeyDown, ...props }: FloatingAc
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     onKeyDown?.(event);
-    if (event.defaultPrevented || !open) return;
+    if (event.defaultPrevented) return;
+
     // The row is pinned to physical order in both directions, so the arrow keys stay physical too.
     const horizontal = side === 'left' || side === 'right';
-    const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown';
-    const prevKey = horizontal ? 'ArrowLeft' : 'ArrowUp';
-    if (event.key !== nextKey && event.key !== prevKey) return;
+    // `top` and `left` render reversed, so moving down or right walks the DOM backwards.
+    const step = side === 'top' || side === 'left' ? -1 : 1;
+    const items = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(ITEM_SELECTOR));
+    const current = items.indexOf(document.activeElement as HTMLElement);
+
+    let index: number;
+    switch (event.key) {
+      case horizontal ? 'ArrowRight' : 'ArrowDown':
+        index = current + step;
+        break;
+      case horizontal ? 'ArrowLeft' : 'ArrowUp':
+        index = current - step;
+        break;
+      case 'Home':
+        index = 0;
+        break;
+      case 'End':
+        index = -1;
+        break;
+      default:
+        return;
+    }
+
     event.preventDefault();
-    const items = Array.from(
-      event.currentTarget.querySelectorAll<HTMLElement>('[data-slot="floating-action-button-item"]:not(:disabled)'),
-    );
-    if (items.length === 0) return;
-    const delta = (event.key === nextKey) !== (side === 'top' || side === 'left') ? 1 : -1;
-    const index = items.indexOf(document.activeElement as HTMLElement);
-    const target = index === -1 ? items[0] : items[(index + delta + items.length) % items.length];
-    target?.focus();
+    items.at(index % items.length)?.focus();
   };
 
   return (
@@ -212,9 +240,12 @@ export type FloatingActionButtonItemProps = HTMLMotionProps<'button'>;
 
 const FloatingActionButtonItem = ({ className, onClick, ...props }: FloatingActionButtonItemProps) => {
   const { open, setOpen, side, focusTrigger } = useFab();
-  const itemVariants: Variants = {
-    open: { opacity: 1, x: 0, y: 0, visibility: 'visible' },
-    closed: { opacity: 0, ...closedOffset[side], transitionEnd: { visibility: 'hidden' } },
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+    setOpen(false);
+    focusTrigger();
   };
 
   return (
@@ -222,21 +253,15 @@ const FloatingActionButtonItem = ({ className, onClick, ...props }: FloatingActi
       type="button"
       role="menuitem"
       tabIndex={open ? 0 : -1}
-      aria-hidden={open ? undefined : true}
       data-slot="floating-action-button-item"
-      variants={itemVariants}
-      transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+      variants={itemVariants[side]}
+      transition={itemTransition}
       className={cn(
         'inline-flex size-10 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-md transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none [&_svg]:size-4',
         className,
       )}
       {...props}
-      onClick={(event) => {
-        onClick?.(event);
-        if (event.defaultPrevented) return;
-        setOpen(false);
-        focusTrigger();
-      }}
+      onClick={handleClick}
     />
   );
 };

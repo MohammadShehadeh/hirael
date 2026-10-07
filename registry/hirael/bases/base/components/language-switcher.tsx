@@ -163,8 +163,11 @@ const LanguageSwitcherContent = ({ heading, align = 'end', className, ...props }
         <DropdownMenuRadioGroup value={value} onValueChange={(code) => setValue(code)}>
           {languages.map((language) => (
             <DropdownMenuRadioItem key={language.code} value={language.code} data-slot="language-switcher-item">
-              <span lang={language.code} dir={language.dir} className="flex-1 text-start">
-                {language.nativeName}
+              {/* Direction sits on an inline <bdi> so the name shapes correctly but lines up with the menu's other rows. */}
+              <span className="flex-1 text-start">
+                <bdi lang={language.code} dir={language.dir}>
+                  {language.nativeName}
+                </bdi>
               </span>
               {language.name && language.name !== language.nativeName && (
                 <span className="ms-4 text-xs text-muted-foreground">{language.name}</span>

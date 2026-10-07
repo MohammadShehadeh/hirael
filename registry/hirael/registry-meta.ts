@@ -4021,17 +4021,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     cssVars: STATUS_CSS_VARS,
   },
   {
-    name: 'diff-viewer',
-    title: 'Diff Viewer',
-    description:
-      'Line diff of two texts on jsdiff. Unified or split layout, +N / -N stats, context lines with expandable gaps.',
-    category: 'display',
-    files: [{ path: 'components/diff-viewer.tsx' }],
-    registryDependencies: ['toggle-group', 'use-controllable-state'],
-    dependencies: ['diff', 'lucide-react'],
-    cssVars: STATUS_CSS_VARS,
-  },
-  {
     name: 'cron-editor',
     title: 'Cron Editor',
     description:
@@ -4981,16 +4970,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
-    name: 'expandable-text',
-    title: 'Expandable Text',
-    description:
-      'Long text clamped to a set number of lines with a Show more toggle. The toggle only appears when the text actually overflows, and it re-measures when the container resizes.',
-    category: 'display',
-    files: [{ path: 'components/expandable-text.tsx' }],
-    registryDependencies: ['use-controllable-state'],
-    dependencies: ['lucide-react'],
-  },
-  {
     name: 'theme-toggle',
     title: 'Theme Toggle',
     description:
@@ -5010,16 +4989,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     files: [{ path: 'components/language-switcher.tsx' }],
     registryDependencies: ['button', 'dropdown-menu', 'use-controllable-state'],
     dependencies: ['lucide-react'],
-  },
-  {
-    name: 'responsive-dialog',
-    title: 'Responsive Dialog',
-    description:
-      'A centered Dialog on wide screens and a bottom Drawer on phones, behind one set of parts. Open state lives in the root, so resizing across the breakpoint keeps it open. The breakpoint is a media query you can change.',
-    category: 'display',
-    files: [{ path: 'components/responsive-dialog.tsx' }],
-    registryDependencies: ['dialog', 'drawer', 'use-controllable-state', 'use-media-query'],
-    dependencies: [],
   },
   {
     name: 'date-time-picker',
@@ -5042,26 +5011,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['@react-input/mask'],
   },
   {
-    name: 'transfer-list',
-    title: 'Transfer List',
-    description:
-      'Two lists side by side for moving items between available and chosen, like permissions or columns. Each side has a filter, check-all with a mixed state and a count, and the panels stack on narrow screens.',
-    category: 'inputs',
-    files: [{ path: 'components/transfer-list.tsx' }],
-    registryDependencies: ['button', 'checkbox', 'input-group', 'use-controllable-state'],
-    dependencies: ['lucide-react'],
-  },
-  {
-    name: 'tree-select',
-    title: 'Tree Select',
-    description:
-      'A select for nested options, like regions, categories or folders. Search keeps the ancestors of every match in view, the trigger shows the full path, and multiple mode checks every leaf under a branch with a mixed state. Full tree keyboard support, mirrored in RTL.',
-    category: 'inputs',
-    files: [{ path: 'components/tree-select.tsx' }],
-    registryDependencies: ['badge', 'button', 'checkbox', 'input-group', 'popover', 'use-controllable-state'],
-    dependencies: ['lucide-react'],
-  },
-  {
     name: 'filter-builder',
     title: 'Filter Builder',
     description:
@@ -5078,36 +5027,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'use-controllable-state',
     ],
     dependencies: ['lucide-react'],
-  },
-  {
-    name: 'event-calendar',
-    title: 'Event Calendar',
-    description:
-      'A scheduling calendar with month, week, day and agenda views. Drag an event to another day or time, drag its bottom edge to change how long it runs, or click an empty slot to add one. Overlapping events share the column, all-day events get their own row, and a line marks the current time.',
-    category: 'data',
-    files: [{ path: 'components/event-calendar.tsx' }],
-    registryDependencies: ['button', 'tabs', 'use-controllable-state'],
-    dependencies: ['@dnd-kit/core', 'date-fns', 'lucide-react'],
-  },
-  {
-    name: 'data-grid',
-    title: 'Data Grid',
-    description:
-      'An editable spreadsheet-style grid on TanStack Table and TanStack Virtual. Thousands of rows scroll smoothly, arrow keys move between cells, Enter or typing edits, Delete clears, and a block pasted from a spreadsheet fills the cells. Text, number, select and checkbox columns, with sorting and resizable columns.',
-    category: 'data',
-    files: [{ path: 'components/data-grid.tsx' }],
-    registryDependencies: ['checkbox'],
-    dependencies: ['@tanstack/react-table', '@tanstack/react-virtual', 'lucide-react'],
-  },
-  {
-    name: 'markdown',
-    title: 'Markdown',
-    description:
-      'Renders markdown with your theme: headings, lists, tables, task lists, quotes and code blocks with a copy button. In streaming mode it closes half-written code fences, bold text and links, so an AI answer stays tidy while it arrives, with a caret at the end.',
-    category: 'display',
-    files: [{ path: 'components/markdown.tsx' }],
-    registryDependencies: ['use-copy-to-clipboard'],
-    dependencies: ['lucide-react', 'react-markdown', 'remark-gfm'],
   },
   {
     name: 'reasoning',
@@ -5172,16 +5091,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['@tanstack/react-virtual'],
   },
   {
-    name: 'availability-editor',
-    title: 'Availability Editor',
-    description:
-      'Weekly working hours like a booking tool: switch each day on or off, give it one or more time ranges, and copy a day to the rest of the week. Overlapping or backwards ranges are flagged as you edit.',
-    category: 'pickers',
-    files: [{ path: 'components/availability-editor.tsx' }],
-    registryDependencies: ['button', 'native-select', 'switch', 'use-controllable-state'],
-    dependencies: ['lucide-react'],
-  },
-  {
     name: 'time-slot-picker',
     title: 'Time Slot Picker',
     description:
@@ -5190,37 +5099,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     files: [{ path: 'components/time-slot-picker.tsx' }],
     registryDependencies: ['calendar', 'use-controllable-state'],
     dependencies: [],
-  },
-  {
-    name: 'gantt',
-    title: 'Gantt Chart',
-    description:
-      'A project timeline with a task list beside it. Drag a bar to move a task, drag its end to change its length, or use the arrow keys. Zoom between days, weeks and months, with weekends shaded, progress fills and a line for today.',
-    category: 'data',
-    files: [{ path: 'components/gantt.tsx' }],
-    registryDependencies: [],
-    dependencies: ['date-fns'],
-  },
-  {
-    name: 'map',
-    title: 'Map',
-    description:
-      'An interactive MapLibre map that switches between light and dark basemaps with your theme. Markers and popups are React components styled with your tokens, and the zoom, north and location buttons are your shadcn Buttons. Uses free CARTO tiles with no API key.',
-    category: 'data',
-    files: [{ path: 'components/map.tsx' }],
-    registryDependencies: ['button'],
-    dependencies: ['lucide-react', 'maplibre-gl'],
-  },
-  {
-    name: 'flow-canvas',
-    title: 'Flow Canvas',
-    description:
-      'A node editor on React Flow for workflow and agent builders. The canvas, edges, handles, controls and minimap take your theme and follow dark mode, and a card node shows an icon, a title, a status dot and a description. Takes every React Flow prop.',
-    category: 'data',
-    files: [{ path: 'components/flow-canvas.tsx' }],
-    registryDependencies: [],
-    dependencies: ['@xyflow/react'],
-    cssVars: STATUS_CSS_VARS,
   },
   {
     name: 'pdf-viewer',

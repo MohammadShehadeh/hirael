@@ -35,6 +35,17 @@ describe.each(Object.entries(registry))(
       expect(run([{ id: '1', field: 'status', operator: 'is', values: [] }])).toHaveLength(3);
     });
 
+    it('should apply a between filter that has only one bound', () => {
+      expect(run([{ id: '1', field: 'estimate', operator: 'between', values: ['', '5'] }])).toEqual([
+        'Fix the date picker',
+        'Add RTL support',
+      ]);
+      expect(run([{ id: '1', field: 'created', operator: 'between', values: ['2026-09-10', ''] }])).toEqual([
+        'Add RTL support',
+        'Filter bar',
+      ]);
+    });
+
     it('should match option fields with is and is not', () => {
       expect(run([{ id: '1', field: 'status', operator: 'is', values: ['todo', 'done'] }])).toEqual([
         'Fix the date picker',

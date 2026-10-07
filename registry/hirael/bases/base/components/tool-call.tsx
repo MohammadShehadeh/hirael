@@ -99,7 +99,7 @@ export interface ToolCallProps extends Omit<
   /** Called by the Deny button while `status` is `approval`. */
   onDeny?: () => void;
   open?: boolean;
-  /** Starts open when the call needs approval or failed, so neither goes unseen. */
+  /** Starts open when the call needs approval or failed, and opens when it later turns into either, so neither goes unseen. */
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   labels?: ToolCallLabelOverrides;
@@ -127,6 +127,14 @@ const ToolCall = ({
     defaultProp: defaultOpen ?? (status === 'approval' || status === 'error'),
     onChange: onOpenChange,
   });
+
+  // A streamed call mounts as pending or running, so its later approval or error opens it here.
+  const prevStatusRef = React.useRef(status);
+  React.useEffect(() => {
+    if (prevStatusRef.current === status) return;
+    prevStatusRef.current = status;
+    if (status === 'approval' || status === 'error') setOpen(true);
+  }, [status, setOpen]);
 
   const ctx = React.useMemo<ToolCallContextValue>(
     () => ({

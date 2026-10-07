@@ -76,7 +76,8 @@ const Reasoning = ({
   const [prevStreaming, setPrevStreaming] = React.useState(streaming);
   if (prevStreaming !== streaming) {
     setPrevStreaming(streaming);
-    setManual(null);
+    // A new stream follows the stream again; the reader's choice from the last one carries past its end.
+    if (streaming) setManual(null);
     setLingering(!streaming);
   }
 

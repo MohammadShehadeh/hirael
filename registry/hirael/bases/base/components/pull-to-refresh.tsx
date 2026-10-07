@@ -90,10 +90,13 @@ const PullToRefresh = ({
       }
       setPull(threshold * 0.75);
       setRefreshing(true);
-      void Promise.resolve(onRefreshRef.current()).finally(() => {
-        setRefreshing(false);
-        setPull(0);
-      });
+      // Called inside the chain so a handler that throws before returning a promise still ends the refresh.
+      void Promise.resolve()
+        .then(() => onRefreshRef.current())
+        .finally(() => {
+          setRefreshing(false);
+          setPull(0);
+        });
     };
 
     const onTouchStart = (event: TouchEvent) => begin(event.touches[0].clientY);

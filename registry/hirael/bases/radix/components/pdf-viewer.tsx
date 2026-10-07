@@ -82,6 +82,12 @@ const PdfViewer = ({ file, defaultPage = 1, workerUrl, labels, className, childr
   const [page, setPage] = React.useState(defaultPage);
   const [pages, setPages] = React.useState(0);
   const [zoom, setZoom] = React.useState(1);
+  const [prevFile, setPrevFile] = React.useState(file);
+  if (prevFile !== file) {
+    setPrevFile(file);
+    setPage(defaultPage);
+    setPages(0);
+  }
 
   // pdf.js needs browser APIs at import time, so it loads after mount.
   React.useEffect(() => {
@@ -104,7 +110,11 @@ const PdfViewer = ({ file, defaultPage = 1, workerUrl, labels, className, childr
       page,
       setPage: (next) => setPage(Math.min(Math.max(1, next), pages || Number.MAX_SAFE_INTEGER)),
       pages,
-      setPages,
+      // The page asked for may not exist, like a `defaultPage` past the end, so it is clamped once the count is known.
+      setPages: (count) => {
+        setPages(count);
+        setPage((current) => Math.min(Math.max(1, current), Math.max(1, count)));
+      },
       zoom,
       setZoom,
       labels: { ...DEFAULT_LABELS, ...labels },

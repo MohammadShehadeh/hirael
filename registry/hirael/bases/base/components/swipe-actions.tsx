@@ -126,8 +126,9 @@ const SwipeActionsContent = ({
         draggedRef.current = false;
       });
       setDrag(null);
-      if (latest > widths.start / 2) setOpen('start');
-      else if (latest < -widths.end / 2) setOpen('end');
+      // A side without actions has no width, so it never opens.
+      if (widths.start > 0 && latest > widths.start / 2) setOpen('start');
+      else if (widths.end > 0 && latest < -widths.end / 2) setOpen('end');
       else setOpen(null);
     };
     window.addEventListener('pointermove', onMove);

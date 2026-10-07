@@ -128,8 +128,8 @@ export const applyFilters = <Row,>(
 ): Row[] =>
   rows.filter((row) =>
     filters.every((filter) => {
-      const [a, b] = filter.values;
-      if (a === undefined || a === '') return true;
+      const [a = '', b = ''] = filter.values;
+      if (a === '' && b === '') return true;
       const raw = getValue(row, filter.field);
       switch (filter.operator) {
         case 'is':
@@ -167,10 +167,10 @@ export const applyFilters = <Row,>(
           if (raw instanceof Date || typeof raw === 'string') {
             const day = raw instanceof Date ? toISODate(raw) : raw.slice(0, 10);
 
-            return day >= a && (!b || day <= b);
+            return (a === '' || day >= a) && (b === '' || day <= b);
           }
 
-          return Number(raw) >= Number(a) && (b === undefined || b === '' || Number(raw) <= Number(b));
+          return (a === '' || Number(raw) >= Number(a)) && (b === '' || Number(raw) <= Number(b));
         }
         case 'before':
         case 'after': {
@@ -452,8 +452,8 @@ interface ValueSummaryProps {
 const ValueSummary = ({ filter, field }: ValueSummaryProps) => {
   const { labels, locale } = useFilterBuilder();
   const dateFormat = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
-  const [a, b] = filter.values;
-  if (!a) return <span className="text-muted-foreground">{labels.empty}</span>;
+  const [a = '', b = ''] = filter.values;
+  if (!a && !b) return <span className="text-muted-foreground">{labels.empty}</span>;
   if (field.type === 'option' || field.type === 'multiOption') {
     if (filter.values.length > 1) return <>{labels.selected(filter.values.length)}</>;
     const option = field.options?.find((o) => o.value === a);
@@ -469,7 +469,7 @@ const ValueSummary = ({ filter, field }: ValueSummaryProps) => {
   if (filter.operator === 'between') {
     return (
       <span className="tabular-nums">
-        {show(a)} {labels.and} {b ? show(b) : '…'}
+        {a ? show(a) : '…'} {labels.and} {b ? show(b) : '…'}
       </span>
     );
   }

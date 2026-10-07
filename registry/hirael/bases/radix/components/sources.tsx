@@ -60,8 +60,8 @@ const Sources = ({
           className="group/sources inline-flex w-fit items-center gap-2 rounded-md text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
         >
           <span aria-hidden className="flex *:not-first:-ms-1">
-            {sources.slice(0, 3).map((source) => (
-              <span key={source.url} className="rounded-sm ring-2 ring-background">
+            {sources.slice(0, 3).map((source, index) => (
+              <span key={`${source.url}-${index}`} className="rounded-sm ring-2 ring-background">
                 <SourceIcon icon={source.icon} />
               </span>
             ))}
@@ -76,7 +76,7 @@ const Sources = ({
       <CollapsibleContent>
         <ol data-slot="sources-list" className="grid gap-1.5 sm:grid-cols-2">
           {sources.map((source, index) => (
-            <li key={source.url}>
+            <li key={`${source.url}-${index}`}>
               <a
                 href={source.url}
                 target="_blank"

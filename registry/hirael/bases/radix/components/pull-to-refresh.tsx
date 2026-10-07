@@ -150,11 +150,7 @@ const PullToRefresh = ({
           {refreshing ? (
             <Spinner />
           ) : (
-            <ArrowDown
-              aria-hidden
-              className="size-4 transition-transform duration-200"
-              style={{ transform: `rotate(${ready ? 180 : 0}deg)` }}
-            />
+            <ArrowDown aria-hidden className={cn('size-4 transition-transform duration-200', ready && 'rotate-180')} />
           )}
           <span role={refreshing ? 'status' : undefined}>
             {refreshing ? text.refreshing : ready ? text.release : text.pull}

@@ -301,17 +301,14 @@ const FilterBuilder = ({
   );
 };
 
-const OptionList = ({
-  field,
-  values,
-  multiple,
-  onChange,
-}: {
+interface OptionListProps {
   field: FilterField;
   values: string[];
   multiple: boolean;
   onChange: (values: string[]) => void;
-}) => {
+}
+
+const OptionList = ({ field, values, multiple, onChange }: OptionListProps) => {
   const { labels } = useFilterBuilder();
 
   return (
@@ -447,7 +444,12 @@ const FilterBuilderAdd = ({ variant = 'outline', size = 'sm', className, ...prop
 const chipPart =
   'inline-flex h-full items-center gap-1.5 px-2 text-xs outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent [&_svg]:size-3.5 [&_svg]:shrink-0';
 
-const ValueSummary = ({ filter, field }: { filter: Filter; field: FilterField }) => {
+interface ValueSummaryProps {
+  filter: Filter;
+  field: FilterField;
+}
+
+const ValueSummary = ({ filter, field }: ValueSummaryProps) => {
   const { labels, locale } = useFilterBuilder();
   const dateFormat = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
   const [a, b] = filter.values;
@@ -475,7 +477,13 @@ const ValueSummary = ({ filter, field }: { filter: Filter; field: FilterField })
   return <span className={cn('max-w-40 truncate', field.type !== 'text' && 'tabular-nums')}>{show(a)}</span>;
 };
 
-const ValueEditor = ({ filter, field, onDone }: { filter: Filter; field: FilterField; onDone: () => void }) => {
+interface ValueEditorProps {
+  filter: Filter;
+  field: FilterField;
+  onDone: () => void;
+}
+
+const ValueEditor = ({ filter, field, onDone }: ValueEditorProps) => {
   const { update, labels } = useFilterBuilder();
   const set = (values: string[]) => update(filter.id, { values });
   const [a = '', b = ''] = filter.values;
@@ -569,12 +577,9 @@ const FilterBuilderChip = ({ filter, className, ...props }: FilterBuilderChipPro
   };
 
   const changeOperator = (operator: FilterOperator) => {
-    const values =
-      operator === 'between' || filter.operator === 'between'
-        ? filter.values.slice(0, 1)
-        : field.type === 'option' && filter.values.length > 1
-          ? filter.values.slice(0, 1)
-          : filter.values;
+    const keepFirst =
+      operator === 'between' || filter.operator === 'between' || (field.type === 'option' && filter.values.length > 1);
+    const values = keepFirst ? filter.values.slice(0, 1) : filter.values;
     update(filter.id, { operator, values });
   };
 

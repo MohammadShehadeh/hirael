@@ -67,7 +67,11 @@ const SwipeActions = ({ onOpenChange, className, children, ...props }: SwipeActi
   );
 };
 
-const SwipeActionsTrack = ({ children }: { children: React.ReactNode }) => {
+interface SwipeActionsTrackProps {
+  children: React.ReactNode;
+}
+
+const SwipeActionsTrack = ({ children }: SwipeActionsTrackProps) => {
   const { open, setOpen, widths } = useSwipeActions();
   const [drag, setDrag] = React.useState<number | null>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
@@ -79,9 +83,8 @@ const SwipeActionsTrack = ({ children }: { children: React.ReactNode }) => {
     if (contentRef.current) setRtl(getComputedStyle(contentRef.current).direction === 'rtl');
   }, []);
 
-  const width = (side: Side) => widths[side];
   // Offset along the reading direction: positive reveals the start actions.
-  const resting = open === 'start' ? width('start') : open === 'end' ? -width('end') : 0;
+  const resting = open === 'start' ? widths.start : open === 'end' ? -widths.end : 0;
   const offset = drag ?? resting;
 
   const items = React.Children.toArray(children);
@@ -105,8 +108,8 @@ const SwipeActionsTrack = ({ children }: { children: React.ReactNode }) => {
         if (Math.abs(dy) > Math.abs(dx) || Math.abs(dx) < 6) return;
         dragging = true;
       }
-      const max = width('start');
-      const min = -width('end');
+      const max = widths.start;
+      const min = -widths.end;
       const raw = startOffset + dx;
       // Past the actions the row resists, so it feels anchored.
       latest = raw > max ? max + (raw - max) * 0.2 : raw < min ? min + (raw - min) * 0.2 : raw;
@@ -122,8 +125,8 @@ const SwipeActionsTrack = ({ children }: { children: React.ReactNode }) => {
         draggedRef.current = false;
       });
       setDrag(null);
-      if (latest > width('start') / 2) setOpen('start');
-      else if (latest < -width('end') / 2) setOpen('end');
+      if (latest > widths.start / 2) setOpen('start');
+      else if (latest < -widths.end / 2) setOpen('end');
       else setOpen(null);
     };
     window.addEventListener('pointermove', onMove);

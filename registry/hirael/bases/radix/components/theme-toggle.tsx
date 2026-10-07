@@ -83,7 +83,7 @@ const ThemeToggle = ({ labels, variant = 'ghost', size = 'icon', className, ...p
 export interface ThemeSelectProps extends Omit<React.ComponentProps<typeof Button>, 'children'> {
   labels?: Partial<ThemeLabels>;
   /** Menu alignment against the trigger. */
-  align?: 'start' | 'center' | 'end';
+  align?: React.ComponentProps<typeof DropdownMenuContent>['align'];
 }
 
 /** An icon button that opens a Light / Dark / System menu. */

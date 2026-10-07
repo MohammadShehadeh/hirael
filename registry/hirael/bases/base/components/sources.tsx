@@ -25,7 +25,11 @@ const hostOf = (url: string) => {
   }
 };
 
-const SourceIcon = ({ source }: { source: SourceItem }) => (
+interface SourceIconProps {
+  source: SourceItem;
+}
+
+const SourceIcon = ({ source }: SourceIconProps) => (
   <span
     aria-hidden
     className="flex size-4 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-muted text-muted-foreground [&_img]:size-full [&_svg]:size-3"

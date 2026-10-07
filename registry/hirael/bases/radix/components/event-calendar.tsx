@@ -25,6 +25,7 @@ import {
   isSameDay,
   isSameMonth,
   isToday,
+  type Day,
   max as maxDate,
   min as minDate,
   startOfDay,
@@ -94,6 +95,17 @@ const DOT_CLASS: Record<EventColor, string> = {
   destructive: 'bg-destructive',
 };
 
+export interface CalendarSlot {
+  start: Date;
+  end: Date;
+  allDay: boolean;
+}
+
+export interface CalendarEventTimes {
+  start: Date;
+  end: Date;
+}
+
 /** Minutes a drag or resize snaps to in the week and day views. */
 const SNAP_MINUTES = 15;
 
@@ -103,13 +115,13 @@ interface EventCalendarContextValue {
   setView: (view: EventCalendarView) => void;
   date: Date;
   setDate: (date: Date) => void;
-  weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  weekStartsOn: Day;
   locale: string;
   hourHeight: number;
   labels: EventCalendarLabels;
   editable: boolean;
   onEventClick?: (event: CalendarEvent) => void;
-  onSlotClick?: (slot: { start: Date; end: Date; allDay: boolean }) => void;
+  onSlotClick?: (slot: CalendarSlot) => void;
   moveEvent: (event: CalendarEvent, start: Date, end: Date) => void;
 }
 
@@ -134,12 +146,12 @@ export interface EventCalendarProps extends React.ComponentProps<'div'> {
   defaultDate?: Date;
   onDateChange?: (date: Date) => void;
   /** Called after an event is dragged to a new time or resized. Leave out to make events read-only. */
-  onEventChange?: (event: CalendarEvent, change: { start: Date; end: Date }) => void;
+  onEventChange?: (event: CalendarEvent, change: CalendarEventTimes) => void;
   onEventClick?: (event: CalendarEvent) => void;
   /** Called when an empty day or time slot is clicked, to create an event there. */
-  onSlotClick?: (slot: { start: Date; end: Date; allDay: boolean }) => void;
+  onSlotClick?: (slot: CalendarSlot) => void;
   /** 0 is Sunday. */
-  weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+  weekStartsOn?: Day;
   /** BCP 47 tag for dates and times. Defaults to `en-US` so server and client render the same text. */
   locale?: string;
   /** Pixel height of one hour in the week and day views. */
@@ -304,31 +316,30 @@ const EventCalendarToolbar = ({ className, children, ...props }: React.Component
 };
 
 const EventCalendarBody = ({ className, ...props }: React.ComponentProps<'div'>) => {
-  const { view, events, moveEvent, editable } = useEventCalendar();
+  const { view, moveEvent, editable } = useEventCalendar();
   const [dragging, setDragging] = React.useState<CalendarEvent | null>(null);
   // A small travel before a drag starts keeps plain clicks working on the events.
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
-  const handleDragStart = (event: DragStartEvent) => {
-    setDragging(events.find((e) => e.id === event.active.id) ?? null);
+  const handleDragStart = ({ active }: DragStartEvent) => {
+    setDragging((active.data.current as EventDragData).event);
   };
 
   const handleDragEnd = ({ active, over, delta }: DragEndEvent) => {
     setDragging(null);
-    const event = events.find((e) => e.id === active.id);
+    const { event, day, hourHeight } = active.data.current as EventDragData;
     const target = over?.data.current as { day: Date; timed: boolean } | undefined;
-    if (!event || !target) return;
+    if (!target) return;
     const duration = differenceInMinutes(event.end, event.start);
+    // Measured from the day that was grabbed, which is not the start day for a chip on a later day of a long event.
+    const days = differenceInCalendarDays(target.day, day);
 
-    if (!target.timed || event.allDay) {
-      const days = differenceInCalendarDays(target.day, event.start);
+    if (!target.timed || event.allDay || !hourHeight) {
       moveEvent(event, addDays(event.start, days), addDays(event.end, days));
 
       return;
     }
-    const hourHeight = (active.data.current as { hourHeight: number }).hourHeight;
     const minutes = Math.round(((delta.y / hourHeight) * 60) / SNAP_MINUTES) * SNAP_MINUTES;
-    const days = differenceInCalendarDays(target.day, event.start);
     const start = addMinutes(addDays(event.start, days), minutes);
     moveEvent(event, start, addMinutes(start, duration));
   };
@@ -374,8 +385,16 @@ const useTimeFormat = () => {
   return React.useMemo(() => new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit' }), [locale]);
 };
 
+interface EventDragData {
+  event: CalendarEvent;
+  day: Date;
+  hourHeight?: number;
+}
+
 interface EventChipProps {
   event: CalendarEvent;
+  /** The day cell the chip sits in. An event spanning several days renders one chip per day. */
+  day: Date;
   /** Pixel height of an hour when the chip sits on a time grid, for turning drag distance into minutes. */
   hourHeight?: number;
   /** `pill` is one line for month cells, `block` stacks title and time, `compact` fits a short event on a time grid. */
@@ -385,12 +404,12 @@ interface EventChipProps {
   children?: React.ReactNode;
 }
 
-const EventChip = ({ event, hourHeight, variant, className, style, children }: EventChipProps) => {
+const EventChip = ({ event, day, hourHeight, variant, className, style, children }: EventChipProps) => {
   const { editable, onEventClick } = useEventCalendar();
   const timeFormat = useTimeFormat();
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: event.id,
-    data: { hourHeight },
+    id: `${event.id}-${day.toISOString()}`,
+    data: { event, day, hourHeight } satisfies EventDragData,
     disabled: !editable,
   });
   const color = event.color ?? 'primary';
@@ -505,7 +524,7 @@ const MonthView = () => {
                   {dayNumber.format(day)}
                 </button>
                 {dayEvents.slice(0, hidden > 0 ? MAX_PER_DAY - 1 : MAX_PER_DAY).map((event) => (
-                  <EventChip key={event.id} event={event} variant="pill" />
+                  <EventChip key={event.id} event={event} day={day} variant="pill" />
                 ))}
                 {hidden > 0 && (
                   <button
@@ -587,7 +606,11 @@ const layoutDay = (events: CalendarEvent[]): PlacedEvent[] => {
 // The header rows reserve the same scrollbar space as the scrolling grid, so their columns line up.
 const GUTTER = 'overflow-y-hidden [scrollbar-gutter:stable]';
 
-const TimeGridView = ({ days: count }: { days: 1 | 7 }) => {
+interface TimeGridViewProps {
+  days: 1 | 7;
+}
+
+const TimeGridView = ({ days: count }: TimeGridViewProps) => {
   const { date, weekStartsOn, events, locale, hourHeight, labels, onSlotClick, setDate, setView } = useEventCalendar();
   const first = count === 7 ? startOfWeek(date, { weekStartsOn }) : startOfDay(date);
   const days = Array.from({ length: count }, (_, i) => addDays(first, i));
@@ -639,7 +662,7 @@ const TimeGridView = ({ days: count }: { days: 1 | 7 }) => {
             <DayCell key={day.toISOString()} day={day} timed={false}>
               <div className="flex h-full flex-col gap-0.5 border-s border-border p-0.5">
                 {allDayEvents[i].map((event) => (
-                  <EventChip key={event.id} event={event} variant="pill" />
+                  <EventChip key={event.id} event={event} day={day} variant="pill" />
                 ))}
               </div>
             </DayCell>
@@ -673,7 +696,12 @@ const TimeGridView = ({ days: count }: { days: 1 | 7 }) => {
   );
 };
 
-const TimeColumn = ({ day, onSlotClick }: { day: Date; onSlotClick?: EventCalendarContextValue['onSlotClick'] }) => {
+interface TimeColumnProps {
+  day: Date;
+  onSlotClick?: (slot: CalendarSlot) => void;
+}
+
+const TimeColumn = ({ day, onSlotClick }: TimeColumnProps) => {
   const { events, hourHeight } = useEventCalendar();
   const timed = eventsOnDay(events, day).filter((e) => !e.allDay);
   const placed = layoutDay(timed);
@@ -706,6 +734,7 @@ const TimeColumn = ({ day, onSlotClick }: { day: Date; onSlotClick?: EventCalend
             <TimedEvent
               key={event.id}
               event={event}
+              day={day}
               style={{
                 top,
                 height,
@@ -742,7 +771,13 @@ const useNow = () => {
   return minute === null ? null : new Date(minute * 60_000);
 };
 
-const TimedEvent = ({ event, style }: { event: CalendarEvent; style: React.CSSProperties }) => {
+interface TimedEventProps {
+  event: CalendarEvent;
+  day: Date;
+  style: React.CSSProperties;
+}
+
+const TimedEvent = ({ event, day, style }: TimedEventProps) => {
   const { hourHeight, editable, moveEvent } = useEventCalendar();
   const [resizeEnd, setResizeEnd] = React.useState<Date | null>(null);
 
@@ -774,6 +809,7 @@ const TimedEvent = ({ event, style }: { event: CalendarEvent; style: React.CSSPr
   return (
     <EventChip
       event={shown}
+      day={day}
       hourHeight={hourHeight}
       variant={typeof height === 'number' && height < hourHeight * 0.75 ? 'compact' : 'block'}
       className="absolute"

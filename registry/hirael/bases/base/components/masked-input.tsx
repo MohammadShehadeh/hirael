@@ -122,8 +122,13 @@ const MaskedInput = ({
   );
 };
 
+export interface FormatMaskedOptions extends Pick<MaskPreset, 'mask'> {
+  /** Defaults to `_` for one digit, like MaskedInput. */
+  replacement?: Replacement;
+}
+
 /** Applies a mask to raw characters, for a value that comes from a server rather than typing. */
-const formatMasked = (raw: string, { mask, replacement = DIGIT }: { mask: string; replacement?: Replacement }) =>
+const formatMasked = (raw: string, { mask, replacement = DIGIT }: FormatMaskedOptions) =>
   format(raw, { mask, replacement });
 
 export { MaskedInput, formatMasked };

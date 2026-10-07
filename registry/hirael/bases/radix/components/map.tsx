@@ -55,7 +55,7 @@ export interface MapProps extends Omit<React.ComponentProps<'div'>, 'onLoad'> {
   center: [number, number];
   zoom?: number;
   /** Style URLs for light and dark mode. Defaults to CARTO Positron and Dark Matter. */
-  styles?: { light: string; dark: string };
+  styles?: typeof MAP_STYLES;
   /** Force a style instead of following the page's theme. */
   theme?: 'light' | 'dark';
   /** Allow scroll-wheel zoom. Off by default so the page scrolls past the map. */
@@ -233,18 +233,18 @@ const MapMarker = ({ position, children, label, onClick, popup }: MapMarkerProps
   );
 };
 
-export interface MapControlsProps extends React.ComponentProps<'div'> {
-  /** Show a button that flies to the reader's location. */
-  locate?: boolean;
-  labels?: Partial<Record<'zoomIn' | 'zoomOut' | 'resetNorth' | 'locate', string>>;
-}
-
 const DEFAULT_CONTROL_LABELS = {
   zoomIn: 'Zoom in',
   zoomOut: 'Zoom out',
   resetNorth: 'Point north',
   locate: 'Show my location',
 };
+
+export interface MapControlsProps extends React.ComponentProps<'div'> {
+  /** Show a button that flies to the reader's location. */
+  locate?: boolean;
+  labels?: Partial<typeof DEFAULT_CONTROL_LABELS>;
+}
 
 /** Zoom, north and location buttons in your Button style, over the map's end corner. */
 const MapControls = ({ locate = false, labels, className, ...props }: MapControlsProps) => {

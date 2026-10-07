@@ -191,15 +191,13 @@ const STATUS_ICON: Partial<Record<UploadStatus, React.ReactNode>> = {
   error: <CircleAlert aria-hidden className="size-4 text-destructive" />,
 };
 
-const UploadQueueItem = ({
-  item,
-  queue,
-  labels,
-}: {
+interface UploadQueueItemProps {
   item: UploadItem;
   queue: ReturnType<typeof useUploadQueue>;
   labels: UploadQueueLabels;
-}) => {
+}
+
+const UploadQueueItem = ({ item, queue, labels }: UploadQueueItemProps) => {
   const active = item.status === 'uploading' || item.status === 'queued';
 
   return (

@@ -30,6 +30,11 @@ export interface GanttTask {
   description?: string;
 }
 
+export interface GanttRange {
+  start: Date;
+  end: Date;
+}
+
 const BAR_CLASS: Record<GanttColor, { bar: string; fill: string }> = {
   primary: { bar: 'bg-primary/25 border-primary', fill: 'bg-primary' },
   'chart-1': { bar: 'bg-chart-1/25 border-chart-1', fill: 'bg-chart-1' },
@@ -52,7 +57,7 @@ interface GanttContextValue {
   locale: string;
   editable: boolean;
   today: Date | null;
-  changeTask: (task: GanttTask, change: { start: Date; end: Date }) => void;
+  changeTask: (task: GanttTask, change: GanttRange) => void;
   onTaskClick?: (task: GanttTask) => void;
 }
 
@@ -78,7 +83,7 @@ export interface GanttProps extends React.ComponentProps<'div'> {
   /** Last day on the timeline. Defaults to a week after the latest task. */
   to?: Date;
   /** Called after a bar is dragged or its end is resized. Leave out to make the chart read-only. */
-  onTaskChange?: (task: GanttTask, change: { start: Date; end: Date }) => void;
+  onTaskChange?: (task: GanttTask, change: GanttRange) => void;
   onTaskClick?: (task: GanttTask) => void;
   /** Pixel height of a row. */
   rowHeight?: number;
@@ -116,7 +121,7 @@ const Gantt = ({
   );
 
   const changeTask = React.useCallback(
-    (task: GanttTask, change: { start: Date; end: Date }) => {
+    (task: GanttTask, change: GanttRange) => {
       if (change.start.getTime() === task.start.getTime() && change.end.getTime() === task.end.getTime()) return;
       onTaskChange?.(task, change);
     },
@@ -294,9 +299,13 @@ const GanttTimeline = ({ className, ...props }: React.ComponentProps<'div'>) => 
   );
 };
 
-const GanttBar = ({ task }: { task: GanttTask }) => {
+interface GanttBarProps {
+  task: GanttTask;
+}
+
+const GanttBar = ({ task }: GanttBarProps) => {
   const { from, dayWidth, rowHeight, editable, changeTask, onTaskClick, locale } = useGantt();
-  const [preview, setPreview] = React.useState<{ start: Date; end: Date } | null>(null);
+  const [preview, setPreview] = React.useState<GanttRange | null>(null);
   const moved = React.useRef(false);
   const shown = preview ?? task;
   const offset = differenceInCalendarDays(shown.start, from);
@@ -310,7 +319,7 @@ const GanttBar = ({ task }: { task: GanttTask }) => {
     event.stopPropagation();
     const originX = event.clientX;
     const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
-    let next = { start: task.start, end: task.end };
+    let next: GanttRange = { start: task.start, end: task.end };
     moved.current = false;
     const onMove = (move: PointerEvent) => {
       const dx = (move.clientX - originX) * (rtl ? -1 : 1);

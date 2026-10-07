@@ -261,17 +261,17 @@ const TransferListPanel = ({
   );
 };
 
-export interface TransferListActionsProps extends React.ComponentProps<'div'> {
-  /** Accessible names for the four move buttons. */
-  labels?: Partial<Record<'moveChecked' | 'moveAll' | 'returnChecked' | 'returnAll', string>>;
-}
-
 const DEFAULT_ACTION_LABELS = {
   moveChecked: 'Move checked to the right list',
   moveAll: 'Move all to the right list',
   returnChecked: 'Move checked back',
   returnAll: 'Move all back',
 };
+
+export interface TransferListActionsProps extends React.ComponentProps<'div'> {
+  /** Accessible names for the four move buttons. */
+  labels?: Partial<typeof DEFAULT_ACTION_LABELS>;
+}
 
 const TransferListActions = ({ labels, className, ...props }: TransferListActionsProps) => {
   const { move, checked, sideItems, disabled } = useTransferList();

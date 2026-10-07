@@ -52,7 +52,7 @@ interface ToolCallContextValue {
   status: ToolCallStatus;
   input: unknown;
   output: unknown;
-  error: React.ReactNode;
+  error?: string;
   durationMs?: number;
   labels: ToolCallLabels;
   onApprove?: () => void;
@@ -82,7 +82,7 @@ export interface ToolCallProps extends Omit<
   /** What the tool returned. Objects are shown as formatted JSON. */
   output?: unknown;
   /** Shown when `status` is `error`. */
-  error?: React.ReactNode;
+  error?: string;
   /** How long the call took, shown beside the status. */
   durationMs?: number;
   /** Called by the Allow button while `status` is `approval`. */

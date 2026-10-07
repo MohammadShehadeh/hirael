@@ -9,6 +9,7 @@ import { ChevronLeft, ChevronRight, Download, Maximize2, ZoomIn, ZoomOut } from 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
+import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { Skeleton } from '@/registry/hirael/bases/base/ui/skeleton';
 
 type ReactPdf = typeof import('react-pdf');
@@ -184,7 +185,7 @@ const PdfViewerToolbar = ({ className, ...props }: React.ComponentProps<'div'>) 
       >
         <ChevronRight className="rtl:rotate-180" />
       </Button>
-      <span aria-hidden className="mx-1 h-5 w-px bg-border" />
+      <Separator orientation="vertical" className="mx-1 data-[orientation=vertical]:h-5" />
       <Button
         type="button"
         variant="ghost"
@@ -276,7 +277,7 @@ const PdfViewerContent = ({ className, ...props }: React.ComponentProps<'div'>) 
           loading={placeholder}
           error={<p className="p-6 text-center text-sm text-muted-foreground">{labels.error}</p>}
           onLoadSuccess={(doc) => setPages(doc.numPages)}
-          className="flex justify-center"
+          className="flex justify-center-safe"
         >
           <lib.Page
             pageNumber={page}

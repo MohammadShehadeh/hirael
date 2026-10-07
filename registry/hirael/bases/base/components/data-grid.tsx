@@ -66,6 +66,8 @@ export interface DataGridProps<Row extends Record<string, unknown>> extends Omit
   label?: string;
   /** Show 1, 2, 3… in a narrow first column. */
   rowNumbers?: boolean;
+  /** BCP 47 tag for number cells. Defaults to `en-US` so server and client render the same text. */
+  locale?: string;
 }
 
 interface Position {
@@ -92,13 +94,14 @@ const DataGrid = <Row extends Record<string, unknown>>({
   height = 400,
   label,
   rowNumbers = true,
+  locale = 'en-US',
   className,
   ...props
 }: DataGridProps<Row>) => {
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const gridId = React.useId();
   const [active, setActive] = React.useState<Position>({ row: 0, col: 0 });
-  const [editing, setEditing] = React.useState<{ draft: string } | null>(null);
+  const [draft, setDraft] = React.useState<string | null>(null);
   // Enter and Tab close the editor, and the input then blurs on unmount; this keeps that from saving twice.
   const editingRef = React.useRef(false);
   const [rtl, setRtl] = React.useState(false);
@@ -140,6 +143,8 @@ const DataGrid = <Row extends Record<string, unknown>>({
     overscan: 8,
   });
 
+  const numberFormat = React.useMemo(() => new Intl.NumberFormat(locale), [locale]);
+
   const cellId = (pos: Position) => `${gridId}-${pos.row}-${pos.col}`;
   const columnAt = (col: number) => columns[col];
   const valueAt = (pos: Position) => rows[pos.row]?.original[columnAt(pos.col)?.id];
@@ -175,20 +180,20 @@ const DataGrid = <Row extends Record<string, unknown>>({
     }
     const value = valueAt(pos);
     editingRef.current = true;
-    setEditing({ draft: initial ?? (value === null || value === undefined ? '' : String(value)) });
+    setDraft(initial ?? (value === null || value === undefined ? '' : String(value)));
   };
 
   const finishEditing = (save: boolean, then?: Position) => {
     if (!editingRef.current) return;
     editingRef.current = false;
-    if (editing && save) commit(active, parseValue(columnAt(active.col)?.type ?? 'text', editing.draft));
-    setEditing(null);
+    if (draft !== null && save) commit(active, parseValue(columnAt(active.col)?.type ?? 'text', draft));
+    setDraft(null);
     if (then) moveTo(then);
     scrollRef.current?.focus();
   };
 
   const handleGridKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (editing) return;
+    if (draft !== null) return;
     const { row, col } = active;
     const page = Math.max(1, Math.floor(height / rowHeight) - 1);
     const forward = rtl ? 'ArrowLeft' : 'ArrowRight';
@@ -234,7 +239,7 @@ const DataGrid = <Row extends Record<string, unknown>>({
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLDivElement>) => {
-    if (editing) return;
+    if (draft !== null) return;
     const text = event.clipboardData.getData('text/plain');
     if (!text) return;
     event.preventDefault();
@@ -267,7 +272,7 @@ const DataGrid = <Row extends Record<string, unknown>>({
     const value = row[column.id];
     if (column.format) return column.format(value, row);
     if (column.type === 'select') return column.options?.find((o) => o.value === value)?.label ?? '';
-    if (column.type === 'number' && typeof value === 'number') return value.toLocaleString('en-US');
+    if (column.type === 'number' && typeof value === 'number') return numberFormat.format(value);
 
     return value === null || value === undefined ? '' : String(value);
   };
@@ -370,7 +375,7 @@ const DataGrid = <Row extends Record<string, unknown>>({
                   {columns.map((column, colIndex) => {
                     const pos = { row: item.index, col: colIndex };
                     const isActive = active.row === item.index && active.col === colIndex;
-                    const isEditing = isActive && editing !== null;
+                    const isEditing = isActive && draft !== null;
                     const width = headers[colIndex]?.getSize() ?? column.width ?? 160;
                     const readOnly = column.editable === false || !onDataChange;
 
@@ -385,7 +390,10 @@ const DataGrid = <Row extends Record<string, unknown>>({
                         data-active={isActive || undefined}
                         data-slot="data-grid-cell"
                         onMouseDown={() => {
-                          if (!isEditing) moveTo(pos);
+                          if (isEditing) return;
+                          // The open editor belongs to the active cell, so it saves before another cell takes over.
+                          if (draft !== null) finishEditing(true, pos);
+                          else moveTo(pos);
                         }}
                         onDoubleClick={() => startEditing(pos)}
                         className={cn(
@@ -400,11 +408,11 @@ const DataGrid = <Row extends Record<string, unknown>>({
                           <select
                             autoFocus
                             aria-label={column.header}
-                            value={editing.draft}
+                            value={draft}
                             onChange={(event) => {
                               commit(pos, event.target.value);
                               editingRef.current = false;
-                              setEditing(null);
+                              setDraft(null);
                               scrollRef.current?.focus();
                             }}
                             onKeyDown={(event) => {
@@ -412,7 +420,7 @@ const DataGrid = <Row extends Record<string, unknown>>({
                             }}
                             onBlur={() => {
                               editingRef.current = false;
-                              setEditing(null);
+                              setDraft(null);
                             }}
                             className="absolute inset-0 bg-background px-2 text-sm outline-none"
                           >
@@ -426,9 +434,9 @@ const DataGrid = <Row extends Record<string, unknown>>({
                           <input
                             autoFocus
                             aria-label={column.header}
-                            value={editing.draft}
+                            value={draft}
                             inputMode={column.type === 'number' ? 'decimal' : undefined}
-                            onChange={(event) => setEditing({ draft: event.target.value })}
+                            onChange={(event) => setDraft(event.target.value)}
                             onFocus={(event) => {
                               const end = event.target.value.length;
                               event.target.setSelectionRange(end, end);

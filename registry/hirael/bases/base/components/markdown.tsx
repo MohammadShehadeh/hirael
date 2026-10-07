@@ -34,15 +34,13 @@ export interface MarkdownCodeBlockLabels {
   copied: string;
 }
 
-const CodeBlock = ({
-  language,
-  code,
-  labels,
-}: {
+interface CodeBlockProps {
   language: string | undefined;
   code: string;
   labels: MarkdownCodeBlockLabels;
-}) => {
+}
+
+const CodeBlock = ({ language, code, labels }: CodeBlockProps) => {
   const { copied, copy } = useCopyToClipboard();
 
   return (

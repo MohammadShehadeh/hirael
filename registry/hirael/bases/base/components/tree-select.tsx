@@ -44,6 +44,25 @@ const flatten = (nodes: TreeSelectNode[], depth = 0, path: string[] = [], parent
   return out;
 };
 
+const ancestorsOf = (value: string, byValue: Map<string, FlatNode>) => {
+  const out: string[] = [];
+  let parent = byValue.get(value)?.parent ?? null;
+  while (parent) {
+    out.push(parent);
+    parent = byValue.get(parent)?.parent ?? null;
+  }
+
+  return out;
+};
+
+// Single and multiple selection share one list; a single value becomes a list of one.
+const toValues = (value: string | string[] | null | undefined) => {
+  if (value === undefined) return undefined;
+  if (Array.isArray(value)) return value;
+
+  return value ? [value] : [];
+};
+
 interface TreeSelectContextValue {
   multiple: boolean;
   selected: Set<string>;
@@ -104,19 +123,8 @@ const TreeSelect = (props: TreeSelectProps) => {
 
   const [open, setOpen] = useControllableState({ prop: openProp, defaultProp: defaultOpen, onChange: onOpenChange });
   const [value, setValue] = useControllableState<string[]>({
-    prop:
-      props.value === undefined
-        ? undefined
-        : multiple
-          ? (props.value as string[])
-          : props.value
-            ? [props.value as string]
-            : [],
-    defaultProp: multiple
-      ? ((props.defaultValue as string[] | undefined) ?? [])
-      : props.defaultValue
-        ? [props.defaultValue as string]
-        : [],
+    prop: toValues(props.value),
+    defaultProp: toValues(props.defaultValue) ?? [],
     onChange: (next) => {
       if (props.multiple) props.onValueChange?.(next);
       else props.onValueChange?.(next[0] ?? null);
@@ -261,13 +269,7 @@ const TreeSelectContent = ({
     if (defaultExpanded === true) return new Set(flat.filter((f) => f.node.children?.length).map((f) => f.node.value));
     const open = new Set(defaultExpanded ?? []);
     // Reveal the current selection.
-    for (const v of selected) {
-      let parent = byValue.get(v)?.parent;
-      while (parent) {
-        open.add(parent);
-        parent = byValue.get(parent)?.parent ?? null;
-      }
-    }
+    for (const v of selected) for (const ancestor of ancestorsOf(v, byValue)) open.add(ancestor);
 
     return open;
   });
@@ -282,11 +284,7 @@ const TreeSelectContent = ({
     for (const f of flat) {
       if (!f.node.label.toLocaleLowerCase().includes(needle)) continue;
       keep.add(f.node.value);
-      let parent = f.parent;
-      while (parent) {
-        keep.add(parent);
-        parent = byValue.get(parent)?.parent ?? null;
-      }
+      for (const ancestor of ancestorsOf(f.node.value, byValue)) keep.add(ancestor);
     }
 
     return keep;
@@ -294,13 +292,8 @@ const TreeSelectContent = ({
 
   const visible = flat.filter((f) => {
     if (matches) return matches.has(f.node.value);
-    let parent = f.parent;
-    while (parent) {
-      if (!expanded.has(parent)) return false;
-      parent = byValue.get(parent)?.parent ?? null;
-    }
 
-    return true;
+    return ancestorsOf(f.node.value, byValue).every((ancestor) => expanded.has(ancestor));
   });
 
   const activeValue = focused && visible.some((f) => f.node.value === focused) ? focused : visible[0]?.node.value;
@@ -453,7 +446,12 @@ const TreeSelectContent = ({
   );
 };
 
-const Highlight = ({ text, needle }: { text: string; needle: string }) => {
+interface HighlightProps {
+  text: string;
+  needle: string;
+}
+
+const Highlight = ({ text, needle }: HighlightProps) => {
   const index = text.toLocaleLowerCase().indexOf(needle);
   if (index < 0) return text;
 

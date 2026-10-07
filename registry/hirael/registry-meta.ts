@@ -5229,7 +5229,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Shows a PDF in your page on react-pdf: page arrows and a page number field, zoom steps, fit to width and a download button. Text can be selected and links work, and the arrow keys turn pages.',
     category: 'files',
     files: [{ path: 'components/pdf-viewer.tsx' }],
-    registryDependencies: ['button', 'input', 'skeleton'],
+    registryDependencies: ['button', 'input', 'separator', 'skeleton'],
     dependencies: ['lucide-react', 'react-pdf'],
   },
   {

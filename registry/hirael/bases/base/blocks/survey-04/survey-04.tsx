@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Check, ChevronDown, ChevronUp, RotateCcw } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { Kbd } from '@/registry/hirael/bases/base/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/base/ui/kbd';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
   Questionnaire,

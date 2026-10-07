@@ -30,7 +30,7 @@ import {
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/radix/ui/dropdown-menu';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
-import { Kbd, KbdGroup } from '@/registry/hirael/bases/radix/components/kbd';
+import { Kbd, KbdGroup } from '@/registry/hirael/bases/radix/ui/kbd';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import {
   Sidebar,

@@ -76,7 +76,7 @@ const collectImports = (base: RegistryBase, entry: RegistryEntry) => {
       }
       const hiraelItem = HIRAEL_IMPORT_PATTERN.exec(specifier)?.[1];
       if (hiraelItem) {
-        // An item that ships a primitive (spinner, kbd) imports its own file.
+        // An item that ships a primitive (accordion) imports its own file.
         if (hiraelItem !== entry.name) hiraelItems.add(hiraelItem);
         continue;
       }

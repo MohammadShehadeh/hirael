@@ -45,7 +45,7 @@ import {
   EmptyTitle,
 } from '@/registry/hirael/bases/base/ui/empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/base/ui/input-group';
-import { Kbd } from '@/registry/hirael/bases/base/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/base/ui/kbd';
 import { Separator } from '@/registry/hirael/bases/base/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/registry/hirael/bases/base/ui/table';
 import {

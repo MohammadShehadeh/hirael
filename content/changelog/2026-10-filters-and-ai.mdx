@@ -1,0 +1,73 @@
+---
+title: Filter builder, AI parts and 18 more
+version: '7.4.0'
+date: 2026-10-04
+description: 'A Linear-style filter bar, a date and time picker, a new AI category, a PDF viewer, mobile gestures and three hooks. Spinner, Combobox and Kbd now come straight from shadcn.'
+added:
+  - filter-builder
+  - date-time-picker
+  - theme-toggle
+  - description-list
+  - time-slot-picker
+  - masked-input
+  - pdf-viewer
+  - reasoning
+  - tool-call
+  - sources
+  - model-selector
+  - comment-thread
+  - language-switcher
+  - virtual-list
+  - bottom-nav
+  - swipe-actions
+  - pull-to-refresh
+  - upload-queue
+  - file-card
+  - kbd-button
+  - use-media-query
+  - use-debounce
+  - use-copy-to-clipboard
+updated:
+  - app-shell-01
+  - app-shell-04
+  - search-02
+  - survey-01
+  - survey-04
+  - floating-toolbar
+  - floating-action-button
+  - use-controllable-state
+---
+
+New, for scheduling:
+
+- **Date Time Picker.** A calendar beside hour and minute columns in one field,
+  with a 12-hour clock option and minute steps.
+- **Time Slot Picker** for booking a meeting time.
+
+New, for data:
+
+- **Filter Builder.** A Linear-style filter bar with option, multi-select, text,
+  number and date filters, plus `applyFilters` for client-side lists.
+- **Virtual List**, **Description List** and **Comment Thread**.
+
+New category, **AI**: **Reasoning**, **Tool Call** with an approval step,
+**Sources** with citation previews, and **Model Selector**.
+
+Also new: **Theme Toggle**, **Language Switcher**, **Masked Input**, **PDF
+Viewer**, **Upload Queue**, **File Card**, a mobile **Bottom Navigation**,
+**Swipe Actions** and **Pull to Refresh**, and three hooks: **useMediaQuery**,
+**useDebounce** and **useCopyToClipboard**.
+
+Changed:
+
+- **Spinner** and **Combobox** are no longer Hirael items, because shadcn/ui
+  ships both. Blocks and components that use them now install your own copy
+  from shadcn instead of overwriting it.
+- **Kbd** is now **Kbd Button**: only the pressable keycap, beside shadcn's own
+  Kbd and KbdGroup. Blocks that show shortcuts use shadcn's Kbd directly.
+- **Diff Viewer** is removed. Copies you already installed keep working.
+- **Floating Toolbar** and **Floating Action Button** move focus with Home and
+  End as well as the arrow keys. A pressed toolbar button is now styled through
+  `aria-pressed`, so restyle it with `aria-pressed:` instead of `data-active`.
+- **useControllableState** keeps the same setter between renders even when
+  `onChange` is an inline function.

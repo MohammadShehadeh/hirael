@@ -44,7 +44,7 @@ import {
   EmptyTitle,
 } from '@/registry/hirael/bases/radix/ui/empty';
 import { InputGroup, InputGroupAddon, InputGroupInput } from '@/registry/hirael/bases/radix/ui/input-group';
-import { Kbd } from '@/registry/hirael/bases/radix/components/kbd';
+import { Kbd } from '@/registry/hirael/bases/radix/ui/kbd';
 import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/registry/hirael/bases/radix/ui/table';
 import {

@@ -104,14 +104,14 @@ const FloatingActionButton = ({
     rootRef.current?.querySelector<HTMLElement>(TRIGGER_SELECTOR)?.focus();
   }, []);
 
-  // Items stay `visibility: hidden` until the open animation starts, so focus waits a few frames for them.
+  // Items stay `visibility: hidden` until their staggered entrance starts, so focus retries for a moment.
+  // The budget is in time, not frames: on a 120Hz screen a few frames pass before the first item shows.
   const focusFirstItem = React.useCallback(() => {
-    let frames = 3;
+    const deadline = performance.now() + 200;
     const attempt = () => {
       const item = rootRef.current?.querySelector<HTMLElement>(ITEM_SELECTOR);
       item?.focus();
-      frames -= 1;
-      if (item && document.activeElement !== item && frames > 0) requestAnimationFrame(attempt);
+      if (item && document.activeElement !== item && performance.now() < deadline) requestAnimationFrame(attempt);
     };
     requestAnimationFrame(attempt);
   }, []);

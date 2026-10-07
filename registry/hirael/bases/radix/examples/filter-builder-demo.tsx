@@ -28,7 +28,7 @@ interface Issue {
 const ISSUES: Issue[] = [
   {
     id: 'HIR-142',
-    title: { en: 'Event calendar drag to resize', ar: 'تغيير مدة الحدث بالسحب' },
+    title: { en: 'Time slot picker keyboard focus', ar: 'تركيز لوحة المفاتيح في منتقي المواعيد' },
     status: 'progress',
     labels: ['feature'],
     assignee: 'mohammad',
@@ -73,7 +73,7 @@ const ISSUES: Issue[] = [
   },
   {
     id: 'HIR-121',
-    title: { en: 'Gantt today line', ar: 'خط اليوم في مخطط جانت' },
+    title: { en: 'Kanban column limits', ar: 'حدود أعمدة كانبان' },
     status: 'done',
     labels: ['feature'],
     assignee: 'omar',

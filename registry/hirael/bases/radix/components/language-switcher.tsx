@@ -153,7 +153,7 @@ const LanguageSwitcherContent = ({ heading, align = 'end', className, ...props }
     <DropdownMenuContent
       align={align}
       data-slot="language-switcher-content"
-      className={cn('min-w-48', className)}
+      className={cn('w-auto min-w-48', className)}
       {...props}
     >
       <DropdownMenuGroup>

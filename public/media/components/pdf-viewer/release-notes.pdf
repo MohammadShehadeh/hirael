@@ -9,7 +9,7 @@ endobj
 << /Type /Pages /Kids [5 0 R 7 0 R 9 0 R] /Count 3 >>
 endobj
 4 0 obj
-<< /Length 405 >>
+<< /Length 407 >>
 stream
 BT
 /F2 24 Tf
@@ -23,9 +23,9 @@ BT
 0 -20 Td
 () Tj
 0 -20 Td
-(This release adds an event calendar, a filter builder,) Tj
+(This release adds a filter builder, a date and time picker,) Tj
 0 -20 Td
-(a date and time picker and a data grid.) Tj
+(parts for AI chat and a PDF viewer.) Tj
 0 -20 Td
 () Tj
 0 -20 Td
@@ -40,7 +40,7 @@ endobj
 << /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 4 0 R >>
 endobj
 6 0 obj
-<< /Length 446 >>
+<< /Length 468 >>
 stream
 BT
 /F2 24 Tf
@@ -50,15 +50,15 @@ BT
 0 -30 Td
 () Tj
 0 -20 Td
-(- Event Calendar: month, week, day and agenda views) Tj
-0 -20 Td
 (- Filter Builder: Linear-style filters with applyFilters) Tj
 0 -20 Td
-(- Data Grid: editable cells, sorting and paste) Tj
+(- Date Time Picker: a calendar beside hour and minute columns) Tj
 0 -20 Td
-(- Map: MapLibre with light and dark basemaps) Tj
+(- Tool Call: AI tool calls with an approval step) Tj
 0 -20 Td
-(- Flow Canvas: React Flow with your tokens) Tj
+(- Sources: citations with hover previews) Tj
+0 -20 Td
+(- Swipe Actions: list rows that slide to reveal actions) Tj
 0 -20 Td
 (- PDF Viewer: the viewer you are using now) Tj
 0 -20 Td
@@ -69,7 +69,7 @@ endobj
 << /Type /Page /Parent 3 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 1 0 R /F2 2 0 R >> >> /Contents 6 0 R >>
 endobj
 8 0 obj
-<< /Length 315 >>
+<< /Length 316 >>
 stream
 BT
 /F2 24 Tf
@@ -107,14 +107,14 @@ xref
 0000000079 00000 n 
 0000000154 00000 n 
 0000000223 00000 n 
-0000000679 00000 n 
-0000000815 00000 n 
-0000001312 00000 n 
-0000001448 00000 n 
-0000001814 00000 n 
-0000001950 00000 n 
+0000000680 00000 n 
+0000000816 00000 n 
+0000001334 00000 n 
+0000001470 00000 n 
+0000001836 00000 n 
+0000001972 00000 n 
 trailer
 << /Size 11 /Root 10 0 R >>
 startxref
-2000
+2022
 %%EOF

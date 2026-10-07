@@ -5498,14 +5498,14 @@ export const COMPONENT_CATEGORY_ORDER: Exclude<ComponentCategory, 'blocks' | 'te
 
 export const COMPONENT_CATEGORY_DESCRIPTIONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number], string> = {
   inputs:
-    'Multi-select, autocomplete, tag, phone, currency, masked, address and credit card inputs, a tree select, a transfer list and a Linear-style filter builder, plus rich text, mentions and a signature pad. Each handles keyboard, RTL and validation states like a shadcn Input, so it drops into an existing form.',
+    'Multi-select, autocomplete, tag, phone, currency, masked, address and credit card inputs and a Linear-style filter builder, plus rich text, mentions and a signature pad. Each handles keyboard, RTL and validation states like a shadcn Input, so it drops into an existing form.',
   pickers:
-    'Date, date and time, date range, time, month, year, color and emoji pickers, plus weekly working hours and a booking slot picker, with full keyboard navigation.',
+    'Date, date and time, date range, time, month, year, color and emoji pickers, plus a booking slot picker, with full keyboard navigation.',
   files:
     'Drag-and-drop upload zones, an upload queue with progress and retry, file cards, a PDF viewer, an image cropper, an avatar uploader and a local media picker, with previews, size limits and clear controls already wired.',
-  data: 'Data tables and an editable data grid, an event calendar, a Gantt chart, a map, a flow canvas, kanban boards, virtual lists, comment threads, description lists, tree views, timelines, sparklines and metric cards for showing structured data.',
+  data: 'Data tables, kanban boards, sortable lists, virtual lists, comment threads, description lists, tree views, timelines, calendar heatmaps, sparklines and metric cards for showing structured data.',
   display:
-    'Callouts, markdown, code blocks, diff and JSON viewers, expandable text, a responsive dialog, lightboxes, marquees, QR codes, audio playback and confirm dialogs, styled with your tokens so they match the rest of the UI.',
+    'Callouts, code blocks, a JSON viewer, lightboxes, marquees, QR codes, audio playback and confirm dialogs, styled with your tokens so they match the rest of the UI.',
   animation:
     'Scroll and text reveals, spotlight and tilt cards, magnetic buttons, cursor glow and a morphing dialog. Every effect honors prefers-reduced-motion.',
   navigation:

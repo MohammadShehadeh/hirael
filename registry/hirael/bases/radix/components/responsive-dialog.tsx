@@ -26,7 +26,11 @@ import {
 import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 import { useMediaQuery } from '@/registry/hirael/hooks/use-media-query';
 
-const ResponsiveDialogContext = React.createContext<{ desktop: boolean } | null>(null);
+interface ResponsiveDialogContextValue {
+  desktop: boolean;
+}
+
+const ResponsiveDialogContext = React.createContext<ResponsiveDialogContextValue | null>(null);
 
 const useResponsiveDialog = () => {
   const ctx = React.useContext(ResponsiveDialogContext);
@@ -75,7 +79,7 @@ const ResponsiveDialogTrigger = (props: React.ComponentProps<typeof DialogTrigge
   return desktop ? (
     <DialogTrigger data-slot="responsive-dialog-trigger" {...props} />
   ) : (
-    <DrawerTrigger data-slot="responsive-dialog-trigger" {...(props as React.ComponentProps<typeof DrawerTrigger>)} />
+    <DrawerTrigger data-slot="responsive-dialog-trigger" {...props} />
   );
 };
 
@@ -85,7 +89,7 @@ const ResponsiveDialogClose = (props: React.ComponentProps<typeof DialogClose>) 
   return desktop ? (
     <DialogClose data-slot="responsive-dialog-close" {...props} />
   ) : (
-    <DrawerClose data-slot="responsive-dialog-close" {...(props as React.ComponentProps<typeof DrawerClose>)} />
+    <DrawerClose data-slot="responsive-dialog-close" {...props} />
   );
 };
 

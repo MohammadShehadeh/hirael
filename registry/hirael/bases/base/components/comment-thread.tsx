@@ -8,23 +8,57 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/registry/hirael/bases/bas
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { Textarea } from '@/registry/hirael/bases/base/ui/textarea';
+import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
+
+interface CommentThreadContextValue {
+  resolved: boolean;
+  setResolved: (resolved: boolean) => void;
+}
+
+const CommentThreadContext = React.createContext<CommentThreadContextValue | null>(null);
+
+const useCommentThread = () => {
+  const ctx = React.useContext(CommentThreadContext);
+  if (!ctx) {
+    throw new Error('CommentThread compound parts must be used inside <CommentThread>');
+  }
+
+  return ctx;
+};
 
 export interface CommentThreadProps extends React.ComponentProps<'section'> {
   /** Resolved threads collapse their replies and composer. */
   resolved?: boolean;
+  defaultResolved?: boolean;
+  onResolvedChange?: (resolved: boolean) => void;
 }
 
-const CommentThread = ({ resolved = false, className, ...props }: CommentThreadProps) => {
+const CommentThread = ({
+  resolved: resolvedProp,
+  defaultResolved = false,
+  onResolvedChange,
+  className,
+  ...props
+}: CommentThreadProps) => {
+  const [resolved, setResolved] = useControllableState({
+    prop: resolvedProp,
+    defaultProp: defaultResolved,
+    onChange: onResolvedChange,
+  });
+  const ctx = React.useMemo<CommentThreadContextValue>(() => ({ resolved, setResolved }), [resolved, setResolved]);
+
   return (
-    <section
-      data-slot="comment-thread"
-      data-resolved={resolved || undefined}
-      className={cn(
-        'group/thread grid gap-4 rounded-lg border border-border bg-card p-4 text-card-foreground data-resolved:bg-muted/40',
-        className,
-      )}
-      {...props}
-    />
+    <CommentThreadContext.Provider value={ctx}>
+      <section
+        data-slot="comment-thread"
+        data-resolved={resolved || undefined}
+        className={cn(
+          'group/thread grid gap-4 rounded-lg border border-border bg-card p-4 text-card-foreground data-resolved:bg-muted/40',
+          className,
+        )}
+        {...props}
+      />
+    </CommentThreadContext.Provider>
   );
 };
 
@@ -39,21 +73,20 @@ const CommentThreadHeader = ({ className, ...props }: React.ComponentProps<'head
 };
 
 export interface CommentThreadResolveProps extends Omit<React.ComponentProps<typeof Button>, 'children'> {
-  resolved: boolean;
-  onResolvedChange: (resolved: boolean) => void;
   resolveLabel?: string;
   reopenLabel?: string;
 }
 
+/** Resolves or reopens the thread it sits in. */
 const CommentThreadResolve = ({
-  resolved,
-  onResolvedChange,
   resolveLabel = 'Resolve',
   reopenLabel = 'Reopen',
   variant = 'ghost',
   size = 'sm',
   ...props
 }: CommentThreadResolveProps) => {
+  const { resolved, setResolved } = useCommentThread();
+
   return (
     <Button
       type="button"
@@ -61,7 +94,7 @@ const CommentThreadResolve = ({
       size={size}
       aria-pressed={resolved}
       data-slot="comment-thread-resolve"
-      onClick={() => onResolvedChange(!resolved)}
+      onClick={() => setResolved(!resolved)}
       {...props}
     >
       <CircleCheck className={cn(resolved && 'text-success')} />
@@ -277,4 +310,5 @@ export {
   CommentReactions,
   CommentReplies,
   CommentComposer,
+  useCommentThread,
 };

@@ -82,6 +82,10 @@ const useModelSelector = () => {
   return ctx;
 };
 
+export type ModelSelectorLabelOverrides = Partial<Omit<ModelSelectorLabels, 'capabilities'>> & {
+  capabilities?: Partial<ModelSelectorLabels['capabilities']>;
+};
+
 export interface ModelSelectorProps {
   models: ModelOption[];
   value?: string;
@@ -90,9 +94,7 @@ export interface ModelSelectorProps {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  labels?: Partial<Omit<ModelSelectorLabels, 'capabilities'>> & {
-    capabilities?: Partial<ModelSelectorLabels['capabilities']>;
-  };
+  labels?: ModelSelectorLabelOverrides;
   disabled?: boolean;
   children?: React.ReactNode;
 }

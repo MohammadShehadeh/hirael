@@ -131,9 +131,14 @@ const DateTimePickerTrigger = ({
 
 const pad2 = (n: number) => n.toString().padStart(2, '0');
 
+interface TimeOption {
+  value: number;
+  label: string;
+}
+
 interface TimeColumnProps {
   label: string;
-  options: { value: number; label: string }[];
+  options: TimeOption[];
   selected: number | undefined;
   onSelect: (value: number) => void;
 }
@@ -211,6 +216,12 @@ export interface DateTimePickerContentProps extends Omit<
   defaultTime?: [number, number];
 }
 
+interface TimePatch {
+  day?: Date;
+  hour?: number;
+  minute?: number;
+}
+
 /** A calendar and hour, minute (and AM/PM) columns side by side. Takes the calendar's props. */
 const DateTimePickerContent = ({
   align = 'start',
@@ -225,7 +236,7 @@ const DateTimePickerContent = ({
   const hour = value?.getHours();
   const pm = (hour ?? 0) >= 12;
 
-  const update = (patch: { day?: Date; hour?: number; minute?: number }) => {
+  const update = (patch: TimePatch) => {
     const base = new Date(patch.day ?? value ?? new Date());
     if (!value && !patch.day) base.setHours(defaultTime[0], defaultTime[1], 0, 0);
     if (patch.day) {

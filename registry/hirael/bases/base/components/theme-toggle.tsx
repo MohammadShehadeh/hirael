@@ -26,7 +26,12 @@ export interface ThemeLabels {
 
 const DEFAULT_LABELS: ThemeLabels = { light: 'Light', dark: 'Dark', system: 'System', toggle: 'Toggle theme' };
 
-const MODES: { value: ThemeMode; icon: typeof Sun }[] = [
+interface ThemeModeOption {
+  value: ThemeMode;
+  icon: typeof Sun;
+}
+
+const MODES: ThemeModeOption[] = [
   { value: 'light', icon: Sun },
   { value: 'system', icon: Monitor },
   { value: 'dark', icon: Moon },
@@ -144,15 +149,23 @@ const ThemeSwitcher = ({ labels, className, ...props }: ThemeSwitcherProps) => {
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
     const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
-    const forward = rtl ? 'ArrowLeft' : 'ArrowRight';
-    const backward = rtl ? 'ArrowRight' : 'ArrowLeft';
-    const step =
-      event.key === forward || event.key === 'ArrowDown'
-        ? 1
-        : event.key === backward || event.key === 'ArrowUp'
-          ? -1
-          : 0;
-    if (!step) return;
+    let step: number;
+    switch (event.key) {
+      case 'ArrowDown':
+        step = 1;
+        break;
+      case 'ArrowUp':
+        step = -1;
+        break;
+      case 'ArrowRight':
+        step = rtl ? -1 : 1;
+        break;
+      case 'ArrowLeft':
+        step = rtl ? 1 : -1;
+        break;
+      default:
+        return;
+    }
     event.preventDefault();
     const next = (index + step + MODES.length) % MODES.length;
     setTheme(MODES[next].value);

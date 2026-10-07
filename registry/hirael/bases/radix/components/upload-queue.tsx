@@ -17,6 +17,7 @@ export interface UploadItem {
   status: UploadStatus;
   /** 0 to 100. */
   progress: number;
+  /** The message of the error `upload` threw, shown under the file. */
   error?: string;
 }
 
@@ -28,7 +29,10 @@ export interface UploadContext {
 }
 
 export interface UseUploadQueueOptions {
-  /** Sends one file. Resolve when it is stored, throw or reject to mark it failed. */
+  /**
+   * Sends one file. Resolve when it is stored, throw or reject to mark it failed.
+   * The error's message is shown to the reader, so throw one written for them.
+   */
   upload: (file: File, context: UploadContext) => Promise<unknown>;
   /** Files uploading at the same time. */
   concurrency?: number;
@@ -141,10 +145,14 @@ const DEFAULT_LABELS: UploadQueueLabels = {
   status: { queued: 'Waiting', uploading: 'Uploading', done: 'Uploaded', error: 'Failed', canceled: 'Canceled' },
 };
 
+export type UploadQueueLabelOverrides = Partial<Omit<UploadQueueLabels, 'status'>> & {
+  status?: Partial<UploadQueueLabels['status']>;
+};
+
 export interface UploadQueueProps extends React.ComponentProps<'div'> {
   /** The `useUploadQueue` result. */
   queue: ReturnType<typeof useUploadQueue>;
-  labels?: Partial<Omit<UploadQueueLabels, 'status'>> & { status?: Partial<UploadQueueLabels['status']> };
+  labels?: UploadQueueLabelOverrides;
 }
 
 /** The list of uploads with an overall bar, per-file progress, and cancel, retry and remove buttons. */
@@ -179,7 +187,14 @@ const UploadQueue = ({ queue, labels, className, ...props }: UploadQueueProps) =
       </div>
       <ul className="grid gap-1">
         {items.map((item) => (
-          <UploadQueueItem key={item.id} item={item} queue={queue} labels={text} />
+          <UploadQueueItem
+            key={item.id}
+            item={item}
+            labels={text}
+            onRetry={() => queue.retry(item.id)}
+            onCancel={() => queue.cancel(item.id)}
+            onRemove={() => queue.remove(item.id)}
+          />
         ))}
       </ul>
     </div>
@@ -191,13 +206,24 @@ const STATUS_ICON: Partial<Record<UploadStatus, React.ReactNode>> = {
   error: <CircleAlert aria-hidden className="size-4 text-destructive" />,
 };
 
+const statusLine = (item: UploadItem, labels: UploadQueueLabels) => {
+  if (item.status === 'uploading') {
+    return `${formatBytes((item.file.size * item.progress) / 100)} / ${formatBytes(item.file.size)}`;
+  }
+  if (item.status === 'error' && item.error) return item.error;
+
+  return `${formatBytes(item.file.size)}, ${labels.status[item.status]}`;
+};
+
 interface UploadQueueItemProps {
   item: UploadItem;
-  queue: ReturnType<typeof useUploadQueue>;
   labels: UploadQueueLabels;
+  onRetry: () => void;
+  onCancel: () => void;
+  onRemove: () => void;
 }
 
-const UploadQueueItem = ({ item, queue, labels }: UploadQueueItemProps) => {
+const UploadQueueItem = ({ item, labels, onRetry, onCancel, onRemove }: UploadQueueItemProps) => {
   const active = item.status === 'uploading' || item.status === 'queued';
 
   return (
@@ -210,20 +236,16 @@ const UploadQueueItem = ({ item, queue, labels }: UploadQueueItemProps) => {
           </span>
           {STATUS_ICON[item.status]}
         </div>
-        {item.status === 'uploading' ? (
+        {item.status === 'uploading' && (
           <Progress value={item.progress} aria-label={`${item.file.name}: ${Math.round(item.progress)}%`} />
-        ) : null}
+        )}
         <span
           className={cn(
             'truncate text-xs text-muted-foreground tabular-nums',
             item.status === 'error' && 'text-destructive',
           )}
         >
-          {item.status === 'uploading'
-            ? `${formatBytes((item.file.size * item.progress) / 100)} / ${formatBytes(item.file.size)}`
-            : item.status === 'error' && item.error
-              ? item.error
-              : `${formatBytes(item.file.size)}, ${labels.status[item.status]}`}
+          {statusLine(item, labels)}
         </span>
       </div>
       <div className="flex shrink-0 gap-0.5">
@@ -234,7 +256,7 @@ const UploadQueueItem = ({ item, queue, labels }: UploadQueueItemProps) => {
             size="icon-sm"
             aria-label={labels.retry}
             title={labels.retry}
-            onClick={() => queue.retry(item.id)}
+            onClick={onRetry}
           >
             <RotateCw />
           </Button>
@@ -245,7 +267,7 @@ const UploadQueueItem = ({ item, queue, labels }: UploadQueueItemProps) => {
           size="icon-sm"
           aria-label={active ? labels.cancel : labels.remove}
           title={active ? labels.cancel : labels.remove}
-          onClick={() => (active ? queue.cancel(item.id) : queue.remove(item.id))}
+          onClick={active ? onCancel : onRemove}
         >
           <X />
         </Button>

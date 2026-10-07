@@ -44,6 +44,9 @@ updated:
   - search-02
   - survey-01
   - survey-04
+  - floating-toolbar
+  - floating-action-button
+  - use-controllable-state
 ---
 
 New, for scheduling:
@@ -85,3 +88,8 @@ Changed:
   from shadcn instead of overwriting it.
 - **Kbd** is now **Kbd Button**: only the pressable keycap, beside shadcn's own
   Kbd and KbdGroup. Blocks that show shortcuts use shadcn's Kbd directly.
+- **Floating Toolbar** and **Floating Action Button** move focus with Home and
+  End as well as the arrow keys. A pressed toolbar button is now styled through
+  `aria-pressed`, so restyle it with `aria-pressed:` instead of `data-active`.
+- **useControllableState** keeps the same setter between renders even when
+  `onChange` is an inline function.

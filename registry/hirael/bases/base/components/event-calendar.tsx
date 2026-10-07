@@ -24,7 +24,6 @@ import {
   endOfWeek,
   isSameDay,
   isSameMonth,
-  isToday,
   type Day,
   max as maxDate,
   min as minDate,
@@ -123,6 +122,7 @@ interface EventCalendarContextValue {
   onEventClick?: (event: CalendarEvent) => void;
   onSlotClick?: (slot: CalendarSlot) => void;
   moveEvent: (event: CalendarEvent, start: Date, end: Date) => void;
+  isToday: (day: Date) => boolean;
 }
 
 const EventCalendarContext = React.createContext<EventCalendarContextValue | null>(null);
@@ -159,6 +159,17 @@ export interface EventCalendarProps extends React.ComponentProps<'div'> {
   labels?: Partial<EventCalendarLabels>;
 }
 
+const subscribeToNothing = () => () => {};
+const getToday = () => startOfDay(new Date()).getTime();
+
+// Today is only read in the browser. A static build renders long before anyone opens the page,
+// so a date taken there would show the wrong period and fail to hydrate.
+const useToday = () => {
+  const time = React.useSyncExternalStore(subscribeToNothing, getToday, () => null);
+
+  return React.useMemo(() => (time === null ? null : new Date(time)), [time]);
+};
+
 const EventCalendar = ({
   events,
   view: viewProp,
@@ -179,9 +190,14 @@ const EventCalendar = ({
   ...props
 }: EventCalendarProps) => {
   const [view, setView] = useControllableState({ prop: viewProp, defaultProp: defaultView, onChange: onViewChange });
-  // The default is fixed at mount so server and client render the same period.
-  const [initialDate] = React.useState(() => defaultDate ?? new Date());
-  const [date, setDate] = useControllableState({ prop: dateProp, defaultProp: initialDate, onChange: onDateChange });
+  const today = useToday();
+  const [dateState, setDate] = useControllableState<Date | null>({
+    prop: dateProp,
+    defaultProp: defaultDate ?? null,
+    onChange: onDateChange,
+  });
+  // Without a date of its own the calendar opens on today, so it waits for the browser.
+  const date = dateState ?? today;
 
   const moveEvent = React.useCallback(
     (event: CalendarEvent, start: Date, end: Date) => {
@@ -191,22 +207,26 @@ const EventCalendar = ({
     [onEventChange],
   );
 
-  const ctx = React.useMemo<EventCalendarContextValue>(
-    () => ({
-      events,
-      view,
-      setView,
-      date,
-      setDate,
-      weekStartsOn,
-      locale,
-      hourHeight,
-      labels: { ...DEFAULT_LABELS, ...labels, views: { ...DEFAULT_LABELS.views, ...labels?.views } },
-      editable: Boolean(onEventChange),
-      onEventClick,
-      onSlotClick,
-      moveEvent,
-    }),
+  const isTodayFn = React.useCallback((day: Date) => today !== null && isSameDay(day, today), [today]);
+
+  const ctx = React.useMemo<EventCalendarContextValue | null>(
+    () =>
+      date && {
+        events,
+        view,
+        setView,
+        date,
+        setDate,
+        weekStartsOn,
+        locale,
+        hourHeight,
+        labels: { ...DEFAULT_LABELS, ...labels, views: { ...DEFAULT_LABELS.views, ...labels?.views } },
+        editable: Boolean(onEventChange),
+        onEventClick,
+        onSlotClick,
+        moveEvent,
+        isToday: isTodayFn,
+      },
     [
       events,
       view,
@@ -221,6 +241,7 @@ const EventCalendar = ({
       onEventClick,
       onSlotClick,
       moveEvent,
+      isTodayFn,
     ],
   );
 
@@ -235,12 +256,13 @@ const EventCalendar = ({
         )}
         {...props}
       >
-        {children ?? (
-          <>
-            <EventCalendarToolbar />
-            <EventCalendarBody />
-          </>
-        )}
+        {ctx &&
+          (children ?? (
+            <>
+              <EventCalendarToolbar />
+              <EventCalendarBody />
+            </>
+          ))}
       </div>
     </EventCalendarContext.Provider>
   );
@@ -471,7 +493,7 @@ const EventChip = ({ event, day, hourHeight, variant, className, style, children
 const MAX_PER_DAY = 3;
 
 const MonthView = () => {
-  const { date, weekStartsOn, events, locale, labels, setDate, setView, onSlotClick } = useEventCalendar();
+  const { date, weekStartsOn, events, locale, labels, setDate, setView, onSlotClick, isToday } = useEventCalendar();
   const first = startOfWeek(startOfMonth(date), { weekStartsOn });
   const last = endOfWeek(endOfMonth(date), { weekStartsOn });
   const days = Array.from({ length: differenceInCalendarDays(last, first) + 1 }, (_, i) => addDays(first, i));
@@ -611,7 +633,8 @@ interface TimeGridViewProps {
 }
 
 const TimeGridView = ({ days: count }: TimeGridViewProps) => {
-  const { date, weekStartsOn, events, locale, hourHeight, labels, onSlotClick, setDate, setView } = useEventCalendar();
+  const { date, weekStartsOn, events, locale, hourHeight, labels, onSlotClick, setDate, setView, isToday } =
+    useEventCalendar();
   const first = count === 7 ? startOfWeek(date, { weekStartsOn }) : startOfDay(date);
   const days = Array.from({ length: count }, (_, i) => addDays(first, i));
   const scrollRef = React.useRef<HTMLDivElement>(null);
@@ -829,7 +852,7 @@ const TimedEvent = ({ event, day, style }: TimedEventProps) => {
 const AGENDA_DAYS = 14;
 
 const AgendaView = () => {
-  const { date, events, locale, labels, onEventClick } = useEventCalendar();
+  const { date, events, locale, labels, onEventClick, isToday } = useEventCalendar();
   const timeFormat = useTimeFormat();
   const dayFormat = new Intl.DateTimeFormat(locale, { weekday: 'long', month: 'long', day: 'numeric' });
   const days = Array.from({ length: AGENDA_DAYS }, (_, i) => addDays(startOfDay(date), i))

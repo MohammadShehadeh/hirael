@@ -47,9 +47,12 @@ const toMinutes = (time: string) => {
 const toTime = (minutes: number) =>
   `${String(Math.floor(minutes / 60) % 24).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`;
 
+/** `order` is an end at or before its start, `overlap` a range that starts inside an earlier one. */
+export type AvailabilityError = 'order' | 'overlap';
+
 /** Problems with a day's ranges, by range index: an end before its start, or an overlap with the one before. */
 export const validateDay = (ranges: TimeRange[]) => {
-  const errors: Record<number, 'order' | 'overlap'> = {};
+  const errors: Record<number, AvailabilityError> = {};
   ranges.forEach((range, i) => {
     if (toMinutes(range.end) <= toMinutes(range.start)) errors[i] = 'order';
   });

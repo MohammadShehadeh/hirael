@@ -28,13 +28,18 @@ const gridFeatures = tableFeatures({
 
 export type DataGridCellType = 'text' | 'number' | 'select' | 'checkbox';
 
+export interface DataGridOption {
+  value: string;
+  label: string;
+}
+
 export interface DataGridColumn<Row> {
   /** Key of the row field this column shows and edits. */
   id: Extract<keyof Row, string>;
   header: string;
   type?: DataGridCellType;
   /** Choices for a `select` column. */
-  options?: { value: string; label: string }[];
+  options?: DataGridOption[];
   /** Starting width in pixels. Columns can be resized by dragging the header edge. */
   width?: number;
   /** Set to false to make the column read-only. */
@@ -69,6 +74,9 @@ export interface DataGridProps<Row extends Record<string, unknown>> extends Omit
   /** BCP 47 tag for number cells. Defaults to `en-US` so server and client render the same text. */
   locale?: string;
 }
+
+// What Delete and Backspace leave in a cell. Select cells keep their value, since empty isn't an option.
+const CLEARED_VALUE: Record<Exclude<DataGridCellType, 'select'>, unknown> = { text: '', number: null, checkbox: false };
 
 interface Position {
   row: number;
@@ -225,7 +233,7 @@ const DataGrid = <Row extends Record<string, unknown>>({
     } else if (event.key === 'Delete' || event.key === 'Backspace') {
       event.preventDefault();
       const type = columnAt(col)?.type ?? 'text';
-      if (type !== 'select') commit(active, type === 'number' ? null : type === 'checkbox' ? false : '');
+      if (type !== 'select') commit(active, CLEARED_VALUE[type]);
     } else if (mod && event.key.toLowerCase() === 'c') {
       const value = valueAt(active);
       void navigator.clipboard?.writeText(value === null || value === undefined ? '' : String(value));
@@ -411,9 +419,7 @@ const DataGrid = <Row extends Record<string, unknown>>({
                             value={draft}
                             onChange={(event) => {
                               commit(pos, event.target.value);
-                              editingRef.current = false;
-                              setDraft(null);
-                              scrollRef.current?.focus();
+                              finishEditing(false);
                             }}
                             onKeyDown={(event) => {
                               if (event.key === 'Escape') finishEditing(false);

@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
 type Side = 'start' | 'end';
 
@@ -30,7 +31,7 @@ export interface SwipeActionsProps extends React.ComponentProps<'div'> {
 }
 
 /** A list row that slides aside to reveal actions, like archive or delete in a mail app. */
-const SwipeActions = ({ onOpenChange, className, children, ...props }: SwipeActionsProps) => {
+const SwipeActions = ({ onOpenChange, className, ...props }: SwipeActionsProps) => {
   const [open, setOpenState] = React.useState<Side | null>(null);
   const [widths, setWidths] = React.useState<Record<Side, number>>({ start: 0, end: 0 });
 
@@ -60,21 +61,24 @@ const SwipeActions = ({ onOpenChange, className, children, ...props }: SwipeActi
           if (!event.currentTarget.contains(event.relatedTarget)) setOpen(null);
         }}
         {...props}
-      >
-        <SwipeActionsTrack>{children}</SwipeActionsTrack>
-      </div>
+      />
     </SwipeActionsContext.Provider>
   );
 };
 
-interface SwipeActionsTrackProps {
-  children: React.ReactNode;
-}
-
-const SwipeActionsTrack = ({ children }: SwipeActionsTrackProps) => {
+/** The row itself. It slides over the action groups and follows the finger or mouse. */
+const SwipeActionsContent = ({
+  ref,
+  className,
+  style,
+  onPointerDown,
+  onClickCapture,
+  ...props
+}: React.ComponentProps<'div'>) => {
   const { open, setOpen, widths } = useSwipeActions();
   const [drag, setDrag] = React.useState<number | null>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
+  const composedRef = React.useMemo(() => composeRefs(contentRef, ref), [ref]);
   // The click that ends a drag must not count as a tap on the row.
   const draggedRef = React.useRef(false);
   const [rtl, setRtl] = React.useState(false);
@@ -87,12 +91,9 @@ const SwipeActionsTrack = ({ children }: SwipeActionsTrackProps) => {
   const resting = open === 'start' ? widths.start : open === 'end' ? -widths.end : 0;
   const offset = drag ?? resting;
 
-  const items = React.Children.toArray(children);
-  const content = items.filter((child) => !(React.isValidElement(child) && child.type === SwipeActionsGroup));
-  const groups = items.filter((child) => React.isValidElement(child) && child.type === SwipeActionsGroup);
-
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (event.button !== 0) return;
+    onPointerDown?.(event);
+    if (event.defaultPrevented || event.button !== 0) return;
     const originX = event.clientX;
     const originY = event.clientY;
     const startOffset = resting;
@@ -134,37 +135,37 @@ const SwipeActionsTrack = ({ children }: SwipeActionsTrackProps) => {
     window.addEventListener('pointercancel', onUp);
   };
 
-  return (
-    <>
-      {groups}
-      <div
-        ref={contentRef}
-        data-slot="swipe-actions-content"
-        onPointerDown={handlePointerDown}
-        onClickCapture={(event) => {
-          if (draggedRef.current) {
-            draggedRef.current = false;
-            event.preventDefault();
-            event.stopPropagation();
+  const handleClickCapture = (event: React.MouseEvent<HTMLDivElement>) => {
+    onClickCapture?.(event);
+    if (draggedRef.current) {
+      draggedRef.current = false;
+      event.preventDefault();
+      event.stopPropagation();
 
-            return;
-          }
-          // A tap on an open row closes it instead of activating what is under the finger.
-          if (open) {
-            event.preventDefault();
-            event.stopPropagation();
-            setOpen(null);
-          }
-        }}
-        className={cn(
-          'relative z-10 touch-pan-y bg-background',
-          drag === null && 'transition-transform duration-200 ease-out motion-reduce:transition-none',
-        )}
-        style={{ transform: `translateX(${offset * (rtl ? -1 : 1)}px)` }}
-      >
-        {content}
-      </div>
-    </>
+      return;
+    }
+    // A tap on an open row closes it instead of activating what is under the finger.
+    if (open) {
+      event.preventDefault();
+      event.stopPropagation();
+      setOpen(null);
+    }
+  };
+
+  return (
+    <div
+      ref={composedRef}
+      data-slot="swipe-actions-content"
+      onPointerDown={handlePointerDown}
+      onClickCapture={handleClickCapture}
+      className={cn(
+        'relative z-10 touch-pan-y bg-background',
+        drag === null && 'transition-transform duration-200 ease-out motion-reduce:transition-none',
+        className,
+      )}
+      style={{ ...style, transform: `translateX(${offset * (rtl ? -1 : 1)}px)` }}
+      {...props}
+    />
   );
 };
 
@@ -247,4 +248,4 @@ const SwipeAction = ({ tone = 'default', icon, className, children, onClick, ...
   );
 };
 
-export { SwipeActions, SwipeActionsGroup, SwipeAction, useSwipeActions };
+export { SwipeActions, SwipeActionsContent, SwipeActionsGroup, SwipeAction, useSwipeActions };

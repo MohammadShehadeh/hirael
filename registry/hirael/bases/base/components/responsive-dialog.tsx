@@ -26,7 +26,11 @@ import {
 import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 import { useMediaQuery } from '@/registry/hirael/hooks/use-media-query';
 
-const ResponsiveDialogContext = React.createContext<{ desktop: boolean } | null>(null);
+interface ResponsiveDialogContextValue {
+  desktop: boolean;
+}
+
+const ResponsiveDialogContext = React.createContext<ResponsiveDialogContextValue | null>(null);
 
 const useResponsiveDialog = () => {
   const ctx = React.useContext(ResponsiveDialogContext);
@@ -69,6 +73,7 @@ const ResponsiveDialog = ({
   );
 };
 
+// Base UI brands Dialog and Drawer handles as different types, so the shared props are cast for the Drawer parts.
 const ResponsiveDialogTrigger = (props: React.ComponentProps<typeof DialogTrigger>) => {
   const { desktop } = useResponsiveDialog();
 

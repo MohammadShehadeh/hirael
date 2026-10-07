@@ -216,6 +216,14 @@ const GanttTimeline = ({ className, ...props }: React.ComponentProps<'div'>) => 
     else months.push({ label, span: 1 });
   }
 
+  // Day view names every day; week view marks each Monday; month view leaves the row to the month names.
+  const dayLabel = (day: Date) => {
+    if (zoom === 'day') return `${weekdayFormat.format(day)} ${dayFormat.format(day)}`;
+    if (zoom === 'week' && day.getDay() === 1) return dayFormat.format(day);
+
+    return '';
+  };
+
   const todayOffset = today ? differenceInCalendarDays(today, from) : -1;
 
   // Bring today into view once it is known.
@@ -254,11 +262,7 @@ const GanttTimeline = ({ className, ...props }: React.ComponentProps<'div'>) => 
               className="flex shrink-0 items-center justify-center text-[10px] text-muted-foreground tabular-nums data-weekend:bg-muted/40"
               style={{ width: dayWidth }}
             >
-              {zoom === 'day'
-                ? `${weekdayFormat.format(day)} ${dayFormat.format(day)}`
-                : zoom === 'week' && day.getDay() === 1
-                  ? dayFormat.format(day)
-                  : ''}
+              {dayLabel(day)}
             </div>
           ))}
         </div>
@@ -299,6 +303,9 @@ const GanttTimeline = ({ className, ...props }: React.ComponentProps<'div'>) => 
   );
 };
 
+/** `move` shifts the whole bar, `resize` drags its end. */
+type DragMode = 'move' | 'resize';
+
 interface GanttBarProps {
   task: GanttTask;
 }
@@ -313,7 +320,7 @@ const GanttBar = ({ task }: GanttBarProps) => {
   const color = BAR_CLASS[task.color ?? 'primary'];
   const rangeFormat = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric' });
 
-  const drag = (event: React.PointerEvent<HTMLElement>, mode: 'move' | 'resize') => {
+  const drag = (event: React.PointerEvent<HTMLElement>, mode: DragMode) => {
     if (!editable || event.button !== 0) return;
     event.preventDefault();
     event.stopPropagation();

@@ -38,7 +38,7 @@ const DEFAULT_LABELS: ToolCallLabels = {
   approvalPrompt: 'This tool wants to run with the input above.',
 };
 
-const STATUS_ICON: Record<ToolCallStatus, { icon: typeof Wrench; className: string }> = {
+const STATUS_ICON: Record<ToolCallStatus, StatusIcon> = {
   pending: { icon: CircleDashed, className: 'text-muted-foreground' },
   approval: { icon: Hand, className: 'text-warning' },
   running: { icon: LoaderCircle, className: 'animate-spin text-primary motion-reduce:animate-none' },
@@ -70,6 +70,15 @@ const useToolCall = () => {
   return ctx;
 };
 
+export type ToolCallLabelOverrides = Partial<Omit<ToolCallLabels, 'status'>> & {
+  status?: Partial<ToolCallLabels['status']>;
+};
+
+interface StatusIcon {
+  icon: typeof Wrench;
+  className: string;
+}
+
 export interface ToolCallProps extends Omit<
   React.ComponentProps<typeof Collapsible>,
   'open' | 'defaultOpen' | 'onOpenChange'
@@ -93,7 +102,7 @@ export interface ToolCallProps extends Omit<
   /** Starts open when the call needs approval or failed, so neither goes unseen. */
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
-  labels?: Partial<Omit<ToolCallLabels, 'status'>> & { status?: Partial<ToolCallLabels['status']> };
+  labels?: ToolCallLabelOverrides;
 }
 
 const ToolCall = ({

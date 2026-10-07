@@ -38,6 +38,7 @@ const ReasoningDemo = () => {
           labels={{
             thinking: t({ en: 'Thinking', ar: 'يفكر' }),
             thought: (s) => t({ en: `Thought for ${s}s`, ar: `فكّر لمدة ${s} ث` }),
+            done: t({ en: 'Reasoning', ar: 'التفكير' }),
           }}
         >
           <ReasoningTrigger />

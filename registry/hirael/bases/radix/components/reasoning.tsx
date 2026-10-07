@@ -12,11 +12,14 @@ export interface ReasoningLabels {
   thinking: string;
   /** Once done, with the time taken in whole seconds. */
   thought: (seconds: number) => string;
+  /** Once done, when the time is unknown, like reasoning from an earlier message. */
+  done: string;
 }
 
 const DEFAULT_LABELS: ReasoningLabels = {
   thinking: 'Thinking',
   thought: (seconds) => (seconds < 1 ? 'Thought for a moment' : `Thought for ${seconds}s`),
+  done: 'Reasoning',
 };
 
 interface ReasoningContextValue {
@@ -142,7 +145,7 @@ const ReasoningTrigger = ({ className, children, ...props }: React.ComponentProp
           (streaming ? (
             <TextShimmer>{labels.thinking}</TextShimmer>
           ) : (
-            <span>{seconds === null ? labels.thinking : labels.thought(seconds)}</span>
+            <span>{seconds === null ? labels.done : labels.thought(seconds)}</span>
           ))}
         <ChevronDown
           aria-hidden

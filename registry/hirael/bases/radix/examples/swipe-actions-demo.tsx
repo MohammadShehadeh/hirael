@@ -5,7 +5,12 @@ import { Archive, MailOpen, Trash2 } from 'lucide-react';
 
 import { useT } from '@/lib/demo-locale';
 import { Avatar, AvatarFallback } from '@/registry/hirael/bases/radix/ui/avatar';
-import { SwipeAction, SwipeActions, SwipeActionsGroup } from '@/registry/hirael/bases/radix/components/swipe-actions';
+import {
+  SwipeAction,
+  SwipeActions,
+  SwipeActionsContent,
+  SwipeActionsGroup,
+} from '@/registry/hirael/bases/radix/components/swipe-actions';
 
 const MAIL = [
   { id: 1, from: 'Sara Haddad', subject: { en: 'Filter bar review', ar: 'مراجعة شريط التصفية' } },
@@ -34,15 +39,17 @@ const SwipeActionsDemo = () => {
                   {t({ en: 'Read', ar: 'مقروء' })}
                 </SwipeAction>
               </SwipeActionsGroup>
-              <div className="flex items-center gap-3 px-4 py-3">
-                <Avatar size="sm">
-                  <AvatarFallback>{item.from.slice(0, 2).toUpperCase()}</AvatarFallback>
-                </Avatar>
-                <div className="grid min-w-0 flex-1">
-                  <span className={read.includes(item.id) ? 'text-sm' : 'text-sm font-semibold'}>{item.from}</span>
-                  <span className="truncate text-xs text-muted-foreground">{t(item.subject)}</span>
+              <SwipeActionsContent>
+                <div className="flex items-center gap-3 px-4 py-3">
+                  <Avatar size="sm">
+                    <AvatarFallback>{item.from.slice(0, 2).toUpperCase()}</AvatarFallback>
+                  </Avatar>
+                  <div className="grid min-w-0 flex-1">
+                    <span className={read.includes(item.id) ? 'text-sm' : 'text-sm font-semibold'}>{item.from}</span>
+                    <span className="truncate text-xs text-muted-foreground">{t(item.subject)}</span>
+                  </div>
                 </div>
-              </div>
+              </SwipeActionsContent>
               <SwipeActionsGroup side="end">
                 <SwipeAction icon={<Archive />} onClick={() => setMail((list) => list.filter((m) => m.id !== item.id))}>
                   {t({ en: 'Archive', ar: 'أرشفة' })}

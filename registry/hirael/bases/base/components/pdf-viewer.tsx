@@ -136,6 +136,11 @@ const PdfViewerToolbar = ({ className, ...props }: React.ComponentProps<'div'>) 
   const [draft, setDraft] = React.useState<string | null>(null);
   const zoomIndex = ZOOM_STEPS.findIndex((step) => step >= zoom - 0.001);
 
+  const commitDraft = () => {
+    if (draft !== null) setPage(Number(draft) || page);
+    setDraft(null);
+  };
+
   return (
     <div
       data-slot="pdf-viewer-toolbar"
@@ -156,8 +161,7 @@ const PdfViewerToolbar = ({ className, ...props }: React.ComponentProps<'div'>) 
         className="flex items-center gap-1.5 text-sm"
         onSubmit={(event) => {
           event.preventDefault();
-          if (draft !== null) setPage(Number(draft) || page);
-          setDraft(null);
+          commitDraft();
         }}
       >
         <Input
@@ -165,10 +169,7 @@ const PdfViewerToolbar = ({ className, ...props }: React.ComponentProps<'div'>) 
           inputMode="numeric"
           value={draft ?? String(page)}
           onChange={(event) => setDraft(event.target.value.replace(/\D/g, ''))}
-          onBlur={() => {
-            if (draft !== null) setPage(Number(draft) || page);
-            setDraft(null);
-          }}
+          onBlur={commitDraft}
           className="h-8 w-12 text-center tabular-nums"
         />
         <span className="text-muted-foreground tabular-nums">

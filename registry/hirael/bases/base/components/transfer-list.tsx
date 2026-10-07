@@ -30,6 +30,9 @@ export interface TransferListItem {
 
 export type TransferListSide = 'source' | 'target';
 
+/** `checked` moves the ticked items, `all` every movable item on the side. */
+type MoveMode = 'checked' | 'all';
+
 interface TransferListContextValue {
   items: TransferListItem[];
   /** Values on the target side, in the order they were added. */
@@ -37,7 +40,7 @@ interface TransferListContextValue {
   checked: Record<TransferListSide, Set<string>>;
   toggle: (side: TransferListSide, value: string) => void;
   setChecked: (side: TransferListSide, values: string[]) => void;
-  move: (from: TransferListSide, mode: 'checked' | 'all') => void;
+  move: (from: TransferListSide, mode: MoveMode) => void;
   sideItems: (side: TransferListSide) => TransferListItem[];
   disabled?: boolean;
 }
@@ -110,7 +113,7 @@ const TransferList = ({
   }, []);
 
   const move = React.useCallback(
-    (from: TransferListSide, mode: 'checked' | 'all') => {
+    (from: TransferListSide, mode: MoveMode) => {
       const movable = sideItems(from)
         .filter((item) => !item.disabled && (mode === 'all' || checked[from].has(item.value)))
         .map((item) => item.value);

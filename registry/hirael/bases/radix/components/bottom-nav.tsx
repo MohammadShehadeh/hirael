@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Slot } from '@radix-ui/react-slot';
+import { Slot, Slottable } from '@radix-ui/react-slot';
 
 import { cn } from '@/lib/utils';
 import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
@@ -135,9 +135,8 @@ const BottomNavItem = ({
         )}
         {...props}
       >
-        {asChild && React.isValidElement<{ children?: React.ReactNode }>(children)
-          ? React.cloneElement(children, undefined, content)
-          : content}
+        {asChild && <Slottable>{children}</Slottable>}
+        {content}
       </Comp>
     </li>
   );

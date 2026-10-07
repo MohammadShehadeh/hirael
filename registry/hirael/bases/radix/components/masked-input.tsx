@@ -6,13 +6,15 @@ import { format, unformat, useMask, type Replacement } from '@react-input/mask';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
+export type MaskTransform = 'uppercase' | 'lowercase';
+
 export interface MaskPreset {
   /** Pattern where each `replacement` key stands for one typed character, like `____ ____`. */
   mask: string;
   /** Which characters each key in `mask` accepts. */
   replacement: Replacement;
   /** Case applied to letters as they are typed. */
-  transform?: 'uppercase' | 'lowercase';
+  transform?: MaskTransform;
   /** Example shown while empty. */
   placeholder?: string;
 }
@@ -62,7 +64,7 @@ export interface MaskedInputProps extends Omit<
   /** Which characters each key in `mask` accepts. Defaults to `_` for one digit. */
   replacement?: Replacement;
   /** Case applied to letters as they are typed. */
-  transform?: 'uppercase' | 'lowercase';
+  transform?: MaskTransform;
   /** Show the whole mask, with unfilled slots, as soon as the field has a value. */
   showMask?: boolean;
   /** The masked value, as reported in `onValueChange`. Format a raw value first with `formatMasked`. */

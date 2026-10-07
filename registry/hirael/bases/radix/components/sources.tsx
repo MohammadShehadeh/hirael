@@ -26,15 +26,15 @@ const hostOf = (url: string) => {
 };
 
 interface SourceIconProps {
-  source: SourceItem;
+  icon: React.ReactNode;
 }
 
-const SourceIcon = ({ source }: SourceIconProps) => (
+const SourceIcon = ({ icon }: SourceIconProps) => (
   <span
     aria-hidden
     className="flex size-4 shrink-0 items-center justify-center overflow-hidden rounded-sm bg-muted text-muted-foreground [&_img]:size-full [&_svg]:size-3"
   >
-    {source.icon ?? <Globe />}
+    {icon ?? <Globe />}
   </span>
 );
 
@@ -59,10 +59,10 @@ const Sources = ({
           data-slot="sources-trigger"
           className="group/sources inline-flex w-fit items-center gap-2 rounded-md text-sm text-muted-foreground outline-none hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50"
         >
-          <span aria-hidden className="flex -space-x-1 rtl:space-x-reverse">
+          <span aria-hidden className="flex *:not-first:-ms-1">
             {sources.slice(0, 3).map((source) => (
               <span key={source.url} className="rounded-sm ring-2 ring-background">
-                <SourceIcon source={source} />
+                <SourceIcon icon={source.icon} />
               </span>
             ))}
           </span>
@@ -90,7 +90,7 @@ const Sources = ({
                 <span className="grid min-w-0 gap-0.5">
                   <span className="truncate text-sm font-medium">{source.title}</span>
                   <span className="flex min-w-0 items-center gap-1.5 text-xs text-muted-foreground">
-                    <SourceIcon source={source} />
+                    <SourceIcon icon={source.icon} />
                     <span className="truncate">{hostOf(source.url)}</span>
                   </span>
                 </span>
@@ -134,7 +134,7 @@ const Citation = ({ source, index, className, ...props }: CitationProps) => {
       <HoverCardContent data-slot="citation-preview" className="w-72">
         <div className="grid gap-1.5">
           <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <SourceIcon source={source} />
+            <SourceIcon icon={source.icon} />
             <span className="truncate">{host}</span>
           </span>
           <a

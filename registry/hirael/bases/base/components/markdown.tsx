@@ -34,13 +34,19 @@ export interface MarkdownCodeBlockLabels {
   copied: string;
 }
 
+const DEFAULT_CODE_LABELS: MarkdownCodeBlockLabels = { copy: 'Copy', copied: 'Copied' };
+
+// Labels reach code blocks through context so the renderers below stay module constants; a renderer
+// created during render is a new component type each time, which remounts every element on every token.
+const CodeLabelsContext = React.createContext<MarkdownCodeBlockLabels>(DEFAULT_CODE_LABELS);
+
 interface CodeBlockProps {
   language: string | undefined;
   code: string;
-  labels: MarkdownCodeBlockLabels;
 }
 
-const CodeBlock = ({ language, code, labels }: CodeBlockProps) => {
+const CodeBlock = ({ language, code }: CodeBlockProps) => {
+  const labels = React.useContext(CodeLabelsContext);
   const { copied, copy } = useCopyToClipboard();
 
   return (
@@ -64,7 +70,7 @@ const CodeBlock = ({ language, code, labels }: CodeBlockProps) => {
   );
 };
 
-const baseComponents = (labels: MarkdownCodeBlockLabels): Components => ({
+const BASE_COMPONENTS: Components = {
   h1: ({ node: _node, className, ...props }) => (
     <h1 className={cn('mt-6 mb-3 text-2xl font-semibold tracking-tight first:mt-0', className)} {...props} />
   ),
@@ -121,7 +127,7 @@ const baseComponents = (labels: MarkdownCodeBlockLabels): Components => ({
     const language = /language-(\S+)/.exec(className ?? '')?.[1];
     // Fenced blocks span lines or name a language; anything else is inline code.
     const block = Boolean(language) || (node?.position && node.position.start.line !== node.position.end.line);
-    if (block) return <CodeBlock language={language} code={String(children).replace(/\n$/, '')} labels={labels} />;
+    if (block) return <CodeBlock language={language} code={String(children).replace(/\n$/, '')} />;
 
     return (
       <code className={cn('rounded-sm bg-muted px-1 py-0.5 text-[0.875em]', className)} {...props}>
@@ -129,22 +135,29 @@ const baseComponents = (labels: MarkdownCodeBlockLabels): Components => ({
       </code>
     );
   },
-});
+};
+
+const REMARK_PLUGINS = [remarkGfm];
 
 export interface MarkdownProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   /** Markdown source. GitHub tables, task lists and strikethrough are supported. */
   children: string;
   /** Repair text cut off mid-stream and show a caret at the end. */
   streaming?: boolean;
-  /** Replace how any element renders, keyed by tag name. */
+  /** Replace how any element renders, keyed by tag name. Keep it stable, at module scope or memoized. */
   components?: Components;
   /** Text on the copy button of code blocks. */
   codeLabels?: Partial<MarkdownCodeBlockLabels>;
 }
 
 const Markdown = ({ children, streaming = false, components, codeLabels, className, ...props }: MarkdownProps) => {
-  const labels = { copy: 'Copy', copied: 'Copied', ...codeLabels };
-  const merged = { ...baseComponents(labels), ...components };
+  const copyLabel = codeLabels?.copy ?? DEFAULT_CODE_LABELS.copy;
+  const copiedLabel = codeLabels?.copied ?? DEFAULT_CODE_LABELS.copied;
+  const labels = React.useMemo(() => ({ copy: copyLabel, copied: copiedLabel }), [copyLabel, copiedLabel]);
+  const merged = React.useMemo(
+    () => (components ? { ...BASE_COMPONENTS, ...components } : BASE_COMPONENTS),
+    [components],
+  );
 
   return (
     <div
@@ -158,9 +171,11 @@ const Markdown = ({ children, streaming = false, components, codeLabels, classNa
       )}
       {...props}
     >
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={merged}>
-        {streaming ? completeMarkdown(children) : children}
-      </ReactMarkdown>
+      <CodeLabelsContext.Provider value={labels}>
+        <ReactMarkdown remarkPlugins={REMARK_PLUGINS} components={merged}>
+          {streaming ? completeMarkdown(children) : children}
+        </ReactMarkdown>
+      </CodeLabelsContext.Provider>
     </div>
   );
 };

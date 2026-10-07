@@ -33,7 +33,6 @@ const toggleReaction = (list: CommentReaction[], emoji: string) => {
 
 const CommentThreadDemo = () => {
   const t = useT();
-  const [resolved, setResolved] = React.useState(false);
   const [reactions, setReactions] = React.useState<CommentReaction[]>([
     { emoji: '👍', count: 3, reacted: true },
     { emoji: '👀', count: 1 },
@@ -49,14 +48,12 @@ const CommentThreadDemo = () => {
 
   return (
     <div className="w-full max-w-lg">
-      <CommentThread resolved={resolved}>
+      <CommentThread>
         <CommentThreadHeader>
           <span className="text-muted-foreground">
             {t({ en: 'On “Filter bar, empty state”', ar: 'على “شريط التصفية، الحالة الفارغة”' })}
           </span>
           <CommentThreadResolve
-            resolved={resolved}
-            onResolvedChange={setResolved}
             resolveLabel={t({ en: 'Resolve', ar: 'حل' })}
             reopenLabel={t({ en: 'Reopen', ar: 'إعادة فتح' })}
           />

@@ -11,6 +11,7 @@ import { customizerPrehydrationScript } from '@/lib/customizer';
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { TooltipProvider } from '@/registry/hirael/bases/radix/ui/tooltip';
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 const jetBrainsMono = JetBrains_Mono({
   variable: '--font-jet-brains-mono',
@@ -90,6 +91,8 @@ interface RootLayoutProps {
   children: React.ReactNode;
 }
 
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth" suppressHydrationWarning>
@@ -106,6 +109,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </TooltipProvider>
+        {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>
     </html>
   );

@@ -12,7 +12,6 @@ export interface ChangelogEntry {
   displayDate: string;
   description: string | null;
   added: string[];
-  /** Existing items that changed in this release. Linked on the page, never dated. */
   updated: string[];
   body: string;
 }
@@ -42,44 +41,43 @@ const DATE_FORMATTER = new Intl.DateTimeFormat('en-US', {
   timeZone: 'UTC',
 });
 
-/** Read once at build time. There is no server to refresh it later. */
+/** Read {CHANGELOG_DIR} once at build time. There is no server to refresh it later. */
 export const getChangelog = async (): Promise<Changelog> => {
-  let files: string[] = [];
   try {
-    files = fs.readdirSync(CHANGELOG_DIR).filter((f) => f.endsWith('.mdx'));
+    const files: string[] = fs.readdirSync(CHANGELOG_DIR).filter((f) => f.endsWith('.mdx'));
+
+    const entries: ChangelogEntry[] = files
+      .flatMap((file) => {
+        const raw = fs.readFileSync(path.join(CHANGELOG_DIR, file), 'utf8');
+        const { data, content } = matter(raw);
+        const parsed = data.date ? new Date(data.date) : null;
+        if (!parsed || Number.isNaN(parsed.getTime())) return [];
+        const isoDate = parsed.toISOString();
+
+        return [
+          {
+            slug: file.replace(/\.mdx$/, ''),
+            title: String(data.title ?? file.replace(/\.mdx$/, '')),
+            version: data.version != null ? String(data.version) : null,
+            isoDate,
+            displayDate: DATE_FORMATTER.format(parsed),
+            description: data.description != null ? String(data.description) : null,
+            added: itemNames(data.added),
+            updated: itemNames(data.updated),
+            body: content.trim(),
+          },
+        ];
+      })
+      .sort(byNewest);
+
+    return {
+      entries,
+      lastUpdated: entries[0]?.displayDate ?? null,
+      latestSlug: entries[0]?.slug ?? null,
+    };
   } catch {
     return { entries: [], lastUpdated: null, latestSlug: null };
   }
-
-  const entries: ChangelogEntry[] = files
-    .flatMap((file) => {
-      const raw = fs.readFileSync(path.join(CHANGELOG_DIR, file), 'utf8');
-      const { data, content } = matter(raw);
-      const parsed = data.date ? new Date(data.date) : null;
-      if (!parsed || Number.isNaN(parsed.getTime())) return [];
-      const isoDate = parsed.toISOString();
-
-      return [
-        {
-          slug: file.replace(/\.mdx$/, ''),
-          title: String(data.title ?? file.replace(/\.mdx$/, '')),
-          version: data.version != null ? String(data.version) : null,
-          isoDate,
-          displayDate: DATE_FORMATTER.format(parsed),
-          description: data.description != null ? String(data.description) : null,
-          added: itemNames(data.added),
-          updated: itemNames(data.updated),
-          body: content.trim(),
-        },
-      ];
-    })
-    .sort(byNewest);
-
-  return {
-    entries,
-    lastUpdated: entries[0]?.displayDate ?? null,
-    latestSlug: entries[0]?.slug ?? null,
-  };
 };
 
 /** Dates come from each release's `added` list. The oldest release wins when an item is listed twice. */

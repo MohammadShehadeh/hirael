@@ -86,6 +86,8 @@ export interface RegistryEntryMeta {
   dependencies?: string[];
   blockKind?: BlockKind;
   blockTagline?: string;
+  /** Descriptive name for a block titled by its number ("Hero 03"); search indexes it. */
+  subtitle?: string;
   cssVars?: RegistryCssVars;
   /** Post-install note the shadcn CLI prints, for setup beyond the auto-installed `dependencies`. */
   docs?: string;
@@ -304,7 +306,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-01',
-    title: 'Beam Shader Hero',
+    title: 'Hero 01',
+    subtitle: 'Beam Shader Hero',
     description:
       'Full-bleed hero card over an animated light-beam shader, with a glass pill nav, a trust badge, a serif headline, dual CTA and a three-stat footer.',
     blockTagline: 'Beam shader, glass nav, stat footer',
@@ -325,7 +328,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-02',
-    title: 'Gradient Stripe Hero',
+    title: 'Hero 02',
+    subtitle: 'Gradient Stripe Hero',
     description:
       'Centered hero over animated gradient bars, with a release pill, a serif headline with an underlined accent, dual CTA and a wordmark strip.',
     blockTagline: 'Stripe shader, release pill, wordmark strip',
@@ -346,7 +350,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-03',
-    title: 'Hero with Logo Cloud',
+    title: 'Hero 03',
+    subtitle: 'Hero with Logo Cloud',
     description:
       'Editorial centered hero on a faded grid, with a serif headline, sub-copy, dual CTA and a logo cloud of customer wordmarks.',
     blockTagline: 'Editorial, grid backdrop, logo cloud',
@@ -363,7 +368,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-04',
-    title: 'Image Banner Hero',
+    title: 'Hero 04',
+    subtitle: 'Image Banner Hero',
     description:
       'Full-bleed image-banner hero with a dark scrim, a slim nav, a serif headline and dual CTA aligned to the bottom.',
     blockTagline: 'Image banner, scrim, bottom-aligned',
@@ -380,7 +386,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-05',
-    title: 'Aurora Shader Hero',
+    title: 'Hero 05',
+    subtitle: 'Aurora Shader Hero',
     description:
       'Full-bleed hero card over an animated aurora shader, with a pill nav, a live status pill, a serif headline, dual CTA and an avatar social-proof row.',
     blockTagline: 'Aurora shader, glass nav, social proof',
@@ -401,7 +408,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-01',
-    title: 'Alternating Feature Rows',
+    title: 'Feature 01',
+    subtitle: 'Alternating Feature Rows',
     description:
       'One bordered card of stacked stripes: a centered intro, three alternating rows pairing an indexed layer with a small deploys, previews or release-rules mockup, then a three-column primitives row and a pair of link calls to action.',
     blockTagline: 'Stacked stripes, 3 layer mockups, link CTAs',
@@ -418,7 +426,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-02',
-    title: 'Indexed Feature List',
+    title: 'Feature 02',
+    subtitle: 'Indexed Feature List',
     description:
       'Centered header above a six-item list of what every catalog item includes, laid out on hairline rows with a tabular index kicker.',
     blockTagline: 'What you get, 6 items, index kicker',
@@ -434,7 +443,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'pricing-01',
-    title: 'Three Tier Pricing',
+    title: 'Pricing 01',
+    subtitle: 'Three Tier Pricing',
     description:
       'Three-tier card row with a monthly/yearly toggle that swaps each price and billing note, a featured middle plan, feature checklist and CTA.',
     blockTagline: 'Billing toggle, 3 tiers, featured plan',
@@ -451,7 +461,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'pricing-02',
-    title: 'Pricing Comparison Table',
+    title: 'Pricing 02',
+    subtitle: 'Pricing Comparison Table',
     description:
       'Plan comparison table with grouped feature rows and a per-plan CTA in the header; on small screens a plan picker shows one plan column at a time.',
     blockTagline: 'Comparison table, grouped rows, mobile plan picker',
@@ -468,7 +479,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'pricing-03',
-    title: 'Animated Pricing Cards',
+    title: 'Pricing 03',
+    subtitle: 'Animated Pricing Cards',
     description:
       'Three-tier card row with a monthly/yearly billing toggle that tweens the price, a featured plan, per-plan icon, feature checklist and CTA.',
     blockTagline: 'Billing toggle, animated price, featured plan',
@@ -485,7 +497,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'testimonial-01',
-    title: 'Single Quote Testimonial',
+    title: 'Testimonial 01',
+    subtitle: 'Single Quote Testimonial',
     description:
       'Centered single quote with stylized open-mark, author block (avatar, name, role, company) and a muted wordmark row below.',
     blockTagline: 'Single quote, author block, wordmark row',
@@ -502,7 +515,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'testimonial-02',
-    title: 'Masonry Testimonial Wall',
+    title: 'Testimonial 02',
+    subtitle: 'Masonry Testimonial Wall',
     description: 'Masonry quote grid (CSS columns) with ~6 bordered quote cards of varying length and author rows.',
     blockTagline: 'Masonry grid, 6 quotes, varied length',
     category: 'blocks',
@@ -518,7 +532,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'cta-01',
-    title: 'Split Install CTA',
+    title: 'CTA 01',
+    subtitle: 'Split Install CTA',
     description:
       'Framed CTA card with headline and sub-copy on the left, and an install command with a copy button above a browse button on the right.',
     blockTagline: 'Framed, split layout, copyable install',
@@ -535,7 +550,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'cta-02',
-    title: 'Centered Install CTA',
+    title: 'CTA 02',
+    subtitle: 'Centered Install CTA',
     description:
       'Full-bleed centered CTA with framing top/bottom rules, highlight underlay on the key word, and an install command with a copy button.',
     blockTagline: 'Centered, highlight underlay, install command',
@@ -552,7 +568,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'cta-03',
-    title: 'Dithered Shader CTA',
+    title: 'CTA 03',
+    subtitle: 'Dithered Shader CTA',
     description:
       'Full-bleed CTA card with an animated dithered shader backdrop, an eyebrow pill, a serif headline and a pill action button.',
     blockTagline: 'Centered, dithered backdrop, serif headline',
@@ -573,7 +590,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'faq-01',
-    title: 'Sticky Numbered FAQ',
+    title: 'FAQ 01',
+    subtitle: 'Sticky Numbered FAQ',
     description:
       'Two-column FAQ: sticky heading and a hairline help note on the start side, numbered accordion on the end side.',
     blockTagline: 'Sticky split, numbered, help note',
@@ -590,7 +608,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'faq-02',
-    title: 'Two-Column FAQ Grid',
+    title: 'FAQ 02',
+    subtitle: 'Two-Column FAQ Grid',
     description: 'Centered heading with two-column accordion grid below. Each row tagged with a Qn index.',
     blockTagline: 'Centered, two-column grid, Qn-indexed',
     category: 'blocks',
@@ -606,7 +625,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'faq-03',
-    title: 'Searchable FAQ',
+    title: 'FAQ 03',
+    subtitle: 'Searchable FAQ',
     description:
       'Searchable FAQ with category tabs, a live-filtered accordion, an empty state for missed queries and a support CTA strip.',
     blockTagline: 'Search, category tabs, empty state',
@@ -623,7 +643,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'faq-04',
-    title: 'Grouped Topics FAQ',
+    title: 'FAQ 04',
+    subtitle: 'Grouped Topics FAQ',
     description:
       'Framed single-column FAQ with side rules, a centered display header with a topic jump nav, five topic groups each pairing a heading with its own accordion, and a support footer line.',
     blockTagline: 'Framed column, topic jump nav, grouped accordions',
@@ -641,6 +662,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'login-01',
     title: 'Login 01',
+    subtitle: 'Login Card',
     description:
       'Centered sign-in: logo and heading above a card with email, password and an inline forgot-password link, a passkey option, an alert for failed attempts and a create-account line below.',
     blockTagline: 'Centered card, passkey, inline errors',
@@ -658,6 +680,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'login-02',
     title: 'Login 02',
+    subtitle: 'Login with Testimonial',
     description:
       'Split login with a testimonial pane. The form leads with Google and GitHub, then email and password with an inline forgot link and an alert for failed attempts. The pane holds a quote and two results over a world map drawn in the foreground token.',
     blockTagline: 'Split, providers first, testimonial pane',
@@ -675,6 +698,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'login-03',
     title: 'Login 03',
+    subtitle: 'Split GitHub Login',
     description:
       'Split-screen sign-in: a decorative animated-paths aside with a brand mark and a short quote, paired with a clean GitHub-only sign-in pane. A back-to-home link, mobile-collapsing layout, and token-based radial glows behind the form.',
     blockTagline: 'Split layout, animated paths, GitHub sign-in',
@@ -692,6 +716,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'login-04',
     title: 'Login 04',
+    subtitle: 'Two-Step Login',
     description:
       'Identifier-first sign-in in one wide card: heading on one side, fields on the other. Email first, then password, with an account chip to switch back and a hidden username field so password managers fill the right account.',
     blockTagline: 'Email first, then password, wide card',
@@ -709,6 +734,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'login-05',
     title: 'Login 05',
+    subtitle: 'Social Login',
     description:
       'Provider-first sign-in: stacked Continue with GitHub, Google and Apple buttons, plus email and passkey options. Email sends a magic link and swaps to a check-your-email state.',
     blockTagline: 'Stacked providers, magic link, passkey',
@@ -726,6 +752,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'signup-01',
     title: 'Sign Up 01',
+    subtitle: 'Sign Up Card',
     description:
       'Centered signup card: GitHub and Google first, then name, email and a password with a strength meter and hint. Terms sit under the card as plain text, and submitting swaps to a check-your-email state.',
     blockTagline: 'Providers first, strength meter, verify state',
@@ -742,6 +769,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'forgot-password-01',
     title: 'Forgot Password 01',
+    subtitle: 'Forgot Password Card',
     description:
       'Centered reset request: one email field with inline validation, then a check-your-email state that echoes the address, links back to sign in and offers a resend.',
     blockTagline: 'Email field, sent state, resend link',
@@ -758,6 +786,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'otp-verify-01',
     title: 'OTP Verify 01',
+    subtitle: 'OTP Verification Card',
     description:
       'Centered verification card built on InputOTP: six slots that fit a phone screen, paste support, auto-verify on the last digit, a 30s resend countdown and a verified state.',
     blockTagline: 'Six-digit code, 30s resend, verified state',
@@ -774,6 +803,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
   {
     name: 'two-factor-setup-01',
     title: 'Two-Factor Setup 01',
+    subtitle: 'Two-Factor Setup',
     description:
       'Three-step 2FA enrollment card: scan a real otpauth QR or copy the key, confirm a six-digit code, then save recovery codes with copy, download and a checkbox-gated finish. Ships composable parts.',
     blockTagline: 'QR + secret, six-digit verify, recovery codes',
@@ -799,7 +829,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'header-01',
-    title: 'Sticky Blur Header',
+    title: 'Header 01',
+    subtitle: 'Sticky Blur Header',
     description:
       'Sticky top nav with brand monogram, centered anchor links, dual auth CTAs and a slide-down mobile menu.',
     blockTagline: 'Sticky, backdrop blur, mobile menu',
@@ -816,7 +847,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'header-02',
-    title: 'Shrinking Pill Header',
+    title: 'Header 02',
+    subtitle: 'Shrinking Pill Header',
     description:
       'Floating nav that runs full width at the top of the page and shrinks into a blurred pill once you scroll past 100px, with a spring-animated width change. Links share a sliding hover highlight; on mobile a toggle opens an animated dropdown menu. Ships composable parts and a scroll-container prop for embedded layouts.',
     blockTagline: 'Shrinks on scroll, sliding hover pill, mobile dropdown',
@@ -833,7 +865,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'header-03',
-    title: 'Mega Menu Header',
+    title: 'Header 03',
+    subtitle: 'Mega Menu Header',
     description:
       'Sticky marketing header with Product, Solutions and Resources mega menus, each a two-column link list beside a featured entry, plain Pricing and Docs links, and a side sheet with collapsible groups on small screens.',
     blockTagline: 'Mega menu, Featured entry, Mobile sheet',
@@ -850,7 +883,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'footer-01',
-    title: 'Four Column Footer',
+    title: 'Footer 01',
+    subtitle: 'Four Column Footer',
     description:
       'Brand + tagline column alongside Product / Company / Resources link columns, with a copyright row and social icons below a thin rule.',
     blockTagline: '4 columns, social row, copyright',
@@ -867,7 +901,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'not-found-01',
-    title: '404 with Suggestions',
+    title: 'Not Found 01',
+    subtitle: '404 with Suggestions',
     description:
       "Centered 404 with mono eyebrow, display headline, paired CTAs and a 'try one of these' suggested-routes list.",
     blockTagline: 'Centered, paired CTAs, route suggestions',
@@ -932,7 +967,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'logo-cloud-01',
-    title: 'Logo Grid with Stats',
+    title: 'Logo Cloud 01',
+    subtitle: 'Logo Grid with Stats',
     description:
       'Centered eyebrow + headline above a 6-column bordered wordmark grid, with stat strip and case-study link below.',
     blockTagline: 'Bordered grid, 12 wordmarks, stat strip',
@@ -949,7 +985,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'logo-cloud-02',
-    title: 'Marquee Logo Cloud',
+    title: 'Logo Cloud 02',
+    subtitle: 'Marquee Logo Cloud',
     description:
       'Two full-bleed marquee rows of wordmarks running in opposite directions, edges faded into the page, each row holding still on hover.',
     blockTagline: 'Two marquee rows, opposite directions, pauses on hover',
@@ -966,7 +1003,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'logo-cloud-03',
-    title: 'Logo Strip with Quote',
+    title: 'Logo Cloud 03',
+    subtitle: 'Logo Strip with Quote',
     description:
       'Quiet single-row wordmark strip that brightens on hover, a rule, then a pull quote with an avatar and attribution.',
     blockTagline: 'Single row, muted wordmarks, pull quote',
@@ -983,7 +1021,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'logo-cloud-04',
-    title: 'Logo Tabs with Metrics',
+    title: 'Logo Cloud 04',
+    subtitle: 'Logo Tabs with Metrics',
     description:
       'Six customer wordmarks as tabs, each opening a proof panel with a metric, a short quote and a story link. It advances on its own, pauses on hover or focus, and stops once you pick one.',
     blockTagline: 'Wordmark tabs, Proof metric, Auto-advance',
@@ -1000,7 +1039,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'contact-01',
-    title: 'Contact Form',
+    title: 'Contact 01',
+    subtitle: 'Contact Form',
     description:
       'Production contact form with controlled state, inline validation, character counter, topic select, consent checkbox and a pending/sent state machine. Channel list and remote-location note alongside.',
     blockTagline: 'Validated form, pending, sent state',
@@ -1028,7 +1068,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'blog-01',
-    title: 'Featured Post Blog Grid',
+    title: 'Blog 01',
+    subtitle: 'Featured Post Blog Grid',
     description:
       'Editorial blog index with a featured post on top and a 4-column grid of post cards underneath. Built on Card and Badge.',
     blockTagline: 'Featured post, 4-up Card grid',
@@ -1045,7 +1086,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'blog-02',
-    title: 'Filterable Blog List',
+    title: 'Blog 02',
+    subtitle: 'Filterable Blog List',
     description:
       'Editorial post index as dated rows with a thumbnail that surfaces on hover, category tabs with counts that filter the list, and an empty state for a category with nothing in it yet.',
     blockTagline: 'Dated rows, Category filter, Hover thumbnails',
@@ -1062,7 +1104,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'ecommerce-01',
-    title: 'Product Grid',
+    title: 'Ecommerce 01',
+    subtitle: 'Product Grid',
     description:
       'Product grid with category filter pills, sale and new badges, wishlist toggles, star ratings, compare-at pricing and add-to-cart buttons that update a live cart count.',
     blockTagline: 'Product grid, filter pills, cart count',
@@ -1079,7 +1122,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'ecommerce-02',
-    title: 'Shopping Cart',
+    title: 'Ecommerce 02',
+    subtitle: 'Shopping Cart',
     description:
       'Shopping cart with capped quantity steppers, animated line-item removal, promo-code validation, a free-shipping threshold, live totals, a checkout that confirms with an order number, and an empty-cart state.',
     blockTagline: 'Cart rows, promo code, live totals',
@@ -1097,7 +1141,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'ecommerce-03',
-    title: 'Product Detail Page',
+    title: 'Ecommerce 03',
+    subtitle: 'Product Detail Page',
     description:
       'Product detail page with a thumbnail gallery, colour swatches, a size grid that knows what is sold out in each colour, a stock-capped quantity stepper, add to cart, and details in an accordion.',
     blockTagline: 'Gallery, Stock-aware sizes, Add to cart',
@@ -1124,7 +1169,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'ecommerce-04',
-    title: 'Product Filter Sidebar',
+    title: 'Ecommerce 04',
+    subtitle: 'Product Filter Sidebar',
     description:
       'Category page with a sticky filter sidebar (category counts that react to the other filters, price range, colour, stock, rating), removable filter chips, sorting, an empty state, and a filter sheet on small screens.',
     blockTagline: 'Live counts, Filter chips, Mobile sheet',
@@ -1155,7 +1201,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'dashboard-01',
-    title: 'Operations Dashboard',
+    title: 'Dashboard 01',
+    subtitle: 'Operations Dashboard',
     description:
       'Operations dashboard with a Tabs date-range switcher (1d / 7d / 30d / 90d), a 4-up metric strip, a weekly bar chart and a recent-activity feed. Every metric declares which direction is good news, so falling churn reads green; each chart bucket is a focusable control, so the numbers reach the keyboard as well as the mouse.',
     blockTagline: 'Tabs range, intent-aware deltas, keyboard chart',
@@ -1172,7 +1219,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'dashboard-02',
-    title: 'Analytics Dashboard',
+    title: 'Dashboard 02',
+    subtitle: 'Analytics Dashboard',
     description:
       'Analytics dashboard with a date-range select, four sparkline KPI tiles, a layered two-series area chart and top-pages and channel-share side cards. Deltas carry their own unit (percent vs percentage points) and the direction that counts as good, and the area chart ships a screen-reader data table of the same numbers.',
     blockTagline: 'Area chart, sparkline KPIs, sr data table',
@@ -1189,7 +1237,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'dashboard-03',
-    title: 'Revenue Dashboard',
+    title: 'Dashboard 03',
+    subtitle: 'Revenue Dashboard',
     description:
       'Revenue dashboard with a month stepper, a plan-mix donut and legend, an invoice status list and a paginated transactions list. Amounts are numbers formatted through Intl, and every colour comes from a lookup keyed by plan or status, so no Tailwind class is stored in the data.',
     blockTagline: 'Donut plan mix, real pagination, month stepper',
@@ -1206,7 +1255,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'dashboard-04',
-    title: 'Commerce Dashboard',
+    title: 'Dashboard 04',
+    subtitle: 'Commerce Dashboard',
     description:
       'Commerce operations dashboard in a card-in-card style: four inset stat tiles, a Today band pairing an hourly two-series revenue chart with ad-budget and peak-hours cards, and a week-in-review band driven by a range select. The budget bar is a real progressbar, both charts ship a screen-reader data table, and each panel only shows an action when it has one.',
     blockTagline: 'Inset stat tiles, progressbar budget, sr tables',
@@ -1223,7 +1273,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'dashboard-05',
-    title: 'Observability Dashboard',
+    title: 'Dashboard 05',
+    subtitle: 'Observability Dashboard',
     description:
       'Observability dashboard composed as one bordered lattice: greeting strip with range select, four sparkline KPI cells, cache and duration chart cells, an AI-insight callout, a P50/P95/P99 latency distribution measured against a stated target, and an active-deployments list. The deployment taking traffic is marked in the primary color and its pulse respects prefers-reduced-motion.',
     blockTagline: 'Bordered lattice, live accent, latency targets',
@@ -1240,7 +1291,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-01',
-    title: 'Hub and Spoke Integrations',
+    title: 'Integrations 01',
+    subtitle: 'Hub and Spoke Integrations',
     description:
       'Two-column integrations section with copy and a linked integration list on the left, and an orbit diagram (central hub with 6 spokes) on the right that highlights the spoke you hover.',
     blockTagline: 'Hub & spoke, 6 spokes, linked hover',
@@ -1257,7 +1309,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-02',
-    title: 'Integrations Card Grid',
+    title: 'Integrations 02',
+    subtitle: 'Integrations Card Grid',
     description:
       'Filterable connector grid: a category toggle group above a card grid, where each card connects or disconnects with a pending state and a running connected count.',
     blockTagline: 'Card grid, category filter, connected state',
@@ -1274,7 +1327,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-03',
-    title: 'Integrations with Request Form',
+    title: 'Integrations 03',
+    subtitle: 'Integrations with Request Form',
     description:
       'Two-column integrations page: a sticky intro with a request-an-integration popover form beside a ruled list of linked connectors and their status.',
     blockTagline: 'Sticky intro, linked rows, request form',
@@ -1291,7 +1345,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-04',
-    title: 'Centered Hub Integrations',
+    title: 'Integrations 04',
+    subtitle: 'Centered Hub Integrations',
     description:
       'Centered integrations section: heading and copy above a hub with 6 linked tool tiles on straight spokes, with pulses travelling in and out along each line.',
     blockTagline: 'Centered hub, 6 spokes, travelling pulses',
@@ -1308,7 +1363,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-05',
-    title: 'Two-Way Sync Integrations',
+    title: 'Integrations 05',
+    subtitle: 'Two-Way Sync Integrations',
     description:
       'Centered integrations section with three source tools on one side and three targets on the other, joined to a central hub by curved paths that carry travelling pulses.',
     blockTagline: 'Curved pipeline, sources to targets, pulses',
@@ -1325,7 +1381,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-06',
-    title: 'Floating Tiles Integrations',
+    title: 'Integrations 06',
+    subtitle: 'Floating Tiles Integrations',
     description:
       'Centered integrations section with a row of tool tiles hung on a shallow arc over a faded grid, each lifting on hover.',
     blockTagline: 'Arced tile row, faded grid, hover lift',
@@ -1342,7 +1399,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-07',
-    title: 'Featured Tool Integrations',
+    title: 'Integrations 07',
+    subtitle: 'Featured Tool Integrations',
     description:
       'Two-column integrations section with copy and a call to action beside a 3 by 3 tile grid whose featured tile cycles on its own, pauses on hover and focus, and can be picked directly.',
     blockTagline: 'Copy + 3x3 grid, cycling featured tile',
@@ -1359,7 +1417,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'integrations-08',
-    title: 'Logo Row Integrations',
+    title: 'Integrations 08',
+    subtitle: 'Logo Row Integrations',
     description:
       'Minimal integrations section: a short heading, a single row of tool icons and a link to the full list.',
     blockTagline: 'Heading, one icon row, link',
@@ -1376,7 +1435,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'image-gallery-01',
-    title: 'Masonry Photo Gallery',
+    title: 'Image Gallery 01',
+    subtitle: 'Masonry Photo Gallery',
     description:
       'Studio-style masonry gallery with a Tabs category filter showing counts, photo tiles in varied aspect ratios that open in a lightbox with thumbnails, and an empty state for categories with no work yet.',
     blockTagline: 'Tabs filter, masonry, lightbox',
@@ -1393,7 +1453,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'image-gallery-02',
-    title: 'Layout Switch Gallery',
+    title: 'Image Gallery 02',
+    subtitle: 'Layout Switch Gallery',
     description:
       'Photo grid with a Grid and Rows layout switch, captions on hover or focus, and a lightbox with thumbnails that opens at the chosen photo and returns focus to it on close.',
     blockTagline: 'Layout switch, Hover captions, Lightbox',
@@ -1410,7 +1471,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'app-shell-01',
-    title: 'Sidebar Admin Shell',
+    title: 'App Shell 01',
+    subtitle: 'Sidebar Admin Shell',
     description:
       'Drop-in admin shell built on the shadcn Sidebar primitive: collapsible icon rail with nav badges and an account menu in the footer, sticky topbar with breadcrumb and a ⌘K search that really focuses, plus an accounts table that filters live and sorts by any column with aria-sort.',
     blockTagline: 'Collapsible Sidebar, ⌘K search, sortable table',
@@ -1439,7 +1501,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'app-shell-02',
-    title: 'Top Nav Settings Shell',
+    title: 'App Shell 02',
+    subtitle: 'Top Nav Settings Shell',
     description:
       'Sidebar-free admin shell with a sticky top bar over a working settings screen: vertical tabs with roving keyboard focus, a header search that filters every section and counts matches per tab, and rows that actually do their thing (inline edit, copy to clipboard, or a switch) with a live save status.',
     blockTagline: 'Top nav, vertical tabs, settings that save',
@@ -1467,7 +1530,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'app-shell-03',
-    title: 'Inbox App Shell',
+    title: 'App Shell 03',
+    subtitle: 'Inbox App Shell',
     description:
       'Split-pane inbox shell: icon rail with unread indicator, a searchable conversation listbox you can walk with the arrow keys, and a reading pane where star, archive and delete all work, with undo. Collapses to one pane on phones with a back button, and the composer sends on ⌘+Enter so Enter still makes a new line.',
     blockTagline: 'Icon rail, arrow-key inbox, reading pane',
@@ -1494,7 +1558,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'app-shell-04',
-    title: 'Workspace Sidebar Shell',
+    title: 'App Shell 04',
+    subtitle: 'Workspace Sidebar Shell',
     description:
       'Starter shell on the shadcn Sidebar primitive (inset variant): a workspace switcher that switches, a ⌘K field that filters the nav, icon-collapsible items with tooltips, an inset header with an account menu and notification count, and a campaign board overview with a stat row and four stage columns.',
     blockTagline: 'Inset Sidebar, ⌘K nav filter, campaign board',
@@ -2777,7 +2842,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-06',
-    title: 'Personal Portfolio Hero',
+    title: 'Hero 06',
+    subtitle: 'Personal Portfolio Hero',
     description:
       'Centered personal hero: a live "available for work" badge, a serif headline with a primary-tinted emphasis span, a sub-line, a three-stat row with hairline dividers, dual rounded CTAs, and a tooltip-backed core-stack icon row framed by gradient rules. Rotated geometric border accents zoom in behind it (and stay still under reduced motion).',
     blockTagline: 'Centered, stat row, geometric accents',
@@ -2794,7 +2860,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-07',
-    title: 'Word Reveal Hero',
+    title: 'Hero 07',
+    subtitle: 'Word Reveal Hero',
     description:
       'Centered hero with a word-by-word blur-in serif headline, a glass beta badge with a live dot, dual rounded CTAs, and animated beam line-art SVGs that trace the top, bottom, and both sides of the section. Respects reduced-motion.',
     blockTagline: 'Beam line-art, word-by-word reveal, dual CTA',
@@ -2811,7 +2878,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-08',
-    title: 'App Preview Hero',
+    title: 'Hero 08',
+    subtitle: 'App Preview Hero',
     description:
       'Centered hero on a framed, token-lit panel: a pill badge, a serif headline with an italic emphasis span, sub-copy, dual CTA buttons, and a window preview of a task board with named cards and statuses. Everything rises in with a staggered entrance that respects reduced motion.',
     blockTagline: 'Centered, framed panel, board preview',
@@ -2828,7 +2896,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'testimonial-03',
-    title: 'Statement Quote Testimonial',
+    title: 'Testimonial 03',
+    subtitle: 'Statement Quote Testimonial',
     description:
       'Centered statement quote with a serif display, an inline quote glyph in the corner, gradient hairline dividers, and a highlighted phrase, closed by a small attribution line.',
     blockTagline: 'Statement quote, serif display, highlight',
@@ -2845,7 +2914,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'testimonial-04',
-    title: 'Testimonial Card Grid',
+    title: 'Testimonial 04',
+    subtitle: 'Testimonial Card Grid',
     description:
       'Three-column quote grid under a centered pill badge and word-by-word headline. Each card opens with a quote mark, then the quote and an author line. Cards rise in with a short stagger.',
     blockTagline: 'Quote grid, word-by-word headline, staggered rise',
@@ -2862,7 +2932,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'testimonial-05',
-    title: 'Case Study Carousel',
+    title: 'Testimonial 05',
+    subtitle: 'Case Study Carousel',
     description:
       'Customer stories carousel where each card leads with a measured result, then a short quote, the person behind it and a link to the case study, with a slide counter and a segmented progress bar.',
     blockTagline: 'Metric first, Case studies, Segmented progress',
@@ -2879,7 +2950,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'cta-04',
-    title: 'Copy Email CTA',
+    title: 'CTA 04',
+    subtitle: 'Copy Email CTA',
     description:
       'Centered get-in-touch CTA with a pill eyebrow, serif headline, mail button, a copy-to-clipboard email address, and GitHub and LinkedIn icon buttons, capped by a soft radial glow dome with a starfield speckle.',
     blockTagline: 'Centered, glow dome, copy email',
@@ -2896,7 +2968,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'cta-05',
-    title: 'Email and Call CTA',
+    title: 'CTA 05',
+    subtitle: 'Email and Call CTA',
     description:
       'Contact CTA panel with a scroll-reactive radial glow, an eyebrow badge, a word-by-word reveal headline, and two contact actions (email and call) each pairing a button with its detail line.',
     blockTagline: 'Scroll-lit glow, contact actions, word reveal',
@@ -2913,7 +2986,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'cta-06',
-    title: 'Gradient Banner CTA',
+    title: 'CTA 06',
+    subtitle: 'Gradient Banner CTA',
     description:
       'CTA banner on one tokenized gradient surface: an eyebrow label, a serif headline with an italic emphasis, short sub-copy, and a primary action button that rises in.',
     blockTagline: 'Single panel, gradient surface, rise-in',
@@ -2930,7 +3004,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'footer-02',
-    title: 'Rounded Top Footer',
+    title: 'Footer 02',
+    subtitle: 'Rounded Top Footer',
     description:
       'Rounded-top footer with a brand block beside a multi-column link grid. Each column caps at five links and shows a "View all" arrow when there are more. A soft radial tint sits behind the top edge, and a bottom meta row carries the copyright and secondary links.',
     blockTagline: 'Rounded top, brand + columns, radial tint',
@@ -2947,7 +3022,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'footer-03',
-    title: 'Boxed Panel Footer',
+    title: 'Footer 03',
+    subtitle: 'Boxed Panel Footer',
     description:
       'Boxed link-column footer: a two-column brand block with wordmark, blurb, and ghost social buttons, two link columns, and a divided copyright row. Sits in a soft outlined panel.',
     blockTagline: 'Boxed panel, brand + link columns, social row',
@@ -2964,7 +3040,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'footer-04',
-    title: 'Newsletter Footer',
+    title: 'Footer 04',
+    subtitle: 'Newsletter Footer',
     description:
       'Four-column footer lit by slow light rays falling from the top edge: brand mark and blurb, a contact column with WhatsApp and email links, a location column, and a subscribe form whose placeholder cycles through prompts. Columns and links rise in with staggered motion; a divided copyright row closes it. Rays hold still under reduced-motion.',
     blockTagline: 'Light rays, contact columns, validated subscribe',
@@ -2985,7 +3062,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'faq-05',
-    title: 'Split Layout FAQ',
+    title: 'FAQ 05',
+    subtitle: 'Split Layout FAQ',
     description:
       'Two-column FAQ block: an eyebrow, serif headline and short intro sit on the start side; a single-open accordion of five questions sits on the end side, split by a vertical divider that collapses to a stacked layout on mobile.',
     blockTagline: 'Split layout, divider, single accordion',
@@ -3002,7 +3080,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'faq-06',
-    title: 'Card Accordion FAQ',
+    title: 'FAQ 06',
+    subtitle: 'Card Accordion FAQ',
     description:
       'Centered FAQ with a pill badge, a word-by-word headline reveal and a short intro above a multi-open accordion where each question is its own bordered card that rises in with a staggered delay and tints slightly when open. Ships composable parts.',
     blockTagline: 'Card accordion, staggered rise, multi-open',
@@ -3018,7 +3097,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'contact-02',
-    title: 'Contact Info Grid',
+    title: 'Contact 02',
+    subtitle: 'Contact Info Grid',
     description:
       'Bordered contact section with a serif header and a three-column info grid: email with a copy button, location, and social pills.',
     blockTagline: 'Info grid, copy email, social pills',
@@ -3035,7 +3115,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'contact-03',
-    title: 'Glow Contact Panel',
+    title: 'Contact 03',
+    subtitle: 'Glow Contact Panel',
     description:
       'Centered contact panel whose bottom glow widens as the section scrolls into view, with a pill badge, a word-by-word headline reveal, two short paragraphs, and a two-column CTA grid: an email button with the address and a copy button beneath it and an outline call button that opens a WhatsApp chat. Ships composable parts.',
     blockTagline: 'Scroll glow, word reveal, copy email',
@@ -3052,7 +3133,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'contact-04',
-    title: 'Support Ticket Form',
+    title: 'Contact 04',
+    subtitle: 'Support Ticket Form',
     description:
       'Support contact section with a live reply-time line from fixed support hours, contact channels, common questions, and a ticket form that suggests help articles as you type the subject.',
     blockTagline: 'Reply time, Suggested answers, Ticket form',
@@ -3080,7 +3162,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'app-shell-05',
-    title: 'Documents App Shell',
+    title: 'App Shell 05',
+    subtitle: 'Documents App Shell',
     description:
       'Inset sidebar app shell: a collapsible icon sidebar with a brand header, grouped Workspace and Tools nav (with a Beta badge), and an account menu in the footer, paired with a sticky header carrying the sidebar toggle and a breadcrumb. The inset holds a documents list with status filters that actually filter.',
     blockTagline: 'Inset sidebar, grouped nav, filterable documents',
@@ -3106,7 +3189,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'app-shell-06',
-    title: 'Nested App Sidebar',
+    title: 'App Shell 06',
+    subtitle: 'Nested App Sidebar',
     description:
       'A nested app sidebar for shadcn/ui. Open a project or settings and the whole sidebar slides to its own links, like the Vercel dashboard, instead of expanding a dropdown. A back row slides out again, the breadcrumb follows the path, and multi-level menus go as deep as you need. Built from sidebar tokens, so it takes on your theme.',
     blockTagline: 'Multi-level sidebar that slides to each section',
@@ -3123,7 +3207,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'dashboard-06',
-    title: 'Pipeline Runs Dashboard',
+    title: 'Dashboard 06',
+    subtitle: 'Pipeline Runs Dashboard',
     description:
       'Pipeline overview dashboard: four stat cards for success, failure, skipped, and live activity, a clickable latest-runs bar chart with a run breakdown panel, and a recent-runs list. The active-now stat uses the primary color for live state; every color is a theme token, so it works in light and dark.',
     blockTagline: 'Stat cards, runs chart, breakdown panel',
@@ -3257,7 +3342,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'process-01',
-    title: 'Getting Started Steps',
+    title: 'Process 01',
+    subtitle: 'Getting Started Steps',
     description:
       'Team onboarding in three indexed steps (invite, connect tools, ship the first project), each with a primary hairline, a title, a body and a short detail line.',
     blockTagline: 'Getting started, 3 steps, index kicker',
@@ -3273,7 +3359,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'process-02',
-    title: 'Install Steps Walkthrough',
+    title: 'Process 02',
+    subtitle: 'Install Steps Walkthrough',
     description:
       'Four-step install section. Picking a step fills the connector up to it and swaps in a detail panel with a short checklist, and the section closes on a copyable install command.',
     blockTagline: 'Four steps, Filling connector, Copyable command',
@@ -3290,7 +3377,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-03',
-    title: 'Terminal Feature Bento',
+    title: 'Feature 03',
+    subtitle: 'Terminal Feature Bento',
     description:
       'Bento explaining install: a lead tile with the shadcn add command and the files it writes, beside five indexed tiles on dependencies, aliases, npm packages, tokens and runtime.',
     blockTagline: 'Bento grid, terminal lead tile, index kicker',
@@ -3306,7 +3394,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-04',
-    title: 'Services Card Grid',
+    title: 'Feature 04',
+    subtitle: 'Services Card Grid',
     description:
       'Services grid: a pill badge, title and intro over a three-column set of cards, each with a large thin icon, title, blurb and a three-point bullet list, lit by a static primary radial glow. Cards rise in with a staggered CSS entrance.',
     blockTagline: 'Icon cards, primary glow, bullet list',
@@ -3323,7 +3412,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-05',
-    title: 'Company Values Grid',
+    title: 'Feature 05',
+    subtitle: 'Company Values Grid',
     description:
       'Values section: a centered header over a two-column, offset grid of six glass cards, each backed by a static dot pattern in the primary color, rising in with a staggered CSS entrance.',
     blockTagline: 'Offset columns, dotted pattern, glass cards',
@@ -3339,7 +3429,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-06',
-    title: 'About Story Cards',
+    title: 'Feature 06',
+    subtitle: 'About Story Cards',
     description:
       'About section: a centered animated header over two equal story cards, each decorated with a fading SVG grid pattern and a token-lit gradient, with a heading and two paragraphs that rise in after the card. Reduced-motion renders everything in place.',
     blockTagline: 'Two story cards, grid pattern, staggered copy',
@@ -3355,7 +3446,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'comparison-01',
-    title: 'Competitor Comparison',
+    title: 'Comparison 01',
+    subtitle: 'Competitor Comparison',
     description:
       'Two-column us-and-them panel: a featured column of checked points beside a muted column of the usual trade-offs, split by a divider that stacks on mobile.',
     blockTagline: 'Us vs them, two columns, check and minus rows',
@@ -3372,7 +3464,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'comparison-02',
-    title: 'Feature Matrix Comparison',
+    title: 'Comparison 02',
+    subtitle: 'Feature Matrix Comparison',
     description:
       'Three-column feature matrix with a highlighted middle column, mixed tick and text cells, and a call to action in the footer row.',
     blockTagline: 'Three columns, feature matrix, highlighted column',
@@ -3389,7 +3482,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'comparison-03',
-    title: 'Before and After Comparison',
+    title: 'Comparison 03',
+    subtitle: 'Before and After Comparison',
     description:
       'Before and after panels side by side, the old way muted with crosses and the new way ticked, a Before/After switch on small screens, closing on an outcome strip.',
     blockTagline: 'Before and after, two panels, outcome strip',
@@ -3406,7 +3500,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'comparison-04',
-    title: 'Sticky Plan Comparison',
+    title: 'Comparison 04',
+    subtitle: 'Sticky Plan Comparison',
     description:
       'Three-plan feature matrix with a sticky plan header, a column highlight that follows the pointer, a switch that hides rows where every plan is equal, and a single-plan picker on small screens.',
     blockTagline: 'Sticky plans, Column focus, Differences only',
@@ -3423,7 +3518,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'newsletter-01',
-    title: 'Newsletter Signup',
+    title: 'Newsletter 01',
+    subtitle: 'Newsletter Signup',
     description:
       'Centered subscribe panel with an inline email form, inline validation and a success state that swaps in a confirmation once a valid address is entered.',
     blockTagline: 'Inline subscribe, validation, success state',
@@ -3440,7 +3536,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'newsletter-02',
-    title: 'Referral Waitlist',
+    title: 'Newsletter 02',
+    subtitle: 'Referral Waitlist',
     description:
       'Waitlist form that validates the address, shows a brief loading state, then returns your place in line with an invite link to copy and the referral rewards it unlocks.',
     blockTagline: 'Waitlist position, Invite link, Referral tiers',
@@ -3467,7 +3564,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'careers-01',
-    title: 'Open Roles List',
+    title: 'Careers 01',
+    subtitle: 'Open Roles List',
     description:
       'Open-roles list with department filter pills and rows that show title, department, location and type, each linking out with a hover arrow.',
     blockTagline: 'Open roles, department filter, linked rows',
@@ -3484,7 +3582,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'careers-02',
-    title: 'Job Posting Page',
+    title: 'Careers 02',
+    subtitle: 'Job Posting Page',
     description:
       'Single job posting with the role details, a numbered hiring process and a sticky apply form with CV upload, validation and a success state. On small screens a sticky button jumps to the form.',
     blockTagline: 'Role details, Hiring stages, Apply form',
@@ -3502,7 +3601,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-09',
-    title: 'Scroll Zoom Hero',
+    title: 'Hero 09',
+    subtitle: 'Scroll Zoom Hero',
     description:
       'Full-viewport product hero on a rounded card that zooms out as the page scrolls: an inline nav with brand and actions, a serif headline, sub-copy, dual CTAs, a labelled step-type strip, a drifting WebGL gradient mixed from the theme tokens, a bouncing scroll cue and a carved stat corner. Reduced-motion aware.',
     blockTagline: 'Zoom-out card, fluid gradient, carved stats',
@@ -3523,7 +3623,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-07',
-    title: 'Problem Framing Cards',
+    title: 'Feature 07',
+    subtitle: 'Problem Framing Cards',
     description:
       'Problem-framing trio: a badge and serif headline with a muted second half above three cards, each an orb icon in concentric rings with a soft radial glow, a title and a short description. Cards fade up in sequence, stilled under reduced motion.',
     blockTagline: 'Orb icons, concentric rings, staggered reveal',
@@ -3540,7 +3641,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-08',
-    title: 'Spotlight Feature Grid',
+    title: 'Feature 08',
+    subtitle: 'Spotlight Feature Grid',
     description:
       'Six-card feature grid on hairline rails: each card carries an inline icon beside its title, a title and a description, corner crosshair marks, and a radial spotlight that follows the pointer on hover. Warm-tinted top glow per card.',
     blockTagline: 'Pointer spotlight, hairline rails, crosshair corners',
@@ -3557,7 +3659,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-09',
-    title: 'Selectable Feature Bento',
+    title: 'Feature 09',
+    subtitle: 'Selectable Feature Bento',
     description:
       'Selectable catalog bento on a hairline grid: step cells with a large faded icon, title and description; picking one shows its sample settings in a panel below. Crosshair frames clip at the cell edge.',
     blockTagline: 'Bento grid, selectable steps, settings panel',
@@ -3574,7 +3677,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-10',
-    title: 'Mixed Overview Bento',
+    title: 'Feature 10',
+    subtitle: 'Mixed Overview Bento',
     description:
       'Mixed-cell overview bento: a quote with attribution, two metric tiles, a latest-drop card with a CardAction, and a three-job list, all on one hairline lattice.',
     blockTagline: 'Mixed cells, quote, metrics, latest drop',
@@ -3591,7 +3695,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'feature-11',
-    title: 'Vertical Feature Tabs',
+    title: 'Feature 11',
+    subtitle: 'Vertical Feature Tabs',
     description:
       'Feature switcher for a shared inbox: a vertical tab list of three capabilities beside a panel previewing each one, from assigned conversations to saved replies and snooze times. Arrow keys move between tabs and the panel follows.',
     blockTagline: 'Vertical tabs, preview panel, inbox rows',
@@ -3608,7 +3713,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'bento-01',
-    title: 'Developer Platform Bento',
+    title: 'Bento 01',
+    subtitle: 'Developer Platform Bento',
     description:
       'A developer platform bento where a deploy log streams when you press Deploy, region latencies update live, and a 90-day uptime strip, install command and usage chart all respond to input. Ships composable parts.',
     blockTagline: 'Streaming deploy log, live region latency, uptime strip, usage range',
@@ -3621,7 +3727,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'bento-02',
-    title: 'Team Collaboration Bento',
+    title: 'Bento 02',
+    subtitle: 'Team Collaboration Bento',
     description:
       'A team collaboration bento with live presence you can follow, a comment thread you can reply to and resolve, a kanban whose cards move by drag or arrows, integration switches and notification settings with a weekly estimate. Ships composable parts.',
     blockTagline: 'Live presence, reply and resolve, draggable kanban, integration switches',
@@ -3633,7 +3740,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'bento-03',
-    title: 'Analytics Bento',
+    title: 'Bento 03',
+    subtitle: 'Analytics Bento',
     description:
       'An analytics bento where a range toggle, segment chips and saved reports drive one shared dataset, so the visitor count, funnel and country list always add up.',
     blockTagline: 'Visitor count, segment chips, funnel, country bars, saved reports',
@@ -3646,7 +3754,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'bento-04',
-    title: 'Security Compliance Bento',
+    title: 'Bento 04',
+    subtitle: 'Security Compliance Bento',
     description:
       'A security and compliance bento with a live audit trail you can pause, a role permission matrix with save and discard, a 2FA adoption meter, certificate expiry countdowns with renew, and a validated access request form. Ships composable parts.',
     blockTagline: 'Pausable audit trail, access matrix, 2FA meter, certificate countdowns',
@@ -3672,7 +3781,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
 
   {
     name: 'pricing-04',
-    title: 'Featured Glow Pricing',
+    title: 'Pricing 04',
+    subtitle: 'Featured Glow Pricing',
     description:
       'Three-tier pricing row with a monthly/yearly toggle, an uppercase plan label, a large price with billing note, a tagline, a full-width CTA and a check-marked quota list; the featured tier gets a primary border, a top radial glow and a most-popular badge.',
     blockTagline: 'Billing toggle, featured glow, quota checklist',
@@ -3689,7 +3799,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'pricing-05',
-    title: 'Usage Pricing Calculator',
+    title: 'Pricing 05',
+    subtitle: 'Usage Pricing Calculator',
     description:
       'Usage pricing calculator with sliders for active users and build minutes, a priority support switch, and a live monthly estimate broken into line items with a volume tier note and monthly or yearly billing.',
     blockTagline: 'Usage sliders, Live estimate, Yearly billing',
@@ -3706,7 +3817,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'faq-07',
-    title: 'Topic Index FAQ',
+    title: 'FAQ 07',
+    subtitle: 'Topic Index FAQ',
     description:
       'Split FAQ: a heading, lead and numbered topic index on the start side; picking a topic opens its answer in the single-open accordion on the end side.',
     blockTagline: 'Topic index, synced accordion, split layout',
@@ -3723,7 +3835,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'cta-07',
-    title: 'Glow Border CTA',
+    title: 'CTA 07',
+    subtitle: 'Glow Border CTA',
     description:
       'Closing CTA panel wrapped in a scroll-reactive primary rim glow that widens as the section moves through the viewport, with an eyebrow badge, a two-tone serif headline, sub-copy and dual CTAs. Static glow under reduced motion.',
     blockTagline: 'Scroll-lit rim, two-tone headline, dual CTA',
@@ -3740,7 +3853,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'hero-10',
-    title: 'Blurred Image Hero',
+    title: 'Hero 10',
+    subtitle: 'Blurred Image Hero',
     description:
       'Bordered hero card over a blurred full-bleed image: a rocket badge, a large centered headline, sub-copy and dual CTAs that rise into place on load. Reduced-motion aware.',
     blockTagline: 'Blurred image card, centered stack, rise-in',
@@ -3757,7 +3871,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'footer-06',
-    title: 'CTA Panel Footer',
+    title: 'Footer 06',
+    subtitle: 'CTA Panel Footer',
     description:
       'Two-part footer: a bordered CTA panel over a rotated, blurred image with a headline, sub-copy and a wide sign-up button, above a brand block with social icons, two link columns and a hairline copyright row.',
     blockTagline: 'Image CTA panel, brand block, link columns',
@@ -3774,7 +3889,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'footer-05',
-    title: 'Floating Card Footer',
+    title: 'Footer 05',
+    subtitle: 'Floating Card Footer',
     description:
       'Floating card footer inset from the page edge: a brand block with mark and tagline, three link columns, and a hairline-divided legal row with copyright and a sign-off line.',
     blockTagline: 'Inset card, three columns, legal row',
@@ -3791,7 +3907,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'status-01',
-    title: 'Uptime Status Page',
+    title: 'Status 01',
+    subtitle: 'Uptime Status Page',
     description:
       'Service status page: an operational banner with an inline check, a 90-day uptime grid of tooltip-backed day bars per service with a status legend, and a dated incident history where each update carries a tone-colored badge, a timestamp and a note.',
     blockTagline: 'Uptime bars, day tooltips, incident timeline',
@@ -3809,7 +3926,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'status-02',
-    title: 'Service Health Grid',
+    title: 'Status 02',
+    subtitle: 'Service Health Grid',
     description:
       'Service health cards in a responsive grid: each with a status dot, a response-time sparkline tinted by state, a status label, and an uptime and response stat pair. One service runs degraded.',
     blockTagline: 'Card grid, response sparklines, uptime stats',
@@ -4149,7 +4267,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'settings-01',
-    title: 'Account Settings Page',
+    title: 'Settings 01',
+    subtitle: 'Account Settings Page',
     description:
       'Account settings page with a sticky section nav, card sections with label/control rows that stack on mobile, dirty-aware Save/Cancel footers, and a Danger zone with an alert-dialog confirm. Ships composable parts.',
     blockTagline: 'Section nav, label/control rows, danger zone confirm',
@@ -4177,7 +4296,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'settings-02',
-    title: 'Security Settings Tabs',
+    title: 'Settings 02',
+    subtitle: 'Security Settings Tabs',
     description:
       'Security and notifications settings in tabs: change password with strength meter, two-factor toggle, revocable session list, and grouped notification switches under a Pause all master. Ships composable parts.',
     blockTagline: 'Password + 2FA, active sessions, pause all switches',
@@ -4195,7 +4315,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'members-01',
-    title: 'Team Members Manager',
+    title: 'Members 01',
+    subtitle: 'Team Members Manager',
     description:
       'Team members management: live search, inline role select, status badges, row actions menu, a pending-invites list with resend/revoke, and an invite dialog that validates emails as tags. Ships composable parts.',
     blockTagline: 'Live search, inline roles, invite dialog',
@@ -4226,7 +4347,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'onboarding-01',
-    title: 'Onboarding Wizard',
+    title: 'Onboarding 01',
+    subtitle: 'Onboarding Wizard',
     description:
       'Four-step setup wizard on the Stepper: controlled or uncontrolled step, per-step validation gating Continue, Skip, Back, a Finish that fires onComplete, and a fade between steps. Ships composable parts.',
     blockTagline: 'Stepper header, gated Continue, done state',
@@ -4255,7 +4377,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'coming-soon-01',
-    title: 'Countdown Coming Soon',
+    title: 'Coming Soon 01',
+    subtitle: 'Countdown Coming Soon',
     description:
       'Full-viewport launch page with a live countdown, an email notify form that shows an inline success state, and a GitHub link in the footer. Ships composable parts.',
     blockTagline: 'Countdown, notify form, inline success',
@@ -4273,7 +4396,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'coming-soon-02',
-    title: 'Sparkle Coming Soon',
+    title: 'Coming Soon 02',
+    subtitle: 'Sparkle Coming Soon',
     description:
       'Full-viewport launch teaser: a pill badge, a word-by-word serif headline, sub-copy and an email notify form with inline validation and a confirmation, above a glowing horizon of sparkles with a rounded planet edge. Motion respects reduced-motion.',
     blockTagline: 'Word reveal, notify form, sparkle horizon',
@@ -4291,7 +4415,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'maintenance-01',
-    title: 'Scheduled Maintenance Page',
+    title: 'Maintenance 01',
+    subtitle: 'Scheduled Maintenance Page',
     description:
       'Scheduled maintenance page with a pulsing status dot, window card showing start, expected return and migration progress, a notify-me popover with email validation, a status page link and a timestamped updates list. Ships composable parts.',
     blockTagline: 'Window progress, notify popover, update log',
@@ -4309,7 +4434,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'maintenance-02',
-    title: 'Offline Maintenance Page',
+    title: 'Maintenance 02',
+    subtitle: 'Offline Maintenance Page',
     description:
       'Full-viewport offline page with a blurred primary glow and a sparkle field behind a pill badge, a word-by-word serif headline, a short status message and a spinner line. Message area is a live region.',
     blockTagline: 'Sparkle backdrop, word reveal, spinner status',
@@ -4326,7 +4452,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'error-01',
-    title: 'Server Error Page',
+    title: 'Error 01',
+    subtitle: 'Server Error Page',
     description:
       '500 page with a retry action, home link, collapsible technical details (request id, timestamp, copy button) and a system status line. Ships composable parts.',
     blockTagline: 'Retry + home, collapsible details, status line',
@@ -4344,7 +4471,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'team-01',
-    title: 'Meet the Team',
+    title: 'Team 01',
+    subtitle: 'Meet the Team',
     description:
       'Team section with a serif headline, a department filter, a grid of members with portraits or initials, roles, bios and GitHub links, and a hiring footer. Ships composable parts.',
     blockTagline: 'Department filter, portrait grid, hiring footer',
@@ -4361,7 +4489,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'team-02',
-    title: 'Team Profiles with Skills',
+    title: 'Team 02',
+    subtitle: 'Team Profiles with Skills',
     description:
       'Single-profile experience section: a four-up metric strip, a bio card with a grid-pattern backdrop, and a competencies card that ends in three pause-on-hover marquee rows of skill chips with edge fades. Every element rises in on scroll and respects reduced-motion.',
     blockTagline: 'Metric strip, profile card, skills marquee',
@@ -4377,7 +4506,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'team-03',
-    title: 'Distributed Team Directory',
+    title: 'Team 03',
+    subtitle: 'Distributed Team Directory',
     description:
       'Distributed team directory grouped by department, showing each person’s live local time and whether they are inside working hours, with a department filter and a sort by time zone.',
     blockTagline: 'Live local times, Department filter, Sort by time zone',
@@ -4394,7 +4524,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'stats-01',
-    title: 'Count Up Stats',
+    title: 'Stats 01',
+    subtitle: 'Count Up Stats',
     description:
       'Metrics band with four large numbers that count up on scroll, labels, optional deltas, and a two-column header on large screens. Ships composable parts.',
     blockTagline: 'Counts up in view, bordered row, two-column on lg',
@@ -4411,7 +4542,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'stats-02',
-    title: 'Stats with Sparklines',
+    title: 'Stats 02',
+    subtitle: 'Stats with Sparklines',
     description:
       'Four metric tiles with a 4w, 12w or 52w range toggle that swaps each figure, trend chip and sparkline; one metric trends the wrong way.',
     blockTagline: 'Range toggle, sparkline each, trend chips',
@@ -4429,7 +4561,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'stats-03',
-    title: 'Stats with Targets',
+    title: 'Stats 03',
+    subtitle: 'Stats with Targets',
     description:
       'Split stats section: a short growth story on one side, four metrics tracked against their targets on the other. Bars fill from zero on load and a Quarter / Year toggle swaps the figures.',
     blockTagline: 'Growth story, Progress to target, Quarter or year',
@@ -4464,7 +4597,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'changelog-01',
-    title: 'Changelog Timeline',
+    title: 'Changelog 01',
+    subtitle: 'Changelog Timeline',
     description:
       'Release notes with a sticky date rail, version badges, New / Improved / Fixed tags, a subscribe button, and a filter that narrows entries. Ships composable parts.',
     blockTagline: 'Sticky date rail, tag filter, version badges',
@@ -4482,7 +4616,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'changelog-02',
-    title: 'Public Roadmap Board',
+    title: 'Changelog 02',
+    subtitle: 'Public Roadmap Board',
     description:
       'Public roadmap board with Now, Next and Later columns. Every item can be upvoted, the board sorts by votes or by date, and on small screens tabs pick the column.',
     blockTagline: 'Now, Next, Later, Upvotes, Sort by votes',
@@ -4500,7 +4635,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'not-found-02',
-    title: 'Framed 404 Page',
+    title: 'Not Found 02',
+    subtitle: 'Framed 404 Page',
     description:
       'A 404 page framed by side rails, with a photo, an error code, a home link and a band of popular pages. Ships composable parts.',
     blockTagline: 'Framed rails, photo, popular pages',
@@ -4512,7 +4648,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'page-header-01',
-    title: 'Detail Page Header',
+    title: 'Page Header 01',
+    subtitle: 'Detail Page Header',
     description:
       'Detail page header with a breadcrumb that collapses on small screens, a status badge, owner and contributor meta, and Share, Edit and overflow actions. Share copies the link, Edit renames in place, Archive locks the page until restored and Delete can be undone. Ships composable parts.',
     blockTagline: 'Collapsing breadcrumb, status badge, copy link, archive and restore',
@@ -4525,7 +4662,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'page-header-02',
-    title: 'Tabbed Page Header',
+    title: 'Page Header 02',
+    subtitle: 'Tabbed Page Header',
     description:
       'Workspace header with a primary action and line tabs for Overview, Members, Billing and Settings, kept in sync with the URL hash. Inviting someone updates the member count and the billing total, and renaming the workspace updates the title. Ships composable parts.',
     blockTagline: 'Line tabs, URL hash sync, live member count',
@@ -4537,7 +4675,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'page-header-03',
-    title: 'Filter Toolbar Page Header',
+    title: 'Page Header 03',
+    subtitle: 'Filter Toolbar Page Header',
     description:
       'Invoice list header with a live count, a New invoice dialog and a toolbar for search, status filter, sort and list or grid layout. Shows an empty result with Clear filters when nothing matches. Ships composable parts.',
     blockTagline: 'Search, status filter, sort, list or grid',
@@ -4560,7 +4699,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'page-header-04',
-    title: 'Analytics Page Header',
+    title: 'Page Header 04',
+    subtitle: 'Analytics Page Header',
     description:
       'Analytics header with a 7, 30 or 90 day range and CSV export, above a strip of four metrics with animated values, sparklines and change chips colored by whether the change is good or bad. Ships composable parts.',
     blockTagline: 'Date range, CSV export, metric strip, sparklines',
@@ -4574,7 +4714,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
 
   {
     name: 'empty-state-01',
-    title: 'First-Run Empty State',
+    title: 'Empty State 01',
+    subtitle: 'First-Run Empty State',
     description:
       'A first-run projects panel. Create a project with a validated name or import a GitHub repo, and the list replaces the empty state.',
     blockTagline: 'First run, validated create dialog, GitHub import, getting-started tips',
@@ -4586,7 +4727,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'empty-state-02',
-    title: 'No Results Empty State',
+    title: 'Empty State 02',
+    subtitle: 'No Results Empty State',
     description:
       'A customer list with search and plan and status filters. When nothing matches, it repeats the query, says how many matches the filters hide, suggests close matches and offers to clear filters.',
     blockTagline: 'Echoed query, hidden match count, did you mean, clear filters',
@@ -4599,7 +4741,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'empty-state-03',
-    title: 'Load Error Empty State',
+    title: 'Empty State 03',
+    subtitle: 'Load Error Empty State',
     description:
       'A deployments panel that failed to load, with a copyable error reference and a support link. Try again shows loading rows, fails once more, then loads the data.',
     blockTagline: 'Error reference, copy button, retry with skeletons, contact support',
@@ -4612,7 +4755,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'empty-state-04',
-    title: 'Invite Members Empty State',
+    title: 'Empty State 04',
+    subtitle: 'Invite Members Empty State',
     description:
       'A members panel with an invite form inside the empty state. Invites are validated and listed as pending, and revoking the last one brings the empty state back.',
     blockTagline: 'Inline invite form, role select, several emails, pending list, revoke',
@@ -4624,7 +4768,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'search-01',
-    title: 'Faceted Docs Search',
+    title: 'Search 01',
+    subtitle: 'Faceted Docs Search',
     description:
       'Docs search with type, product area and date facets whose counts reflect the other active filters, removable filter chips and relevance or newest sorting. Ships composable parts.',
     blockTagline: 'Live facet counts, filter chips, highlighted matches, mobile filter sheet',
@@ -4645,7 +4790,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'search-02',
-    title: 'Search Suggestions Dropdown',
+    title: 'Search 02',
+    subtitle: 'Search Suggestions Dropdown',
     description:
       'Search field with a suggestion dropdown: recent and popular searches when empty, matching pages and people while typing. Slash focuses it and the arrow keys move through results.',
     blockTagline: 'Slash to focus, arrow keys, removable recents, grouped suggestions',
@@ -4657,7 +4803,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'search-03',
-    title: 'Search Results Page',
+    title: 'Search 03',
+    subtitle: 'Search Results Page',
     description:
       'Search results page with type tabs and counts, results laid out for docs, people and files, a spelling correction when nothing matches, and paged loading.',
     blockTagline: 'Type tabs with counts, did you mean, show more',
@@ -4669,7 +4816,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'search-04',
-    title: 'Help Center Search',
+    title: 'Search 04',
+    subtitle: 'Help Center Search',
     description:
       'Help center search section with popular topics that fill the query, live matching articles as you type, and a category index when the field is empty.',
     blockTagline: 'Popular topics, live results, category index, support fallback',
@@ -4682,7 +4830,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
 
   {
     name: 'survey-01',
-    title: 'NPS Survey',
+    title: 'Survey 01',
+    subtitle: 'NPS Survey',
     description:
       'NPS card built on Questionnaire: a 0 to 10 scale with number-key shortcuts, then a required follow-up question that changes with the score. Submitting shows the score with a Change answer action. Ships composable parts.',
     blockTagline: 'NPS scale, number-key shortcuts, follow-up by score, change answer',
@@ -4694,7 +4843,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'survey-02',
-    title: 'Feedback Survey',
+    title: 'Survey 02',
+    subtitle: 'Feedback Survey',
     description:
       'Four-question feedback card built on the Questionnaire: single choice, pick up to 3, a 1 to 5 rating and an optional comment you can skip. Required questions validate inline, and a review step lets you edit any answer before submitting.',
     blockTagline: 'Progress bar, pick up to 3, 1 to 5 rating, skip, review and edit',
@@ -4706,7 +4856,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'survey-03',
-    title: 'Cancellation Survey',
+    title: 'Survey 03',
+    subtitle: 'Cancellation Survey',
     description:
       'Plan card with a cancellation survey in a dialog, built on Questionnaire. The reason you pick decides the follow-up step (a discount, a pause or a feedback question), and the card shows the result with an undo.',
     blockTagline: 'Cancel reason, retention offer, pause plan, undo',
@@ -4717,7 +4868,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'survey-04',
-    title: 'Conversational Survey',
+    title: 'Survey 04',
+    subtitle: 'Conversational Survey',
     description:
       'Full-height survey that shows one question per screen, with letter-key answers, Enter to continue and a thin progress bar. One answer skips a later question, and the flow ends on a personal thank-you with a restart.',
     blockTagline: 'One question per screen, letter keys, branching, progress bar',
@@ -4729,7 +4881,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chart-01',
-    title: 'Revenue Bar Chart',
+    title: 'Chart 01',
+    subtitle: 'Revenue Bar Chart',
     description:
       'Monthly revenue bar chart by plan with a year select, a stacked or grouped toggle, totals above the bars and a summary line computed from the data.',
     blockTagline: 'Year select, stacked or grouped bars, bar totals, computed summary',
@@ -4742,7 +4895,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chart-02',
-    title: 'Traffic Area Chart',
+    title: 'Chart 02',
+    subtitle: 'Traffic Area Chart',
     description:
       'Traffic area charts for visitors and signups with a 7, 30 or 90 day range, legend cards that turn each series on or off, and a crosshair tooltip shared across both panels.',
     blockTagline: 'Range toggle, series toggles, shared crosshair, period deltas',
@@ -4755,7 +4909,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chart-03',
-    title: 'Channel Donut Chart',
+    title: 'Chart 03',
+    subtitle: 'Channel Donut Chart',
     description:
       'Revenue by channel donut with the total in the centre and a ranked list of value, share and change. Hovering a row highlights its slice and hovering a slice highlights its row.',
     blockTagline: 'Donut with centre total, ranked legend, linked hover, period toggle',
@@ -4768,7 +4923,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chart-04',
-    title: 'Conversion Funnel Chart',
+    title: 'Chart 04',
+    subtitle: 'Conversion Funnel Chart',
     description:
       'Signup funnel from visited to subscribed, showing the count, share of visitors, step conversion and drop-off at each step, with an All, Organic or Paid segment toggle.',
     blockTagline: 'Funnel bars, step conversion, drop-off, segment toggle',
@@ -4780,7 +4936,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chat-01',
-    title: 'Two-Pane Messenger',
+    title: 'Chat 01',
+    subtitle: 'Two-Pane Messenger',
     description:
       'Messenger with a searchable conversation list, unread counts that clear when opened, and a thread that sticks to the newest message, with attachments and an emoji picker in the composer. On phones the list and thread become two screens. Ships composable parts.',
     blockTagline: 'Searchable conversations, unread counts, attachments, emoji',
@@ -4803,7 +4960,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chat-02',
-    title: 'Support Chat Widget',
+    title: 'Chat 02',
+    subtitle: 'Support Chat Widget',
     description:
       'Floating support widget with the typical reply time, quick replies, an agent that answers a few topics after a typing indicator, and a rating when the conversation ends. Ships composable parts.',
     blockTagline: 'Launcher, quick replies, typing indicator, end-of-chat rating',
@@ -4816,7 +4974,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chat-03',
-    title: 'Team Channel with Threads',
+    title: 'Chat 03',
+    subtitle: 'Team Channel with Threads',
     description:
       'Team channel with emoji reactions, a pinned message, @mentions in the composer, and replies that open in a side thread with its own composer. Ships composable parts.',
     blockTagline: 'Reactions, reply threads, mentions, pinned message',
@@ -4828,7 +4987,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'chat-04',
-    title: 'Shared Inbox',
+    title: 'Chat 04',
+    subtitle: 'Shared Inbox',
     description:
       'Shared customer inbox with Open, Snoozed and Closed tabs, an assignee filter, internal notes in the composer, saved replies, and snooze and close actions that move conversations between tabs. Ships composable parts.',
     blockTagline: 'Status tabs, assignee filter, internal notes, saved replies',
@@ -4905,7 +5065,8 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'ai-chat-01',
-    title: 'AI Chat with History',
+    title: 'AI Chat 01',
+    subtitle: 'AI Chat with History',
     description:
       'Full chat screen: grouped history sidebar that collapses to a sheet, top bar with model badge, streaming thread, and pinned composer. Ships composable parts.',
     blockTagline: 'History sidebar, streaming replies, Stop cancels',
@@ -5429,6 +5590,22 @@ export const BLOCK_KIND_LABELS: Record<BlockKind, string> = {
   chat: 'Chat',
 };
 
+const NUMBERED_SLUG = /^(.*)-(\d+)$/;
+
+// Blocks titled by number list as login-01, login-02 … within a category, wherever they sit in this file.
+const byNumberedSlug = (entries: RegistryEntryMeta[]): RegistryEntryMeta[] => {
+  const prefixRank = new Map<string, number>();
+  const keyed = entries.map((entry) => {
+    const match = NUMBERED_SLUG.exec(entry.name);
+    const prefix = match?.[1] ?? entry.name;
+    if (!prefixRank.has(prefix)) prefixRank.set(prefix, prefixRank.size);
+
+    return { entry, rank: prefixRank.get(prefix) ?? 0, number: match ? Number(match[2]) : 0 };
+  });
+
+  return keyed.sort((a, b) => a.rank - b.rank || a.number - b.number).map(({ entry }) => entry);
+};
+
 export const BLOCKS_BY_KIND = (() => {
   const groups: Record<BlockKind, RegistryEntryMeta[]> = {
     hero: [],
@@ -5468,10 +5645,8 @@ export const BLOCKS_BY_KIND = (() => {
     bento: [],
     chat: [],
   };
-  for (const entry of REGISTRY) {
-    if (entry.category === 'blocks' && entry.blockKind) {
-      groups[entry.blockKind].push(entry);
-    }
+  for (const entry of byNumberedSlug(REGISTRY.filter((item) => item.category === 'blocks'))) {
+    if (entry.blockKind) groups[entry.blockKind].push(entry);
   }
 
   return groups;

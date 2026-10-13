@@ -266,6 +266,7 @@ export const buildSearchIndex = (entries: RegistryEntryMeta[]): SearchDoc[] =>
       compactName: compact(entry.name),
       fields: [
         { words: words(entry.title), weight: 100 },
+        { words: words(entry.subtitle ?? ''), weight: 95 },
         { words: words(entry.name), weight: 90 },
         { words: words(kindWords), weight: 50 },
         { words: words(entry.blockTagline ?? ''), weight: 30 },

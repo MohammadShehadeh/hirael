@@ -144,7 +144,10 @@ Let's say you are adding a component called `week-picker`.
 **Blocks** are ready-made page sections, like a hero, a pricing table or a
 dashboard. They live in `bases/<base>/blocks/<name>/<name>.tsx` and need a
 `blockKind` (the section type, such as `hero`) and a short `blockTagline` in
-`registry-meta.ts`.
+`registry-meta.ts`. A numbered block is titled by its number (`hero-03` is
+"Hero 03") and carries a `subtitle` that says what it is ("Hero with Logo
+Cloud"); search and page titles use the subtitle, and the category lists blocks
+in number order.
 
 A good rule for deciding between the two: a general control that works
 anywhere, like a date picker, is a component. Something built for one kind of

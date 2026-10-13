@@ -101,11 +101,10 @@ const Header01 = () => {
                       <DropdownMenuContent align="start" className="w-44">
                         {n.items.map((item) => (
                           <DropdownMenuItem key={item.label} asChild>
-                            <a
-                              {...linkProps(item.href)}
-                              className="aria-[current=page]:font-medium aria-[current=page]:text-foreground"
-                            >
-                              {item.label}
+                            <a {...linkProps(item.href)}>
+                              <span className={cn(current === item.href && 'font-medium text-foreground')}>
+                                {item.label}
+                              </span>
                             </a>
                           </DropdownMenuItem>
                         ))}

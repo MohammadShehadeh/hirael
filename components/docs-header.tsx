@@ -34,8 +34,8 @@ export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
 
   return (
     <header className="relative z-40 h-16 w-full border-b border-border bg-background/70 backdrop-blur-xl">
-      <div className="mx-auto flex h-full w-full max-w-(--docs-layout-width) items-center">
-        <div className="flex shrink-0 items-center gap-1 px-4 md:w-(--docs-sidebar-width)">
+      <div className="mx-auto flex h-full w-full max-w-page items-center">
+        <div className="flex shrink-0 items-center gap-1 px-4 md:w-sidebar">
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
             <SheetTrigger asChild>
               <Button

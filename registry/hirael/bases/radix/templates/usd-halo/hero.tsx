@@ -86,20 +86,23 @@ export const HeroSection = () => {
           decoding="async"
           className="absolute inset-0 size-full object-cover object-center"
         />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-b from-white/70 via-white/20 to-white/10" />
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white/85 via-white/40 to-transparent"
+          className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/20 to-background/10"
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background/85 via-background/40 to-transparent"
         />
 
         <div className="relative z-10 flex h-full flex-col items-start justify-start p-12 pt-36">
-          <h1 className="mb-4 max-w-xl text-5xl leading-tight font-medium tracking-[-0.04em] text-black md:text-6xl">
+          <h1 className="mb-4 max-w-xl text-5xl leading-tight font-medium tracking-[-0.04em] text-foreground md:text-6xl">
             Your Wealth
             <br />
             Works
           </h1>
 
-          <p className="mb-8 max-w-md [font-family:var(--font-inter),ui-sans-serif,system-ui,sans-serif] text-base leading-relaxed text-black/70 md:text-lg">
+          <p className="mb-8 max-w-md [font-family:var(--font-inter),ui-sans-serif,system-ui,sans-serif] text-base leading-relaxed text-foreground/70 md:text-lg">
             An automated, reward-powered digital dollar built for native passive earnings and effortless connection into
             DeFi.
           </p>
@@ -112,7 +115,7 @@ export const HeroSection = () => {
               trackClass="marquee-track"
               keyframesName="marquee"
               durationSeconds={22}
-              itemClass="mx-7 shrink-0 whitespace-nowrap text-black/80"
+              itemClass="mx-7 shrink-0 whitespace-nowrap text-foreground/80"
             />
           </div>
         </div>

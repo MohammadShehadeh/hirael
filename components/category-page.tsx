@@ -21,7 +21,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
   const total = blocks.length;
 
   return (
-    <div className="docs-container flex flex-col gap-8 py-10 sm:gap-10 sm:py-12 md:py-16">
+    <div className="container flex flex-col gap-8 py-10 sm:gap-10 sm:py-12 md:py-16">
       <Breadcrumbs items={[{ label: 'Blocks', href: '/blocks' }, { label: category.title }]} />
 
       <header className="flex flex-col gap-4">
@@ -119,7 +119,7 @@ const RoadmapState = ({ category }: RoadmapStateProps) => {
       <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">
         <div
           aria-hidden
-          className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] opacity-50"
+          className="pointer-events-none absolute inset-0 bg-dot-grid mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] opacity-50"
         />
         <div className="relative flex flex-col gap-4">
           <span className="text-xs text-muted-foreground uppercase">In design</span>

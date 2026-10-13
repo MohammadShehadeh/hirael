@@ -86,9 +86,9 @@ const InlineEditDemo = () => {
           })}
           required
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 text-lg font-semibold tracking-tight">
             <InlineEditPreview asChild>
-              <h3 className="text-lg font-semibold tracking-tight" />
+              <h3 />
             </InlineEditPreview>
             <InlineEditInput aria-label={t({ en: 'Edit heading', ar: 'تعديل العنوان' })} />
             <InlineEditControls />

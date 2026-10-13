@@ -39,11 +39,11 @@ const PILLARS: Pillar[] = [
 const DeliveryGlyph = () => {
   return (
     <svg width="19" height="18" viewBox="0 0 17 16" fill="none" aria-hidden className="shrink-0">
-      <circle cx="8.5" cy="8" r="7" stroke="#c86fff" strokeWidth="1.2" />
-      <rect x="8" y="0" width="1" height="3" fill="rgb(200, 111, 255)" />
-      <rect x="8" y="13" width="1" height="3" fill="rgb(200, 111, 255)" />
-      <rect x="0" y="7.5" width="3" height="1" fill="rgb(200, 111, 255)" />
-      <rect x="14" y="7.5" width="3" height="1" fill="rgb(200, 111, 255)" />
+      <circle cx="8.5" cy="8" r="7" stroke="var(--primary)" strokeWidth="1.2" />
+      <rect x="8" y="0" width="1" height="3" fill="var(--primary)" />
+      <rect x="8" y="13" width="1" height="3" fill="var(--primary)" />
+      <rect x="0" y="7.5" width="3" height="1" fill="var(--primary)" />
+      <rect x="14" y="7.5" width="3" height="1" fill="var(--primary)" />
     </svg>
   );
 };

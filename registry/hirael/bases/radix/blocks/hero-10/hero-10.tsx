@@ -85,13 +85,13 @@ const Hero10 = () => {
             className={cn('mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md', RISE)}
           >
             <Button asChild size="lg">
-              <a href="#" className="group flex items-center gap-2">
+              <a href="#">
                 <GithubIcon className="size-4" />
                 Connect GitHub
               </a>
             </Button>
             <Button asChild variant="secondary" size="lg">
-              <a href="#" className="group flex items-center gap-2">
+              <a href="#">
                 <Play className="size-3.5 fill-current" />
                 See how it works
               </a>

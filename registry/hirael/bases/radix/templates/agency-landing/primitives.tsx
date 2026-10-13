@@ -57,15 +57,15 @@ export const OrangeButton = ({ label, className, ...props }: OrangeButtonProps) 
       type="button"
       className={cn(
         PILL_BUTTON,
-        'group h-auto bg-[#F26522] py-2 ps-5 pe-2 text-[13px] text-white hover:bg-[#e05a1a] sm:ps-6 sm:text-[14px]',
+        'group h-auto bg-primary py-2 ps-5 pe-2 text-[13px] text-primary-foreground hover:bg-primary/90 sm:ps-6 sm:text-[14px]',
         className,
       )}
       {...props}
     >
       <RollText>{label}</RollText>
-      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white sm:h-8 sm:w-8">
+      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-background sm:h-8 sm:w-8">
         <ArrowRight
-          className={cn('size-4 text-[#F26522] transition-transform duration-500 group-hover:-rotate-45', EASE)}
+          className={cn('size-4 text-primary transition-transform duration-500 group-hover:-rotate-45', EASE)}
         />
       </span>
     </button>

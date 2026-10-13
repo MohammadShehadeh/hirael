@@ -14,7 +14,7 @@ export const DocsTabsBar = () => {
     <div className="sticky top-0 z-30 h-11 w-full border-b border-border bg-background/70 backdrop-blur-xl">
       <nav
         aria-label="Sections"
-        className="mx-auto flex h-full w-full max-w-(--docs-layout-width) [scrollbar-width:none] items-stretch overflow-x-auto px-4 [&::-webkit-scrollbar]:hidden"
+        className="mx-auto flex h-full w-full max-w-page [scrollbar-width:none] items-stretch overflow-x-auto px-4 [&::-webkit-scrollbar]:hidden"
       >
         {/* Scrolls sideways on narrow screens rather than widening the page. */}
         <div className="-ms-3 flex shrink-0 items-stretch gap-1">

@@ -12,7 +12,9 @@ import {
   PreviewOpenButton,
   PreviewRefreshButton,
   PreviewThemeButton,
+  PreviewZoomMenu,
   previewSrc,
+  type PreviewZoom,
   usePreviewTheme,
 } from '@/components/preview-frame';
 import { SegmentedControl } from '@/components/segmented-control';
@@ -23,7 +25,7 @@ type Viewport = 'mobile' | 'tablet' | 'desktop';
 const SIZES: Record<Viewport, { width: number; label: string }> = {
   mobile: { width: 380, label: 'Mobile' },
   tablet: { width: 768, label: 'Tablet' },
-  desktop: { width: 0, label: 'Desktop' },
+  desktop: { width: 1280, label: 'Desktop' },
 };
 
 const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
@@ -53,13 +55,27 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
   const [key, setKey] = React.useState(0);
   const [isRtl, setIsRtl] = React.useState(false);
   const previewTheme = usePreviewTheme();
+  const stageRef = React.useRef<HTMLDivElement>(null);
+  const [stageWidth, setStageWidth] = React.useState(0);
+  const [frameHeight, setFrameHeight] = React.useState<number | null>(null);
+  const [zoom, setZoom] = React.useState<PreviewZoom>('fit');
+
+  React.useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    const observer = new ResizeObserver(([item]) => setStageWidth(item.contentRect.width));
+    observer.observe(stage);
+
+    return () => observer.disconnect();
+  }, []);
 
   const src = previewSrc(embedHref, { theme: previewTheme.previewMode, isRtl });
 
-  const sizing =
-    viewport === 'desktop'
-      ? { width: '100%', maxWidth: '100%' }
-      : { width: `${SIZES[viewport].width}px`, maxWidth: '100%' };
+  // The frame keeps the viewport's real width so the block hits its own breakpoints, then shrinks to fit the page.
+  const width = SIZES[viewport].width;
+  const fitScale = stageWidth > 0 ? Math.min(1, stageWidth / width) : 1;
+  const scale = zoom === 'fit' ? fitScale : zoom / 100;
+  const visibleHeight = (frameHeight ?? initialHeight / scale) * scale;
 
   return (
     <div data-slot="block-viewer" className="overflow-hidden rounded-sm border border-border bg-background">
@@ -76,14 +92,11 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
 
             return {
               value: v,
-              ariaLabel: `${SIZES[v].label} viewport${v === 'desktop' ? '' : ` (${SIZES[v].width}px)`}`,
-              label: (active: boolean) => (
+              ariaLabel: `${SIZES[v].label} viewport (${SIZES[v].width}px)`,
+              label: () => (
                 <>
                   <Icon className="size-3" />
                   <span className="hidden sm:inline">{SIZES[v].label}</span>
-                  {v !== 'desktop' && active && (
-                    <span className="text-muted-foreground tabular-nums">{SIZES[v].width}</span>
-                  )}
                 </>
               ),
             };
@@ -91,6 +104,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
         />
 
         <div className="flex items-center gap-1">
+          <PreviewZoomMenu value={zoom} onValueChange={setZoom} fitPercent={Math.round(fitScale * 100)} />
           <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
           <PreviewThemeButton theme={previewTheme} />
           <PreviewRefreshButton onRefresh={() => setKey((k) => k + 1)} />
@@ -100,18 +114,20 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
         </div>
       </div>
 
-      <div className="bg-dot-grid flex justify-center overflow-x-auto bg-card/20 p-3 sm:p-4">
-        <PreviewFrame
-          src={src}
-          title={`${entry.title} preview`}
-          refreshKey={key}
-          initialHeight={initialHeight}
-          minHeight={MIN_HEIGHT}
-          maxHeight={maxHeight}
-          eager={eager}
-          className="transition-[width,max-width] duration-300 ease-out"
-          style={sizing}
-        />
+      <div ref={stageRef} className="flex justify-center-safe overflow-x-auto bg-card/20 bg-dot-grid p-3 sm:p-4">
+        <div className="shrink-0 overflow-hidden" style={{ width: width * scale, height: visibleHeight }}>
+          <PreviewFrame
+            src={src}
+            title={`${entry.title} preview`}
+            refreshKey={key}
+            initialHeight={initialHeight / scale}
+            minHeight={MIN_HEIGHT / scale}
+            maxHeight={maxHeight / scale}
+            eager={eager}
+            onHeightChange={setFrameHeight}
+            style={{ width, transform: `scale(${scale})`, transformOrigin: '0 0' }}
+          />
+        </div>
       </div>
 
       <InstallBlock name={entry.name} variant="frame" />

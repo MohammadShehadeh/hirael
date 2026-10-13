@@ -92,9 +92,9 @@ const Beam = ({ className, reduce }: BeamProps) => {
       <defs>
         <linearGradient id="hero07-beam" x1="230" y1="233" x2="230" y2="0" gradientUnits="userSpaceOnUse">
           <stop stopColor="transparent" offset="0%" />
-          <stop stopColor="color-mix(in oklch, var(--primary) 60%, transparent)" offset="30%" />
+          <stop stopColor="var(--primary)" stopOpacity={0.6} offset="30%" />
           <stop stopColor="var(--foreground)" offset="50%" />
-          <stop stopColor="color-mix(in oklch, var(--primary) 60%, transparent)" offset="70%" />
+          <stop stopColor="var(--primary)" stopOpacity={0.6} offset="70%" />
           <stop stopColor="transparent" offset="100%" />
         </linearGradient>
       </defs>
@@ -150,9 +150,9 @@ const SideBeam = ({ className, reduce }: SideBeamProps) => {
       <defs>
         <linearGradient id="hero07-side" x1="160.901" y1="444" x2="160.901" y2="0" gradientUnits="userSpaceOnUse">
           <stop stopColor="transparent" offset="0%" />
-          <stop stopColor="color-mix(in oklch, var(--primary) 60%, transparent)" offset="30%" />
+          <stop stopColor="var(--primary)" stopOpacity={0.6} offset="30%" />
           <stop stopColor="var(--foreground)" offset="50%" />
-          <stop stopColor="color-mix(in oklch, var(--primary) 60%, transparent)" offset="70%" />
+          <stop stopColor="var(--primary)" stopOpacity={0.6} offset="70%" />
           <stop stopColor="transparent" offset="100%" />
         </linearGradient>
       </defs>

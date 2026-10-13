@@ -1,22 +1,16 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, MailCheck } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { Field, FieldError, FieldGroup, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
+import { Card, CardContent } from '@/registry/hirael/bases/radix/ui/card';
+import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const ENTER =
-  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-const SWAP =
-  'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-
-const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
+const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 interface BrandMarkProps {
   className?: string;
@@ -30,8 +24,6 @@ const BrandMark = ({ className }: BrandMarkProps) => {
   );
 };
 
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
-
 type SendStatus = 'idle' | 'sending' | 'sent';
 
 const ForgotPassword01 = () => {
@@ -42,16 +34,12 @@ const ForgotPassword01 = () => {
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) {
-      setError('Enter the email you signed up with.');
-
-      return;
-    }
     if (!EMAIL_PATTERN.test(email)) {
-      setError("That doesn't look like a valid email.");
+      setError(email.trim() ? 'Enter a valid email address.' : 'Enter your email address.');
 
       return;
     }
+
     setError(null);
     setStatus('sending');
     await wait(900);
@@ -64,91 +52,43 @@ const ForgotPassword01 = () => {
     setResend('sent');
   };
 
+  const sent = status === 'sent';
+
   return (
     <section
       data-slot="forgot-password"
-      className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24"
+      className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background px-4 py-12"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
-      />
+      <a href="#" aria-label="Hirael home" className="text-foreground">
+        <BrandMark className="size-9" />
+      </a>
 
-      <div className="mx-auto w-full max-w-md px-6">
-        <div
-          data-slot="forgot-password-card"
-          className={cn(ENTER, 'rounded-sm border border-border bg-card shadow-[8px_8px_0_0_var(--border)]')}
-        >
-          {status === 'sent' ? (
-            <div
-              role="status"
-              aria-live="polite"
-              className={cn(SWAP, 'flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-8')}
-            >
-              <MailCheck aria-hidden className="size-7 text-foreground" />
-              <div className="flex flex-col gap-1">
-                <h1 className="font-serif text-3xl font-medium tracking-tight">Check your inbox</h1>
-                <p className="text-xs text-muted-foreground">
-                  We sent a reset link to <span className="break-all text-foreground">{email}</span>. It expires in 15
-                  minutes.
-                </p>
-              </div>
-              <div className="mt-2 flex flex-col items-center gap-2">
-                <p className="text-xs text-muted-foreground">
-                  {resend === 'sent' ? (
-                    <span key="resent" className={SWAP}>
-                      Sent again. Give it a minute to arrive.
-                    </span>
-                  ) : (
-                    <>
-                      Didn&apos;t get it?{' '}
-                      <Button
-                        type="button"
-                        variant="link"
-                        size="xs"
-                        onClick={onResend}
-                        disabled={resend === 'sending'}
-                        className="h-auto"
-                      >
-                        {resend === 'sending' ? 'Sending…' : 'Resend'}
-                      </Button>
-                    </>
-                  )}
-                </p>
-                <a href="#" className="text-xs text-muted-foreground uppercase transition-colors hover:text-foreground">
-                  Back to sign in
-                </a>
-              </div>
-            </div>
-          ) : (
-            <>
-              <div
-                data-slot="forgot-password-header"
-                className="flex flex-col items-center gap-4 border-b border-border px-6 pt-8 pb-6 sm:px-8"
-              >
-                <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
-                <div style={stagger(1)} className={cn(ENTER, 'flex flex-col items-center gap-1 text-center')}>
-                  <h1 className="font-serif text-3xl font-medium tracking-tight">Forgot your password?</h1>
-                  <p className="text-xs text-muted-foreground">
-                    Enter your email and we&apos;ll send you a link to reset it.
-                  </p>
-                </div>
-              </div>
+      <h1 className="text-2xl font-semibold tracking-tight">{sent ? 'Check your email' : 'Reset your password'}</h1>
 
-              <form
-                data-slot="forgot-password-form"
-                noValidate
-                style={stagger(2)}
-                className={cn(ENTER, 'p-6 sm:p-8')}
-                onSubmit={onSubmit}
-              >
+      <div className="flex w-full max-w-sm flex-col gap-4">
+        <Card data-slot="forgot-password-card">
+          <CardContent>
+            {sent ? (
+              <div role="status" className="flex flex-col gap-6">
+                <p className="text-sm text-muted-foreground">
+                  We sent a reset link to <span className="font-medium break-all text-foreground">{email}</span>. It
+                  expires in 15 minutes. If it doesn&apos;t arrive, check your spam folder.
+                </p>
+                <Button asChild className="w-full">
+                  <a href="#">Return to sign in</a>
+                </Button>
+              </div>
+            ) : (
+              <form data-slot="forgot-password-form" noValidate onSubmit={onSubmit}>
                 <FieldGroup className="gap-5">
-                  <Field className="gap-1.5" data-invalid={Boolean(error) || undefined}>
-                    <FieldLabel htmlFor="forgot01-email">Email</FieldLabel>
+                  <Field data-invalid={Boolean(error) || undefined}>
+                    <FieldLabel htmlFor="forgot01-email">Email address</FieldLabel>
+                    <FieldDescription>
+                      Enter the email on your account and we&apos;ll send you a link to reset your password.
+                    </FieldDescription>
                     <Input
                       id="forgot01-email"
                       type="email"
-                      placeholder="you@hirael.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       autoComplete="email"
@@ -158,39 +98,38 @@ const ForgotPassword01 = () => {
                     <FieldError id="forgot01-email-error">{error}</FieldError>
                   </Field>
 
-                  <Button type="submit" variant="default" size="lg" disabled={status === 'sending'} className="group">
-                    {status === 'sending' ? (
-                      <>
-                        <Spinner className="motion-reduce:animate-none" />
-                        Sending link…
-                      </>
-                    ) : (
-                      <>
-                        Send reset link
-                        <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                      </>
-                    )}
+                  <Button type="submit" disabled={status === 'sending'} className="w-full">
+                    {status === 'sending' && <Spinner />}
+                    {status === 'sending' ? 'Sending…' : 'Send reset link'}
                   </Button>
                 </FieldGroup>
               </form>
+            )}
+          </CardContent>
+        </Card>
 
-              <div style={stagger(3)} className={cn(ENTER, 'border-t border-border px-6 py-4 text-center sm:px-8')}>
-                <p className="text-xs text-muted-foreground">
-                  Remembered it?{' '}
-                  <a
-                    href="#"
-                    className="font-medium text-foreground underline-offset-4 hover:text-foreground hover:underline"
-                  >
-                    Back to sign in
-                  </a>
-                </p>
-              </div>
-            </>
+        <p className="text-center text-sm text-muted-foreground">
+          {sent ? (
+            resend === 'sent' ? (
+              <span role="status">Sent again. Give it a minute to arrive.</span>
+            ) : (
+              <>
+                Didn&apos;t get it?{' '}
+                <button
+                  type="button"
+                  onClick={onResend}
+                  disabled={resend === 'sending'}
+                  className="font-medium text-primary underline-offset-4 hover:underline disabled:opacity-50"
+                >
+                  {resend === 'sending' ? 'Sending…' : 'Resend link'}
+                </button>
+              </>
+            )
+          ) : (
+            <a href="#" className="font-medium text-primary underline-offset-4 hover:underline">
+              Back to sign in
+            </a>
           )}
-        </div>
-
-        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs text-muted-foreground uppercase')}>
-          Reset links expire after 15 minutes
         </p>
       </div>
     </section>

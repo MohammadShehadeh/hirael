@@ -21,18 +21,18 @@ const LINK_COLUMNS = [
 
 export const Footer = () => {
   return (
-    <footer className="bg-gray-900 text-white">
+    <footer className="bg-foreground text-background">
       <div className="mx-auto w-full max-w-[1440px] px-5 py-16 sm:px-8 sm:py-20 lg:px-12 lg:py-24">
-        <div className="flex flex-col gap-8 border-b border-white/10 pb-12 sm:pb-16 lg:flex-row lg:items-end lg:justify-between lg:pb-20">
+        <div className="flex flex-col gap-8 border-b border-background/10 pb-12 sm:pb-16 lg:flex-row lg:items-end lg:justify-between lg:pb-20">
           <div className="max-w-2xl">
             <div className="mb-5 flex items-center gap-3 sm:mb-8">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-gray-900 sm:h-7 sm:w-7">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background text-foreground sm:h-7 sm:w-7">
                 <HiraelMark className="h-3.5 w-3 sm:h-4 sm:w-3.5" />
               </span>
               <span
                 className={cn(
                   PILL_LABEL,
-                  'border-white/15 px-3 py-1 text-[12px] text-white sm:px-4 sm:py-1.5 sm:text-[13px]',
+                  'border-background/15 px-3 py-1 text-[12px] text-background sm:px-4 sm:py-1.5 sm:text-[13px]',
                 )}
               >
                 Work with us
@@ -49,7 +49,7 @@ export const Footer = () => {
             <OrangeButton label="Start a project" />
             <a
               href="mailto:hello@hirael.com"
-              className="text-[14px] text-gray-400 transition-colors duration-300 hover:text-white"
+              className="text-[14px] text-background/60 transition-colors duration-300 hover:text-background"
             >
               hello@hirael.com
             </a>
@@ -59,29 +59,36 @@ export const Footer = () => {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 sm:py-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:py-20">
           <div className="col-span-2 flex flex-col gap-5 lg:col-span-1">
             <a href="#" aria-label="Hirael home" className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-gray-900 sm:h-10 sm:w-10">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-background text-foreground sm:h-10 sm:w-10">
                 <HiraelMark className="h-5 w-4 sm:h-6 sm:w-5" />
               </span>
               <span className="text-[15px] font-semibold tracking-tight sm:text-[16px]">Hirael</span>
             </a>
-            <p className="max-w-xs text-[14px] leading-[1.6] text-gray-400">
+            <p className="max-w-xs text-[14px] leading-[1.6] text-background/60">
               A strategy-led studio crafting digital experiences for growing brands.
             </p>
-            <span className={cn(PILL_LABEL, 'gap-2 border-white/15 px-3 py-1.5 text-[13px] font-normal text-gray-300')}>
-              <span className="flex h-2 w-2 rounded-full bg-[#F26522]" />
+            <span
+              className={cn(
+                PILL_LABEL,
+                'gap-2 border-background/15 px-3 py-1.5 text-[13px] font-normal text-background/75',
+              )}
+            >
+              <span className="flex h-2 w-2 rounded-full bg-primary" />
               Taking on projects for Q1 2026
             </span>
           </div>
 
           {LINK_COLUMNS.map((col) => (
             <nav key={col.heading} className="flex flex-col gap-3.5">
-              <h3 className="text-[11px] font-semibold tracking-[0.16em] text-gray-500 uppercase">{col.heading}</h3>
+              <h3 className="text-[11px] font-semibold tracking-[0.16em] text-background/50 uppercase">
+                {col.heading}
+              </h3>
               <ul className="flex flex-col gap-2.5">
                 {col.links.map((link) => (
                   <li key={link}>
                     <a
                       href="#"
-                      className="group inline-flex items-center gap-1 text-[14px] text-gray-400 transition-colors duration-300 hover:text-white"
+                      className="group inline-flex items-center gap-1 text-[14px] text-background/60 transition-colors duration-300 hover:text-background"
                     >
                       {link}
                       <ArrowUpRight
@@ -101,20 +108,20 @@ export const Footer = () => {
 
         <div
           aria-hidden
-          className="pointer-events-none overflow-hidden border-t border-white/10 pt-10 select-none sm:pt-12"
+          className="pointer-events-none overflow-hidden border-t border-background/10 pt-10 select-none sm:pt-12"
         >
-          <span className="block text-[18vw] leading-[0.8] font-medium tracking-[-0.05em] text-white/[0.06]">
+          <span className="block text-[18vw] leading-[0.8] font-medium tracking-[-0.05em] text-background/[0.06]">
             Hirael
           </span>
         </div>
 
         <div className="flex flex-col gap-4 pt-8 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-[13px] text-gray-500">© 2026 Hirael Studio. All rights reserved.</p>
+          <p className="text-[13px] text-background/50">© 2026 Hirael Studio. All rights reserved.</p>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-            <a href="#" className="text-[13px] text-gray-500 transition-colors duration-300 hover:text-white">
+            <a href="#" className="text-[13px] text-background/50 transition-colors duration-300 hover:text-background">
               Privacy
             </a>
-            <a href="#" className="text-[13px] text-gray-500 transition-colors duration-300 hover:text-white">
+            <a href="#" className="text-[13px] text-background/50 transition-colors duration-300 hover:text-background">
               Terms
             </a>
           </div>

@@ -640,10 +640,10 @@ export const REGISTRY: RegistryEntryMeta[] = [
   },
   {
     name: 'login-01',
-    title: 'Login Card',
+    title: 'Login 01',
     description:
-      'Centered login card with monogram, email + password (using the password-input component), remember-me, divider and GitHub / Google providers.',
-    blockTagline: 'Centered card, providers, password-input',
+      'Centered sign-in: logo and heading above a card with email, password and an inline forgot-password link, a passkey option, an alert for failed attempts and a create-account line below.',
+    blockTagline: 'Centered card, passkey, inline errors',
     category: 'blocks',
     blockKind: 'login',
     files: [
@@ -652,15 +652,15 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/login-01.tsx',
       },
     ],
-    registryDependencies: ['button', 'checkbox', 'field', 'input', 'password-input', 'spinner'],
+    registryDependencies: ['alert', 'button', 'card', 'field', 'input', 'password-input', 'spinner'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'login-02',
-    title: 'Login with Testimonial',
+    title: 'Login 02',
     description:
-      'Two-pane login: form on the left, dark testimonial panel with quote and metrics on the right. Uses the strength-meter variant of password-input.',
-    blockTagline: 'Split, testimonial pane, strength meter',
+      'Split login with a testimonial pane. The form leads with Google and GitHub, then email and password with an inline forgot link and an alert for failed attempts. The pane holds a quote and two results over a world map drawn in the foreground token.',
+    blockTagline: 'Split, providers first, testimonial pane',
     category: 'blocks',
     blockKind: 'login',
     files: [
@@ -669,15 +669,66 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/login-02.tsx',
       },
     ],
-    registryDependencies: ['button', 'field', 'input', 'password-input', 'spinner'],
+    registryDependencies: ['alert', 'button', 'field', 'input', 'password-input', 'spinner'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'login-03',
+    title: 'Login 03',
+    description:
+      'Split-screen sign-in: a decorative animated-paths aside with a brand mark and a short quote, paired with a clean GitHub-only sign-in pane. A back-to-home link, mobile-collapsing layout, and token-based radial glows behind the form.',
+    blockTagline: 'Split layout, animated paths, GitHub sign-in',
+    category: 'blocks',
+    blockKind: 'login',
+    files: [
+      {
+        path: 'blocks/login-03/login-03.tsx',
+        target: 'components/blocks/login-03.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'spinner'],
+    dependencies: ['lucide-react', 'motion'],
+  },
+  {
+    name: 'login-04',
+    title: 'Login 04',
+    description:
+      'Identifier-first sign-in in one wide card: heading on one side, fields on the other. Email first, then password, with an account chip to switch back and a hidden username field so password managers fill the right account.',
+    blockTagline: 'Email first, then password, wide card',
+    category: 'blocks',
+    blockKind: 'login',
+    files: [
+      {
+        path: 'blocks/login-04/login-04.tsx',
+        target: 'components/blocks/login-04.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'card', 'field', 'input', 'password-input', 'spinner'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'login-05',
+    title: 'Login 05',
+    description:
+      'Provider-first sign-in: stacked Continue with GitHub, Google and Apple buttons, plus email and passkey options. Email sends a magic link and swaps to a check-your-email state.',
+    blockTagline: 'Stacked providers, magic link, passkey',
+    category: 'blocks',
+    blockKind: 'login',
+    files: [
+      {
+        path: 'blocks/login-05/login-05.tsx',
+        target: 'components/blocks/login-05.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'field', 'input', 'spinner'],
     dependencies: ['lucide-react'],
   },
   {
     name: 'signup-01',
-    title: 'Sign Up Card',
+    title: 'Sign Up 01',
     description:
-      'Centered signup card with monogram, name + email, strength-meter password-input, terms checkbox, divider and GitHub / Google providers. Validates inline on submit.',
-    blockTagline: 'Centered card, strength meter, providers',
+      'Centered signup card: GitHub and Google first, then name, email and a password with a strength meter and hint. Terms sit under the card as plain text, and submitting swaps to a check-your-email state.',
+    blockTagline: 'Providers first, strength meter, verify state',
     category: 'blocks',
     blockKind: 'login',
     files: [
@@ -686,15 +737,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/signup-01.tsx',
       },
     ],
-    registryDependencies: ['button', 'checkbox', 'field', 'input', 'password-input', 'spinner'],
-    dependencies: ['lucide-react'],
+    registryDependencies: ['button', 'card', 'field', 'input', 'password-input', 'spinner'],
   },
   {
     name: 'forgot-password-01',
-    title: 'Forgot Password Card',
+    title: 'Forgot Password 01',
     description:
-      'Centered reset-request card: email with inline validation and a pending submit, swapping to a check-your-inbox state that echoes the address with resend and back-to-sign-in links.',
-    blockTagline: 'Centered card, inbox state, resend link',
+      'Centered reset request: one email field with inline validation, then a check-your-email state that echoes the address, links back to sign in and offers a resend.',
+    blockTagline: 'Email field, sent state, resend link',
     category: 'blocks',
     blockKind: 'login',
     files: [
@@ -703,15 +753,14 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/forgot-password-01.tsx',
       },
     ],
-    registryDependencies: ['button', 'field', 'input', 'spinner'],
-    dependencies: ['lucide-react'],
+    registryDependencies: ['button', 'card', 'field', 'input', 'spinner'],
   },
   {
     name: 'otp-verify-01',
-    title: 'OTP Verification Card',
+    title: 'OTP Verify 01',
     description:
-      'Centered verification card built on InputOTP: six slots that fit a phone screen, paste support, auto-verify on the last digit, a 30s resend countdown announced once when it unlocks, and a pending then success verify flow.',
-    blockTagline: 'Six-box code, 30s resend, success state',
+      'Centered verification card built on InputOTP: six slots that fit a phone screen, paste support, auto-verify on the last digit, a 30s resend countdown and a verified state.',
+    blockTagline: 'Six-digit code, 30s resend, verified state',
     category: 'blocks',
     blockKind: 'login',
     files: [
@@ -720,7 +769,32 @@ export const REGISTRY: RegistryEntryMeta[] = [
         target: 'components/blocks/otp-verify-01.tsx',
       },
     ],
-    registryDependencies: ['button', 'field', 'input-otp', 'spinner'],
+    registryDependencies: ['button', 'card', 'field', 'input-otp', 'spinner'],
+  },
+  {
+    name: 'two-factor-setup-01',
+    title: 'Two-Factor Setup 01',
+    description:
+      'Three-step 2FA enrollment card: scan a real otpauth QR or copy the key, confirm a six-digit code, then save recovery codes with copy, download and a checkbox-gated finish. Ships composable parts.',
+    blockTagline: 'QR + secret, six-digit verify, recovery codes',
+    category: 'blocks',
+    blockKind: 'login',
+    files: [
+      {
+        path: 'blocks/two-factor-setup-01/two-factor-setup-01.tsx',
+        target: 'components/blocks/two-factor-setup-01.tsx',
+      },
+    ],
+    registryDependencies: [
+      'button',
+      'checkbox',
+      'copy-button',
+      'field',
+      'input-otp',
+      'qr-code',
+      'spinner',
+      'use-controllable-state',
+    ],
     dependencies: ['lucide-react'],
   },
   {
@@ -2995,23 +3069,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     cssVars: STATUS_CSS_VARS,
   },
   {
-    name: 'login-03',
-    title: 'Split GitHub Login',
-    description:
-      'Split-screen sign-in: a decorative animated-paths aside with a brand mark and a short quote, paired with a clean GitHub-only sign-in pane. A back-to-home link, mobile-collapsing layout, and token-based radial glows behind the form.',
-    blockTagline: 'Split layout, animated paths, GitHub sign-in',
-    category: 'blocks',
-    blockKind: 'login',
-    files: [
-      {
-        path: 'blocks/login-03/login-03.tsx',
-        target: 'components/blocks/login-03.tsx',
-      },
-    ],
-    registryDependencies: ['button', 'spinner'],
-    dependencies: ['lucide-react', 'motion'],
-  },
-  {
     name: 'toc',
     title: 'Table of Contents',
     description:
@@ -4195,32 +4252,6 @@ export const REGISTRY: RegistryEntryMeta[] = [
     ],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
-  },
-  {
-    name: 'two-factor-setup-01',
-    title: 'Two-Factor Setup',
-    description:
-      'Three-step 2FA enrollment card: scan a real otpauth QR or copy the key, confirm a six-digit code, then save recovery codes with copy, download and a checkbox-gated finish. Ships composable parts.',
-    blockTagline: 'QR + secret, six-digit verify, recovery codes',
-    category: 'blocks',
-    blockKind: 'login',
-    files: [
-      {
-        path: 'blocks/two-factor-setup-01/two-factor-setup-01.tsx',
-        target: 'components/blocks/two-factor-setup-01.tsx',
-      },
-    ],
-    registryDependencies: [
-      'button',
-      'checkbox',
-      'copy-button',
-      'field',
-      'input-otp',
-      'qr-code',
-      'spinner',
-      'use-controllable-state',
-    ],
-    dependencies: ['lucide-react'],
   },
   {
     name: 'coming-soon-01',

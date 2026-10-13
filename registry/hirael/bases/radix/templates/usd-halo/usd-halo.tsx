@@ -14,7 +14,7 @@ const UsdHalo = () => {
       className={cn(
         manrope.variable,
         inter.variable,
-        'flex flex-col bg-[#F5F5F5] text-black antialiased',
+        'flex flex-col bg-muted text-foreground antialiased',
         '[font-family:var(--font-manrope),ui-sans-serif,system-ui,sans-serif]',
       )}
     >

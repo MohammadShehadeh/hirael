@@ -81,7 +81,7 @@ export const SelectedWorks = () => {
               />
               <span aria-hidden="true" className="absolute inset-0 opacity-20 mix-blend-multiply" style={HALFTONE} />
               <span className="absolute inset-0 flex items-center justify-center bg-[hsl(var(--bg))]/70 opacity-0 backdrop-blur-lg transition-opacity duration-500 group-hover:opacity-100">
-                <span className="accent-gradient-animated rounded-full p-px">
+                <span className="pf-gradient-animated rounded-full p-px">
                   <span className="flex items-center rounded-full bg-white px-4 py-2 text-sm text-black">
                     View&nbsp;
                     <span className="font-display italic">{project.title}</span>

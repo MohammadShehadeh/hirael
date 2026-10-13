@@ -18,7 +18,7 @@ export const ComponentCategoryPage = ({ category }: ComponentCategoryPageProps) 
   const label = CATEGORY_LABELS[category];
 
   return (
-    <div className="docs-container flex flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
+    <div className="container flex flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
       <Breadcrumbs items={[{ label: 'Components', href: '/components' }, { label }]} />
 
       <header className="flex flex-col gap-4 border-b border-border pb-8 sm:pb-10">

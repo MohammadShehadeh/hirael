@@ -35,7 +35,7 @@ export default function GlobalError() {
           <div aria-hidden className="ambient-halo" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_55%_45%_at_50%_0%,black,transparent_75%)] opacity-40"
+            className="pointer-events-none absolute inset-0 bg-dot-grid mask-[radial-gradient(ellipse_55%_45%_at_50%_0%,black,transparent_75%)] opacity-40"
           />
 
           <div className="container flex flex-col items-center gap-6">

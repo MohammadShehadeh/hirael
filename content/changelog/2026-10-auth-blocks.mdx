@@ -1,0 +1,58 @@
+---
+title: Auth blocks, previews at real size
+version: '7.5.0'
+date: 2026-10-13
+description: 'Two new sign-in blocks, cleaner auth blocks built on your Card and Alert, templates that follow your theme, and block previews that render at true desktop width.'
+added:
+  - login-04
+  - login-05
+updated:
+  - login-01
+  - login-02
+  - signup-01
+  - forgot-password-01
+  - otp-verify-01
+  - two-factor-setup-01
+  - hero-07
+  - magnetic-button
+  - agency-landing
+  - usd-halo
+  - nexacore
+  - portfolio
+  - mindloop
+---
+
+New:
+
+- **Login 04.** Email first, password second, inside one wide card. A chip
+  shows the email so you can switch accounts, and a hidden username field
+  lets password managers fill the right one.
+- **Login 05.** GitHub, Google and Apple stacked, then email and passkey.
+  Email sends a magic link.
+
+Improved:
+
+- **Auth blocks use your `Card` and `Alert`**, with a plain background, a sans
+  heading and no entrance animation.
+- **Login 01** puts the forgot-password link beside the password label, adds a
+  passkey option and shows failed attempts in an `Alert`.
+- **Login 02** swaps the grid background and glow for a world map in your
+  theme's colors, and its form leads with Google and GitHub.
+- **Sign Up 01** leads with providers, shows a password hint under the
+  strength meter and replaces the terms checkbox with a line of text.
+- **Forgot Password 01**, **OTP Verify 01** and **Two-Factor Setup 01** share
+  the same layout, with sentence-case copy and no uppercase labels.
+- **Templates follow your theme.** Agency Landing, USD Halo, Nexacore,
+  Portfolio and Mindloop drop hard-coded grays and brand colors for your
+  tokens, so they work in dark mode.
+- **Magnetic Button** takes `variant` and `size`, so a link rendered through it
+  can look like any of your buttons.
+
+On the site:
+
+- **Every block page lists its category.** A row under the title links to each
+  block in the same category, with the current one marked and a link back to
+  the grid.
+- **Previews render at real size.** Mobile, tablet and desktop load at 380,
+  768 and 1280 pixels and scale down to fit, with a zoom menu beside the RTL
+  and theme toggles.

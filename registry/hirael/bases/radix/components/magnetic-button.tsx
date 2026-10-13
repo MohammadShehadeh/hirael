@@ -5,13 +5,14 @@ import { Slot } from '@radix-ui/react-slot';
 import { type HTMLMotionProps, motion, useReducedMotion, useSpring } from 'motion/react';
 
 import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/registry/hirael/bases/radix/ui/button';
+import { type Button, buttonVariants } from '@/registry/hirael/bases/radix/ui/button';
 
 const MotionSlot = motion.create(Slot);
 
 const SPRING = { stiffness: 200, damping: 15, mass: 0.1 };
 
-export interface MagneticButtonProps extends HTMLMotionProps<'button'> {
+export interface MagneticButtonProps
+  extends HTMLMotionProps<'button'>, Pick<React.ComponentProps<typeof Button>, 'variant' | 'size'> {
   /** Pull strength as a fraction of the cursor's distance from center. */
   strength?: number;
   /** Render the child element instead of a button (e.g. a link). */
@@ -21,6 +22,8 @@ export interface MagneticButtonProps extends HTMLMotionProps<'button'> {
 const MagneticButton = ({
   className,
   strength = 0.4,
+  variant,
+  size,
   asChild = false,
   onPointerMove,
   onPointerLeave,
@@ -53,7 +56,7 @@ const MagneticButton = ({
       onPointerLeave={handlePointerLeave}
       style={{ x, y }}
       className={cn(
-        !asChild && buttonVariants(),
+        (!asChild || variant || size) && buttonVariants({ variant, size }),
         // Motion drives the transform every frame; transition-all would make it lag behind the spring.
         'transition-[color,background-color,border-color,box-shadow]',
         className,

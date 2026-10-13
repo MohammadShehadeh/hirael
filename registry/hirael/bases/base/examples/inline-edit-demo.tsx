@@ -78,7 +78,7 @@ const InlineEditDemo = () => {
       </div>
 
       <div className="grid gap-3">
-        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'render', ar: 'render' })}</p>
+        <p className="text-xs text-muted-foreground uppercase">{t({ en: 'As a heading', ar: 'كعنوان' })}</p>
         <InlineEdit
           defaultValue={t({
             en: 'Release notes v2.4',
@@ -86,8 +86,8 @@ const InlineEditDemo = () => {
           })}
           required
         >
-          <div className="flex items-center gap-2">
-            <InlineEditPreview render={<h3 className="text-lg font-semibold tracking-tight" />} />
+          <div className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+            <InlineEditPreview render={<h3 />} />
             <InlineEditInput aria-label={t({ en: 'Edit heading', ar: 'تعديل العنوان' })} />
             <InlineEditControls />
           </div>

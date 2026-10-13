@@ -113,16 +113,11 @@ const Hero08 = () => {
             style={stagger(3)}
             className={cn('mx-auto my-8 flex flex-col items-center justify-center gap-4 sm:flex-row md:max-w-md', RISE)}
           >
-            <Button render={<a className="flex items-center gap-2" href="#" />} nativeButton={false} size="lg">
+            <Button render={<a href="#" />} nativeButton={false} size="lg">
               <GithubIcon className="size-4" />
               Connect repository
             </Button>
-            <Button
-              render={<a className="flex items-center gap-2" href="#features" />}
-              nativeButton={false}
-              variant="secondary"
-              size="lg"
-            >
+            <Button render={<a href="#features" />} nativeButton={false} variant="secondary" size="lg">
               <Play className="size-3.5 fill-current" />
               See how it works
             </Button>

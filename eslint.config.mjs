@@ -64,6 +64,28 @@ const eslintConfig = [
     },
     rules: {
       'shadcn/no-restyle': ['error', { allow: RESTYLE_ALLOW, contracts: LAYOUT_SLOTS }],
+      'shadcn/no-raw-colors': 'error',
+    },
+  },
+  {
+    // Behaviour-only parts ship no classes, and Base UI attributes the `render` element's classes to them.
+    // That element is the consumer's own button or link, which the Radix tree passes through `asChild` unchecked.
+    files: ['registry/hirael/bases/base/**/*.{ts,tsx}'],
+    rules: {
+      'shadcn/no-restyle': [
+        'error',
+        {
+          allow: RESTYLE_ALLOW,
+          contracts: [
+            ...LAYOUT_SLOTS,
+            {
+              pattern:
+                '^(Collapsible(Trigger|Content)?|TooltipTrigger|DropdownMenuTrigger|DrawerClose|SheetClose|LightboxTrigger)$',
+              allow: ['spacing', 'color', 'typography', 'shape', 'effects', 'motion', ...RESTYLE_ALLOW],
+            },
+          ],
+        },
+      ],
     },
   },
   {
@@ -96,6 +118,13 @@ const eslintConfig = [
     files: ['registry/hirael/bases/*/ui/**'],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
+    // ImageResponse renders favicons without the stylesheet, so theme variables don't resolve there.
+    files: ['app/icon.tsx', 'app/apple-icon.tsx', 'app/pwa-icon/route.tsx'],
+    rules: {
+      'shadcn/no-raw-colors': 'off',
     },
   },
   {

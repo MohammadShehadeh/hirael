@@ -26,9 +26,9 @@ export const Logo = ({ className }: LogoProps) => {
     <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden className={cn('shrink-0', className)}>
       <defs>
         <linearGradient id="nexacore-logo" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
-          <stop stopColor="rgb(28, 78, 255)" />
-          <stop offset="0.5" stopColor="rgb(172, 36, 255)" />
-          <stop offset="1" stopColor="rgb(254, 136, 27)" />
+          <stop stopColor="var(--chart-1)" />
+          <stop offset="0.5" stopColor="var(--chart-2)" />
+          <stop offset="1" stopColor="var(--chart-3)" />
         </linearGradient>
       </defs>
       <circle cx="14" cy="14" r="11" stroke="url(#nexacore-logo)" strokeWidth="2.5" />
@@ -46,9 +46,9 @@ export const BrandMark = ({ className, style }: BrandMarkProps) => {
     <svg viewBox="0 0 24 24" fill="none" aria-hidden className={cn('shrink-0', className)} style={style}>
       <defs>
         <linearGradient id="nexacore-mark" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
-          <stop stopColor="rgb(28, 78, 255)" />
-          <stop offset="0.5" stopColor="rgb(172, 36, 255)" />
-          <stop offset="1" stopColor="rgb(254, 136, 27)" />
+          <stop stopColor="var(--chart-1)" />
+          <stop offset="0.5" stopColor="var(--chart-2)" />
+          <stop offset="1" stopColor="var(--chart-3)" />
         </linearGradient>
       </defs>
       <circle cx="12" cy="12" r="8.5" stroke="url(#nexacore-mark)" strokeWidth="1.8" />

@@ -17,12 +17,8 @@ const MagneticButtonDemo = () => {
         <ArrowRight className="size-4" />
       </MagneticButton>
 
-      <MagneticButton asChild>
-        <a
-          href="#"
-          onClick={(e) => e.preventDefault()}
-          className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-        >
+      <MagneticButton asChild variant="outline">
+        <a href="#" onClick={(e) => e.preventDefault()}>
           {t({ en: 'As a link', ar: 'كرابط' })}
           <ArrowRight className="size-4" />
         </a>

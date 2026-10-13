@@ -102,16 +102,10 @@ const Header01 = () => {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="start" className="w-44">
                         {n.items.map((item) => (
-                          <DropdownMenuItem
-                            render={
-                              <a
-                                {...linkProps(item.href)}
-                                className="aria-[current=page]:font-medium aria-[current=page]:text-foreground"
-                              />
-                            }
-                            key={item.label}
-                          >
-                            {item.label}
+                          <DropdownMenuItem render={<a {...linkProps(item.href)} />} key={item.label}>
+                            <span className={cn(current === item.href && 'font-medium text-foreground')}>
+                              {item.label}
+                            </span>
                           </DropdownMenuItem>
                         ))}
                       </DropdownMenuContent>

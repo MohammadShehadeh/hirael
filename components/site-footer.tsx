@@ -121,7 +121,7 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
           <div aria-hidden className="ambient-halo opacity-70" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent_80%)] opacity-30"
+            className="pointer-events-none absolute inset-0 bg-dot-grid mask-[radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent_80%)] opacity-30"
           />
 
           <div className="relative px-6 pt-12 sm:px-10 sm:pt-14 lg:px-14">
@@ -192,8 +192,8 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
             >
               <defs>
                 <linearGradient id="footer-wordmark" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="color-mix(in oklch, var(--primary) 16%, transparent)" />
-                  <stop offset="100%" stopColor="color-mix(in oklch, var(--primary) 4%, transparent)" />
+                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.16} />
+                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.04} />
                 </linearGradient>
               </defs>
               <path d={HIRAEL_MARK_PATH} fill="url(#footer-wordmark)" />

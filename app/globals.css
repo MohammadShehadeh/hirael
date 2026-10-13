@@ -55,16 +55,17 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-@utility container {
-  margin-inline: auto;
-  padding-inline: 16px;
-  max-width: 1480px;
+/* One source for the page frame: every wrapper, header and rail reads these. */
+@theme {
+  --container-page: 1600px;
+  --container-sidebar: 17rem;
+  --container-rail: 15rem;
 }
 
-@utility docs-container {
+@utility container {
   margin-inline: auto;
   width: 100%;
-  max-width: 1480px;
+  max-width: var(--container-page);
   padding-inline: 16px;
 
   @media (width >= 640px) {
@@ -144,6 +145,27 @@
       --rail-dash-x: 0;
     }
   }
+}
+
+@utility text-display {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  font-feature-settings:
+    'liga' 1,
+    'calt' 1;
+}
+
+@utility shadow-elevated {
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 6%, transparent),
+    0 24px 60px -30px color-mix(in oklch, var(--foreground) 24%, transparent),
+    0 8px 24px -18px color-mix(in oklch, var(--foreground) 16%, transparent);
+}
+
+@utility bg-dot-grid {
+  background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+  background-size: 22px 22px;
 }
 
 :root {
@@ -379,22 +401,6 @@
       0 20px 50px -28px color-mix(in oklch, var(--foreground) 30%, transparent);
   }
 
-  .text-display {
-    font-family: var(--font-serif), ui-serif, Georgia, serif;
-    font-weight: 500;
-    letter-spacing: -0.015em;
-    font-feature-settings:
-      'liga' 1,
-      'calt' 1;
-  }
-
-  .shadow-elevated {
-    box-shadow:
-      inset 0 1px 0 0 color-mix(in oklch, var(--foreground) 6%, transparent),
-      0 24px 60px -30px color-mix(in oklch, var(--foreground) 24%, transparent),
-      0 8px 24px -18px color-mix(in oklch, var(--foreground) 16%, transparent);
-  }
-
   .state-dot {
     display: inline-block;
     width: 6px;
@@ -420,11 +426,6 @@
       radial-gradient(circle at top right, black, transparent 31%),
       radial-gradient(circle at bottom left, black, transparent 31%),
       radial-gradient(circle at bottom right, black, transparent 31%);
-  }
-
-  .bg-dot-grid {
-    background-image: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
-    background-size: 22px 22px;
   }
 }
 

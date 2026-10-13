@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowLeft, ArrowRight, CheckCircle2, Download, ShieldCheck } from 'lucide-react';
+import { Download } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -13,12 +13,8 @@ import { QRCode } from '@/registry/hirael/bases/radix/components/qr-code';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
-const ENTER =
-  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-
-const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 interface TwoFactorSetupContextValue {
   step: number;
@@ -75,10 +71,7 @@ const TwoFactorSetup = ({
       <div
         data-slot="two-factor-setup"
         data-step={step}
-        className={cn(
-          'rounded-sm border border-border bg-card text-card-foreground shadow-[8px_8px_0_0_var(--border)]',
-          className,
-        )}
+        className={cn('rounded-xl border bg-card text-card-foreground shadow-sm', className)}
         {...props}
       />
     </TwoFactorSetupContext.Provider>
@@ -157,7 +150,7 @@ const TwoFactorSetupTitle = ({ as: Heading = 'h2', className, ...props }: TwoFac
   return (
     <Heading
       data-slot="two-factor-setup-title"
-      className={cn('font-serif text-3xl font-medium tracking-tight', className)}
+      className={cn('text-xl font-semibold tracking-tight', className)}
       {...props}
     />
   );
@@ -165,7 +158,7 @@ const TwoFactorSetupTitle = ({ as: Heading = 'h2', className, ...props }: TwoFac
 
 const TwoFactorSetupDescription = ({ className, ...props }: React.ComponentProps<'p'>) => {
   return (
-    <p data-slot="two-factor-setup-description" className={cn('text-xs text-muted-foreground', className)} {...props} />
+    <p data-slot="two-factor-setup-description" className={cn('text-sm text-muted-foreground', className)} {...props} />
   );
 };
 
@@ -179,7 +172,7 @@ const TwoFactorSetupQr = ({ value, size = 168, className, ...props }: TwoFactorS
   return (
     <div
       data-slot="two-factor-setup-qr"
-      className={cn('mx-auto inline-flex rounded-sm border border-border bg-background p-3', className)}
+      className={cn('mx-auto inline-flex rounded-lg border bg-background p-3', className)}
       {...props}
     >
       <QRCode value={value} size={size} title="Authenticator setup code" />
@@ -210,8 +203,8 @@ const TwoFactorSetupSecret = ({
 
   return (
     <div data-slot="two-factor-setup-secret" className={cn('flex flex-col gap-1.5', className)} {...props}>
-      <span className="text-xs text-muted-foreground uppercase">{label}</span>
-      <div className="flex items-center justify-between gap-2 rounded-sm border border-border bg-background ps-3 pe-1">
+      <span className="text-sm font-medium">{label}</span>
+      <div className="flex items-center justify-between gap-2 rounded-md border bg-background ps-3 pe-1">
         <span dir="ltr" className="text-sm tracking-wide text-foreground tabular-nums select-all">
           {grouped}
         </span>
@@ -319,7 +312,7 @@ const TwoFactorSetupRecoveryCodes = ({
 
   return (
     <div data-slot="two-factor-setup-recovery-codes" className={cn('flex flex-col gap-4', className)} {...props}>
-      <ul dir="ltr" className="grid grid-cols-2 gap-px overflow-hidden rounded-sm border border-border bg-border">
+      <ul dir="ltr" className="grid grid-cols-2 gap-px overflow-hidden rounded-md border bg-border">
         {codes.map((code) => (
           <li
             key={code}
@@ -362,7 +355,7 @@ const TwoFactorSetupFooter = ({ className, ...props }: React.ComponentProps<'div
   return (
     <div
       data-slot="two-factor-setup-footer"
-      className={cn('flex items-center justify-between gap-3 border-t border-border px-6 py-4 sm:px-8', className)}
+      className={cn('flex items-center justify-between gap-3 border-t px-6 py-4', className)}
       {...props}
     />
   );
@@ -386,19 +379,23 @@ const RECOVERY_CODES = [
   'x0pa-e2jr',
 ] as const;
 
-const STEP_LABELS = ['Scan', 'Verify', 'Recovery codes'];
-
-interface BrandMarkProps {
-  className?: string;
-}
-
-const BrandMark = ({ className }: BrandMarkProps) => {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
-      <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
-    </svg>
-  );
-};
+const STEPS = [
+  {
+    label: 'Scan',
+    title: 'Scan the QR code',
+    description: `Open your authenticator app and scan the code to add your ${ISSUER} account.`,
+  },
+  {
+    label: 'Verify',
+    title: 'Enter the code',
+    description: `Type the 6-digit code your app shows for ${ISSUER} to confirm it works.`,
+  },
+  {
+    label: 'Recovery codes',
+    title: 'Save your recovery codes',
+    description: 'Each code works once. Use one if you lose access to your authenticator app.',
+  },
+];
 
 const TwoFactorSetup01 = () => {
   const [step, setStep] = React.useState(0);
@@ -412,7 +409,7 @@ const TwoFactorSetup01 = () => {
   const verify = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     if (code.length < 6) {
-      setCodeError('Enter the six digits from your authenticator app.');
+      setCodeError('Enter the 6-digit code from your authenticator app.');
 
       return;
     }
@@ -426,166 +423,93 @@ const TwoFactorSetup01 = () => {
   return (
     <section
       data-slot="two-factor-setup-01-block"
-      className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24"
+      className="flex min-h-svh items-center justify-center bg-background px-4 py-12"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
-      />
-
-      <div className="mx-auto w-full max-w-md px-6">
-        <TwoFactorSetup step={step} onStepChange={setStep} count={3} className={ENTER}>
-          {done ? (
-            <div
-              role="status"
-              aria-live="polite"
-              className={cn(SWAP, 'flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-8')}
-            >
-              <CheckCircle2 aria-hidden className="size-7 text-foreground" />
-              <div className="flex flex-col gap-1">
-                <TwoFactorSetupTitle as="h1">Two-factor is on</TwoFactorSetupTitle>
-                <TwoFactorSetupDescription>
-                  You&apos;ll be asked for a code from your authenticator app the next time you sign in.
-                </TwoFactorSetupDescription>
-              </div>
-              <a
-                href="#"
-                className="mt-2 text-xs text-muted-foreground uppercase transition-colors hover:text-foreground"
-              >
-                Back to security settings
-              </a>
+      <TwoFactorSetup step={step} onStepChange={setStep} count={STEPS.length} className="w-full max-w-sm">
+        {done ? (
+          <div role="status" className={cn(SWAP, 'flex flex-col gap-6 p-6')}>
+            <div className="flex flex-col gap-1.5">
+              <TwoFactorSetupTitle as="h1">Two-factor authentication is on</TwoFactorSetupTitle>
+              <TwoFactorSetupDescription>
+                Next time you sign in, you&apos;ll enter a code from your authenticator app.
+              </TwoFactorSetupDescription>
             </div>
-          ) : (
-            <>
-              <div className="flex flex-col items-center gap-4 border-b border-border px-6 pt-8 pb-6 sm:px-8">
-                <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
-                <TwoFactorSetupSteps labels={STEP_LABELS} style={stagger(1)} className={ENTER} />
-                <div key={step} className={cn(SWAP, 'flex flex-col items-center gap-1 text-center')}>
-                  {step === 0 ? (
-                    <>
-                      <TwoFactorSetupTitle as="h1">Scan this code</TwoFactorSetupTitle>
-                      <TwoFactorSetupDescription>
-                        Open your authenticator app and scan the QR code to add your {ISSUER} account.
-                      </TwoFactorSetupDescription>
-                    </>
-                  ) : step === 1 ? (
-                    <>
-                      <TwoFactorSetupTitle as="h1">Enter the code</TwoFactorSetupTitle>
-                      <TwoFactorSetupDescription>
-                        Type the six digits your app shows for <span className="text-foreground">{ISSUER}</span> to
-                        confirm it&apos;s set up correctly.
-                      </TwoFactorSetupDescription>
-                    </>
-                  ) : (
-                    <>
-                      <TwoFactorSetupTitle as="h1">Save your recovery codes</TwoFactorSetupTitle>
-                      <TwoFactorSetupDescription>
-                        Each code works once. Use them if you lose access to your authenticator app.
-                      </TwoFactorSetupDescription>
-                    </>
-                  )}
-                </div>
+            <Button asChild variant="outline" className="w-full">
+              <a href="#">Back to security settings</a>
+            </Button>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col gap-4 border-b p-6">
+              <TwoFactorSetupSteps labels={STEPS.map((s) => s.label)} />
+              <div key={step} className={cn(SWAP, 'flex flex-col gap-1.5')}>
+                <TwoFactorSetupTitle as="h1">{STEPS[step].title}</TwoFactorSetupTitle>
+                <TwoFactorSetupDescription>{STEPS[step].description}</TwoFactorSetupDescription>
               </div>
+            </div>
 
-              <form
-                id={formId}
-                noValidate
-                style={stagger(2)}
-                className={cn(ENTER, 'p-6 sm:p-8')}
-                onSubmit={step === 1 ? verify : (e) => e.preventDefault()}
-              >
-                <TwoFactorSetupStep index={0}>
-                  <TwoFactorSetupQr value={OTPAUTH_URI} />
-                  <TwoFactorSetupSecret value={SECRET} />
-                </TwoFactorSetupStep>
+            <form id={formId} noValidate className="p-6" onSubmit={step === 1 ? verify : (e) => e.preventDefault()}>
+              <TwoFactorSetupStep index={0}>
+                <TwoFactorSetupQr value={OTPAUTH_URI} />
+                <TwoFactorSetupSecret value={SECRET} />
+              </TwoFactorSetupStep>
 
-                <TwoFactorSetupStep index={1}>
-                  <TwoFactorSetupCode
-                    value={code}
-                    onValueChange={(v) => {
-                      setCode(v);
-                      if (codeError) setCodeError(null);
-                    }}
-                    error={codeError}
-                    disabled={verifying}
-                  />
-                </TwoFactorSetupStep>
+              <TwoFactorSetupStep index={1}>
+                <TwoFactorSetupCode
+                  value={code}
+                  onValueChange={(v) => {
+                    setCode(v);
+                    if (codeError) setCodeError(null);
+                  }}
+                  error={codeError}
+                  disabled={verifying}
+                />
+              </TwoFactorSetupStep>
 
-                <TwoFactorSetupStep index={2}>
-                  <TwoFactorSetupRecoveryCodes
-                    codes={RECOVERY_CODES}
-                    saved={saved}
-                    onSavedChange={setSaved}
-                    fileName="hirael-recovery-codes.txt"
-                  />
-                </TwoFactorSetupStep>
-              </form>
+              <TwoFactorSetupStep index={2}>
+                <TwoFactorSetupRecoveryCodes
+                  codes={RECOVERY_CODES}
+                  saved={saved}
+                  onSavedChange={setSaved}
+                  fileName="hirael-recovery-codes.txt"
+                />
+              </TwoFactorSetupStep>
+            </form>
 
-              <TwoFactorSetupFooter style={stagger(3)} className={ENTER}>
-                {step === 0 ? (
-                  <React.Fragment key="scan">
-                    <a
-                      href="#"
-                      className={cn(
-                        SWAP,
-                        'text-xs text-muted-foreground uppercase transition-colors hover:text-foreground',
-                      )}
-                    >
-                      Cancel
-                    </a>
-                    <Button type="button" className={cn(SWAP, 'group')} onClick={() => setStep(1)}>
-                      Continue
-                      <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                    </Button>
-                  </React.Fragment>
-                ) : step === 1 ? (
-                  <React.Fragment key="verify">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className={SWAP}
-                      onClick={() => setStep(0)}
-                      disabled={verifying}
-                    >
-                      <ArrowLeft className="size-4 rtl:rotate-180" />
-                      Back
-                    </Button>
-                    <Button type="submit" form={formId} className={cn(SWAP, 'group')} disabled={verifying}>
-                      {verifying ? (
-                        <>
-                          <Spinner className="motion-reduce:animate-none" />
-                          Verifying…
-                        </>
-                      ) : (
-                        <>
-                          Verify
-                          <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                        </>
-                      )}
-                    </Button>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment key="recovery">
-                    <span
-                      className={cn(SWAP, 'inline-flex items-center gap-1.5 text-xs text-muted-foreground uppercase')}
-                    >
-                      <ShieldCheck aria-hidden className="size-3.5" />
-                      Code verified
-                    </span>
-                    <Button type="button" className={SWAP} disabled={!saved} onClick={() => setDone(true)}>
-                      Finish
-                    </Button>
-                  </React.Fragment>
-                )}
-              </TwoFactorSetupFooter>
-            </>
-          )}
-        </TwoFactorSetup>
-
-        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs text-muted-foreground uppercase')}>
-          Recovery codes are shown once, so keep them safe
-        </p>
-      </div>
+            <TwoFactorSetupFooter>
+              {step === 0 && (
+                <>
+                  <Button asChild variant="ghost">
+                    <a href="#">Cancel</a>
+                  </Button>
+                  <Button type="button" onClick={() => setStep(1)}>
+                    Continue
+                  </Button>
+                </>
+              )}
+              {step === 1 && (
+                <>
+                  <Button type="button" variant="ghost" onClick={() => setStep(0)} disabled={verifying}>
+                    Back
+                  </Button>
+                  <Button type="submit" form={formId} disabled={verifying}>
+                    {verifying && <Spinner />}
+                    {verifying ? 'Verifying…' : 'Verify'}
+                  </Button>
+                </>
+              )}
+              {step === 2 && (
+                <>
+                  <span className="text-sm text-muted-foreground">Shown once only</span>
+                  <Button type="button" disabled={!saved} onClick={() => setDone(true)}>
+                    Finish setup
+                  </Button>
+                </>
+              )}
+            </TwoFactorSetupFooter>
+          </>
+        )}
+      </TwoFactorSetup>
     </section>
   );
 };

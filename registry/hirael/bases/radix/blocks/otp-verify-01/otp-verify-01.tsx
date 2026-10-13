@@ -1,24 +1,22 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
-import { FieldError, FieldGroup, FieldLegend, FieldSet } from '@/registry/hirael/bases/radix/ui/field';
+import { Card, CardContent } from '@/registry/hirael/bases/radix/ui/card';
+import {
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLegend,
+  FieldSet,
+} from '@/registry/hirael/bases/radix/ui/field';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/registry/hirael/bases/radix/ui/input-otp';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 30;
-const MASKED_EMAIL = 'h•••@mohammadshehadeh.com';
-
-const ENTER =
-  'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-const SWAP =
-  'animate-in fade-in slide-in-from-bottom-2 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
-
-const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
+const MASKED_EMAIL = 'h***@mohammadshehadeh.com';
 
 interface BrandMarkProps {
   className?: string;
@@ -42,9 +40,7 @@ const OtpVerify01 = () => {
 
   React.useEffect(() => {
     if (secondsLeft <= 0) return;
-    const id = window.setTimeout(() => {
-      setSecondsLeft((s) => s - 1);
-    }, 1000);
+    const id = window.setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
 
     return () => window.clearTimeout(id);
   }, [secondsLeft]);
@@ -52,7 +48,7 @@ const OtpVerify01 = () => {
   const verify = async (value: string) => {
     if (status === 'verifying') return;
     if (value.length < CODE_LENGTH) {
-      setError('Enter all six digits to continue.');
+      setError(`Enter all ${CODE_LENGTH} digits.`);
 
       return;
     }
@@ -73,67 +69,38 @@ const OtpVerify01 = () => {
     void verify(code);
   };
 
+  const verified = status === 'success';
+
   return (
     <section
       data-slot="otp-verify"
-      className="relative isolate flex min-h-svh items-center justify-center bg-background py-16 md:py-24"
+      className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background px-4 py-12"
     >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[32px_32px] opacity-[0.35]"
-      />
+      <a href="#" aria-label="Hirael home" className="text-foreground">
+        <BrandMark className="size-9" />
+      </a>
 
-      <div className="mx-auto w-full max-w-md px-6">
-        <div
-          data-slot="otp-verify-card"
-          className={cn(ENTER, 'rounded-sm border border-border bg-card shadow-[8px_8px_0_0_var(--border)]')}
-        >
-          {status === 'success' ? (
-            <div
-              role="status"
-              aria-live="polite"
-              className={cn(SWAP, 'flex flex-col items-center gap-4 px-6 py-10 text-center sm:px-8')}
-            >
-              <CheckCircle2 aria-hidden className="size-7 text-foreground" />
-              <div className="flex flex-col gap-1">
-                <h1 className="font-serif text-3xl font-medium tracking-tight">You&apos;re verified</h1>
-                <p className="text-xs text-muted-foreground">Code accepted. Redirecting you to your workspace…</p>
-              </div>
-              <a
-                href="#"
-                className="mt-2 text-xs text-muted-foreground uppercase transition-colors hover:text-foreground"
-              >
-                Continue to dashboard
-              </a>
-            </div>
-          ) : (
-            <>
-              <div
-                data-slot="otp-verify-header"
-                className="flex flex-col items-center gap-4 border-b border-border px-6 pt-8 pb-6 sm:px-8"
-              >
-                <BrandMark className={cn(ENTER, 'size-7 text-foreground')} />
-                <div style={stagger(1)} className={cn(ENTER, 'flex flex-col items-center gap-1 text-center')}>
-                  <h1 className="font-serif text-3xl font-medium tracking-tight">Check your email</h1>
-                  <p className="text-xs text-muted-foreground">
-                    We sent a 6-digit code to <span className="text-foreground">{MASKED_EMAIL}</span>. It expires in 10
-                    minutes.
-                  </p>
-                </div>
-              </div>
+      <h1 className="text-2xl font-semibold tracking-tight">{verified ? 'You’re verified' : 'Verify it’s you'}</h1>
 
-              <form
-                data-slot="otp-verify-form"
-                noValidate
-                style={stagger(2)}
-                className={cn(ENTER, 'p-6 sm:p-8')}
-                onSubmit={onSubmit}
-              >
+      <div className="flex w-full max-w-sm flex-col gap-4">
+        <Card data-slot="otp-verify-card">
+          <CardContent>
+            {verified ? (
+              <div role="status" className="flex flex-col gap-6">
+                <p className="text-sm text-muted-foreground">Code accepted. You can continue to your workspace.</p>
+                <Button asChild className="w-full">
+                  <a href="#">Continue</a>
+                </Button>
+              </div>
+            ) : (
+              <form data-slot="otp-verify-form" noValidate onSubmit={onSubmit}>
                 <FieldGroup className="gap-5">
-                  <FieldSet className="gap-1.5">
-                    <FieldLegend variant="label" className="mb-1.5">
-                      Verification code
-                    </FieldLegend>
+                  <FieldSet>
+                    <FieldLegend variant="label">Verification code</FieldLegend>
+                    <FieldDescription>
+                      We sent a {CODE_LENGTH}-digit code to <span className="text-foreground">{MASKED_EMAIL}</span>. It
+                      expires in 10 minutes.
+                    </FieldDescription>
                     <div dir="ltr">
                       <InputOTP
                         maxLength={CODE_LENGTH}
@@ -142,7 +109,7 @@ const OtpVerify01 = () => {
                           setCode(value);
                           if (error) setError(null);
                         }}
-                        onComplete={(value: string) => void verify(value)}
+                        onComplete={verify}
                         pattern="^\d+$"
                         inputMode="numeric"
                         autoComplete="one-time-code"
@@ -167,62 +134,49 @@ const OtpVerify01 = () => {
                     <FieldError id="otp01-code-error">{error}</FieldError>
                   </FieldSet>
 
-                  <Button type="submit" variant="default" size="lg" disabled={status === 'verifying'} className="group">
-                    {status === 'verifying' ? (
-                      <>
-                        <Spinner className="motion-reduce:animate-none" />
-                        Verifying…
-                      </>
-                    ) : (
-                      <>
-                        Verify code
-                        <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                      </>
-                    )}
+                  <Button type="submit" disabled={status === 'verifying'} className="w-full">
+                    {status === 'verifying' && <Spinner />}
+                    {status === 'verifying' ? 'Verifying…' : 'Verify'}
                   </Button>
-
-                  <p className="text-center text-xs text-muted-foreground">
-                    {secondsLeft > 0 ? (
-                      <>
-                        Resend code in{' '}
-                        <span dir="ltr" className="text-foreground tabular-nums">
-                          0:{String(secondsLeft).padStart(2, '0')}
-                        </span>
-                      </>
-                    ) : (
-                      <span key="resend" className={SWAP}>
-                        Didn&apos;t get it?{' '}
-                        <Button type="button" variant="link" size="xs" onClick={resend} className="h-auto">
-                          Resend code
-                        </Button>
-                      </span>
-                    )}
-                  </p>
-                  <span aria-live="polite" className="sr-only">
-                    {secondsLeft === 0 ? 'You can request a new code now.' : ''}
-                  </span>
                 </FieldGroup>
               </form>
+            )}
+          </CardContent>
+        </Card>
 
-              <div style={stagger(3)} className={cn(ENTER, 'border-t border-border px-6 py-4 text-center sm:px-8')}>
-                <p className="text-xs text-muted-foreground">
-                  Wrong address?{' '}
-                  <a
-                    href="#"
-                    className="font-medium text-foreground underline-offset-4 hover:text-foreground hover:underline"
-                  >
-                    Back to sign in
-                  </a>
-                </p>
-              </div>
-            </>
-          )}
-        </div>
-
-        <p style={stagger(4)} className={cn(ENTER, 'mt-4 text-center text-xs text-muted-foreground uppercase')}>
-          One-time codes are never shared with anyone
-        </p>
+        {!verified && (
+          <p className="text-center text-sm text-muted-foreground">
+            {secondsLeft > 0 ? (
+              <>
+                Resend code in{' '}
+                <span dir="ltr" className="text-foreground tabular-nums">
+                  0:{String(secondsLeft).padStart(2, '0')}
+                </span>
+              </>
+            ) : (
+              <>
+                Didn&apos;t get it?{' '}
+                <button
+                  type="button"
+                  onClick={resend}
+                  className="font-medium text-primary underline-offset-4 hover:underline"
+                >
+                  Resend code
+                </button>
+              </>
+            )}
+            <span aria-live="polite" className="sr-only">
+              {secondsLeft === 0 ? 'You can request a new code now.' : ''}
+            </span>
+          </p>
+        )}
       </div>
+
+      {!verified && (
+        <a href="#" className="text-sm text-muted-foreground hover:text-foreground hover:underline">
+          Back to sign in
+        </a>
+      )}
     </section>
   );
 };

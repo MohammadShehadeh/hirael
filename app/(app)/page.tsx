@@ -28,7 +28,7 @@ export default async function LandingPage() {
   const [changelog, latest] = await Promise.all([getChangelog(), getLatestCatalog(CATALOG_PREVIEW_COUNT)]);
 
   return (
-    <div className="page-rails mx-auto w-[calc(100%-1rem)] max-w-370 flex-1 sm:w-[calc(100%-1.5rem)]">
+    <div className="page-rails mx-auto w-[calc(100%-1rem)] max-w-page flex-1 sm:w-[calc(100%-1.5rem)]">
       <div className="relative mx-auto max-w-6xl">
         <SideRails />
         <Hero latestRelease={changelog.entries[0] ?? null} />

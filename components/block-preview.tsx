@@ -80,7 +80,7 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
       <div
         aria-hidden
         className={cn(
-          'bg-dot-grid absolute inset-0 flex items-center justify-center transition-opacity duration-500',
+          'absolute inset-0 flex items-center justify-center bg-dot-grid transition-opacity duration-500',
           loaded ? 'pointer-events-none opacity-0' : 'opacity-100',
         )}
       >

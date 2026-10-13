@@ -25,7 +25,7 @@ export default async function NotFound() {
           <div aria-hidden className="ambient-halo" />
           <div
             aria-hidden
-            className="bg-dot-grid pointer-events-none absolute inset-0 mask-[radial-gradient(ellipse_60%_45%_at_50%_0%,black,transparent_75%)] opacity-40"
+            className="pointer-events-none absolute inset-0 bg-dot-grid mask-[radial-gradient(ellipse_60%_45%_at_50%_0%,black,transparent_75%)] opacity-40"
           />
           <div className="relative container flex w-full flex-col items-center gap-6 py-24 text-center sm:py-28 lg:py-36">
             <span className="inline-flex items-center rounded-full border border-border bg-card/60 px-3.5 py-1 text-xs text-muted-foreground uppercase backdrop-blur-sm">

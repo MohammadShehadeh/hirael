@@ -85,7 +85,7 @@ export interface DocsSidebarProps {
 
 export const DocsSidebar = ({ releases }: DocsSidebarProps) => {
   return (
-    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-(--docs-sidebar-width) shrink-0 overflow-y-auto border-e border-border md:block">
+    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-sidebar shrink-0 overflow-y-auto border-e border-border md:block">
       <DocsSidebarNav releases={releases} className="p-4" />
     </aside>
   );

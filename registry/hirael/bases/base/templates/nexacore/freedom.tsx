@@ -28,7 +28,7 @@ const ControlGlyph = () => {
     <svg width="19" height="18" viewBox="0 0 17 16" fill="none" aria-hidden className="shrink-0">
       <path
         d="M8.5 14C8.5 14 1.5 9.8 1.5 5.4C1.5 3.2 3.2 1.8 5 1.8C6.5 1.8 7.8 2.8 8.5 4C9.2 2.8 10.5 1.8 12 1.8C13.8 1.8 15.5 3.2 15.5 5.4C15.5 9.8 8.5 14 8.5 14Z"
-        fill="rgb(200, 111, 255)"
+        fill="var(--primary)"
       />
     </svg>
   );

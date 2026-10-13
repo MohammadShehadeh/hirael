@@ -85,10 +85,19 @@ const KEYWORD_SHAPES = [
 ];
 
 export const entryKeywords = (entry: RegistryEntryMeta): string[] => {
-  const shapes = KEYWORD_SHAPES.map((shape) => shape(entry.title));
+  const name = entry.subtitle ?? entry.title;
+  const shapes = KEYWORD_SHAPES.map((shape) => shape(name));
 
   return [
-    ...new Set([entry.title, entry.name, ...shapes, collectionName(entry), 'shadcn registry', SITE.name.toLowerCase()]),
+    ...new Set([
+      entry.title,
+      name,
+      entry.name,
+      ...shapes,
+      collectionName(entry),
+      'shadcn registry',
+      SITE.name.toLowerCase(),
+    ]),
   ];
 };
 
@@ -198,7 +207,8 @@ export interface DetailMetadataOptions {
 export const detailMetadata = (entry: RegistryEntryMeta, options: DetailMetadataOptions = {}): Metadata => {
   const { titleSuffix } = options;
   const href = entryHref(entry);
-  const pageTitle = titleSuffix ? `${entry.title} ${titleSuffix}` : entry.title;
+  const fullTitle = entry.subtitle ? `${entry.title}: ${entry.subtitle}` : entry.title;
+  const pageTitle = titleSuffix ? `${fullTitle} ${titleSuffix}` : fullTitle;
 
   return {
     title: pageTitle,

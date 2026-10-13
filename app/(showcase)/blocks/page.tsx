@@ -27,7 +27,7 @@ export default function BlocksIndex() {
   const blocks = REGISTRY.filter((r) => r.category === 'blocks');
 
   return (
-    <div className="docs-container flex flex-col gap-14 py-16 sm:gap-16 sm:py-20">
+    <div className="container flex flex-col gap-14 py-16 sm:gap-16 sm:py-20">
       <CollectionJsonLd
         id="blocks-index"
         path="/blocks"

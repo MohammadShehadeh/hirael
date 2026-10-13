@@ -78,9 +78,9 @@ const BACKERS: MarqueeBrand[] = [
 
 export const BackedBySection = () => {
   return (
-    <section className="bg-[#F5F5F5] px-6">
+    <section className="bg-muted px-6">
       <div className="mx-auto grid max-w-[88rem] grid-cols-1 items-center gap-8 md:grid-cols-4">
-        <p className="text-base leading-relaxed text-black/70">
+        <p className="text-base leading-relaxed text-foreground/70">
           Funded by premier partners
           <br />
           and forward-thinking leaders.
@@ -91,7 +91,7 @@ export const BackedBySection = () => {
             trackClass="backers-track"
             keyframesName="backers-marquee"
             durationSeconds={30}
-            itemClass="mx-10 shrink-0 whitespace-nowrap text-black/50"
+            itemClass="mx-10 shrink-0 whitespace-nowrap text-foreground/50"
           />
         </div>
       </div>

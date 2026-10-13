@@ -16,6 +16,8 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/radix/ui/dropdown-menu';
@@ -104,6 +106,55 @@ export const PreviewThemeButton = ({ theme }: PreviewThemeButtonProps) => {
     <PreviewToolbarButton label={isLight ? 'Switch preview to dark' : 'Switch preview to light'} onClick={theme.toggle}>
       {isLight ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
     </PreviewToolbarButton>
+  );
+};
+
+export type PreviewZoom = 'fit' | 50 | 75 | 100;
+
+const ZOOM_STEPS: PreviewZoom[] = ['fit', 50, 75, 100];
+
+const parseZoom = (value: string): PreviewZoom => ZOOM_STEPS.find((step) => String(step) === value) ?? 'fit';
+
+export interface PreviewZoomMenuProps {
+  value: PreviewZoom;
+  onValueChange: (value: PreviewZoom) => void;
+  /** The zoom that fits the frame in the page, shown beside Fit. */
+  fitPercent: number;
+}
+
+export const PreviewZoomMenu = ({ value, onValueChange, fitPercent }: PreviewZoomMenuProps) => {
+  const current = value === 'fit' ? fitPercent : value;
+
+  return (
+    <DropdownMenu>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
+            <Button type="button" variant="ghost" size="xs" aria-label={`Preview zoom, ${current}%`}>
+              <span className="tabular-nums">{current}%</span>
+            </Button>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent side="bottom">Zoom</TooltipContent>
+      </Tooltip>
+      <DropdownMenuContent align="end" className="w-40">
+        <DropdownMenuLabel>Zoom</DropdownMenuLabel>
+        <DropdownMenuRadioGroup value={String(value)} onValueChange={(next) => onValueChange(parseZoom(next))}>
+          {ZOOM_STEPS.map((step) => (
+            <DropdownMenuRadioItem key={step} value={String(step)}>
+              {step === 'fit' ? (
+                <>
+                  Fit
+                  <span className="ms-auto text-muted-foreground tabular-nums">{fitPercent}%</span>
+                </>
+              ) : (
+                <span className="tabular-nums">{step}%</span>
+              )}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 
@@ -273,6 +324,8 @@ export interface PreviewFrameProps extends Omit<React.ComponentProps<'iframe'>, 
   maxHeight: number;
   /** Load with the page instead of after it, for the one preview a page is about. */
   eager?: boolean;
+  /** Called with each measured height, for wrappers that scale the frame. */
+  onHeightChange?: (height: number) => void;
 }
 
 export const PreviewFrame = ({
@@ -286,6 +339,7 @@ export const PreviewFrame = ({
   className,
   style,
   onLoad,
+  onHeightChange,
   ...props
 }: PreviewFrameProps) => {
   const [height, setHeight] = React.useState<number | null>(null);
@@ -297,7 +351,9 @@ export const PreviewFrame = ({
   const follow = (frame: HTMLIFrameElement) => {
     observerRef.current?.disconnect();
     observerRef.current = observeShellHeight(frame, (shellHeight) => {
-      setHeight(Math.min(maxHeight, Math.max(minHeight, shellHeight)));
+      const next = Math.min(maxHeight, Math.max(minHeight, shellHeight));
+      setHeight(next);
+      onHeightChange?.(next);
     });
   };
 

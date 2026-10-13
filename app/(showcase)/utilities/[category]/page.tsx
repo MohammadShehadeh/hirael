@@ -46,7 +46,7 @@ export default async function UtilityCategoryRoute({ params }: UtilityCategoryRo
   const breadcrumb = [{ label: 'Hooks & utilities', href: '/utilities' }, { label }];
 
   return (
-    <div className="docs-container flex flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
+    <div className="container flex flex-col gap-10 py-10 sm:gap-12 sm:py-12 md:py-16">
       <CollectionJsonLd
         id={`utilities-${category}`}
         path={`/utilities/${category}`}

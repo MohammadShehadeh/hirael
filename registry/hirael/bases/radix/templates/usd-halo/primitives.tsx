@@ -38,15 +38,17 @@ export const PillButton = ({ label, large = false, inverted = false, className, 
       type="button"
       className={cn(
         'inline-flex shrink-0 items-center justify-center gap-3 rounded-full py-2 ps-8 pe-2 text-base font-medium whitespace-nowrap transition-all duration-200 outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50',
-        inverted ? 'bg-white text-[#2B2644] hover:bg-white/90' : 'bg-black text-white hover:bg-gray-800',
+        inverted
+          ? 'bg-background text-foreground hover:bg-background/90'
+          : 'bg-foreground text-background hover:bg-foreground/90',
         large && 'md:text-lg',
         className,
       )}
       {...props}
     >
       <span>{label}</span>
-      <span className={cn('rounded-full p-2', inverted ? 'bg-[#2B2644]' : 'bg-white')}>
-        <ArrowRight className={cn('size-5 rtl:rotate-180', inverted ? 'text-white' : 'text-black')} />
+      <span className={cn('rounded-full p-2', inverted ? 'bg-foreground' : 'bg-background')}>
+        <ArrowRight className={cn('size-5 rtl:rotate-180', inverted ? 'text-background' : 'text-foreground')} />
       </span>
     </button>
   );

@@ -150,8 +150,8 @@ export const Avatar = ({ tone = 0, className }: AvatarProps) => {
           </linearGradient>
         </defs>
         <rect width="32" height="32" fill={`url(#${id})`} />
-        <circle cx="16" cy="13" r="5" fill="#0a0a0a" opacity="0.28" />
-        <path d="M6 30c0-5.5 4.5-9 10-9s10 3.5 10 9Z" fill="#0a0a0a" opacity="0.28" />
+        <circle cx="16" cy="13" r="5" fill="var(--background)" opacity="0.28" />
+        <path d="M6 30c0-5.5 4.5-9 10-9s10 3.5 10 9Z" fill="var(--background)" opacity="0.28" />
       </svg>
     </span>
   );

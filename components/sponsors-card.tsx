@@ -23,7 +23,7 @@ export const SponsorsRail = () => {
   if (hasOwnRightColumn(pathname)) return null;
 
   return (
-    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-(--docs-rail-width) shrink-0 overflow-y-auto p-4 xl:block">
+    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-rail shrink-0 overflow-y-auto p-4 xl:block">
       <SponsorsCard />
     </aside>
   );

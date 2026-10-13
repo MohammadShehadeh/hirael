@@ -24,8 +24,8 @@ const Logo = () => {
       onClick={(e) => onAnchorClick(e, '#home')}
       className="group relative flex size-9 shrink-0 items-center justify-center rounded-full transition-transform duration-300 hover:scale-110"
     >
-      <span className="accent-gradient absolute inset-0 rounded-full" />
-      <span className="absolute inset-0 rounded-full bg-[linear-gradient(270deg,#89AACC_0%,#4E85BF_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+      <span className="pf-gradient absolute inset-0 rounded-full" />
+      <span className="absolute inset-0 rounded-full bg-[linear-gradient(270deg,color-mix(in_oklch,var(--primary)_55%,var(--background))_0%,var(--primary)_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
       <span className="absolute inset-[1.5px] rounded-full bg-[hsl(var(--bg))]" />
       <span className="font-display relative text-[13px] leading-none italic">MS</span>
     </a>
@@ -212,7 +212,7 @@ export const Hero = ({ start = true }: HeroProps) => {
       <div className="absolute bottom-8 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center gap-3">
         <span className="text-xs tracking-[0.2em] text-[hsl(var(--muted))] uppercase">Scroll</span>
         <span className="relative block h-10 w-px overflow-hidden bg-[hsl(var(--stroke))]">
-          <span className="accent-gradient animate-scroll-down absolute inset-x-0 top-0 block h-1/2 w-full" />
+          <span className="pf-gradient animate-scroll-down absolute inset-x-0 top-0 block h-1/2 w-full" />
         </span>
       </div>
     </section>

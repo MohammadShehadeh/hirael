@@ -37,7 +37,7 @@ const ItemLinks = ({ label, names }: { label: string; names: string[] }) => {
 
 export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogViewProps) => {
   return (
-    <article className="relative docs-container py-16 sm:py-20">
+    <article className="relative container py-16 sm:py-20">
       <div className="relative">
         <div
           aria-hidden
@@ -55,7 +55,7 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
       {entries.length === 0 ? (
         <p className="mt-16 text-sm text-muted-foreground">No releases recorded yet.</p>
       ) : (
-        <div className="docs-container mt-16 w-full sm:mt-20">
+        <div className="mt-16 sm:mt-20">
           {entries.map((entry, index) => (
             <section
               key={entry.slug}

@@ -91,7 +91,7 @@ export const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
 
       <div className="absolute inset-x-0 bottom-0 h-[3px] bg-[hsl(var(--stroke))]/50">
         <div
-          className="accent-gradient h-full shadow-[0_0_8px_rgba(137,170,204,0.35)]"
+          className="pf-gradient h-full shadow-[0_0_8px_color-mix(in_oklch,var(--primary)_35%,transparent)]"
           style={{ width: `${count}%` }}
         />
       </div>

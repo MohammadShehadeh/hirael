@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { CircleAlert, Hash } from 'lucide-react';
 
+import { BlockSiblings } from '@/components/block-siblings';
 import { BlockViewer } from '@/components/block-viewer';
 import { Breadcrumbs, type Crumb } from '@/components/breadcrumbs';
 import { CodeBlock, InlineCodeBlock, type CodeBlockTab } from '@/components/code-block';
@@ -215,7 +216,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
   const issueUrl = `${SITE.githubRepoUrl}/issues/new?title=${encodeURIComponent(`[${entry.name}] `)}`;
 
   return (
-    <div className="docs-container py-10 sm:py-12 md:py-14">
+    <div className="container py-10 sm:py-12 md:py-14">
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-10">
         <div className="flex min-w-0 flex-col gap-10 sm:gap-12">
           <header className="flex flex-col gap-4">
@@ -255,6 +256,8 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
 
             <p className="max-w-xl text-base text-pretty text-muted-foreground md:text-lg">{entry.description}</p>
           </header>
+
+          <BlockSiblings entry={entry} />
 
           <TocChips items={tocItems} className="xl:hidden" />
 

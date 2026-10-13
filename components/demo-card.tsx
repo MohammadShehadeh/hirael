@@ -116,7 +116,7 @@ const LazyDemo = ({ name, inert, compact }: LazyDemoProps) => {
       ref={ref}
       inert={inert}
       className={cn(
-        'bg-dot-grid relative flex items-center justify-center overflow-hidden p-5',
+        'relative flex items-center justify-center overflow-hidden bg-dot-grid p-5',
         compact ? 'aspect-video' : 'h-60',
       )}
     >

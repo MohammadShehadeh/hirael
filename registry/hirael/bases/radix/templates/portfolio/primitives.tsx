@@ -79,7 +79,7 @@ export const RingLink = ({ href, children, ariaLabel, target, rel, outerClassNam
     >
       <span
         aria-hidden="true"
-        className="accent-gradient pointer-events-none absolute -inset-[2px] rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pf-gradient pointer-events-none absolute -inset-[2px] rounded-full opacity-0 transition-opacity duration-300 group-hover:opacity-100"
       />
       <span
         className={cn(

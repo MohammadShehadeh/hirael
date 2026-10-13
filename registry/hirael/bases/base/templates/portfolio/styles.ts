@@ -12,11 +12,11 @@ export const PORTFOLIO_STYLES = `
 [data-slot="portfolio"] .font-display {
   font-family: var(--font-instrument-serif), ui-serif, Georgia, serif;
 }
-[data-slot="portfolio"] .accent-gradient {
-  background-image: linear-gradient(90deg, #89AACC 0%, #4E85BF 100%);
+[data-slot="portfolio"] .pf-gradient {
+  background-image: linear-gradient(90deg, color-mix(in oklch, var(--primary) 55%, var(--background)) 0%, var(--primary) 100%);
 }
-[data-slot="portfolio"] .accent-gradient-animated {
-  background-image: linear-gradient(90deg, #89AACC 0%, #4E85BF 50%, #89AACC 100%);
+[data-slot="portfolio"] .pf-gradient-animated {
+  background-image: linear-gradient(90deg, color-mix(in oklch, var(--primary) 55%, var(--background)) 0%, var(--primary) 50%, color-mix(in oklch, var(--primary) 55%, var(--background)) 100%);
   background-size: 200% 100%;
   animation: pf-gradient-shift 6s ease infinite;
 }
@@ -41,7 +41,7 @@ export const PORTFOLIO_STYLES = `
 }
 @media (prefers-reduced-motion: reduce) {
   [data-slot="portfolio"] .animate-scroll-down,
-  [data-slot="portfolio"] .accent-gradient-animated {
+  [data-slot="portfolio"] .pf-gradient-animated {
     animation: none;
   }
 }

@@ -26,6 +26,29 @@ const BrandMark = ({ className }: BrandMarkProps) => {
 
 type SendStatus = 'idle' | 'sending' | 'sent';
 
+interface ResendLineProps {
+  status: SendStatus;
+  onResend: () => void;
+}
+
+const ResendLine = ({ status, onResend }: ResendLineProps) => {
+  if (status === 'sent') return <span role="status">Sent again. Give it a minute to arrive.</span>;
+
+  return (
+    <>
+      Didn&apos;t get it?{' '}
+      <button
+        type="button"
+        onClick={onResend}
+        disabled={status === 'sending'}
+        className="font-medium text-primary underline-offset-4 hover:underline disabled:opacity-50"
+      >
+        {status === 'sending' ? 'Sending…' : 'Resend link'}
+      </button>
+    </>
+  );
+};
+
 const ForgotPassword01 = () => {
   const [email, setEmail] = React.useState('');
   const [error, setError] = React.useState<string | null>(null);
@@ -110,21 +133,7 @@ const ForgotPassword01 = () => {
 
         <p className="text-center text-sm text-muted-foreground">
           {sent ? (
-            resend === 'sent' ? (
-              <span role="status">Sent again. Give it a minute to arrive.</span>
-            ) : (
-              <>
-                Didn&apos;t get it?{' '}
-                <button
-                  type="button"
-                  onClick={onResend}
-                  disabled={resend === 'sending'}
-                  className="font-medium text-primary underline-offset-4 hover:underline disabled:opacity-50"
-                >
-                  {resend === 'sending' ? 'Sending…' : 'Resend link'}
-                </button>
-              </>
-            )
+            <ResendLine status={resend} onResend={onResend} />
           ) : (
             <a href="#" className="font-medium text-primary underline-offset-4 hover:underline">
               Back to sign in

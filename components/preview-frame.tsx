@@ -113,6 +113,8 @@ export type PreviewZoom = 'fit' | 50 | 75 | 100;
 
 const ZOOM_STEPS: PreviewZoom[] = ['fit', 50, 75, 100];
 
+const parseZoom = (value: string): PreviewZoom => ZOOM_STEPS.find((step) => String(step) === value) ?? 'fit';
+
 export interface PreviewZoomMenuProps {
   value: PreviewZoom;
   onValueChange: (value: PreviewZoom) => void;
@@ -137,10 +139,7 @@ export const PreviewZoomMenu = ({ value, onValueChange, fitPercent }: PreviewZoo
       </Tooltip>
       <DropdownMenuContent align="end" className="w-40">
         <DropdownMenuLabel>Zoom</DropdownMenuLabel>
-        <DropdownMenuRadioGroup
-          value={String(value)}
-          onValueChange={(next) => onValueChange(next === 'fit' ? 'fit' : (Number(next) as PreviewZoom))}
-        >
+        <DropdownMenuRadioGroup value={String(value)} onValueChange={(next) => onValueChange(parseZoom(next))}>
           {ZOOM_STEPS.map((step) => (
             <DropdownMenuRadioItem key={step} value={String(step)}>
               {step === 'fit' ? (

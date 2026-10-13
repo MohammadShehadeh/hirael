@@ -142,7 +142,7 @@ const Signup01 = () => {
                         type="button"
                         variant="outline"
                         disabled={pending !== null}
-                        onClick={() => void onProvider(id)}
+                        onClick={() => onProvider(id)}
                         className="w-full"
                       >
                         {pending === id ? <Spinner /> : <Icon className="size-4" />}

@@ -180,7 +180,7 @@ const Login04 = () => {
                     Create account
                   </Button>
                 ) : (
-                  <Button type="button" variant="ghost" disabled={pending !== null} onClick={() => void onPasskey()}>
+                  <Button type="button" variant="ghost" disabled={pending !== null} onClick={onPasskey}>
                     {pending === 'passkey' ? <Spinner /> : <KeyRound />}
                     Use a passkey
                   </Button>

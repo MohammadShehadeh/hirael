@@ -109,7 +109,7 @@ const OtpVerify01 = () => {
                           setCode(value);
                           if (error) setError(null);
                         }}
-                        onComplete={(value: string) => void verify(value)}
+                        onComplete={verify}
                         pattern="^\d+$"
                         inputMode="numeric"
                         autoComplete="one-time-code"

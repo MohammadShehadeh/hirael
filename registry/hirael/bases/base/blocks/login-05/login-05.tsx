@@ -112,7 +112,7 @@ const Login05 = () => {
       </a>
 
       <div data-slot="login-panel" className="flex w-full max-w-xs flex-col gap-6">
-        {view === 'sent' ? (
+        {view === 'sent' && (
           <div key="sent" role="status" className={cn(SWAP, 'flex flex-col gap-6 text-center')}>
             <div className="flex flex-col gap-2">
               <h1 className="text-2xl font-semibold tracking-tight">Check your email</h1>
@@ -124,85 +124,85 @@ const Login05 = () => {
               Use another method
             </Button>
           </div>
-        ) : (
-          <>
-            <h1 className="text-center text-2xl font-semibold tracking-tight">Log in to Hirael</h1>
+        )}
 
-            {view === 'methods' ? (
-              <div key="methods" className={cn(SWAP, 'flex flex-col gap-3')}>
-                {PROVIDERS.map(({ id, label, icon: Icon }, index) => (
-                  <Button
-                    key={id}
-                    type="button"
-                    size="lg"
-                    variant={index === 0 ? 'default' : 'outline'}
-                    disabled={pending !== null}
-                    onClick={() => void redirect(id)}
-                    className="w-full"
-                  >
-                    {pending === id ? <Spinner /> : <Icon className="size-4" />}
-                    Continue with {label}
-                  </Button>
-                ))}
+        {view !== 'sent' && <h1 className="text-center text-2xl font-semibold tracking-tight">Log in to Hirael</h1>}
 
-                <div className="py-2">
-                  <FieldSeparator />
-                </div>
+        {view === 'methods' && (
+          <div key="methods" className={cn(SWAP, 'flex flex-col gap-3')}>
+            {PROVIDERS.map(({ id, label, icon: Icon }, index) => (
+              <Button
+                key={id}
+                type="button"
+                size="lg"
+                variant={index === 0 ? 'default' : 'outline'}
+                disabled={pending !== null}
+                onClick={() => redirect(id)}
+                className="w-full"
+              >
+                {pending === id ? <Spinner /> : <Icon className="size-4" />}
+                Continue with {label}
+              </Button>
+            ))}
 
-                <Button
-                  type="button"
-                  size="lg"
-                  variant="outline"
-                  disabled={pending !== null}
-                  onClick={() => setView('email')}
-                  className="w-full"
-                >
-                  <Mail />
-                  Continue with email
-                </Button>
-                <Button
-                  type="button"
-                  size="lg"
-                  variant="outline"
-                  disabled={pending !== null}
-                  onClick={() => void redirect('passkey')}
-                  className="w-full"
-                >
-                  {pending === 'passkey' ? <Spinner /> : <KeyRound />}
-                  Continue with passkey
-                </Button>
-              </div>
-            ) : (
-              <form key="email" noValidate onSubmit={onEmailSubmit} className={SWAP}>
-                <FieldGroup className="gap-4">
-                  <Field data-invalid={Boolean(error) || undefined}>
-                    <FieldLabel htmlFor="login05-email" className="sr-only">
-                      Email address
-                    </FieldLabel>
-                    <Input
-                      id="login05-email"
-                      type="email"
-                      placeholder="Email address"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      autoComplete="email"
-                      autoFocus
-                      aria-invalid={Boolean(error) || undefined}
-                      aria-describedby={error ? 'login05-email-error' : undefined}
-                    />
-                    <FieldError id="login05-email-error">{error}</FieldError>
-                  </Field>
-                  <Button type="submit" size="lg" disabled={pending !== null} className="w-full">
-                    {pending === 'email' && <Spinner />}
-                    Continue with email
-                  </Button>
-                  <Button type="button" variant="ghost" onClick={backToMethods} className="w-full">
-                    Other login options
-                  </Button>
-                </FieldGroup>
-              </form>
-            )}
-          </>
+            <div className="py-2">
+              <FieldSeparator />
+            </div>
+
+            <Button
+              type="button"
+              size="lg"
+              variant="outline"
+              disabled={pending !== null}
+              onClick={() => setView('email')}
+              className="w-full"
+            >
+              <Mail />
+              Continue with email
+            </Button>
+            <Button
+              type="button"
+              size="lg"
+              variant="outline"
+              disabled={pending !== null}
+              onClick={() => redirect('passkey')}
+              className="w-full"
+            >
+              {pending === 'passkey' ? <Spinner /> : <KeyRound />}
+              Continue with passkey
+            </Button>
+          </div>
+        )}
+
+        {view === 'email' && (
+          <form key="email" noValidate onSubmit={onEmailSubmit} className={SWAP}>
+            <FieldGroup className="gap-4">
+              <Field data-invalid={Boolean(error) || undefined}>
+                <FieldLabel htmlFor="login05-email" className="sr-only">
+                  Email address
+                </FieldLabel>
+                <Input
+                  id="login05-email"
+                  type="email"
+                  placeholder="Email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  autoComplete="email"
+                  autoFocus
+                  aria-invalid={Boolean(error) || undefined}
+                  aria-describedby={error ? 'login05-email-error' : undefined}
+                />
+                <FieldError id="login05-email-error">{error}</FieldError>
+              </Field>
+              <Button type="submit" size="lg" disabled={pending !== null} className="w-full">
+                {pending === 'email' && <Spinner />}
+                Continue with email
+              </Button>
+              <Button type="button" variant="ghost" onClick={backToMethods} className="w-full">
+                Other login options
+              </Button>
+            </FieldGroup>
+          </form>
         )}
 
         <span role="status" className="sr-only">

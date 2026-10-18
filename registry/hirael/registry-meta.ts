@@ -4242,7 +4242,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Card number, expiry, and CVC in one row with brand detection, per-brand grouping, Luhn and expiry validation, and auto-advance between fields.',
     category: 'inputs',
     files: [{ path: 'components/credit-card-input.tsx' }],
-    registryDependencies: ['input'],
+    registryDependencies: ['input', 'compose-refs'],
     dependencies: ['lucide-react'],
   },
   {

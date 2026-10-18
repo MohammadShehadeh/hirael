@@ -25,7 +25,7 @@ const EmojiPicker = ({ onEmojiSelect, className, ...props }: EmojiPickerProps) =
       data-slot="emoji-picker"
       onEmojiSelect={({ emoji }) => onEmojiSelect?.(emoji)}
       className={cn(
-        'isolate flex w-80 max-w-full flex-col gap-2 rounded-md border border-border bg-popover p-2 text-popover-foreground',
+        'isolate flex w-80 max-w-full flex-col gap-2 rounded-md border border-border bg-popover p-2 text-popover-foreground will-change-transform',
         className,
       )}
       {...props}

@@ -198,14 +198,26 @@ export const parseCron = (expression: string): ParsedCron => {
   return { valid: error === null, error, errorField, fields };
 };
 
+// Three or more consecutive values read better as a range: `1,2,3,4,5` -> `1-5`.
+const compactRuns = (values: number[]): string => {
+  const parts: string[] = [];
+  let i = 0;
+  while (i < values.length) {
+    let j = i;
+    while (j + 1 < values.length && values[j + 1] === values[j] + 1) j++;
+    parts.push(j - i >= 2 ? `${values[i]}-${values[j]}` : values.slice(i, j + 1).join(','));
+    i = j + 1;
+  }
+
+  return parts.join(',');
+};
+
 export const formatCronField = (field: Pick<CronFieldValue, 'mode' | 'values' | 'step'>): string => {
   if (field.mode === 'every') return '*';
   if (field.mode === 'step') return `*/${Math.max(1, field.step)}`;
   if (field.values.length === 0) return '*';
 
-  return Array.from(new Set(field.values))
-    .sort((a, b) => a - b)
-    .join(',');
+  return compactRuns(Array.from(new Set(field.values)).sort((a, b) => a - b));
 };
 
 export const formatCron = (fields: Record<CronField, Pick<CronFieldValue, 'mode' | 'values' | 'step'>>): string => {
@@ -268,10 +280,14 @@ export const describeCron = (expression: string): string => {
     parts.push(`every ${ordinal(dayOfMonth.step)} day of the month`);
   }
 
-  if (dayOfWeek.mode === 'specific') {
-    const names = dayOfWeek.values.map((d) => DAY_NAMES[d]);
-    const isWeekdays = dayOfWeek.values.join(',') === '1,2,3,4,5';
-    const label = isWeekdays ? 'weekdays' : joinList(names);
+  if (dayOfWeek.mode === 'specific' && dayOfWeek.values.length === 7) {
+    parts.push(dayOfMonth.mode === 'specific' ? 'and every day' : 'every day');
+  } else if (dayOfWeek.mode === 'specific') {
+    // A 7 in the expression (`5-7`) means Sunday ends the week, so list it last instead of first.
+    const sundayLast = /(^|\D)7(?!\d)/.test(dayOfWeek.raw) && dayOfWeek.values.includes(0);
+    const days = sundayLast ? [...dayOfWeek.values.filter((d) => d !== 0), 0] : dayOfWeek.values;
+    const isWeekdays = days.join(',') === '1,2,3,4,5';
+    const label = isWeekdays ? 'weekdays' : joinList(days.map((d) => DAY_NAMES[d]));
     parts.push(dayOfMonth.mode === 'specific' ? `and on ${label}` : `on ${label}`);
   } else if (dayOfWeek.mode === 'step') {
     parts.push(`every ${ordinal(dayOfWeek.step)} day of the week`);
@@ -745,6 +761,8 @@ interface CronEditorNextRunsProps extends Omit<React.ComponentProps<'ol'>, 'chil
   locale?: string;
   formatOptions?: Intl.DateTimeFormatOptions;
   emptyLabel?: string;
+  /** Shown for a valid expression that can never fire, like `0 0 31 2 *`. */
+  neverLabel?: string;
 }
 
 const CronEditorNextRuns = ({
@@ -752,6 +770,7 @@ const CronEditorNextRuns = ({
   locale,
   formatOptions,
   emptyLabel = 'No upcoming runs.',
+  neverLabel = 'This schedule never runs.',
   className,
   ...props
 }: CronEditorNextRunsProps) => {
@@ -782,7 +801,7 @@ const CronEditorNextRuns = ({
   return (
     <ol data-slot="cron-editor-next-runs" className={cn('grid gap-1 text-[11px] tabular-nums', className)} {...props}>
       {runs.length === 0 ? (
-        <li className="text-muted-foreground">{emptyLabel}</li>
+        <li className="text-muted-foreground">{stamp !== 0 && ctx.parsed.valid ? neverLabel : emptyLabel}</li>
       ) : (
         runs.map((d, i) => (
           <li key={d.getTime()} data-slot="cron-editor-next-run" className="flex items-center gap-2 text-foreground">

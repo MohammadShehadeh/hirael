@@ -30,7 +30,7 @@ export const CARD_BRANDS: readonly CardBrandSpec[] = [
   {
     brand: 'mastercard',
     label: 'Mastercard',
-    pattern: /^(5[1-5]|2(2[2-9]|[3-6]|7[01]|720))/,
+    pattern: /^(5[1-5]|222[1-9]|22[3-9]|2[3-6]|27[01]|2720)/,
     lengths: [16],
     groups: [4, 4, 4, 4],
     cvcLength: 3,

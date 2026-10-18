@@ -198,14 +198,26 @@ export const parseCron = (expression: string): ParsedCron => {
   return { valid: error === null, error, errorField, fields };
 };
 
+// Three or more consecutive values read better as a range: `1,2,3,4,5` -> `1-5`.
+const compactRuns = (values: number[]): string => {
+  const parts: string[] = [];
+  let i = 0;
+  while (i < values.length) {
+    let j = i;
+    while (j + 1 < values.length && values[j + 1] === values[j] + 1) j++;
+    parts.push(j - i >= 2 ? `${values[i]}-${values[j]}` : values.slice(i, j + 1).join(','));
+    i = j + 1;
+  }
+
+  return parts.join(',');
+};
+
 export const formatCronField = (field: Pick<CronFieldValue, 'mode' | 'values' | 'step'>): string => {
   if (field.mode === 'every') return '*';
   if (field.mode === 'step') return `*/${Math.max(1, field.step)}`;
   if (field.values.length === 0) return '*';
 
-  return Array.from(new Set(field.values))
-    .sort((a, b) => a - b)
-    .join(',');
+  return compactRuns(Array.from(new Set(field.values)).sort((a, b) => a - b));
 };
 
 export const formatCron = (fields: Record<CronField, Pick<CronFieldValue, 'mode' | 'values' | 'step'>>): string => {

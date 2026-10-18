@@ -268,10 +268,14 @@ export const describeCron = (expression: string): string => {
     parts.push(`every ${ordinal(dayOfMonth.step)} day of the month`);
   }
 
-  if (dayOfWeek.mode === 'specific') {
-    const names = dayOfWeek.values.map((d) => DAY_NAMES[d]);
-    const isWeekdays = dayOfWeek.values.join(',') === '1,2,3,4,5';
-    const label = isWeekdays ? 'weekdays' : joinList(names);
+  if (dayOfWeek.mode === 'specific' && dayOfWeek.values.length === 7) {
+    parts.push(dayOfMonth.mode === 'specific' ? 'and every day' : 'every day');
+  } else if (dayOfWeek.mode === 'specific') {
+    // A 7 in the expression (`5-7`) means Sunday ends the week, so list it last instead of first.
+    const sundayLast = /(^|\D)7(?!\d)/.test(dayOfWeek.raw) && dayOfWeek.values.includes(0);
+    const days = sundayLast ? [...dayOfWeek.values.filter((d) => d !== 0), 0] : dayOfWeek.values;
+    const isWeekdays = days.join(',') === '1,2,3,4,5';
+    const label = isWeekdays ? 'weekdays' : joinList(days.map((d) => DAY_NAMES[d]));
     parts.push(dayOfMonth.mode === 'specific' ? `and on ${label}` : `on ${label}`);
   } else if (dayOfWeek.mode === 'step') {
     parts.push(`every ${ordinal(dayOfWeek.step)} day of the week`);
@@ -745,6 +749,8 @@ interface CronEditorNextRunsProps extends Omit<React.ComponentProps<'ol'>, 'chil
   locale?: string;
   formatOptions?: Intl.DateTimeFormatOptions;
   emptyLabel?: string;
+  /** Shown for a valid expression that can never fire, like `0 0 31 2 *`. */
+  neverLabel?: string;
 }
 
 const CronEditorNextRuns = ({
@@ -752,6 +758,7 @@ const CronEditorNextRuns = ({
   locale,
   formatOptions,
   emptyLabel = 'No upcoming runs.',
+  neverLabel = 'This schedule never runs.',
   className,
   ...props
 }: CronEditorNextRunsProps) => {
@@ -782,7 +789,7 @@ const CronEditorNextRuns = ({
   return (
     <ol data-slot="cron-editor-next-runs" className={cn('grid gap-1 text-[11px] tabular-nums', className)} {...props}>
       {runs.length === 0 ? (
-        <li className="text-muted-foreground">{emptyLabel}</li>
+        <li className="text-muted-foreground">{stamp !== 0 && ctx.parsed.valid ? neverLabel : emptyLabel}</li>
       ) : (
         runs.map((d, i) => (
           <li key={d.getTime()} data-slot="cron-editor-next-run" className="flex items-center gap-2 text-foreground">

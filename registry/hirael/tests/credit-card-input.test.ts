@@ -73,6 +73,8 @@ describe.each([
       ['123', '12/3'],
       ['1228', '12/28'],
       ['12/289', '12/28'],
+      ['12/2028', '12/28'],
+      ['122028', '12/28'],
       ['ab12cd', '12'],
     ])('should format %j as %j', (input, expected) => {
       expect(formatCardExpiry(input)).toBe(expected);

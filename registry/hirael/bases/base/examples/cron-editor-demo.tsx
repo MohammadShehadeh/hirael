@@ -81,6 +81,10 @@ const CronEditorDemo = () => {
                   en: 'No upcoming runs.',
                   ar: 'لا تشغيلات قادمة.',
                 })}
+                neverLabel={t({
+                  en: 'This schedule never runs.',
+                  ar: 'هذا الجدول لا يعمل أبدًا.',
+                })}
               />
             </div>
           </div>

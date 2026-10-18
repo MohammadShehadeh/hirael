@@ -12,6 +12,11 @@ export const formatBytes = (bytes: number): string => {
     n /= 1024;
     i++;
   }
+  // Rounding can carry up to 1024 (1048575 B is "1024.0 KB"), so step up once more.
+  if (Number(n.toFixed(i === 0 ? 0 : 1)) >= 1024 && i < UNITS.length - 1) {
+    n /= 1024;
+    i++;
+  }
 
   return `${i === 0 ? n.toFixed(0) : n.toFixed(1)} ${UNITS[i]}`;
 };

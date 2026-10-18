@@ -5,6 +5,7 @@ import { CreditCard } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Input } from '@/registry/hirael/bases/base/ui/input';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
 export type CardBrand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'diners' | 'jcb' | 'unknown';
 
@@ -128,6 +129,22 @@ export const formatCardNumber = (number: string, brand?: CardBrand): string => {
   if (i < digits.length) parts.push(digits.slice(i));
 
   return parts.join(' ');
+};
+
+/** Digits in `formatted` before index `position`. */
+const digitsBefore = (formatted: string, position: number): number => {
+  return digitsOnly(formatted.slice(0, position)).length;
+};
+
+/** Index in `formatted` just after its `count`th digit. */
+const positionAfterDigits = (formatted: string, count: number): number => {
+  if (count <= 0) return 0;
+  let seen = 0;
+  for (let i = 0; i < formatted.length; i++) {
+    if (/\d/.test(formatted[i]) && ++seen === count) return i + 1;
+  }
+
+  return formatted.length;
 };
 
 export const formatCardExpiry = (expiry: string): string => {
@@ -365,7 +382,39 @@ const CreditCardInputNumber = ({
   ...props
 }: CreditCardInputNumberProps) => {
   const ctx = useCreditCardInput();
-  const fieldProps = useFieldProps('number', { onBlur, onKeyDown });
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  // Digits left of the caret, restored after the reformat; a controlled rewrite otherwise drops the caret at the end.
+  const caretRef = React.useRef<number | null>(null);
+  const fieldProps = useFieldProps('number', {
+    onBlur,
+    onKeyDown: (e) => {
+      const el = e.currentTarget;
+      const start = el.selectionStart ?? 0;
+      const collapsed = start === el.selectionEnd;
+      // Deleting a group space would change nothing, so delete the digit beyond it instead.
+      const overSpace =
+        collapsed &&
+        ((e.key === 'Backspace' && el.value[start - 1] === ' ') || (e.key === 'Delete' && el.value[start] === ' '));
+      if (overSpace) {
+        e.preventDefault();
+        const digits = digitsBefore(el.value, start);
+        const removeAt = e.key === 'Backspace' ? digits - 1 : digits;
+        caretRef.current = removeAt;
+        ctx.setField('number', ctx.value.number.slice(0, removeAt) + ctx.value.number.slice(removeAt + 1));
+      }
+      onKeyDown?.(e);
+    },
+  });
+  const formatted = formatCardNumber(ctx.value.number, ctx.brand);
+
+  React.useLayoutEffect(() => {
+    const el = inputRef.current;
+    const digits = caretRef.current;
+    caretRef.current = null;
+    if (!el || digits === null || document.activeElement !== el) return;
+    const position = positionAfterDigits(formatted, digits);
+    el.setSelectionRange(position, position);
+  });
 
   return (
     <div
@@ -376,17 +425,23 @@ const CreditCardInputNumber = ({
         {...fieldProps}
         autoComplete="cc-number"
         placeholder={placeholder}
-        value={formatCardNumber(ctx.value.number, ctx.brand)}
+        value={formatted}
         aria-label="Card number"
         data-slot="credit-card-input-number-field"
         className={cn('pe-16 tracking-[0.06em] tabular-nums', ctx.variant === 'row' && ROW_INPUT, className)}
         onChange={(e) => {
-          ctx.setField('number', e.target.value);
-          if (ctx.spec.lengths.length === 1 && digitsOnly(e.target.value).length >= ctx.spec.lengths[0]) {
+          const { value } = e.target;
+          const caret = digitsBefore(value, e.target.selectionStart ?? value.length);
+          const total = digitsOnly(value).length;
+          caretRef.current = caret;
+          ctx.setField('number', value);
+          // Only advance when typing at the end, not while fixing a digit in the middle.
+          if (ctx.spec.lengths.length === 1 && total >= ctx.spec.lengths[0] && caret >= total) {
             ctx.focusField('expiry');
           }
         }}
         {...props}
+        ref={composeRefs(inputRef, props.ref)}
       />
       <span className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2">
         {children ?? <CreditCardInputBrand />}

@@ -148,7 +148,10 @@ const positionAfterDigits = (formatted: string, count: number): number => {
 };
 
 export const formatCardExpiry = (expiry: string): string => {
-  const digits = digitsOnly(expiry).slice(0, 4);
+  let digits = digitsOnly(expiry);
+  // Autofill can write MM/YYYY; keep the two-digit year instead of the century.
+  if (digits.length === 6 && digits.slice(2, 4) === '20') digits = digits.slice(0, 2) + digits.slice(4);
+  digits = digits.slice(0, 4);
   if (digits.length <= 2) return digits;
 
   return `${digits.slice(0, 2)}/${digits.slice(2)}`;

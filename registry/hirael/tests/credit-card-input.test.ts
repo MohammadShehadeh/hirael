@@ -31,6 +31,15 @@ describe.each([
       expect(detectCardBrand('')).toBe('unknown');
       expect(detectCardBrand('9999')).toBe('unknown');
     });
+
+    it.each([
+      ['2220', 'unknown'],
+      ['2221', 'mastercard'],
+      ['2720', 'mastercard'],
+      ['2721', 'unknown'],
+    ])('should only read %s as Mastercard inside the 2221-2720 range', (prefix, brand) => {
+      expect(detectCardBrand(`${prefix}000000000000`)).toBe(brand);
+    });
   });
 
   describe('luhnCheck', () => {

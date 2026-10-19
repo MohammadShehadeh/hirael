@@ -107,7 +107,7 @@ export const ViewAllButton = ({ label, href, className }: ViewAllButtonProps) =>
       innerClassName="bg-[hsl(var(--surface))] px-4 py-2 text-xs text-[hsl(var(--text))] backdrop-blur-md"
     >
       {label}
-      <ArrowRight className="size-3" />
+      <ArrowRight className="size-3 rtl:rotate-180" />
     </RingLink>
   );
 };

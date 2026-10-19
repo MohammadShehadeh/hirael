@@ -65,7 +65,10 @@ export const OrangeButton = ({ label, className, ...props }: OrangeButtonProps) 
       <RollText>{label}</RollText>
       <span className="flex h-7 w-7 items-center justify-center rounded-full bg-background sm:h-8 sm:w-8">
         <ArrowRight
-          className={cn('size-4 text-primary transition-transform duration-500 group-hover:-rotate-45', EASE)}
+          className={cn(
+            'size-4 text-primary transition-transform duration-500 group-hover:-rotate-45 rtl:rotate-180 rtl:group-hover:rotate-[225deg]',
+            EASE,
+          )}
         />
       </span>
     </button>

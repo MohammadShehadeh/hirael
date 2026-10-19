@@ -58,7 +58,7 @@ export const CaseStudies = () => {
                   <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center">
                     <ArrowRight
                       size={14}
-                      className="-rotate-45 text-background transition-transform duration-300 group-hover:rotate-0"
+                      className="-rotate-45 text-background transition-transform duration-300 group-hover:rotate-0 rtl:rotate-[225deg] rtl:group-hover:rotate-180"
                     />
                   </span>
                   <span className="text-[13px] font-medium whitespace-nowrap text-background opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">

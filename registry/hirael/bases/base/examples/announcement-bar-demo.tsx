@@ -27,7 +27,7 @@ const AnnouncementBarDemo = () => {
             </span>
             <AnnouncementBarLink href="#">
               {t({ en: 'Read the post', ar: 'اقرأ المقال' })}
-              <ArrowRight className="size-3" />
+              <ArrowRight className="size-3 rtl:rotate-180" />
             </AnnouncementBarLink>
           </AnnouncementBar>
         </div>
@@ -46,7 +46,7 @@ const AnnouncementBarDemo = () => {
             </span>
             <AnnouncementBarLink href="#">
               {t({ en: 'Claim 50% off', ar: 'احصل على خصم 50%' })}
-              <ArrowRight className="size-3" />
+              <ArrowRight className="size-3 rtl:rotate-180" />
             </AnnouncementBarLink>
           </AnnouncementBar>
         </div>

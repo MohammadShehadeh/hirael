@@ -71,7 +71,10 @@ export const useUploadQueue = ({ upload, concurrency = 3 }: UseUploadQueueOption
           if (controller.signal.aborted) return;
           patch(item.id, { status: 'error', error: error instanceof Error ? error.message : String(error) });
         })
-        .finally(() => controllers.current.delete(item.id));
+        .finally(() => {
+          // A retry may already own this id; a late settle must not drop the retry's controller.
+          if (controllers.current.get(item.id) === controller) controllers.current.delete(item.id);
+        });
     },
     [patch],
   );

@@ -14,12 +14,12 @@ const MagneticButtonDemo = () => {
 
       <MagneticButton strength={0.6}>
         {t({ en: 'Stronger pull', ar: 'جذب أقوى' })}
-        <ArrowRight className="size-4" />
+        <ArrowRight className="size-4 rtl:rotate-180" />
       </MagneticButton>
 
       <MagneticButton variant="outline" render={<a href="#" onClick={(e) => e.preventDefault()} />}>
         {t({ en: 'As a link', ar: 'كرابط' })}
-        <ArrowRight className="size-4" />
+        <ArrowRight className="size-4 rtl:rotate-180" />
       </MagneticButton>
     </div>
   );

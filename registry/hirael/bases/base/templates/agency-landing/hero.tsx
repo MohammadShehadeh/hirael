@@ -61,7 +61,10 @@ export const Hero = () => {
                 <RollText>Book a strategy call</RollText>
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white">
                   <ArrowRight
-                    className={cn('size-3.5 text-black transition-transform duration-500 group-hover:-rotate-45', EASE)}
+                    className={cn(
+                      'size-3.5 text-black transition-transform duration-500 group-hover:-rotate-45 rtl:rotate-180 rtl:group-hover:rotate-[225deg]',
+                      EASE,
+                    )}
                   />
                 </span>
               </button>

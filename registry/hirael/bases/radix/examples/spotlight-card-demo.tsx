@@ -32,7 +32,7 @@ const SpotlightCardDemo = () => {
           <div className="p-5">
             <div className="flex items-start justify-between gap-4">
               <h3 className="text-sm font-medium text-foreground">{card.title}</h3>
-              <ArrowUpRight className="size-4 text-muted-foreground" />
+              <ArrowUpRight className="size-4 text-muted-foreground rtl:-scale-x-100" />
             </div>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{card.body}</p>
           </div>

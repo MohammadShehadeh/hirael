@@ -62,12 +62,18 @@ const parseToNumber = (view: string, decimalSeparator: string): number | null =>
   return view && Number.isFinite(n) ? n : null;
 };
 
+// The focused field holds plain digits; the grouped, localized form only shows at rest.
+const formatEditable = (value: number, decimals: number, decimalSeparator: string): string => {
+  return value.toFixed(decimals).replace('.', decimalSeparator);
+};
+
 interface Ctx {
   id: string;
   value: number | null;
   setValue: (next: number | null) => void;
   view: string;
   setView: (next: string) => void;
+  setFocused: (focused: boolean) => void;
   locale: string;
   decimals: number;
   disabled?: boolean;
@@ -131,6 +137,7 @@ const CurrencyInput = ({
   const decimalSeparator = React.useMemo(() => resolveDecimalSeparator(locale), [locale]);
 
   const [view, setView] = React.useState<string>(() => (value === null ? '' : formatNumber(value, locale, decimals)));
+  const [focused, setFocused] = React.useState(false);
 
   // Reformat on an outside value change or a new locale/precision, but not for the
   // field's own typing, or every keystroke would snap "1" to "1.00".
@@ -139,7 +146,9 @@ const CurrencyInput = ({
   if (synced.value !== value || synced.formatKey !== formatKey) {
     setSynced({ value, formatKey });
     if (synced.formatKey !== formatKey || value !== parseToNumber(view, decimalSeparator)) {
-      setView(value === null ? '' : formatNumber(value, locale, decimals));
+      // A parent clamping mid-edit must not hand the field grouped text it can't parse back on blur.
+      if (value === null) setView('');
+      else setView(focused ? formatEditable(value, decimals, decimalSeparator) : formatNumber(value, locale, decimals));
     }
   }
 
@@ -150,6 +159,7 @@ const CurrencyInput = ({
       setValue,
       view,
       setView,
+      setFocused,
       locale,
       decimals,
       disabled,
@@ -219,10 +229,12 @@ const CurrencyInputField = ({
       }}
       onFocus={(e) => {
         onFocus?.(e);
-        if (ctx.value !== null) ctx.setView(ctx.value.toFixed(ctx.decimals).replace('.', ctx.decimalSeparator));
+        ctx.setFocused(true);
+        if (ctx.value !== null) ctx.setView(formatEditable(ctx.value, ctx.decimals, ctx.decimalSeparator));
       }}
       onBlur={(e) => {
         onBlur?.(e);
+        ctx.setFocused(false);
         const parsed = parseToNumber(ctx.view, ctx.decimalSeparator);
         ctx.setView(parsed === null ? '' : formatNumber(parsed, ctx.locale, ctx.decimals));
         // Only commit a real change, so a plain focus/blur never fires onValueChange.

@@ -43,13 +43,16 @@ const MIRROR_PROPS = [
   'direction',
 ] as const;
 
+// `.` and `-` may join name parts but never end one, so "Thanks @john." mentions `john`.
+const MENTION_NAME = String.raw`[\p{L}\p{N}_]+(?:[.\-][\p{L}\p{N}_]+)*`;
+
 const triggerCharClass = (triggers: string[]) => {
   return triggers.map((ch) => ch.replace(/[\\\]^-]/g, '\\$&')).join('');
 };
 
 export const getMentions = (value: string, trigger: string | string[] = '@'): string[] => {
   const triggers = Array.isArray(trigger) ? trigger : [trigger];
-  const re = new RegExp(`(?:^|\\s)[${triggerCharClass(triggers)}]([\\p{L}\\p{N}_.\\-]+)`, 'gu');
+  const re = new RegExp(`(?:^|\\s)[${triggerCharClass(triggers)}](${MENTION_NAME})`, 'gu');
   const out: string[] = [];
   let m: RegExpExecArray | null;
   while ((m = re.exec(value)) !== null) out.push(m[1]);
@@ -107,7 +110,7 @@ interface Segment {
 }
 
 const segmentValue = (value: string, triggers: string[], known: Set<string>): Segment[] => {
-  const re = new RegExp(`(^|\\s)([${triggerCharClass(triggers)}][\\p{L}\\p{N}_.\\-]+)`, 'gu');
+  const re = new RegExp(`(^|\\s)([${triggerCharClass(triggers)}]${MENTION_NAME})`, 'gu');
   const segments: Segment[] = [];
   let last = 0;
   let m: RegExpExecArray | null;

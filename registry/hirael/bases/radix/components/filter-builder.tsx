@@ -107,6 +107,9 @@ const DEFAULT_LABELS: FilterBuilderLabels = {
   selected: (count) => `${count} selected`,
 };
 
+// Number columns often arrive as strings (CSV, JSON), so only an ISO-dated string compares as a date.
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}/;
+
 const toISODate = (date: Date) =>
   `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
 
@@ -164,7 +167,7 @@ export const applyFilters = <Row,>(
         case 'lt':
           return Number(raw) < Number(a);
         case 'between': {
-          if (raw instanceof Date || typeof raw === 'string') {
+          if (raw instanceof Date || (typeof raw === 'string' && ISO_DATE.test(raw))) {
             const day = raw instanceof Date ? toISODate(raw) : raw.slice(0, 10);
 
             return (a === '' || day >= a) && (b === '' || day <= b);

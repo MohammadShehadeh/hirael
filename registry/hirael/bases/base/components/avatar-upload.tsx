@@ -164,10 +164,14 @@ const AvatarUpload = ({
     noClick: true,
     noKeyboard: true,
     onDropAccepted: ([file]) => readFile(file),
-    onDropRejected: ([rejection]) =>
-      rejection.errors[0]?.code === 'file-too-large'
-        ? fail({ reason: 'size', message: `Image must be under ${formatBytes(maxSize ?? 0)}.` })
-        : fail({ reason: 'type', message: 'That file type is not supported.' }),
+    onDropRejected: (rejections) => {
+      // A multi-file drop still uses the first image; the extras come back as too-many-files, which is no error.
+      const code = rejections.flatMap((r) => r.errors).find((e) => e.code !== 'too-many-files')?.code;
+      if (code === undefined) return;
+      if (code === 'file-too-large')
+        fail({ reason: 'size', message: `Image must be under ${formatBytes(maxSize ?? 0)}.` });
+      else fail({ reason: 'type', message: 'That file type is not supported.' });
+    },
   });
 
   const registerCropper = React.useCallback((ref: ImageCropperRef | null) => {

@@ -77,6 +77,19 @@ describe.each(Object.entries(registry))(
       expect(run([{ id: '1', field: 'estimate', operator: 'between', values: ['2', '5'] }])).toHaveLength(2);
     });
 
+    it('should compare numbers that arrive as strings by value in a between range', () => {
+      const prices = [{ price: '9' }, { price: '42' }, { price: '100' }];
+      const between = (a: string, b: string) =>
+        applyFilters(
+          prices,
+          [{ id: '1', field: 'price', operator: 'between', values: [a, b] }],
+          (row) => row.price,
+        ).map((row) => row.price);
+
+      expect(between('5', '10')).toEqual(['9']);
+      expect(between('20', '200')).toEqual(['42', '100']);
+    });
+
     it('should compare dates and date ranges', () => {
       expect(run([{ id: '1', field: 'created', operator: 'before', values: ['2026-09-10'] }])).toEqual([
         'Fix the date picker',

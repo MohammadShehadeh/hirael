@@ -52,6 +52,17 @@ const clampPair = ([lo, hi]: NumberRangeValue, min: number, max: number): Number
   return a <= b ? [a, b] : [b, a];
 };
 
+const decimalsOf = (n: number): number => {
+  const [mantissa, exponent] = String(n).split('e-');
+
+  return (mantissa.split('.')[1]?.length ?? 0) + (exponent ? Number(exponent) : 0);
+};
+
+// Adding a fractional step drifts (0.2 + 0.1 is 0.30000000000000004), so round to the finer of value and step.
+const addStep = (n: number, delta: number, step: number): number => {
+  return Number((n + delta).toFixed(Math.min(20, Math.max(decimalsOf(n), decimalsOf(step)))));
+};
+
 const defaultFormat: NumberFormatter = (n) => String(n);
 const defaultParse: NumberParser = (s) => {
   const cleaned = s.replace(/[^\d.-]/g, '');
@@ -194,7 +205,7 @@ const NumberRangeInput = ({ bound, className, onBlur, onKeyDown, ...props }: Num
           } else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
             e.preventDefault();
             const delta = (e.key === 'ArrowUp' ? 1 : -1) * ctx.step * (e.shiftKey ? 10 : 1);
-            setBound(current + delta);
+            setBound(addStep(current, delta, ctx.step));
             setDraft(null);
           }
         }}

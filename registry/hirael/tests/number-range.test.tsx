@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -47,5 +47,24 @@ describe.each(Object.entries(registry))('NumberRange (%s)', (_, { NumberRange, N
 
     expect(onValueChange).not.toHaveBeenCalled();
     expect(field).toHaveValue('10');
+  });
+
+  it.each([
+    [0.1, 0.2, false, '0.3', [0.3, 1]],
+    [0.07, 0, true, '0.7', [0.7, 1]],
+    [0.1, 0.25, false, '0.35', [0.35, 1]],
+  ])('should step by %d from %d (shift: %s) without floating-point noise', (step, start, shiftKey, shown, reported) => {
+    const onValueChange = vi.fn();
+    render(
+      <NumberRange min={0} max={1} step={step} defaultValue={[start, 1]} onValueChange={onValueChange}>
+        <NumberRangeInput bound="min" aria-label="Minimum" />
+      </NumberRange>,
+    );
+    const field = screen.getByRole('textbox', { name: 'Minimum' });
+
+    fireEvent.keyDown(field, { key: 'ArrowUp', shiftKey });
+
+    expect(field).toHaveValue(shown);
+    expect(onValueChange).toHaveBeenLastCalledWith(reported);
   });
 });

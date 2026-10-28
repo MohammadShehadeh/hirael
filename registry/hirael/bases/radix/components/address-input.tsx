@@ -119,6 +119,7 @@ interface AddressInputContextValue {
   setField: (field: AddressField | 'country', next: string) => void;
   format: AddressFormat;
   labels?: AddressLabels;
+  locale?: string;
   disabled?: boolean;
   readOnly?: boolean;
 }
@@ -140,6 +141,8 @@ export interface AddressInputProps extends Omit<React.ComponentProps<'div'>, 'de
   onValueChange?: (value: AddressValue) => void;
   /** Overrides the format's labels, one field at a time. */
   labels?: AddressLabels;
+  /** Language for the country names, like `ar`. */
+  locale?: string;
   disabled?: boolean;
   readOnly?: boolean;
   children?: React.ReactNode;
@@ -150,6 +153,7 @@ const AddressInput = ({
   defaultValue,
   onValueChange,
   labels,
+  locale,
   disabled,
   readOnly,
   className,
@@ -174,8 +178,8 @@ const AddressInput = ({
   const format = React.useMemo(() => formatForCountry(value.country), [value.country]);
 
   const ctx = React.useMemo<AddressInputContextValue>(
-    () => ({ id, value, setField, format, labels, disabled, readOnly }),
-    [id, value, setField, format, labels, disabled, readOnly],
+    () => ({ id, value, setField, format, labels, locale, disabled, readOnly }),
+    [id, value, setField, format, labels, locale, disabled, readOnly],
   );
 
   return (
@@ -208,6 +212,7 @@ const AddressInputCountry = ({ priority, className, ...props }: AddressInputCoun
         id={id}
         value={ctx.value.country}
         onValueChange={(country) => ctx.setField('country', country)}
+        locale={ctx.locale}
         disabled={ctx.disabled || ctx.readOnly}
         priority={priority}
       >

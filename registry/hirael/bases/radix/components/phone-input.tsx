@@ -5,7 +5,11 @@ import { AsYouType, parsePhoneNumberFromString, type CountryCode } from 'libphon
 import { Check, ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-import { COUNTRIES, type Country } from '@/registry/hirael/bases/radix/components/country-select';
+import {
+  COUNTRIES,
+  useLocalizedCountries,
+  type Country,
+} from '@/registry/hirael/bases/radix/components/country-select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/radix/ui/popover';
 import {
   Command,
@@ -53,6 +57,7 @@ const parseE164 = (value: string | undefined, fallback: Country): ParsedE164 => 
 interface Ctx extends ParsedE164 {
   id: string;
   update: (next: ParsedE164) => void;
+  locale?: string;
   disabled?: boolean;
 }
 
@@ -73,6 +78,8 @@ export interface PhoneInputProps extends Omit<React.ComponentProps<'div'>, 'chil
   defaultValue?: string;
   onValueChange?: (e164: string) => void;
   defaultCountry?: string;
+  /** Language for the country names in the country list, like `ar`. */
+  locale?: string;
   disabled?: boolean;
   name?: string;
   children?: React.ReactNode;
@@ -84,6 +91,7 @@ const PhoneInput = ({
   defaultValue,
   onValueChange,
   defaultCountry = 'US',
+  locale,
   disabled,
   name,
   className,
@@ -117,8 +125,8 @@ const PhoneInput = ({
   );
 
   const ctx = React.useMemo<Ctx>(
-    () => ({ id: fieldId, ...phone, update, disabled }),
-    [fieldId, phone, update, disabled],
+    () => ({ id: fieldId, ...phone, update, locale, disabled }),
+    [fieldId, phone, update, locale, disabled],
   );
 
   return (
@@ -136,6 +144,7 @@ type PhoneInputCountrySelectProps = Omit<React.ComponentProps<'button'>, 'childr
 const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelectProps) => {
   const ctx = usePhoneInput();
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const { countries, nameOf } = useLocalizedCountries(COUNTRIES, ctx.locale);
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -148,7 +157,7 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
             role="combobox"
             aria-expanded={open}
             aria-haspopup="listbox"
-            aria-label={`Country code, currently ${ctx.country.name} ${ctx.country.dialCode}`}
+            aria-label={`Country code, currently ${nameOf(ctx.country)} ${ctx.country.dialCode}`}
             disabled={ctx.disabled}
             className={cn('gap-1.5 text-xs tabular-nums', className)}
             {...props}
@@ -177,10 +186,11 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
             <CommandList>
               <CommandEmpty>No country found.</CommandEmpty>
               <CommandGroup>
-                {COUNTRIES.map((c) => (
+                {countries.map((c) => (
                   <CommandItem
                     key={c.iso2}
-                    value={`${c.name} ${c.iso2} ${c.dialCode}`}
+                    value={`${nameOf(c)} ${c.iso2} ${c.dialCode}`}
+                    keywords={[c.name]}
                     onSelect={() => {
                       ctx.update({ country: c, national: ctx.national });
                       setOpen(false);
@@ -189,7 +199,7 @@ const PhoneInputCountrySelect = ({ className, ...props }: PhoneInputCountrySelec
                   >
                     <span className="flex min-w-0 items-center gap-2">
                       <span className="shrink-0 text-xs font-medium">{c.iso2}</span>
-                      <span className="min-w-0 truncate">{c.name}</span>
+                      <span className="min-w-0 truncate">{nameOf(c)}</span>
                     </span>
                     <span className="flex shrink-0 items-center gap-1.5">
                       <span className="text-xs text-muted-foreground tabular-nums">{c.dialCode}</span>

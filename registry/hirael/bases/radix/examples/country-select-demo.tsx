@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT } from '@/lib/demo-locale';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Field, FieldDescription, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import {
@@ -17,6 +17,7 @@ import {
 
 const CountrySelectDemo = () => {
   const t = useT();
+  const locale = useDemoLocale();
   const [country, setCountry] = React.useState('JO');
   const [markets, setMarkets] = React.useState<string[]>(['AE', 'SA']);
   const [shipping, setShipping] = React.useState('');
@@ -36,7 +37,7 @@ const CountrySelectDemo = () => {
             ar: 'اختيار مفرد',
           })}
         </p>
-        <CountrySelect value={country} onValueChange={setCountry} showDialCode>
+        <CountrySelect locale={locale} value={country} onValueChange={setCountry} showDialCode>
           <CountrySelectTrigger>
             <CountrySelectValue placeholder={t({ en: 'Select a country', ar: 'اختر دولة' })} />
           </CountrySelectTrigger>
@@ -55,6 +56,7 @@ const CountrySelectDemo = () => {
           })}
         </p>
         <CountrySelect
+          locale={locale}
           multiple
           value={markets}
           onValueChange={setMarkets}
@@ -95,7 +97,13 @@ const CountrySelectDemo = () => {
         <div className="rounded-md border border-border bg-card p-4">
           <Field className="gap-2">
             <FieldLabel htmlFor="ship-country">{t({ en: 'Shipping country', ar: 'دولة الشحن' })}</FieldLabel>
-            <CountrySelect id="ship-country" value={shipping} onValueChange={setShipping} priority={['US', 'GB', 'DE']}>
+            <CountrySelect
+              locale={locale}
+              id="ship-country"
+              value={shipping}
+              onValueChange={setShipping}
+              priority={['US', 'GB', 'DE']}
+            >
               <CountrySelectTrigger className="w-full sm:max-w-xs">
                 <CountrySelectValue placeholder={t({ en: 'Where to?', ar: 'إلى أين؟' })} />
               </CountrySelectTrigger>

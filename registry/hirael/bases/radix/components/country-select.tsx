@@ -23,7 +23,7 @@ export interface Country {
   dialCode: string;
 }
 
-/** Sorted by name, the order the list renders in. */
+/** Sorted by English name, the order the list renders in without a `locale`. */
 export const COUNTRIES: readonly Country[] = [
   { iso2: 'DZ', name: 'Algeria', dialCode: '+213' },
   { iso2: 'AR', name: 'Argentina', dialCode: '+54' },
@@ -111,6 +111,7 @@ interface CountrySelectContextValue {
   open: boolean;
   setOpen: (next: boolean) => void;
   find: (iso2: string) => Country | undefined;
+  nameOf: (country: Country) => string;
   listboxId: string;
 }
 
@@ -131,6 +132,8 @@ interface CountrySelectBaseProps {
   /** ISO-2 codes pinned to the top of the list. */
   priority?: readonly string[];
   showDialCode?: boolean;
+  /** Language for the country names, like `ar`. The list sorts by the translated names; English names stay searchable. */
+  locale?: string;
   disabled?: boolean;
   open?: boolean;
   defaultOpen?: boolean;
@@ -163,12 +166,30 @@ const toList = (v: string | string[] | undefined): string[] => {
 
 const NO_PRIORITY: readonly string[] = [];
 
+/** Country names in `locale` from `Intl`, with the list in that locale's alphabetical order. */
+export const useLocalizedCountries = (countries: readonly Country[], locale: string | undefined) => {
+  const regionNames = React.useMemo(
+    () => (locale ? new Intl.DisplayNames([locale], { type: 'region' }) : null),
+    [locale],
+  );
+  const nameOf = React.useCallback((country: Country) => regionNames?.of(country.iso2) ?? country.name, [regionNames]);
+  const sorted = React.useMemo(() => {
+    if (!locale) return countries;
+    const collator = new Intl.Collator(locale);
+
+    return [...countries].sort((a, b) => collator.compare(nameOf(a), nameOf(b)));
+  }, [countries, locale, nameOf]);
+
+  return { countries: sorted, nameOf };
+};
+
 const CountrySelect = (props: CountrySelectProps) => {
   const {
     id,
     countries = COUNTRIES,
     priority = NO_PRIORITY,
     showDialCode = false,
+    locale,
     disabled,
     open: openProp,
     defaultOpen = false,
@@ -183,6 +204,7 @@ const CountrySelect = (props: CountrySelectProps) => {
   const reactId = React.useId();
   const selectId = id ?? reactId;
   const listboxId = React.useId();
+  const { countries: localized, nameOf } = useLocalizedCountries(countries, locale);
 
   const [internal, setInternal] = React.useState<string[]>(() => toList(defaultValue));
   const selected = React.useMemo(() => (valueProp === undefined ? internal : toList(valueProp)), [valueProp, internal]);
@@ -219,16 +241,16 @@ const CountrySelect = (props: CountrySelectProps) => {
 
   const { priorityList, rest } = React.useMemo(() => {
     const priorityList = priority
-      .map((p) => countries.find((c) => c.iso2 === p.toUpperCase()))
+      .map((p) => localized.find((c) => c.iso2 === p.toUpperCase()))
       .filter((c): c is Country => Boolean(c));
 
-    return { priorityList, rest: countries.filter((c) => !priorityList.includes(c)) };
-  }, [countries, priority]);
+    return { priorityList, rest: localized.filter((c) => !priorityList.includes(c)) };
+  }, [localized, priority]);
 
   const ctx = React.useMemo<CountrySelectContextValue>(
     () => ({
       id: selectId,
-      countries,
+      countries: localized,
       priority: priorityList,
       rest,
       selected,
@@ -239,12 +261,13 @@ const CountrySelect = (props: CountrySelectProps) => {
       disabled,
       open,
       setOpen,
-      find: (iso2) => countries.find((c) => c.iso2 === iso2.toUpperCase()),
+      find: (iso2) => localized.find((c) => c.iso2 === iso2.toUpperCase()),
+      nameOf,
       listboxId,
     }),
     [
       selectId,
-      countries,
+      localized,
       priorityList,
       rest,
       selected,
@@ -254,6 +277,7 @@ const CountrySelect = (props: CountrySelectProps) => {
       disabled,
       open,
       setOpen,
+      nameOf,
       listboxId,
     ],
   );
@@ -350,7 +374,7 @@ const CountrySelectValue = ({
     return (
       <span data-slot="country-select-value" className={cn('flex min-w-0 items-center gap-2', className)} {...props}>
         <CountrySelectFlag iso2={c.iso2} />
-        <span className="truncate">{c.name}</span>
+        <span className="truncate">{ctx.nameOf(c)}</span>
         {ctx.showDialCode && <span className="text-xs text-muted-foreground tabular-nums">{c.dialCode}</span>}
       </span>
     );
@@ -364,7 +388,7 @@ const CountrySelectValue = ({
         ))}
       </span>
       <span className="truncate">
-        {picked.length <= 2 ? picked.map((c) => c.name).join(', ') : countLabel(picked.length)}
+        {picked.length <= 2 ? picked.map(ctx.nameOf).join(', ') : countLabel(picked.length)}
       </span>
     </span>
   );
@@ -456,8 +480,8 @@ const CountrySelectItem = ({ country, className, children, ...props }: CountrySe
 
   return (
     <CommandItem
-      value={`${country.name} ${country.iso2}`}
-      keywords={[country.iso2, country.dialCode]}
+      value={`${ctx.nameOf(country)} ${country.iso2}`}
+      keywords={[country.iso2, country.dialCode, country.name]}
       onSelect={() => ctx.select(country.iso2)}
       data-slot="country-select-item"
       className={cn('gap-2', className)}
@@ -466,7 +490,7 @@ const CountrySelectItem = ({ country, className, children, ...props }: CountrySe
       {children ?? (
         <>
           <CountrySelectFlag iso2={country.iso2} />
-          <span className="min-w-0 flex-1 truncate">{country.name}</span>
+          <span className="min-w-0 flex-1 truncate">{ctx.nameOf(country)}</span>
           {ctx.showDialCode && (
             <span className="shrink-0 text-xs text-muted-foreground tabular-nums">{country.dialCode}</span>
           )}

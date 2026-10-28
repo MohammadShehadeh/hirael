@@ -1,10 +1,12 @@
 // Runs in `pnpm check:registry`, before `shadcn build`. Checks registry-meta.ts
 // against both base trees: every declared file and preview exists, declared
 // dependencies match what the source imports, shipped source uses no site-only
-// class or token, and the order arrays cover every category exactly once.
+// class or token, the order arrays cover every category exactly once, and every
+// changelog entry has a valid date and names only real items.
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import matter from 'gray-matter';
 import ts from 'typescript';
 
 import {
@@ -220,6 +222,36 @@ checkOrder(
     Object.keys(REGISTRY_BY_CATEGORY).filter((category) => !['blocks', 'templates', 'utilities'].includes(category)),
   ),
 );
+
+// `added:` dates an item and drives its New badge and datePublished, so a stale or misspelled name loses all three.
+const checkChangelogFile = (file: string, source: string, itemNames: Set<string>) => {
+  const { data } = matter(source);
+  const date: unknown = data.date;
+  const time = date instanceof Date || typeof date === 'string' ? new Date(date).getTime() : Number.NaN;
+  if (Number.isNaN(time)) report.fail(`changelog ${file} has no valid date`);
+
+  for (const key of ['added', 'updated'] as const) {
+    const listed: unknown = data[key] ?? [];
+    if (!Array.isArray(listed)) {
+      report.fail(`changelog ${file} has a ${key}: that is not a list`);
+      continue;
+    }
+    const entries: unknown[] = listed;
+    for (const name of entries.filter((entry) => typeof entry !== 'string' || !itemNames.has(entry))) {
+      report.fail(`changelog ${file} lists "${String(name)}" under ${key}:, which is not a registry item`);
+    }
+  }
+};
+
+const checkChangelog = () => {
+  const dir = path.join(ROOT, 'content', 'changelog');
+  const itemNames = new Set(ALL_ENTRIES.map((entry) => entry.name));
+  for (const file of readdirSync(dir).filter((name) => name.endsWith('.mdx'))) {
+    checkChangelogFile(file, readFileSync(path.join(dir, file), 'utf8'), itemNames);
+  }
+};
+
+checkChangelog();
 
 report.finish(
   `registry OK — ${REGISTRY.length} showcased + ${DISTRIBUTION_ONLY.length} distribution-only items, meta consistent.`,

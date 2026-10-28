@@ -389,6 +389,22 @@ const RichTextEditorSeparator = ({ className, ...props }: React.ComponentProps<t
   );
 };
 
+const SCHEME = /^[a-z][a-z\d+-]*:/i;
+const RELATIVE_HREF = /^[/#?.]/;
+const EMAIL = /^[^\s/@]+@[^\s/@]+\.[^\s/@]+$/;
+
+/**
+ * The href a typed link gets. A bare domain becomes `https://…` and an email `mailto:…`; anything with a scheme, or a
+ * path, anchor or query, stays as typed.
+ */
+export const normalizeLinkHref = (input: string): string => {
+  const href = input.trim();
+  if (SCHEME.test(href) || RELATIVE_HREF.test(href)) return href;
+  if (EMAIL.test(href)) return `mailto:${href}`;
+
+  return `https://${href}`;
+};
+
 const RichTextEditorLinkPopover = () => {
   const labels = React.useContext(RichTextEditorLabelsContext);
   const editor = useRichTextEditor();
@@ -417,7 +433,12 @@ const RichTextEditorLinkPopover = () => {
     if (url.trim() === '') {
       editor.chain().focus().extendMarkRange('link').unsetLink().run();
     } else {
-      editor.chain().focus().extendMarkRange('link').setLink({ href: url.trim() }).run();
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange('link')
+        .setLink({ href: normalizeLinkHref(url) })
+        .run();
     }
     setOpen(false);
   };
@@ -450,7 +471,9 @@ const RichTextEditorLinkPopover = () => {
           inputRef.current?.focus();
         }}
       >
+        {/* type="url" keeps the URL keyboard; noValidate lets "hirael.com" through to get its https:// instead of a browser error. */}
         <form
+          noValidate
           className="flex items-center gap-2"
           onSubmit={(e) => {
             e.preventDefault();

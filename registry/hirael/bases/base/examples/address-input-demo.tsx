@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT } from '@/lib/demo-locale';
 import {
   AddressInput,
   AddressInputCountry,
@@ -21,12 +21,14 @@ const START: AddressValue = {
 
 const AddressInputDemo = () => {
   const t = useT();
+  const locale = useDemoLocale();
 
   const [address, setAddress] = React.useState<AddressValue>(START);
 
   return (
     <div className="flex w-full max-w-lg flex-col gap-4">
       <AddressInput
+        locale={locale}
         value={address}
         onValueChange={setAddress}
         labels={t({

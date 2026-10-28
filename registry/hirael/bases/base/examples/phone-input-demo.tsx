@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT } from '@/lib/demo-locale';
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import {
   PhoneInput,
@@ -12,6 +12,7 @@ import {
 
 const PhoneInputDemo = () => {
   const t = useT();
+  const locale = useDemoLocale();
 
   const [basic, setBasic] = React.useState('');
   const [composed, setComposed] = React.useState('+442071838750');
@@ -25,7 +26,7 @@ const PhoneInputDemo = () => {
             ar: 'الهاتف، الولايات المتحدة افتراضيًا',
           })}
         </FieldLabel>
-        <PhoneInput id="ph-basic" value={basic} onValueChange={setBasic} defaultCountry="US">
+        <PhoneInput locale={locale} id="ph-basic" value={basic} onValueChange={setBasic} defaultCountry="US">
           <PhoneInputCountrySelect />
           <PhoneInputField placeholder={t({ en: 'Phone number', ar: 'رقم الهاتف' })} />
         </PhoneInput>
@@ -44,7 +45,7 @@ const PhoneInputDemo = () => {
             ar: 'الهاتف، رقم بريطاني مُعبّأ مسبقًا',
           })}
         </FieldLabel>
-        <PhoneInput id="ph-composed" value={composed} onValueChange={setComposed} defaultCountry="GB">
+        <PhoneInput locale={locale} id="ph-composed" value={composed} onValueChange={setComposed} defaultCountry="GB">
           <PhoneInputCountrySelect />
           <PhoneInputField placeholder="20 7183 8750" />
         </PhoneInput>

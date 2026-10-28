@@ -9,6 +9,7 @@ export const getRepoStars = async (): Promise<number | null> => {
   try {
     const res = await fetch('https://api.github.com/repos/MohammadShehadeh/hirael', {
       headers: { 'x-build-stamp': buildStamp },
+      signal: AbortSignal.timeout(5000),
     });
 
     if (!res.ok) return null;

@@ -84,7 +84,15 @@ const SwipeActionsContent = ({
   const [rtl, setRtl] = React.useState(false);
 
   React.useLayoutEffect(() => {
-    if (contentRef.current) setRtl(getComputedStyle(contentRef.current).direction === 'rtl');
+    const node = contentRef.current;
+    if (!node) return;
+    const update = () => setRtl(getComputedStyle(node).direction === 'rtl');
+    update();
+    // A live language switch flips `dir` without remounting the row.
+    const observer = new MutationObserver(update);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['dir'], subtree: true });
+
+    return () => observer.disconnect();
   }, []);
 
   // Offset along the reading direction: positive reveals the start actions.

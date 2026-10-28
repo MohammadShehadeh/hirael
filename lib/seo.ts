@@ -11,8 +11,8 @@ import {
   type RegistryEntryMeta,
 } from '@/registry/hirael/registry-meta';
 
-export const WEBSITE_ID = `${SITE.url}/#website`;
-export const ORGANIZATION_ID = `${SITE.url}/#person`;
+const WEBSITE_ID = `${SITE.url}/#website`;
+const ORGANIZATION_ID = `${SITE.url}/#person`;
 
 const titled = (text: string) => `${text} - ${SITE.name}`;
 
@@ -84,7 +84,7 @@ const KEYWORD_SHAPES = [
   (title: string) => `tailwind ${title.toLowerCase()}`,
 ];
 
-export const entryKeywords = (entry: RegistryEntryMeta): string[] => {
+const entryKeywords = (entry: RegistryEntryMeta): string[] => {
   const name = entry.subtitle ?? entry.title;
   const shapes = KEYWORD_SHAPES.map((shape) => shape(name));
 

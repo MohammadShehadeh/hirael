@@ -238,7 +238,7 @@ export interface SearchDoc {
   compactName: string;
 }
 
-export const entryKindLabel = (entry: RegistryEntryMeta) => {
+const entryKindLabel = (entry: RegistryEntryMeta) => {
   if (entry.category === 'templates') return 'Template';
   if (entry.category === 'blocks') return entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : 'Block';
 

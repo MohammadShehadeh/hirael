@@ -33,3 +33,19 @@ describe.each(Object.entries(registry))('RichTextEditor (%s)', (_, { RichTextEdi
     expect(onValueChange).not.toHaveBeenCalled();
   });
 });
+
+describe.each(Object.entries(registry))('normalizeLinkHref (%s)', (_, { normalizeLinkHref }) => {
+  it.each([
+    ['hirael.com', 'https://hirael.com'],
+    ['  www.hirael.com/docs ', 'https://www.hirael.com/docs'],
+    ['hirael.com:8080/blocks', 'https://hirael.com:8080/blocks'],
+    ['me@hirael.com', 'mailto:me@hirael.com'],
+    ['https://hirael.com', 'https://hirael.com'],
+    ['mailto:me@hirael.com', 'mailto:me@hirael.com'],
+    ['tel:+15551234567', 'tel:+15551234567'],
+    ['/docs', '/docs'],
+    ['#install', '#install'],
+  ])('should turn %j into %j', (typed, href) => {
+    expect(normalizeLinkHref(typed)).toBe(href);
+  });
+});

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it, vi } from 'vitest';
 
@@ -63,5 +63,36 @@ describe.each(Object.entries(registry))('PhoneInput (%s)', (_, { PhoneInput, Pho
 
     await user.click(screen.getByRole('button', { name: 'Reset' }));
     expect(field).toHaveValue('2071234567');
+  });
+
+  it.each([
+    ['+44 20 7946 0958', '+442079460958', '2079460958'],
+    ['+971 50 123 4567', '+971501234567', '501234567'],
+  ])('should switch to the country of a pasted %s', (pasted, e164, national) => {
+    const onValueChange = vi.fn();
+    render(
+      <PhoneInput defaultCountry="US" onValueChange={onValueChange}>
+        <PhoneInputField aria-label="Phone" />
+      </PhoneInput>,
+    );
+    const field = screen.getByRole('textbox', { name: 'Phone' });
+
+    fireEvent.change(field, { target: { value: pasted } });
+
+    expect(onValueChange).toHaveBeenLastCalledWith(e164);
+    expect(field).toHaveValue(national);
+  });
+
+  it('should keep the selected country for a pasted national number', () => {
+    const onValueChange = vi.fn();
+    render(
+      <PhoneInput defaultCountry="US" onValueChange={onValueChange}>
+        <PhoneInputField aria-label="Phone" />
+      </PhoneInput>,
+    );
+
+    fireEvent.change(screen.getByRole('textbox', { name: 'Phone' }), { target: { value: '(555) 123-4567' } });
+
+    expect(onValueChange).toHaveBeenLastCalledWith('+15551234567');
   });
 });

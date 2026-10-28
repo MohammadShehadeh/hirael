@@ -80,9 +80,18 @@ export const CopyPageButton = ({ name, title, className }: CopyPageButtonProps) 
   const handleCopyMarkdown = async () => {
     setCopyState('copying');
     try {
-      const response = await fetch(markdownPath);
-      if (!response.ok) throw new Error(String(response.status));
-      await navigator.clipboard.writeText(await response.text());
+      const markdown = fetch(markdownPath, { signal: AbortSignal.timeout(10_000) }).then((response) => {
+        if (!response.ok) throw new Error(String(response.status));
+
+        return response.text();
+      });
+      // Safari only allows a clipboard write during the click, so start it now and hand it the pending fetch.
+      if ('ClipboardItem' in window) {
+        const blob = markdown.then((text) => new Blob([text], { type: 'text/plain' }));
+        await navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]);
+      } else {
+        await navigator.clipboard.writeText(await markdown);
+      }
       setCopyState('copied');
     } catch {
       setCopyState('error');

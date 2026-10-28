@@ -31,8 +31,11 @@ export interface KanbanMove {
 const CARD_CLASS =
   'group/kanban-card relative flex shrink-0 flex-col gap-2 rounded-md border border-border bg-card p-3 text-sm text-card-foreground shadow-xs outline-none select-none';
 
+// Own keys only: `in` also matches inherited names like "constructor", and Object.hasOwn needs an ES2022 lib.
 const columnOf = (board: KanbanValue, id: string) =>
-  id in board ? id : Object.keys(board).find((column) => board[column].includes(id));
+  Object.prototype.hasOwnProperty.call(board, id)
+    ? id
+    : Object.keys(board).find((column) => board[column].includes(id));
 
 interface KanbanCtx {
   value: KanbanValue;

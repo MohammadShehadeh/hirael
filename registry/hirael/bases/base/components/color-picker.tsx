@@ -14,6 +14,11 @@ import { useControllableState } from '@/registry/hirael/hooks/use-controllable-s
 
 export type ColorFormat = 'hex' | 'rgb' | 'hsl';
 
+interface HueSat {
+  h: number;
+  s: number;
+}
+
 interface ColorPickerContextValue {
   hex: string;
   setHex: (hex: string) => void;
@@ -21,6 +26,8 @@ interface ColorPickerContextValue {
   setFormat: (f: ColorFormat) => void;
   swatches: string[];
   pushSwatch: (hex: string) => void;
+  hueSat: HueSat;
+  setHueSat: (next: HueSat) => void;
   disabled?: boolean;
 }
 
@@ -36,6 +43,22 @@ const useColorPicker = () => {
 };
 
 const DEFAULT_SWATCHES = ['#0ea5e9', '#22c55e', '#a855f7', '#f43f5e', '#f97316', '#facc15', '#14b8a6', '#64748b'];
+
+// Hex has no hue for greys and no saturation for black or white, so keep the last ones while they still give this colour.
+const syncHueSat = (hex: string, previous: HueSat): HueSat => {
+  const hsl = colord(hex).toHsl();
+  if (colord({ ...hsl, h: previous.h, s: previous.s }).toHex() === colord(hex).toHex()) return previous;
+
+  return { h: hsl.h, s: hsl.s };
+};
+
+const useRememberedHueSat = (hex: string) => {
+  const [hueSat, setHueSat] = React.useState<HueSat>(() => syncHueSat(hex, { h: 0, s: 0 }));
+  const synced = syncHueSat(hex, hueSat);
+  if (synced.h !== hueSat.h || synced.s !== hueSat.s) setHueSat(synced);
+
+  return { hueSat, setHueSat };
+};
 
 export interface ColorPickerProps {
   value?: string;
@@ -74,6 +97,8 @@ const ColorPicker = ({
     onChange: onValueChange,
   });
 
+  const { hueSat, setHueSat } = useRememberedHueSat(value);
+
   const [format, setFormat] = useControllableState<ColorFormat>({
     prop: formatProp,
     defaultProp: defaultFormat,
@@ -105,8 +130,8 @@ const ColorPicker = ({
   }, [swatchesProp, recent]);
 
   const ctx = React.useMemo<ColorPickerContextValue>(
-    () => ({ hex: value, setHex: setValue, format, setFormat, swatches, pushSwatch, disabled }),
-    [value, setValue, format, setFormat, swatches, pushSwatch, disabled],
+    () => ({ hex: value, setHex: setValue, format, setFormat, swatches, pushSwatch, hueSat, setHueSat, disabled }),
+    [value, setValue, format, setFormat, swatches, pushSwatch, hueSat, setHueSat, disabled],
   );
 
   return (
@@ -284,6 +309,7 @@ const ColorPickerFormatInputs = ({
     );
   }
 
+  const hsl = { ...color.toHsl(), ...ctx.hueSat };
   const channels =
     ctx.format === 'rgb'
       ? (['r', 'g', 'b'] as const).map((k) => ({
@@ -294,9 +320,12 @@ const ColorPickerFormatInputs = ({
         }))
       : (['h', 's', 'l'] as const).map((k) => ({
           k,
-          value: color.toHsl()[k],
+          value: hsl[k],
           max: k === 'h' ? 360 : 100,
-          commit: (n: number) => ctx.setHex(colord({ ...color.toHsl(), [k]: n }).toHex()),
+          commit: (n: number) => {
+            if (k !== 'l') ctx.setHueSat({ ...ctx.hueSat, [k]: n });
+            ctx.setHex(colord({ ...hsl, [k]: n }).toHex());
+          },
         }));
 
   return (

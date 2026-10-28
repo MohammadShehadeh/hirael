@@ -3,6 +3,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import * as base from '@/registry/hirael/bases/base/components/kanban';
 import * as radix from '@/registry/hirael/bases/radix/components/kanban';
+import type { KanbanValue } from '@/registry/hirael/bases/radix/components/kanban';
 
 const registry = {
   radix,
@@ -37,12 +38,12 @@ afterAll(() => {
 describe.each(Object.entries(registry))(
   'Kanban (%s)',
   (_, { Kanban, KanbanColumn, KanbanColumnContent, KanbanCard }) => {
-    const setup = () => {
+    const setup = (board: KanbanValue = initial) => {
       const onCardMove = vi.fn();
       const onValueChange = vi.fn();
       render(
-        <Kanban defaultValue={initial} onCardMove={onCardMove} onValueChange={onValueChange}>
-          {Object.keys(initial).map((columnId) => (
+        <Kanban defaultValue={board} onCardMove={onCardMove} onValueChange={onValueChange}>
+          {Object.keys(board).map((columnId) => (
             <KanbanColumn key={columnId} id={columnId}>
               <KanbanColumnContent>
                 {(ids) =>
@@ -57,7 +58,7 @@ describe.each(Object.entries(registry))(
           ))}
         </Kanban>,
       );
-      const card = screen.getByText('Card a');
+      const card = screen.getByText(`Card ${board.todo[0]}`);
       card.focus();
 
       return { onCardMove, onValueChange, card };
@@ -86,6 +87,20 @@ describe.each(Object.entries(registry))(
         to: { columnId: 'todo', index: 1 },
       });
       expect(onValueChange).toHaveBeenCalledWith({ todo: ['b', 'a'], done: ['c'] });
+    });
+
+    it('should move cards whose ids match inherited object keys', async () => {
+      const { onCardMove, onValueChange, card } = setup({ todo: ['constructor', 'toString'], done: ['c'] });
+      await press(card, 'Space');
+      await press(card, 'ArrowDown');
+      await press(card, 'Enter');
+
+      expect(onCardMove).toHaveBeenCalledWith({
+        cardId: 'constructor',
+        from: { columnId: 'todo', index: 0 },
+        to: { columnId: 'todo', index: 1 },
+      });
+      expect(onValueChange).toHaveBeenCalledWith({ todo: ['toString', 'constructor'], done: ['c'] });
     });
 
     it('should not commit a keyboard move cancelled with Escape', async () => {

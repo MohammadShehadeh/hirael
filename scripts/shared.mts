@@ -49,7 +49,7 @@ export const jsonText = (value: unknown) => `${JSON.stringify(value, null, 2)}\n
 export const STAMPABLE_FILE = /\.(tsx?|jsx?|mjs)$/;
 
 /** `shadcn build` also writes the catalog index here; it is not an installable item. */
-export const readBuiltItems = (base: RegistryBase = 'radix') =>
+const readBuiltItems = (base: RegistryBase = 'radix') =>
   readdirSync(builtDir(base))
     .filter((name) => name.endsWith('.json') && name !== 'registry.json')
     .map((name) => {

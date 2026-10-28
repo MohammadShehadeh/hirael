@@ -8,7 +8,7 @@ export const CATEGORY_GROUP_LABELS = {
   app: 'Product & app',
 } as const;
 
-export const CATEGORY_GROUP_ORDER: CategoryGroup[] = ['marketing', 'site', 'app'];
+const CATEGORY_GROUP_ORDER: CategoryGroup[] = ['marketing', 'site', 'app'];
 
 export interface CategoryMeta {
   slug: string;

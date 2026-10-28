@@ -9,7 +9,7 @@ export const MODE_STORAGE_KEY = 'hirael.theme.mode.v1';
 export const CONFIG_STORAGE_KEY = 'hirael.customizer.v1';
 export const CSS_STORAGE_KEY = 'hirael.customizer.css.v1';
 export const STYLE_ELEMENT_ID = 'hirael-customizer';
-export const SCOPE_ATTR = 'data-customizer-scope';
+const SCOPE_ATTR = 'data-customizer-scope';
 const SCOPE_SELECTOR = `[${SCOPE_ATTR}]`;
 
 export const BASES = REGISTRY_BASES.map((name) => ({

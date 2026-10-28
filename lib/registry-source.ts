@@ -5,7 +5,7 @@ import type { SourceFile } from '@/components/component-page';
 import { highlightCode, langFromPath } from '@/lib/highlight';
 import { DEFAULT_BASE, REGISTRY_BASES, registryFilePath, type RegistryBase } from '@/registry/hirael/registry-meta';
 
-export const loadSource = async (
+const loadSource = async (
   files: string[] | undefined,
   base: RegistryBase = DEFAULT_BASE,
 ): Promise<Record<string, SourceFile>> => {

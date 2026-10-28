@@ -3,40 +3,7 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
 overrides:
-  '@modelcontextprotocol/sdk@>=1.12.0 <1.31.0': ^1.31.0
-  brace-expansion@<1.1.19: ^1.1.19
-  brace-expansion@<1.1.20: ^1.1.20
-  brace-expansion@<1.1.21: ^1.1.21
-  brace-expansion@>=4.0.0 <5.0.10: ^5.0.10
-  brace-expansion@>=4.0.0 <5.0.11: ^5.0.11
-  brace-expansion@>=4.0.0 <5.0.12: ^5.0.12
-  fast-uri@>=3.0.0 <3.1.8: ^3.1.8
-  ip-address@<=10.7.0: ^10.7.1
-  js-yaml@>=3.0.0 <3.15.2: ^3.15.2
-  postcss: '>=8.5.10'
-  proxy-addr@>=1.1.0 <2.0.8: ^2.0.8
-  sharp@<0.35.5: ^0.35.5
-  source-map-js@>=1.0.0 <1.2.2: ^1.2.2
-
-# pnpm 12 holds back releases younger than a day (minimumReleaseAge). These were
-# upgraded on 2026-09-23, the day they shipped; the list can go once they age in.
-minimumReleaseAgeExclude:
-  - '@exodus/bytes@1.16.0'
-  - '@next/env@16.3.6'
-  - '@next/eslint-plugin-next@16.3.6'
-  - '@next/swc-darwin-arm64@16.3.6'
-  - '@next/swc-darwin-x64@16.3.6'
-  - '@next/swc-linux-arm64-gnu@16.3.6'
-  - '@next/swc-linux-arm64-musl@16.3.6'
-  - '@next/swc-linux-x64-gnu@16.3.6'
-  - '@next/swc-linux-x64-musl@16.3.6'
-  - '@next/swc-win32-arm64-msvc@16.3.6'
-  - '@next/swc-win32-x64-msvc@16.3.6'
-  - '@shadcn/lint@0.2.0'
-  - cn@0.4.0
-  - eslint-config-next@16.3.6
-  - framer-motion@13.4.1
-  - motion-dom@13.4.1
-  - motion@13.4.1
-  - next@16.3.6
-  - prettier@3.9.9
+  undici@>=7.0.0 <7.30.1: ^7.30.1
+  undici@>=7.15.0 <7.30.1: ^7.30.1
+  undici@>=7.18.0 <7.30.1: ^7.30.1
+  vite@>=8.3.0 <=8.3.2: ^8.3.3

@@ -227,6 +227,17 @@ const PhoneInputField = ({
 }: PhoneInputFieldProps) => {
   const ctx = usePhoneInput();
 
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    // A pasted or autofilled "+44 20 7946 0958" names its own country; read as national digits it dials the wrong number.
+    if (value.trimStart().startsWith('+') && parsePhoneNumberFromString(value)) {
+      ctx.update(parseE164(value, ctx.country));
+
+      return;
+    }
+    ctx.update({ country: ctx.country, national: value.replace(/[^\d\s]/g, '') });
+  };
+
   return (
     <InputGroupInput
       id={ctx.id}
@@ -238,7 +249,7 @@ const PhoneInputField = ({
       placeholder={placeholder}
       disabled={ctx.disabled}
       className={cn('rtl:text-right', className)}
-      onChange={(e) => ctx.update({ country: ctx.country, national: e.target.value.replace(/[^\d\s]/g, '') })}
+      onChange={handleChange}
       onBlur={(e) => {
         onBlur?.(e);
         const normalized = ctx.national.replace(/\s+/g, ' ').trim();

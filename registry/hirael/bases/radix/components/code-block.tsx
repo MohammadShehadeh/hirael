@@ -93,8 +93,9 @@ const CSS_RULES: Rule[] = [
   { type: 'comment', re: String.raw`\/\*[\s\S]*?(?:\*\/|$)` },
   { type: 'string', re: String.raw`'[^']*'|"[^"]*"` },
   { type: 'keyword', re: String.raw`@[\w-]+|!important\b` },
+  // A selector is followed by `{` before any `;` or `}`, which keeps `#add {` apart from `color: #add;`.
+  { type: 'type', re: String.raw`[.#][\w-]+(?=[^;{}]*\{)` },
   { type: 'number', re: String.raw`#[0-9a-fA-F]{3,8}\b` },
-  { type: 'type', re: String.raw`[.#][\w-]+` },
   { type: 'property', re: String.raw`[\w-]+(?=\s*:)` },
   {
     type: 'number',

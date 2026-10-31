@@ -7,7 +7,7 @@
 @theme inline {
   --font-sans: var(--font-sans-active, var(--font-outfit));
   --font-mono: var(--font-jet-brains-mono);
-  --font-serif: var(--font-cormorant);
+  --font-serif: var(--font-geist-serif-regular);
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -148,9 +148,9 @@
 }
 
 @utility text-display {
-  font-family: var(--font-serif), ui-serif, Georgia, serif;
-  font-weight: 500;
-  letter-spacing: -0.015em;
+  font-family: --theme(--font-serif);
+  font-weight: 400;
+  letter-spacing: --theme(--tracking-tight);
   font-feature-settings:
     'liga' 1,
     'calt' 1;

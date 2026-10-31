@@ -36,7 +36,7 @@ export const ItemCards = ({ items, className }: ItemCardsProps) => {
         >
           <span className="flex items-center justify-between gap-2">
             <span className="flex min-w-0 items-center gap-2">
-              <span className="truncate text-sm font-medium tracking-[-0.01em] text-foreground">{entry.title}</span>
+              <span className="truncate text-sm font-medium tracking-tight text-foreground">{entry.title}</span>
               <NewBadge addedAt={addedAt} />
             </span>
             <ArrowUpRight

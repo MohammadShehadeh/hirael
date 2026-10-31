@@ -31,9 +31,7 @@ export const PageHeader = ({ kicker, title, blurb, children }: PageHeaderProps) 
   return (
     <header className="mx-auto flex max-w-2xl flex-col items-center gap-5 text-center">
       <Pill>{kicker}</Pill>
-      <h1 className="text-display text-4xl leading-[0.92] tracking-[-0.02em] italic sm:text-5xl md:text-6xl">
-        {title}
-      </h1>
+      <h1 className="text-display text-4xl leading-tight sm:text-5xl md:text-6xl">{title}</h1>
       {blurb && <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{blurb}</p>}
       {children}
     </header>
@@ -59,9 +57,7 @@ export const SectionHeading = ({ kicker, title, blurb }: SectionHeadingProps) =>
   return (
     <div className="mx-auto mb-12 flex max-w-2xl flex-col items-center gap-5 text-center sm:mb-16">
       <Pill>{kicker}</Pill>
-      <h2 className="text-display text-3xl leading-[0.95] tracking-[-0.01em] text-balance italic sm:text-5xl lg:text-6xl">
-        {title}
-      </h2>
+      <h2 className="text-display text-3xl leading-tight text-balance sm:text-5xl lg:text-6xl">{title}</h2>
       {blurb && <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{blurb}</p>}
     </div>
   );

@@ -31,7 +31,7 @@ export const FullTemplates = () => {
                 <BlockPreview entry={entry} />
                 <div className="flex flex-col gap-1.5 p-5">
                   <span className="flex items-center justify-between gap-2">
-                    <span className="text-base font-medium tracking-[-0.01em]">{entry.title}</span>
+                    <span className="text-base font-medium tracking-tight">{entry.title}</span>
                     <ArrowUpRight
                       className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:-translate-y-0.5 rtl:-scale-x-100"
                       aria-hidden

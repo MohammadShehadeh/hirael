@@ -45,7 +45,7 @@ export const Hero = ({ latestRelease }: HeroProps) => {
 
         <h1
           className={cn(
-            'w-full text-display text-3xl leading-normal tracking-tight text-balance italic delay-[80ms] fill-mode-both sm:text-4xl sm:leading-[0.9] md:text-5xl',
+            'w-full text-display text-3xl leading-tight text-balance delay-[80ms] fill-mode-both sm:text-4xl md:text-5xl',
             riseText,
           )}
         >

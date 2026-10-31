@@ -270,7 +270,7 @@ const ART: Record<string, React.ReactNode> = {
 
   'not-found': (
     <div className="flex size-full flex-col items-center justify-center gap-2">
-      <span className="text-display text-4xl leading-none text-foreground/15 italic">404</span>
+      <span className="text-display text-4xl leading-none text-foreground/15">404</span>
       <div className="flex gap-1.5">
         <div className="h-4 w-11 rounded-sm bg-warm" />
         <div className="h-4 w-11 rounded-sm border border-border" />

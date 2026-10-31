@@ -30,7 +30,7 @@ const RoadmapState = ({ category }: RoadmapStateProps) => {
         />
         <div className="relative flex flex-col gap-4">
           <span className="text-xs text-muted-foreground uppercase">In design</span>
-          <h3 className="text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
+          <h3 className="text-2xl font-medium tracking-tight sm:text-3xl">
             {category.title} blocks are on the roadmap.
           </h3>
           <p className="max-w-xl text-sm text-muted-foreground">
@@ -63,7 +63,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
             Roadmap
           </span>
         )}
-        <h1 className="text-4xl leading-[1.05] font-semibold tracking-tight sm:text-5xl">{category.title}.</h1>
+        <h1 className="text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">{category.title}.</h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{category.description}</p>
         <p className="text-xs text-muted-foreground uppercase">
           {category.isComingSoon
@@ -107,7 +107,7 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
                           </>
                         )}
                       </p>
-                      <h2 id={`${entry.name}-title`} className="text-2xl font-semibold tracking-[-0.015em] sm:text-3xl">
+                      <h2 id={`${entry.name}-title`} className="text-2xl font-semibold tracking-tight sm:text-3xl">
                         <Link
                           href={href}
                           className="rounded-sm outline-none hover:underline hover:underline-offset-6 focus-visible:ring-[3px] focus-visible:ring-ring/50"

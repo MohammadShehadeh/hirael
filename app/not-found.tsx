@@ -32,7 +32,7 @@ export default async function NotFound() {
               Error 404
             </span>
 
-            <h1 className="text-display text-4xl leading-[1.04] sm:text-6xl md:text-7xl">
+            <h1 className="text-display text-4xl leading-tight sm:text-6xl md:text-7xl">
               This page isn&apos;t in the registry.
             </h1>
 

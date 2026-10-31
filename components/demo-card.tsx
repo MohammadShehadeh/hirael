@@ -104,7 +104,7 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
       <LazyDemo name={entry.name} compact={compact} inert={!engaged && hoverCapable} />
       <div className={cn('flex flex-col gap-1.5 border-t border-border', compact ? 'px-4 py-3' : 'p-4')}>
         <div className="flex items-center justify-between gap-2">
-          <h3 className="flex min-w-0 items-center gap-2 text-sm font-medium tracking-[-0.01em]">
+          <h3 className="flex min-w-0 items-center gap-2 text-sm font-medium tracking-tight">
             <Link
               href={href}
               className="truncate outline-none after:absolute after:inset-0 after:content-[''] focus-visible:underline"
@@ -120,7 +120,7 @@ export const DemoCard = ({ entry, className, compact = false, addedAt }: DemoCar
         {!compact && (
           <>
             <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
-            <span className="mt-1 inline-flex items-center gap-1 text-xs tracking-[0.12em] text-muted-foreground uppercase transition-colors group-hover/card:text-foreground">
+            <span className="mt-1 inline-flex items-center gap-1 text-xs tracking-widest text-muted-foreground uppercase transition-colors group-hover/card:text-foreground">
               View
               <ArrowRight className="size-3 transition-transform group-hover/card:translate-x-0.5 rtl:rotate-180" />
             </span>

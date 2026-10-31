@@ -177,7 +177,7 @@ const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) =
 
   return (
     <section data-slot="example" className="flex flex-col gap-3">
-      {showTitle && <h3 className="text-sm font-medium tracking-[-0.01em]">{example.title}</h3>}
+      {showTitle && <h3 className="text-sm font-medium tracking-tight">{example.title}</h3>}
       <div className="relative overflow-hidden rounded-md border border-border">
         <div className="flex items-center justify-between gap-2 border-b border-border/70 bg-card/40 px-3 py-2">
           <SegmentedControl
@@ -505,7 +505,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
 
             <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
               <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl leading-[1.05] font-semibold tracking-tight text-balance md:text-4xl">
+                <h1 className="text-3xl leading-tight font-semibold tracking-tight text-balance md:text-4xl">
                   {entry.title}
                 </h1>
                 <NewBadge addedAt={extras?.addedAt} />

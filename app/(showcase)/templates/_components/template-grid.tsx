@@ -17,7 +17,7 @@ const TemplateCard = ({ entry }: TemplateCardProps) => {
       <BlockPreview entry={entry} />
 
       <div className="flex flex-1 flex-col gap-2 p-4 sm:p-5">
-        <h2 className="text-base font-medium tracking-[-0.01em]">{entry.title}</h2>
+        <h2 className="text-base font-medium tracking-tight">{entry.title}</h2>
         <p className="line-clamp-2 text-xs text-muted-foreground">{entry.description}</p>
         {entry.dependencies?.length ? (
           <div className="flex flex-wrap gap-1.5">

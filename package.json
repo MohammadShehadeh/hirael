@@ -61,6 +61,7 @@
     "date-fns": "^4.4.0",
     "embla-carousel-react": "^8.6.0",
     "frimousse": "^0.4.0",
+    "geist": "1.9.0",
     "gray-matter": "^4.0.3",
     "gsap": "^3.15.0",
     "input-otp": "^1.5.0",

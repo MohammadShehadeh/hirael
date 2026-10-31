@@ -84,10 +84,7 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
               </div>
 
               <div className="mt-4 min-w-0 md:mt-0">
-                <h2
-                  id={`release-${entry.slug}-title`}
-                  className="text-display text-3xl leading-[0.95] italic sm:text-4xl"
-                >
+                <h2 id={`release-${entry.slug}-title`} className="text-display text-3xl leading-tight sm:text-4xl">
                   {entry.version ?? entry.title}
                 </h2>
 

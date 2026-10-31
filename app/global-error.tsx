@@ -1,6 +1,7 @@
 'use client';
 
-import { Cormorant_Garamond, JetBrains_Mono, Outfit } from 'next/font/google';
+import { GeistSerifRegular } from 'geist/font/serif/regular';
+import { JetBrains_Mono, Outfit } from 'next/font/google';
 import { RefreshCw } from 'lucide-react';
 import './globals.css';
 
@@ -20,17 +21,10 @@ const jetBrainsMono = JetBrains_Mono({
   weight: ['400', '500', '600'],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: '--font-cormorant',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
-});
-
 export default function GlobalError() {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(outfit.className, jetBrainsMono.variable, cormorant.variable, 'antialiased')}>
+      <body className={cn(outfit.className, jetBrainsMono.variable, GeistSerifRegular.variable, 'antialiased')}>
         <main className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-background text-center text-foreground">
           <div aria-hidden className="ambient-halo" />
           <div
@@ -43,7 +37,7 @@ export default function GlobalError() {
 
             <div className="relative flex flex-col items-center gap-3">
               <span className="text-xs text-muted-foreground uppercase">Something went wrong</span>
-              <h1 className="text-display text-3xl leading-[1.05] sm:text-4xl">This page failed to load.</h1>
+              <h1 className="text-display text-3xl leading-tight sm:text-4xl">This page failed to load.</h1>
               <p className="max-w-sm text-sm text-muted-foreground">
                 An unexpected error occurred. Try refreshing the page or come back in a moment.
               </p>

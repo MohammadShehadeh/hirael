@@ -7,10 +7,7 @@ import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 
 export const mdxComponents: MDXComponents = {
   h2: ({ className, ...props }: React.ComponentProps<'h2'>) => (
-    <h2
-      className={cn('mt-8 text-lg font-medium tracking-[-0.01em] text-foreground first:mt-0', className)}
-      {...props}
-    />
+    <h2 className={cn('mt-8 text-lg font-medium tracking-tight text-foreground first:mt-0', className)} {...props} />
   ),
   h3: ({ className, ...props }: React.ComponentProps<'h3'>) => (
     <h3 className={cn('mt-6 text-xs text-muted-foreground uppercase', className)} {...props} />

@@ -49,7 +49,7 @@ const FramedPreviewCard = ({ item: { entry, addedAt } }: FramedPreviewCardProps)
       </div>
       <span className="flex items-center justify-between gap-2 px-4 py-3">
         <span className="flex min-w-0 items-center gap-2">
-          <span className="truncate text-sm font-medium tracking-[-0.01em]">{entry.title}</span>
+          <span className="truncate text-sm font-medium tracking-tight">{entry.title}</span>
           <NewBadge addedAt={addedAt} />
         </span>
         <ArrowUpRight

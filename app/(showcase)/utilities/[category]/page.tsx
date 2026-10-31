@@ -62,7 +62,7 @@ export default async function UtilityCategoryRoute({ params }: UtilityCategoryRo
       <Breadcrumbs items={breadcrumb} />
 
       <header className="flex flex-col gap-4 border-b border-border pb-8 sm:pb-10">
-        <h1 className="text-4xl leading-[1.05] font-semibold tracking-tight sm:text-5xl">{label}.</h1>
+        <h1 className="text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">{label}.</h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">{UTILITY_KIND_DESCRIPTIONS[category]}</p>
         <p className="text-xs text-muted-foreground uppercase">{`${items.length} item${items.length === 1 ? '' : 's'}`}</p>
       </header>

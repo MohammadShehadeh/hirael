@@ -50,7 +50,7 @@ const PagerLink = ({ entry, direction }: PagerLinkProps) => {
         </span>
         {!isPrev && arrow}
       </span>
-      <span className="text-xl font-semibold tracking-[-0.015em] text-foreground underline-offset-6 group-hover:underline sm:text-2xl">
+      <span className="text-xl font-semibold tracking-tight text-foreground underline-offset-6 group-hover:underline sm:text-2xl">
         {entry.title}
       </span>
     </Link>

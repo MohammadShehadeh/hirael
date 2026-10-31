@@ -22,7 +22,7 @@ export const ComponentCategoryPage = ({ category }: ComponentCategoryPageProps) 
       <Breadcrumbs items={[{ label: 'Components', href: '/components' }, { label }]} />
 
       <header className="flex flex-col gap-4 border-b border-border pb-8 sm:pb-10">
-        <h1 className="text-4xl leading-[1.05] font-semibold tracking-tight sm:text-5xl">{label}.</h1>
+        <h1 className="text-4xl leading-tight font-semibold tracking-tight sm:text-5xl">{label}.</h1>
         <p className="max-w-2xl text-sm text-muted-foreground sm:text-base">
           {COMPONENT_CATEGORY_DESCRIPTIONS[category]}
         </p>

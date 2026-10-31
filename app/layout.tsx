@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, JetBrains_Mono } from 'next/font/google';
+import { GeistSerifRegular } from 'geist/font/serif/regular';
+import { JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 import { ThemeProvider } from '@/components/active-theme';
@@ -19,13 +20,6 @@ const jetBrainsMono = JetBrains_Mono({
   weight: ['400', '500', '600'],
   // Code and install commands are never the first paint, so this font shouldn't compete with CSS for bandwidth.
   preload: false,
-});
-
-const cormorant = Cormorant_Garamond({
-  variable: '--font-cormorant',
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
@@ -104,7 +98,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <link rel="alternate" type="application/json" title="Registry catalog" href="/r/registry.json" />
       </head>
-      <body className={cn(outfit.variable, jetBrainsMono.variable, cormorant.variable, 'font-sans antialiased')}>
+      <body
+        className={cn(outfit.variable, jetBrainsMono.variable, GeistSerifRegular.variable, 'font-sans antialiased')}
+      >
         <SkipLink />
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>

@@ -1,13 +1,17 @@
 'use client';
 
-export type RecentKind = 'component' | 'block' | 'template';
+// The mini build keeps the parser out of the shared client bundle's weight.
+import * as z from 'zod/mini';
 
-export interface RecentItem {
-  name: string;
-  title: string;
-  href: string;
-  kind: RecentKind;
-}
+const recentItemSchema = z.object({
+  name: z.string(),
+  title: z.string(),
+  href: z.string(),
+  kind: z.enum(['component', 'block', 'template']),
+});
+
+export type RecentItem = z.infer<typeof recentItemSchema>;
+export type RecentKind = RecentItem['kind'];
 
 const STORAGE_KEY = 'hirael:recent-items';
 const MAX_RECENTS = 5;
@@ -34,13 +38,11 @@ const parse = (raw: string | null): RecentItem[] => {
     const parsed: unknown = JSON.parse(raw);
     if (!Array.isArray(parsed)) return NO_RECENTS;
 
-    return parsed.filter(
-      (item): item is RecentItem =>
-        !!item &&
-        typeof item === 'object' &&
-        typeof (item as RecentItem).href === 'string' &&
-        typeof (item as RecentItem).title === 'string',
-    );
+    return parsed.flatMap((item) => {
+      const result = recentItemSchema.safeParse(item);
+
+      return result.success ? [result.data] : [];
+    });
   } catch {
     return NO_RECENTS;
   }

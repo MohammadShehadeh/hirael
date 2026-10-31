@@ -65,7 +65,7 @@ const Stepper = ({
     onChange: onValueChange,
   });
 
-  const ctx = React.useMemo<StepperCtx>(() => ({ value, setValue, orientation }), [value, setValue, orientation]);
+  const ctx: StepperCtx = { value, setValue, orientation };
 
   return (
     <StepperContext.Provider value={ctx}>
@@ -92,12 +92,19 @@ export interface StepperItemProps extends React.ComponentProps<'div'> {
   disabled?: boolean;
 }
 
+const stepState = (step: number, value: number, completed: boolean | undefined): StepState => {
+  if (completed || step < value) return 'completed';
+  if (step === value) return 'active';
+
+  return 'inactive';
+};
+
 const StepperItem = ({ step, completed, disabled = false, className, ...props }: StepperItemProps) => {
   const { value, orientation } = useStepper();
 
-  const state: StepState = completed || step < value ? 'completed' : step === value ? 'active' : 'inactive';
+  const state = stepState(step, value, completed);
 
-  const ctx = React.useMemo<StepperItemCtx>(() => ({ step, state, disabled }), [step, state, disabled]);
+  const ctx: StepperItemCtx = { step, state, disabled };
 
   return (
     <StepperItemContext.Provider value={ctx}>

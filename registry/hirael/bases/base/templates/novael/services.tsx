@@ -12,6 +12,11 @@ import {
 
 import { LOREM, Reveal, SectionHeader, type Lang } from './primitives';
 
+interface Service {
+  id: string;
+  icon: LucideIcon;
+}
+
 const SERVICES = [
   { id: 'frontend', icon: CodeXml },
   { id: 'backend', icon: Server },
@@ -19,9 +24,14 @@ const SERVICES = [
   { id: 'qa', icon: TestTubeDiagonal },
   { id: 'devops', icon: InfinityIcon },
   { id: 'infra', icon: Network },
-] as const satisfies readonly { id: string; icon: LucideIcon }[];
+] as const satisfies readonly Service[];
 
 type ServiceId = (typeof SERVICES)[number]['id'];
+
+interface ServiceCopy {
+  title: string;
+  text: string;
+}
 
 const COPY = {
   en: {
@@ -84,7 +94,7 @@ const COPY = {
       },
     },
   },
-} satisfies Record<Lang, { items: Record<ServiceId, { title: string; text: string }> } & Record<string, unknown>>;
+} satisfies Record<Lang, { items: Record<ServiceId, ServiceCopy> } & Record<string, unknown>>;
 
 interface ServicesProps {
   lang: Lang;

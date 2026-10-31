@@ -24,7 +24,14 @@ const DEPARTMENTS = [
 
 type Department = (typeof DEPARTMENTS)[number]['value'];
 type Filter = Department | 'all';
-type Sort = 'time' | 'name';
+
+const isFilter = (value: unknown): value is Filter =>
+  value === 'all' || DEPARTMENTS.some((department) => department.value === value);
+const SORT_VALUES = ['time', 'name'] as const;
+
+type Sort = (typeof SORT_VALUES)[number];
+
+const isSort = (value: unknown): value is Sort => SORT_VALUES.some((option) => option === value);
 
 interface Member {
   name: string;
@@ -202,7 +209,7 @@ const Team03 = () => {
   const now = React.useSyncExternalStore(subscribeToMinutes, getCurrentMinute, getServerMinute);
 
   const sortTime = now ?? REFERENCE_TIME;
-  const sorted = [...MEMBERS].sort((a, b) =>
+  const sorted = MEMBERS.toSorted((a, b) =>
     sort === 'name'
       ? a.name.localeCompare(b.name)
       : readLocalTime(a.timeZone, sortTime).offsetMinutes - readLocalTime(b.timeZone, sortTime).offsetMinutes ||
@@ -259,7 +266,9 @@ const Team03 = () => {
               spacing={1}
               aria-label="Filter by department"
               value={filter}
-              onValueChange={(next) => next && setFilter(next as Filter)}
+              onValueChange={(next) => {
+                if (isFilter(next)) setFilter(next);
+              }}
               className="-mb-px flex-wrap"
             >
               {filters.map((option) => (
@@ -280,7 +289,9 @@ const Team03 = () => {
                 size="sm"
                 aria-labelledby="team-03-sort"
                 value={sort}
-                onValueChange={(next) => next && setSort(next as Sort)}
+                onValueChange={(next) => {
+                  if (isSort(next)) setSort(next);
+                }}
               >
                 <ToggleGroupItem value="time">Local time</ToggleGroupItem>
                 <ToggleGroupItem value="name">A to Z</ToggleGroupItem>

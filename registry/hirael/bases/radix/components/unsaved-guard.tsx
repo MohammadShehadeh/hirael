@@ -52,21 +52,18 @@ const useUnsavedGuard = (options: UnsavedGuardOptions): GuardNavigation => {
     return () => ctx.unregister(id);
   }, [ctx, id, when, title, description, confirmText, cancelText]);
 
-  return React.useCallback<GuardNavigation>(
-    (proceed) => {
-      const current = latestRef.current;
-      if (!current.when) {
-        return Promise.resolve(proceed?.()).then(() => true);
-      }
+  return ((proceed) => {
+    const current = latestRef.current;
+    if (!current.when) {
+      return Promise.resolve(proceed?.()).then(() => true);
+    }
 
-      return ctx.confirmLeave(current).then((ok) => {
-        if (!ok) return false;
+    return ctx.confirmLeave(current).then((ok) => {
+      if (!ok) return false;
 
-        return ctx.proceedUnguarded(proceed).then(() => true);
-      });
-    },
-    [ctx],
-  );
+      return ctx.proceedUnguarded(proceed).then(() => true);
+    });
+  }) as GuardNavigation;
 };
 
 export interface UnsavedGuardProviderProps {
@@ -82,22 +79,6 @@ export interface UnsavedGuardProviderProps {
   /** Default leave-dialog copy, overridden per `useUnsavedGuard` call. */
   defaultOptions?: Omit<UnsavedGuardOptions, 'when'>;
 }
-
-const UnsavedGuardProvider = ({
-  children,
-  beforeUnload = true,
-  onProceed,
-  defaultOptions,
-}: UnsavedGuardProviderProps) => {
-  const outerConfirm = useOptionalConfirm();
-  const inner = (
-    <UnsavedGuardInner beforeUnload={beforeUnload} onProceed={onProceed} defaultOptions={defaultOptions}>
-      {children}
-    </UnsavedGuardInner>
-  );
-
-  return outerConfirm ? inner : <ConfirmProvider>{inner}</ConfirmProvider>;
-};
 
 const UnsavedGuardInner = ({
   children,
@@ -120,47 +101,37 @@ const UnsavedGuardInner = ({
     cancelText: defCancelText,
   } = defaultOptions ?? {};
 
-  const recompute = React.useCallback(() => {
+  const recompute = () => {
     activeRef.current = [...guardsRef.current.values()].find((guard) => guard.when) ?? null;
-  }, []);
+  };
 
-  const register = React.useCallback(
-    (id: string, options: UnsavedGuardOptions) => {
-      guardsRef.current.set(id, options);
-      recompute();
-    },
-    [recompute],
-  );
+  const register = (id: string, options: UnsavedGuardOptions) => {
+    guardsRef.current.set(id, options);
+    recompute();
+  };
 
-  const unregister = React.useCallback(
-    (id: string) => {
-      guardsRef.current.delete(id);
-      recompute();
-    },
-    [recompute],
-  );
+  const unregister = (id: string) => {
+    guardsRef.current.delete(id);
+    recompute();
+  };
 
-  const confirmLeave = React.useCallback(
-    (options?: Partial<UnsavedGuardOptions>) =>
-      confirm({
-        tone: 'destructive',
-        title: options?.title ?? defTitle ?? 'Discard unsaved changes?',
-        description:
-          options?.description ?? defDescription ?? 'You have unsaved changes that will be lost if you leave.',
-        confirmText: options?.confirmText ?? defConfirmText ?? 'Leave',
-        cancelText: options?.cancelText ?? defCancelText ?? 'Stay',
-      }),
-    [confirm, defTitle, defDescription, defConfirmText, defCancelText],
-  );
+  const confirmLeave = (options?: Partial<UnsavedGuardOptions>) =>
+    confirm({
+      tone: 'destructive',
+      title: options?.title ?? defTitle ?? 'Discard unsaved changes?',
+      description: options?.description ?? defDescription ?? 'You have unsaved changes that will be lost if you leave.',
+      confirmText: options?.confirmText ?? defConfirmText ?? 'Leave',
+      cancelText: options?.cancelText ?? defCancelText ?? 'Stay',
+    });
 
-  const proceedUnguarded = React.useCallback(async (proceed?: () => void | Promise<void>) => {
+  const proceedUnguarded = async (proceed?: () => void | Promise<void>) => {
     bypassRef.current = true;
-    try {
-      await proceed?.();
-    } finally {
-      bypassRef.current = false;
-    }
-  }, []);
+    await Promise.resolve()
+      .then(proceed)
+      .finally(() => {
+        bypassRef.current = false;
+      });
+  };
 
   React.useEffect(() => {
     if (!beforeUnload) return;
@@ -174,46 +145,45 @@ const UnsavedGuardInner = ({
     return () => window.removeEventListener('beforeunload', handler);
   }, [beforeUnload]);
 
+  const onLinkClick = React.useEffectEvent((event: MouseEvent) => {
+    if (activeRef.current === null || event.defaultPrevented || event.button !== 0) return;
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    const anchor = event.target instanceof Element ? event.target.closest('a') : null;
+    if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) return;
+    const href = anchor.getAttribute('href');
+    if (!href || href.startsWith('#')) return;
+    let url: URL;
+    try {
+      url = new URL(anchor.href, window.location.href);
+    } catch {
+      return;
+    }
+    if (url.origin !== window.location.origin || url.href === window.location.href) return;
+    event.preventDefault();
+    event.stopPropagation();
+    void confirmLeave(activeRef.current ?? undefined).then((ok) => {
+      if (!ok) return;
+      if (onProceed) {
+        void proceedUnguarded(() => onProceed(url.href));
+
+        return;
+      }
+      // beforeunload fires after assign() returns, so the bypass must outlive this call.
+      bypassRef.current = true;
+      window.location.assign(url.href);
+    });
+  });
+
   React.useEffect(() => {
     const root = wrapperRef.current;
     if (!root) return;
-    const onClick = (event: MouseEvent) => {
-      if (activeRef.current === null || event.defaultPrevented || event.button !== 0) return;
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-      const anchor = event.target instanceof Element ? event.target.closest('a') : null;
-      if (!anchor || anchor.target === '_blank' || anchor.hasAttribute('download')) return;
-      const href = anchor.getAttribute('href');
-      if (!href || href.startsWith('#')) return;
-      let url: URL;
-      try {
-        url = new URL(anchor.href, window.location.href);
-      } catch {
-        return;
-      }
-      if (url.origin !== window.location.origin || url.href === window.location.href) return;
-      event.preventDefault();
-      event.stopPropagation();
-      void confirmLeave(activeRef.current ?? undefined).then((ok) => {
-        if (!ok) return;
-        if (onProceed) {
-          void proceedUnguarded(() => onProceed(url.href));
-
-          return;
-        }
-        // beforeunload fires after assign() returns, so the bypass must outlive this call.
-        bypassRef.current = true;
-        window.location.assign(url.href);
-      });
-    };
+    const onClick = (event: MouseEvent) => onLinkClick(event);
     root.addEventListener('click', onClick, true);
 
     return () => root.removeEventListener('click', onClick, true);
-  }, [confirmLeave, onProceed, proceedUnguarded]);
+  }, []);
 
-  const value = React.useMemo<UnsavedGuardContextValue>(
-    () => ({ register, unregister, confirmLeave, proceedUnguarded }),
-    [register, unregister, confirmLeave, proceedUnguarded],
-  );
+  const value: UnsavedGuardContextValue = { register, unregister, confirmLeave, proceedUnguarded };
 
   return (
     <UnsavedGuardContext.Provider value={value}>
@@ -222,6 +192,22 @@ const UnsavedGuardInner = ({
       </div>
     </UnsavedGuardContext.Provider>
   );
+};
+
+const UnsavedGuardProvider = ({
+  children,
+  beforeUnload = true,
+  onProceed,
+  defaultOptions,
+}: UnsavedGuardProviderProps) => {
+  const outerConfirm = useOptionalConfirm();
+  const inner = (
+    <UnsavedGuardInner beforeUnload={beforeUnload} onProceed={onProceed} defaultOptions={defaultOptions}>
+      {children}
+    </UnsavedGuardInner>
+  );
+
+  return outerConfirm ? inner : <ConfirmProvider>{inner}</ConfirmProvider>;
 };
 
 export { UnsavedGuardProvider, useUnsavedGuard };

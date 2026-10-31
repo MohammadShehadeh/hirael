@@ -23,6 +23,9 @@ const DOT_COLOR: Record<DayStatus, string> = {
   outage: 'bg-destructive',
 };
 
+// Object.keys widens to string[]; DOT_COLOR has a key per status.
+const DAY_STATUSES = Object.keys(DOT_COLOR) as DayStatus[];
+
 const STATUS_LABEL: Record<DayStatus, string> = {
   operational: 'Operational',
   degraded: 'Degraded',
@@ -48,8 +51,13 @@ interface Day {
   note: string;
 }
 
+interface DayException {
+  status: DayStatus;
+  note: string;
+}
+
 // Day 0 is the oldest, day 89 is today.
-const buildDays = (exceptions: Record<number, { status: DayStatus; note: string }>): Array<Day> => {
+const buildDays = (exceptions: Record<number, DayException>): Array<Day> => {
   return Array.from({ length: DAYS }, (_, i) => {
     const ex = exceptions[i];
 
@@ -180,7 +188,7 @@ const Status01 = () => {
               <p className="mt-2 text-sm text-muted-foreground">99.97% across all services over the last 90 days.</p>
             </div>
             <ul className="flex items-center gap-4">
-              {(Object.keys(DOT_COLOR) as Array<DayStatus>).map((status) => (
+              {DAY_STATUSES.map((status) => (
                 <li key={status} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                   <span aria-hidden className={cn('size-2 rounded-full', DOT_COLOR[status])} />
                   {STATUS_LABEL[status]}

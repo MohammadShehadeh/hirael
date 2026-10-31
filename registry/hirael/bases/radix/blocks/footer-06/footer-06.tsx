@@ -93,7 +93,7 @@ const Footer06 = () => {
           width={1920}
           height={1080}
           quality={75}
-          className="absolute inset-0 h-full w-full rotate-180 object-cover blur-[1px] md:blur-[2px] dark:opacity-40"
+          className="absolute inset-0 size-full rotate-180 object-cover blur-[1px] md:blur-[2px] dark:opacity-40"
         />
         <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/70 via-black/40 to-black/10" />
         <div className="relative z-10 flex h-full flex-col items-start justify-between px-4 pt-2 pb-2 sm:justify-center sm:pb-4 md:px-8">

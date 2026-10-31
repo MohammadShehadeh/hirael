@@ -62,7 +62,7 @@ const FloatingPaths = ({ position }: FloatingPathsProps) => {
 
   return (
     <div className="pointer-events-none absolute inset-0">
-      <svg className="h-full w-full text-primary" fill="none" viewBox="0 0 696 316">
+      <svg className="size-full text-primary" fill="none" viewBox="0 0 696 316">
         {paths.map((path) => (
           <motion.path
             key={path.id}
@@ -88,7 +88,7 @@ const FloatingPaths = ({ position }: FloatingPathsProps) => {
 const Login03 = () => {
   const [redirecting, setRedirecting] = React.useState(false);
 
-  const onContinue = async () => {
+  const handleContinue = async () => {
     setRedirecting(true);
     await new Promise((r) => setTimeout(r, 2000));
     setRedirecting(false);
@@ -164,7 +164,7 @@ const Login03 = () => {
               variant="default"
               size="lg"
               disabled={redirecting}
-              onClick={onContinue}
+              onClick={handleContinue}
               className="w-full"
             >
               {redirecting ? <Spinner aria-hidden /> : <GithubIcon className="size-4" />}

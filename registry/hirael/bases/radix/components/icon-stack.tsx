@@ -21,6 +21,38 @@ export interface IconStackProps extends React.ComponentProps<'div'> {
   layers?: number;
 }
 
+interface IconStackLayerProps {
+  front?: boolean;
+  opacity: number;
+  x: number;
+  y: number;
+}
+
+const IconStackLayer = ({ front = false, opacity, x, y }: IconStackLayerProps) => {
+  return (
+    <g opacity={opacity} transform={`translate(${x} ${y})`}>
+      <path
+        data-slot="icon-stack-layer"
+        d="M42.2538 2.046C41.4408 1.6325 40.3965 1.6677 39.2612 2.2424L7.9616 18.1934C5.3895 19.5039 3.301 23.1064 3.301 26.2322V64.3226C3.301 66.0677 3.9458 67.2943 4.962 67.8199L1.8363 66.229C0.8201 65.7104 0.1753 64.4771 0.1753 62.732V24.6412C0.1753 21.5085 2.2638 17.913 4.8359 16.6024L36.1355 0.6515C37.2778 0.0698 38.322 0.0416 39.128 0.4551L42.2538 2.046Z"
+        stroke="currentColor"
+        strokeOpacity={front ? 0.3 : 0.2}
+        strokeWidth="0.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        data-slot="icon-stack-layer"
+        d="M42.2545 2.0456C43.2707 2.5643 43.9155 3.7979 43.9155 5.543V43.6337C43.9155 46.7665 41.827 50.3616 39.2549 51.6722L7.9554 67.6235C6.813 68.2052 5.7687 68.2331 4.9628 67.8196C3.9465 67.301 3.3018 66.0673 3.3018 64.3222V26.2318C3.3018 23.0991 5.3903 19.5036 7.9624 18.193L39.2619 2.2421C40.4043 1.6604 41.4486 1.6321 42.2545 2.0456Z"
+        stroke="currentColor"
+        strokeOpacity={front ? 0.3 : 0.2}
+        strokeWidth="0.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
+  );
+};
+
 /** Pair with `IconStackContent`. Size it with a width; height follows the 72:80 aspect ratio. */
 const IconStack = ({ className, children, style, layers = 3, ...props }: IconStackProps) => {
   const count = Math.max(1, Math.round(layers));
@@ -38,6 +70,7 @@ const IconStack = ({ className, children, style, layers = 3, ...props }: IconSta
     <div
       data-slot="icon-stack"
       className={cn('relative aspect-9/10 w-18 text-foreground **:data-[slot=icon-stack-layer]:fill-muted', className)}
+      // React's CSSProperties type has no custom properties.
       style={
         {
           '--icon-stack-face-x': `${(faceX / VIEW_WIDTH) * 100}%`,
@@ -48,12 +81,7 @@ const IconStack = ({ className, children, style, layers = 3, ...props }: IconSta
       {...props}
     >
       {/* The stack is a fixed physical arrangement, so it is not mirrored in RTL. */}
-      <svg
-        aria-hidden
-        viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`}
-        fill="none"
-        className="h-full w-full overflow-visible"
-      >
+      <svg aria-hidden viewBox={`0 0 ${VIEW_WIDTH} ${VIEW_HEIGHT}`} fill="none" className="size-full overflow-visible">
         <g transform={`translate(${offsetX} ${offsetY}) scale(${scale})`}>
           <ellipse
             cx={stackWidth / 2}
@@ -80,41 +108,6 @@ const IconStack = ({ className, children, style, layers = 3, ...props }: IconSta
 
       {children}
     </div>
-  );
-};
-
-const IconStackLayer = ({
-  front = false,
-  opacity,
-  x,
-  y,
-}: {
-  front?: boolean;
-  opacity: number;
-  x: number;
-  y: number;
-}) => {
-  return (
-    <g opacity={opacity} transform={`translate(${x} ${y})`}>
-      <path
-        data-slot="icon-stack-layer"
-        d="M42.2538 2.046C41.4408 1.6325 40.3965 1.6677 39.2612 2.2424L7.9616 18.1934C5.3895 19.5039 3.301 23.1064 3.301 26.2322V64.3226C3.301 66.0677 3.9458 67.2943 4.962 67.8199L1.8363 66.229C0.8201 65.7104 0.1753 64.4771 0.1753 62.732V24.6412C0.1753 21.5085 2.2638 17.913 4.8359 16.6024L36.1355 0.6515C37.2778 0.0698 38.322 0.0416 39.128 0.4551L42.2538 2.046Z"
-        stroke="currentColor"
-        strokeOpacity={front ? 0.3 : 0.2}
-        strokeWidth="0.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        data-slot="icon-stack-layer"
-        d="M42.2545 2.0456C43.2707 2.5643 43.9155 3.7979 43.9155 5.543V43.6337C43.9155 46.7665 41.827 50.3616 39.2549 51.6722L7.9554 67.6235C6.813 68.2052 5.7687 68.2331 4.9628 67.8196C3.9465 67.301 3.3018 66.0673 3.3018 64.3222V26.2318C3.3018 23.0991 5.3903 19.5036 7.9624 18.193L39.2619 2.2421C40.4043 1.6604 41.4486 1.6321 42.2545 2.0456Z"
-        stroke="currentColor"
-        strokeOpacity={front ? 0.3 : 0.2}
-        strokeWidth="0.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </g>
   );
 };
 

@@ -82,7 +82,11 @@ const useCountdown = (target: Date | string | number, options: UseCountdownOptio
   return state;
 };
 
-const CountdownTimerValue = ({ value, className, ...props }: React.ComponentProps<'span'> & { value: string }) => {
+interface CountdownTimerValueProps extends React.ComponentProps<'span'> {
+  value: string;
+}
+
+const CountdownTimerValue = ({ value, className, ...props }: CountdownTimerValueProps) => {
   const reduceMotion = useReducedMotion();
 
   return (

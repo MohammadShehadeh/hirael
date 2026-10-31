@@ -1,8 +1,10 @@
-import react from '@vitejs/plugin-react';
+import babel from '@rolldown/plugin-babel';
+import react, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  plugins: [react()],
+  // Items carry no hand-written memoization, so tests must render them compiled, as the site and consumers do.
+  plugins: [react(), babel({ presets: [reactCompilerPreset()] })],
   resolve: {
     tsconfigPaths: true,
     // `server-only` throws outside a React Server bundle; build-time lib code is plain Node under test.

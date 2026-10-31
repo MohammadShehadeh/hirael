@@ -120,13 +120,10 @@ const CheckboxGroup = ({
   });
   const [touched, setTouched] = React.useState(false);
 
-  const setValue = React.useCallback(
-    (next: string[]) => {
-      setTouched(true);
-      setControlledValue(next);
-    },
-    [setControlledValue],
-  );
+  const setValue = (next: string[]) => {
+    setTouched(true);
+    setControlledValue(next);
+  };
 
   const [items, setItems] = React.useState<Map<string, ItemEntry>>(() => new Map());
   const [subs, setSubs] = React.useState<Map<string, SubEntry>>(() => new Map());
@@ -138,7 +135,7 @@ const CheckboxGroup = ({
   const labelId = `${id}-label`;
   const messageId = `${id}-message`;
 
-  const registerItem = React.useCallback((entry: ItemEntry) => {
+  const registerItem = (entry: ItemEntry) => {
     setItems((prev) => {
       const current = prev.get(entry.value);
       if (
@@ -161,9 +158,9 @@ const CheckboxGroup = ({
 
         return next;
       });
-  }, []);
+  };
 
-  const registerSub = React.useCallback((entry: SubEntry) => {
+  const registerSub = (entry: SubEntry) => {
     setSubs((prev) => (prev.get(entry.id)?.text === entry.text ? prev : new Map(prev).set(entry.id, entry)));
 
     return () =>
@@ -174,133 +171,94 @@ const CheckboxGroup = ({
 
         return next;
       });
-  }, []);
+  };
 
   const needle = query.trim().toLowerCase();
 
-  const isItemVisible = React.useCallback(
-    (text: string, subId?: string) => {
-      if (!needle || text.toLowerCase().includes(needle)) return true;
-      const subText = subId ? subs.get(subId)?.text : undefined;
+  const isItemVisible = (text: string, subId?: string) => {
+    if (!needle || text.toLowerCase().includes(needle)) return true;
+    const subText = subId ? subs.get(subId)?.text : undefined;
 
-      return !!subText && subText.toLowerCase().includes(needle);
-    },
-    [needle, subs],
-  );
+    return !!subText && subText.toLowerCase().includes(needle);
+  };
 
-  const isSubVisible = React.useCallback(
-    (subId: string, text: string) => {
-      if (!needle || text.toLowerCase().includes(needle)) return true;
-      for (const item of items.values()) {
-        if (item.subId === subId && item.text.toLowerCase().includes(needle)) return true;
-      }
+  const isSubVisible = (subId: string, text: string) => {
+    if (!needle || text.toLowerCase().includes(needle)) return true;
+    for (const item of items.values()) {
+      if (item.subId === subId && item.text.toLowerCase().includes(needle)) return true;
+    }
 
-      return false;
-    },
-    [needle, items],
-  );
+    return false;
+  };
 
-  const toggle = React.useCallback(
-    (option: string, checked: boolean) => {
-      if (!checked) {
-        setValue(value.filter((v) => v !== option));
+  const toggle = (option: string, checked: boolean) => {
+    if (!checked) {
+      setValue(value.filter((v) => v !== option));
 
-        return;
-      }
-      if (value.includes(option) || (max !== undefined && value.length >= max)) return;
-      setValue([...value, option]);
-    },
-    [value, setValue, max],
-  );
+      return;
+    }
+    if (value.includes(option) || (max !== undefined && value.length >= max)) return;
+    setValue([...value, option]);
+  };
 
-  const getScope = React.useCallback(
-    (subId?: string): CheckboxGroupScope => {
-      const checkedSet = new Set(value);
-      const visible = [...items.values()].filter(
-        (item) => (subId === undefined || item.subId === subId) && isItemVisible(item.text, item.subId),
-      );
-      const selectable = visible.filter((item) => !item.disabled);
-      const allChecked = selectable.length > 0 && selectable.every((item) => checkedSet.has(item.value));
-      const noneChecked = visible.every((item) => !checkedSet.has(item.value));
-      const additions = selectable.filter((item) => !checkedSet.has(item.value)).map((item) => item.value);
-      const fits = max === undefined || value.length + additions.length <= max;
-      const anySelectableChecked = selectable.some((item) => checkedSet.has(item.value));
+  const getScope = (subId?: string): CheckboxGroupScope => {
+    const checkedSet = new Set(value);
+    const visible = [...items.values()].filter(
+      (item) => (subId === undefined || item.subId === subId) && isItemVisible(item.text, item.subId),
+    );
+    const selectable = visible.filter((item) => !item.disabled);
+    const allChecked = selectable.length > 0 && selectable.every((item) => checkedSet.has(item.value));
+    const noneChecked = visible.every((item) => !checkedSet.has(item.value));
+    const additions = selectable.filter((item) => !checkedSet.has(item.value)).map((item) => item.value);
+    const fits = max === undefined || value.length + additions.length <= max;
+    const anySelectableChecked = selectable.some((item) => checkedSet.has(item.value));
 
-      return {
-        state: allChecked ? true : noneChecked ? false : 'indeterminate',
-        disabled: disabled || selectable.length === 0 || (!allChecked && !fits && !anySelectableChecked),
-        toggle: () => {
-          if (allChecked || !fits) {
-            const drop = new Set(selectable.map((item) => item.value));
-            setValue(value.filter((v) => !drop.has(v)));
-          } else {
-            setValue([...value, ...additions]);
-          }
-        },
-      };
-    },
-    [value, items, isItemVisible, max, disabled, setValue],
-  );
+    return {
+      state: allChecked ? true : noneChecked ? false : 'indeterminate',
+      disabled: disabled || selectable.length === 0 || (!allChecked && !fits && !anySelectableChecked),
+      toggle: () => {
+        if (allChecked || !fits) {
+          const drop = new Set(selectable.map((item) => item.value));
+          setValue(value.filter((v) => !drop.has(v)));
+        } else {
+          setValue([...value, ...additions]);
+        }
+      },
+    };
+  };
 
-  const visibleCount = React.useMemo(() => {
-    let count = 0;
-    for (const item of items.values()) if (isItemVisible(item.text, item.subId)) count++;
-
-    return count;
-  }, [items, isItemVisible]);
+  let visibleCount = 0;
+  for (const item of items.values()) if (isItemVisible(item.text, item.subId)) visibleCount++;
 
   const count = value.length;
   const atMax = max !== undefined && count >= max;
   const belowMin = min !== undefined && count < min;
   const invalid = ariaInvalid === true || ariaInvalid === 'true' || (touched && belowMin);
 
-  const ctx = React.useMemo<CheckboxGroupContextValue>(
-    () => ({
-      value,
-      query,
-      setQuery,
-      toggle,
-      registerItem,
-      registerSub,
-      isItemVisible,
-      isSubVisible,
-      getScope,
-      visibleCount,
-      disabled,
-      invalid,
-      labelId,
-      messageId,
-      setHasLabel,
-      setHasMessage,
-      count,
-      min,
-      max,
-      atMax,
-      belowMin,
-      touched,
-    }),
-    [
-      value,
-      query,
-      toggle,
-      registerItem,
-      registerSub,
-      isItemVisible,
-      isSubVisible,
-      getScope,
-      visibleCount,
-      disabled,
-      invalid,
-      labelId,
-      messageId,
-      count,
-      min,
-      max,
-      atMax,
-      belowMin,
-      touched,
-    ],
-  );
+  const ctx: CheckboxGroupContextValue = {
+    value,
+    query,
+    setQuery,
+    toggle,
+    registerItem,
+    registerSub,
+    isItemVisible,
+    isSubVisible,
+    getScope,
+    visibleCount,
+    disabled,
+    invalid,
+    labelId,
+    messageId,
+    setHasLabel,
+    setHasMessage,
+    count,
+    min,
+    max,
+    atMax,
+    belowMin,
+    touched,
+  };
 
   return (
     <CheckboxGroupContext.Provider value={ctx}>

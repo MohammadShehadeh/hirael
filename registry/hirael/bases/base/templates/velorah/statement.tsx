@@ -19,7 +19,7 @@ export const Statement = () => {
         muted
         playsInline
         aria-hidden
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        className="absolute inset-0 z-0 size-full object-cover"
       />
 
       <div className="relative z-10 flex max-w-5xl flex-col items-center text-center">

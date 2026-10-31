@@ -83,7 +83,7 @@ const CardGrid = ({ id, squares }: CardGridProps) => {
   return (
     <div className="pointer-events-none absolute inset-0 z-0 mask-[linear-gradient(white,transparent)]">
       <div className="absolute inset-0 bg-linear-to-br from-primary/8 to-transparent mask-[radial-gradient(farthest-side_at_top,white,transparent)]">
-        <svg aria-hidden className="absolute inset-0 h-full w-full fill-primary/10 stroke-primary/25">
+        <svg aria-hidden className="absolute inset-0 size-full fill-primary/10 stroke-primary/25">
           <defs>
             <pattern id={id} width={20} height={20} patternUnits="userSpaceOnUse" x="-12" y="4">
               <path d="M.5 20V.5H20" fill="none" />

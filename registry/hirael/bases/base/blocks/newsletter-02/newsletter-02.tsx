@@ -56,6 +56,8 @@ const progressFor = (invites: number) => {
 
 type Status = 'idle' | 'loading' | 'joined';
 
+const count = new Intl.NumberFormat('en-US');
+
 const Newsletter02 = () => {
   const [email, setEmail] = React.useState('');
   const [error, setError] = React.useState<string | null>(null);
@@ -79,7 +81,7 @@ const Newsletter02 = () => {
     timer.current = setTimeout(() => setStatus('joined'), 700);
   };
 
-  const reset = () => {
+  const handleReset = () => {
     setEmail('');
     setStatus('idle');
     requestAnimationFrame(() => inputRef.current?.focus());
@@ -170,7 +172,7 @@ const Newsletter02 = () => {
               </ol>
             </div>
 
-            <Button variant="link" size="sm" onClick={reset} className="h-auto w-fit">
+            <Button variant="link" size="sm" onClick={handleReset} className="h-auto w-fit">
               Use a different email
             </Button>
           </div>
@@ -242,7 +244,7 @@ const Newsletter02 = () => {
               </AvatarStack>
               <span className="text-sm text-muted-foreground">
                 <span dir="ltr" className="text-foreground tabular-nums">
-                  {WAITLIST.joined.toLocaleString('en-US')}
+                  {count.format(WAITLIST.joined)}
                 </span>{' '}
                 people already joined
               </span>

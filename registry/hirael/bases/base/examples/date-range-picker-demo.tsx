@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useDemoLocale, useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT, type Localized } from '@/lib/demo-locale';
 import { Field, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import {
   DateRangePicker,
@@ -20,11 +20,16 @@ const daysAgo = (days: number) => {
   return d;
 };
 
+const mediumDate: Localized<Intl.DateTimeFormat> = {
+  en: new Intl.DateTimeFormat('en', { dateStyle: 'medium' }),
+  ar: new Intl.DateTimeFormat('ar', { dateStyle: 'medium' }),
+};
+
 const DateRangePickerDemo = () => {
   const t = useT();
   const locale = useDemoLocale();
 
-  const fmt = new Intl.DateTimeFormat(locale, { dateStyle: 'medium' });
+  const fmt = mediumDate[locale];
   const print = (r: DateRange | undefined) =>
     r?.from ? `${fmt.format(r.from)} → ${r.to ? fmt.format(r.to) : '…'}` : '-';
 

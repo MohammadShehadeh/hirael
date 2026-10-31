@@ -77,7 +77,7 @@ const MentionInputDemo = () => {
     },
   ];
 
-  function searchPeopleAndChannels(query: string, trigger: string): Promise<MentionItem[]> {
+  function handleSearchPeopleAndChannels(query: string, trigger: string): Promise<MentionItem[]> {
     const source = trigger === '#' ? CHANNELS : TEAM;
     const q = query.toLowerCase();
 
@@ -86,7 +86,7 @@ const MentionInputDemo = () => {
     );
   }
 
-  function searchDirectory(query: string): Promise<MentionItem[]> {
+  function handleSearchDirectory(query: string): Promise<MentionItem[]> {
     const q = query.toLowerCase();
 
     return new Promise((resolve) => {
@@ -139,7 +139,7 @@ const MentionInputDemo = () => {
         <MentionInput
           defaultValue=""
           trigger={['@', '#']}
-          onSearch={searchPeopleAndChannels}
+          onSearch={handleSearchPeopleAndChannels}
           placeholder={t({
             en: 'Type @ for people or # for channels…',
             ar: 'اكتب @ للأشخاص أو # للقنوات…',
@@ -157,7 +157,7 @@ const MentionInputDemo = () => {
         </p>
         <MentionInput
           defaultValue=""
-          onSearch={searchDirectory}
+          onSearch={handleSearchDirectory}
           placeholder={t({
             en: 'Type @ to search the directory…',
             ar: 'اكتب @ للبحث في الدليل…',

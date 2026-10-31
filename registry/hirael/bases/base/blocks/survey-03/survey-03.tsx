@@ -39,7 +39,12 @@ const stagger = (index: number, step = 80): React.CSSProperties => ({ animationD
 
 type Reason = 'too-expensive' | 'missing-feature' | 'switching' | 'not-using' | 'other';
 
-const REASONS: readonly { value: Reason; label: string }[] = [
+interface ReasonOption {
+  value: Reason;
+  label: string;
+}
+
+const REASONS: readonly ReasonOption[] = [
   { value: 'too-expensive', label: 'It costs too much' },
   { value: 'missing-feature', label: 'It is missing a feature we need' },
   { value: 'switching', label: 'We are switching to another tool' },
@@ -82,18 +87,18 @@ const addMonths = (iso: string, months: number) => {
   return date.toISOString().slice(0, 10);
 };
 
-const formatDate = (iso: string) =>
-  new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(`${iso}T00:00:00Z`),
-  );
+const longDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
-const formatPrice = (amount: number) =>
-  new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    maximumFractionDigits: 2,
-    minimumFractionDigits: 0,
-  }).format(amount);
+const formatDate = (iso: string) => longDate.format(new Date(`${iso}T00:00:00Z`));
+
+const money = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 2,
+  minimumFractionDigits: 0,
+});
+
+const formatPrice = (amount: number) => money.format(amount);
 
 const DISCOUNTED_PRICE = Math.round(PLAN.price * (1 - DISCOUNT) * 100) / 100;
 
@@ -132,16 +137,13 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
   // Until a reason is picked the generic note stands in, so progress and Continue already read as two steps.
   const followUp = reason ? FOLLOW_UP[reason] : 'note';
 
-  const items = React.useMemo(
-    () => [
-      { name: 'reason', required: true, choices: REASON_CHOICES },
-      { name: 'discount', required: true, disabled: followUp !== 'discount', choices: DISCOUNT_CHOICES },
-      { name: 'pause', required: true, disabled: followUp !== 'pause', choices: PAUSE_CHOICES },
-      { name: 'feature', disabled: followUp !== 'feature' },
-      { name: 'note', disabled: followUp !== 'note' },
-    ],
-    [followUp],
-  );
+  const items = [
+    { name: 'reason', required: true, choices: REASON_CHOICES },
+    { name: 'discount', required: true, disabled: followUp !== 'discount', choices: DISCOUNT_CHOICES },
+    { name: 'pause', required: true, disabled: followUp !== 'pause', choices: PAUSE_CHOICES },
+    { name: 'feature', disabled: followUp !== 'feature' },
+    { name: 'note', disabled: followUp !== 'note' },
+  ];
 
   const pickReason = (next: Reason) => {
     setReason(next);
@@ -159,7 +161,7 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
     setItem(next);
   };
 
-  const pick = (name: FollowUp, value: string) => () => setDecision((current) => ({ ...current, [name]: value }));
+  const handlePick = (name: FollowUp, value: string) => setDecision((current) => ({ ...current, [name]: value }));
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -256,13 +258,13 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
               <s className="ms-auto text-sm text-muted-foreground tabular-nums">{formatPrice(PLAN.price)}</s>
             </div>
             <QuestionnaireChoices>
-              <QuestionnaireChoice value="discount" onChange={pick('discount', 'discount')}>
+              <QuestionnaireChoice value="discount" onChange={() => handlePick('discount', 'discount')}>
                 Apply 30% off
                 <QuestionnaireChoiceDescription>
                   Until <span className="tabular-nums">{formatDate(addMonths(PLAN.renews, DISCOUNT_MONTHS))}</span>
                 </QuestionnaireChoiceDescription>
               </QuestionnaireChoice>
-              <QuestionnaireChoice value="cancel" onChange={pick('discount', 'cancel')}>
+              <QuestionnaireChoice value="cancel" onChange={() => handlePick('discount', 'cancel')}>
                 Cancel anyway
                 <QuestionnaireChoiceDescription>
                   You keep access until <span className="tabular-nums">{formatDate(PLAN.renews)}</span>
@@ -282,7 +284,11 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
             </DialogHeader>
             <QuestionnaireChoices>
               {PAUSE_OPTIONS.map((option) => (
-                <QuestionnaireChoice key={option.value} value={option.value} onChange={pick('pause', option.value)}>
+                <QuestionnaireChoice
+                  key={option.value}
+                  value={option.value}
+                  onChange={() => handlePick('pause', option.value)}
+                >
                   Pause for {option.label}
                   <QuestionnaireChoiceDescription>
                     Hirael resumes on{' '}
@@ -290,7 +296,7 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
                   </QuestionnaireChoiceDescription>
                 </QuestionnaireChoice>
               ))}
-              <QuestionnaireChoice value="cancel" onChange={pick('pause', 'cancel')}>
+              <QuestionnaireChoice value="cancel" onChange={() => handlePick('pause', 'cancel')}>
                 Cancel anyway
                 <QuestionnaireChoiceDescription>
                   You keep access until <span className="tabular-nums">{formatDate(PLAN.renews)}</span>
@@ -345,12 +351,22 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
   );
 };
 
-const STATUS_BADGE: Record<PlanStatus['kind'], { label: string; variant: 'secondary' | 'outline' | 'destructive' }> = {
+interface StatusBadgeMeta {
+  label: string;
+  variant: 'secondary' | 'outline' | 'destructive';
+}
+
+const STATUS_BADGE: Record<PlanStatus['kind'], StatusBadgeMeta> = {
   active: { label: 'Active', variant: 'secondary' },
   discounted: { label: '30% off', variant: 'secondary' },
   paused: { label: 'Paused', variant: 'outline' },
   canceling: { label: 'Canceling', variant: 'destructive' },
 };
+
+interface SummaryRow {
+  label: string;
+  value: string;
+}
 
 const Survey03 = () => {
   const [status, setStatus] = React.useState<PlanStatus>({ kind: 'active' });
@@ -359,7 +375,7 @@ const Survey03 = () => {
   // A fresh key per opening starts the survey over without resetting state during the close animation.
   const [dialogKey, setDialogKey] = React.useState(0);
 
-  const openDialog = () => {
+  const handleOpenDialog = () => {
     setDialogKey((key) => key + 1);
     setDialogOpen(true);
   };
@@ -382,7 +398,7 @@ const Survey03 = () => {
           ? `No charges while paused. Billing resumes on ${formatDate(status.until)}.`
           : `You keep access until ${formatDate(status.on)}. Nothing else will be charged.`;
 
-  const details: { label: string; value: string }[] =
+  const details: SummaryRow[] =
     status.kind === 'active'
       ? [{ label: 'Renews on', value: formatDate(PLAN.renews) }]
       : status.kind === 'discounted'
@@ -484,7 +500,7 @@ const Survey03 = () => {
                 Undo cancellation
               </Button>
             ) : (
-              <Button type="button" variant="outline" className="shrink-0" onClick={openDialog}>
+              <Button type="button" variant="outline" className="shrink-0" onClick={handleOpenDialog}>
                 Cancel plan
               </Button>
             )}

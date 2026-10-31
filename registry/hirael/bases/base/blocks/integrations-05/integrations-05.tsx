@@ -50,6 +50,26 @@ const CENTER = { x: WIDTH / 2, y: HEIGHT / 2 };
 const inbound = (y: number) => `M${EDGE} ${y} C250 ${y}, 250 ${CENTER.y}, ${CENTER.x} ${CENTER.y}`;
 const outbound = (y: number) => `M${CENTER.x} ${CENTER.y} C650 ${CENTER.y}, 650 ${y}, ${WIDTH - EDGE} ${y}`;
 
+interface TileProps {
+  tool: Tool;
+  left: number;
+  top: number;
+}
+
+const Tile = ({ tool, left, top }: TileProps) => {
+  return (
+    <a
+      href={tool.href}
+      aria-label={tool.name}
+      title={tool.name}
+      className="absolute z-10 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground shadow-xs transition-[color,transform,box-shadow] duration-150 ease-out hover:-translate-y-[55%] hover:text-foreground hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none sm:size-16"
+      style={{ left: `${left}%`, top: `${top}%` }}
+    >
+      <tool.icon aria-hidden className="size-5 sm:size-7" />
+    </a>
+  );
+};
+
 const Integrations05 = () => {
   return (
     <section
@@ -135,26 +155,6 @@ const Integrations05 = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-interface TileProps {
-  tool: Tool;
-  left: number;
-  top: number;
-}
-
-const Tile = ({ tool, left, top }: TileProps) => {
-  return (
-    <a
-      href={tool.href}
-      aria-label={tool.name}
-      title={tool.name}
-      className="absolute z-10 flex size-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-xl border border-border bg-card text-muted-foreground shadow-xs transition-[color,transform,box-shadow] duration-150 ease-out hover:-translate-y-[55%] hover:text-foreground hover:shadow-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none motion-reduce:transition-none sm:size-16"
-      style={{ left: `${left}%`, top: `${top}%` }}
-    >
-      <tool.icon aria-hidden className="size-5 sm:size-7" />
-    </a>
   );
 };
 

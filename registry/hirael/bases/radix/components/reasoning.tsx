@@ -98,15 +98,12 @@ const Reasoning = ({
 
   const open = openProp ?? manual ?? (streaming || lingering);
 
-  const ctx = React.useMemo<ReasoningContextValue>(
-    () => ({
-      streaming,
-      open,
-      seconds: duration ?? measured,
-      labels: { ...DEFAULT_LABELS, ...labels },
-    }),
-    [streaming, open, duration, measured, labels],
-  );
+  const ctx: ReasoningContextValue = {
+    streaming,
+    open,
+    seconds: duration ?? measured,
+    labels: { ...DEFAULT_LABELS, ...labels },
+  };
 
   return (
     <ReasoningContext.Provider value={ctx}>

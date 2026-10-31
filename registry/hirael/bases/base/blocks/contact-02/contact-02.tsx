@@ -55,7 +55,7 @@ const CopyEmail = ({ email }: CopyEmailProps) => {
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
-  const copy = async () => {
+  const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(email);
       setCopied(true);
@@ -73,7 +73,7 @@ const CopyEmail = ({ email }: CopyEmailProps) => {
       size="sm"
       data-slot="contact-copy"
       data-state={copied ? 'copied' : 'idle'}
-      onClick={copy}
+      onClick={handleCopy}
     >
       <span key={copied ? 'copied' : 'idle'} className={cn(SWAP, 'inline-flex items-center gap-1.5')}>
         {copied ? <Check aria-hidden className="size-3.5" /> : <Copy aria-hidden className="size-3.5" />}
@@ -86,76 +86,13 @@ const CopyEmail = ({ email }: CopyEmailProps) => {
   );
 };
 
-const Contact02 = () => {
-  return (
-    <section data-slot="contact" className="relative mx-auto max-w-6xl border-x border-border bg-background">
-      <div data-slot="contact-header" className="flex grow flex-col justify-center gap-2 px-4 py-18 md:items-center">
-        <h2 className={cn(ENTER, 'font-serif text-4xl font-medium tracking-tight md:text-5xl')}>Contact us</h2>
-        <p style={stagger(1, 70)} className={cn(ENTER, 'text-base text-muted-foreground')}>
-          Reach the team. We read every message.
-        </p>
-      </div>
-
-      <Separator />
-
-      <div data-slot="contact-grid" className="grid md:grid-cols-3">
-        <Box
-          icon={<Mail />}
-          title="Email"
-          description="We respond to every note within a day."
-          style={stagger(0, 60, 200)}
-        >
-          <a href={`mailto:${EMAIL}`} className="text-sm font-medium tracking-wide hover:underline">
-            {EMAIL}
-          </a>
-          <CopyEmail email={EMAIL} />
-        </Box>
-
-        <Box
-          icon={<MapPin />}
-          title="Location"
-          description="A small team spread across three time zones."
-          style={stagger(1, 60, 200)}
-        >
-          <span className="text-sm font-medium tracking-wide">Remote-first</span>
-        </Box>
-
-        <Box
-          icon={<MessageCircle />}
-          title="Elsewhere"
-          description="Issues and release notes live on GitHub."
-          className="border-b-0 md:border-e-0"
-          style={stagger(2, 60, 200)}
-        >
-          <div className="flex flex-wrap items-center gap-2">
-            {SOCIAL_LINKS.map((link) => {
-              const Icon = link.icon;
-
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  className="flex items-center gap-x-2 rounded-full border border-border bg-card px-3 py-1.5 shadow-sm transition-colors duration-150 ease-out hover:bg-accent"
-                >
-                  <Icon className="size-3.5 text-muted-foreground" />
-                  <span className="text-xs font-medium tracking-wide">{link.label}</span>
-                </a>
-              );
-            })}
-          </div>
-        </Box>
-      </div>
-    </section>
-  );
-};
-
 interface ContactBoxProps extends React.ComponentProps<'div'> {
   icon: React.ReactNode;
   title: string;
   description: string;
 }
 
-const Box = ({ title, description, className, children, icon, ...props }: ContactBoxProps) => {
+const ContactBox = ({ title, description, className, children, icon, ...props }: ContactBoxProps) => {
   return (
     <div
       data-slot="contact-box"
@@ -179,6 +116,69 @@ const Box = ({ title, description, className, children, icon, ...props }: Contac
         <p className="text-sm text-muted-foreground">{description}</p>
       </div>
     </div>
+  );
+};
+
+const Contact02 = () => {
+  return (
+    <section data-slot="contact" className="relative mx-auto max-w-6xl border-x border-border bg-background">
+      <div data-slot="contact-header" className="flex grow flex-col justify-center gap-2 px-4 py-18 md:items-center">
+        <h2 className={cn(ENTER, 'font-serif text-4xl font-medium tracking-tight md:text-5xl')}>Contact us</h2>
+        <p style={stagger(1, 70)} className={cn(ENTER, 'text-base text-muted-foreground')}>
+          Reach the team. We read every message.
+        </p>
+      </div>
+
+      <Separator />
+
+      <div data-slot="contact-grid" className="grid md:grid-cols-3">
+        <ContactBox
+          icon={<Mail />}
+          title="Email"
+          description="We respond to every note within a day."
+          style={stagger(0, 60, 200)}
+        >
+          <a href={`mailto:${EMAIL}`} className="text-sm font-medium tracking-wide hover:underline">
+            {EMAIL}
+          </a>
+          <CopyEmail email={EMAIL} />
+        </ContactBox>
+
+        <ContactBox
+          icon={<MapPin />}
+          title="Location"
+          description="A small team spread across three time zones."
+          style={stagger(1, 60, 200)}
+        >
+          <span className="text-sm font-medium tracking-wide">Remote-first</span>
+        </ContactBox>
+
+        <ContactBox
+          icon={<MessageCircle />}
+          title="Elsewhere"
+          description="Issues and release notes live on GitHub."
+          className="border-b-0 md:border-e-0"
+          style={stagger(2, 60, 200)}
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            {SOCIAL_LINKS.map((link) => {
+              const Icon = link.icon;
+
+              return (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="flex items-center gap-x-2 rounded-full border border-border bg-card px-3 py-1.5 shadow-sm transition-colors duration-150 ease-out hover:bg-accent"
+                >
+                  <Icon className="size-3.5 text-muted-foreground" />
+                  <span className="text-xs font-medium tracking-wide">{link.label}</span>
+                </a>
+              );
+            })}
+          </div>
+        </ContactBox>
+      </div>
+    </section>
   );
 };
 

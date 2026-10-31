@@ -98,7 +98,12 @@ interface BoardCard {
   due: string;
 }
 
-const BOARD: readonly { stage: string; cards: readonly BoardCard[] }[] = [
+interface BoardStage {
+  stage: string;
+  cards: readonly BoardCard[];
+}
+
+const BOARD: readonly BoardStage[] = [
   {
     stage: 'Planned',
     cards: [

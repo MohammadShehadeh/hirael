@@ -10,7 +10,13 @@ export const SECTION_IDS = ['intro', 'services', 'works', 'contact'] as const;
 
 export type SectionId = (typeof SECTION_IDS)[number];
 
-export const LOREM: Record<Lang, { short: string; medium: string; long: string }> = {
+interface LoremText {
+  short: string;
+  medium: string;
+  long: string;
+}
+
+export const LOREM: Record<Lang, LoremText> = {
   en: {
     short: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
     medium:
@@ -26,7 +32,7 @@ export const LOREM: Record<Lang, { short: string; medium: string; long: string }
 };
 
 export const useDocumentRtl = () => {
-  const subscribe = React.useCallback(() => () => {}, []);
+  const subscribe = () => () => {};
 
   return React.useSyncExternalStore(
     subscribe,

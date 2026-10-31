@@ -61,7 +61,13 @@ const STATS: readonly Stat[] = [
   },
 ];
 
-const HOURLY: readonly { hour: string; today: number; yesterday: number }[] = [
+interface HourlyOrders {
+  hour: string;
+  today: number;
+  yesterday: number;
+}
+
+const HOURLY: readonly HourlyOrders[] = [
   { hour: '00', today: 12, yesterday: 10 },
   { hour: '02', today: 9, yesterday: 8 },
   { hour: '04', today: 14, yesterday: 11 },
@@ -83,7 +89,12 @@ const REVENUE = {
   delta: { value: 17.6, unit: '%', goodWhen: 'up' } satisfies Delta,
 };
 
-const PEAK_HOURS: readonly { hour: string; orders: number }[] = [
+interface HourOrders {
+  hour: string;
+  orders: number;
+}
+
+const PEAK_HOURS: readonly HourOrders[] = [
   { hour: '07', orders: 14 },
   { hour: '08', orders: 18 },
   { hour: '09', orders: 26 },
@@ -98,20 +109,33 @@ const PEAK_HOURS: readonly { hour: string; orders: number }[] = [
   { hour: '18', orders: 19 },
 ];
 
-type WeekRange = 'this' | 'last';
+const WEEK_RANGE_VALUES = ['this', 'last'] as const;
+
+type WeekRange = (typeof WEEK_RANGE_VALUES)[number];
+
+const isWeekRange = (value: unknown): value is WeekRange => WEEK_RANGE_VALUES.some((option) => option === value);
+
+interface DayOrders {
+  day: string;
+  orders: number;
+}
+
+interface OrdersSummary {
+  value: string;
+  delta: Delta;
+  days: readonly DayOrders[];
+}
+
+interface MiniStat {
+  label: string;
+  value: string;
+  delta: Delta;
+  spark: readonly number[];
+}
 
 interface WeekData {
-  orders: {
-    value: string;
-    delta: Delta;
-    days: readonly { day: string; orders: number }[];
-  };
-  minis: readonly {
-    label: string;
-    value: string;
-    delta: Delta;
-    spark: readonly number[];
-  }[];
+  orders: OrdersSummary;
+  minis: readonly MiniStat[];
 }
 
 const WEEK: Record<WeekRange, WeekData> = {
@@ -189,7 +213,7 @@ const WEEK: Record<WeekRange, WeekData> = {
 
 const PEAK_WINDOW = 3;
 
-const busiestWindow = (hours: readonly { hour: string; orders: number }[], size: number) => {
+const busiestWindow = (hours: readonly HourOrders[], size: number) => {
   let start = 0;
   let best = -1;
   for (let i = 0; i + size <= hours.length; i++) {
@@ -248,17 +272,32 @@ interface DeltaChipProps {
   label: string;
 }
 
+type Direction = 'up' | 'down' | 'unchanged';
+
+const directionOf = (value: number): Direction => {
+  if (value > 0) return 'up';
+  if (value < 0) return 'down';
+
+  return 'unchanged';
+};
+
+const DIRECTION_ICON = { up: ArrowUpRight, down: ArrowDownRight, unchanged: Minus };
+
+// Negative deltas use a true minus sign (U+2212), not a hyphen.
+const DIRECTION_SIGN: Record<Direction, string> = { up: '+', down: '−', unchanged: '' };
+
+const deltaTone = ({ value, goodWhen }: DeltaChipProps['delta']) => {
+  if (value === 0) return 'bg-accent text-muted-foreground';
+
+  return value > 0 === (goodWhen === 'up') ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive';
+};
+
 const DeltaChip = ({ delta, label }: DeltaChipProps) => {
-  const { value, unit, goodWhen } = delta;
-  const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
-  const direction = value > 0 ? 'up' : value < 0 ? 'down' : 'unchanged';
-  const sign = value > 0 ? '+' : value < 0 ? '−' : '';
-  const tone =
-    value === 0
-      ? 'bg-accent text-muted-foreground'
-      : value > 0 === (goodWhen === 'up')
-        ? 'bg-success/10 text-success'
-        : 'bg-destructive/10 text-destructive';
+  const { value, unit } = delta;
+  const direction = directionOf(value);
+  const Icon = DIRECTION_ICON[direction];
+  const sign = DIRECTION_SIGN[direction];
+  const tone = deltaTone(delta);
 
   return (
     <span
@@ -561,7 +600,12 @@ const Dashboard04 = () => {
         <div data-slot="dashboard-week" style={stagger(3)} className={cn(ENTER, 'flex flex-col gap-4', DENSE_GAP)}>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <h3 className="text-lg font-semibold tracking-[-0.02em]">Week in review</h3>
-            <Select value={range} onValueChange={(v) => setRange(v as WeekRange)}>
+            <Select
+              value={range}
+              onValueChange={(v) => {
+                if (isWeekRange(v)) setRange(v);
+              }}
+            >
               <SelectTrigger size="sm" className="w-[130px]" aria-label="Week range">
                 <SelectValue />
               </SelectTrigger>

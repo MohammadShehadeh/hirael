@@ -28,8 +28,12 @@ export interface DetailExtras {
   related: DatedEntry[];
 }
 
+const dayFormat = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'short',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
 /** Fixed to UTC so the server and client render the same day. */
-export const formatDay = (day: string): string =>
-  new Intl.DateTimeFormat('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(`${day}T00:00:00Z`),
-  );
+export const formatDay = (day: string): string => dayFormat.format(new Date(`${day}T00:00:00Z`));

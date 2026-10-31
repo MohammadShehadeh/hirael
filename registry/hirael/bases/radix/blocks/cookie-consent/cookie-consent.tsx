@@ -40,27 +40,24 @@ const useCookieConsent = () => {
 // Server render reports "chosen" so the SSR HTML never shows the banner and
 // hydration agrees; the real storage value is read once hydration commits.
 const useStoredChoice = (storageKey: string) => {
-  const subscribe = React.useCallback(
-    (cb: () => void) => {
-      if (typeof window === 'undefined') return () => {};
-      const handler = (e: StorageEvent) => {
-        if (e.key === storageKey) cb();
-      };
-      window.addEventListener('storage', handler);
+  const subscribe = (cb: () => void) => {
+    if (typeof window === 'undefined') return () => {};
+    const handler = (e: StorageEvent) => {
+      if (e.key === storageKey) cb();
+    };
+    window.addEventListener('storage', handler);
 
-      return () => window.removeEventListener('storage', handler);
-    },
-    [storageKey],
-  );
-  const getSnapshot = React.useCallback(() => {
+    return () => window.removeEventListener('storage', handler);
+  };
+  const getSnapshot = () => {
     if (typeof window === 'undefined') return true;
     try {
       return window.localStorage.getItem(storageKey) !== null;
     } catch {
       return false;
     }
-  }, [storageKey]);
-  const getServerSnapshot = React.useCallback(() => true, []);
+  };
+  const getServerSnapshot = () => true;
 
   return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };
@@ -109,74 +106,65 @@ const CookieConsent = ({
   const [expanded, setExpanded] = React.useState(false);
   const categoriesRef = React.useRef<Map<string, CategoryRecord>>(new Map());
 
-  const setOpen = React.useCallback(
-    (next: boolean) => {
-      if (!isControlled) setDismissed(!next);
-      onOpenChange?.(next);
-    },
-    [isControlled, onOpenChange],
-  );
+  const setOpen = (next: boolean) => {
+    if (!isControlled) setDismissed(!next);
+    onOpenChange?.(next);
+  };
 
-  const register = React.useCallback((category: CategoryRecord) => {
+  const register = (category: CategoryRecord) => {
     categoriesRef.current.set(category.id, category);
 
     return () => {
       categoriesRef.current.delete(category.id);
     };
-  }, []);
+  };
 
-  const setPref = React.useCallback((id: string, checked: boolean) => {
+  const setPref = (id: string, checked: boolean) => {
     setPrefs((prev) => ({ ...prev, [id]: checked }));
-  }, []);
+  };
 
-  const commit = React.useCallback(
-    (next: CookiePreferences) => {
-      writeStored(storageKey, next);
-      setPrefs(next);
-      onChange?.(next);
-      setExpanded(false);
-      setOpen(false);
-    },
-    [storageKey, onChange, setOpen],
-  );
+  const commit = (next: CookiePreferences) => {
+    writeStored(storageKey, next);
+    setPrefs(next);
+    onChange?.(next);
+    setExpanded(false);
+    setOpen(false);
+  };
 
-  const acceptAll = React.useCallback(() => {
+  const acceptAll = () => {
     const next: CookiePreferences = {};
     for (const { id } of categoriesRef.current.values()) next[id] = true;
     commit(next);
-  }, [commit]);
+  };
 
-  const rejectAll = React.useCallback(() => {
+  const rejectAll = () => {
     const next: CookiePreferences = {};
     for (const { id, required } of categoriesRef.current.values()) {
       next[id] = required;
     }
     commit(next);
-  }, [commit]);
+  };
 
-  const save = React.useCallback(() => {
+  const save = () => {
     const next: CookiePreferences = {};
     for (const { id, required } of categoriesRef.current.values()) {
       next[id] = required || Boolean(prefs[id]);
     }
     commit(next);
-  }, [commit, prefs]);
+  };
 
-  const value = React.useMemo<CookieConsentContextValue>(
-    () => ({
-      prefs,
-      setPref,
-      expanded,
-      setExpanded,
-      register,
-      acceptAll,
-      rejectAll,
-      save,
-    }),
-    [prefs, setPref, expanded, register, acceptAll, rejectAll, save],
-  );
+  const value: CookieConsentContextValue = {
+    prefs,
+    setPref,
+    expanded,
+    setExpanded,
+    register,
+    acceptAll,
+    rejectAll,
+    save,
+  };
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Escape' && expanded) {
       event.stopPropagation();
       setExpanded(false);
@@ -194,7 +182,7 @@ const CookieConsent = ({
         data-slot="cookie-consent"
         data-position={position}
         data-expanded={expanded ? '' : undefined}
-        onKeyDown={onKeyDown}
+        onKeyDown={handleKeyDown}
         className={cn(
           position === 'fixed' ? 'fixed' : 'absolute',
           'start-4 bottom-4 z-50 flex w-[calc(100%-2rem)] max-w-sm flex-col gap-4 rounded-lg border border-border bg-card p-5 text-card-foreground shadow-lg',
@@ -423,7 +411,7 @@ const CookieConsentBlock = () => {
   const [open, setOpen] = React.useState(true);
   const [choice, setChoice] = React.useState<CookiePreferences | null>(null);
 
-  const reset = () => {
+  const handleReset = () => {
     try {
       window.localStorage.removeItem(PREVIEW_STORAGE_KEY);
     } catch {
@@ -463,7 +451,7 @@ const CookieConsentBlock = () => {
           )}
         </span>
         {!open ? (
-          <Button type="button" variant="link" onClick={reset} className="h-auto">
+          <Button type="button" variant="link" onClick={handleReset} className="h-auto">
             Reset and show the banner again
           </Button>
         ) : null}

@@ -58,7 +58,7 @@ export const DEFAULT_CONFIG: CustomizerConfig = {
 };
 
 const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T =>
-  typeof value === 'string' && (allowed as readonly string[]).includes(value) ? (value as T) : fallback;
+  allowed.find((option) => option === value) ?? fallback;
 
 export const normalizeConfig = (raw: Partial<CustomizerConfig> | null | undefined): CustomizerConfig => {
   const baseColor = pick(raw?.baseColor, BASE_COLOR_NAMES, DEFAULT_CONFIG.baseColor);
@@ -94,6 +94,7 @@ export const normalizeConfig = (raw: Partial<CustomizerConfig> | null | undefine
   };
 };
 
+// Object.keys widens to string[]; DEFAULT_CONFIG has exactly the config's keys.
 export const isDefaultConfig = (config: CustomizerConfig) =>
   (Object.keys(DEFAULT_CONFIG) as (keyof CustomizerConfig)[]).every((key) => config[key] === DEFAULT_CONFIG[key]);
 

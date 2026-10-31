@@ -107,16 +107,16 @@ const MediaInput = ({
     };
   }, []);
 
-  const open = React.useCallback(() => {
+  const open = () => {
     if (!disabled) inputRef.current?.click();
-  }, [disabled]);
+  };
 
-  const clear = React.useCallback(() => {
+  const clear = () => {
     // Emptied here, not on change, so a named input still submits its file and re-picking the same file fires change.
     if (inputRef.current) inputRef.current.value = '';
     setError(null);
     setValue(null);
-  }, [setValue]);
+  };
 
   const reject = (message: string) => {
     // Put the accepted file back in the native input, so a named input doesn't submit the rejected one.
@@ -152,10 +152,7 @@ const MediaInput = ({
     setValue({ file, url });
   };
 
-  const ctx = React.useMemo<MediaInputContextValue>(
-    () => ({ value, error, disabled, open, clear }),
-    [value, error, disabled, open, clear],
-  );
+  const ctx: MediaInputContextValue = { value, error, disabled, open, clear };
 
   return (
     <MediaInputContext.Provider value={ctx}>

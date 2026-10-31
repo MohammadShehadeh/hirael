@@ -22,7 +22,7 @@ const getHighlighter = async (): Promise<Highlighter> => {
 export type HighlightLang = BundledLanguage | 'plaintext';
 
 export const highlightCode = async (code: string, lang: HighlightLang): Promise<string> => {
-  const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage) ? (lang as BundledLanguage) : 'tsx';
+  const safeLang = SUPPORTED_LANGS.find((supported) => supported === lang) ?? 'tsx';
   const highlighter = await getHighlighter();
 
   return highlighter.codeToHtml(code, {
@@ -33,7 +33,7 @@ export const highlightCode = async (code: string, lang: HighlightLang): Promise<
 };
 
 export const highlightInline = async (code: string, lang: HighlightLang = 'ts'): Promise<string> => {
-  const safeLang = SUPPORTED_LANGS.includes(lang as BundledLanguage) ? (lang as BundledLanguage) : 'ts';
+  const safeLang = SUPPORTED_LANGS.find((supported) => supported === lang) ?? 'ts';
   const highlighter = await getHighlighter();
 
   return highlighter.codeToHtml(code, {

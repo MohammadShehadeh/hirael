@@ -24,6 +24,7 @@ const ROWS: Row[] = [
   { status: 'progress', labels: ['feature'], title: 'Filter bar', estimate: 8, created: '2026-10-02' },
 ];
 
+// The getter only receives the field ids defined above, all keys of Row.
 const get = (row: Row, field: string) => row[field as keyof Row];
 
 describe.each(Object.entries(registry))(

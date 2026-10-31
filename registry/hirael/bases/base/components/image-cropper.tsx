@@ -130,10 +130,7 @@ const ImageCropper = ({
     [setZoom, setCrop, defaultZoom, defaultCrop],
   );
 
-  const ctx = React.useMemo<ImageCropperContextValue>(
-    () => ({ zoom, setZoom, minZoom: MIN_ZOOM, maxZoom, disabled }),
-    [zoom, setZoom, maxZoom, disabled],
-  );
+  const ctx: ImageCropperContextValue = { zoom, setZoom, minZoom: MIN_ZOOM, maxZoom, disabled };
 
   return (
     <ImageCropperContext.Provider value={ctx}>

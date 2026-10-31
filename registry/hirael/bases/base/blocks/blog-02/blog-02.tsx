@@ -218,7 +218,14 @@ const Blog02 = () => {
           </div>
 
           <div style={stagger(3, 80)} className={cn(ENTER, '-mx-6 overflow-x-auto px-6 md:mx-0 md:px-0')}>
-            <Tabs value={filter} onValueChange={(value) => setFilter(value as Filter)} aria-label="Filter posts">
+            <Tabs
+              value={filter}
+              onValueChange={(value) => {
+                const next = FILTERS.find((item) => item === value);
+                if (next) setFilter(next);
+              }}
+              aria-label="Filter posts"
+            >
               <TabsList data-slot="blog-filter" variant="line">
                 {FILTERS.map((item) => (
                   <TabsTrigger key={item} value={item}>

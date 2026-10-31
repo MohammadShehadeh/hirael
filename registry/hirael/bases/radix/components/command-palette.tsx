@@ -47,7 +47,12 @@ const parseRecents = (raw: string | null): CommandPaletteRecent[] => {
 
     return parsed.filter(
       (entry): entry is CommandPaletteRecent =>
-        typeof entry === 'object' && entry !== null && typeof (entry as CommandPaletteRecent).id === 'string',
+        typeof entry === 'object' &&
+        entry !== null &&
+        'id' in entry &&
+        typeof entry.id === 'string' &&
+        'label' in entry &&
+        typeof entry.label === 'string',
     );
   } catch {
     return NO_RECENTS;
@@ -56,7 +61,12 @@ const parseRecents = (raw: string | null): CommandPaletteRecent[] => {
 
 // Cached per raw string: useSyncExternalStore needs a stable snapshot for an unchanged value.
 const recentsListeners = new Set<() => void>();
-const recentsCache = new Map<string, { raw: string | null; value: CommandPaletteRecent[] }>();
+interface RecentsCacheEntry {
+  raw: string | null;
+  value: CommandPaletteRecent[];
+}
+
+const recentsCache = new Map<string, RecentsCacheEntry>();
 
 // Answers for keys localStorage refused to write (private mode), so recents still last the visit.
 const recentsMemory = new Map<string, CommandPaletteRecent[]>();
@@ -183,56 +193,50 @@ const CommandPalette = ({
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [shortcut, open, setOpen]);
 
-  const pushPage = React.useCallback((page: string) => {
+  const pushPage = (page: string) => {
     setPages((prev) => [...prev, page]);
     setQuery('');
-  }, []);
+  };
 
-  const popPage = React.useCallback(() => {
+  const popPage = () => {
     setPages((prev) => prev.slice(0, -1));
-  }, []);
+  };
 
-  const recordRecent = React.useCallback(
-    (entry: CommandPaletteRecent) => {
-      if (!recentsKey) return;
-      const current = recentsSnapshot(recentsKey);
-      const next = [entry, ...current.filter((r) => r.id !== entry.id)].slice(0, maxRecents);
-      try {
-        window.localStorage.setItem(recentsKey, JSON.stringify(next));
-      } catch {
-        recentsMemory.set(recentsKey, next);
-      }
-      emitRecents();
-    },
-    [recentsKey, maxRecents],
-  );
+  const recordRecent = (entry: CommandPaletteRecent) => {
+    if (!recentsKey) return;
+    const current = recentsSnapshot(recentsKey);
+    const next = [entry, ...current.filter((r) => r.id !== entry.id)].slice(0, maxRecents);
+    try {
+      window.localStorage.setItem(recentsKey, JSON.stringify(next));
+    } catch {
+      recentsMemory.set(recentsKey, next);
+    }
+    emitRecents();
+  };
 
-  const clearRecents = React.useCallback(() => {
+  const clearRecents = () => {
     if (!recentsKey) return;
     recentsMemory.delete(recentsKey);
     try {
       window.localStorage.removeItem(recentsKey);
     } catch {}
     emitRecents();
-  }, [recentsKey]);
+  };
 
-  const ctx = React.useMemo<CommandPaletteContextValue>(
-    () => ({
-      open,
-      setOpen,
-      query,
-      setQuery,
-      pages,
-      activePage: pages[pages.length - 1] ?? null,
-      pushPage,
-      popPage,
-      recents,
-      recordRecent,
-      clearRecents,
-      shortcutLabel: shortcut ? `${isApple ? '⌘' : 'Ctrl '}${shortcut.toUpperCase()}` : '',
-    }),
-    [open, setOpen, query, pages, pushPage, popPage, recents, recordRecent, clearRecents, shortcut, isApple],
-  );
+  const ctx: CommandPaletteContextValue = {
+    open,
+    setOpen,
+    query,
+    setQuery,
+    pages,
+    activePage: pages[pages.length - 1] ?? null,
+    pushPage,
+    popPage,
+    recents,
+    recordRecent,
+    clearRecents,
+    shortcutLabel: shortcut ? `${isApple ? '⌘' : 'Ctrl '}${shortcut.toUpperCase()}` : '',
+  };
 
   return <CommandPaletteContext.Provider value={ctx}>{children}</CommandPaletteContext.Provider>;
 };
@@ -271,6 +275,31 @@ const CommandPaletteDialog = (props: CommandPaletteDialogProps) => {
   return <CommandDialog open={ctx.open} onOpenChange={ctx.setOpen} showCloseButton={false} {...props} />;
 };
 
+const CommandPaletteBack = ({ className, onClick, ...props }: React.ComponentProps<'button'>) => {
+  const ctx = usePalette();
+  if (ctx.pages.length === 0) return null;
+
+  return (
+    <button
+      type="button"
+      data-slot="command-palette-back"
+      aria-label="Back"
+      className={cn(
+        'inline-flex shrink-0 items-center gap-1 rounded-[3px] bg-accent px-2 py-1 text-xs text-accent-foreground',
+        className,
+      )}
+      {...props}
+      onClick={(e) => {
+        onClick?.(e);
+        if (!e.defaultPrevented) ctx.popPage();
+      }}
+    >
+      {ctx.pages[ctx.pages.length - 1]}
+      <ChevronRight className="size-3 rtl:rotate-180" />
+    </button>
+  );
+};
+
 const CommandPaletteInput = ({
   className,
   placeholder = 'Type a command or search…',
@@ -304,31 +333,6 @@ const CommandPaletteInput = ({
         {...props}
       />
     </div>
-  );
-};
-
-const CommandPaletteBack = ({ className, onClick, ...props }: React.ComponentProps<'button'>) => {
-  const ctx = usePalette();
-  if (ctx.pages.length === 0) return null;
-
-  return (
-    <button
-      type="button"
-      data-slot="command-palette-back"
-      aria-label="Back"
-      className={cn(
-        'inline-flex shrink-0 items-center gap-1 rounded-[3px] bg-accent px-2 py-1 text-xs text-accent-foreground',
-        className,
-      )}
-      {...props}
-      onClick={(e) => {
-        onClick?.(e);
-        if (!e.defaultPrevented) ctx.popPage();
-      }}
-    >
-      {ctx.pages[ctx.pages.length - 1]}
-      <ChevronRight className="size-3 rtl:rotate-180" />
-    </button>
   );
 };
 

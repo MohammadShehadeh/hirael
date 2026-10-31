@@ -117,7 +117,7 @@ const LogoCloud04 = () => {
   const paused = hovered || focused;
   const autoAdvance = !picked;
 
-  const advance = (event: React.AnimationEvent<HTMLSpanElement>) => {
+  const handleAdvance = (event: React.AnimationEvent<HTMLSpanElement>) => {
     if (event.target !== event.currentTarget || !autoAdvance) return;
     const current = STORIES.findIndex((story) => story.value === active);
     setActive(STORIES[(current + 1) % STORIES.length].value);
@@ -155,7 +155,8 @@ const LogoCloud04 = () => {
           onPointerLeave={() => setHovered(false)}
           onFocus={() => setFocused(true)}
           onBlur={(event) => {
-            if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setFocused(false);
+            if (event.relatedTarget instanceof Node && event.currentTarget.contains(event.relatedTarget)) return;
+            setFocused(false);
           }}
         >
           <div className="border-y border-border">
@@ -187,7 +188,7 @@ const LogoCloud04 = () => {
                       {isActive && (
                         <span
                           data-slot="logo-cloud-progress"
-                          onAnimationEnd={advance}
+                          onAnimationEnd={handleAdvance}
                           style={
                             autoAdvance
                               ? {

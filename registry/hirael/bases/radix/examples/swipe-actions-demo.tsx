@@ -11,6 +11,7 @@ import {
   SwipeActionsContent,
   SwipeActionsGroup,
 } from '@/registry/hirael/bases/radix/components/swipe-actions';
+import { cn } from '@/lib/utils';
 
 const MAIL = [
   { id: 1, from: 'Sara Haddad', subject: { en: 'Filter bar review', ar: 'مراجعة شريط التصفية' } },
@@ -45,7 +46,7 @@ const SwipeActionsDemo = () => {
                     <AvatarFallback>{item.from.slice(0, 2).toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <div className="grid min-w-0 flex-1">
-                    <span className={read.includes(item.id) ? 'text-sm' : 'text-sm font-semibold'}>{item.from}</span>
+                    <span className={cn('text-sm', !read.includes(item.id) && 'font-semibold')}>{item.from}</span>
                     <span className="truncate text-xs text-muted-foreground">{t(item.subject)}</span>
                   </div>
                 </div>

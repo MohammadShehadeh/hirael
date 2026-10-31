@@ -13,8 +13,13 @@ export function generateStaticParams() {
 
 export const generateMetadata = templateEmbedMetadata;
 
+interface BaseTemplateEmbedRouteParams {
+  base: string;
+  template: string;
+}
+
 interface BaseTemplateEmbedRouteProps {
-  params: Promise<{ base: string; template: string }>;
+  params: Promise<BaseTemplateEmbedRouteParams>;
 }
 
 export default async function BaseTemplateEmbedRoute({ params }: BaseTemplateEmbedRouteProps) {

@@ -7,30 +7,29 @@ import { REGISTRY_BASE_URL, STAMPABLE_FILE, jsonText, readAllBuiltItems, sourceH
 // Root-relative /media paths would 404 once installed, so payloads get absolute URLs.
 const MEDIA_PATH = /(["'`])\/media\//g;
 
-let stampedFiles = 0;
-let mediaFiles = 0;
-let touchedItems = 0;
-for (const { file: itemJson, item } of readAllBuiltItems()) {
+const results = readAllBuiltItems().map(({ file: itemJson, item }) => {
   const header = sourceHeader(item);
-  let isTouched = false;
+  let stampedFiles = 0;
+  let mediaFiles = 0;
   for (const file of item.files ?? []) {
     if (typeof file.content !== 'string') continue;
     const withMedia = file.content.replace(MEDIA_PATH, `$1${REGISTRY_BASE_URL}/media/`);
     if (withMedia !== file.content) {
       file.content = withMedia;
       mediaFiles++;
-      isTouched = true;
     }
     if (!STAMPABLE_FILE.test(file.path)) continue;
     if (file.content.startsWith(header)) continue;
     file.content = `${header}\n${file.content}`;
     stampedFiles++;
-    isTouched = true;
   }
-  if (!isTouched) continue;
-  writeFileSync(itemJson, jsonText(item));
-  touchedItems++;
-}
+  if (stampedFiles || mediaFiles) writeFileSync(itemJson, jsonText(item));
+
+  return { stampedFiles, mediaFiles };
+});
+const stampedFiles = results.reduce((total, result) => total + result.stampedFiles, 0);
+const mediaFiles = results.reduce((total, result) => total + result.mediaFiles, 0);
+const touchedItems = results.filter((result) => result.stampedFiles || result.mediaFiles).length;
 console.log(
   `✓ source stamped — ${stampedFiles} file(s) in ${touchedItems} item(s) carry the Hirael header, ${mediaFiles} file(s) point media at ${REGISTRY_BASE_URL}`,
 );

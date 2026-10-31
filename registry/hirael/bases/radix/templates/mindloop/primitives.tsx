@@ -1,23 +1,23 @@
 'use client';
 
 import * as React from 'react';
-import { useReducedMotion, type MotionProps, type Transition } from 'motion/react';
+import type { MotionProps, Transition } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
 const FADE_EASE: Transition['ease'] = 'easeOut';
 
-export const useFadeUp = () => {
-  const reduce = useReducedMotion();
+interface FadeUpOptions {
+  fade?: boolean;
+}
 
-  // `fade: false` keeps a headline at full opacity so it counts as painted for Largest Contentful Paint.
-  return (delay = 0, { fade = true } = {}): MotionProps => ({
-    initial: reduce ? { opacity: 1, y: 0 } : { opacity: fade ? 0 : 1, y: 20 },
-    whileInView: { opacity: 1, y: 0 },
-    viewport: { once: true, margin: '-100px' },
-    transition: reduce ? { duration: 0 } : { duration: 0.6, delay, ease: FADE_EASE },
-  });
-};
+// `fade: false` keeps a headline at full opacity so it counts as painted for Largest Contentful Paint.
+export const fadeUp = (reduce: boolean | null, delay = 0, { fade = true }: FadeUpOptions = {}): MotionProps => ({
+  initial: reduce ? { opacity: 1, y: 0 } : { opacity: fade ? 0 : 1, y: 20 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, margin: '-100px' },
+  transition: reduce ? { duration: 0 } : { duration: 0.6, delay, ease: FADE_EASE },
+});
 
 interface SerifProps {
   children: React.ReactNode;
@@ -142,7 +142,7 @@ export const Avatar = ({ tone = 0, className }: AvatarProps) => {
 
   return (
     <span className={cn('inline-flex size-8 overflow-hidden rounded-full border-2 border-background', className)}>
-      <svg viewBox="0 0 32 32" className="h-full w-full" aria-hidden>
+      <svg viewBox="0 0 32 32" className="size-full" aria-hidden>
         <defs>
           <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor={t.from} />

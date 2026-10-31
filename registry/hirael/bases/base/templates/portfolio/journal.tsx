@@ -60,7 +60,7 @@ export const Journal = () => {
               }}
               className="group flex items-center gap-4 rounded-[40px] border border-[hsl(var(--stroke))] bg-[hsl(var(--surface))]/30 p-4 transition-colors duration-300 hover:bg-[hsl(var(--surface))] sm:gap-6 sm:rounded-full"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
               <img
                 src={entry.image}
                 alt=""

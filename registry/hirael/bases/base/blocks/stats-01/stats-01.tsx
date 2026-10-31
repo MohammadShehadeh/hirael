@@ -92,7 +92,7 @@ const StatsItem = ({ className, ...props }: StatsItemProps) => {
 // render and anything visible on load show the real number.
 const useCountUp = <T extends Element>(margin = '0px 0px -10% 0px') => {
   const ref = React.useRef<T | null>(null);
-  const [countUp, setCountUp] = React.useState(false);
+  const [shouldCountUp, setShouldCountUp] = React.useState(false);
 
   React.useEffect(() => {
     const el = ref.current;
@@ -108,7 +108,7 @@ const useCountUp = <T extends Element>(margin = '0px 0px -10% 0px') => {
           return;
         }
         if (visible) {
-          setCountUp(true);
+          setShouldCountUp(true);
           observer.disconnect();
         }
       },
@@ -119,7 +119,7 @@ const useCountUp = <T extends Element>(margin = '0px 0px -10% 0px') => {
     return () => observer.disconnect();
   }, [margin]);
 
-  return [ref, countUp] as const;
+  return { ref, shouldCountUp };
 };
 
 interface StatsValueProps extends Omit<React.ComponentProps<'div'>, 'children'> {
@@ -142,7 +142,7 @@ const StatsValue = ({
   className,
   ...props
 }: StatsValueProps) => {
-  const [ref, countUp] = useCountUp<HTMLDivElement>();
+  const { ref, shouldCountUp } = useCountUp<HTMLDivElement>();
 
   return (
     <div
@@ -155,9 +155,9 @@ const StatsValue = ({
       {...props}
     >
       <AnimatedNumber
-        key={countUp ? 'count-up' : 'static'}
+        key={shouldCountUp ? 'count-up' : 'static'}
         value={value}
-        startValue={countUp ? 0 : value}
+        startValue={shouldCountUp ? 0 : value}
         duration={duration}
         decimals={decimals}
         prefix={prefix}

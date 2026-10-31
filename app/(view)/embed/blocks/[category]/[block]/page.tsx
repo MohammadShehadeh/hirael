@@ -11,8 +11,13 @@ export function generateStaticParams() {
 
 export const generateMetadata = blockEmbedMetadata;
 
+interface BlockEmbedRouteParams {
+  category: string;
+  block: string;
+}
+
 interface BlockEmbedRouteProps {
-  params: Promise<{ category: string; block: string }>;
+  params: Promise<BlockEmbedRouteParams>;
 }
 
 export default async function BlockEmbedRoute({ params }: BlockEmbedRouteProps) {

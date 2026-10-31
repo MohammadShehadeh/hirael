@@ -88,7 +88,7 @@ interface HighlightLineProps {
   line: string;
 }
 
-const HighlightLine = React.memo(function HighlightLine({ line }: HighlightLineProps) {
+const HighlightLine = function HighlightLine({ line }: HighlightLineProps) {
   const tokens = tokenizeLine(line);
 
   return (
@@ -102,7 +102,7 @@ const HighlightLine = React.memo(function HighlightLine({ line }: HighlightLineP
           ))}
     </span>
   );
-});
+};
 
 interface YamlEditorProps extends Omit<React.ComponentProps<'div'>, 'onChange' | 'defaultValue'> {
   value?: string;

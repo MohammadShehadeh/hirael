@@ -42,72 +42,70 @@ interface LightRayProps extends RayConfig {
   reduce: boolean;
 }
 
-const LightRay = React.memo(
-  ({
-    left,
-    rotation,
-    width,
-    duration,
-    delay,
-    swayDuration,
-    swayDelay,
-    blur,
-    strongSway,
-    opacity,
-    speed,
-    length,
-    reduce,
-  }: LightRayProps) => {
-    const rotate = (deg: number) => `translateX(-50%) rotate(${deg}deg)`;
+const LightRay = ({
+  left,
+  rotation,
+  width,
+  duration,
+  delay,
+  swayDuration,
+  swayDelay,
+  blur,
+  strongSway,
+  opacity,
+  speed,
+  length,
+  reduce,
+}: LightRayProps) => {
+  const rotate = (deg: number) => `translateX(-50%) rotate(${deg}deg)`;
 
-    return (
-      <motion.div
-        data-slot="footer-beam"
-        aria-hidden
-        className="pointer-events-none absolute -top-[5%] origin-top mix-blend-screen"
-        style={{
-          left,
-          width,
-          height: length,
-          filter: `blur(${blur}px)`,
-          transform: rotate(rotation),
-          opacity: reduce ? opacity : undefined,
-          background: `linear-gradient(to bottom, color-mix(in oklch, var(--primary) ${Math.round(
-            opacity * 100,
-          )}%, transparent), transparent)`,
-          willChange: reduce ? undefined : 'opacity, transform',
-        }}
-        initial={reduce ? false : { opacity: opacity * 0.4 }}
-        animate={
-          reduce
-            ? undefined
-            : {
-                opacity: [opacity * 0.4, opacity, opacity * 0.4],
-                transform: [rotate(rotation), rotate(rotation + (strongSway ? 1 : 0.5)), rotate(rotation)],
-              }
-        }
-        transition={
-          reduce
-            ? undefined
-            : {
-                opacity: {
-                  duration: duration / speed,
-                  delay: delay / speed,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                },
-                transform: {
-                  duration: swayDuration / speed,
-                  delay: swayDelay / speed,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                },
-              }
-        }
-      />
-    );
-  },
-);
+  return (
+    <motion.div
+      data-slot="footer-beam"
+      aria-hidden
+      className="pointer-events-none absolute -top-[5%] origin-top mix-blend-screen"
+      style={{
+        left,
+        width,
+        height: length,
+        filter: `blur(${blur}px)`,
+        transform: rotate(rotation),
+        opacity: reduce ? opacity : undefined,
+        background: `linear-gradient(to bottom, color-mix(in oklch, var(--primary) ${Math.round(
+          opacity * 100,
+        )}%, transparent), transparent)`,
+        willChange: reduce ? undefined : 'opacity, transform',
+      }}
+      initial={reduce ? false : { opacity: opacity * 0.4 }}
+      animate={
+        reduce
+          ? undefined
+          : {
+              opacity: [opacity * 0.4, opacity, opacity * 0.4],
+              transform: [rotate(rotation), rotate(rotation + (strongSway ? 1 : 0.5)), rotate(rotation)],
+            }
+      }
+      transition={
+        reduce
+          ? undefined
+          : {
+              opacity: {
+                duration: duration / speed,
+                delay: delay / speed,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              },
+              transform: {
+                duration: swayDuration / speed,
+                delay: swayDelay / speed,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              },
+            }
+      }
+    />
+  );
+};
 LightRay.displayName = 'LightRay';
 
 export interface FooterBeamsProps extends React.ComponentProps<'div'> {
@@ -131,7 +129,7 @@ const FooterBeams = ({
   ...props
 }: FooterBeamsProps) => {
   const reduce = useReducedMotion() ?? false;
-  const rays = React.useMemo(() => Array.from({ length: rayCount }, (_, i) => rayConfig(i, rayCount)), [rayCount]);
+  const rays = Array.from({ length: rayCount }, (_, i) => rayConfig(i, rayCount));
 
   return (
     <div data-slot="footer-beams" className={cn('relative overflow-hidden bg-background', className)} {...props}>

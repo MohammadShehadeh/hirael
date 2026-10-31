@@ -1,6 +1,11 @@
 import { LogoIcon, PillButton } from './primitives';
 
-const FOOTER_COLUMNS: { heading: string; links: string[] }[] = [
+interface FooterColumn {
+  heading: string;
+  links: string[];
+}
+
+const FOOTER_COLUMNS: FooterColumn[] = [
   { heading: 'Product', links: ['Wallet', 'Rewards', 'Network', 'Security'] },
   { heading: 'Developers', links: ['Docs', 'API', 'Status', 'GitHub'] },
   { heading: 'Company', links: ['About', 'Careers', 'Blog', 'Press'] },
@@ -17,7 +22,7 @@ export const FooterSection = () => {
           <div className="flex flex-col justify-between gap-10 border-b border-background/10 pb-12 md:flex-row md:items-end">
             <div className="max-w-sm">
               <div className="mb-5 flex items-center gap-2.5">
-                <LogoIcon className="h-7 w-7 text-background" />
+                <LogoIcon className="size-7 text-background" />
                 <span className="text-2xl font-medium tracking-tight text-background">Halo</span>
               </div>
               <p className="text-base leading-relaxed text-background/60">

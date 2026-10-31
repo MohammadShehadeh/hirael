@@ -73,19 +73,17 @@ const ErrorPageActions = ({
 }: ErrorPageActionsProps) => {
   const [retrying, setRetrying] = React.useState(false);
 
-  const retry = React.useCallback(async () => {
+  const retry = async () => {
     if (onRetry) {
       setRetrying(true);
-      try {
-        await onRetry();
-      } finally {
-        setRetrying(false);
-      }
+      await Promise.resolve()
+        .then(onRetry)
+        .finally(() => setRetrying(false));
 
       return;
     }
     if (typeof window !== 'undefined') window.location.reload();
-  }, [onRetry]);
+  };
 
   return (
     <div data-slot="error-page-actions" className={cn('flex flex-wrap items-center gap-3', className)} {...props}>
@@ -101,12 +99,17 @@ const ErrorPageActions = ({
   );
 };
 
+interface DetailRow {
+  label: string;
+  value: string;
+}
+
 export interface ErrorPageDetailsProps extends React.ComponentProps<'div'> {
   requestId: string;
   /** ISO 8601 string or preformatted text. */
   timestamp: string;
   /** Extra label/value rows shown after Request ID and Timestamp. */
-  rows?: ReadonlyArray<{ label: string; value: string }>;
+  rows?: ReadonlyArray<DetailRow>;
   defaultOpen?: boolean;
 }
 
@@ -118,11 +121,8 @@ const ErrorPageDetails = ({
   className,
   ...props
 }: ErrorPageDetailsProps) => {
-  const allRows = React.useMemo(
-    () => [{ label: 'Request ID', value: requestId }, { label: 'Timestamp', value: timestamp }, ...rows],
-    [requestId, timestamp, rows],
-  );
-  const copyText = React.useMemo(() => allRows.map((r) => `${r.label}: ${r.value}`).join('\n'), [allRows]);
+  const allRows = [{ label: 'Request ID', value: requestId }, { label: 'Timestamp', value: timestamp }, ...rows];
+  const copyText = allRows.map((r) => `${r.label}: ${r.value}`).join('\n');
 
   return (
     <Collapsible defaultOpen={defaultOpen} asChild>
@@ -168,8 +168,14 @@ export interface ErrorPageStatusProps extends React.ComponentProps<'a'> {
   tone?: 'success' | 'warning' | 'destructive';
 }
 
+const STATUS_DOT: Record<NonNullable<ErrorPageStatusProps['tone']>, string> = {
+  success: 'bg-success',
+  warning: 'bg-warning',
+  destructive: 'bg-destructive',
+};
+
 const ErrorPageStatus = ({ tone = 'success', className, children, ...props }: ErrorPageStatusProps) => {
-  const dot = tone === 'warning' ? 'bg-warning' : tone === 'destructive' ? 'bg-destructive' : 'bg-success';
+  const dot = STATUS_DOT[tone];
 
   return (
     <a

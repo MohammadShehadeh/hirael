@@ -6,6 +6,8 @@ import { useT } from '@/lib/demo-locale';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { CountdownTimer } from '@/registry/hirael/bases/base/components/countdown-timer';
 
+const timeFormat = new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: 'numeric', second: 'numeric' });
+
 const CountdownTimerDemo = () => {
   const t = useT();
 
@@ -72,7 +74,7 @@ const CountdownTimerDemo = () => {
           hideZeroDays
           target={shortTarget}
           labels={labels}
-          onComplete={() => setCompletedAt(new Date().toLocaleTimeString())}
+          onComplete={() => setCompletedAt(timeFormat.format(new Date()))}
           completeContent={
             <span className="text-xl font-semibold text-primary">{t({ en: "We're live!", ar: 'انطلقنا!' })}</span>
           }

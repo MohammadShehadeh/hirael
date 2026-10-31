@@ -44,8 +44,8 @@ export const Footer = () => {
             className="group inline-flex w-fit shrink-0 items-center gap-2 rounded-full bg-(--cs-ink) py-1.5 ps-5 pe-1.5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
           >
             Start a project
-            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10">
-              <ArrowUpRight className="h-4 w-4 text-(--cs-cream) rtl:-scale-x-100" />
+            <span className="flex size-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:size-10">
+              <ArrowUpRight className="size-4 text-(--cs-cream) rtl:-scale-x-100" />
             </span>
           </a>
         </div>

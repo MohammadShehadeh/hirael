@@ -107,13 +107,13 @@ const readHash = () => window.location.hash.slice(1);
 /** Keeps the selected tab in the URL hash so a link or a reload opens the same tab. */
 const useHashTab = <T extends string>(tabs: readonly T[], fallback: T) => {
   const hash = React.useSyncExternalStore(subscribeToHash, readHash, () => '');
-  const tab = (tabs as readonly string[]).includes(hash) ? (hash as T) : fallback;
+  const tab = tabs.find((item) => item === hash) ?? fallback;
 
-  const setTab = React.useCallback((next: T) => {
+  const setTab = (next: T) => {
     // replaceState keeps the router's history state and doesn't scroll to an element with a matching id.
     window.history.replaceState(window.history.state, '', `#${next}`);
     hashListeners.forEach((listener) => listener());
-  }, []);
+  };
 
   return [tab, setTab] as const;
 };
@@ -139,6 +139,8 @@ const stagger = (index: number, step = 60): React.CSSProperties => ({ animationD
 const TABS = ['overview', 'members', 'billing', 'settings'] as const;
 
 type Tab = (typeof TABS)[number];
+
+const isTab = (value: unknown): value is Tab => TABS.some((option) => option === value);
 
 type Role = 'Owner' | 'Admin' | 'Member';
 
@@ -183,9 +185,223 @@ const initialsOf = (name: string) =>
     .map((part) => part[0]?.toUpperCase())
     .join('');
 
-const StatLabel = ({ children }: { children: React.ReactNode }) => (
+interface StatLabelProps {
+  children: React.ReactNode;
+}
+
+const StatLabel = ({ children }: StatLabelProps) => (
   <span className="text-xs text-muted-foreground uppercase">{children}</span>
 );
+
+interface MembersPanelProps {
+  members: readonly Member[];
+  pending: number;
+  inviteRef: React.Ref<HTMLInputElement>;
+  autoFocus: boolean;
+  onInvite: (email: string) => void;
+  onRevoke: (email: string) => void;
+}
+
+const MembersPanel = ({ members, pending, inviteRef, autoFocus, onInvite, onRevoke }: MembersPanelProps) => {
+  const [email, setEmail] = React.useState('');
+  const [error, setError] = React.useState<string | null>(null);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const value = email.trim().toLowerCase();
+    if (!EMAIL_PATTERN.test(value)) {
+      setError('Enter an email address like you@hirael.com.');
+
+      return;
+    }
+    if (members.some((member) => member.email === value)) {
+      setError('That person is already in the workspace.');
+
+      return;
+    }
+    onInvite(value);
+    setEmail('');
+    setError(null);
+  };
+
+  return (
+    <div data-slot="page-header-02-members" className="flex flex-col gap-6">
+      <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-2">
+        <Field data-invalid={Boolean(error) || undefined}>
+          <FieldLabel htmlFor="page-header-02-invite">Invite by email</FieldLabel>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <Input
+              ref={inviteRef}
+              id="page-header-02-invite"
+              type="email"
+              autoComplete="off"
+              autoFocus={autoFocus}
+              placeholder="you@hirael.com"
+              value={email}
+              aria-invalid={Boolean(error) || undefined}
+              onChange={(event) => {
+                setEmail(event.target.value);
+                setError(null);
+              }}
+              className="sm:max-w-sm"
+            />
+            <Button type="submit" variant="outline">
+              Send invite
+            </Button>
+          </div>
+          {error ? <FieldError>{error}</FieldError> : <FieldDescription>Invites expire after 7 days.</FieldDescription>}
+        </Field>
+      </form>
+
+      <div className="flex flex-col gap-3">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-sm font-medium">People</h2>
+          <span className="text-xs text-muted-foreground tabular-nums" aria-live="polite">
+            {members.length - pending} active{pending > 0 ? `, ${pending} invited` : ''}
+          </span>
+        </div>
+        <ul className="flex flex-col divide-y divide-border border-y border-border">
+          {members.map((member) => (
+            <li key={member.email} className={cn(SWAP, 'flex items-center gap-3 py-3')}>
+              <Avatar size="sm">
+                <AvatarFallback>{initialsOf(member.name)}</AvatarFallback>
+              </Avatar>
+              <div className="flex min-w-0 flex-1 flex-col">
+                <span className="truncate text-sm font-medium">{member.invited ? member.email : member.name}</span>
+                <span className="truncate text-xs text-muted-foreground">
+                  {member.invited ? 'Invite sent' : member.email}
+                </span>
+              </div>
+              {member.invited ? (
+                <Button type="button" variant="ghost" size="sm" onClick={() => onRevoke(member.email)}>
+                  Revoke
+                </Button>
+              ) : (
+                <Badge variant={member.role === 'Owner' ? 'secondary' : 'outline'}>{member.role}</Badge>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+interface BillingPanelProps {
+  seats: number;
+}
+
+const BillingPanel = ({ seats }: BillingPanelProps) => {
+  return (
+    <div data-slot="page-header-02-billing" className="flex flex-col gap-8">
+      <dl className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="flex flex-col gap-1">
+          <dt>
+            <StatLabel>Plan</StatLabel>
+          </dt>
+          <dd className="text-sm">
+            <span className="font-medium">Team</span>
+            <span className="text-muted-foreground tabular-nums">, {currency.format(SEAT_PRICE)} per seat</span>
+          </dd>
+        </div>
+        <div className="flex flex-col gap-1">
+          <dt>
+            <StatLabel>Next invoice</StatLabel>
+          </dt>
+          <dd className="text-sm">
+            <span className="font-medium tabular-nums">{currency.format(seats * SEAT_PRICE)}</span>
+            <span className="text-muted-foreground tabular-nums">
+              {' '}
+              on Oct 1 for {seats} {seats === 1 ? 'seat' : 'seats'}
+            </span>
+          </dd>
+        </div>
+        <div className="flex flex-col gap-1">
+          <dt>
+            <StatLabel>Payment method</StatLabel>
+          </dt>
+          <dd className="text-sm tabular-nums">Visa ending 4242</dd>
+        </div>
+      </dl>
+      <div className="flex flex-col gap-3">
+        <h2 className="text-sm font-medium">Invoices</h2>
+        <ul className="flex flex-col divide-y divide-border border-y border-border">
+          {INVOICES.map((invoice) => (
+            <li key={invoice.id} className="flex items-center justify-between gap-4 py-3 text-sm">
+              <span className="flex flex-col">
+                <span className="font-medium tabular-nums">{invoice.date}</span>
+                <span className="text-xs text-muted-foreground tabular-nums">{invoice.id}</span>
+              </span>
+              <span className="flex items-center gap-4">
+                <span className="tabular-nums">{currency.format(invoice.amount)}</span>
+                <Button variant="link" size="sm" render={<a href="#" />} nativeButton={false}>
+                  Download
+                </Button>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+};
+
+interface SettingsPanelProps {
+  name: string;
+  onSave: (name: string) => void;
+}
+
+const workspaceNameError = (name: string) => {
+  if (name === '') return 'Give the workspace a name.';
+
+  return name.length > 40 ? 'Keep it under 40 characters.' : null;
+};
+
+const SettingsPanel = ({ name, onSave }: SettingsPanelProps) => {
+  const [value, setValue] = React.useState(name);
+  const [saved, setSaved] = React.useState(false);
+
+  const trimmed = value.trim();
+  const error = workspaceNameError(trimmed);
+  const dirty = trimmed !== name;
+
+  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (error || !dirty) return;
+    onSave(trimmed);
+    setSaved(true);
+  };
+
+  return (
+    <form data-slot="page-header-02-settings" onSubmit={submit} noValidate className="flex max-w-md flex-col gap-4">
+      <Field data-invalid={Boolean(error) || undefined}>
+        <FieldLabel htmlFor="page-header-02-name">Workspace name</FieldLabel>
+        <Input
+          id="page-header-02-name"
+          value={value}
+          aria-invalid={Boolean(error) || undefined}
+          onChange={(event) => {
+            setValue(event.target.value);
+            setSaved(false);
+          }}
+        />
+        {error ? (
+          <FieldError>{error}</FieldError>
+        ) : (
+          <FieldDescription>Shown in the header and in invites.</FieldDescription>
+        )}
+      </Field>
+      <div className="flex items-center gap-3">
+        <Button type="submit" disabled={Boolean(error) || !dirty}>
+          Save
+        </Button>
+        <span role="status" className="text-sm text-muted-foreground">
+          {saved ? 'Saved' : ''}
+        </span>
+      </div>
+    </form>
+  );
+};
 
 const PageHeader02 = () => {
   const [tab, setTab] = useHashTab(TABS, 'overview');
@@ -199,7 +415,7 @@ const PageHeader02 = () => {
     setTab(next);
   };
 
-  const startInvite = () => {
+  const handleStartInvite = () => {
     if (tab === 'members') {
       inviteRef.current?.focus();
 
@@ -214,7 +430,12 @@ const PageHeader02 = () => {
   return (
     <section data-slot="page-header-02" className="bg-background py-16 sm:py-20">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-6 md:px-10">
-        <Tabs value={tab} onValueChange={(value) => selectTab(value as Tab)}>
+        <Tabs
+          value={tab}
+          onValueChange={(value) => {
+            if (isTab(value)) selectTab(value);
+          }}
+        >
           <TabbedHeader className="mb-6">
             <TabbedHeaderRow>
               <TabbedHeaderContent>
@@ -224,7 +445,7 @@ const PageHeader02 = () => {
                 </TabbedHeaderDescription>
               </TabbedHeaderContent>
               <TabbedHeaderActions style={stagger(2, 80)} className={ENTER}>
-                <Button type="button" onClick={startInvite}>
+                <Button type="button" onClick={handleStartInvite}>
                   <UserPlus aria-hidden />
                   Invite people
                 </Button>
@@ -315,207 +536,6 @@ const PageHeader02 = () => {
         </Tabs>
       </div>
     </section>
-  );
-};
-
-interface MembersPanelProps {
-  members: readonly Member[];
-  pending: number;
-  inviteRef: React.Ref<HTMLInputElement>;
-  autoFocus: boolean;
-  onInvite: (email: string) => void;
-  onRevoke: (email: string) => void;
-}
-
-const MembersPanel = ({ members, pending, inviteRef, autoFocus, onInvite, onRevoke }: MembersPanelProps) => {
-  const [email, setEmail] = React.useState('');
-  const [error, setError] = React.useState<string | null>(null);
-
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const value = email.trim().toLowerCase();
-    if (!EMAIL_PATTERN.test(value)) {
-      setError('Enter an email address like you@hirael.com.');
-
-      return;
-    }
-    if (members.some((member) => member.email === value)) {
-      setError('That person is already in the workspace.');
-
-      return;
-    }
-    onInvite(value);
-    setEmail('');
-    setError(null);
-  };
-
-  return (
-    <div data-slot="page-header-02-members" className="flex flex-col gap-6">
-      <form onSubmit={submit} noValidate className="flex flex-col gap-2">
-        <Field data-invalid={Boolean(error) || undefined}>
-          <FieldLabel htmlFor="page-header-02-invite">Invite by email</FieldLabel>
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <Input
-              ref={inviteRef}
-              id="page-header-02-invite"
-              type="email"
-              autoComplete="off"
-              autoFocus={autoFocus}
-              placeholder="you@hirael.com"
-              value={email}
-              aria-invalid={Boolean(error) || undefined}
-              onChange={(event) => {
-                setEmail(event.target.value);
-                setError(null);
-              }}
-              className="sm:max-w-sm"
-            />
-            <Button type="submit" variant="outline">
-              Send invite
-            </Button>
-          </div>
-          {error ? <FieldError>{error}</FieldError> : <FieldDescription>Invites expire after 7 days.</FieldDescription>}
-        </Field>
-      </form>
-
-      <div className="flex flex-col gap-3">
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-sm font-medium">People</h2>
-          <span className="text-xs text-muted-foreground tabular-nums" aria-live="polite">
-            {members.length - pending} active{pending > 0 ? `, ${pending} invited` : ''}
-          </span>
-        </div>
-        <ul className="flex flex-col divide-y divide-border border-y border-border">
-          {members.map((member) => (
-            <li key={member.email} className={cn(SWAP, 'flex items-center gap-3 py-3')}>
-              <Avatar size="sm">
-                <AvatarFallback>{initialsOf(member.name)}</AvatarFallback>
-              </Avatar>
-              <div className="flex min-w-0 flex-1 flex-col">
-                <span className="truncate text-sm font-medium">{member.invited ? member.email : member.name}</span>
-                <span className="truncate text-xs text-muted-foreground">
-                  {member.invited ? 'Invite sent' : member.email}
-                </span>
-              </div>
-              {member.invited ? (
-                <Button type="button" variant="ghost" size="sm" onClick={() => onRevoke(member.email)}>
-                  Revoke
-                </Button>
-              ) : (
-                <Badge variant={member.role === 'Owner' ? 'secondary' : 'outline'}>{member.role}</Badge>
-              )}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
-
-const BillingPanel = ({ seats }: { seats: number }) => {
-  return (
-    <div data-slot="page-header-02-billing" className="flex flex-col gap-8">
-      <dl className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <div className="flex flex-col gap-1">
-          <dt>
-            <StatLabel>Plan</StatLabel>
-          </dt>
-          <dd className="text-sm">
-            <span className="font-medium">Team</span>
-            <span className="text-muted-foreground tabular-nums">, {currency.format(SEAT_PRICE)} per seat</span>
-          </dd>
-        </div>
-        <div className="flex flex-col gap-1">
-          <dt>
-            <StatLabel>Next invoice</StatLabel>
-          </dt>
-          <dd className="text-sm">
-            <span className="font-medium tabular-nums">{currency.format(seats * SEAT_PRICE)}</span>
-            <span className="text-muted-foreground tabular-nums">
-              {' '}
-              on Oct 1 for {seats} {seats === 1 ? 'seat' : 'seats'}
-            </span>
-          </dd>
-        </div>
-        <div className="flex flex-col gap-1">
-          <dt>
-            <StatLabel>Payment method</StatLabel>
-          </dt>
-          <dd className="text-sm tabular-nums">Visa ending 4242</dd>
-        </div>
-      </dl>
-      <div className="flex flex-col gap-3">
-        <h2 className="text-sm font-medium">Invoices</h2>
-        <ul className="flex flex-col divide-y divide-border border-y border-border">
-          {INVOICES.map((invoice) => (
-            <li key={invoice.id} className="flex items-center justify-between gap-4 py-3 text-sm">
-              <span className="flex flex-col">
-                <span className="font-medium tabular-nums">{invoice.date}</span>
-                <span className="text-xs text-muted-foreground tabular-nums">{invoice.id}</span>
-              </span>
-              <span className="flex items-center gap-4">
-                <span className="tabular-nums">{currency.format(invoice.amount)}</span>
-                <Button variant="link" size="sm" render={<a href="#" />} nativeButton={false}>
-                  Download
-                </Button>
-              </span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-  );
-};
-
-interface SettingsPanelProps {
-  name: string;
-  onSave: (name: string) => void;
-}
-
-const SettingsPanel = ({ name, onSave }: SettingsPanelProps) => {
-  const [value, setValue] = React.useState(name);
-  const [saved, setSaved] = React.useState(false);
-
-  const trimmed = value.trim();
-  const error =
-    trimmed === '' ? 'Give the workspace a name.' : trimmed.length > 40 ? 'Keep it under 40 characters.' : null;
-  const dirty = trimmed !== name;
-
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (error || !dirty) return;
-    onSave(trimmed);
-    setSaved(true);
-  };
-
-  return (
-    <form data-slot="page-header-02-settings" onSubmit={submit} noValidate className="flex max-w-md flex-col gap-4">
-      <Field data-invalid={Boolean(error) || undefined}>
-        <FieldLabel htmlFor="page-header-02-name">Workspace name</FieldLabel>
-        <Input
-          id="page-header-02-name"
-          value={value}
-          aria-invalid={Boolean(error) || undefined}
-          onChange={(event) => {
-            setValue(event.target.value);
-            setSaved(false);
-          }}
-        />
-        {error ? (
-          <FieldError>{error}</FieldError>
-        ) : (
-          <FieldDescription>Shown in the header and in invites.</FieldDescription>
-        )}
-      </Field>
-      <div className="flex items-center gap-3">
-        <Button type="submit" disabled={Boolean(error) || !dirty}>
-          Save
-        </Button>
-        <span role="status" className="text-sm text-muted-foreground">
-          {saved ? 'Saved' : ''}
-        </span>
-      </div>
-    </form>
   );
 };
 

@@ -10,8 +10,12 @@ const registry = {
   base,
 };
 
+interface ClampedProps {
+  onValue: (value: number | null) => void;
+}
+
 describe.each(Object.entries(registry))('CurrencyInput (%s)', (_, { CurrencyInput, CurrencyInputField }) => {
-  const Clamped = ({ onValue }: { onValue: (value: number | null) => void }) => {
+  const Clamped = ({ onValue }: ClampedProps) => {
     const [value, setValue] = React.useState<number | null>(null);
 
     return (
@@ -31,7 +35,7 @@ describe.each(Object.entries(registry))('CurrencyInput (%s)', (_, { CurrencyInpu
   it('should keep a value the parent clamps while the field is focused', () => {
     const seen: (number | null)[] = [];
     render(<Clamped onValue={(value) => seen.push(value)} />);
-    const input = screen.getByRole('textbox', { name: 'Amount' }) as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>('textbox', { name: 'Amount' });
 
     fireEvent.focus(input);
     fireEvent.change(input, { target: { value: '5000' } });
@@ -48,7 +52,7 @@ describe.each(Object.entries(registry))('CurrencyInput (%s)', (_, { CurrencyInpu
         <CurrencyInputField aria-label="Amount" />
       </CurrencyInput>,
     );
-    const input = screen.getByRole('textbox', { name: 'Amount' }) as HTMLInputElement;
+    const input = screen.getByRole<HTMLInputElement>('textbox', { name: 'Amount' });
     expect(input.value).toBe('1,234.50');
 
     fireEvent.focus(input);

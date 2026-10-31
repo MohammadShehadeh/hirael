@@ -58,45 +58,6 @@ export interface LanguageSwitcherProps {
   children?: React.ReactNode;
 }
 
-const LanguageSwitcher = ({
-  languages,
-  value: valueProp,
-  defaultValue,
-  onValueChange,
-  open,
-  defaultOpen,
-  onOpenChange,
-  children,
-}: LanguageSwitcherProps) => {
-  const [value, setValue] = useControllableState({
-    prop: valueProp,
-    defaultProp: defaultValue ?? languages[0]?.code ?? '',
-    onChange: (code: string) =>
-      onValueChange?.(
-        code,
-        languages.find((language) => language.code === code),
-      ),
-  });
-
-  const ctx = React.useMemo<LanguageSwitcherContextValue>(
-    () => ({ value, setValue, languages, current: languages.find((language) => language.code === value) }),
-    [value, setValue, languages],
-  );
-
-  return (
-    <LanguageSwitcherContext.Provider value={ctx}>
-      <DropdownMenu open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
-        {children ?? (
-          <>
-            <LanguageSwitcherTrigger />
-            <LanguageSwitcherContent />
-          </>
-        )}
-      </DropdownMenu>
-    </LanguageSwitcherContext.Provider>
-  );
-};
-
 export interface LanguageSwitcherTriggerProps extends Omit<React.ComponentProps<typeof Button>, 'children'> {
   /** `name` shows the current language's native name, `code` its short tag (EN, AR), `icon` only the globe. */
   display?: 'name' | 'code' | 'icon';
@@ -175,6 +136,47 @@ const LanguageSwitcherContent = ({ heading, align = 'end', className, ...props }
         </DropdownMenuRadioGroup>
       </DropdownMenuGroup>
     </DropdownMenuContent>
+  );
+};
+
+const LanguageSwitcher = ({
+  languages,
+  value: valueProp,
+  defaultValue,
+  onValueChange,
+  open,
+  defaultOpen,
+  onOpenChange,
+  children,
+}: LanguageSwitcherProps) => {
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue ?? languages[0]?.code ?? '',
+    onChange: (code: string) =>
+      onValueChange?.(
+        code,
+        languages.find((language) => language.code === code),
+      ),
+  });
+
+  const ctx: LanguageSwitcherContextValue = {
+    value,
+    setValue,
+    languages,
+    current: languages.find((language) => language.code === value),
+  };
+
+  return (
+    <LanguageSwitcherContext.Provider value={ctx}>
+      <DropdownMenu open={open} defaultOpen={defaultOpen} onOpenChange={onOpenChange}>
+        {children ?? (
+          <>
+            <LanguageSwitcherTrigger />
+            <LanguageSwitcherContent />
+          </>
+        )}
+      </DropdownMenu>
+    </LanguageSwitcherContext.Provider>
   );
 };
 

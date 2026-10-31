@@ -38,23 +38,24 @@ const Headline = () => {
   );
 };
 
+const BEAM_VERTICALS = [
+  'M141.338 232.625V5.075',
+  'M200.338 232.625V5.075',
+  'M259.338 231.625V4.075',
+  'M318.338 230.625V3.075',
+];
+
+const BEAM_CURVES = [
+  'M459.649 152.723 351.613 69.264a11 11 0 0 1-4.275-8.705V.074',
+  'm.338 152.723 108.036-83.459a11 11 0 0 0 4.275-8.705V.074',
+];
+
 interface BeamProps {
   className?: string;
   reduce: boolean | null;
 }
 
 const Beam = ({ className, reduce }: BeamProps) => {
-  const verticals = [
-    'M141.338 232.625V5.075',
-    'M200.338 232.625V5.075',
-    'M259.338 231.625V4.075',
-    'M318.338 230.625V3.075',
-  ];
-  const curves = [
-    'M459.649 152.723 351.613 69.264a11 11 0 0 1-4.275-8.705V.074',
-    'm.338 152.723 108.036-83.459a11 11 0 0 0 4.275-8.705V.074',
-  ];
-
   return (
     <svg
       width={460}
@@ -64,10 +65,10 @@ const Beam = ({ className, reduce }: BeamProps) => {
       className={cn('text-foreground', className)}
       aria-hidden="true"
     >
-      {[...verticals, ...curves].map((d, i) => (
+      {[...BEAM_VERTICALS, ...BEAM_CURVES].map((d, i) => (
         <path key={`base-${i}`} d={d} stroke="currentColor" strokeWidth="1" className="opacity-15" />
       ))}
-      {curves.map((d, i) => (
+      {BEAM_CURVES.map((d, i) => (
         <motion.path
           key={`beam-${i}`}
           d={d}
@@ -86,7 +87,7 @@ const Beam = ({ className, reduce }: BeamProps) => {
                   ease: 'linear',
                 }
           }
-          style={{ willChange: 'stroke-dashoffset' }}
+          className="will-change-[stroke-dashoffset]"
         />
       ))}
       <defs>
@@ -102,17 +103,17 @@ const Beam = ({ className, reduce }: BeamProps) => {
   );
 };
 
+const SIDE_BEAM_PATHS = [
+  'M0 442.957L209.048 442.957C212.366 442.957 215.508 441.458 217.596 438.879L321.802 310.196',
+  'M0 1.19531L209.048 1.19557C212.366 1.19558 215.508 2.69391 217.596 5.27302L321.802 133.956',
+];
+
 interface SideBeamProps {
   className?: string;
   reduce: boolean | null;
 }
 
 const SideBeam = ({ className, reduce }: SideBeamProps) => {
-  const paths = [
-    'M0 442.957L209.048 442.957C212.366 442.957 215.508 441.458 217.596 438.879L321.802 310.196',
-    'M0 1.19531L209.048 1.19557C212.366 1.19558 215.508 2.69391 217.596 5.27302L321.802 133.956',
-  ];
-
   return (
     <svg
       width={200}
@@ -122,10 +123,10 @@ const SideBeam = ({ className, reduce }: SideBeamProps) => {
       className={cn('text-foreground', className)}
       aria-hidden="true"
     >
-      {paths.map((d, i) => (
+      {SIDE_BEAM_PATHS.map((d, i) => (
         <path key={`base-${i}`} d={d} stroke="currentColor" strokeWidth="1" className="opacity-15" />
       ))}
-      {paths.map((d, i) => (
+      {SIDE_BEAM_PATHS.map((d, i) => (
         <motion.path
           key={`beam-${i}`}
           d={d}
@@ -144,7 +145,7 @@ const SideBeam = ({ className, reduce }: SideBeamProps) => {
                   ease: 'linear',
                 }
           }
-          style={{ willChange: 'stroke-dashoffset' }}
+          className="will-change-[stroke-dashoffset]"
         />
       ))}
       <defs>

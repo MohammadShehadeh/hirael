@@ -76,16 +76,16 @@ const ChatThread = ({
     if (!atBottom && !latestFromSelf) setUnseen(true);
   }
 
-  const scrollToBottom = React.useCallback(() => {
+  const scrollToBottom = () => {
     const el = viewportRef.current;
     if (!el) return;
     pinnedRef.current = true;
     // Already at the bottom means no scroll event will come to clear the flag.
     autoScrollingRef.current = el.scrollHeight - el.scrollTop - el.clientHeight > 1;
     el.scrollTo({ top: el.scrollHeight, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-  }, []);
+  };
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
@@ -97,7 +97,7 @@ const ChatThread = ({
     pinnedRef.current = pinned;
     setAtBottom(pinned);
     if (pinned) setUnseen(false);
-  }, [threshold]);
+  };
 
   // Typing indicators and replies grow the content without scrolling it, so follow the box size.
   React.useLayoutEffect(() => {
@@ -113,11 +113,12 @@ const ChatThread = ({
     return () => observer.disconnect();
   }, []);
 
+  const followOwnMessage = React.useEffectEvent(scrollToBottom);
   React.useLayoutEffect(() => {
-    if (latestFromSelf) scrollToBottom();
-  }, [latestId, latestFromSelf, scrollToBottom]);
+    if (latestFromSelf) followOwnMessage();
+  }, [latestId, latestFromSelf]);
 
-  const context = React.useMemo(() => ({ atBottom, unseen, scrollToBottom }), [atBottom, unseen, scrollToBottom]);
+  const context = { atBottom, unseen, scrollToBottom };
 
   return (
     <ChatThreadContext.Provider value={context}>
@@ -348,25 +349,19 @@ const ChatComposer = ({
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const canSend = !disabled && value.trim().length > 0;
 
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (!isControlled) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [isControlled, onValueChange],
-  );
+  const setValue = (next: string) => {
+    if (!isControlled) setInternalValue(next);
+    onValueChange?.(next);
+  };
 
-  const send = React.useCallback(() => {
+  const send = () => {
     if (!canSend) return;
     onSend?.(value.trim());
     setValue('');
     inputRef.current?.focus();
-  }, [canSend, onSend, value, setValue]);
+  };
 
-  const context = React.useMemo(
-    () => ({ value, setValue, canSend, send, inputRef, disabled }),
-    [value, setValue, canSend, send, disabled],
-  );
+  const context = { value, setValue, canSend, send, inputRef, disabled };
 
   return (
     <ChatComposerContext.Provider value={context}>
@@ -475,7 +470,7 @@ const SupportWidget = ({
   });
   const panelId = React.useId();
 
-  const context = React.useMemo(() => ({ open, setOpen, panelId }), [open, setOpen, panelId]);
+  const context = { open, setOpen, panelId };
 
   return (
     <SupportWidgetContext.Provider value={context}>
@@ -641,14 +636,19 @@ const AGENT = { name: 'Nadia Karim', firstName: 'Nadia', initials: 'NK' };
 
 type Topic = 'track' | 'address' | 'pause' | 'damaged' | 'done';
 
-const TOPICS: { id: Topic; label: string }[] = [
+interface TopicOption {
+  id: Topic;
+  label: string;
+}
+
+const TOPICS: TopicOption[] = [
   { id: 'track', label: 'Track my order' },
   { id: 'address', label: 'Change delivery address' },
   { id: 'pause', label: 'Pause my subscription' },
   { id: 'damaged', label: 'My bag arrived damaged' },
 ];
 
-const DONE: { id: Topic; label: string } = { id: 'done', label: 'That is all, thanks' };
+const DONE: TopicOption = { id: 'done', label: 'That is all, thanks' };
 
 const ORDER_PATTERN = /\bHR-?(\d{4,6})\b/i;
 
@@ -733,7 +733,9 @@ interface Message {
 
 type Stage = 'chatting' | 'rating' | 'rated';
 
-const clock = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date());
+const clockFormat = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+const clock = () => clockFormat.format(new Date());
 
 // The automatic greeting has no timestamp: it isn't a message anyone sent at a moment in time.
 const GREETING: Message[] = [
@@ -840,7 +842,7 @@ const Chat02 = () => {
     });
   };
 
-  const send = (text: string) => {
+  const handleSend = (text: string) => {
     if (stage !== 'chatting') return;
     const id = `u-${messages.length}`;
     setMessages((current) => [...current, { id, from: 'me', text, time: clock(), status: 'sent' }]);
@@ -865,12 +867,12 @@ const Chat02 = () => {
     setTyping(false);
   };
 
-  const endChat = () => {
+  const handleEndChat = () => {
     stopAgent();
     setStage('rating');
   };
 
-  const restart = () => {
+  const handleRestart = () => {
     stopAgent();
     awaitingRef.current = false;
     setMessages(GREETING);
@@ -880,13 +882,13 @@ const Chat02 = () => {
     setAwaitingOrder(false);
   };
 
-  const suggestions = awaitingOrder
-    ? [{ id: 'track' as Topic, label: 'HR-20931' }]
+  const suggestions: readonly TopicOption[] = awaitingOrder
+    ? [{ id: 'track', label: 'HR-20931' }]
     : [...TOPICS.filter((topic) => !used.includes(topic.id)), ...(used.length > 0 ? [DONE] : [])];
 
   const runs = groupRuns(messages);
   const latest = messages[messages.length - 1];
-  const lastOwnId = [...messages].reverse().find((message) => message.from === 'me')?.id;
+  const lastOwnId = messages.toReversed().find((message) => message.from === 'me')?.id;
 
   return (
     <section
@@ -955,7 +957,7 @@ const Chat02 = () => {
               </p>
             </div>
             {stage === 'chatting' && messages.some((message) => message.from === 'me') ? (
-              <Button type="button" variant="ghost" size="xs" onClick={endChat}>
+              <Button type="button" variant="ghost" size="xs" onClick={handleEndChat}>
                 End chat
               </Button>
             ) : null}
@@ -1044,7 +1046,7 @@ const Chat02 = () => {
                         ? 'Sorry it missed. A team lead will read the chat and email you today.'
                         : 'We will send a copy of this chat to your email.'}
                     </p>
-                    <Button type="button" variant="outline" size="sm" onClick={restart}>
+                    <Button type="button" variant="outline" size="sm" onClick={handleRestart}>
                       Start a new chat
                     </Button>
                   </>
@@ -1058,14 +1060,14 @@ const Chat02 = () => {
             {stage === 'chatting' && suggestions.length > 0 ? (
               <SupportQuickReplies key={suggestions.map((item) => item.label).join('|')} className={SWAP}>
                 {suggestions.map((item) => (
-                  <SupportQuickReply key={item.label} onClick={() => send(item.label)}>
+                  <SupportQuickReply key={item.label} onClick={() => handleSend(item.label)}>
                     {item.label}
                   </SupportQuickReply>
                 ))}
               </SupportQuickReplies>
             ) : null}
             <div className="px-3 pb-3">
-              <ChatComposer onSend={send} disabled={stage !== 'chatting'}>
+              <ChatComposer onSend={handleSend} disabled={stage !== 'chatting'}>
                 <ChatComposerInput
                   autoFocus={focusInput}
                   placeholder={stage === 'chatting' ? 'Write a message' : 'This chat has ended'}

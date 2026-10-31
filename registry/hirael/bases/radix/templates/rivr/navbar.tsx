@@ -4,7 +4,12 @@ import { ChevronRight } from 'lucide-react';
 
 import { PillButton, RivrMark } from './primitives';
 
-const NAV_ITEMS: { label: string; hasDropdown?: boolean }[] = [
+interface NavItem {
+  label: string;
+  hasDropdown?: boolean;
+}
+
+const NAV_ITEMS: NavItem[] = [
   { label: 'Ecosystem' },
   { label: 'Economics', hasDropdown: true },
   { label: 'Developers' },

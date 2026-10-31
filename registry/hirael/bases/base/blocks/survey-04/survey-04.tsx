@@ -25,7 +25,12 @@ const EASE = 'ease-[cubic-bezier(0.22,1,0.36,1)]';
 const STEP_IN = `animate-in fade-in duration-300 ${EASE} fill-mode-both motion-reduce:animate-none`;
 const ITEM_IN = `data-active:animate-in data-active:fade-in-0 data-active:duration-300 ${EASE} motion-reduce:data-active:animate-none`;
 
-type QuestionId = 'name' | 'use' | 'team' | 'seats' | 'start';
+const QUESTION_ID_VALUES = ['name', 'use', 'team', 'seats', 'start'] as const;
+
+type QuestionId = (typeof QUESTION_ID_VALUES)[number];
+
+const isQuestionId = (value: unknown): value is QuestionId => QUESTION_ID_VALUES.some((option) => option === value);
+
 type Answers = Record<QuestionId, string>;
 
 interface Option {
@@ -95,7 +100,12 @@ const ORDER: readonly QuestionId[] = ['name', 'use', 'team', 'seats', 'start'];
 
 const toChoices = (question: ChoiceQuestion) => question.options.map((option) => ({ value: option.value }));
 
-const ProgressTrack = ({ value, className }: { value: number; className?: string }) => (
+interface ProgressTrackProps {
+  value: number;
+  className?: string;
+}
+
+const ProgressTrack = ({ value, className }: ProgressTrackProps) => (
   <span data-slot="question-flow-track" aria-hidden className={cn('block h-1 bg-muted', className)}>
     <span
       className="block h-full origin-left bg-primary transition-transform duration-300 ease-out motion-reduce:transition-none rtl:origin-right"
@@ -104,8 +114,13 @@ const ProgressTrack = ({ value, className }: { value: number; className?: string
   </span>
 );
 
+interface ItemHeadingProps {
+  title: string;
+  description?: string;
+}
+
 // The styled title is sized for cards; a full-screen flow needs display type, so it goes on an inner span.
-const ItemHeading = ({ title, description }: { title: string; description?: string }) => (
+const ItemHeading = ({ title, description }: ItemHeadingProps) => (
   <>
     <QuestionnaireTitle>
       <span className="text-3xl font-semibold tracking-tight text-balance sm:text-4xl">{title}</span>
@@ -118,10 +133,12 @@ const ItemHeading = ({ title, description }: { title: string; description?: stri
   </>
 );
 
+type StepDirection = 'forward' | 'back';
+
 const Survey04 = () => {
   const [round, setRound] = React.useState(0);
   const [item, setItem] = React.useState<string>('name');
-  const [direction, setDirection] = React.useState<'forward' | 'back'>('forward');
+  const [direction, setDirection] = React.useState<StepDirection>('forward');
   const [name, setName] = React.useState('');
   const [team, setTeam] = React.useState('');
   const [answers, setAnswers] = React.useState<Answers | null>(null);
@@ -129,29 +146,28 @@ const Survey04 = () => {
   const solo = team === 'solo';
 
   // Working alone makes the seat count meaningless, so that item drops out of the path.
-  const items = React.useMemo(
-    () => [
-      { name: 'name', required: true },
-      { name: 'use', required: true, choices: toChoices(USE) },
-      { name: 'team', required: true, choices: toChoices(TEAM) },
-      { name: 'seats', required: true, disabled: solo, choices: toChoices(SEATS) },
-      { name: 'start', required: true, choices: toChoices(START) },
-    ],
-    [solo],
-  );
+  const items = [
+    { name: 'name', required: true },
+    { name: 'use', required: true, choices: toChoices(USE) },
+    { name: 'team', required: true, choices: toChoices(TEAM) },
+    { name: 'seats', required: true, disabled: solo, choices: toChoices(SEATS) },
+    { name: 'start', required: true, choices: toChoices(START) },
+  ];
 
-  const changeItem = (next: string) => {
-    setDirection(ORDER.indexOf(next as QuestionId) < ORDER.indexOf(item as QuestionId) ? 'back' : 'forward');
+  const handleChangeItem = (next: string) => {
+    if (isQuestionId(next))
+      setDirection(ORDER.indexOf(next) < ORDER.findIndex((id) => id === item) ? 'back' : 'forward');
     setItem(next);
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    // fromEntries types its keys as string; ORDER lists every question.
     setAnswers(Object.fromEntries(ORDER.map((id) => [id, String(data.get(id) ?? '')])) as Answers);
   };
 
-  const restart = () => {
+  const handleRestart = () => {
     setRound((current) => current + 1);
     setItem('name');
     setDirection('forward');
@@ -231,7 +247,7 @@ const Survey04 = () => {
                   </div>
                 ))}
               </dl>
-              <Button type="button" variant="outline" className="w-fit" onClick={restart}>
+              <Button type="button" variant="outline" className="w-fit" onClick={handleRestart}>
                 <RotateCcw aria-hidden />
                 Start over
               </Button>
@@ -245,7 +261,7 @@ const Survey04 = () => {
           item={item}
           items={items}
           shortcuts="letters"
-          onItemChange={changeItem}
+          onItemChange={handleChangeItem}
           onSubmit={handleSubmit}
         >
           <QuestionnaireProgress

@@ -8,8 +8,8 @@ import { DEFAULT_BASE, getExamples, type RegistryBase } from '@/registry/hirael/
 // Template-literal `import()`s compile to context modules over `examples/<slug>.tsx`, so an example following
 // that layout needs no entry here. Blocks and templates load from their own modules because Next preloads the
 // fonts of every chunk a page can reach, and one template import would add every template's fonts to the page.
-const loadExample = (base: RegistryBase, slug: string) =>
-  import(`./bases/${base}/examples/${slug}`) as Promise<DemoModule>;
+const loadExample = (base: RegistryBase, slug: string): Promise<DemoModule> =>
+  import(`./bases/${base}/examples/${slug}`);
 
 export interface RegistryExampleProps {
   name: string;

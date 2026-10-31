@@ -51,7 +51,7 @@ const Card = ({ image, rotate, onOpen }: CardProps) => {
       style={{ rotate: `${rotate}deg` }}
       className="group block w-full max-w-[320px] cursor-pointer"
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
+      {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
       <img
         src={image}
         alt="Exploration"
@@ -185,7 +185,7 @@ export const Explorations = () => {
                 <path d="M6 6l12 12M18 6 6 18" />
               </svg>
             </Button>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
             <img
               src={active}
               alt="Exploration"

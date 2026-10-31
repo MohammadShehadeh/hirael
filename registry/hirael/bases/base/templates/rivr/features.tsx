@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { Activity, ArrowUpRight, Layers, ShieldCheck } from 'lucide-react';
 
 import { fadeUp, PillButton } from './primitives';
+import { cn } from '@/lib/utils';
 
 const CARD_BASE =
   'group relative overflow-hidden rounded-[1.5rem] bg-card p-7 transition-shadow hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] md:rounded-[2rem]';
@@ -26,10 +27,10 @@ export const Features = () => {
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3 md:grid-rows-2 md:gap-5">
         <motion.div
           {...fadeUp(0.05)}
-          className={`${CARD_BASE} flex min-h-[28rem] flex-col justify-between md:row-span-2 md:p-9`}
+          className={cn(CARD_BASE, 'flex min-h-[28rem] flex-col justify-between md:row-span-2 md:p-9')}
         >
           <Layers className="pointer-events-none absolute -end-10 -bottom-10 size-72 text-foreground opacity-[0.02] transition-transform duration-500 group-hover:scale-110" />
-          <span className={`relative ${ICON_CHIP}`}>
+          <span className={cn('relative', ICON_CHIP)}>
             <Layers className="size-6" />
           </span>
           <div className="relative">
@@ -45,10 +46,10 @@ export const Features = () => {
 
         <motion.div
           {...fadeUp(0.1)}
-          className={`${CARD_BASE} flex min-h-[13rem] flex-col justify-between md:col-span-2 md:p-9`}
+          className={cn(CARD_BASE, 'flex min-h-[13rem] flex-col justify-between md:col-span-2 md:p-9')}
         >
           <Activity className="pointer-events-none absolute -end-6 -bottom-8 size-60 text-foreground opacity-[0.02] transition-transform duration-500 group-hover:scale-110" />
-          <span className={`relative ${ICON_CHIP}`}>
+          <span className={cn('relative', ICON_CHIP)}>
             <Activity className="size-6" />
           </span>
           <div className="relative">
@@ -60,7 +61,7 @@ export const Features = () => {
           </div>
         </motion.div>
 
-        <motion.div {...fadeUp(0.15)} className={`${CARD_BASE} flex flex-col justify-between`}>
+        <motion.div {...fadeUp(0.15)} className={cn(CARD_BASE, 'flex flex-col justify-between')}>
           <span className={ICON_CHIP}>
             <ShieldCheck className="size-6" />
           </span>
@@ -82,7 +83,7 @@ export const Features = () => {
         <motion.a
           href="#"
           {...fadeUp(0.2)}
-          className={`${CARD_BASE} flex flex-col items-center justify-center gap-5 text-center`}
+          className={cn(CARD_BASE, 'flex flex-col items-center justify-center gap-5 text-center')}
         >
           <span className="flex size-16 items-center justify-center rounded-full bg-secondary text-foreground transition-transform duration-300 group-hover:scale-110">
             <ArrowUpRight className="size-7 rtl:-scale-x-100" />

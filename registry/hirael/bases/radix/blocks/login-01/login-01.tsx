@@ -29,11 +29,11 @@ const BrandMark = ({ className }: BrandMarkProps) => {
   );
 };
 
-type Errors = Partial<{
-  email: string;
-  password: string;
-  form: string;
-}>;
+interface Errors {
+  email?: string;
+  password?: string;
+  form?: string;
+}
 
 type Pending = 'password' | 'passkey' | null;
 
@@ -52,7 +52,7 @@ const Login01 = () => {
     return next;
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const next = validate();
     setErrors(next);
@@ -64,7 +64,7 @@ const Login01 = () => {
     setErrors({ form: 'Incorrect email or password.' });
   };
 
-  const onPasskey = async () => {
+  const handlePasskey = async () => {
     setErrors({});
     setPending('passkey');
     await wait(1200);
@@ -93,7 +93,7 @@ const Login01 = () => {
 
         <Card data-slot="login-card">
           <CardContent>
-            <form data-slot="login-form" noValidate onSubmit={onSubmit}>
+            <form data-slot="login-form" noValidate onSubmit={handleSubmit}>
               <FieldGroup className="gap-5">
                 <Field data-invalid={Boolean(errors.email) || undefined}>
                   <FieldLabel htmlFor="login01-email">Email address</FieldLabel>
@@ -139,7 +139,7 @@ const Login01 = () => {
                   type="button"
                   variant="outline"
                   disabled={pending !== null}
-                  onClick={onPasskey}
+                  onClick={handlePasskey}
                   className="w-full"
                 >
                   {pending === 'passkey' ? <Spinner /> : <KeyRound />}

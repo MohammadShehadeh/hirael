@@ -19,8 +19,12 @@ export function generateStaticParams() {
   return UTILITY_KIND_ORDER.map((category) => ({ category }));
 }
 
+interface UtilityCategoryRouteParams {
+  category: string;
+}
+
 interface UtilityCategoryRouteProps {
-  params: Promise<{ category: string }>;
+  params: Promise<UtilityCategoryRouteParams>;
 }
 
 const isUtilityKind = (value: string): value is UtilityKind => UTILITY_KIND_ORDER.some((kind) => kind === value);

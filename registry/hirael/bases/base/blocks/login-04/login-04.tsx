@@ -74,12 +74,12 @@ const Login04 = () => {
     setError('Wrong password. Try again or reset it.');
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     void (step === 'email' ? onEmailSubmit() : onPasswordSubmit());
   };
 
-  const onPasskey = async () => {
+  const handlePasskey = async () => {
     setError(null);
     setPending('passkey');
     await wait(1200);
@@ -87,7 +87,7 @@ const Login04 = () => {
     setError('Passkey sign-in was cancelled.');
   };
 
-  const changeAccount = () => {
+  const handleChangeAccount = () => {
     setPassword('');
     setError(null);
     setStep('email');
@@ -100,7 +100,12 @@ const Login04 = () => {
     >
       <Card data-slot="login-card" className="w-full max-w-sm md:max-w-3xl">
         <CardContent>
-          <form data-slot="login-form" noValidate onSubmit={onSubmit} className="grid gap-8 md:grid-cols-2 md:gap-12">
+          <form
+            data-slot="login-form"
+            noValidate
+            onSubmit={handleSubmit}
+            className="grid gap-8 md:grid-cols-2 md:gap-12"
+          >
             <div data-slot="login-header" className="flex flex-col items-start gap-4">
               <BrandMark className="size-8 text-foreground" />
               {step === 'email' ? (
@@ -115,7 +120,7 @@ const Login04 = () => {
                     type="button"
                     variant="outline"
                     size="sm"
-                    onClick={changeAccount}
+                    onClick={handleChangeAccount}
                     aria-label={`${email}, use another account`}
                     className="max-w-full"
                   >
@@ -180,7 +185,7 @@ const Login04 = () => {
                     Create account
                   </Button>
                 ) : (
-                  <Button type="button" variant="ghost" disabled={pending !== null} onClick={onPasskey}>
+                  <Button type="button" variant="ghost" disabled={pending !== null} onClick={handlePasskey}>
                     {pending === 'passkey' ? <Spinner /> : <KeyRound />}
                     Use a passkey
                   </Button>

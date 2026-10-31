@@ -25,6 +25,9 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
+const FILTERS = ['All', 'Web', 'Brand', 'Editorial', 'Motion', 'Print'] as const;
+type Filter = (typeof FILTERS)[number];
+
 interface Tile {
   client: string;
   project: string;
@@ -35,8 +38,7 @@ interface Tile {
   src: string;
 }
 
-const FILTERS = ['All', 'Web', 'Brand', 'Editorial', 'Motion', 'Print'] as const;
-type Filter = (typeof FILTERS)[number];
+const isFilter = (value: unknown): value is Filter => FILTERS.some((option) => option === value);
 
 // Placeholder photos served from hirael.com. Swap them for your own assets, or
 // add the host to `images.remotePatterns` in next.config to keep them.
@@ -136,8 +138,8 @@ const ImageGallery01 = () => {
     caption: `${t.client}, ${t.project}, ${t.year}`,
   }));
 
-  const changeFilter = (next: string) => {
-    setFilter(next as Filter);
+  const handleChangeFilter = (next: string) => {
+    if (isFilter(next)) setFilter(next);
     setHasFiltered(true);
     setIndex(0);
   };
@@ -170,7 +172,7 @@ const ImageGallery01 = () => {
 
           <Tabs
             value={filter}
-            onValueChange={changeFilter}
+            onValueChange={handleChangeFilter}
             aria-label="Filter gallery by category"
             style={stagger(3, 70)}
             className={ENTER}
@@ -195,7 +197,7 @@ const ImageGallery01 = () => {
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              <Button variant="outline" size="sm" onClick={() => changeFilter('All')}>
+              <Button variant="outline" size="sm" onClick={() => handleChangeFilter('All')}>
                 Show all work
               </Button>
             </EmptyContent>

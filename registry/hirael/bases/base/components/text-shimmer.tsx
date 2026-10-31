@@ -51,6 +51,7 @@ const TextShimmer = ({ as: Comp = 'span', duration = 2, spread = 2, className, s
       <Comp
         data-slot="text-shimmer"
         className={cn('inline-block text-muted-foreground', className)}
+        // React's CSSProperties type has no custom properties.
         style={
           {
             '--shimmer-duration': `${duration}s`,

@@ -14,8 +14,13 @@ export function generateStaticParams() {
   }));
 }
 
+interface BlockRouteParams {
+  category: string;
+  block: string;
+}
+
 interface BlockOpenGraphImageProps {
-  params: Promise<{ category: string; block: string }>;
+  params: Promise<BlockRouteParams>;
 }
 
 export default async function BlockOpenGraphImage({ params }: BlockOpenGraphImageProps) {

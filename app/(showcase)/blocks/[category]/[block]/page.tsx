@@ -18,8 +18,13 @@ export function generateStaticParams() {
   }));
 }
 
+interface BlockRouteParams {
+  category: string;
+  block: string;
+}
+
 interface BlockRouteProps {
-  params: Promise<{ category: string; block: string }>;
+  params: Promise<BlockRouteParams>;
 }
 
 export async function generateMetadata({ params }: BlockRouteProps): Promise<Metadata> {

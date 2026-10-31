@@ -31,8 +31,12 @@ export const exampleEmbedParams = () =>
 
 export const nestedEmbedBases = (): RegistryBase[] => REGISTRY_BASES.filter((base) => base !== DEFAULT_BASE);
 
+interface BlockEmbedParams {
+  block: string;
+}
+
 export interface BlockEmbedMetadataProps {
-  params: Promise<{ block: string }>;
+  params: Promise<BlockEmbedParams>;
 }
 
 export const blockEmbedMetadata = async ({ params }: BlockEmbedMetadataProps): Promise<Metadata> => {
@@ -41,8 +45,12 @@ export const blockEmbedMetadata = async ({ params }: BlockEmbedMetadataProps): P
   return embedMetadata(`${REGISTRY_BY_NAME[block]?.title ?? 'Block'} preview`);
 };
 
+interface TemplateEmbedParams {
+  template: string;
+}
+
 export interface TemplateEmbedMetadataProps {
-  params: Promise<{ template: string }>;
+  params: Promise<TemplateEmbedParams>;
 }
 
 export const templateEmbedMetadata = async ({ params }: TemplateEmbedMetadataProps): Promise<Metadata> => {
@@ -51,8 +59,13 @@ export const templateEmbedMetadata = async ({ params }: TemplateEmbedMetadataPro
   return embedMetadata(`${REGISTRY_BY_NAME[template]?.title ?? 'Template'} preview`);
 };
 
+interface ExampleEmbedParams {
+  component: string;
+  example: string;
+}
+
 export interface ExampleEmbedMetadataProps {
-  params: Promise<{ component: string; example: string }>;
+  params: Promise<ExampleEmbedParams>;
 }
 
 export const exampleEmbedMetadata = async ({ params }: ExampleEmbedMetadataProps): Promise<Metadata> => {

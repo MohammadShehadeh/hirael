@@ -38,7 +38,13 @@ export const SITE = {
   },
 } as const;
 
-export const NAV_LINKS: { href: string; label: string; isExternal?: boolean }[] = [
+interface NavLink {
+  href: string;
+  label: string;
+  isExternal?: boolean;
+}
+
+export const NAV_LINKS: NavLink[] = [
   { href: '/components', label: 'Components' },
   { href: '/blocks', label: 'Blocks' },
   { href: '/templates', label: 'Templates' },

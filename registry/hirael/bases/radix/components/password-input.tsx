@@ -89,12 +89,9 @@ const PasswordInput = ({
 
   const [visible, setVisible] = React.useState(false);
 
-  const strength = React.useMemo(() => scorer(value), [scorer, value]);
+  const strength = scorer(value);
 
-  const ctx = React.useMemo<Ctx>(
-    () => ({ id: fieldId, value, setValue, visible, setVisible, disabled, strength }),
-    [fieldId, value, setValue, visible, disabled, strength],
-  );
+  const ctx: Ctx = { id: fieldId, value, setValue, visible, setVisible, disabled, strength };
 
   return (
     <PasswordContext.Provider value={ctx}>

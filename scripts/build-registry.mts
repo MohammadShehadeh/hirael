@@ -125,7 +125,7 @@ const toRegistryItem = (base: RegistryBase, entry: RegistryEntry) => {
     description: entry.description,
     categories: deriveCategories(entry),
     dependencies: basePackages(base, entry.dependencies ?? [], importsBaseUi(base, source)).sort(),
-    registryDependencies: [...(entry.registryDependencies ?? [])].sort().map((dep) => resolveDependency(base, dep)),
+    registryDependencies: (entry.registryDependencies ?? []).toSorted().map((dep) => resolveDependency(base, dep)),
     ...(cssVars ? { cssVars } : {}),
     ...(isShowcased(entry) && entry.docs ? { docs: entry.docs } : {}),
     ...(files.length ? { files } : {}),

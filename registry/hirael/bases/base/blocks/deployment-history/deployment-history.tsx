@@ -9,7 +9,14 @@ import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 
 export type DeploymentState = 'success' | 'failed' | 'building' | 'rolled-back' | 'queued';
 
-const stateMeta: Record<DeploymentState, { icon: React.ElementType; text: string; ring: string; label: string }> = {
+interface StateMeta {
+  icon: React.ElementType;
+  text: string;
+  ring: string;
+  label: string;
+}
+
+const stateMeta: Record<DeploymentState, StateMeta> = {
   success: {
     icon: CheckCircle2,
     text: 'text-success',
@@ -133,7 +140,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-type Deployment = {
+interface Deployment {
   id: string;
   state: DeploymentState;
   version: string;
@@ -142,7 +149,7 @@ type Deployment = {
   note: string;
   when: string;
   duration?: string;
-};
+}
 
 const DEPLOYMENTS: Deployment[] = [
   {

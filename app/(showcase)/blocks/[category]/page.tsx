@@ -13,8 +13,12 @@ export function generateStaticParams() {
   return CATEGORY_REGISTRY.map((c) => ({ category: c.slug }));
 }
 
+interface BlockCategoryRouteParams {
+  category: string;
+}
+
 interface BlockCategoryRouteProps {
-  params: Promise<{ category: string }>;
+  params: Promise<BlockCategoryRouteParams>;
 }
 
 export async function generateMetadata({ params }: BlockCategoryRouteProps): Promise<Metadata> {

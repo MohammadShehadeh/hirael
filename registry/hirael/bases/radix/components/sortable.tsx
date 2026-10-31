@@ -113,7 +113,7 @@ const Sortable = ({
     setOrder(next);
   };
 
-  const ctx = React.useMemo(() => ({ order }), [order]);
+  const ctx = { order };
 
   return (
     <DndContext id={id} sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
@@ -159,17 +159,14 @@ const SortableItem = ({ value, disabled = false, className, style, ...props }: S
   });
   const index = ctx.order.indexOf(value);
 
-  const itemCtx = React.useMemo<SortableItemCtx>(
-    () => ({
-      attributes,
-      listeners,
-      setActivatorNodeRef,
-      setHasHandle,
-      dragging: isDragging,
-      disabled,
-    }),
-    [attributes, listeners, setActivatorNodeRef, isDragging, disabled],
-  );
+  const itemCtx: SortableItemCtx = {
+    attributes,
+    listeners,
+    setActivatorNodeRef,
+    setHasHandle,
+    dragging: isDragging,
+    disabled,
+  };
 
   return (
     <SortableItemContext.Provider value={itemCtx}>

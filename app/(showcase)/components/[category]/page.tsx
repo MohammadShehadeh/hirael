@@ -16,15 +16,19 @@ type ComponentCategory = (typeof COMPONENT_CATEGORY_ORDER)[number];
 export const dynamicParams = false;
 
 function isComponentCategory(value: string): value is ComponentCategory {
-  return (COMPONENT_CATEGORY_ORDER as readonly string[]).includes(value);
+  return COMPONENT_CATEGORY_ORDER.some((category) => category === value);
 }
 
 export function generateStaticParams() {
   return COMPONENT_CATEGORY_ORDER.map((category) => ({ category }));
 }
 
+interface ComponentCategoryRouteParams {
+  category: string;
+}
+
 interface ComponentCategoryRouteProps {
-  params: Promise<{ category: string }>;
+  params: Promise<ComponentCategoryRouteParams>;
 }
 
 export async function generateMetadata({ params }: ComponentCategoryRouteProps): Promise<Metadata> {

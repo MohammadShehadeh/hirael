@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
+import { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
@@ -35,9 +35,13 @@ const TiltCard = ({
   const rotateY = useSpring(0, SPRING);
   const glareX = useMotionValue(50);
   const glareY = useMotionValue(50);
-  const glareBackground = useMotionTemplate`radial-gradient(circle at ${glareX}% ${glareY}%, color-mix(in oklch, var(--foreground) 16%, transparent), transparent 60%)`;
+  const glareBackground = useTransform(
+    [glareX, glareY],
+    ([gx, gy]) =>
+      `radial-gradient(circle at ${gx}% ${gy}%, color-mix(in oklch, var(--foreground) 16%, transparent), transparent 60%)`,
+  );
 
-  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     onPointerMoveProp?.(event);
     if (event.defaultPrevented || reduced || event.pointerType !== 'mouse') return;
     const rect = event.currentTarget.getBoundingClientRect();
@@ -49,7 +53,7 @@ const TiltCard = ({
     glareY.set(py * 100);
   };
 
-  const onPointerLeave = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerLeave = (event: React.PointerEvent<HTMLDivElement>) => {
     onPointerLeaveProp?.(event);
     rotateX.set(0);
     rotateY.set(0);
@@ -58,8 +62,8 @@ const TiltCard = ({
   return (
     <div
       data-slot="tilt-card"
-      onPointerMove={onPointerMove}
-      onPointerLeave={onPointerLeave}
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
       className={cn('group', className)}
       style={{ perspective: `${perspective}px`, ...style }}
       {...props}

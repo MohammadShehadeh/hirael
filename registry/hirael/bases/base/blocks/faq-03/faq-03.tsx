@@ -31,7 +31,12 @@ const stagger = (index: number, step = 60): React.CSSProperties => ({ animationD
 
 type Category = 'getting-started' | 'billing' | 'licensing';
 
-const CATEGORIES: { value: Category | 'all'; label: string }[] = [
+interface CategoryOption {
+  value: Category | 'all';
+  label: string;
+}
+
+const CATEGORIES: CategoryOption[] = [
   { value: 'all', label: 'All' },
   { value: 'getting-started', label: 'Getting started' },
   { value: 'billing', label: 'Billing' },
@@ -44,7 +49,13 @@ const CATEGORY_LABELS: Record<Category, string> = {
   licensing: 'Licensing',
 };
 
-const FAQS: readonly { q: string; a: string; category: Category }[] = [
+interface Faq {
+  q: string;
+  a: string;
+  category: Category;
+}
+
+const FAQS: readonly Faq[] = [
   {
     q: 'How do I install my first block?',
     a: "Run the shadcn CLI with the block's registry URL; the source lands in components/blocks/ and is yours to edit. No package to add, nothing to configure.",
@@ -99,7 +110,7 @@ const Faq03 = () => {
     return f.q.toLowerCase().includes(normalized) || f.a.toLowerCase().includes(normalized);
   });
 
-  const clearFilters = () => {
+  const handleClearFilters = () => {
     setQuery('');
     setCategory('all');
   };
@@ -126,7 +137,7 @@ const Faq03 = () => {
         <div data-slot="faq-filters" style={stagger(3, 70)} className={cn(ENTER, 'flex flex-col items-center gap-4')}>
           <InputGroup className="w-full max-w-md">
             <InputGroupAddon>
-              <Search className="size-4" />
+              <Search />
             </InputGroupAddon>
             <InputGroupInput
               type="search"
@@ -138,7 +149,10 @@ const Faq03 = () => {
           </InputGroup>
           <Tabs
             value={category}
-            onValueChange={(v) => setCategory(v as Category | 'all')}
+            onValueChange={(v) => {
+              const option = CATEGORIES.find((item) => item.value === v);
+              if (option) setCategory(option.value);
+            }}
             className="w-full items-center"
           >
             <TabsList className="max-w-full flex-wrap group-data-[orientation=horizontal]/tabs:h-auto">
@@ -178,12 +192,12 @@ const Faq03 = () => {
               <EmptyTitle>No matching questions</EmptyTitle>
               <EmptyDescription>
                 Nothing matches &ldquo;{query.trim()}&rdquo;
-                {category !== 'all' ? ` in ${CATEGORY_LABELS[category as Category]}` : ''}. Try different keywords or
-                clear the filters.
+                {category !== 'all' ? ` in ${CATEGORY_LABELS[category]}` : ''}. Try different keywords or clear the
+                filters.
               </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
-              <Button variant="outline" size="sm" onClick={clearFilters}>
+              <Button variant="outline" size="sm" onClick={handleClearFilters}>
                 Clear filters
               </Button>
             </EmptyContent>

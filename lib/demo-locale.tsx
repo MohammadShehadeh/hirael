@@ -19,10 +19,12 @@ export const useDemoLocale = (): DemoLocale => {
   return React.useContext(DemoLocaleContext);
 };
 
+export type Localized<T> = Record<DemoLocale, T>;
+
 export const useT = () => {
   const locale = useDemoLocale();
 
-  return function t<T>(pair: { en: T; ar: T }): T {
+  return function t<T>(pair: Localized<T>): T {
     return pair[locale];
   };
 };

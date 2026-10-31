@@ -17,7 +17,11 @@ const SWAP =
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
 type Cell = boolean | string;
-type PlanKey = 'starter' | 'growth' | 'business';
+const PLAN_KEY_VALUES = ['starter', 'growth', 'business'] as const;
+
+type PlanKey = (typeof PLAN_KEY_VALUES)[number];
+
+const isPlanKey = (value: unknown): value is PlanKey => PLAN_KEY_VALUES.some((option) => option === value);
 
 interface Plan {
   key: PlanKey;
@@ -39,7 +43,12 @@ interface Row {
   cells: Record<PlanKey, Cell>;
 }
 
-const GROUPS: readonly { label: string; rows: readonly Row[] }[] = [
+interface RowGroup {
+  label: string;
+  rows: readonly Row[];
+}
+
+const GROUPS: readonly RowGroup[] = [
   {
     label: 'Monitoring',
     rows: [
@@ -121,7 +130,9 @@ const Pricing02 = () => {
           data-slot="pricing-plan-picker"
           variant="outline"
           value={[selected]}
-          onValueChange={([next]) => next && setSelected(next as PlanKey)}
+          onValueChange={([next]) => {
+            if (isPlanKey(next)) setSelected(next);
+          }}
           aria-label="Plan to show"
           style={stagger(3)}
           className={cn(ENTER, 'mt-10 w-full md:hidden')}

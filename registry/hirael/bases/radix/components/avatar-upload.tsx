@@ -125,26 +125,20 @@ const AvatarUpload = ({
     [],
   );
 
-  const setValue = React.useCallback(
-    (next: string | null) => {
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(next);
-    },
-    [valueProp, onValueChange],
-  );
+  const setValue = (next: string | null) => {
+    if (valueProp === undefined) setInternal(next);
+    onValueChange?.(next);
+  };
 
-  const fail = React.useCallback(
-    (err: AvatarUploadErrorInfo) => {
-      setError(err);
-      onError?.(err);
-    },
-    [onError],
-  );
+  const fail = (err: AvatarUploadErrorInfo) => {
+    setError(err);
+    onError?.(err);
+  };
 
   const readFile = (file: File) => {
     setError(null);
     const readId = ++readIdRef.current;
-    readAsDataUrl(file)
+    void readAsDataUrl(file)
       .then((url) => {
         if (readId !== readIdRef.current) return;
         if (crop) setPending(url);
@@ -174,58 +168,40 @@ const AvatarUpload = ({
     },
   });
 
-  const registerCropper = React.useCallback((ref: ImageCropperRef | null) => {
+  const registerCropper = (ref: ImageCropperRef | null) => {
     cropperRef.current = ref;
-  }, []);
+  };
 
-  const confirmCrop = React.useCallback(() => {
+  const confirmCrop = () => {
     const url = cropperRef.current?.getCroppedDataUrl({ size: outputSize });
     setValue(url ?? pending);
     setPending(null);
-  }, [outputSize, pending, setValue]);
+  };
 
-  const cancelCrop = React.useCallback(() => setPending(null), []);
+  const cancelCrop = () => setPending(null);
 
-  const remove = React.useCallback(() => {
+  const remove = () => {
     if (disabled) return;
     setError(null);
     setValue(null);
-  }, [disabled, setValue]);
+  };
 
-  const ctx = React.useMemo<AvatarUploadContextValue>(
-    () => ({
-      id: rootId,
-      value,
-      shape,
-      size,
-      disabled,
-      dragging: isDragActive,
-      getInputProps,
-      error,
-      pending,
-      registerCropper,
-      openPicker: open,
-      confirmCrop,
-      cancelCrop,
-      remove,
-    }),
-    [
-      rootId,
-      value,
-      shape,
-      size,
-      disabled,
-      isDragActive,
-      getInputProps,
-      error,
-      pending,
-      registerCropper,
-      open,
-      confirmCrop,
-      cancelCrop,
-      remove,
-    ],
-  );
+  const ctx: AvatarUploadContextValue = {
+    id: rootId,
+    value,
+    shape,
+    size,
+    disabled,
+    dragging: isDragActive,
+    getInputProps,
+    error,
+    pending,
+    registerCropper,
+    openPicker: open,
+    confirmCrop,
+    cancelCrop,
+    remove,
+  };
 
   return (
     <AvatarUploadContext.Provider value={ctx}>
@@ -275,7 +251,7 @@ const AvatarUploadPreview = ({
         )}
       >
         {ctx.value ? (
-          // eslint-disable-next-line @next/next/no-img-element
+          // eslint-disable-next-line @next/next/no-img-element -- the value is a data URL or any remote image
           <img
             src={ctx.value}
             alt={alt}

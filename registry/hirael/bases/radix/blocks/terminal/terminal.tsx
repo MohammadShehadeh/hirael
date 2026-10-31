@@ -48,11 +48,11 @@ const TerminalBody = ({ follow = true, className, children, ...props }: Terminal
   const ref = React.useRef<HTMLDivElement>(null);
   const pinnedRef = React.useRef(true);
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = ref.current;
     if (!el) return;
     pinnedRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
-  }, []);
+  };
 
   React.useLayoutEffect(() => {
     const el = ref.current;
@@ -169,7 +169,7 @@ const TerminalBlock = () => {
   ]);
   const nextId = React.useRef(1);
 
-  function run(command: string) {
+  function handleRun(command: string) {
     const next: Omit<TerminalEntry, 'id'>[] = [{ kind: 'command', text: command }];
     const [name, ...args] = command.split(/\s+/);
 
@@ -229,13 +229,13 @@ const TerminalBlock = () => {
               return (
                 <TerminalLine
                   key={entry.id}
-                  className={entry.kind === 'error' ? 'text-destructive' : 'text-muted-foreground'}
+                  className={cn(entry.kind === 'error' ? 'text-destructive' : 'text-muted-foreground')}
                 >
                   {entry.text}
                 </TerminalLine>
               );
             })}
-            <TerminalInput user={TERMINAL_USER} onSubmit={run} aria-label="Terminal command" />
+            <TerminalInput user={TERMINAL_USER} onSubmit={handleRun} aria-label="Terminal command" />
           </TerminalBody>
         </Terminal>
       </div>

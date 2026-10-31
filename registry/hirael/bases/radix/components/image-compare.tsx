@@ -65,14 +65,11 @@ const ImageCompare = ({
 
   const position = clamp(positionProp ?? uncontrolled);
 
-  const setPosition = React.useCallback(
-    (next: number) => {
-      const value = clamp(next);
-      if (positionProp === undefined) setUncontrolled(value);
-      onPositionChange?.(value);
-    },
-    [positionProp, onPositionChange],
-  );
+  const setPosition = (next: number) => {
+    const value = clamp(next);
+    if (positionProp === undefined) setUncontrolled(value);
+    onPositionChange?.(value);
+  };
 
   React.useLayoutEffect(() => {
     const node = containerRef.current;
@@ -91,23 +88,20 @@ const ImageCompare = ({
     return () => observer.disconnect();
   }, []);
 
-  const positionFromPointer = React.useCallback(
-    (event: React.PointerEvent) => {
-      const node = containerRef.current;
-      if (!node) return null;
-      const rect = node.getBoundingClientRect();
-      if (orientation === 'vertical') {
-        if (rect.height === 0) return null;
+  const positionFromPointer = (event: React.PointerEvent) => {
+    const node = containerRef.current;
+    if (!node) return null;
+    const rect = node.getBoundingClientRect();
+    if (orientation === 'vertical') {
+      if (rect.height === 0) return null;
 
-        return clamp(((event.clientY - rect.top) / rect.height) * 100);
-      }
-      if (rect.width === 0) return null;
-      const raw = ((event.clientX - rect.left) / rect.width) * 100;
+      return clamp(((event.clientY - rect.top) / rect.height) * 100);
+    }
+    if (rect.width === 0) return null;
+    const raw = ((event.clientX - rect.left) / rect.width) * 100;
 
-      return clamp(rtl ? 100 - raw : raw);
-    },
-    [orientation, rtl],
-  );
+    return clamp(rtl ? 100 - raw : raw);
+  };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     onPointerMove?.(event);
@@ -116,21 +110,18 @@ const ImageCompare = ({
     if (next !== null) setPosition(next);
   };
 
-  const ctx = React.useMemo<ImageCompareContextValue>(
-    () => ({
-      position,
-      setPosition,
-      orientation,
-      disabled,
-      dragging,
-      setDragging,
-      rtl,
-      positionFromPointer,
-    }),
-    [position, setPosition, orientation, disabled, dragging, rtl, positionFromPointer],
-  );
+  const ctx: ImageCompareContextValue = {
+    position,
+    setPosition,
+    orientation,
+    disabled,
+    dragging,
+    setDragging,
+    rtl,
+    positionFromPointer,
+  };
 
-  const composedRef = React.useMemo(() => composeRefs(containerRef, ref), [ref]);
+  const composedRef = composeRefs(containerRef, ref);
 
   return (
     <ImageCompareContext.Provider value={ctx}>
@@ -162,15 +153,16 @@ const ImageCompareBefore = ({ className, children, ...props }: ImageCompareBefor
 
 export type ImageCompareAfterProps = React.ComponentProps<'div'>;
 
+const clipPathFor = (position: number, orientation: ImageCompareOrientation, rtl: boolean) => {
+  if (orientation === 'vertical') return `inset(${position}% 0 0 0)`;
+
+  return rtl ? `inset(0 ${position}% 0 0)` : `inset(0 0 0 ${position}%)`;
+};
+
 const ImageCompareAfter = ({ className, style, children, ...props }: ImageCompareAfterProps) => {
   const { position, orientation, dragging, rtl } = useImageCompare();
 
-  const clipPath =
-    orientation === 'vertical'
-      ? `inset(${position}% 0 0 0)`
-      : rtl
-        ? `inset(0 ${position}% 0 0)`
-        : `inset(0 0 0 ${position}%)`;
+  const clipPath = clipPathFor(position, orientation, rtl);
 
   return (
     <div
@@ -232,7 +224,7 @@ const ImageCompareHandle = ({
     if (next !== null) setPosition(next);
   };
 
-  const endDrag = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handleEndDrag = (event: React.PointerEvent<HTMLDivElement>) => {
     if (event.type === 'pointercancel') onPointerCancel?.(event);
     else onPointerUp?.(event);
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
@@ -246,16 +238,15 @@ const ImageCompareHandle = ({
     if (event.defaultPrevented || disabled) return;
     const step = event.shiftKey ? 10 : 1;
     // Up raises the announced value; vertically that value is measured from the bottom.
-    const next = (
-      {
-        ArrowRight: position + (rtl ? -step : step),
-        ArrowLeft: position + (rtl ? step : -step),
-        ArrowUp: position + (vertical ? -step : step),
-        ArrowDown: position + (vertical ? step : -step),
-        Home: vertical ? 100 : 0,
-        End: vertical ? 0 : 100,
-      } as Record<string, number>
-    )[event.key];
+    const nextByKey: Partial<Record<string, number>> = {
+      ArrowRight: position + (rtl ? -step : step),
+      ArrowLeft: position + (rtl ? step : -step),
+      ArrowUp: position + (vertical ? -step : step),
+      ArrowDown: position + (vertical ? step : -step),
+      Home: vertical ? 100 : 0,
+      End: vertical ? 0 : 100,
+    };
+    const next = nextByKey[event.key];
     if (next === undefined) return;
     event.preventDefault();
     setPosition(next);
@@ -279,8 +270,8 @@ const ImageCompareHandle = ({
       tabIndex={disabled ? -1 : 0}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
+      onPointerUp={handleEndDrag}
+      onPointerCancel={handleEndDrag}
       onKeyDown={handleKeyDown}
       style={{
         ...style,

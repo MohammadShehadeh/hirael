@@ -154,8 +154,17 @@ const DAY = 86_400_000;
 
 type DocType = 'doc' | 'guide' | 'api' | 'changelog';
 type Area = 'auth' | 'billing' | 'webhooks' | 'storage' | 'cli';
-type UpdatedRange = 'any' | 'week' | 'month';
-type Sort = 'relevance' | 'newest';
+const UPDATED_RANGE_VALUES = ['any', 'week', 'month'] as const;
+
+type UpdatedRange = (typeof UPDATED_RANGE_VALUES)[number];
+
+const isUpdatedRange = (value: unknown): value is UpdatedRange =>
+  UPDATED_RANGE_VALUES.some((option) => option === value);
+const SORT_VALUES = ['relevance', 'newest'] as const;
+
+type Sort = (typeof SORT_VALUES)[number];
+
+const isSort = (value: unknown): value is Sort => SORT_VALUES.some((option) => option === value);
 
 interface DocRecord {
   id: string;
@@ -167,14 +176,24 @@ interface DocRecord {
   updated: string;
 }
 
-const TYPES: readonly { value: DocType; label: string }[] = [
+interface DocTypeOption {
+  value: DocType;
+  label: string;
+}
+
+const TYPES: readonly DocTypeOption[] = [
   { value: 'doc', label: 'Doc' },
   { value: 'guide', label: 'Guide' },
   { value: 'api', label: 'API reference' },
   { value: 'changelog', label: 'Changelog' },
 ];
 
-const AREAS: readonly { value: Area; label: string }[] = [
+interface AreaOption {
+  value: Area;
+  label: string;
+}
+
+const AREAS: readonly AreaOption[] = [
   { value: 'auth', label: 'Authentication' },
   { value: 'billing', label: 'Billing' },
   { value: 'webhooks', label: 'Webhooks' },
@@ -182,12 +201,19 @@ const AREAS: readonly { value: Area; label: string }[] = [
   { value: 'cli', label: 'CLI' },
 ];
 
-const RANGES: readonly { value: UpdatedRange; label: string; days: number }[] = [
+interface UpdatedRangeOption {
+  value: UpdatedRange;
+  label: string;
+  days: number;
+}
+
+const RANGES: readonly UpdatedRangeOption[] = [
   { value: 'any', label: 'Any time', days: Infinity },
   { value: 'week', label: 'Past week', days: 7 },
   { value: 'month', label: 'Past month', days: 30 },
 ];
 
+// fromEntries types its keys as string; TYPES and AREAS list every value.
 const TYPE_LABEL = Object.fromEntries(TYPES.map((type) => [type.value, type.label])) as Record<DocType, string>;
 const AREA_LABEL = Object.fromEntries(AREAS.map((area) => [area.value, area.label])) as Record<Area, string>;
 
@@ -421,13 +447,15 @@ const RECORDS: readonly DocRecord[] = [
 
 const daysAgo = (date: string) => Math.round((TODAY - Date.parse(date)) / DAY);
 
+const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
 const formatUpdated = (date: string) => {
   const days = daysAgo(date);
   if (days <= 0) return 'today';
   if (days === 1) return 'yesterday';
   if (days < 7) return `${days} days ago`;
 
-  return new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(date));
+  return shortDate.format(new Date(date));
 };
 
 // Every term must appear somewhere; title hits outrank snippet hits.
@@ -525,7 +553,9 @@ const FacetPanel = ({ matches, filters, onToggleType, onToggleArea, onUpdatedCha
         <SearchFacetLegend>Updated</SearchFacetLegend>
         <RadioGroup
           value={filters.updated}
-          onValueChange={(value) => onUpdatedChange(value as UpdatedRange)}
+          onValueChange={(value) => {
+            if (isUpdatedRange(value)) onUpdatedChange(value);
+          }}
           aria-label="Updated"
         >
           <div className="flex flex-col gap-1">
@@ -573,7 +603,7 @@ const Search01 = () => {
   const toggleType = (value: DocType) => setFilters((current) => ({ ...current, types: toggle(current.types, value) }));
   const toggleArea = (value: Area) => setFilters((current) => ({ ...current, areas: toggle(current.areas, value) }));
   const changeUpdated = (value: UpdatedRange) => setFilters((current) => ({ ...current, updated: value }));
-  const clearAll = () => setFilters(NO_FILTERS);
+  const handleClearAll = () => setFilters(NO_FILTERS);
 
   const facetProps: FacetPanelProps = {
     matches,
@@ -681,7 +711,7 @@ const Search01 = () => {
                   size="sm"
                   value={[sort]}
                   onValueChange={([next]) => {
-                    if (next) setSort(next as Sort);
+                    if (isSort(next)) setSort(next);
                   }}
                   aria-label="Sort results"
                   data-slot="faceted-search-sort"
@@ -717,7 +747,7 @@ const Search01 = () => {
                     {updatedLabel}
                   </SearchFilterChip>
                 ) : null}
-                <Button type="button" variant="ghost" size="xs" onClick={clearAll}>
+                <Button type="button" variant="ghost" size="xs" onClick={handleClearAll}>
                   Clear all
                 </Button>
               </div>
@@ -777,7 +807,7 @@ const Search01 = () => {
                     size="sm"
                     onClick={() => {
                       setQuery('');
-                      clearAll();
+                      handleClearAll();
                     }}
                   >
                     Clear search and filters

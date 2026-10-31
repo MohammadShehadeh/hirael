@@ -17,6 +17,8 @@ const SIGNUPS = [5, 9, 7, 12, 8, 14, 11, 17, 13, 19, 22, 18];
 const ERRORS = [0.4, 0.3, 0.5, 0.9, 1.4, 1.1, 0.8, 0.6, 0.5, 0.7, 0.4, 0.3];
 const REVENUE = [4200, 4380, 4100, 4650, 4720, 4390, 5010, 5240, 4980, 5320, 5410, 5670];
 
+const count = new Intl.NumberFormat();
+
 const SparklineDemo = () => {
   const t = useT();
 
@@ -127,7 +129,7 @@ const SparklineDemo = () => {
             <SparklineArea fillOpacity={0.1} />
             <SparklineLine strokeWidth={2} />
             <SparklineDot r={3} />
-            <SparklineTooltip format={(v) => `$${v.toLocaleString()}`} />
+            <SparklineTooltip format={(v) => `$${count.format(v)}`} />
           </Sparkline>
         </div>
       </div>

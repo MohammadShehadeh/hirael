@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useT, type Localized } from '@/lib/demo-locale';
 import {
   CalendarHeatmap,
   CalendarHeatmapLegend,
@@ -27,16 +27,18 @@ const generateActivity = (seed: number, days: number): CalendarHeatmapDatum[] =>
   });
 };
 
-const customScale = (level: number) => {
-  const scale = [
-    'bg-muted',
-    'bg-emerald-200 dark:bg-emerald-900',
-    'bg-emerald-400 dark:bg-emerald-700',
-    'bg-emerald-500 dark:bg-emerald-500',
-    'bg-emerald-700 dark:bg-emerald-300',
-  ];
+const CUSTOM_SCALE = ['bg-muted', 'bg-chart-2/25', 'bg-chart-2/50', 'bg-chart-2/75', 'bg-chart-2'];
 
-  return scale[Math.min(level, scale.length - 1)];
+const customScale = (level: number) => CUSTOM_SCALE[Math.min(level, CUSTOM_SCALE.length - 1)];
+
+const shortDate: Localized<Intl.DateTimeFormat> = {
+  en: new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+  ar: new Intl.DateTimeFormat('ar', { month: 'short', day: 'numeric', year: 'numeric' }),
+};
+
+const mediumDate: Localized<Intl.DateTimeFormat> = {
+  en: new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }),
+  ar: new Intl.DateTimeFormat('ar', { dateStyle: 'medium' }),
 };
 
 const CalendarHeatmapDemo = () => {
@@ -50,11 +52,7 @@ const CalendarHeatmapDemo = () => {
   const moreLabel = t({ en: 'More', ar: 'أكثر' });
 
   const formatTooltip = (date: Date, value: number) => {
-    const formatted = new Intl.DateTimeFormat(locale, {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(date);
+    const formatted = t(shortDate).format(date);
 
     return t({
       en: `${value} contribution${value === 1 ? '' : 's'} on ${formatted}`,
@@ -94,9 +92,7 @@ const CalendarHeatmapDemo = () => {
             locale={locale}
             tooltipFormatter={formatTooltip}
             onSelectDay={(date, value) => {
-              const formatted = new Intl.DateTimeFormat(locale, {
-                dateStyle: 'medium',
-              }).format(date);
+              const formatted = t(mediumDate).format(date);
               setSelected(
                 t({
                   en: `${value} commits on ${formatted}`,

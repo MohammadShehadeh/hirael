@@ -33,6 +33,7 @@ const useCallbackRef = <T extends (...args: never[]) => unknown>(callback: T | u
     callbackRef.current = callback;
   });
 
+  // A wrapper can't be typed as T's exact signature generically; it forwards every argument unchanged.
   return React.useMemo(() => ((...args) => callbackRef.current?.(...args)) as T, []);
 };
 
@@ -149,12 +150,6 @@ const getColumnId = <TData extends RowData>(column: ColumnDef<DataTableFeatures,
   return typeof column.header === 'string' ? column.header : '';
 };
 
-const serializeFilterValue = (value: unknown): string => {
-  if (value == null) return '';
-
-  return Array.isArray(value) ? value.map(String).join(ARRAY_SEPARATOR) : String(value);
-};
-
 const toQueryValue = (value: unknown): string | string[] | null => {
   if (value == null || value === '') return null;
   if (Array.isArray(value)) {
@@ -166,6 +161,17 @@ const toQueryValue = (value: unknown): string | string[] | null => {
   return String(value);
 };
 
+const PAGE_KEY = 'page';
+const PER_PAGE_KEY = 'perPage';
+const SORT_KEY = 'sort';
+const ARRAY_SEPARATOR = ',';
+
+const serializeFilterValue = (value: unknown): string => {
+  if (value == null) return '';
+
+  return Array.isArray(value) ? value.map(String).join(ARRAY_SEPARATOR) : String(value);
+};
+
 const areFiltersEqual = (a: ColumnFiltersState, b: ColumnFiltersState): boolean => {
   if (a.length !== b.length) return false;
   const values = new Map(a.map((f) => [f.id, serializeFilterValue(f.value)]));
@@ -173,10 +179,6 @@ const areFiltersEqual = (a: ColumnFiltersState, b: ColumnFiltersState): boolean 
   return b.every((f) => values.has(f.id) && values.get(f.id) === serializeFilterValue(f.value));
 };
 
-const PAGE_KEY = 'page';
-const PER_PAGE_KEY = 'perPage';
-const SORT_KEY = 'sort';
-const ARRAY_SEPARATOR = ',';
 const DEBOUNCE_MS = 300;
 const THROTTLE_MS = 50;
 
@@ -313,9 +315,9 @@ export const useDataTable = <TData extends RowData>(props: UseDataTableProps<TDa
     (updaterOrValue: Updater<SortingState>) => {
       if (typeof updaterOrValue === 'function') {
         const newSorting = updaterOrValue(sorting);
-        setSorting(newSorting as ExtendedColumnSort<TData>[]);
+        void setSorting(newSorting);
       } else {
-        setSorting(updaterOrValue as ExtendedColumnSort<TData>[]);
+        void setSorting(updaterOrValue);
       }
     },
     [sorting, setSorting],

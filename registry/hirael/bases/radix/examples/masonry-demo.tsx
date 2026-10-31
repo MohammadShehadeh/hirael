@@ -2,6 +2,7 @@
 
 import { useT } from '@/lib/demo-locale';
 import { Masonry, MasonryItem } from '@/registry/hirael/bases/radix/components/masonry';
+import { cn } from '@/lib/utils';
 
 const aspects = ['aspect-square', 'aspect-[3/4]', 'aspect-video', 'aspect-[4/5]', 'aspect-[3/2]', 'aspect-[2/3]'];
 
@@ -79,7 +80,7 @@ const MasonryDemo = () => {
         </p>
         <Masonry columns={{ base: 2, sm: 3 }} gap={8}>
           {aspects.map((aspect, i) => (
-            <div key={aspect} className={`${aspect} flex items-end rounded-md bg-muted p-2`}>
+            <div key={aspect} className={cn(aspect, 'flex items-end rounded-md bg-muted p-2')}>
               <span className="text-[10px] text-muted-foreground tabular-nums">{String(i + 1).padStart(2, '0')}</span>
             </div>
           ))}

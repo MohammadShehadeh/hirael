@@ -84,66 +84,57 @@ const TagInput = ({
   const errorId = React.useId();
   const inputRef = React.useRef<HTMLInputElement | null>(null);
 
-  const add = React.useCallback(
-    (candidates: string[]): boolean => {
-      if (disabled || readOnly) return false;
-      const next = [...value];
-      let added = false;
-      let duplicate = false;
-      let failure: string | null = null;
-      for (const tag of candidates.map((c) => c.trim()).filter(Boolean)) {
-        if (maxTags !== undefined && next.length >= maxTags) {
-          failure = limitMessage(maxTags);
-          break;
-        }
-        if (next.some((t) => t.toLowerCase() === tag.toLowerCase())) {
-          duplicate = true;
-          continue;
-        }
-        const result = validate?.(tag, next) ?? true;
-        if (result !== true) {
-          failure = result;
-          continue;
-        }
-        next.push(tag);
-        added = true;
+  const add = (candidates: string[]): boolean => {
+    if (disabled || readOnly) return false;
+    const next = [...value];
+    let added = false;
+    let duplicate = false;
+    let failure: string | null = null;
+    for (const tag of candidates.map((c) => c.trim()).filter(Boolean)) {
+      if (maxTags !== undefined && next.length >= maxTags) {
+        failure = limitMessage(maxTags);
+        break;
       }
-      if (added) setValue(next);
-      if (added || failure) setError(failure);
+      if (next.some((t) => t.toLowerCase() === tag.toLowerCase())) {
+        duplicate = true;
+        continue;
+      }
+      const result = validate?.(tag, next) ?? true;
+      if (result !== true) {
+        failure = result;
+        continue;
+      }
+      next.push(tag);
+      added = true;
+    }
+    if (added) setValue(next);
+    if (added || failure) setError(failure);
 
-      // A duplicate is already there, so it counts as handled and the draft clears.
-      return added || (duplicate && !failure);
-    },
-    [disabled, readOnly, value, maxTags, limitMessage, validate, setValue],
-  );
+    // A duplicate is already there, so it counts as handled and the draft clears.
+    return added || (duplicate && !failure);
+  };
 
-  const remove = React.useCallback(
-    (index: number) => {
-      if (disabled || readOnly) return;
-      setValue(value.filter((_, i) => i !== index));
-      setError(null);
-    },
-    [disabled, readOnly, value, setValue],
-  );
+  const remove = (index: number) => {
+    if (disabled || readOnly) return;
+    setValue(value.filter((_, i) => i !== index));
+    setError(null);
+  };
 
-  const ctx = React.useMemo<Ctx>(
-    () => ({
-      value,
-      draft,
-      setDraft,
-      error,
-      setError,
-      errorId,
-      add,
-      remove,
-      disabled,
-      readOnly,
-      commitKeys,
-      splitOn,
-      inputRef,
-    }),
-    [value, draft, error, errorId, add, remove, disabled, readOnly, commitKeys, splitOn],
-  );
+  const ctx: Ctx = {
+    value,
+    draft,
+    setDraft,
+    error,
+    setError,
+    errorId,
+    add,
+    remove,
+    disabled,
+    readOnly,
+    commitKeys,
+    splitOn,
+    inputRef,
+  };
 
   return (
     <TagInputContext.Provider value={ctx}>
@@ -240,7 +231,7 @@ const TagInputField = ({
 }: TagInputFieldProps) => {
   const ctx = useTagInput();
   const { inputRef } = ctx;
-  const composedRef = React.useMemo(() => composeRefs(inputRef, ref), [inputRef, ref]);
+  const composedRef = composeRefs(inputRef, ref);
 
   const commitDraft = () => {
     if (ctx.draft.trim() && ctx.add([ctx.draft])) ctx.setDraft('');

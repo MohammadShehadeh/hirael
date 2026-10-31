@@ -38,53 +38,51 @@ export interface UseUploadQueueOptions {
   concurrency?: number;
 }
 
-let nextId = 0;
-
 /** Queue state and actions: add files, and they upload a few at a time with progress, cancel and retry. */
 export const useUploadQueue = ({ upload, concurrency = 3 }: UseUploadQueueOptions) => {
   const [items, setItems] = React.useState<UploadItem[]>([]);
   const controllers = React.useRef(new Map<string, AbortController>());
+  const lastIdRef = React.useRef(0);
   const uploadRef = React.useRef(upload);
 
   React.useLayoutEffect(() => {
     uploadRef.current = upload;
   });
 
-  const patch = React.useCallback((id: string, change: Partial<UploadItem>) => {
+  const patch = (id: string, change: Partial<UploadItem>) => {
     setItems((list) => list.map((item) => (item.id === id ? { ...item, ...change } : item)));
-  }, []);
+  };
 
-  const start = React.useCallback(
-    (item: UploadItem) => {
-      const controller = new AbortController();
-      controllers.current.set(item.id, controller);
-      patch(item.id, { status: 'uploading', progress: 0, error: undefined });
-      uploadRef
-        .current(item.file, {
-          signal: controller.signal,
-          onProgress: (percent) => patch(item.id, { progress: Math.min(100, Math.max(0, percent)) }),
-        })
-        .then(() => {
-          if (!controller.signal.aborted) patch(item.id, { status: 'done', progress: 100 });
-        })
-        .catch((error: unknown) => {
-          if (controller.signal.aborted) return;
-          patch(item.id, { status: 'error', error: error instanceof Error ? error.message : String(error) });
-        })
-        .finally(() => {
-          // A retry may already own this id; a late settle must not drop the retry's controller.
-          if (controllers.current.get(item.id) === controller) controllers.current.delete(item.id);
-        });
-    },
-    [patch],
-  );
+  const start = (item: UploadItem) => {
+    const controller = new AbortController();
+    controllers.current.set(item.id, controller);
+    patch(item.id, { status: 'uploading', progress: 0, error: undefined });
+    void uploadRef
+      .current(item.file, {
+        signal: controller.signal,
+        onProgress: (percent) => patch(item.id, { progress: Math.min(100, Math.max(0, percent)) }),
+      })
+      .then(() => {
+        if (!controller.signal.aborted) patch(item.id, { status: 'done', progress: 100 });
+      })
+      .catch((error: unknown) => {
+        if (controller.signal.aborted) return;
+        patch(item.id, { status: 'error', error: error instanceof Error ? error.message : String(error) });
+      })
+      .finally(() => {
+        // A retry may already own this id; a late settle must not drop the retry's controller.
+        if (controllers.current.get(item.id) === controller) controllers.current.delete(item.id);
+      });
+  };
+
+  const startQueued = React.useEffectEvent(start);
 
   // Starts queued files whenever a slot frees up.
   React.useEffect(() => {
     const active = items.filter((item) => item.status === 'uploading').length;
     const waiting = items.filter((item) => item.status === 'queued' && !controllers.current.has(item.id));
-    waiting.slice(0, Math.max(0, concurrency - active)).forEach(start);
-  }, [items, concurrency, start]);
+    waiting.slice(0, Math.max(0, concurrency - active)).forEach((item) => startQueued(item));
+  }, [items, concurrency]);
 
   React.useEffect(() => {
     const map = controllers.current;
@@ -92,40 +90,31 @@ export const useUploadQueue = ({ upload, concurrency = 3 }: UseUploadQueueOption
     return () => map.forEach((controller) => controller.abort());
   }, []);
 
-  const add = React.useCallback((files: Iterable<File>) => {
-    const added = [...files].map((file) => ({
-      id: `upload-${++nextId}`,
-      file,
-      status: 'queued' as const,
-      progress: 0,
-    }));
+  const add = (files: Iterable<File>) => {
+    const added = [...files].map((file) => {
+      lastIdRef.current += 1;
+
+      return { id: `upload-${lastIdRef.current}`, file, status: 'queued' as const, progress: 0 };
+    });
     setItems((list) => [...list, ...added]);
-  }, []);
+  };
 
-  const cancel = React.useCallback(
-    (id: string) => {
-      controllers.current.get(id)?.abort();
-      controllers.current.delete(id);
-      patch(id, { status: 'canceled' });
-    },
-    [patch],
-  );
+  const cancel = (id: string) => {
+    controllers.current.get(id)?.abort();
+    controllers.current.delete(id);
+    patch(id, { status: 'canceled' });
+  };
 
-  const retry = React.useCallback(
-    (id: string) => patch(id, { status: 'queued', progress: 0, error: undefined }),
-    [patch],
-  );
+  const retry = (id: string) => patch(id, { status: 'queued', progress: 0, error: undefined });
 
-  const remove = React.useCallback((id: string) => {
+  const remove = (id: string) => {
     controllers.current.get(id)?.abort();
     controllers.current.delete(id);
     setItems((list) => list.filter((item) => item.id !== id));
-  }, []);
+  };
 
-  const clearFinished = React.useCallback(
-    () => setItems((list) => list.filter((item) => item.status !== 'done' && item.status !== 'canceled')),
-    [],
-  );
+  const clearFinished = () =>
+    setItems((list) => list.filter((item) => item.status !== 'done' && item.status !== 'canceled'));
 
   return { items, add, cancel, retry, remove, clearFinished };
 };
@@ -148,61 +137,15 @@ const DEFAULT_LABELS: UploadQueueLabels = {
   status: { queued: 'Waiting', uploading: 'Uploading', done: 'Uploaded', error: 'Failed', canceled: 'Canceled' },
 };
 
-export type UploadQueueLabelOverrides = Partial<Omit<UploadQueueLabels, 'status'>> & {
+export interface UploadQueueLabelOverrides extends Partial<Omit<UploadQueueLabels, 'status'>> {
   status?: Partial<UploadQueueLabels['status']>;
-};
+}
 
 export interface UploadQueueProps extends React.ComponentProps<'div'> {
   /** The `useUploadQueue` result. */
   queue: ReturnType<typeof useUploadQueue>;
   labels?: UploadQueueLabelOverrides;
 }
-
-/** The list of uploads with an overall bar, per-file progress, and cancel, retry and remove buttons. */
-const UploadQueue = ({ queue, labels, className, ...props }: UploadQueueProps) => {
-  const text = { ...DEFAULT_LABELS, ...labels, status: { ...DEFAULT_LABELS.status, ...labels?.status } };
-  const { items } = queue;
-  if (items.length === 0) return null;
-
-  const counted = items.filter((item) => item.status !== 'canceled');
-  const done = counted.filter((item) => item.status === 'done').length;
-  const overall = counted.length ? counted.reduce((sum, item) => sum + item.progress, 0) / counted.length : 0;
-  const finished = items.some((item) => item.status === 'done' || item.status === 'canceled');
-
-  return (
-    <div
-      data-slot="upload-queue"
-      className={cn('grid gap-3 rounded-lg border border-border bg-card p-3 text-card-foreground', className)}
-      {...props}
-    >
-      <div className="grid gap-2">
-        <div className="flex items-center justify-between gap-3 text-sm">
-          <span aria-live="polite" className="font-medium tabular-nums">
-            {text.summary(done, counted.length)}
-          </span>
-          {finished && (
-            <Button type="button" variant="ghost" size="xs" onClick={queue.clearFinished}>
-              {text.clear}
-            </Button>
-          )}
-        </div>
-        <Progress value={overall} aria-label={text.summary(done, counted.length)} />
-      </div>
-      <ul className="grid gap-1">
-        {items.map((item) => (
-          <UploadQueueItem
-            key={item.id}
-            item={item}
-            labels={text}
-            onRetry={() => queue.retry(item.id)}
-            onCancel={() => queue.cancel(item.id)}
-            onRemove={() => queue.remove(item.id)}
-          />
-        ))}
-      </ul>
-    </div>
-  );
-};
 
 const STATUS_ICON: Partial<Record<UploadStatus, React.ReactNode>> = {
   done: <CircleCheck aria-hidden className="size-4 text-success" />,
@@ -276,6 +219,52 @@ const UploadQueueItem = ({ item, labels, onRetry, onCancel, onRemove }: UploadQu
         </Button>
       </div>
     </li>
+  );
+};
+
+/** The list of uploads with an overall bar, per-file progress, and cancel, retry and remove buttons. */
+const UploadQueue = ({ queue, labels, className, ...props }: UploadQueueProps) => {
+  const text = { ...DEFAULT_LABELS, ...labels, status: { ...DEFAULT_LABELS.status, ...labels?.status } };
+  const { items } = queue;
+  if (items.length === 0) return null;
+
+  const counted = items.filter((item) => item.status !== 'canceled');
+  const done = counted.filter((item) => item.status === 'done').length;
+  const overall = counted.length ? counted.reduce((sum, item) => sum + item.progress, 0) / counted.length : 0;
+  const finished = items.some((item) => item.status === 'done' || item.status === 'canceled');
+
+  return (
+    <div
+      data-slot="upload-queue"
+      className={cn('grid gap-3 rounded-lg border border-border bg-card p-3 text-card-foreground', className)}
+      {...props}
+    >
+      <div className="grid gap-2">
+        <div className="flex items-center justify-between gap-3 text-sm">
+          <span aria-live="polite" className="font-medium tabular-nums">
+            {text.summary(done, counted.length)}
+          </span>
+          {finished && (
+            <Button type="button" variant="ghost" size="xs" onClick={queue.clearFinished}>
+              {text.clear}
+            </Button>
+          )}
+        </div>
+        <Progress value={overall} aria-label={text.summary(done, counted.length)} />
+      </div>
+      <ul className="grid gap-1">
+        {items.map((item) => (
+          <UploadQueueItem
+            key={item.id}
+            item={item}
+            labels={text}
+            onRetry={() => queue.retry(item.id)}
+            onCancel={() => queue.cancel(item.id)}
+            onRemove={() => queue.remove(item.id)}
+          />
+        ))}
+      </ul>
+    </div>
   );
 };
 

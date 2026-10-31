@@ -46,6 +46,42 @@ interface ResourceStatusBannerProps extends React.ComponentProps<'div'> {
   state: ResourceState;
 }
 
+type ResourceStatusListProps = React.ComponentProps<'ul'>;
+
+const ResourceStatusList = ({ className, ...props }: ResourceStatusListProps) => {
+  return <ul data-slot="resource-status-list" className={cn('divide-y divide-border', className)} {...props} />;
+};
+
+interface ResourceStatusItemProps extends React.ComponentProps<'li'> {
+  name: React.ReactNode;
+  state: ResourceState;
+  description?: React.ReactNode;
+  uptime?: React.ReactNode;
+}
+
+interface ResourceStatusDotProps extends React.ComponentProps<'span'> {
+  state: ResourceState;
+  /** Pulse the dot to signal a live/active condition. */
+  pulse?: boolean;
+}
+
+const ResourceStatusDot = ({ state, pulse, className, ...props }: ResourceStatusDotProps) => {
+  return (
+    <span data-slot="resource-status-dot" className={cn('relative flex size-2.5 shrink-0', className)} {...props}>
+      {pulse ? (
+        <span
+          className={cn(
+            'absolute inline-flex size-full animate-ping rounded-full opacity-75 motion-reduce:animate-none',
+            stateDot[state],
+          )}
+          aria-hidden
+        />
+      ) : null}
+      <span className={cn('relative inline-flex size-2.5 rounded-full', stateDot[state])} aria-hidden />
+    </span>
+  );
+};
+
 const ResourceStatusBanner = ({ state, className, children, ...props }: ResourceStatusBannerProps) => {
   return (
     <div
@@ -60,18 +96,24 @@ const ResourceStatusBanner = ({ state, className, children, ...props }: Resource
   );
 };
 
-type ResourceStatusListProps = React.ComponentProps<'ul'>;
-
-const ResourceStatusList = ({ className, ...props }: ResourceStatusListProps) => {
-  return <ul data-slot="resource-status-list" className={cn('divide-y divide-border', className)} {...props} />;
-};
-
-interface ResourceStatusItemProps extends React.ComponentProps<'li'> {
-  name: React.ReactNode;
+interface ResourceStatusIndicatorProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   state: ResourceState;
-  description?: React.ReactNode;
-  uptime?: React.ReactNode;
+  children?: React.ReactNode;
 }
+
+const ResourceStatusIndicator = ({ state, className, children, ...props }: ResourceStatusIndicatorProps) => {
+  return (
+    <span
+      data-slot="resource-status-indicator"
+      data-state={state}
+      className={cn('inline-flex items-center gap-1.5 text-xs font-medium', stateText[state], className)}
+      {...props}
+    >
+      <ResourceStatusDot state={state} />
+      {children ?? stateLabel[state]}
+    </span>
+  );
+};
 
 const ResourceStatusItem = ({
   name,
@@ -102,48 +144,6 @@ const ResourceStatusItem = ({
         {children ?? <ResourceStatusIndicator state={state} />}
       </div>
     </li>
-  );
-};
-
-interface ResourceStatusDotProps extends React.ComponentProps<'span'> {
-  state: ResourceState;
-  /** Pulse the dot to signal a live/active condition. */
-  pulse?: boolean;
-}
-
-const ResourceStatusDot = ({ state, pulse, className, ...props }: ResourceStatusDotProps) => {
-  return (
-    <span data-slot="resource-status-dot" className={cn('relative flex size-2.5 shrink-0', className)} {...props}>
-      {pulse ? (
-        <span
-          className={cn(
-            'absolute inline-flex size-full animate-ping rounded-full opacity-75 motion-reduce:animate-none',
-            stateDot[state],
-          )}
-          aria-hidden
-        />
-      ) : null}
-      <span className={cn('relative inline-flex size-2.5 rounded-full', stateDot[state])} aria-hidden />
-    </span>
-  );
-};
-
-interface ResourceStatusIndicatorProps extends Omit<React.ComponentProps<'span'>, 'children'> {
-  state: ResourceState;
-  children?: React.ReactNode;
-}
-
-const ResourceStatusIndicator = ({ state, className, children, ...props }: ResourceStatusIndicatorProps) => {
-  return (
-    <span
-      data-slot="resource-status-indicator"
-      data-state={state}
-      className={cn('inline-flex items-center gap-1.5 text-xs font-medium', stateText[state], className)}
-      {...props}
-    >
-      <ResourceStatusDot state={state} />
-      {children ?? stateLabel[state]}
-    </span>
   );
 };
 

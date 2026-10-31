@@ -87,8 +87,9 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const formatAmount = (value: string) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(Number(value) || 0);
+const usd = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+const formatAmount = (value: string) => usd.format(Number(value) || 0);
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 

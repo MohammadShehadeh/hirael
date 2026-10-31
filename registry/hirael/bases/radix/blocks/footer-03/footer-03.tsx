@@ -41,9 +41,14 @@ const ENTER =
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
 interface FooterColumn {
   label: string;
-  links: readonly { label: string; href: string }[];
+  links: readonly FooterLink[];
 }
 
 const COLUMNS: readonly FooterColumn[] = [

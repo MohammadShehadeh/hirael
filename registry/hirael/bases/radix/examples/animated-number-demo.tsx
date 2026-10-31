@@ -11,7 +11,7 @@ const AnimatedNumberDemo = () => {
   const [revenue, setRevenue] = React.useState(48250);
   const [users, setUsers] = React.useState(12481);
 
-  const shuffle = () => {
+  const handleShuffle = () => {
     setRevenue(Math.round(20000 + Math.random() * 80000));
     setUsers(Math.round(2000 + Math.random() * 40000));
   };
@@ -47,7 +47,7 @@ const AnimatedNumberDemo = () => {
             </span>
           </div>
         </div>
-        <Button type="button" variant="outline" size="sm" onClick={shuffle} className="mt-1 w-fit">
+        <Button type="button" variant="outline" size="sm" onClick={handleShuffle} className="mt-1 w-fit">
           {t({ en: 'Randomize', ar: 'تغيير عشوائي' })}
         </Button>
       </div>

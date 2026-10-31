@@ -12,7 +12,12 @@ import { Separator } from '@/registry/hirael/bases/radix/ui/separator';
 type PlanName = 'Pro' | 'Team' | 'Enterprise';
 type InvoiceState = 'Paid' | 'Open' | 'Overdue';
 
-const PLAN_TONE: Record<PlanName, { stroke: string; swatch: string }> = {
+interface PlanTone {
+  stroke: string;
+  swatch: string;
+}
+
+const PLAN_TONE: Record<PlanName, PlanTone> = {
   Pro: { stroke: 'stroke-foreground/85', swatch: 'bg-foreground/85' },
   Team: {
     stroke: 'stroke-muted-foreground/50',
@@ -36,13 +41,19 @@ interface PlanSlice {
   mrr: number;
 }
 
+interface InvoiceTotal {
+  state: InvoiceState;
+  count: number;
+  amount: number;
+}
+
 interface MonthData {
   label: string;
   total: number;
   delta: number;
   comparedWith: string;
   plans: readonly PlanSlice[];
-  invoices: readonly { state: InvoiceState; count: number; amount: number }[];
+  invoices: readonly InvoiceTotal[];
 }
 
 const MONTHS: readonly MonthData[] = [
@@ -156,7 +167,13 @@ const TRANSACTIONS: readonly Txn[] = [
   },
 ];
 
-const TXN_STATUS: Record<Txn['status'], { label: string; dot: string; amount: string }> = {
+interface TxnStatusMeta {
+  label: string;
+  dot: string;
+  amount: string;
+}
+
+const TXN_STATUS: Record<Txn['status'], TxnStatusMeta> = {
   paid: { label: 'Paid', dot: 'bg-success', amount: 'text-foreground' },
   open: {
     label: 'Open',
@@ -190,9 +207,11 @@ const usdCents = new Intl.NumberFormat('en-US', {
 });
 
 const signedUsd = (amount: number) => {
-  const sign = amount > 0 ? '+' : amount < 0 ? '−' : '';
+  const magnitude = usdCents.format(Math.abs(amount));
+  if (amount > 0) return `+${magnitude}`;
+  if (amount < 0) return `−${magnitude}`;
 
-  return `${sign}${usdCents.format(Math.abs(amount))}`;
+  return magnitude;
 };
 
 interface DonutProps {

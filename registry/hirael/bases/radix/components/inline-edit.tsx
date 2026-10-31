@@ -112,12 +112,12 @@ const InlineEdit = ({
     }
   }
 
-  const startEditing = React.useCallback(() => {
+  const startEditing = () => {
     if (disabled) return;
     setEditing(true);
-  }, [disabled, setEditing]);
+  };
 
-  const submit = React.useCallback(() => {
+  const submit = () => {
     if (pending) return;
     const next = draft;
     const message = required && next.trim() === '' ? requiredMessage : (validate?.(next) ?? null);
@@ -130,7 +130,7 @@ const InlineEdit = ({
     const result = onSubmit?.(next);
     if (result instanceof Promise) {
       setPending(true);
-      result
+      void result
         .then(() => {
           setValue(next);
           setEditing(false);
@@ -143,14 +143,14 @@ const InlineEdit = ({
       setValue(next);
       setEditing(false);
     }
-  }, [pending, draft, required, requiredMessage, submitErrorMessage, validate, onSubmit, setValue, setEditing]);
+  };
 
-  const cancel = React.useCallback(() => {
+  const cancel = () => {
     if (pending) return;
     // Draft and error reset when editing next starts, so there's nothing to restore here.
     setEditing(false);
     onCancel?.();
-  }, [pending, setEditing, onCancel]);
+  };
 
   const previewRef = React.useRef<HTMLSpanElement | null>(null);
   const wasEditingRef = React.useRef(editing);
@@ -167,40 +167,23 @@ const InlineEdit = ({
     }
   }, [editing]);
 
-  const ctx = React.useMemo<InlineEditCtx>(
-    () => ({
-      value,
-      draft,
-      setDraft,
-      editing,
-      pending,
-      error,
-      errorId,
-      disabled,
-      placeholder,
-      selectOnFocus,
-      submitOnBlur,
-      startEditing,
-      submit,
-      cancel,
-      previewRef,
-    }),
-    [
-      value,
-      draft,
-      editing,
-      pending,
-      error,
-      errorId,
-      disabled,
-      placeholder,
-      selectOnFocus,
-      submitOnBlur,
-      startEditing,
-      submit,
-      cancel,
-    ],
-  );
+  const ctx: InlineEditCtx = {
+    value,
+    draft,
+    setDraft,
+    editing,
+    pending,
+    error,
+    errorId,
+    disabled,
+    placeholder,
+    selectOnFocus,
+    submitOnBlur,
+    startEditing,
+    submit,
+    cancel,
+    previewRef,
+  };
 
   return (
     <InlineEditContext.Provider value={ctx}>
@@ -239,10 +222,7 @@ const InlineEditPreview = ({
 
   // Composed in the callback, not during render: previewRef arrives through context,
   // where the ref lint rule can't see that composeRefs never reads it.
-  const composedRef = React.useCallback(
-    (node: HTMLSpanElement | null) => composeRefs(previewRef, ref)(node),
-    [previewRef, ref],
-  );
+  const composedRef = (node: HTMLSpanElement | null) => composeRefs(previewRef, ref)(node);
 
   if (editing) return null;
 
@@ -305,16 +285,13 @@ const useInlineEditField = <T extends FieldElement>(
   // Once per node: an inline consumer ref re-invokes this every render, and
   // re-selecting mid-typing would swallow the next keystroke.
   const focusedRef = React.useRef<T | null>(null);
-  const focusOnMount = React.useCallback(
-    (node: T | null) => {
-      if (!node || node === focusedRef.current) return;
-      focusedRef.current = node;
-      node.focus();
-      if (ctx.selectOnFocus) node.select();
-    },
-    [ctx.selectOnFocus],
-  );
-  const composedRef = React.useCallback((node: T | null) => composeRefs(focusOnMount, ref)(node), [focusOnMount, ref]);
+  const focusOnMount = (node: T | null) => {
+    if (!node || node === focusedRef.current) return;
+    focusedRef.current = node;
+    node.focus();
+    if (ctx.selectOnFocus) node.select();
+  };
+  const composedRef = (node: T | null) => composeRefs(focusOnMount, ref)(node);
 
   return {
     editing: ctx.editing,

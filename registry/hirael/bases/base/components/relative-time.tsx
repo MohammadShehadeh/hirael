@@ -74,28 +74,29 @@ const subscribeTo = (interval: number) => {
   return subscribe;
 };
 
-const formatters = new Map<string, Intl.RelativeTimeFormat | Intl.DateTimeFormat>();
+const relativeFormats = new Map<string, Intl.RelativeTimeFormat>();
+const absoluteFormats = new Map<string, Intl.DateTimeFormat>();
 
 const relativeFormat = (locale: string | undefined, numeric: RelativeNumeric, style: Intl.RelativeTimeFormatStyle) => {
-  const key = `r|${locale}|${numeric}|${style}`;
-  let format = formatters.get(key);
+  const key = `${locale}|${numeric}|${style}`;
+  let format = relativeFormats.get(key);
   if (!format) {
     format = new Intl.RelativeTimeFormat(locale, { numeric, style });
-    formatters.set(key, format);
+    relativeFormats.set(key, format);
   }
 
-  return format as Intl.RelativeTimeFormat;
+  return format;
 };
 
 const absoluteFormat = (locale: string | undefined) => {
-  const key = `a|${locale}`;
-  let format = formatters.get(key);
+  const key = String(locale);
+  let format = absoluteFormats.get(key);
   if (!format) {
     format = new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' });
-    formatters.set(key, format);
+    absoluteFormats.set(key, format);
   }
 
-  return format as Intl.DateTimeFormat;
+  return format;
 };
 
 const formatRelative = (diff: number, format: Intl.RelativeTimeFormat) => {

@@ -16,7 +16,11 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
-type Period = 'quarter' | 'year';
+const PERIOD_VALUES = ['quarter', 'year'] as const;
+
+type Period = (typeof PERIOD_VALUES)[number];
+
+const isPeriod = (value: unknown): value is Period => PERIOD_VALUES.some((option) => option === value);
 
 interface Metric {
   name: string;
@@ -27,11 +31,18 @@ interface Metric {
   context: string;
 }
 
-const count = (value: number) => value.toLocaleString('en-US');
+const integer = new Intl.NumberFormat('en-US');
+
+const count = (value: number) => integer.format(value);
 const money = (value: number) => `$${Math.round(value / 1000)}k`;
 const percent = (value: number) => `${value}%`;
 
-const PERIODS: Record<Period, { caption: string; metrics: readonly Metric[] }> = {
+interface PeriodStats {
+  caption: string;
+  metrics: readonly Metric[];
+}
+
+const PERIODS: Record<Period, PeriodStats> = {
   quarter: {
     caption: 'Q3 2026 targets, July to September',
     metrics: [
@@ -160,7 +171,7 @@ const Stats03 = () => {
               size="sm"
               value={[period]}
               onValueChange={([value]) => {
-                if (value) setPeriod(value as Period);
+                if (isPeriod(value)) setPeriod(value);
               }}
               aria-label="Period"
             >
@@ -197,6 +208,7 @@ const Stats03 = () => {
                       'h-1.5',
                       '**:data-[slot=progress-indicator]:delay-(--bar-delay) **:data-[slot=progress-indicator]:duration-700 **:data-[slot=progress-indicator]:ease-[cubic-bezier(0.22,1,0.36,1)]',
                     )}
+                    // React's CSSProperties type has no custom properties.
                     style={{ '--bar-delay': `${index * 60}ms` } as React.CSSProperties}
                   />
                   <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 text-sm">

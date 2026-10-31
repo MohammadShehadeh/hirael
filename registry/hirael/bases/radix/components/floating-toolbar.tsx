@@ -14,7 +14,7 @@ const FloatingToolbar = ({ className, onKeyDown, ...props }: FloatingToolbarProp
     if (event.defaultPrevented) return;
 
     const items = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(BUTTON_SELECTOR));
-    const current = items.indexOf(document.activeElement as HTMLElement);
+    const current = items.findIndex((item) => item === document.activeElement);
     // Focus may sit on something else the consumer put in the toolbar, like an input that needs its own arrow keys.
     if (current === -1) return;
 

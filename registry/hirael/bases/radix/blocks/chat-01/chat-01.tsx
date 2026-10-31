@@ -184,16 +184,16 @@ const ChatThread = ({
     if (!atBottom && !latestFromSelf) setUnseen(true);
   }
 
-  const scrollToBottom = React.useCallback(() => {
+  const scrollToBottom = () => {
     const el = viewportRef.current;
     if (!el) return;
     pinnedRef.current = true;
     // Already at the bottom means no scroll event will come to clear the flag.
     autoScrollingRef.current = el.scrollHeight - el.scrollTop - el.clientHeight > 1;
     el.scrollTo({ top: el.scrollHeight, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-  }, []);
+  };
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
@@ -205,7 +205,7 @@ const ChatThread = ({
     pinnedRef.current = pinned;
     setAtBottom(pinned);
     if (pinned) setUnseen(false);
-  }, [threshold]);
+  };
 
   // Typing indicators and replies grow the content without scrolling it, so follow the box size.
   React.useLayoutEffect(() => {
@@ -221,11 +221,12 @@ const ChatThread = ({
     return () => observer.disconnect();
   }, []);
 
+  const followOwnMessage = React.useEffectEvent(scrollToBottom);
   React.useLayoutEffect(() => {
-    if (latestFromSelf) scrollToBottom();
-  }, [latestId, latestFromSelf, scrollToBottom]);
+    if (latestFromSelf) followOwnMessage();
+  }, [latestId, latestFromSelf]);
 
-  const context = React.useMemo(() => ({ atBottom, unseen, scrollToBottom }), [atBottom, unseen, scrollToBottom]);
+  const context = { atBottom, unseen, scrollToBottom };
 
   return (
     <ChatThreadContext.Provider value={context}>
@@ -504,39 +505,30 @@ const ChatComposer = ({
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const canSend = !disabled && (value.trim().length > 0 || allowEmpty);
 
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (!isControlled) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [isControlled, onValueChange],
-  );
+  const setValue = (next: string) => {
+    if (!isControlled) setInternalValue(next);
+    onValueChange?.(next);
+  };
 
-  const send = React.useCallback(() => {
+  const send = () => {
     if (!canSend) return;
     onSend?.(value.trim());
     setValue('');
     inputRef.current?.focus();
-  }, [canSend, onSend, value, setValue]);
+  };
 
-  const insertText = React.useCallback(
-    (text: string) => {
-      const el = inputRef.current;
-      const start = el?.selectionStart ?? value.length;
-      const end = el?.selectionEnd ?? value.length;
-      setValue(value.slice(0, start) + text + value.slice(end));
-      requestAnimationFrame(() => {
-        el?.focus();
-        el?.setSelectionRange(start + text.length, start + text.length);
-      });
-    },
-    [value, setValue],
-  );
+  const insertText = (text: string) => {
+    const el = inputRef.current;
+    const start = el?.selectionStart ?? value.length;
+    const end = el?.selectionEnd ?? value.length;
+    setValue(value.slice(0, start) + text + value.slice(end));
+    requestAnimationFrame(() => {
+      el?.focus();
+      el?.setSelectionRange(start + text.length, start + text.length);
+    });
+  };
 
-  const context = React.useMemo(
-    () => ({ value, setValue, canSend, send, insertText, inputRef, disabled }),
-    [value, setValue, canSend, send, insertText, disabled],
-  );
+  const context = { value, setValue, canSend, send, insertText, inputRef, disabled };
 
   return (
     <ChatComposerContext.Provider value={context}>
@@ -695,6 +687,11 @@ interface Message {
   attachments?: Attachment[];
 }
 
+interface ConversationMessage {
+  from: string;
+  text: string;
+}
+
 interface Conversation {
   id: string;
   /** Group chats have a title; direct chats take the other person's name. */
@@ -704,7 +701,7 @@ interface Conversation {
   unread: number;
   messages: Message[];
   /** Scripted answers, used one per message you send. */
-  replies: { from: string; text: string }[];
+  replies: ConversationMessage[];
   typing?: string;
 }
 
@@ -900,7 +897,9 @@ const groupMessages = (messages: readonly Message[]): ThreadRow[] => {
   return rows;
 };
 
-const clock = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date());
+const clockFormat = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+const clock = () => clockFormat.format(new Date());
 
 const conversationName = (conversation: Conversation) => conversation.title ?? PEOPLE[conversation.members[0]].name;
 
@@ -968,10 +967,12 @@ const ComposerEmoji = () => {
   );
 };
 
+type MobilePane = 'list' | 'thread';
+
 const Chat01 = () => {
   const [conversations, setConversations] = React.useState(CONVERSATIONS);
   const [activeId, setActiveId] = React.useState(CONVERSATIONS[0].id);
-  const [view, setView] = React.useState<'list' | 'thread'>('list');
+  const [view, setView] = React.useState<MobilePane>('list');
   const [query, setQuery] = React.useState('');
   const [drafts, setDrafts] = React.useState<Record<string, string>>({});
   const [attachments, setAttachments] = React.useState<Attachment[]>([]);
@@ -1028,7 +1029,7 @@ const Chat01 = () => {
     updateConversation(id, (conversation) => ({ ...conversation, unread: 0 }));
   };
 
-  const send = (text: string) => {
+  const handleSend = (text: string) => {
     const conversation = active;
     const id = nextId(conversation.id);
     const message: Message = {
@@ -1102,7 +1103,7 @@ const Chat01 = () => {
 
   const rows = groupMessages(active.messages);
   const latest = active.messages[active.messages.length - 1];
-  const lastOwnId = [...active.messages].reverse().find((message) => message.from === ME)?.id;
+  const lastOwnId = active.messages.toReversed().find((message) => message.from === ME)?.id;
   const firstName = conversationName(active).split(' ')[0];
 
   return (
@@ -1243,7 +1244,7 @@ const Chat01 = () => {
               <ChatComposer
                 value={drafts[active.id] ?? ''}
                 onValueChange={(value) => setDrafts((current) => ({ ...current, [active.id]: value }))}
-                onSend={send}
+                onSend={handleSend}
                 allowEmpty={attachments.length > 0}
               >
                 {attachments.length > 0 ? (

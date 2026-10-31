@@ -85,7 +85,7 @@ export const getReleaseDates = async (): Promise<Record<string, string>> => {
   const { entries } = await getChangelog();
   const dates: Record<string, string> = {};
 
-  for (const entry of [...entries].reverse()) {
+  for (const entry of entries.toReversed()) {
     const day = entry.isoDate.slice(0, 10);
     for (const name of entry.added) dates[name] ??= day;
   }

@@ -97,7 +97,12 @@ type Locations = Record<string, Section | null>;
 
 const INITIAL_LOCATIONS: Locations = { maya: 'Pricing', tom: 'Pricing', sara: 'Timeline', dev: 'Overview', ana: null };
 
-const MOVES: readonly { id: string; to: Section | null }[] = [
+interface Move {
+  id: string;
+  to: Section | null;
+}
+
+const MOVES: readonly Move[] = [
   { id: 'ana', to: 'Risks' },
   { id: 'dev', to: 'Pricing' },
   { id: 'sara', to: null },
@@ -299,7 +304,7 @@ const CommentThread = (props: TileProps) => {
   const [draft, setDraft] = React.useState('');
   const [resolved, setResolved] = React.useState(false);
 
-  const post = (event: React.FormEvent<HTMLFormElement>) => {
+  const handlePost = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const body = draft.trim();
     if (!body) return;
@@ -348,7 +353,7 @@ const CommentThread = (props: TileProps) => {
                 </li>
               ))}
             </ol>
-            <form onSubmit={post} className="mt-auto flex flex-col gap-2">
+            <form onSubmit={handlePost} className="mt-auto flex flex-col gap-2">
               <label htmlFor="bento-02-comment" className="sr-only">
                 Reply
               </label>
@@ -569,8 +574,17 @@ const IntegrationsList = (props: TileProps) => {
   );
 };
 
-type Scope = 'all' | 'mentions' | 'none';
-type Delivery = 'instant' | 'hourly' | 'daily';
+const SCOPE_VALUES = ['all', 'mentions', 'none'] as const;
+
+type Scope = (typeof SCOPE_VALUES)[number];
+
+const isScope = (value: unknown): value is Scope => SCOPE_VALUES.some((option) => option === value);
+
+const DELIVERY_VALUES = ['instant', 'hourly', 'daily'] as const;
+
+type Delivery = (typeof DELIVERY_VALUES)[number];
+
+const isDelivery = (value: unknown): value is Delivery => DELIVERY_VALUES.some((option) => option === value);
 
 const DAILY_EVENTS: Record<Scope, number> = { all: 38, mentions: 9, none: 0 };
 const WORK_HOURS = 8;
@@ -618,7 +632,7 @@ const NotificationPrefs = (props: TileProps) => {
             size="sm"
             value={[scope]}
             onValueChange={([next]) => {
-              if (next) setScope(next as Scope);
+              if (isScope(next)) setScope(next);
             }}
             aria-labelledby="bento-02-scope"
             className="flex-wrap"
@@ -638,7 +652,7 @@ const NotificationPrefs = (props: TileProps) => {
             value={[delivery]}
             disabled={scope === 'none'}
             onValueChange={([next]) => {
-              if (next) setDelivery(next as Delivery);
+              if (isDelivery(next)) setDelivery(next);
             }}
             aria-labelledby="bento-02-delivery"
             className="flex-wrap"

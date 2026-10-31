@@ -32,14 +32,34 @@ const noise = (seed: number) => {
   return (t >>> 0) / 4294967296;
 };
 
-type Range = '7d' | '30d' | '90d';
-type SegmentId = 'all' | 'new' | 'returning' | 'mobile' | 'desktop' | 'search';
+const RANGE_VALUES = ['7d', '30d', '90d'] as const;
 
-const RANGES: Record<Range, { days: number; label: string }> = {
+type Range = (typeof RANGE_VALUES)[number];
+
+const isRange = (value: unknown): value is Range => RANGE_VALUES.some((option) => option === value);
+
+const SEGMENT_ID_VALUES = ['all', 'new', 'returning', 'mobile', 'desktop', 'search'] as const;
+
+type SegmentId = (typeof SEGMENT_ID_VALUES)[number];
+
+const isSegmentId = (value: unknown): value is SegmentId => SEGMENT_ID_VALUES.some((option) => option === value);
+
+interface RangeOption {
+  days: number;
+  label: string;
+}
+
+const RANGES: Record<Range, RangeOption> = {
   '7d': { days: 7, label: 'Last 7 days' },
   '30d': { days: 30, label: 'Last 30 days' },
   '90d': { days: 90, label: 'Last 90 days' },
 };
+
+interface FunnelCounts {
+  signup: number;
+  activate: number;
+  pay: number;
+}
 
 interface Segment {
   id: SegmentId;
@@ -47,7 +67,7 @@ interface Segment {
   description: string;
   share: number;
   seed: number;
-  rates: { signup: number; activate: number; pay: number };
+  rates: FunnelCounts;
   bounce: number;
   /** Median session length in seconds. */
   session: number;
@@ -157,40 +177,38 @@ interface View {
 
 const useAnalytics = ({ range, segment: segmentId }: View) => {
   const segment = segmentById(segmentId);
-  const history = React.useMemo(() => dailyVisitors(segment), [segment]);
+  const history = dailyVisitors(segment);
 
-  return React.useMemo(() => {
-    const days = RANGES[range].days;
-    const series = history.slice(HISTORY - days);
-    const visitors = sum(series);
-    const previous = sum(history.slice(HISTORY - days * 2, HISTORY - days));
+  const days = RANGES[range].days;
+  const series = history.slice(HISTORY - days);
+  const visitors = sum(series);
+  const previous = sum(history.slice(HISTORY - days * 2, HISTORY - days));
 
-    const signedUp = Math.round(visitors * segment.rates.signup);
-    const activated = Math.round(signedUp * segment.rates.activate);
-    const paid = Math.round(activated * segment.rates.pay);
+  const signedUp = Math.round(visitors * segment.rates.signup);
+  const activated = Math.round(signedUp * segment.rates.activate);
+  const paid = Math.round(activated * segment.rates.pay);
 
-    const regionCounts = REGIONS.map((region, index) => ({
-      name: region.name,
-      count: Math.round(visitors * region.share * (0.8 + 0.4 * noise(segment.seed * 31 + index))),
-    })).sort((a, b) => b.count - a.count);
-    const other = visitors - sum(regionCounts.map((region) => region.count));
+  const regionCounts = REGIONS.map((region, index) => ({
+    name: region.name,
+    count: Math.round(visitors * region.share * (0.8 + 0.4 * noise(segment.seed * 31 + index))),
+  })).sort((a, b) => b.count - a.count);
+  const other = visitors - sum(regionCounts.map((region) => region.count));
 
-    return {
-      segment,
-      series,
-      visitors,
-      change: ((visitors - previous) / previous) * 100,
-      funnel: [
-        { label: 'Visited', count: visitors },
-        { label: 'Signed up', count: signedUp },
-        { label: 'Activated', count: activated },
-        { label: 'Paid', count: paid },
-      ],
-      regions: [...regionCounts, { name: 'Other', count: other }],
-      firstDay: dayFormat.format(new Date(LAST_DAY - (days - 1) * DAY_MS)),
-      lastDay: dayFormat.format(new Date(LAST_DAY)),
-    };
-  }, [history, range, segment]);
+  return {
+    segment,
+    series,
+    visitors,
+    change: ((visitors - previous) / previous) * 100,
+    funnel: [
+      { label: 'Visited', count: visitors },
+      { label: 'Signed up', count: signedUp },
+      { label: 'Activated', count: activated },
+      { label: 'Paid', count: paid },
+    ],
+    regions: [...regionCounts, { name: 'Other', count: other }],
+    firstDay: dayFormat.format(new Date(LAST_DAY - (days - 1) * DAY_MS)),
+    lastDay: dayFormat.format(new Date(LAST_DAY)),
+  };
 };
 
 type Analytics = ReturnType<typeof useAnalytics>;
@@ -243,7 +261,7 @@ const MetricTile = ({ data, range, onRangeChange, ...props }: MetricTileProps) =
           size="sm"
           value={range}
           onValueChange={(next) => {
-            if (next) onRangeChange(next as Range);
+            if (isRange(next)) onRangeChange(next);
           }}
           aria-label="Date range"
         >
@@ -334,7 +352,7 @@ const SegmentTile = ({ segment, onSegmentChange, ...props }: SegmentTileProps) =
           spacing={2}
           value={segment}
           onValueChange={(next) => {
-            if (next) onSegmentChange(next as SegmentId);
+            if (isSegmentId(next)) onSegmentChange(next);
           }}
           aria-label="Segment"
           className="flex-wrap"
@@ -361,7 +379,9 @@ const SegmentTile = ({ segment, onSegmentChange, ...props }: SegmentTileProps) =
   );
 };
 
-type FunnelTileProps = Omit<TileProps, 'title' | 'description' | 'action' | 'children'> & { data: Analytics };
+interface FunnelTileProps extends Omit<TileProps, 'title' | 'description' | 'action' | 'children'> {
+  data: Analytics;
+}
 
 const FunnelTile = ({ data, ...props }: FunnelTileProps) => {
   return (
@@ -406,7 +426,9 @@ const FunnelTile = ({ data, ...props }: FunnelTileProps) => {
   );
 };
 
-type RegionTileProps = Omit<TileProps, 'title' | 'description' | 'action' | 'children'> & { data: Analytics };
+interface RegionTileProps extends Omit<TileProps, 'title' | 'description' | 'action' | 'children'> {
+  data: Analytics;
+}
 
 const RegionTile = ({ data, ...props }: RegionTileProps) => {
   // Other is a remainder, not a country, so it doesn't set the scale.
@@ -465,10 +487,10 @@ interface ReportsTileProps extends Omit<TileProps, 'title' | 'description' | 'ac
 
 const ReportsTile = ({ view, onOpen, ...props }: ReportsTileProps) => {
   const [reports, setReports] = React.useState<readonly Report[]>(INITIAL_REPORTS);
-  const sorted = [...reports].sort((a, b) => Number(b.pinned) - Number(a.pinned));
+  const sorted = reports.toSorted((a, b) => Number(b.pinned) - Number(a.pinned));
   const saved = reports.some((report) => report.range === view.range && report.segment === view.segment);
 
-  const save = () =>
+  const handleSave = () =>
     setReports((list) => [
       ...list,
       {
@@ -487,7 +509,7 @@ const ReportsTile = ({ view, onOpen, ...props }: ReportsTileProps) => {
       title="Saved reports"
       description="Open one to load its segment and range."
       action={
-        <Button variant="outline" size="sm" onClick={save} disabled={saved}>
+        <Button variant="outline" size="sm" onClick={handleSave} disabled={saved}>
           <Plus aria-hidden />
           {saved ? 'Saved' : 'Save view'}
         </Button>

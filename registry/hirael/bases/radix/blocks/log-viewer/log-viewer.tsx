@@ -36,11 +36,11 @@ const LogViewer = ({ follow = true, className, children, ...props }: LogViewerPr
   const ref = React.useRef<HTMLDivElement>(null);
   const pinnedRef = React.useRef(true);
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = ref.current;
     if (!el) return;
     pinnedRef.current = el.scrollHeight - el.scrollTop - el.clientHeight < 24;
-  }, []);
+  };
 
   React.useEffect(() => {
     if (follow) pinnedRef.current = true;
@@ -138,9 +138,19 @@ const formatClock = (total: number) =>
     .map((part) => String(part).padStart(2, '0'))
     .join(':');
 
-type LogFilter = 'all' | 'info' | 'warn' | 'error';
+const LOG_FILTER_VALUES = ['all', 'info', 'warn', 'error'] as const;
 
-const FILTERS: { value: LogFilter; label: string; levels: LogLevel[] | null }[] = [
+type LogFilter = (typeof LOG_FILTER_VALUES)[number];
+
+const isLogFilter = (value: unknown): value is LogFilter => LOG_FILTER_VALUES.some((option) => option === value);
+
+interface LevelFilter {
+  value: LogFilter;
+  label: string;
+  levels: LogLevel[] | null;
+}
+
+const FILTERS: LevelFilter[] = [
   { value: 'all', label: 'All', levels: null },
   { value: 'info', label: 'Info', levels: ['debug', 'info', 'success'] },
   { value: 'warn', label: 'Warn', levels: ['warn'] },
@@ -186,7 +196,7 @@ const LogViewerBlock = () => {
             variant="outline"
             value={filter}
             onValueChange={(value) => {
-              if (value) setFilter(value as LogFilter);
+              if (isLogFilter(value)) setFilter(value);
             }}
             aria-label="Filter by level"
           >

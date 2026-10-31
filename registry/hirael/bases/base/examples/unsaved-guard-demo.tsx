@@ -10,6 +10,11 @@ import { UnsavedGuardProvider, useUnsavedGuard } from '@/registry/hirael/bases/b
 
 type Tab = 'profile' | 'billing';
 
+interface TabOption {
+  id: Tab;
+  label: React.ReactNode;
+}
+
 const UnsavedGuardDemoInner = () => {
   const t = useT();
   const nameId = React.useId();
@@ -37,7 +42,7 @@ const UnsavedGuardDemoInner = () => {
     });
   }
 
-  const tabs: { id: Tab; label: React.ReactNode }[] = [
+  const tabs: TabOption[] = [
     { id: 'profile', label: t({ en: 'Profile', ar: 'الملف الشخصي' }) },
     { id: 'billing', label: t({ en: 'Billing', ar: 'الفوترة' }) },
   ];

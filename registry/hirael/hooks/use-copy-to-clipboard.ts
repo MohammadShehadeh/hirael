@@ -16,29 +16,26 @@ export const useCopyToClipboard = ({ timeout = 2000, onCopy, onError }: UseCopyT
 
   React.useEffect(() => () => window.clearTimeout(timerRef.current), []);
 
-  const copy = React.useCallback(
-    async (text: string) => {
-      try {
-        await navigator.clipboard.writeText(text);
-      } catch (error) {
-        onError?.(error);
+  const copy = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch (error) {
+      onError?.(error);
 
-        return false;
-      }
-      setCopied(true);
-      onCopy?.(text);
-      window.clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(() => setCopied(false), timeout);
+      return false;
+    }
+    setCopied(true);
+    onCopy?.(text);
+    window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(() => setCopied(false), timeout);
 
-      return true;
-    },
-    [timeout, onCopy, onError],
-  );
+    return true;
+  };
 
-  const reset = React.useCallback(() => {
+  const reset = () => {
     window.clearTimeout(timerRef.current);
     setCopied(false);
-  }, []);
+  };
 
   return { copied, copy, reset };
 };

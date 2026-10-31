@@ -44,12 +44,17 @@ export interface CalloutProps extends Omit<React.ComponentProps<'div'>, 'title'>
   icon?: React.ElementType | React.ReactElement | false;
 }
 
+const CalloutTitle = ({ className, ...props }: React.ComponentProps<'div'>) => {
+  return <div data-slot="callout-title" className={cn('leading-5 font-semibold', className)} {...props} />;
+};
+
 const Callout = ({ title, icon, className, variant = 'info', children, ...props }: CalloutProps) => {
   const variantKey: CalloutVariant = variant === 'error' ? 'destructive' : (variant ?? 'info');
 
   const renderIcon = () => {
     if (icon === false) return null;
     if (React.isValidElement(icon)) return icon;
+    // Past the false and element checks, `icon` is a component.
     const IconComponent = (icon as React.ElementType | undefined) ?? variantIcons[variantKey];
 
     return <IconComponent className="size-5" />;
@@ -77,10 +82,6 @@ const Callout = ({ title, icon, className, variant = 'info', children, ...props 
       </div>
     </div>
   );
-};
-
-const CalloutTitle = ({ className, ...props }: React.ComponentProps<'div'>) => {
-  return <div data-slot="callout-title" className={cn('leading-5 font-semibold', className)} {...props} />;
 };
 
 const CalloutDescription = ({ className, ...props }: React.ComponentProps<'div'>) => {

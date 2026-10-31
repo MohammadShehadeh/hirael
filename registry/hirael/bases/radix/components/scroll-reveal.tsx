@@ -52,34 +52,32 @@ const ScrollReveal = ({
 }: ScrollRevealProps) => {
   const nodeRef = React.useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
+  // The handle is read after mount, when the node is attached.
   React.useImperativeHandle(ref, () => nodeRef.current as HTMLDivElement);
 
   // A callback ref, not an effect: observation starts when the node attaches and stops when it detaches.
-  const revealRef = React.useCallback(
-    (node: HTMLDivElement | null) => {
-      nodeRef.current = node;
-      if (!node || reduced) return;
-      let isHidden = false;
-      const stop = observeReveal(node, amount, (inView) => {
-        if (!inView) {
-          if (isHidden) return;
-          isHidden = true;
-          const { x, y } = offsetFor(direction, distance, getComputedStyle(node).direction === 'rtl');
-          animate(node, { opacity: 0, x, y }, { duration: 0 });
+  const revealRef = (node: HTMLDivElement | null) => {
+    nodeRef.current = node;
+    if (!node || reduced) return;
+    let isHidden = false;
+    const stop = observeReveal(node, amount, (inView) => {
+      if (!inView) {
+        if (isHidden) return;
+        isHidden = true;
+        const { x, y } = offsetFor(direction, distance, getComputedStyle(node).direction === 'rtl');
+        animate(node, { opacity: 0, x, y }, { duration: 0 });
 
-          return;
-        }
-        if (isHidden) {
-          isHidden = false;
-          animate(node, { opacity: 1, x: 0, y: 0 }, { duration: duration / 1000, delay: delay / 1000, ease: EASE });
-        }
-        if (once) stop();
-      });
+        return;
+      }
+      if (isHidden) {
+        isHidden = false;
+        animate(node, { opacity: 1, x: 0, y: 0 }, { duration: duration / 1000, delay: delay / 1000, ease: EASE });
+      }
+      if (once) stop();
+    });
 
-      return stop;
-    },
-    [reduced, amount, once, duration, delay, direction, distance],
-  );
+    return stop;
+  };
 
   return <motion.div ref={revealRef} data-slot="scroll-reveal" {...props} />;
 };

@@ -89,33 +89,27 @@ const Onboarding = ({
   const total = steps.length;
   const step = Math.min(Math.max(stepProp ?? internal, 0), Math.max(total - 1, 0));
 
-  const goTo = React.useCallback(
-    (next: number) => {
-      const clamped = Math.min(Math.max(next, 0), total - 1);
-      if (stepProp === undefined) setInternal(clamped);
-      onStepChange?.(clamped);
-    },
-    [stepProp, onStepChange, total],
-  );
+  const goTo = (next: number) => {
+    const clamped = Math.min(Math.max(next, 0), total - 1);
+    if (stepProp === undefined) setInternal(clamped);
+    onStepChange?.(clamped);
+  };
 
-  const next = React.useCallback(() => goTo(step + 1), [goTo, step]);
-  const back = React.useCallback(() => goTo(step - 1), [goTo, step]);
-  const complete = React.useCallback(() => onComplete?.(), [onComplete]);
+  const next = () => goTo(step + 1);
+  const back = () => goTo(step - 1);
+  const complete = () => onComplete?.();
 
-  const ctx = React.useMemo<OnboardingCtx>(
-    () => ({
-      step,
-      total,
-      steps,
-      isFirst: step === 0,
-      isLast: step === total - 1,
-      goTo,
-      next,
-      back,
-      complete,
-    }),
-    [step, total, steps, goTo, next, back, complete],
-  );
+  const ctx: OnboardingCtx = {
+    step,
+    total,
+    steps,
+    isFirst: step === 0,
+    isLast: step === total - 1,
+    goTo,
+    next,
+    back,
+    complete,
+  };
 
   return (
     <OnboardingContext.Provider value={ctx}>
@@ -246,7 +240,7 @@ const OnboardingFooter = ({
 }: OnboardingFooterProps) => {
   const { isFirst, isLast, next, back, complete } = useOnboarding();
 
-  const skip = () => {
+  const handleSkip = () => {
     onSkip?.();
     if (isLast) complete();
     else next();
@@ -265,7 +259,7 @@ const OnboardingFooter = ({
       <div className="flex items-center gap-2">
         {children}
         {skippable ? (
-          <Button type="button" variant="ghost" size="sm" onClick={skip}>
+          <Button type="button" variant="ghost" size="sm" onClick={handleSkip}>
             {skipLabel}
           </Button>
         ) : null}
@@ -363,7 +357,7 @@ const Onboarding01 = () => {
     true,
   ][step];
 
-  const restart = () => {
+  const handleRestart = () => {
     setDone(false);
     setStep(0);
     setWorkspace(DEMO_WORKSPACE);
@@ -398,9 +392,9 @@ const Onboarding01 = () => {
                   You can change any of this later in Settings.
                 </p>
               </div>
-              <Button type="button" size="lg" onClick={restart}>
+              <Button type="button" size="lg" onClick={handleRestart}>
                 Set up another workspace
-                <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
+                <ArrowRight className="rtl:rotate-180" aria-hidden />
               </Button>
             </div>
           ) : (
@@ -535,7 +529,7 @@ const Onboarding01 = () => {
                               onClick={() => setInvites((list) => list.filter((_, j) => j !== i))}
                               className="size-9 shrink-0"
                             >
-                              <X className="size-4" aria-hidden />
+                              <X aria-hidden />
                             </Button>
                           ) : null}
                         </div>

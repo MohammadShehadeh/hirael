@@ -61,6 +61,64 @@ export interface SparklineProps extends Omit<React.ComponentProps<'div'>, 'child
   children?: React.ReactNode;
 }
 
+type SparklineLineProps = Omit<React.ComponentProps<typeof Line>, 'dataKey' | 'ref'>;
+
+const SparklineLine = ({ strokeWidth = 1.5, ...props }: SparklineLineProps) => {
+  const { curve } = useSparkline();
+
+  return (
+    <Line
+      data-slot="sparkline-line"
+      dataKey="value"
+      type={curve ? 'monotone' : 'linear'}
+      stroke="currentColor"
+      strokeWidth={strokeWidth}
+      dot={false}
+      activeDot={{ r: 2.5, fill: 'currentColor', stroke: 'var(--background)', strokeWidth: 1.5 }}
+      isAnimationActive={false}
+      {...props}
+    />
+  );
+};
+
+type SparklineAreaProps = Omit<React.ComponentProps<typeof Area>, 'dataKey' | 'ref'>;
+
+const SparklineArea = ({ fillOpacity = 0.15, ...props }: SparklineAreaProps) => {
+  const { curve } = useSparkline();
+
+  return (
+    <Area
+      data-slot="sparkline-area"
+      dataKey="value"
+      type={curve ? 'monotone' : 'linear'}
+      fill="currentColor"
+      fillOpacity={fillOpacity}
+      stroke="none"
+      activeDot={false}
+      isAnimationActive={false}
+      {...props}
+    />
+  );
+};
+
+type SparklineBarsProps = Omit<React.ComponentProps<typeof Bar>, 'dataKey' | 'ref'>;
+
+const SparklineBars = ({ radius = 1, ...props }: SparklineBarsProps) => {
+  return (
+    <Bar
+      data-slot="sparkline-bars"
+      dataKey="value"
+      fill="currentColor"
+      fillOpacity={0.85}
+      radius={radius}
+      minPointSize={1}
+      activeBar={{ fillOpacity: 1 }}
+      isAnimationActive={false}
+      {...props}
+    />
+  );
+};
+
 const Sparkline = ({
   data,
   variant = 'line',
@@ -75,8 +133,8 @@ const Sparkline = ({
   ...props
 }: SparklineProps) => {
   const resolvedTone: ResolvedSparklineTone = tone === 'default' ? 'neutral' : tone;
-  const points = React.useMemo(() => data.map((value, index) => ({ index, value })), [data]);
-  const ctx = React.useMemo<SparklineCtx>(() => ({ data, curve }), [data, curve]);
+  const points = data.map((value, index) => ({ index, value }));
+  const ctx: SparklineCtx = { data, curve };
 
   const summary =
     label ??
@@ -134,64 +192,6 @@ const Sparkline = ({
         </ComposedChart>
       </div>
     </SparklineContext.Provider>
-  );
-};
-
-type SparklineLineProps = Omit<React.ComponentProps<typeof Line>, 'dataKey' | 'ref'>;
-
-const SparklineLine = ({ strokeWidth = 1.5, ...props }: SparklineLineProps) => {
-  const { curve } = useSparkline();
-
-  return (
-    <Line
-      data-slot="sparkline-line"
-      dataKey="value"
-      type={curve ? 'monotone' : 'linear'}
-      stroke="currentColor"
-      strokeWidth={strokeWidth}
-      dot={false}
-      activeDot={{ r: 2.5, fill: 'currentColor', stroke: 'var(--background)', strokeWidth: 1.5 }}
-      isAnimationActive={false}
-      {...props}
-    />
-  );
-};
-
-type SparklineAreaProps = Omit<React.ComponentProps<typeof Area>, 'dataKey' | 'ref'>;
-
-const SparklineArea = ({ fillOpacity = 0.15, ...props }: SparklineAreaProps) => {
-  const { curve } = useSparkline();
-
-  return (
-    <Area
-      data-slot="sparkline-area"
-      dataKey="value"
-      type={curve ? 'monotone' : 'linear'}
-      fill="currentColor"
-      fillOpacity={fillOpacity}
-      stroke="none"
-      activeDot={false}
-      isAnimationActive={false}
-      {...props}
-    />
-  );
-};
-
-type SparklineBarsProps = Omit<React.ComponentProps<typeof Bar>, 'dataKey' | 'ref'>;
-
-const SparklineBars = ({ radius = 1, ...props }: SparklineBarsProps) => {
-  return (
-    <Bar
-      data-slot="sparkline-bars"
-      dataKey="value"
-      fill="currentColor"
-      fillOpacity={0.85}
-      radius={radius}
-      minPointSize={1}
-      activeBar={{ fillOpacity: 1 }}
-      isAnimationActive={false}
-      {...props}
-    />
   );
 };
 
@@ -254,6 +254,7 @@ const SparklineTooltip = ({ format, children, className }: SparklineTooltipProps
       allowEscapeViewBox={{ y: true }}
       position={{ y: 0 }}
       content={({ active, payload }) => {
+        // Recharts types the payload as any; it's one of the points built above.
         const point = payload?.[0]?.payload as { index: number; value: number } | undefined;
         if (!active || !point) return null;
 

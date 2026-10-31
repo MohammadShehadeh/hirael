@@ -3,10 +3,15 @@
 
 export type ThemeTokens = Record<string, string>;
 
+interface ThemeCssVars {
+  light: ThemeTokens;
+  dark: ThemeTokens;
+}
+
 export interface ThemeItem {
   name: string;
   title: string;
-  cssVars: { light: ThemeTokens; dark: ThemeTokens };
+  cssVars: ThemeCssVars;
 }
 
 export const HIRAEL_THEME: ThemeItem = {

@@ -83,8 +83,15 @@ const FooterColumn = ({ title, delay = 0, className, children, ...props }: Foote
   );
 };
 
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+  ltr?: boolean;
+}
+
 interface FooterLinksProps extends React.ComponentProps<'ul'> {
-  links: readonly { label: string; href: string; external?: boolean; ltr?: boolean }[];
+  links: readonly FooterLink[];
   /** Milliseconds to wait before the first link reveals. */
   delay?: number;
 }

@@ -106,29 +106,23 @@ const NumberRange = ({
     defaultProp: defaultValue ?? [min, max],
     onChange: onValueChange,
   });
-  const setValue = React.useCallback(
-    (next: NumberRangeValue) => {
-      const clamped = clampPair(next, min, max);
-      setControlledValue(clamped);
-    },
-    [setControlledValue, min, max],
-  );
+  const setValue = (next: NumberRangeValue) => {
+    const clamped = clampPair(next, min, max);
+    setControlledValue(clamped);
+  };
 
-  const ctx = React.useMemo<NumberRangeContextValue>(
-    () => ({
-      value,
-      setValue,
-      min,
-      max,
-      step,
-      disabled,
-      format,
-      parse,
-      prefix,
-      suffix,
-    }),
-    [value, setValue, min, max, step, disabled, format, parse, prefix, suffix],
-  );
+  const ctx: NumberRangeContextValue = {
+    value,
+    setValue,
+    min,
+    max,
+    step,
+    disabled,
+    format,
+    parse,
+    prefix,
+    suffix,
+  };
 
   return (
     <NumberRangeContext.Provider value={ctx}>
@@ -150,9 +144,11 @@ const NumberRangeSlider = ({
       min={ctx.min}
       max={ctx.max}
       step={ctx.step}
-      value={ctx.value as number[]}
+      value={ctx.value}
       disabled={ctx.disabled}
-      onValueChange={(v) => ctx.setValue(v as NumberRangeValue)}
+      onValueChange={(v) => {
+        if (typeof v !== 'number') ctx.setValue([v[0], v[1]]);
+      }}
       data-slot="number-range-slider"
       className={className}
       {...props}

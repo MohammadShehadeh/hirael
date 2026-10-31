@@ -82,102 +82,6 @@ export interface DurationInputProps extends Omit<React.ComponentProps<'div'>, 'd
   children?: React.ReactNode;
 }
 
-const DurationInput = ({
-  value: valueProp,
-  defaultValue = null,
-  onValueChange,
-  units: unitsProp,
-  max,
-  disabled,
-  readOnly,
-  className,
-  children,
-  ...props
-}: DurationInputProps) => {
-  const [seconds, setControlledSeconds] = useControllableState<number | null>({
-    prop: valueProp,
-    defaultProp: defaultValue,
-    onChange: onValueChange,
-  });
-
-  const unitsKey = sortUnits(unitsProp ?? ['h', 'm']).join('') || 'hm';
-  const units = React.useMemo(() => unitsKey.split('') as DurationUnit[], [unitsKey]);
-
-  const [draft, setDraft] = React.useState<DurationDraft | null>(null);
-
-  const setSeconds = React.useCallback(
-    (next: number | null) => {
-      const clamped = next === null ? null : Math.max(0, max === undefined ? next : Math.min(max, next));
-      setControlledSeconds(clamped);
-    },
-    [setControlledSeconds, max],
-  );
-
-  const parts = React.useMemo(() => splitDuration(seconds ?? 0, units), [seconds, units]);
-
-  const maxFor = React.useCallback(
-    (unit: DurationUnit) => {
-      const index = units.indexOf(unit);
-      if (index > 0) return UNIT_SECONDS[units[index - 1]] / UNIT_SECONDS[unit] - 1;
-
-      return max === undefined ? Infinity : Math.floor(max / UNIT_SECONDS[unit]);
-    },
-    [units, max],
-  );
-
-  const widthFor = React.useCallback(
-    (unit: DurationUnit) => {
-      const limit = maxFor(unit);
-
-      return Number.isFinite(limit) ? Math.max(2, String(limit).length) : 3;
-    },
-    [maxFor],
-  );
-
-  const setUnit = React.useCallback(
-    (unit: DurationUnit, next: number) => {
-      if (disabled || readOnly) return;
-      const bounded = Math.max(0, Math.min(maxFor(unit), next));
-      setSeconds(joinDuration({ ...parts, [unit]: bounded }, units));
-    },
-    [disabled, readOnly, maxFor, parts, units, setSeconds],
-  );
-
-  const clear = React.useCallback(() => {
-    setDraft(null);
-    setSeconds(null);
-  }, [setSeconds]);
-
-  const ctx = React.useMemo<DurationInputContextValue>(
-    () => ({
-      seconds,
-      units,
-      parts,
-      maxFor,
-      widthFor,
-      setUnit,
-      clear,
-      draft,
-      setDraft,
-      disabled,
-      readOnly,
-    }),
-    [seconds, units, parts, maxFor, widthFor, setUnit, clear, draft, disabled, readOnly],
-  );
-
-  return (
-    <DurationInputContext.Provider value={ctx}>
-      <div role="group" data-slot="duration-input" className={cn('flex flex-col gap-2', className)} {...props}>
-        {children ?? (
-          <DurationInputContainer>
-            <DurationInputSegments />
-          </DurationInputContainer>
-        )}
-      </div>
-    </DurationInputContext.Provider>
-  );
-};
-
 const DurationInputContainer = ({ className, children, onMouseDown, ...props }: React.ComponentProps<'div'>) => {
   const ctx = useDurationInput();
 
@@ -232,7 +136,8 @@ const DurationInputSegment = ({
   const limit = ctx.maxFor(unit);
   const draftText = ctx.draft?.unit === unit ? ctx.draft.text : null;
   const editing = draftText !== null;
-  const display = editing ? draftText : ctx.seconds === null ? '' : String(ctx.parts[unit]).padStart(2, '0');
+  const committed = ctx.seconds === null ? '' : String(ctx.parts[unit]).padStart(2, '0');
+  const display = draftText ?? committed;
 
   const focusSibling = (el: HTMLElement, delta: number) => {
     const next = ctx.units[ctx.units.indexOf(unit) + delta];
@@ -330,6 +235,87 @@ const DurationInputSegments = ({ className, ...props }: React.ComponentProps<'sp
         <DurationInputSegment key={unit} unit={unit} />
       ))}
     </span>
+  );
+};
+
+const DurationInput = ({
+  value: valueProp,
+  defaultValue = null,
+  onValueChange,
+  units: unitsProp,
+  max,
+  disabled,
+  readOnly,
+  className,
+  children,
+  ...props
+}: DurationInputProps) => {
+  const [seconds, setControlledSeconds] = useControllableState<number | null>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: onValueChange,
+  });
+
+  const unitsKey = sortUnits(unitsProp ?? ['h', 'm']).join('') || 'hm';
+  const units = UNIT_ORDER.filter((unit) => unitsKey.includes(unit));
+
+  const [draft, setDraft] = React.useState<DurationDraft | null>(null);
+
+  const setSeconds = (next: number | null) => {
+    const clamped = next === null ? null : Math.max(0, max === undefined ? next : Math.min(max, next));
+    setControlledSeconds(clamped);
+  };
+
+  const parts = splitDuration(seconds ?? 0, units);
+
+  const maxFor = (unit: DurationUnit) => {
+    const index = units.indexOf(unit);
+    if (index > 0) return UNIT_SECONDS[units[index - 1]] / UNIT_SECONDS[unit] - 1;
+
+    return max === undefined ? Infinity : Math.floor(max / UNIT_SECONDS[unit]);
+  };
+
+  const widthFor = (unit: DurationUnit) => {
+    const limit = maxFor(unit);
+
+    return Number.isFinite(limit) ? Math.max(2, String(limit).length) : 3;
+  };
+
+  const setUnit = (unit: DurationUnit, next: number) => {
+    if (disabled || readOnly) return;
+    const bounded = Math.max(0, Math.min(maxFor(unit), next));
+    setSeconds(joinDuration({ ...parts, [unit]: bounded }, units));
+  };
+
+  const clear = () => {
+    setDraft(null);
+    setSeconds(null);
+  };
+
+  const ctx: DurationInputContextValue = {
+    seconds,
+    units,
+    parts,
+    maxFor,
+    widthFor,
+    setUnit,
+    clear,
+    draft,
+    setDraft,
+    disabled,
+    readOnly,
+  };
+
+  return (
+    <DurationInputContext.Provider value={ctx}>
+      <div role="group" data-slot="duration-input" className={cn('flex flex-col gap-2', className)} {...props}>
+        {children ?? (
+          <DurationInputContainer>
+            <DurationInputSegments />
+          </DurationInputContainer>
+        )}
+      </div>
+    </DurationInputContext.Provider>
   );
 };
 

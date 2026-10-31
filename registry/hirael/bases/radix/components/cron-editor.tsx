@@ -11,7 +11,9 @@ import { useControllableState } from '@/registry/hirael/hooks/use-controllable-s
 
 export type CronField = 'minute' | 'hour' | 'dayOfMonth' | 'month' | 'dayOfWeek';
 
-export type CronFieldMode = 'every' | 'specific' | 'step';
+const CRON_FIELD_MODES = ['every', 'specific', 'step'] as const;
+
+export type CronFieldMode = (typeof CRON_FIELD_MODES)[number];
 
 export interface CronFieldValue {
   mode: CronFieldMode;
@@ -33,7 +35,12 @@ export interface ParsedCron {
 
 export const CRON_FIELDS: readonly CronField[] = ['minute', 'hour', 'dayOfMonth', 'month', 'dayOfWeek'] as const;
 
-const FIELD_RANGE: Record<CronField, { min: number; max: number }> = {
+interface FieldRange {
+  min: number;
+  max: number;
+}
+
+const FIELD_RANGE: Record<CronField, FieldRange> = {
   minute: { min: 0, max: 59 },
   hour: { min: 0, max: 23 },
   dayOfMonth: { min: 1, max: 31 },
@@ -231,11 +238,12 @@ const joinList = (items: string[]): string => {
   return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
 };
 
+const ORDINAL_SUFFIXES = ['th', 'st', 'nd', 'rd'];
+
 const ordinal = (n: number): string => {
-  const s = ['th', 'st', 'nd', 'rd'];
   const v = n % 100;
 
-  return `${n}${s[(v - 20) % 10] ?? s[v] ?? s[0]}`;
+  return `${n}${ORDINAL_SUFFIXES[(v - 20) % 10] ?? ORDINAL_SUFFIXES[v] ?? ORDINAL_SUFFIXES[0]}`;
 };
 
 const pad2 = (n: number): string => {
@@ -403,26 +411,20 @@ const CronEditor = ({
     onChange: onValueChange,
   });
 
-  const parsed = React.useMemo(() => parseCron(value), [value]);
+  const parsed = parseCron(value);
 
-  const setField = React.useCallback(
-    (field: CronField, patch: Partial<Pick<CronFieldValue, 'mode' | 'values' | 'step'>>) => {
-      // Keep the other fields as typed; reformatting them would expand ranges and turn invalid tokens into `*`.
-      const tokens = value.trim().split(/\s+/);
-      const next = CRON_FIELDS.map((f, i) => {
-        if (f === field) return formatCronField({ ...parsed.fields[f], ...patch });
+  const setField = (field: CronField, patch: Partial<Pick<CronFieldValue, 'mode' | 'values' | 'step'>>) => {
+    // Keep the other fields as typed; reformatting them would expand ranges and turn invalid tokens into `*`.
+    const tokens = value.trim().split(/\s+/);
+    const next = CRON_FIELDS.map((f, i) => {
+      if (f === field) return formatCronField({ ...parsed.fields[f], ...patch });
 
-        return tokens.length === CRON_FIELDS.length ? tokens[i] : parsed.fields[f].raw;
-      });
-      setValue(next.join(' '));
-    },
-    [value, parsed, setValue],
-  );
+      return tokens.length === CRON_FIELDS.length ? tokens[i] : parsed.fields[f].raw;
+    });
+    setValue(next.join(' '));
+  };
 
-  const ctx = React.useMemo<CronEditorContextValue>(
-    () => ({ id: editorId, value, setValue, parsed, setField, disabled }),
-    [editorId, value, setValue, parsed, setField, disabled],
-  );
+  const ctx: CronEditorContextValue = { id: editorId, value, setValue, parsed, setField, disabled };
 
   return (
     <CronEditorContext.Provider value={ctx}>
@@ -519,23 +521,6 @@ interface CronEditorFieldsProps extends Omit<React.ComponentProps<'div'>, 'child
   modeLabels?: Partial<Record<CronFieldMode, string>>;
 }
 
-const CronEditorFields = ({ fields = CRON_FIELDS, labels, modeLabels, className, ...props }: CronEditorFieldsProps) => {
-  const fieldLabels = { ...DEFAULT_FIELD_LABELS, ...labels };
-  const modes = { ...DEFAULT_MODE_LABELS, ...modeLabels };
-
-  return (
-    <div
-      data-slot="cron-editor-fields"
-      className={cn('grid gap-3 sm:grid-cols-2 lg:grid-cols-3', className)}
-      {...props}
-    >
-      {fields.map((field) => (
-        <CronEditorField key={field} field={field} label={fieldLabels[field]} modeLabels={modes} />
-      ))}
-    </div>
-  );
-};
-
 interface CronEditorFieldProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   field: CronField;
   label?: string;
@@ -587,7 +572,8 @@ const CronEditorField = ({
           data-slot="cron-editor-field-mode"
           className="text-xs"
           onChange={(e) => {
-            const mode = e.target.value as CronFieldMode;
+            const mode = CRON_FIELD_MODES.find((option) => option === e.target.value);
+            if (!mode) return;
             if (mode === 'every') ctx.setField(field, { mode });
             else if (mode === 'step') {
               ctx.setField(field, {
@@ -667,6 +653,23 @@ const CronEditorField = ({
         </div>
       )}
     </Field>
+  );
+};
+
+const CronEditorFields = ({ fields = CRON_FIELDS, labels, modeLabels, className, ...props }: CronEditorFieldsProps) => {
+  const fieldLabels = { ...DEFAULT_FIELD_LABELS, ...labels };
+  const modes = { ...DEFAULT_MODE_LABELS, ...modeLabels };
+
+  return (
+    <div
+      data-slot="cron-editor-fields"
+      className={cn('grid gap-3 sm:grid-cols-2 lg:grid-cols-3', className)}
+      {...props}
+    >
+      {fields.map((field) => (
+        <CronEditorField key={field} field={field} label={fieldLabels[field]} modeLabels={modes} />
+      ))}
+    </div>
   );
 };
 
@@ -777,25 +780,17 @@ const CronEditorNextRuns = ({
   const ctx = useCronEditor();
   const stamp = React.useSyncExternalStore(subscribeMinute, getMinuteStamp, getServerMinuteStamp);
 
-  const runs = React.useMemo(() => {
-    if (stamp === 0 || !ctx.parsed.valid) return [];
+  const runs = stamp === 0 || !ctx.parsed.valid ? [] : nextCronRuns(ctx.value, count, new Date(stamp * 60_000));
 
-    return nextCronRuns(ctx.value, count, new Date(stamp * 60_000));
-  }, [stamp, ctx.parsed.valid, ctx.value, count]);
-
-  const formatter = React.useMemo(
-    () =>
-      new Intl.DateTimeFormat(
-        locale,
-        formatOptions ?? {
-          weekday: 'short',
-          month: 'short',
-          day: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-        },
-      ),
-    [locale, formatOptions],
+  const formatter = new Intl.DateTimeFormat(
+    locale,
+    formatOptions ?? {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    },
   );
 
   return (

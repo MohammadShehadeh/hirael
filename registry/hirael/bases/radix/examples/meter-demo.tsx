@@ -13,6 +13,8 @@ import {
   MeterValue,
 } from '@/registry/hirael/bases/radix/components/meter';
 
+const count = new Intl.NumberFormat('en-US');
+
 const MeterDemo = () => {
   const t = useT();
   const [requests, setRequests] = React.useState(8420);
@@ -62,8 +64,8 @@ const MeterDemo = () => {
             ]}
             getValueText={(v, max) =>
               t({
-                en: `${v.toLocaleString('en-US')} of ${max.toLocaleString('en-US')} requests`,
-                ar: `${v.toLocaleString('en-US')} من ${max.toLocaleString('en-US')} طلب`,
+                en: `${count.format(v)} of ${count.format(max)} requests`,
+                ar: `${count.format(v)} من ${count.format(max)} طلب`,
               })
             }
           >
@@ -71,8 +73,8 @@ const MeterDemo = () => {
               <MeterLabel>{t({ en: 'API requests today', ar: 'طلبات API اليوم' })}</MeterLabel>
               <MeterValue>
                 {t({
-                  en: `${requests.toLocaleString('en-US')} of 10,000`,
-                  ar: `${requests.toLocaleString('en-US')} من 10,000`,
+                  en: `${count.format(requests)} of 10,000`,
+                  ar: `${count.format(requests)} من 10,000`,
                 })}
               </MeterValue>
             </MeterHeader>

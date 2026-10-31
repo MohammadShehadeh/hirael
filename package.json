@@ -93,7 +93,9 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@babel/core": "^7.29.7",
     "@eslint/compat": "^2.1.1",
+    "@rolldown/plugin-babel": "^0.2.4",
     "@shadcn/lint": "^0.2.3",
     "@stylistic/eslint-plugin": "^5.10.0",
     "@tailwindcss/postcss": "^4.3.3",
@@ -101,6 +103,7 @@
     "@testing-library/jest-dom": "^7.0.1",
     "@testing-library/react": "^16.3.3",
     "@testing-library/user-event": "^14.6.8",
+    "@types/babel__core": "^7.20.5",
     "@types/mdx": "^2.0.14",
     "@types/node": "^26.6.5",
     "@types/react": "19.3.0",

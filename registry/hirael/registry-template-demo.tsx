@@ -5,8 +5,8 @@ import * as React from 'react';
 import { lazyDemo, LazyDemo, type DemoModule } from '@/registry/hirael/registry-lazy';
 import { DEFAULT_BASE, type RegistryBase } from '@/registry/hirael/registry-meta';
 
-const loadTemplate = (base: RegistryBase, name: string) =>
-  import(`./bases/${base}/templates/${name}/${name}`) as Promise<DemoModule>;
+const loadTemplate = (base: RegistryBase, name: string): Promise<DemoModule> =>
+  import(`./bases/${base}/templates/${name}/${name}`);
 
 export interface RegistryTemplateProps {
   name: string;

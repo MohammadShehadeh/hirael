@@ -61,13 +61,12 @@ const Masonry = ({
   const [assignment, setAssignment] = React.useState<number[][] | null>(null);
 
   const heightsRef = React.useRef(new Map<number, number>());
-  const nodesRef = React.useRef(new Map<number, HTMLDivElement>());
-  const itemRefsRef = React.useRef(new Map<number, (node: HTMLDivElement | null) => void>());
+  const nodesRef = React.useRef(new Set<HTMLDivElement>());
   const observerRef = React.useRef<ResizeObserver | null>(null);
   const rafRef = React.useRef(0);
   const containerRef = React.useRef<HTMLDivElement | null>(null);
 
-  const setContainerRef = React.useMemo(() => composeRefs(containerRef, ref), [ref]);
+  const setContainerRef = composeRefs(containerRef, ref);
 
   // Layout effect so a client render settles on the measured column count before paint.
   React.useLayoutEffect(() => {
@@ -114,7 +113,7 @@ const Masonry = ({
     const observer = new ResizeObserver((entries) => {
       let changed = false;
       for (const entry of entries) {
-        const index = Number((entry.target as HTMLElement).dataset.masonryIndex);
+        const index = entry.target instanceof HTMLElement ? Number(entry.target.dataset.masonryIndex) : Number.NaN;
         if (Number.isNaN(index)) continue;
         const height = entry.borderBoxSize?.[0]?.blockSize ?? entry.target.getBoundingClientRect().height;
         if (heightsRef.current.get(index) !== height) {
@@ -135,24 +134,16 @@ const Masonry = ({
     };
   }, [columnCount, gap, itemCount]);
 
-  const getItemRef = (index: number) => {
-    let callback = itemRefsRef.current.get(index);
-    if (!callback) {
-      callback = (node: HTMLDivElement | null) => {
-        const prev = nodesRef.current.get(index);
-        if (prev && observerRef.current) observerRef.current.unobserve(prev);
-        if (node) {
-          nodesRef.current.set(index, node);
-          observerRef.current?.observe(node);
-        } else {
-          nodesRef.current.delete(index);
-          heightsRef.current.delete(index);
-        }
-      };
-      itemRefsRef.current.set(index, callback);
-    }
+  const trackItem = (index: number, node: HTMLDivElement | null) => {
+    if (!node) return;
+    nodesRef.current.add(node);
+    observerRef.current?.observe(node);
 
-    return callback;
+    return () => {
+      observerRef.current?.unobserve(node);
+      nodesRef.current.delete(node);
+      heightsRef.current.delete(index);
+    };
   };
 
   const distribution =
@@ -168,7 +159,6 @@ const Masonry = ({
       className={cn('flex w-full min-w-0 items-start', className)}
       {...props}
     >
-      {/* eslint-disable-next-line react-hooks/refs */}
       {distribution.map((columnIndices, column) => (
         <div
           key={column}
@@ -181,15 +171,9 @@ const Masonry = ({
             const key = React.isValidElement(child) && child.key != null ? child.key : index;
 
             return (
-              <div
-                key={key}
-                ref={getItemRef(index)}
-                data-slot="masonry-item-wrapper"
-                data-masonry-index={index}
-                className="min-w-0"
-              >
+              <MasonryCell key={key} index={index} onTrack={trackItem}>
                 {child}
-              </div>
+              </MasonryCell>
             );
           })}
         </div>
@@ -197,6 +181,24 @@ const Masonry = ({
     </div>
   );
 };
+
+interface MasonryCellProps {
+  index: number;
+  onTrack: (index: number, node: HTMLDivElement | null) => (() => void) | undefined;
+  children: React.ReactNode;
+}
+
+// Its own component so the ref callback only changes when the item's index does.
+const MasonryCell = ({ index, onTrack, children }: MasonryCellProps) => (
+  <div
+    ref={(node) => onTrack(index, node)}
+    data-slot="masonry-item-wrapper"
+    data-masonry-index={index}
+    className="min-w-0"
+  >
+    {children}
+  </div>
+);
 
 const MasonryItem = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return <div data-slot="masonry-item" className={cn('min-w-0', className)} {...props} />;

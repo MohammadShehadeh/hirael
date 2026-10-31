@@ -15,7 +15,11 @@ const SWAP =
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 60}ms` });
 
-type View = 'before' | 'after';
+const VIEW_VALUES = ['before', 'after'] as const;
+
+type View = (typeof VIEW_VALUES)[number];
+
+const isView = (value: unknown): value is View => VIEW_VALUES.some((option) => option === value);
 
 const BEFORE = [
   'A combobox lives in three components, each with its own keyboard handling',
@@ -58,7 +62,9 @@ const Comparison03 = () => {
           data-slot="comparison-switch"
           variant="outline"
           value={[view]}
-          onValueChange={([next]) => next && setView(next as View)}
+          onValueChange={([next]) => {
+            if (isView(next)) setView(next);
+          }}
           aria-label="Show"
           style={stagger(2)}
           className={cn(ENTER, 'mt-10 w-full md:hidden')}

@@ -15,8 +15,17 @@ const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-300 ${EASE} fil
 
 const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
-type ColumnId = 'now' | 'next' | 'later';
-type Sort = 'votes' | 'newest';
+const COLUMN_ID_VALUES = ['now', 'next', 'later'] as const;
+
+type ColumnId = (typeof COLUMN_ID_VALUES)[number];
+
+const isColumnId = (value: unknown): value is ColumnId => COLUMN_ID_VALUES.some((option) => option === value);
+
+const SORT_VALUES = ['votes', 'newest'] as const;
+
+type Sort = (typeof SORT_VALUES)[number];
+
+const isSort = (value: unknown): value is Sort => SORT_VALUES.some((option) => option === value);
 
 interface RoadmapItem {
   id: string;
@@ -31,7 +40,13 @@ interface RoadmapItem {
   shipped?: string;
 }
 
-const COLUMNS: readonly { id: ColumnId; title: string; meaning: string }[] = [
+interface Column {
+  id: ColumnId;
+  title: string;
+  meaning: string;
+}
+
+const COLUMNS: readonly Column[] = [
   { id: 'now', title: 'Now', meaning: 'Being built this cycle' },
   { id: 'next', title: 'Next', meaning: 'Planned for the next cycle' },
   { id: 'later', title: 'Later', meaning: 'On our list, not scheduled yet' },
@@ -133,10 +148,11 @@ const ITEMS: readonly RoadmapItem[] = [
 
 // Sorts on the stored count so an item doesn't jump from under the cursor when voted.
 const sortItems = (items: readonly RoadmapItem[], sort: Sort) =>
-  [...items].sort((a, b) => (sort === 'votes' ? b.votes - a.votes : b.added.localeCompare(a.added)));
+  items.toSorted((a, b) => (sort === 'votes' ? b.votes - a.votes : b.added.localeCompare(a.added)));
 
-const formatAdded = (date: string) =>
-  new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', timeZone: 'UTC' }).format(new Date(date));
+const addedDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: '2-digit', timeZone: 'UTC' });
+
+const formatAdded = (date: string) => addedDate.format(new Date(date));
 
 interface UpvoteProps {
   count: number;
@@ -225,7 +241,7 @@ const Changelog02 = () => {
               value={[sort]}
               onValueChange={([next]) => {
                 // Keep one option selected when the active one is clicked again.
-                if (next) setSort(next as Sort);
+                if (isSort(next)) setSort(next);
               }}
               aria-labelledby="changelog-02-sort"
               data-slot="roadmap-sort"
@@ -239,7 +255,9 @@ const Changelog02 = () => {
         <div style={stagger(4, 80)} className={cn(ENTER, 'flex flex-col gap-4')}>
           <Tabs
             value={activeColumn}
-            onValueChange={(value) => setActiveColumn(value as ColumnId)}
+            onValueChange={(value) => {
+              if (isColumnId(value)) setActiveColumn(value);
+            }}
             aria-label="Roadmap column"
             className="md:hidden"
           >

@@ -15,7 +15,13 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
-const FAQS: readonly { id: string; q: string; a: string }[] = [
+interface Faq {
+  id: string;
+  q: string;
+  a: string;
+}
+
+const FAQS: readonly Faq[] = [
   {
     id: 'item-1',
     q: 'Is there a free plan?',

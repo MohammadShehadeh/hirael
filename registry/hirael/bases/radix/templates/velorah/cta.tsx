@@ -6,7 +6,7 @@ export const Cta = () => {
   return (
     <section className="relative flex min-h-[90vh] flex-col items-center justify-center overflow-hidden px-6 text-center">
       <video
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        className="absolute inset-0 z-0 size-full object-cover"
         src={CTA_VIDEO}
         autoPlay
         loop

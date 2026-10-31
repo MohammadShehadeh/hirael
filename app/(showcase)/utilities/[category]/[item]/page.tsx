@@ -10,8 +10,13 @@ export function generateStaticParams() {
   return UTILITIES.map((entry) => ({ category: utilityKind(entry), item: entry.name }));
 }
 
+interface UtilityRouteParams {
+  category: string;
+  item: string;
+}
+
 interface UtilityRouteProps {
-  params: Promise<{ category: string; item: string }>;
+  params: Promise<UtilityRouteParams>;
 }
 
 const findEntry = (category: string, item: string) => {

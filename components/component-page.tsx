@@ -88,6 +88,275 @@ export interface ComponentPageProps {
   extras?: DetailExtras;
 }
 
+interface PageSection {
+  id: string;
+  label: string;
+  content: React.ReactNode;
+}
+
+const githubSourceUrl = (entry: RegistryEntryMeta, base: RegistryBase) => {
+  const files = entry.files ?? [];
+  const primary = files[0]?.path;
+  if (!primary) return null;
+  const repoPath = registryFilePath(base, primary);
+  if (files.length === 1) return `${SITE.githubRepoUrl}/blob/main/${repoPath}`;
+  const dir = repoPath.slice(0, repoPath.lastIndexOf('/'));
+
+  return `${SITE.githubRepoUrl}/tree/main/${dir}`;
+};
+
+interface HeaderActionProps {
+  href: string;
+  title: string;
+  icon: React.ReactNode;
+  children: React.ReactNode;
+}
+
+const HeaderAction = ({ href, title, icon, children }: HeaderActionProps) => {
+  return (
+    <Button asChild variant="ghost" size="sm">
+      <a href={href} target="_blank" rel="noreferrer noopener" title={title}>
+        {icon}
+        {children}
+      </a>
+    </Button>
+  );
+};
+
+interface SectionProps {
+  id: string;
+  label: string;
+  children: React.ReactNode;
+}
+
+const Section = ({ id, label, children }: SectionProps) => {
+  return (
+    <section id={id} className="flex scroll-mt-16 flex-col gap-4">
+      <a
+        href={`#${id}`}
+        className="group/anchor inline-flex w-fit items-center gap-1.5"
+        aria-label={`${label} section`}
+      >
+        <SectionLabel>{label}</SectionLabel>
+        <Hash
+          className="size-3 text-muted-foreground opacity-0 transition-opacity group-hover/anchor:opacity-100"
+          aria-hidden
+        />
+      </a>
+      {children}
+    </section>
+  );
+};
+
+interface ExampleBlockProps {
+  entry: RegistryEntryMeta;
+  example: ExampleEntry;
+  showTitle: boolean;
+  eager: boolean;
+}
+
+// Same floor as the embed shell.
+const EXAMPLE_MIN_HEIGHT = 360;
+const EXAMPLE_MAX_HEIGHT = 1200;
+
+const EXAMPLE_VIEW_VALUES = ['preview', 'code'] as const;
+
+type ExampleView = (typeof EXAMPLE_VIEW_VALUES)[number];
+
+const isExampleView = (value: string): value is ExampleView => EXAMPLE_VIEW_VALUES.some((option) => option === value);
+
+// Framed because a theme or direction class on this page can't reach dialogs and popovers that portal out.
+const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) => {
+  const [view, setView] = React.useState<ExampleView>('preview');
+  const [isRtl, setIsRtl] = React.useState(false);
+  const [refreshKey, setRefreshKey] = React.useState(0);
+  const previewTheme = usePreviewTheme();
+  const base = useRegistryBase();
+  const hasCode = !!example.source;
+  const src = previewSrc(exampleEmbedHref(entry, example.slug, base), { theme: previewTheme.previewMode, isRtl });
+
+  return (
+    <section data-slot="example" className="flex flex-col gap-3">
+      {showTitle && <h3 className="text-sm font-medium tracking-[-0.01em]">{example.title}</h3>}
+      <div className="relative overflow-hidden rounded-md border border-border">
+        <div className="flex items-center justify-between gap-2 border-b border-border/70 bg-card/40 px-3 py-2">
+          <SegmentedControl
+            role="tab"
+            ariaLabel="Example view"
+            value={view}
+            onValueChange={(v) => {
+              if (isExampleView(v)) setView(v);
+            }}
+            className="rounded-md border border-border/70 bg-card/30 p-0.5"
+            itemClassName="rounded-sm px-2.5 py-1 text-xs uppercase"
+            items={[
+              { value: 'preview', label: 'preview' },
+              {
+                value: 'code',
+                label: 'code',
+                disabled: !hasCode,
+                title: hasCode ? undefined : 'No example source for this item',
+              },
+            ]}
+          />
+          {view === 'preview' && (
+            <div className="flex items-center gap-1">
+              <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
+              <PreviewThemeButton theme={previewTheme} />
+              <PreviewRefreshButton onRefresh={() => setRefreshKey((k) => k + 1)} />
+              <PreviewOpenButton href={src} />
+              <PreviewMoreMenu entry={entry} />
+            </div>
+          )}
+        </div>
+
+        {view === 'preview' ? (
+          <PreviewFrame
+            src={src}
+            title={`${entry.title} ${example.title.toLowerCase()} preview`}
+            refreshKey={refreshKey}
+            initialHeight={EXAMPLE_MIN_HEIGHT}
+            minHeight={EXAMPLE_MIN_HEIGHT}
+            maxHeight={EXAMPLE_MAX_HEIGHT}
+            eager={eager}
+            className="w-full"
+          />
+        ) : example.source ? (
+          <CodeBlock
+            tabs={[
+              {
+                label: `${example.slug}.tsx`,
+                code: example.source.code,
+                html: example.source.html,
+              },
+            ]}
+          />
+        ) : null}
+      </div>
+    </section>
+  );
+};
+
+interface DepGroupProps {
+  title: string;
+  deps: string[];
+}
+
+const DepGroup = ({ title, deps }: DepGroupProps) => {
+  return (
+    <div className="rounded-sm border border-border bg-card p-4">
+      <h3 className="mb-2 text-xs text-muted-foreground uppercase">{title}</h3>
+      <div className="flex flex-wrap gap-1.5">
+        {deps.map((d) => (
+          <span key={d} className="rounded-sm border border-border px-1.5 py-0 text-xs uppercase">
+            {d}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const API_TH = 'px-4 py-2 text-start';
+const API_TH_LABEL = 'text-xs font-normal uppercase text-muted-foreground';
+
+interface ApiPanelProps {
+  parts: ApiPart[];
+}
+
+interface ApiPropRowProps {
+  prop: ApiProp;
+}
+
+interface HighlightedCodeProps {
+  html?: string | null;
+  fallback: string;
+}
+
+const HighlightedCode = ({ html, fallback }: HighlightedCodeProps) =>
+  html ? (
+    <code className="shiki-inline font-mono text-xs" dangerouslySetInnerHTML={{ __html: html }} />
+  ) : (
+    <code className="font-mono text-xs text-muted-foreground">{fallback}</code>
+  );
+
+const ApiPropRow = ({ prop }: ApiPropRowProps) => (
+  <TableRow className="align-top">
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <code className="font-mono text-xs text-foreground">
+        {prop.name}
+        {prop.required && (
+          <span className="text-destructive" title="Required">
+            *
+          </span>
+        )}
+      </code>
+      {prop.description && <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">{prop.description}</p>}
+    </TableCell>
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <HighlightedCode html={prop.typeHtml} fallback={prop.type} />
+    </TableCell>
+    <TableCell className="px-4 py-2.5 whitespace-normal">
+      <HighlightedCode html={prop.defaultHtml} fallback={prop.default ?? 'none'} />
+    </TableCell>
+  </TableRow>
+);
+
+const ApiPanel = ({ parts }: ApiPanelProps) => {
+  return (
+    <div className="flex flex-col gap-4">
+      {parts.map((part) => (
+        <section key={part.name} className="overflow-hidden rounded-sm border border-border bg-card">
+          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border px-4 py-2.5">
+            <h3 className="font-mono text-xs text-foreground">
+              {part.kind === 'function' ? `${part.name}()` : `<${part.name} />`}
+            </h3>
+            {part.extendsNative && (
+              <span className="text-xs text-muted-foreground uppercase">+ native element props</span>
+            )}
+          </div>
+          {part.props.length ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className={API_TH}>
+                    <span className={API_TH_LABEL}>{part.kind === 'function' ? 'Parameter' : 'Prop'}</span>
+                  </TableHead>
+                  <TableHead className={API_TH}>
+                    <span className={API_TH_LABEL}>Type</span>
+                  </TableHead>
+                  <TableHead className={API_TH}>
+                    <span className={API_TH_LABEL}>Default</span>
+                  </TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {part.props.map((prop) => (
+                  <ApiPropRow key={prop.name} prop={prop} />
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <p className="px-4 py-3 text-xs text-muted-foreground">
+              {part.kind === 'function'
+                ? 'Takes no arguments.'
+                : part.extendsNative
+                  ? 'No props of its own; forwards everything to the underlying element.'
+                  : 'No configurable props.'}
+            </p>
+          )}
+          {part.returns ? (
+            <div className="flex flex-wrap items-baseline gap-2 border-t border-border px-4 py-2.5">
+              <span className={API_TH_LABEL}>Returns</span>
+              <HighlightedCode html={part.returnsHtml} fallback={part.returns} />
+            </div>
+          ) : null}
+        </section>
+      ))}
+    </div>
+  );
+};
+
 export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb, extras }: ComponentPageProps) => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
   const isUtility = entry.category === 'utilities';
@@ -286,266 +555,3 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
     </div>
   );
 };
-
-interface PageSection {
-  id: string;
-  label: string;
-  content: React.ReactNode;
-}
-
-const githubSourceUrl = (entry: RegistryEntryMeta, base: RegistryBase) => {
-  const files = entry.files ?? [];
-  const primary = files[0]?.path;
-  if (!primary) return null;
-  const repoPath = registryFilePath(base, primary);
-  if (files.length === 1) return `${SITE.githubRepoUrl}/blob/main/${repoPath}`;
-  const dir = repoPath.slice(0, repoPath.lastIndexOf('/'));
-
-  return `${SITE.githubRepoUrl}/tree/main/${dir}`;
-};
-
-interface HeaderActionProps {
-  href: string;
-  title: string;
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}
-
-const HeaderAction = ({ href, title, icon, children }: HeaderActionProps) => {
-  return (
-    <Button asChild variant="ghost" size="sm">
-      <a href={href} target="_blank" rel="noreferrer noopener" title={title}>
-        {icon}
-        {children}
-      </a>
-    </Button>
-  );
-};
-
-interface SectionProps {
-  id: string;
-  label: string;
-  children: React.ReactNode;
-}
-
-const Section = ({ id, label, children }: SectionProps) => {
-  return (
-    <section id={id} className="flex scroll-mt-16 flex-col gap-4">
-      <a
-        href={`#${id}`}
-        className="group/anchor inline-flex w-fit items-center gap-1.5"
-        aria-label={`${label} section`}
-      >
-        <SectionLabel>{label}</SectionLabel>
-        <Hash
-          className="size-3 text-muted-foreground opacity-0 transition-opacity group-hover/anchor:opacity-100"
-          aria-hidden
-        />
-      </a>
-      {children}
-    </section>
-  );
-};
-
-interface ExampleBlockProps {
-  entry: RegistryEntryMeta;
-  example: ExampleEntry;
-  showTitle: boolean;
-  eager: boolean;
-}
-
-// Same floor as the embed shell.
-const EXAMPLE_MIN_HEIGHT = 360;
-const EXAMPLE_MAX_HEIGHT = 1200;
-
-type ExampleView = 'preview' | 'code';
-
-// Framed because a theme or direction class on this page can't reach dialogs and popovers that portal out.
-const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) => {
-  const [view, setView] = React.useState<ExampleView>('preview');
-  const [isRtl, setIsRtl] = React.useState(false);
-  const [refreshKey, setRefreshKey] = React.useState(0);
-  const previewTheme = usePreviewTheme();
-  const base = useRegistryBase();
-  const hasCode = !!example.source;
-  const src = previewSrc(exampleEmbedHref(entry, example.slug, base), { theme: previewTheme.previewMode, isRtl });
-
-  return (
-    <section data-slot="example" className="flex flex-col gap-3">
-      {showTitle && <h3 className="text-sm font-medium tracking-[-0.01em]">{example.title}</h3>}
-      <div className="relative overflow-hidden rounded-md border border-border">
-        <div className="flex items-center justify-between gap-2 border-b border-border/70 bg-card/40 px-3 py-2">
-          <SegmentedControl
-            role="tab"
-            ariaLabel="Example view"
-            value={view}
-            onValueChange={(v) => setView(v as ExampleView)}
-            className="rounded-md border border-border/70 bg-card/30 p-0.5"
-            itemClassName="rounded-sm px-2.5 py-1 text-xs uppercase"
-            items={[
-              { value: 'preview', label: 'preview' },
-              {
-                value: 'code',
-                label: 'code',
-                disabled: !hasCode,
-                title: hasCode ? undefined : 'No example source for this item',
-              },
-            ]}
-          />
-          {view === 'preview' && (
-            <div className="flex items-center gap-1">
-              <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
-              <PreviewThemeButton theme={previewTheme} />
-              <PreviewRefreshButton onRefresh={() => setRefreshKey((k) => k + 1)} />
-              <PreviewOpenButton href={src} />
-              <PreviewMoreMenu entry={entry} />
-            </div>
-          )}
-        </div>
-
-        {view === 'preview' ? (
-          <PreviewFrame
-            src={src}
-            title={`${entry.title} ${example.title.toLowerCase()} preview`}
-            refreshKey={refreshKey}
-            initialHeight={EXAMPLE_MIN_HEIGHT}
-            minHeight={EXAMPLE_MIN_HEIGHT}
-            maxHeight={EXAMPLE_MAX_HEIGHT}
-            eager={eager}
-            className="w-full"
-          />
-        ) : example.source ? (
-          <CodeBlock
-            tabs={[
-              {
-                label: `${example.slug}.tsx`,
-                code: example.source.code,
-                html: example.source.html,
-              },
-            ]}
-          />
-        ) : null}
-      </div>
-    </section>
-  );
-};
-
-interface DepGroupProps {
-  title: string;
-  deps: string[];
-}
-
-const DepGroup = ({ title, deps }: DepGroupProps) => {
-  return (
-    <div className="rounded-sm border border-border bg-card p-4">
-      <h3 className="mb-2 text-xs text-muted-foreground uppercase">{title}</h3>
-      <div className="flex flex-wrap gap-1.5">
-        {deps.map((d) => (
-          <span key={d} className="rounded-sm border border-border px-1.5 py-0 text-xs uppercase">
-            {d}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const API_TH = 'px-4 py-2 text-start';
-const API_TH_LABEL = 'text-xs font-normal uppercase text-muted-foreground';
-
-interface ApiPanelProps {
-  parts: ApiPart[];
-}
-
-const ApiPanel = ({ parts }: ApiPanelProps) => {
-  return (
-    <div className="flex flex-col gap-4">
-      {parts.map((part) => (
-        <section key={part.name} className="overflow-hidden rounded-sm border border-border bg-card">
-          <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-border px-4 py-2.5">
-            <h3 className="font-mono text-xs text-foreground">
-              {part.kind === 'function' ? `${part.name}()` : `<${part.name} />`}
-            </h3>
-            {part.extendsNative && (
-              <span className="text-xs text-muted-foreground uppercase">+ native element props</span>
-            )}
-          </div>
-          {part.props.length ? (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className={API_TH}>
-                    <span className={API_TH_LABEL}>{part.kind === 'function' ? 'Parameter' : 'Prop'}</span>
-                  </TableHead>
-                  <TableHead className={API_TH}>
-                    <span className={API_TH_LABEL}>Type</span>
-                  </TableHead>
-                  <TableHead className={API_TH}>
-                    <span className={API_TH_LABEL}>Default</span>
-                  </TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {part.props.map((prop) => (
-                  <ApiPropRow key={prop.name} prop={prop} />
-                ))}
-              </TableBody>
-            </Table>
-          ) : (
-            <p className="px-4 py-3 text-xs text-muted-foreground">
-              {part.kind === 'function'
-                ? 'Takes no arguments.'
-                : part.extendsNative
-                  ? 'No props of its own; forwards everything to the underlying element.'
-                  : 'No configurable props.'}
-            </p>
-          )}
-          {part.returns ? (
-            <div className="flex flex-wrap items-baseline gap-2 border-t border-border px-4 py-2.5">
-              <span className={API_TH_LABEL}>Returns</span>
-              <HighlightedCode html={part.returnsHtml} fallback={part.returns} />
-            </div>
-          ) : null}
-        </section>
-      ))}
-    </div>
-  );
-};
-
-interface ApiPropRowProps {
-  prop: ApiProp;
-}
-
-const ApiPropRow = ({ prop }: ApiPropRowProps) => (
-  <TableRow className="align-top">
-    <TableCell className="px-4 py-2.5 whitespace-normal">
-      <code className="font-mono text-xs text-foreground">
-        {prop.name}
-        {prop.required && (
-          <span className="text-destructive" title="Required">
-            *
-          </span>
-        )}
-      </code>
-      {prop.description && <p className="mt-1 max-w-[32ch] text-xs text-muted-foreground">{prop.description}</p>}
-    </TableCell>
-    <TableCell className="px-4 py-2.5 whitespace-normal">
-      <HighlightedCode html={prop.typeHtml} fallback={prop.type} />
-    </TableCell>
-    <TableCell className="px-4 py-2.5 whitespace-normal">
-      <HighlightedCode html={prop.defaultHtml} fallback={prop.default ?? 'none'} />
-    </TableCell>
-  </TableRow>
-);
-
-interface HighlightedCodeProps {
-  html?: string | null;
-  fallback: string;
-}
-
-const HighlightedCode = ({ html, fallback }: HighlightedCodeProps) =>
-  html ? (
-    <code className="shiki-inline font-mono text-xs" dangerouslySetInnerHTML={{ __html: html }} />
-  ) : (
-    <code className="font-mono text-xs text-muted-foreground">{fallback}</code>
-  );

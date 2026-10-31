@@ -85,7 +85,7 @@ const TenantLogo = ({ tenant, className }: TenantLogoProps) => {
       )}
     >
       {tenant?.image ? (
-        // eslint-disable-next-line @next/next/no-img-element
+        // eslint-disable-next-line @next/next/no-img-element -- tenant logos can be any remote image
         <img src={tenant.image} alt="" className="size-full object-cover" />
       ) : tenant ? (
         initials(tenant.label)
@@ -129,10 +129,7 @@ const TenantSwitcher = ({
   });
   const active = tenants.find((tenant) => tenant.value === value);
 
-  const context = React.useMemo<TenantSwitcherContextValue>(
-    () => ({ value, setValue, active, tenants, open, setOpen, disabled }),
-    [value, setValue, active, tenants, open, setOpen, disabled],
-  );
+  const context: TenantSwitcherContextValue = { value, setValue, active, tenants, open, setOpen, disabled };
 
   return (
     <TenantSwitcherContext.Provider value={context}>
@@ -192,66 +189,23 @@ const TenantSwitcherTrigger = ({
   );
 };
 
-const TenantSwitcherContent = ({
-  className,
-  searchable = true,
-  searchPlaceholder = 'Find workspace…',
-  emptyMessage = 'No workspaces found.',
-  footer,
-  children,
-  ...props
-}: React.ComponentProps<typeof PopoverContent> & {
+interface TenantSwitcherContentProps extends React.ComponentProps<typeof PopoverContent> {
   searchable?: boolean;
   searchPlaceholder?: string;
   emptyMessage?: string;
   /** Pinned below the scrolling list, e.g. a <TenantSwitcherCreate>. */
   footer?: React.ReactNode;
-}) => {
-  const { tenants } = useTenantSwitcher();
-  const groups = useGroupedTenants(tenants);
+}
 
-  return (
-    <PopoverContent
-      align="start"
-      sideOffset={6}
-      data-slot="tenant-switcher-content"
-      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem] p-0', className)}
-      onOpenAutoFocus={(event) => event.preventDefault()}
-      {...props}
-    >
-      <Command loop>
-        {searchable && <CommandInput placeholder={searchPlaceholder} />}
-        <CommandList>
-          <CommandEmpty>{emptyMessage}</CommandEmpty>
-          {children ??
-            groups.map(([group, items]) => (
-              <CommandGroup key={group ?? '__ungrouped'} heading={group}>
-                {items.map((tenant) => (
-                  <TenantSwitcherItem key={tenant.value} tenant={tenant} />
-                ))}
-              </CommandGroup>
-            ))}
-        </CommandList>
-        {footer && (
-          <>
-            <CommandSeparator />
-            <div className="p-1">{footer}</div>
-          </>
-        )}
-      </Command>
-    </PopoverContent>
-  );
-};
-
-const TenantSwitcherItem = ({
-  tenant,
-  children,
-  className,
-  ...props
-}: Omit<React.ComponentProps<typeof CommandItem>, 'value' | 'onSelect' | 'children'> & {
+interface TenantSwitcherItemProps extends Omit<
+  React.ComponentProps<typeof CommandItem>,
+  'value' | 'onSelect' | 'children'
+> {
   tenant: Tenant;
   children?: React.ReactNode;
-}) => {
+}
+
+const TenantSwitcherItem = ({ tenant, children, className, ...props }: TenantSwitcherItemProps) => {
   const { value, setValue, setOpen } = useTenantSwitcher();
   const selected = value === tenant.value;
 
@@ -303,16 +257,59 @@ const TenantSwitcherCreate = ({
 };
 
 const useGroupedTenants = (tenants: Tenant[]) => {
-  return React.useMemo(() => {
-    const groups = new Map<string | undefined, Tenant[]>();
-    for (const tenant of tenants) {
-      const bucket = groups.get(tenant.group) ?? [];
-      bucket.push(tenant);
-      groups.set(tenant.group, bucket);
-    }
+  const groups = new Map<string | undefined, Tenant[]>();
+  for (const tenant of tenants) {
+    const bucket = groups.get(tenant.group) ?? [];
+    bucket.push(tenant);
+    groups.set(tenant.group, bucket);
+  }
 
-    return [...groups];
-  }, [tenants]);
+  return [...groups];
+};
+
+const TenantSwitcherContent = ({
+  className,
+  searchable = true,
+  searchPlaceholder = 'Find workspace…',
+  emptyMessage = 'No workspaces found.',
+  footer,
+  children,
+  ...props
+}: TenantSwitcherContentProps) => {
+  const { tenants } = useTenantSwitcher();
+  const groups = useGroupedTenants(tenants);
+
+  return (
+    <PopoverContent
+      align="start"
+      sideOffset={6}
+      data-slot="tenant-switcher-content"
+      className={cn('w-(--radix-popover-trigger-width) min-w-[15rem] p-0', className)}
+      onOpenAutoFocus={(event) => event.preventDefault()}
+      {...props}
+    >
+      <Command loop>
+        {searchable && <CommandInput placeholder={searchPlaceholder} />}
+        <CommandList>
+          <CommandEmpty>{emptyMessage}</CommandEmpty>
+          {children ??
+            groups.map(([group, items]) => (
+              <CommandGroup key={group ?? '__ungrouped'} heading={group}>
+                {items.map((tenant) => (
+                  <TenantSwitcherItem key={tenant.value} tenant={tenant} />
+                ))}
+              </CommandGroup>
+            ))}
+        </CommandList>
+        {footer && (
+          <>
+            <CommandSeparator />
+            <div className="p-1">{footer}</div>
+          </>
+        )}
+      </Command>
+    </PopoverContent>
+  );
 };
 
 export { TenantSwitcher, TenantSwitcherTrigger, TenantSwitcherContent, TenantSwitcherItem, TenantSwitcherCreate };
@@ -332,7 +329,7 @@ const TenantSwitcherBlock = () => {
   const [name, setName] = React.useState('');
   const [error, setError] = React.useState<string | undefined>();
 
-  const onCreatingChange = (next: boolean) => {
+  const handleCreatingChange = (next: boolean) => {
     setCreating(next);
     if (!next) {
       setName('');
@@ -340,7 +337,7 @@ const TenantSwitcherBlock = () => {
     }
   };
 
-  const createWorkspace = (event: React.FormEvent) => {
+  const handleCreateWorkspace = (event: React.FormEvent) => {
     event.preventDefault();
     const label = name.trim();
     if (!label) {
@@ -356,7 +353,7 @@ const TenantSwitcherBlock = () => {
     const value = `${label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${tenants.length}`;
     setTenants((prev) => [...prev, { value, label, caption: 'Free', group: 'Teams' }]);
     setWorkspace(value);
-    onCreatingChange(false);
+    handleCreatingChange(false);
   };
 
   return (
@@ -386,9 +383,9 @@ const TenantSwitcherBlock = () => {
         </TenantSwitcher>
       </div>
 
-      <Dialog open={creating} onOpenChange={onCreatingChange}>
+      <Dialog open={creating} onOpenChange={handleCreatingChange}>
         <DialogContent className="sm:max-w-sm">
-          <form noValidate onSubmit={createWorkspace} className="grid gap-4">
+          <form noValidate onSubmit={handleCreateWorkspace} className="grid gap-4">
             <DialogHeader>
               <DialogTitle>Create workspace</DialogTitle>
               <DialogDescription>Name it after your team or project. You can rename it later.</DialogDescription>

@@ -41,6 +41,21 @@ export interface TreeViewProps extends Omit<React.ComponentProps<'div'>, 'defaul
   onValueChange?: (value: string) => void;
 }
 
+const visibleItems = (items: Map<string, HTMLButtonElement>) =>
+  Array.from(items.values())
+    .filter((el) => el.isConnected && !el.disabled)
+    .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1));
+
+const firstVisibleValue = (items: Map<string, HTMLButtonElement>) => {
+  const first = visibleItems(items)[0];
+  if (!first) return null;
+  for (const [itemValue, itemEl] of items) {
+    if (itemEl === first) return itemValue;
+  }
+
+  return null;
+};
+
 const TreeView = ({ value: valueProp, defaultValue, onValueChange, className, ...props }: TreeViewProps) => {
   const [selected, setSelected] = useControllableState<string | undefined>({
     prop: valueProp,
@@ -51,35 +66,16 @@ const TreeView = ({ value: valueProp, defaultValue, onValueChange, className, ..
   const itemsRef = React.useRef(new Map<string, HTMLButtonElement>());
   const [tabbable, setTabbable] = React.useState<string | null>(null);
 
-  const getVisibleItems = React.useCallback(
-    () =>
-      Array.from(itemsRef.current.values())
-        .filter((el) => el.isConnected && !el.disabled)
-        .sort((a, b) => (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1)),
-    [],
-  );
+  const getVisibleItems = () => visibleItems(itemsRef.current);
 
-  const firstVisibleValue = React.useCallback(() => {
-    const first = getVisibleItems()[0];
-    if (!first) return null;
-    for (const [itemValue, itemEl] of itemsRef.current) {
-      if (itemEl === first) return itemValue;
-    }
+  const registerItem = (value: string, el: HTMLButtonElement) => {
+    itemsRef.current.set(value, el);
 
-    return null;
-  }, [getVisibleItems]);
-
-  const registerItem = React.useCallback(
-    (value: string, el: HTMLButtonElement) => {
-      itemsRef.current.set(value, el);
-
-      return () => {
-        itemsRef.current.delete(value);
-        setTabbable((current) => (current === value ? firstVisibleValue() : current));
-      };
-    },
-    [firstVisibleValue],
-  );
+    return () => {
+      itemsRef.current.delete(value);
+      setTabbable((current) => (current === value ? firstVisibleValue(itemsRef.current) : current));
+    };
+  };
 
   React.useEffect(() => {
     setTabbable((current) => {
@@ -88,21 +84,18 @@ const TreeView = ({ value: valueProp, defaultValue, onValueChange, className, ..
         return selected;
       }
 
-      return firstVisibleValue();
+      return firstVisibleValue(itemsRef.current);
     });
-  }, [selected, firstVisibleValue]);
+  }, [selected]);
 
-  const ctx = React.useMemo<TreeCtx>(
-    () => ({
-      selected,
-      setSelected,
-      tabbable,
-      setTabbable,
-      registerItem,
-      getVisibleItems,
-    }),
-    [selected, setSelected, tabbable, setTabbable, registerItem, getVisibleItems],
-  );
+  const ctx: TreeCtx = {
+    selected,
+    setSelected,
+    tabbable,
+    setTabbable,
+    registerItem,
+    getVisibleItems,
+  };
 
   return (
     <TreeViewContext.Provider value={ctx}>

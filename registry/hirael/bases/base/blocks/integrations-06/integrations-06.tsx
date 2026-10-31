@@ -64,6 +64,7 @@ const Integrations06 = () => {
         {TOOLS.map((tool, index) => (
           <li
             key={tool.name}
+            // React's CSSProperties type has no custom properties.
             style={{ ...stagger(index, 60, 200), '--drop': drop(index) } as React.CSSProperties}
             className={cn(ENTER, 'sm:mt-(--drop)')}
           >

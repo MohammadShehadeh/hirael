@@ -108,6 +108,10 @@ const createNumberFormat = (locale: string, options: Intl.NumberFormatOptions): 
   };
 };
 
+type StepDirection = 1 | -1;
+
+type Bound = 'min' | 'max';
+
 interface NumberFieldContextValue {
   inputId: string;
   inputRef: React.RefObject<HTMLInputElement | null>;
@@ -128,8 +132,8 @@ interface NumberFieldContextValue {
   commit: () => void;
   revert: () => boolean;
   /** Returns the new value, or `null` when nothing changed. `from` overrides the current value. */
-  stepBy: (direction: 1 | -1, amount?: number, from?: number) => number | null;
-  setToBound: (bound: 'min' | 'max') => boolean;
+  stepBy: (direction: StepDirection, amount?: number, from?: number) => number | null;
+  setToBound: (bound: Bound) => boolean;
 }
 
 const NumberFieldContext = React.createContext<NumberFieldContextValue | null>(null);
@@ -217,7 +221,7 @@ const NumberField = ({
   });
 
   const optionsKey = JSON.stringify(resolveFormatOptions(formatOptions, precision, step, largeStep));
-  const format = React.useMemo(() => createNumberFormat(locale, JSON.parse(optionsKey)), [locale, optionsKey]);
+  const format = createNumberFormat(locale, JSON.parse(optionsKey));
 
   const [inputValue, setInputValue] = React.useState(() => format.format(value));
 
@@ -228,27 +232,21 @@ const NumberField = ({
     setInputValue(format.format(value));
   }
 
-  const update = React.useCallback(
-    (next: number | null) => {
-      setInputValue(format.format(next));
-      if (Object.is(next, value)) return;
-      setValue(next);
-    },
-    [format, value, setValue],
-  );
+  const update = (next: number | null) => {
+    setInputValue(format.format(next));
+    if (Object.is(next, value)) return;
+    setValue(next);
+  };
 
-  const clamp = React.useCallback(
-    (n: number) => {
-      const rounded = roundTo(n, format.fractionDigits);
-      if (max !== undefined && rounded > max) return max;
-      if (min !== undefined && rounded < min) return min;
+  const clamp = (n: number) => {
+    const rounded = roundTo(n, format.fractionDigits);
+    if (max !== undefined && rounded > max) return max;
+    if (min !== undefined && rounded < min) return min;
 
-      return rounded;
-    },
-    [format, min, max],
-  );
+    return rounded;
+  };
 
-  const commit = React.useCallback(() => {
+  const commit = () => {
     const parsed = format.parse(inputValue);
     if (parsed !== null && Number.isNaN(parsed)) {
       setInputValue(format.format(value));
@@ -256,103 +254,75 @@ const NumberField = ({
       return;
     }
     update(parsed === null ? null : clamp(parsed));
-  }, [format, inputValue, value, update, clamp]);
+  };
 
-  const revert = React.useCallback(() => {
+  const revert = () => {
     const committed = format.format(value);
     if (inputValue === committed) return false;
     setInputValue(committed);
 
     return true;
-  }, [format, inputValue, value]);
+  };
 
-  const stepBy = React.useCallback(
-    (direction: 1 | -1, amount = step, from?: number) => {
-      if (disabled || readOnly) return null;
-      const draft = format.parse(inputValue);
-      const base = from ?? (draft === null || Number.isNaN(draft) ? value : draft);
-      if (base === null) {
-        const start = clamp(direction > 0 ? (min ?? 0) : (max ?? 0));
-        update(start);
+  const stepBy = (direction: StepDirection, amount = step, from?: number) => {
+    if (disabled || readOnly) return null;
+    const draft = format.parse(inputValue);
+    const base = from ?? (draft === null || Number.isNaN(draft) ? value : draft);
+    if (base === null) {
+      const start = clamp(direction > 0 ? (min ?? 0) : (max ?? 0));
+      update(start);
 
-        return start;
+      return start;
+    }
+    let next = base + direction * amount;
+    if (amount === step) {
+      const origin = min ?? 0;
+      const position = (base - origin) / step;
+      // Off-grid values snap to the neighbouring multiple instead of keeping their offset.
+      if (Math.abs(position - Math.round(position)) > 1e-9) {
+        next = origin + (direction > 0 ? Math.ceil(position) : Math.floor(position)) * step;
       }
-      let next = base + direction * amount;
-      if (amount === step) {
-        const origin = min ?? 0;
-        const position = (base - origin) / step;
-        // Off-grid values snap to the neighbouring multiple instead of keeping their offset.
-        if (Math.abs(position - Math.round(position)) > 1e-9) {
-          next = origin + (direction > 0 ? Math.ceil(position) : Math.floor(position)) * step;
-        }
-      }
-      const clamped = clamp(next);
-      update(clamped);
+    }
+    const clamped = clamp(next);
+    update(clamped);
 
-      return clamped === base ? null : clamped;
-    },
-    [disabled, readOnly, format, inputValue, value, step, min, max, update, clamp],
-  );
+    return clamped === base ? null : clamped;
+  };
 
-  const setToBound = React.useCallback(
-    (bound: 'min' | 'max') => {
-      const target = bound === 'min' ? min : max;
-      if (target === undefined || disabled || readOnly) return false;
-      update(target);
+  const setToBound = (bound: Bound) => {
+    const target = bound === 'min' ? min : max;
+    if (target === undefined || disabled || readOnly) return false;
+    update(target);
 
-      return true;
-    },
-    [min, max, disabled, readOnly, update],
-  );
+    return true;
+  };
 
   const interactive = !disabled && !readOnly;
   const canIncrement = interactive && (max === undefined || value === null || value < max);
   const canDecrement = interactive && (min === undefined || value === null || value > min);
 
-  const ctx = React.useMemo<NumberFieldContextValue>(
-    () => ({
-      inputId,
-      inputRef,
-      value,
-      inputValue,
-      setInputValue,
-      format,
-      min,
-      max,
-      step,
-      largeStep,
-      disabled,
-      readOnly,
-      required,
-      allowWheel,
-      canIncrement,
-      canDecrement,
-      commit,
-      revert,
-      stepBy,
-      setToBound,
-    }),
-    [
-      inputId,
-      value,
-      inputValue,
-      format,
-      min,
-      max,
-      step,
-      largeStep,
-      disabled,
-      readOnly,
-      required,
-      allowWheel,
-      canIncrement,
-      canDecrement,
-      commit,
-      revert,
-      stepBy,
-      setToBound,
-    ],
-  );
+  const ctx: NumberFieldContextValue = {
+    inputId,
+    inputRef,
+    value,
+    inputValue,
+    setInputValue,
+    format,
+    min,
+    max,
+    step,
+    largeStep,
+    disabled,
+    readOnly,
+    required,
+    allowWheel,
+    canIncrement,
+    canDecrement,
+    commit,
+    revert,
+    stepBy,
+    setToBound,
+  };
 
   return (
     <NumberFieldContext.Provider value={ctx}>
@@ -401,7 +371,7 @@ const NumberFieldInput = ({
 }: NumberFieldInputProps) => {
   const ctx = useNumberField();
   const { inputRef, allowWheel, disabled, readOnly } = ctx;
-  const composedRef = React.useMemo(() => composeRefs(inputRef, ref), [inputRef, ref]);
+  const composedRef = composeRefs(inputRef, ref);
 
   const stepRef = React.useRef(ctx.stepBy);
   React.useEffect(() => {
@@ -490,13 +460,13 @@ const useHoldRepeat = (action: (from: number | undefined) => number | null) => {
   });
 
   const stopRef = React.useRef<(() => void) | null>(null);
-  const stop = React.useCallback(() => {
+  const stop = () => {
     stopRef.current?.();
     stopRef.current = null;
-  }, []);
-  React.useEffect(() => stop, [stop]);
+  };
+  React.useEffect(() => () => stopRef.current?.(), []);
 
-  const start = React.useCallback(() => {
+  const start = () => {
     stop();
     let last = actionRef.current(undefined);
     if (last === null) return;
@@ -520,7 +490,7 @@ const useHoldRepeat = (action: (from: number | undefined) => number | null) => {
       window.removeEventListener('pointercancel', stop);
       window.removeEventListener('blur', stop);
     };
-  }, [stop]);
+  };
 
   return { start, stop };
 };
@@ -531,6 +501,9 @@ interface NumberFieldStepButtonProps extends Omit<
 > {
   direction: 1 | -1;
 }
+
+const STACKED_ICONS = { increment: ChevronUp, decrement: ChevronDown };
+const INLINE_ICONS = { increment: Plus, decrement: Minus };
 
 const NumberFieldStepButton = ({
   direction,
@@ -548,7 +521,8 @@ const NumberFieldStepButton = ({
   const increment = direction > 0;
   const isDisabled = disabled || (increment ? !ctx.canIncrement : !ctx.canDecrement);
   const { start, stop } = useHoldRepeat((from) => ctx.stepBy(direction, ctx.step, from));
-  const Icon = stacked ? (increment ? ChevronUp : ChevronDown) : increment ? Plus : Minus;
+  const icons = stacked ? STACKED_ICONS : INLINE_ICONS;
+  const Icon = increment ? icons.increment : icons.decrement;
 
   const button = (
     <InputGroupButton

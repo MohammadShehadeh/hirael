@@ -3,6 +3,7 @@
 import { useT } from '@/lib/demo-locale';
 import { useReducedMotion } from '@/registry/hirael/hooks/use-reduced-motion';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
+import { cn } from '@/lib/utils';
 
 const UseReducedMotionDemo = () => {
   const t = useT();
@@ -20,11 +21,11 @@ const UseReducedMotionDemo = () => {
       <div className="relative h-2 overflow-hidden rounded-full bg-muted">
         <span
           aria-hidden
-          className={
-            reduced
-              ? 'absolute inset-y-0 start-0 w-1/3 rounded-full bg-primary'
-              : 'absolute inset-y-0 start-0 w-1/3 animate-[slide_1.6s_ease-in-out_infinite_alternate] rounded-full bg-primary rtl:animate-[slide-rtl_1.6s_ease-in-out_infinite_alternate]'
-          }
+          className={cn(
+            'absolute inset-y-0 start-0 w-1/3 rounded-full bg-primary',
+            !reduced &&
+              'animate-[slide_1.6s_ease-in-out_infinite_alternate] rtl:animate-[slide-rtl_1.6s_ease-in-out_infinite_alternate]',
+          )}
         />
       </div>
 

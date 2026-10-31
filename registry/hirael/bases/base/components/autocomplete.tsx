@@ -153,6 +153,8 @@ export interface AutocompleteProps extends Omit<React.ComponentProps<'div'>, 'de
 const NO_OPTIONS: AutocompleteOption[] = [];
 const NO_RECENT: string[] = [];
 
+type MoveStep = 1 | -1;
+
 const Autocomplete = ({
   value: valueProp,
   defaultValue,
@@ -220,17 +222,15 @@ const Autocomplete = ({
     };
   }, [searchQuery, debounce]);
 
-  const options = React.useMemo<AutocompleteOption[]>(() => {
-    if (showRecent) return recent.slice(0, limit).map((entry) => ({ value: entry, group: recentLabel }));
-    if (!searchable) return NO_OPTIONS;
-    // Stale results stay up while the next query loads, so the list doesn't flicker.
-    if (onSearch) return result?.options ?? NO_OPTIONS;
+  let options: AutocompleteOption[];
+  if (showRecent) options = recent.slice(0, limit).map((entry) => ({ value: entry, group: recentLabel }));
+  else if (!searchable) options = NO_OPTIONS;
+  // Stale results stay up while the next query loads, so the list doesn't flicker.
+  else if (onSearch) options = result?.options ?? NO_OPTIONS;
+  else options = filter(items, query).slice(0, limit);
 
-    return filter(items, query).slice(0, limit);
-  }, [showRecent, recent, limit, recentLabel, searchable, onSearch, result, filter, items, query]);
-
-  const groups = React.useMemo(() => groupOptions(options), [options]);
-  const ordered = React.useMemo(() => groups.flatMap((group) => group.entries.map((entry) => entry.option)), [groups]);
+  const groups = groupOptions(options);
+  const ordered = groups.flatMap((group) => group.entries.map((entry) => entry.option));
 
   let status: AutocompleteStatus = 'idle';
   if (!showRecent && searchable) {
@@ -251,152 +251,117 @@ const Autocomplete = ({
   const candidate = active >= 0 ? ordered[active] : ordered.find((option) => completionFor(option, value));
   const completion = inlineComplete && visible ? completionFor(candidate, value) : '';
 
-  const select = React.useCallback(
-    (option: AutocompleteOption) => {
-      if (option.disabled) return;
-      setValue(option.value);
-      setOpen(false);
-      onOptionSelect?.(option);
-      onValueCommit?.(option.value);
-    },
-    [setValue, onOptionSelect, onValueCommit],
-  );
+  const select = (option: AutocompleteOption) => {
+    if (option.disabled) return;
+    setValue(option.value);
+    setOpen(false);
+    onOptionSelect?.(option);
+    onValueCommit?.(option.value);
+  };
 
-  const close = React.useCallback(() => setOpen(false), []);
+  const close = () => setOpen(false);
 
-  const move = React.useCallback(
-    (step: 1 | -1) => {
-      const count = ordered.length;
-      if (count === 0) return;
-      let next = active;
-      for (let i = 0; i < count; i++) {
-        next = next + step;
-        if (next >= count) next = 0;
-        if (next < 0) next = count - 1;
-        if (!ordered[next].disabled) {
-          setActiveIndex(next);
+  const move = (step: MoveStep) => {
+    const count = ordered.length;
+    if (count === 0) return;
+    let next = active;
+    for (let i = 0; i < count; i++) {
+      next = next + step;
+      if (next >= count) next = 0;
+      if (next < 0) next = count - 1;
+      if (!ordered[next].disabled) {
+        setActiveIndex(next);
 
-          return;
-        }
+        return;
       }
-    },
-    [ordered, active],
-  );
+    }
+  };
 
-  const onKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLInputElement>) => {
-      // Enter confirming an IME composition must not pick a suggestion.
-      if (event.nativeEvent.isComposing || event.keyCode === 229) return;
-      const input = event.currentTarget;
-      const forward = getComputedStyle(input).direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
-      const caretAtEnd = input.selectionStart === input.selectionEnd && input.selectionEnd === input.value.length;
+  const onKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // Enter confirming an IME composition must not pick a suggestion.
+    if (event.nativeEvent.isComposing || event.keyCode === 229) return;
+    const input = event.currentTarget;
+    const forward = getComputedStyle(input).direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+    const caretAtEnd = input.selectionStart === input.selectionEnd && input.selectionEnd === input.value.length;
 
-      switch (event.key) {
-        case 'ArrowDown':
-        case 'ArrowUp':
+    switch (event.key) {
+      case 'ArrowDown':
+      case 'ArrowUp':
+        event.preventDefault();
+        if (!visible) setOpen(true);
+        else move(event.key === 'ArrowDown' ? 1 : -1);
+        break;
+      case 'Enter':
+        if (visible && active >= 0) {
           event.preventDefault();
-          if (!visible) setOpen(true);
-          else move(event.key === 'ArrowDown' ? 1 : -1);
-          break;
-        case 'Enter':
-          if (visible && active >= 0) {
-            event.preventDefault();
-            select(ordered[active]);
-          } else if (query) {
-            setOpen(false);
-            onValueCommit?.(value);
-          }
-          break;
-        case 'Escape':
-          if (visible) {
-            event.preventDefault();
-            setOpen(false);
-          } else if (value) {
-            event.preventDefault();
-            setValue('');
-          }
-          break;
-        case 'Tab':
-          if (completion && candidate && !event.shiftKey) {
-            event.preventDefault();
-            select(candidate);
-          }
-          break;
-        case 'ArrowLeft':
-        case 'ArrowRight':
-          if (event.key === forward && completion && candidate && caretAtEnd) {
-            event.preventDefault();
-            select(candidate);
-          }
-          break;
-      }
-    },
-    [visible, move, active, select, ordered, query, onValueCommit, value, setValue, completion, candidate],
-  );
+          select(ordered[active]);
+        } else if (query) {
+          setOpen(false);
+          onValueCommit?.(value);
+        }
+        break;
+      case 'Escape':
+        if (visible) {
+          event.preventDefault();
+          setOpen(false);
+        } else if (value) {
+          event.preventDefault();
+          setValue('');
+        }
+        break;
+      case 'Tab':
+        if (completion && candidate && !event.shiftKey) {
+          event.preventDefault();
+          select(candidate);
+        }
+        break;
+      case 'ArrowLeft':
+      case 'ArrowRight':
+        if (event.key === forward && completion && candidate && caretAtEnd) {
+          event.preventDefault();
+          select(candidate);
+        }
+        break;
+    }
+  };
 
-  const onChange = React.useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(event.target.value);
-      setOpen(true);
-    },
-    [setValue],
-  );
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+    setOpen(true);
+  };
 
-  const onFocus = React.useCallback(() => {
+  const onFocus = () => {
     if (!value) setOpen(true);
-  }, [value]);
+  };
 
-  const inputHandlers = React.useMemo<AutocompleteContextValue['inputHandlers']>(
-    () => ({ onChange, onKeyDown, onFocus, onBlur: close }),
-    [onChange, onKeyDown, onFocus, close],
-  );
+  const inputHandlers: AutocompleteContextValue['inputHandlers'] = { onChange, onKeyDown, onFocus, onBlur: close };
 
   React.useEffect(() => {
     if (active < 0) return;
     document.getElementById(`${id}-option-${active}`)?.scrollIntoView?.({ block: 'nearest' });
   }, [active, id]);
 
-  const ctx = React.useMemo<AutocompleteContextValue>(
-    () => ({
-      id,
-      listboxId,
-      value,
-      query,
-      options: ordered,
-      groups,
-      activeIndex: active,
-      setActiveIndex,
-      visible,
-      status,
-      loading,
-      completion,
-      inlineComplete,
-      disabled,
-      name,
-      anchorRef,
-      inputRef,
-      select,
-      inputHandlers,
-    }),
-    [
-      id,
-      listboxId,
-      value,
-      query,
-      ordered,
-      groups,
-      active,
-      visible,
-      status,
-      loading,
-      completion,
-      inlineComplete,
-      disabled,
-      name,
-      select,
-      inputHandlers,
-    ],
-  );
+  const ctx: AutocompleteContextValue = {
+    id,
+    listboxId,
+    value,
+    query,
+    options: ordered,
+    groups,
+    activeIndex: active,
+    setActiveIndex,
+    visible,
+    status,
+    loading,
+    completion,
+    inlineComplete,
+    disabled,
+    name,
+    anchorRef,
+    inputRef,
+    select,
+    inputHandlers,
+  };
 
   return (
     <AutocompleteContext.Provider value={ctx}>
@@ -423,13 +388,15 @@ const Autocomplete = ({
  * The consumer's handler runs first; the part's own is skipped once that handler prevents default.
  * An event that arrived already prevented (a popover's document listener) still reaches the part.
  */
-const chainHandlers =
-  <E extends React.SyntheticEvent>(theirs: ((event: E) => void) | undefined, ours: ((event: E) => void) | undefined) =>
-  (event: E) => {
-    const arrivedPrevented = event.defaultPrevented;
-    theirs?.(event);
-    if (arrivedPrevented || !event.defaultPrevented) ours?.(event);
-  };
+const runHandlers = <E extends React.SyntheticEvent>(
+  event: E,
+  theirs: ((event: E) => void) | undefined,
+  ours: ((event: E) => void) | undefined,
+) => {
+  const arrivedPrevented = event.defaultPrevented;
+  theirs?.(event);
+  if (arrivedPrevented || !event.defaultPrevented) ours?.(event);
+};
 
 interface AutocompleteInputProps extends Omit<React.ComponentProps<'input'>, 'value' | 'defaultValue' | 'name'> {
   /** Classes for the `<input>` itself; `className` goes on the surrounding group. */
@@ -467,7 +434,7 @@ const AutocompleteInput = ({
   } = useAutocomplete();
   const ghostRef = React.useRef<HTMLDivElement>(null);
   const isDisabled = rootDisabled || disabled;
-  const composedRef = React.useMemo(() => composeRefs(inputRef, ref), [inputRef, ref]);
+  const composedRef = composeRefs(inputRef, ref);
 
   // The ghost copies the input's measured box, so it lines up whatever padding the input group applies.
   React.useLayoutEffect(() => {
@@ -525,10 +492,10 @@ const AutocompleteInput = ({
         disabled={isDisabled}
         className={inputClassName}
         {...props}
-        onChange={chainHandlers(onChange, inputHandlers.onChange)}
-        onKeyDown={chainHandlers(onKeyDown, inputHandlers.onKeyDown)}
-        onFocus={chainHandlers(onFocus, inputHandlers.onFocus)}
-        onBlur={chainHandlers(onBlur, inputHandlers.onBlur)}
+        onChange={(event) => runHandlers(event, onChange, inputHandlers.onChange)}
+        onKeyDown={(event) => runHandlers(event, onKeyDown, inputHandlers.onKeyDown)}
+        onFocus={(event) => runHandlers(event, onFocus, inputHandlers.onFocus)}
+        onBlur={(event) => runHandlers(event, onBlur, inputHandlers.onBlur)}
       />
       {loading && (
         <InputGroupAddon align="inline-end" data-slot="autocomplete-spinner">
@@ -555,6 +522,93 @@ interface AutocompleteContentProps
   /** Renders a suggestion's content. Defaults to the value with the match in bold, plus its description. */
   renderOption?: (option: AutocompleteOption) => React.ReactNode;
 }
+
+interface AutocompleteItemProps extends Omit<React.ComponentProps<'div'>, 'children'> {
+  option: AutocompleteOption;
+  /** Position in the rendered list, used for keyboard highlight. */
+  index: number;
+  children?: React.ReactNode;
+}
+
+interface AutocompleteHighlightProps extends Omit<React.ComponentProps<'span'>, 'children'> {
+  /** The full text to render. */
+  text: string;
+  /** The part to emphasize. Defaults to the typed text. */
+  query?: string;
+}
+
+const AutocompleteHighlight = ({ text, query, className, ...props }: AutocompleteHighlightProps) => {
+  const ctx = React.useContext(AutocompleteContext);
+  const needle = (query ?? ctx?.query ?? '').toLowerCase();
+  const at = needle ? text.toLowerCase().indexOf(needle) : -1;
+
+  return (
+    <span data-slot="autocomplete-highlight" className={cn('truncate', className)} {...props}>
+      {at < 0 ? (
+        text
+      ) : (
+        <>
+          {text.slice(0, at)}
+          <mark data-slot="autocomplete-match" className="bg-transparent font-semibold text-current">
+            {text.slice(at, at + needle.length)}
+          </mark>
+          {text.slice(at + needle.length)}
+        </>
+      )}
+    </span>
+  );
+};
+
+const AutocompleteItem = ({
+  option,
+  index,
+  className,
+  children,
+  onClick,
+  onMouseMove,
+  ...props
+}: AutocompleteItemProps) => {
+  const ctx = useAutocomplete();
+  const active = index === ctx.activeIndex;
+
+  return (
+    <div
+      id={`${ctx.id}-option-${index}`}
+      role="option"
+      aria-selected={active}
+      aria-disabled={option.disabled || undefined}
+      data-slot="autocomplete-item"
+      data-active={active || undefined}
+      data-disabled={option.disabled || undefined}
+      onMouseMove={(event) => {
+        onMouseMove?.(event);
+        if (!event.defaultPrevented && !active && !option.disabled) ctx.setActiveIndex(index);
+      }}
+      onClick={(event) => {
+        onClick?.(event);
+        if (!event.defaultPrevented) ctx.select(option);
+      }}
+      className={cn(
+        'flex cursor-default flex-col gap-0.5 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none',
+        'data-[active]:bg-accent data-[active]:text-accent-foreground',
+        'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
+        className,
+      )}
+      {...props}
+    >
+      {children ?? (
+        <>
+          <AutocompleteHighlight text={option.value} />
+          {option.description && (
+            <span data-slot="autocomplete-item-description" className="truncate text-xs text-muted-foreground">
+              {option.description}
+            </span>
+          )}
+        </>
+      )}
+    </div>
+  );
+};
 
 const AutocompleteContent = ({
   className,
@@ -644,93 +698,6 @@ const AutocompleteContent = ({
         </PopoverPrimitive.Popup>
       </PopoverPrimitive.Positioner>
     </PopoverPrimitive.Portal>
-  );
-};
-
-interface AutocompleteItemProps extends Omit<React.ComponentProps<'div'>, 'children'> {
-  option: AutocompleteOption;
-  /** Position in the rendered list, used for keyboard highlight. */
-  index: number;
-  children?: React.ReactNode;
-}
-
-const AutocompleteItem = ({
-  option,
-  index,
-  className,
-  children,
-  onClick,
-  onMouseMove,
-  ...props
-}: AutocompleteItemProps) => {
-  const ctx = useAutocomplete();
-  const active = index === ctx.activeIndex;
-
-  return (
-    <div
-      id={`${ctx.id}-option-${index}`}
-      role="option"
-      aria-selected={active}
-      aria-disabled={option.disabled || undefined}
-      data-slot="autocomplete-item"
-      data-active={active || undefined}
-      data-disabled={option.disabled || undefined}
-      onMouseMove={(event) => {
-        onMouseMove?.(event);
-        if (!event.defaultPrevented && !active && !option.disabled) ctx.setActiveIndex(index);
-      }}
-      onClick={(event) => {
-        onClick?.(event);
-        if (!event.defaultPrevented) ctx.select(option);
-      }}
-      className={cn(
-        'flex cursor-default flex-col gap-0.5 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none',
-        'data-[active]:bg-accent data-[active]:text-accent-foreground',
-        'data-[disabled]:pointer-events-none data-[disabled]:opacity-50',
-        className,
-      )}
-      {...props}
-    >
-      {children ?? (
-        <>
-          <AutocompleteHighlight text={option.value} />
-          {option.description && (
-            <span data-slot="autocomplete-item-description" className="truncate text-xs text-muted-foreground">
-              {option.description}
-            </span>
-          )}
-        </>
-      )}
-    </div>
-  );
-};
-
-interface AutocompleteHighlightProps extends Omit<React.ComponentProps<'span'>, 'children'> {
-  /** The full text to render. */
-  text: string;
-  /** The part to emphasize. Defaults to the typed text. */
-  query?: string;
-}
-
-const AutocompleteHighlight = ({ text, query, className, ...props }: AutocompleteHighlightProps) => {
-  const ctx = React.useContext(AutocompleteContext);
-  const needle = (query ?? ctx?.query ?? '').toLowerCase();
-  const at = needle ? text.toLowerCase().indexOf(needle) : -1;
-
-  return (
-    <span data-slot="autocomplete-highlight" className={cn('truncate', className)} {...props}>
-      {at < 0 ? (
-        text
-      ) : (
-        <>
-          {text.slice(0, at)}
-          <mark data-slot="autocomplete-match" className="bg-transparent font-semibold text-current">
-            {text.slice(at, at + needle.length)}
-          </mark>
-          {text.slice(at + needle.length)}
-        </>
-      )}
-    </span>
   );
 };
 

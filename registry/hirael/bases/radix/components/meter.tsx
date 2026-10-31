@@ -118,84 +118,6 @@ export interface MeterProps extends React.ComponentProps<'div'> {
   getValueText?: (value: number, max: number) => string;
 }
 
-const Meter = ({
-  value: valueProp,
-  min = 0,
-  max = 100,
-  segments: segmentsProp,
-  tone = 'primary',
-  thresholds,
-  size = 'default',
-  getValueText,
-  className,
-  children,
-  ...props
-}: MeterProps) => {
-  const [labelId, setLabelId] = React.useState<string | null>(null);
-  const span = max - min || 1;
-
-  const segments = React.useMemo<ResolvedSegment[]>(() => {
-    const list = segmentsProp ?? [];
-
-    return list.map((segment, i) => {
-      const total = list.slice(0, i + 1).reduce((sum, s) => sum + s.value, 0);
-
-      return {
-        ...segment,
-        tone: segment.tone ?? SEGMENT_TONES[i % SEGMENT_TONES.length],
-        end: clamp((total / span) * 100, 0, 100),
-      };
-    });
-  }, [segmentsProp, span]);
-
-  // Rounded so summed decimals report 32.7, not 32.699999999999996.
-  const value = valueProp ?? Math.round((segmentsProp ?? []).reduce((sum, s) => sum + s.value, min) * 1e6) / 1e6;
-  const percent = clamp(((value - min) / span) * 100, 0, 100);
-
-  const reached = React.useMemo(() => {
-    let match: MeterThreshold | undefined;
-    for (const t of [...(thresholds ?? [])].sort((a, b) => a.value - b.value)) {
-      if (value >= t.value) match = t;
-    }
-
-    return match;
-  }, [thresholds, value]);
-
-  const valueText =
-    getValueText?.(value, max) ??
-    [`${numberFormat.format(value)} of ${numberFormat.format(max)}`, reached?.label].filter(Boolean).join(', ');
-
-  const ctx = React.useMemo<MeterContextValue>(
-    () => ({
-      value,
-      min,
-      max,
-      percent,
-      tone: reached?.tone ?? tone,
-      thresholdReached: reached !== undefined,
-      segments,
-      valueText,
-      labelId,
-      setLabelId,
-    }),
-    [value, min, max, percent, reached, tone, segments, valueText, labelId],
-  );
-
-  return (
-    <MeterContext.Provider value={ctx}>
-      <div
-        data-slot="meter"
-        data-size={size}
-        data-tone={ctx.tone}
-        className={cn('group/meter flex w-full flex-col gap-2', className)}
-        {...props}
-      >
-        {children ?? <MeterTrack />}
-      </div>
-    </MeterContext.Provider>
-  );
-};
-
 const MeterHeader = ({ className, ...props }: React.ComponentProps<'div'>) => {
   return (
     <div
@@ -239,6 +161,55 @@ const MeterValue = ({ unit, className, children, ...props }: MeterValueProps) =>
   );
 };
 
+// Each fill spans the whole track and slides in from the start edge, so it animates on transform
+// alone and flips with the writing direction.
+const fillClass =
+  'absolute inset-0 -translate-x-(--meter-offset) transition-[translate,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:translate-x-(--meter-offset)';
+
+const MeterIndicator = ({ className, style, ...props }: React.ComponentProps<'div'>) => {
+  const { percent, tone } = useMeter();
+
+  return (
+    <div
+      data-slot="meter-indicator"
+      data-tone={tone}
+      className={cn(fillClass, FILL_CLASS[tone], className)}
+      // React's CSSProperties type has no custom properties.
+      style={{ '--meter-offset': `${100 - percent}%`, ...style } as React.CSSProperties}
+      {...props}
+    />
+  );
+};
+
+export interface MeterSegmentProps extends React.ComponentProps<'div'> {
+  /** Position of the segment in the `segments` prop of `Meter`. */
+  index: number;
+}
+
+const MeterSegment = ({ index, className, style, ...props }: MeterSegmentProps) => {
+  const { segments } = useMeter();
+  const segment = segments[index];
+  if (!segment) return null;
+
+  return (
+    <div
+      data-slot="meter-segment"
+      data-tone={segment.tone}
+      className={cn(fillClass, FILL_CLASS[segment.tone], className)}
+      // Later segments reach further, so earlier ones stack on top to stay visible.
+      // React's CSSProperties type has no custom properties.
+      style={
+        {
+          '--meter-offset': `${100 - segment.end}%`,
+          zIndex: segments.length - index,
+          ...style,
+        } as React.CSSProperties
+      }
+      {...props}
+    />
+  );
+};
+
 const MeterTrack = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
   const { value, min, max, valueText, labelId, segments } = useMeter();
 
@@ -268,50 +239,71 @@ const MeterTrack = ({ className, children, ...props }: React.ComponentProps<'div
   );
 };
 
-// Each fill spans the whole track and slides in from the start edge, so it animates on transform
-// alone and flips with the writing direction.
-const fillClass =
-  'absolute inset-0 -translate-x-(--meter-offset) transition-[translate,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:translate-x-(--meter-offset)';
+const Meter = ({
+  value: valueProp,
+  min = 0,
+  max = 100,
+  segments: segmentsProp,
+  tone = 'primary',
+  thresholds,
+  size = 'default',
+  getValueText,
+  className,
+  children,
+  ...props
+}: MeterProps) => {
+  const [labelId, setLabelId] = React.useState<string | null>(null);
+  const span = max - min || 1;
 
-const MeterIndicator = ({ className, style, ...props }: React.ComponentProps<'div'>) => {
-  const { percent, tone } = useMeter();
+  const list = segmentsProp ?? [];
+  const segments: ResolvedSegment[] = list.map((segment, i) => {
+    const total = list.slice(0, i + 1).reduce((sum, s) => sum + s.value, 0);
+
+    return {
+      ...segment,
+      tone: segment.tone ?? SEGMENT_TONES[i % SEGMENT_TONES.length],
+      end: clamp((total / span) * 100, 0, 100),
+    };
+  });
+
+  // Rounded so summed decimals report 32.7, not 32.699999999999996.
+  const value = valueProp ?? Math.round((segmentsProp ?? []).reduce((sum, s) => sum + s.value, min) * 1e6) / 1e6;
+  const percent = clamp(((value - min) / span) * 100, 0, 100);
+
+  let reached: MeterThreshold | undefined;
+  for (const t of (thresholds ?? []).toSorted((a, b) => a.value - b.value)) {
+    if (value >= t.value) reached = t;
+  }
+
+  const valueText =
+    getValueText?.(value, max) ??
+    [`${numberFormat.format(value)} of ${numberFormat.format(max)}`, reached?.label].filter(Boolean).join(', ');
+
+  const ctx: MeterContextValue = {
+    value,
+    min,
+    max,
+    percent,
+    tone: reached?.tone ?? tone,
+    thresholdReached: reached !== undefined,
+    segments,
+    valueText,
+    labelId,
+    setLabelId,
+  };
 
   return (
-    <div
-      data-slot="meter-indicator"
-      data-tone={tone}
-      className={cn(fillClass, FILL_CLASS[tone], className)}
-      style={{ '--meter-offset': `${100 - percent}%`, ...style } as React.CSSProperties}
-      {...props}
-    />
-  );
-};
-
-export interface MeterSegmentProps extends React.ComponentProps<'div'> {
-  /** Position of the segment in the `segments` prop of `Meter`. */
-  index: number;
-}
-
-const MeterSegment = ({ index, className, style, ...props }: MeterSegmentProps) => {
-  const { segments } = useMeter();
-  const segment = segments[index];
-  if (!segment) return null;
-
-  return (
-    <div
-      data-slot="meter-segment"
-      data-tone={segment.tone}
-      className={cn(fillClass, FILL_CLASS[segment.tone], className)}
-      // Later segments reach further, so earlier ones stack on top to stay visible.
-      style={
-        {
-          '--meter-offset': `${100 - segment.end}%`,
-          zIndex: segments.length - index,
-          ...style,
-        } as React.CSSProperties
-      }
-      {...props}
-    />
+    <MeterContext.Provider value={ctx}>
+      <div
+        data-slot="meter"
+        data-size={size}
+        data-tone={ctx.tone}
+        className={cn('group/meter flex w-full flex-col gap-2', className)}
+        {...props}
+      >
+        {children ?? <MeterTrack />}
+      </div>
+    </MeterContext.Provider>
   );
 };
 

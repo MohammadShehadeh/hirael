@@ -62,7 +62,9 @@ const DEFAULT_FORMAT: AddressFormat = {
   },
 };
 
-type AddressFormatPatch = Omit<Partial<AddressFormat>, 'labels'> & { labels?: Partial<AddressFormat['labels']> };
+interface AddressFormatPatch extends Omit<Partial<AddressFormat>, 'labels'> {
+  labels?: Partial<AddressFormat['labels']>;
+}
 
 /** Per-country overrides on top of {@link DEFAULT_FORMAT}; unlisted countries use the default. */
 export const ADDRESS_FORMATS: Record<string, AddressFormatPatch> = {
@@ -148,54 +150,6 @@ export interface AddressInputProps extends Omit<React.ComponentProps<'div'>, 'de
   children?: React.ReactNode;
 }
 
-const AddressInput = ({
-  value: valueProp,
-  defaultValue,
-  onValueChange,
-  labels,
-  locale,
-  disabled,
-  readOnly,
-  className,
-  children,
-  ...props
-}: AddressInputProps) => {
-  const [value, setValue] = useControllableState<AddressValue>({
-    prop: valueProp,
-    defaultProp: { ...EMPTY_ADDRESS, ...defaultValue },
-    onChange: onValueChange,
-  });
-  const id = React.useId();
-
-  const setField = React.useCallback(
-    (field: AddressField | 'country', next: string) => {
-      const updated = { ...value, [field]: next };
-      setValue(updated);
-    },
-    [value, setValue],
-  );
-
-  const format = React.useMemo(() => formatForCountry(value.country), [value.country]);
-
-  const ctx = React.useMemo<AddressInputContextValue>(
-    () => ({ id, value, setField, format, labels, locale, disabled, readOnly }),
-    [id, value, setField, format, labels, locale, disabled, readOnly],
-  );
-
-  return (
-    <AddressInputContext.Provider value={ctx}>
-      <div data-slot="address-input" className={cn('flex flex-col gap-4', className)} {...props}>
-        {children ?? (
-          <>
-            <AddressInputCountry />
-            <AddressInputFields />
-          </>
-        )}
-      </div>
-    </AddressInputContext.Provider>
-  );
-};
-
 export interface AddressInputCountryProps extends React.ComponentProps<'div'> {
   /** ISO-2 codes pinned to the top of the country list. */
   priority?: readonly string[];
@@ -273,6 +227,48 @@ const AddressInputFields = ({ className, ...props }: React.ComponentProps<'div'>
         </div>
       ))}
     </div>
+  );
+};
+
+const AddressInput = ({
+  value: valueProp,
+  defaultValue,
+  onValueChange,
+  labels,
+  locale,
+  disabled,
+  readOnly,
+  className,
+  children,
+  ...props
+}: AddressInputProps) => {
+  const [value, setValue] = useControllableState<AddressValue>({
+    prop: valueProp,
+    defaultProp: { ...EMPTY_ADDRESS, ...defaultValue },
+    onChange: onValueChange,
+  });
+  const id = React.useId();
+
+  const setField = (field: AddressField | 'country', next: string) => {
+    const updated = { ...value, [field]: next };
+    setValue(updated);
+  };
+
+  const format = formatForCountry(value.country);
+
+  const ctx: AddressInputContextValue = { id, value, setField, format, labels, locale, disabled, readOnly };
+
+  return (
+    <AddressInputContext.Provider value={ctx}>
+      <div data-slot="address-input" className={cn('flex flex-col gap-4', className)} {...props}>
+        {children ?? (
+          <>
+            <AddressInputCountry />
+            <AddressInputFields />
+          </>
+        )}
+      </div>
+    </AddressInputContext.Provider>
   );
 };
 

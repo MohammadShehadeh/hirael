@@ -28,7 +28,11 @@ const SWAP =
 
 const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
-type Category = 'All' | 'Source' | 'Messaging' | 'Data' | 'Billing';
+const CATEGORY_VALUES = ['All', 'Source', 'Messaging', 'Data', 'Billing'] as const;
+
+type Category = (typeof CATEGORY_VALUES)[number];
+
+const isCategory = (value: unknown): value is Category => CATEGORY_VALUES.some((option) => option === value);
 
 interface Integration {
   name: string;
@@ -130,7 +134,7 @@ const Integrations02 = () => {
               spacing={1}
               value={[active]}
               onValueChange={([value]) => {
-                if (value) setActive(value as Category);
+                if (isCategory(value)) setActive(value);
               }}
               aria-label="Filter by category"
               className="flex-wrap"

@@ -36,8 +36,6 @@ const read = (base: RegistryBase, file: string): string | undefined => {
   }
 };
 
-let written = 0;
-
 for (const base of REGISTRY_BASES) {
   const outDir = builtDir(base);
   mkdirSync(outDir, { recursive: true });
@@ -69,10 +67,9 @@ for (const base of REGISTRY_BASES) {
     });
 
     writeFileSync(path.join(outDir, `${entry.name}.md`), markdown);
-    written += 1;
   }
 }
 
 console.log(
-  `✓ ${written} registry markdown pages generated (${REGISTRY.length} items x ${REGISTRY_BASES.length} bases)`,
+  `✓ ${REGISTRY.length * REGISTRY_BASES.length} registry markdown pages generated (${REGISTRY.length} items x ${REGISTRY_BASES.length} bases)`,
 );

@@ -94,61 +94,6 @@ export interface TableOfContentsProps extends Omit<React.ComponentProps<'nav'>, 
   children?: React.ReactNode;
 }
 
-const TableOfContents = ({
-  items,
-  activeId: controlledActiveId,
-  label = 'On this page',
-  className,
-  children,
-  'aria-label': ariaLabel,
-  ...props
-}: TableOfContentsProps) => {
-  const headingCounts = React.useRef(new Map<string, number>());
-  const [idsKey, setIdsKey] = React.useState('');
-
-  // Every link registers its target, so the items and compound forms both track the active heading.
-  const registerHeading = React.useCallback((id: string) => {
-    const counts = headingCounts.current;
-    counts.set(id, (counts.get(id) ?? 0) + 1);
-    setIdsKey([...counts.keys()].join(' '));
-
-    return () => {
-      const next = (counts.get(id) ?? 1) - 1;
-      if (next > 0) counts.set(id, next);
-      else counts.delete(id);
-      setIdsKey([...counts.keys()].join(' '));
-    };
-  }, []);
-
-  const trackedActiveId = useActiveHeading(idsKey, controlledActiveId === undefined);
-  const activeId = controlledActiveId !== undefined ? controlledActiveId : trackedActiveId;
-  const contextValue = React.useMemo(() => ({ activeId, registerHeading }), [activeId, registerHeading]);
-
-  const content =
-    children ??
-    (items && items.length > 0 ? (
-      <>
-        {label && <TableOfContentsLabel>{label}</TableOfContentsLabel>}
-        <TableOfContentsList items={items} />
-      </>
-    ) : null);
-
-  if (!content) return null;
-
-  return (
-    <TocContext.Provider value={contextValue}>
-      <nav
-        data-slot="toc"
-        aria-label={ariaLabel ?? (typeof label === 'string' ? label : 'On this page')}
-        className={cn('flex flex-col gap-3', className)}
-        {...props}
-      >
-        {content}
-      </nav>
-    </TocContext.Provider>
-  );
-};
-
 export type TableOfContentsLabelProps = React.ComponentProps<'p'>;
 
 const TableOfContentsLabel = ({ className, ...props }: TableOfContentsLabelProps) => {
@@ -161,36 +106,10 @@ export interface TableOfContentsListProps extends Omit<React.ComponentProps<'ul'
   children?: React.ReactNode;
 }
 
-const TableOfContentsList = ({ items, level = 0, className, children, ...props }: TableOfContentsListProps) => {
-  if (children === undefined && (!items || items.length === 0)) return null;
-
-  return (
-    <ul
-      data-slot="toc-list"
-      data-level={level}
-      className={cn('flex flex-col gap-1', level === 0 ? 'border-s border-border' : 'ms-4 mt-1', className)}
-      {...props}
-    >
-      {children ?? items?.map((item) => <TableOfContentsItem key={item.id} item={item} level={level} />)}
-    </ul>
-  );
-};
-
 export interface TableOfContentsItemProps extends Omit<React.ComponentProps<'li'>, 'children'> {
   item: TocItem;
   level?: number;
 }
-
-const TableOfContentsItem = ({ item, level = 0, className, ...props }: TableOfContentsItemProps) => {
-  return (
-    <li data-slot="toc-item" className={className} {...props}>
-      <TableOfContentsLink href={`#${item.id}`} level={item.level}>
-        {item.text}
-      </TableOfContentsLink>
-      {!!item.children?.length && <TableOfContentsList items={item.children} level={level + 1} />}
-    </li>
-  );
-};
 
 export interface TableOfContentsLinkProps extends React.ComponentProps<'a'> {
   level?: number;
@@ -244,3 +163,84 @@ const TableOfContentsLink = ({
 };
 
 export { TableOfContents, TableOfContentsLabel, TableOfContentsList, TableOfContentsItem, TableOfContentsLink };
+
+const TableOfContentsList = ({ items, level = 0, className, children, ...props }: TableOfContentsListProps) => {
+  if (children === undefined && (!items || items.length === 0)) return null;
+
+  return (
+    <ul
+      data-slot="toc-list"
+      data-level={level}
+      className={cn('flex flex-col gap-1', level === 0 ? 'border-s border-border' : 'ms-4 mt-1', className)}
+      {...props}
+    >
+      {children ?? items?.map((item) => <TableOfContentsItem key={item.id} item={item} level={level} />)}
+    </ul>
+  );
+};
+
+const TableOfContents = ({
+  items,
+  activeId: controlledActiveId,
+  label = 'On this page',
+  className,
+  children,
+  'aria-label': ariaLabel,
+  ...props
+}: TableOfContentsProps) => {
+  const headingCounts = React.useRef(new Map<string, number>());
+  const [idsKey, setIdsKey] = React.useState('');
+
+  // Every link registers its target, so the items and compound forms both track the active heading.
+  const registerHeading = (id: string) => {
+    const counts = headingCounts.current;
+    counts.set(id, (counts.get(id) ?? 0) + 1);
+    setIdsKey([...counts.keys()].join(' '));
+
+    return () => {
+      const next = (counts.get(id) ?? 1) - 1;
+      if (next > 0) counts.set(id, next);
+      else counts.delete(id);
+      setIdsKey([...counts.keys()].join(' '));
+    };
+  };
+
+  const trackedActiveId = useActiveHeading(idsKey, controlledActiveId === undefined);
+  const activeId = controlledActiveId !== undefined ? controlledActiveId : trackedActiveId;
+  const contextValue = { activeId, registerHeading };
+
+  const content =
+    children ??
+    (items && items.length > 0 ? (
+      <>
+        {label && <TableOfContentsLabel>{label}</TableOfContentsLabel>}
+        <TableOfContentsList items={items} />
+      </>
+    ) : null);
+
+  if (!content) return null;
+
+  return (
+    <TocContext.Provider value={contextValue}>
+      <nav
+        data-slot="toc"
+        aria-label={ariaLabel ?? (typeof label === 'string' ? label : 'On this page')}
+        className={cn('flex flex-col gap-3', className)}
+        {...props}
+      >
+        {content}
+      </nav>
+    </TocContext.Provider>
+  );
+};
+
+const TableOfContentsItem = ({ item, level = 0, className, ...props }: TableOfContentsItemProps) => {
+  return (
+    <li data-slot="toc-item" className={className} {...props}>
+      <TableOfContentsLink href={`#${item.id}`} level={item.level}>
+        {item.text}
+      </TableOfContentsLink>
+      {!!item.children?.length && <TableOfContentsList items={item.children} level={level + 1} />}
+    </li>
+  );
+};

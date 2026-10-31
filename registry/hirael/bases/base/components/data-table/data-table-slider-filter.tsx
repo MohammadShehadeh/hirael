@@ -42,6 +42,15 @@ interface DataTableSliderFilterProps<TData extends RowData> {
   title?: string;
 }
 
+const wholeNumber = new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 });
+
+const sliderStep = (rangeSize: number) => {
+  if (rangeSize <= 20) return 1;
+  if (rangeSize <= 100) return Math.ceil(rangeSize / 20);
+
+  return Math.ceil(rangeSize / 50);
+};
+
 export const DataTableSliderFilter = <TData extends RowData>({ column, title }: DataTableSliderFilterProps<TData>) => {
   const labels = useDataTableLabels();
   const id = React.useId();
@@ -71,7 +80,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
     }
 
     const rangeSize = maxValue - minValue;
-    const step = rangeSize <= 20 ? 1 : rangeSize <= 100 ? Math.ceil(rangeSize / 20) : Math.ceil(rangeSize / 50);
+    const step = sliderStep(rangeSize);
     // Snap max up to the step grid, otherwise the slider can never reach the real max.
     const snappedMax = minValue + Math.ceil(rangeSize / step) * step;
 
@@ -86,7 +95,7 @@ export const DataTableSliderFilter = <TData extends RowData>({ column, title }: 
   const [toDraft, setToDraft] = React.useState<string | null>(null);
 
   const formatValue = React.useCallback((value: number) => {
-    return value.toLocaleString(undefined, { maximumFractionDigits: 0 });
+    return wholeNumber.format(value);
   }, []);
 
   const commitFrom = React.useCallback(() => {

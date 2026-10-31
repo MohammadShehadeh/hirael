@@ -30,7 +30,7 @@ const ImagePreview = () => {
   if (!value) return null;
 
   return (
-    // eslint-disable-next-line @next/next/no-img-element
+    // eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image
     <img
       src={value.url}
       alt={value.file.name}

@@ -38,15 +38,6 @@ const DEFAULT_LABELS: ToolCallLabels = {
   approvalPrompt: 'This tool wants to run with the input above.',
 };
 
-const STATUS_ICON: Record<ToolCallStatus, StatusIcon> = {
-  pending: { icon: CircleDashed, className: 'text-muted-foreground' },
-  approval: { icon: Hand, className: 'text-warning' },
-  running: { icon: LoaderCircle, className: 'animate-spin text-primary motion-reduce:animate-none' },
-  done: { icon: CircleCheck, className: 'text-success' },
-  error: { icon: CircleAlert, className: 'text-destructive' },
-  denied: { icon: CircleAlert, className: 'text-muted-foreground' },
-};
-
 interface ToolCallContextValue {
   name: string;
   status: ToolCallStatus;
@@ -70,14 +61,23 @@ const useToolCall = () => {
   return ctx;
 };
 
-export type ToolCallLabelOverrides = Partial<Omit<ToolCallLabels, 'status'>> & {
+export interface ToolCallLabelOverrides extends Partial<Omit<ToolCallLabels, 'status'>> {
   status?: Partial<ToolCallLabels['status']>;
-};
+}
 
 interface StatusIcon {
   icon: typeof Wrench;
   className: string;
 }
+
+const STATUS_ICON: Record<ToolCallStatus, StatusIcon> = {
+  pending: { icon: CircleDashed, className: 'text-muted-foreground' },
+  approval: { icon: Hand, className: 'text-warning' },
+  running: { icon: LoaderCircle, className: 'animate-spin text-primary motion-reduce:animate-none' },
+  done: { icon: CircleCheck, className: 'text-success' },
+  error: { icon: CircleAlert, className: 'text-destructive' },
+  denied: { icon: CircleAlert, className: 'text-muted-foreground' },
+};
 
 export interface ToolCallProps extends Omit<
   React.ComponentProps<typeof Collapsible>,
@@ -104,81 +104,6 @@ export interface ToolCallProps extends Omit<
   onOpenChange?: (open: boolean) => void;
   labels?: ToolCallLabelOverrides;
 }
-
-const ToolCall = ({
-  name,
-  status = 'done',
-  input,
-  output,
-  error,
-  durationMs,
-  onApprove,
-  onDeny,
-  open: openProp,
-  defaultOpen,
-  onOpenChange,
-  labels,
-  className,
-  children,
-  ...props
-}: ToolCallProps) => {
-  const [open, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpen ?? (status === 'approval' || status === 'error'),
-    onChange: onOpenChange,
-  });
-
-  // A streamed call mounts as pending or running, so its later approval or error opens it here.
-  const prevStatusRef = React.useRef(status);
-  React.useEffect(() => {
-    if (prevStatusRef.current === status) return;
-    prevStatusRef.current = status;
-    if (status === 'approval' || status === 'error') setOpen(true);
-  }, [status, setOpen]);
-
-  const ctx = React.useMemo<ToolCallContextValue>(
-    () => ({
-      name,
-      status,
-      input,
-      output,
-      error,
-      durationMs,
-      labels: {
-        ...DEFAULT_LABELS,
-        ...labels,
-        status: { ...DEFAULT_LABELS.status, ...labels?.status },
-      },
-      onApprove,
-      onDeny,
-    }),
-    [name, status, input, output, error, durationMs, labels, onApprove, onDeny],
-  );
-
-  return (
-    <ToolCallContext.Provider value={ctx}>
-      <Collapsible
-        data-slot="tool-call"
-        data-status={status}
-        // Approval can't hide behind a closed panel.
-        open={status === 'approval' || open}
-        onOpenChange={setOpen}
-        className={cn(
-          'w-full overflow-hidden rounded-lg border border-border bg-card text-card-foreground data-[status=approval]:border-warning/50',
-          className,
-        )}
-        {...props}
-      >
-        {children ?? (
-          <>
-            <ToolCallTrigger />
-            <ToolCallContent />
-          </>
-        )}
-      </Collapsible>
-    </ToolCallContext.Provider>
-  );
-};
 
 const formatDuration = (ms: number) => (ms < 1000 ? `${Math.round(ms)}ms` : `${(ms / 1000).toFixed(1)}s`);
 
@@ -286,6 +211,78 @@ const ToolCallContent = ({ className, children, ...props }: React.ComponentProps
         )}
       </div>
     </CollapsibleContent>
+  );
+};
+
+const ToolCall = ({
+  name,
+  status = 'done',
+  input,
+  output,
+  error,
+  durationMs,
+  onApprove,
+  onDeny,
+  open: openProp,
+  defaultOpen,
+  onOpenChange,
+  labels,
+  className,
+  children,
+  ...props
+}: ToolCallProps) => {
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen ?? (status === 'approval' || status === 'error'),
+    onChange: onOpenChange,
+  });
+
+  // A streamed call mounts as pending or running, so its later approval or error opens it here.
+  const prevStatusRef = React.useRef(status);
+  React.useEffect(() => {
+    if (prevStatusRef.current === status) return;
+    prevStatusRef.current = status;
+    if (status === 'approval' || status === 'error') setOpen(true);
+  }, [status, setOpen]);
+
+  const ctx: ToolCallContextValue = {
+    name,
+    status,
+    input,
+    output,
+    error,
+    durationMs,
+    labels: {
+      ...DEFAULT_LABELS,
+      ...labels,
+      status: { ...DEFAULT_LABELS.status, ...labels?.status },
+    },
+    onApprove,
+    onDeny,
+  };
+
+  return (
+    <ToolCallContext.Provider value={ctx}>
+      <Collapsible
+        data-slot="tool-call"
+        data-status={status}
+        // Approval can't hide behind a closed panel.
+        open={status === 'approval' || open}
+        onOpenChange={setOpen}
+        className={cn(
+          'w-full overflow-hidden rounded-lg border border-border bg-card text-card-foreground data-[status=approval]:border-warning/50',
+          className,
+        )}
+        {...props}
+      >
+        {children ?? (
+          <>
+            <ToolCallTrigger />
+            <ToolCallContent />
+          </>
+        )}
+      </Collapsible>
+    </ToolCallContext.Provider>
   );
 };
 

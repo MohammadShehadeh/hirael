@@ -3,14 +3,14 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
-import { useT } from '@/lib/demo-locale';
+import { useT, type Localized } from '@/lib/demo-locale';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { VirtualList } from '@/registry/hirael/bases/radix/components/virtual-list';
 
 interface LogLine {
   id: number;
   level: 'info' | 'warn' | 'error';
-  message: { en: string; ar: string };
+  message: Localized<string>;
 }
 
 const MESSAGES: LogLine['message'][] = [
@@ -49,7 +49,7 @@ const VirtualListDemo = () => {
   const [lines, setLines] = React.useState<LogLine[]>(() => makePage(0));
   const [loading, setLoading] = React.useState(false);
 
-  const loadMore = () => {
+  const handleLoadMore = () => {
     setLoading(true);
     window.setTimeout(() => {
       setLines((list) => [...list, ...makePage(list.length)]);
@@ -66,7 +66,7 @@ const VirtualListDemo = () => {
           estimateSize={44}
           hasMore={lines.length < TOTAL}
           loading={loading}
-          onEndReached={loadMore}
+          onEndReached={handleLoadMore}
           loader={
             <div className="flex items-center justify-center gap-2 py-3 text-xs text-muted-foreground">
               <Spinner />

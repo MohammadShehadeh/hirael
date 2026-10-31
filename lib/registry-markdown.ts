@@ -22,13 +22,18 @@ export interface MarkdownApiPart {
   extendsNative: boolean;
 }
 
+interface MarkdownExample {
+  title: string;
+  code: string;
+}
+
 export interface RegistryMarkdownInput {
   entry: RegistryEntryMeta;
   base: RegistryBase;
   origin: string;
   baseLabel: string;
   sources: Record<string, string>;
-  examples: { title: string; code: string }[];
+  examples: MarkdownExample[];
   api: MarkdownApiPart[] | null;
 }
 

@@ -100,7 +100,7 @@ const Contact01 = () => {
     }
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setTouched(true);
     const next = validate(state);
@@ -112,7 +112,7 @@ const Contact01 = () => {
     setStatus('sent');
   };
 
-  const reset = () => {
+  const handleReset = () => {
     setState(INITIAL);
     setErrors({});
     setTouched(false);
@@ -163,12 +163,12 @@ const Contact01 = () => {
                       <span className="text-foreground">{state.email}</span>.
                     </p>
                   </div>
-                  <Button variant="outline" size="sm" onClick={reset}>
+                  <Button variant="outline" size="sm" onClick={handleReset}>
                     Send another
                   </Button>
                 </div>
               ) : (
-                <form key="form" noValidate onSubmit={onSubmit} className={cn(SWAP, 'block')}>
+                <form key="form" noValidate onSubmit={handleSubmit} className={cn(SWAP, 'block')}>
                   <FieldGroup>
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                       <Field data-invalid={Boolean(errors.name) || undefined}>

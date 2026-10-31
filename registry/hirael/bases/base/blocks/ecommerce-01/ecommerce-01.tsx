@@ -22,7 +22,12 @@ type Category = 'audio' | 'wearables' | 'travel' | 'everyday';
 
 type CategoryFilter = Category | 'all';
 
-const FILTERS: { value: CategoryFilter; label: string }[] = [
+interface FilterOption {
+  value: CategoryFilter;
+  label: string;
+}
+
+const FILTERS: FilterOption[] = [
   { value: 'all', label: 'All' },
   { value: 'audio', label: 'Audio' },
   { value: 'wearables', label: 'Wearables' },

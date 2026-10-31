@@ -102,16 +102,16 @@ const ChatThread = ({
     if (!atBottom && !latestFromSelf) setUnseen(true);
   }
 
-  const scrollToBottom = React.useCallback(() => {
+  const scrollToBottom = () => {
     const el = viewportRef.current;
     if (!el) return;
     pinnedRef.current = true;
     // Already at the bottom means no scroll event will come to clear the flag.
     autoScrollingRef.current = el.scrollHeight - el.scrollTop - el.clientHeight > 1;
     el.scrollTo({ top: el.scrollHeight, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-  }, []);
+  };
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
@@ -123,7 +123,7 @@ const ChatThread = ({
     pinnedRef.current = pinned;
     setAtBottom(pinned);
     if (pinned) setUnseen(false);
-  }, [threshold]);
+  };
 
   // Status changes and replies grow the content without scrolling it, so follow the box size.
   React.useLayoutEffect(() => {
@@ -139,11 +139,12 @@ const ChatThread = ({
     return () => observer.disconnect();
   }, []);
 
+  const followOwnMessage = React.useEffectEvent(scrollToBottom);
   React.useLayoutEffect(() => {
-    if (latestFromSelf) scrollToBottom();
-  }, [latestId, latestFromSelf, scrollToBottom]);
+    if (latestFromSelf) followOwnMessage();
+  }, [latestId, latestFromSelf]);
 
-  const context = React.useMemo(() => ({ atBottom, unseen, scrollToBottom }), [atBottom, unseen, scrollToBottom]);
+  const context = { atBottom, unseen, scrollToBottom };
 
   return (
     <ChatThreadContext.Provider value={context}>
@@ -378,39 +379,30 @@ const ChatComposer = ({
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const canSend = value.trim().length > 0;
 
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (!isControlled) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [isControlled, onValueChange],
-  );
+  const setValue = (next: string) => {
+    if (!isControlled) setInternalValue(next);
+    onValueChange?.(next);
+  };
 
-  const send = React.useCallback(() => {
+  const send = () => {
     if (!canSend) return;
     onSend?.(value.trim());
     setValue('');
     inputRef.current?.focus();
-  }, [canSend, onSend, value, setValue]);
+  };
 
-  const insertText = React.useCallback(
-    (text: string) => {
-      const el = inputRef.current;
-      const start = el?.selectionStart ?? value.length;
-      const end = el?.selectionEnd ?? value.length;
-      setValue(value.slice(0, start) + text + value.slice(end));
-      requestAnimationFrame(() => {
-        el?.focus();
-        el?.setSelectionRange(start + text.length, start + text.length);
-      });
-    },
-    [value, setValue],
-  );
+  const insertText = (text: string) => {
+    const el = inputRef.current;
+    const start = el?.selectionStart ?? value.length;
+    const end = el?.selectionEnd ?? value.length;
+    setValue(value.slice(0, start) + text + value.slice(end));
+    requestAnimationFrame(() => {
+      el?.focus();
+      el?.setSelectionRange(start + text.length, start + text.length);
+    });
+  };
 
-  const context = React.useMemo(
-    () => ({ value, setValue, canSend, send, insertText, inputRef }),
-    [value, setValue, canSend, send, insertText],
-  );
+  const context = { value, setValue, canSend, send, insertText, inputRef };
 
   return (
     <ChatComposerContext.Provider value={context}>
@@ -569,18 +561,37 @@ export {
   useChatComposer,
 };
 
-type Status = 'open' | 'snoozed' | 'closed';
+const STATUS_VALUES = ['open', 'snoozed', 'closed'] as const;
+
+type Status = (typeof STATUS_VALUES)[number];
+
+const isStatus = (value: unknown): value is Status => STATUS_VALUES.some((option) => option === value);
+
 type Assignee = 'me' | 'ana' | 'tom';
 type AssigneeFilter = 'all' | Assignee | 'unassigned';
-type Mode = 'reply' | 'note';
+const MODE_VALUES = ['reply', 'note'] as const;
 
-const TEAM: Record<Assignee, { name: string; initials: string }> = {
+type Mode = (typeof MODE_VALUES)[number];
+
+const isMode = (value: unknown): value is Mode => MODE_VALUES.some((option) => option === value);
+
+interface Teammate {
+  name: string;
+  initials: string;
+}
+
+const TEAM: Record<Assignee, Teammate> = {
   me: { name: 'Mohammad Shehadeh', initials: 'MS' },
   ana: { name: 'Ana Lima', initials: 'AL' },
   tom: { name: 'Tom Becker', initials: 'TB' },
 };
 
-const FILTERS: { value: AssigneeFilter; label: string }[] = [
+interface AssigneeOption {
+  value: AssigneeFilter;
+  label: string;
+}
+
+const FILTERS: AssigneeOption[] = [
   { value: 'all', label: 'Everyone' },
   { value: 'me', label: 'Assigned to me' },
   { value: 'unassigned', label: 'Unassigned' },
@@ -588,7 +599,12 @@ const FILTERS: { value: AssigneeFilter; label: string }[] = [
   { value: 'tom', label: 'Tom Becker' },
 ];
 
-const TABS: { value: Status; label: string }[] = [
+interface StatusTab {
+  value: Status;
+  label: string;
+}
+
+const TABS: StatusTab[] = [
   { value: 'open', label: 'Open' },
   { value: 'snoozed', label: 'Snoozed' },
   { value: 'closed', label: 'Closed' },
@@ -855,7 +871,9 @@ const CONVERSATIONS: Conversation[] = [
   },
 ];
 
-const clock = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date());
+const clockFormat = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+const clock = () => clockFormat.format(new Date());
 
 const toMinutes = (time: string) => {
   const [hours, minutes] = time.split(':').map(Number);
@@ -958,12 +976,14 @@ interface Notice {
   eventId: string;
 }
 
+type MobilePane = 'list' | 'conversation';
+
 const Chat04 = () => {
   const [conversations, setConversations] = React.useState(CONVERSATIONS);
   const [tab, setTab] = React.useState<Status>('open');
   const [filter, setFilter] = React.useState<AssigneeFilter>('all');
   const [activeId, setActiveId] = React.useState<string>('vat');
-  const [view, setView] = React.useState<'list' | 'conversation'>('list');
+  const [view, setView] = React.useState<MobilePane>('list');
   const [mode, setMode] = React.useState<Mode>('reply');
   const [drafts, setDrafts] = React.useState<Record<string, string>>({});
   const [notice, setNotice] = React.useState<Notice | null>(null);
@@ -1003,6 +1023,7 @@ const Chat04 = () => {
   };
 
   const filtered = conversations.filter(matchesFilter);
+  // fromEntries types its keys as string; TABS has one per status.
   const counts = Object.fromEntries(
     TABS.map((item) => [item.value, filtered.filter((conversation) => conversation.status === item.value).length]),
   ) as Record<Status, number>;
@@ -1044,7 +1065,7 @@ const Chat04 = () => {
     schedule(() => setNotice((current) => (current?.key === key ? null : current)), 6000);
   };
 
-  const undo = () => {
+  const handleUndo = () => {
     if (!notice) return;
     update(notice.conversationId, (current) => ({
       ...current,
@@ -1055,7 +1076,7 @@ const Chat04 = () => {
     setNotice(null);
   };
 
-  const send = (text: string) => {
+  const handleSend = (text: string) => {
     if (!active) return;
     const id = nextId();
     const note = mode === 'note';
@@ -1133,7 +1154,10 @@ const Chat04 = () => {
                       <DropdownMenuLabel>Assignee</DropdownMenuLabel>
                       <DropdownMenuRadioGroup
                         value={filter}
-                        onValueChange={(value) => setFilter(value as AssigneeFilter)}
+                        onValueChange={(value) => {
+                          const option = FILTERS.find((item) => item.value === value);
+                          if (option) setFilter(option.value);
+                        }}
                       >
                         {FILTERS.map((item) => (
                           <DropdownMenuRadioItem key={item.value} value={item.value}>
@@ -1145,7 +1169,12 @@ const Chat04 = () => {
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <Tabs value={tab} onValueChange={(value) => setTab(value as Status)}>
+              <Tabs
+                value={tab}
+                onValueChange={(value) => {
+                  if (isStatus(value)) setTab(value);
+                }}
+              >
                 <TabsList variant="line" className="w-full justify-start">
                   {TABS.map((item) => (
                     <TabsTrigger key={item.value} value={item.value} className="flex-none">
@@ -1205,7 +1234,7 @@ const Chat04 = () => {
                   className={cn(SWAP, 'flex items-center gap-2 border-t border-border py-2 ps-4 pe-2 text-sm')}
                 >
                   <span className="min-w-0 flex-1 truncate">{notice.text}</span>
-                  <Button type="button" variant="ghost" size="sm" onClick={undo}>
+                  <Button type="button" variant="ghost" size="sm" onClick={handleUndo}>
                     Undo
                   </Button>
                 </div>
@@ -1334,14 +1363,14 @@ const Chat04 = () => {
                   note={mode === 'note'}
                   value={drafts[active.id] ?? ''}
                   onValueChange={(value) => setDrafts((current) => ({ ...current, [active.id]: value }))}
-                  onSend={send}
+                  onSend={handleSend}
                 >
                   <InputGroupAddon align="block-start">
                     <ToggleGroup
                       size="sm"
                       value={[mode]}
                       onValueChange={([next]) => {
-                        if (next) setMode(next as Mode);
+                        if (isMode(next)) setMode(next);
                       }}
                       aria-label="Message type"
                     >

@@ -90,20 +90,14 @@ const FileDropzone = ({
     },
   });
 
-  const removeAt = React.useCallback(
-    (index: number) => {
-      const removed = files[index];
-      setFiles(files.filter((_, i) => i !== index));
-      // Errors about this file, or about the one-file limit, no longer apply once it's gone.
-      setErrors((prev) => prev.filter((err) => err.file !== removed && err.reason !== 'count'));
-    },
-    [files, setFiles],
-  );
+  const removeAt = (index: number) => {
+    const removed = files[index];
+    setFiles(files.filter((_, i) => i !== index));
+    // Errors about this file, or about the one-file limit, no longer apply once it's gone.
+    setErrors((prev) => prev.filter((err) => err.file !== removed && err.reason !== 'count'));
+  };
 
-  const ctx = React.useMemo<Ctx>(
-    () => ({ files, accept, maxSize, disabled, errors, removeAt, dropzone }),
-    [files, accept, maxSize, disabled, errors, removeAt, dropzone],
-  );
+  const ctx: Ctx = { files, accept, maxSize, disabled, errors, removeAt, dropzone };
 
   return (
     <FileDropzoneContext.Provider value={ctx}>
@@ -133,12 +127,10 @@ const FileDropzoneZone = ({
   const ctx = useFileDropzone();
   const { getRootProps, getInputProps, isDragActive } = ctx.dropzone;
   const types = ctx.accept && Object.entries(ctx.accept).flatMap(([mime, exts]) => (exts.length ? exts : [mime]));
-  const resolvedSubline =
-    subline !== undefined
-      ? subline
-      : [types?.join(', '), ctx.maxSize !== undefined && `up to ${formatBytes(ctx.maxSize)}`]
-          .filter(Boolean)
-          .join(', ') || null;
+  const limits = [types?.join(', '), ctx.maxSize !== undefined && `up to ${formatBytes(ctx.maxSize)}`]
+    .filter(Boolean)
+    .join(', ');
+  const resolvedSubline = subline !== undefined ? subline : limits || null;
 
   return (
     <div

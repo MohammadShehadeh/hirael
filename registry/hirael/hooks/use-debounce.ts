@@ -40,25 +40,23 @@ export const useDebouncedCallback = <Args extends unknown[]>(
 
   React.useEffect(() => () => window.clearTimeout(timerRef.current), []);
 
-  return React.useMemo(() => {
-    const flush = () => {
-      window.clearTimeout(timerRef.current);
-      const args = pendingRef.current;
-      pendingRef.current = null;
-      if (args) callbackRef.current(...args);
-    };
-    const cancel = () => {
-      window.clearTimeout(timerRef.current);
-      pendingRef.current = null;
-    };
-    const debounced = ((...args: Args) => {
-      pendingRef.current = args;
-      window.clearTimeout(timerRef.current);
-      timerRef.current = window.setTimeout(flush, delay);
-    }) as DebouncedCallback<Args>;
-    debounced.cancel = cancel;
-    debounced.flush = flush;
+  const flush = () => {
+    window.clearTimeout(timerRef.current);
+    const args = pendingRef.current;
+    pendingRef.current = null;
+    if (args) callbackRef.current(...args);
+  };
+  const cancel = () => {
+    window.clearTimeout(timerRef.current);
+    pendingRef.current = null;
+  };
+  const debounced = (...args: Args) => {
+    pendingRef.current = args;
+    window.clearTimeout(timerRef.current);
+    timerRef.current = window.setTimeout(flush, delay);
+  };
+  debounced.cancel = cancel;
+  debounced.flush = flush;
 
-    return debounced;
-  }, [delay]);
+  return debounced;
 };

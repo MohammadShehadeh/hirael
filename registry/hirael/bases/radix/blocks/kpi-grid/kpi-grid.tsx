@@ -109,17 +109,38 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-type KpiPeriod = '7d' | '30d' | '90d';
+const KPI_PERIOD_VALUES = ['7d', '30d', '90d'] as const;
 
-const PERIODS: { value: KpiPeriod; label: string; comparison: string }[] = [
+type KpiPeriod = (typeof KPI_PERIOD_VALUES)[number];
+
+const isKpiPeriod = (value: unknown): value is KpiPeriod => KPI_PERIOD_VALUES.some((option) => option === value);
+
+interface PeriodOption {
+  value: KpiPeriod;
+  label: string;
+  comparison: string;
+}
+
+const PERIODS: PeriodOption[] = [
   { value: '7d', label: '7 days', comparison: 'vs previous 7 days' },
   { value: '30d', label: '30 days', comparison: 'vs previous 30 days' },
   { value: '90d', label: '90 days', comparison: 'vs previous quarter' },
 ];
 
-type KpiReading = { value: string; trend: KpiTrend; delta: string; spark: number[] };
+interface KpiReading {
+  value: string;
+  trend: KpiTrend;
+  delta: string;
+  spark: number[];
+}
 
-const KPI_ROWS: { key: string; label: string; periods: Record<KpiPeriod, KpiReading> }[] = [
+interface KpiRow {
+  key: string;
+  label: string;
+  periods: Record<KpiPeriod, KpiReading>;
+}
+
+const KPI_ROWS: KpiRow[] = [
   {
     key: 'revenue',
     label: 'Revenue',
@@ -175,7 +196,7 @@ const KpiGridBlock = () => {
             variant="outline"
             value={period}
             onValueChange={(value) => {
-              if (value) setPeriod(value as KpiPeriod);
+              if (isKpiPeriod(value)) setPeriod(value);
             }}
             aria-label="Period"
           >

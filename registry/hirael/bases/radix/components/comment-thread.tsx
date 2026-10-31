@@ -45,7 +45,7 @@ const CommentThread = ({
     defaultProp: defaultResolved,
     onChange: onResolvedChange,
   });
-  const ctx = React.useMemo<CommentThreadContextValue>(() => ({ resolved, setResolved }), [resolved, setResolved]);
+  const ctx: CommentThreadContextValue = { resolved, setResolved };
 
   return (
     <CommentThreadContext.Provider value={ctx}>

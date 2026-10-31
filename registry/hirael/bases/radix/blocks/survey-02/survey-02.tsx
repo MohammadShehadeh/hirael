@@ -37,7 +37,13 @@ interface Answers {
   notes: string;
 }
 
-const QUESTIONS: readonly { name: QuestionId; title: string; required: boolean }[] = [
+interface Question {
+  name: QuestionId;
+  title: string;
+  required: boolean;
+}
+
+const QUESTIONS: readonly Question[] = [
   { name: 'source', title: 'How did you first hear about Hirael?', required: true },
   { name: 'features', title: 'Which features does your team use most?', required: true },
   { name: 'setup', title: 'How easy was it to set up your workspace?', required: true },
@@ -83,11 +89,19 @@ const formatAnswer = (name: QuestionId, answers: Answers): string | null => {
       return answers.setup ? `${answers.setup} of 5, ${SETUP_LABELS[Number(answers.setup) - 1]}` : null;
     case 'notes':
       return answers.notes.trim() || null;
+    default: {
+      const unhandled: never = name;
+      throw new Error(`Unhandled survey question: ${String(unhandled)}`);
+    }
   }
 };
 
+interface ProgressTrackProps {
+  value: number;
+}
+
 // Progress fills by translating left, which starts from the wrong edge in RTL; this track scales from the start edge.
-const ProgressTrack = ({ value }: { value: number }) => (
+const ProgressTrack = ({ value }: ProgressTrackProps) => (
   <span
     data-slot="feedback-survey-track"
     aria-hidden
@@ -135,19 +149,19 @@ const Survey02 = () => {
     setItem(name);
   };
 
-  const backToQuestions = () => {
+  const handleBackToQuestions = () => {
     setReviewing(false);
     setItem(LAST_QUESTION);
   };
 
   // Submitting re-validates every item and lands back on the review step.
-  const saveAndReview = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSaveAndReview = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!returnToReview) return;
     event.preventDefault();
     event.currentTarget.form?.requestSubmit();
   };
 
-  const restart = () => {
+  const handleRestart = () => {
     setRound((current) => current + 1);
     setItem(QUESTIONS[0].name);
     setFeatures([]);
@@ -178,7 +192,7 @@ const Survey02 = () => {
                   We read every response. If we ship something you asked for, we will let you know by email.
                 </p>
               </div>
-              <Button type="button" variant="outline" className="w-fit" onClick={restart}>
+              <Button type="button" variant="outline" className="w-fit" onClick={handleRestart}>
                 <RotateCcw aria-hidden />
                 Start over
               </Button>
@@ -325,7 +339,7 @@ const Survey02 = () => {
                 <div data-slot="feedback-survey-footer" className="border-t border-border px-6 py-4">
                   {reviewing ? (
                     <div className="flex items-center justify-between gap-3">
-                      <Button type="button" variant="ghost" onClick={backToQuestions}>
+                      <Button type="button" variant="ghost" onClick={handleBackToQuestions}>
                         <ChevronLeft aria-hidden className="rtl:rotate-180" />
                         Back
                       </Button>
@@ -337,7 +351,7 @@ const Survey02 = () => {
                     <QuestionnaireActions>
                       <QuestionnairePrevious />
                       <QuestionnaireSkip />
-                      <QuestionnaireNext onClick={saveAndReview}>
+                      <QuestionnaireNext onClick={handleSaveAndReview}>
                         {returnToReview ? 'Save and review' : 'Next'}
                       </QuestionnaireNext>
                       <QuestionnaireSubmit>{returnToReview ? 'Save and review' : 'Review'}</QuestionnaireSubmit>

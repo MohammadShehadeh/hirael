@@ -32,8 +32,14 @@ export interface MaintenanceStatusProps extends React.ComponentProps<'span'> {
   tone?: 'warning' | 'success' | 'destructive';
 }
 
+const STATUS_DOT: Record<NonNullable<MaintenanceStatusProps['tone']>, string> = {
+  warning: 'bg-warning',
+  success: 'bg-success',
+  destructive: 'bg-destructive',
+};
+
 const MaintenanceStatus = ({ tone = 'warning', className, children, ...props }: MaintenanceStatusProps) => {
-  const dot = tone === 'success' ? 'bg-success' : tone === 'destructive' ? 'bg-destructive' : 'bg-warning';
+  const dot = STATUS_DOT[tone];
 
   return (
     <span

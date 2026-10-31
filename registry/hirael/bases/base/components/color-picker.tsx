@@ -12,7 +12,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases
 import { Tabs, TabsList, TabsTrigger } from '@/registry/hirael/bases/base/ui/tabs';
 import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
-export type ColorFormat = 'hex' | 'rgb' | 'hsl';
+const COLOR_FORMAT_VALUES = ['hex', 'rgb', 'hsl'] as const;
+
+export type ColorFormat = (typeof COLOR_FORMAT_VALUES)[number];
+
+const isColorFormat = (value: unknown): value is ColorFormat => COLOR_FORMAT_VALUES.some((option) => option === value);
 
 interface HueSat {
   h: number;
@@ -106,37 +110,40 @@ const ColorPicker = ({
   });
 
   const [recent, setRecent] = React.useState<string[]>([]);
-  const pushSwatch = React.useCallback(
-    (hex: string) =>
-      setRecent((prev) => [hex, ...prev.filter((c) => c.toLowerCase() !== hex.toLowerCase())].slice(0, recentLimit)),
-    [recentLimit],
-  );
+  const pushSwatch = (hex: string) =>
+    setRecent((prev) => [hex, ...prev.filter((c) => c.toLowerCase() !== hex.toLowerCase())].slice(0, recentLimit));
 
   const [open, setControlledOpen] = useControllableState({
     prop: openProp,
     defaultProp: defaultOpen,
     onChange: onOpenChange,
   });
-  const setOpen = (next: boolean) => {
+  const handleSetOpen = (next: boolean) => {
     setControlledOpen(next);
     // Remember the colour the popover closes on, not every step of a drag.
     if (!next) pushSwatch(value.toLowerCase());
   };
 
-  const swatches = React.useMemo(() => {
-    const merged = swatchesProp ? [...swatchesProp, ...recent] : [...recent, ...DEFAULT_SWATCHES];
+  const merged = swatchesProp ? [...swatchesProp, ...recent] : [...recent, ...DEFAULT_SWATCHES];
+  const swatches = merged
+    .filter((c, i) => merged.findIndex((o) => o.toLowerCase() === c.toLowerCase()) === i)
+    .slice(0, 16);
 
-    return merged.filter((c, i) => merged.findIndex((o) => o.toLowerCase() === c.toLowerCase()) === i).slice(0, 16);
-  }, [swatchesProp, recent]);
-
-  const ctx = React.useMemo<ColorPickerContextValue>(
-    () => ({ hex: value, setHex: setValue, format, setFormat, swatches, pushSwatch, hueSat, setHueSat, disabled }),
-    [value, setValue, format, setFormat, swatches, pushSwatch, hueSat, setHueSat, disabled],
-  );
+  const ctx: ColorPickerContextValue = {
+    hex: value,
+    setHex: setValue,
+    format,
+    setFormat,
+    swatches,
+    pushSwatch,
+    hueSat,
+    setHueSat,
+    disabled,
+  };
 
   return (
     <ColorPickerContext.Provider value={ctx}>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleSetOpen}>
         {children}
       </Popover>
     </ColorPickerContext.Provider>
@@ -209,7 +216,9 @@ const ColorPickerFormatTabs = ({
       {...props}
       data-slot="color-picker-format-tabs"
       value={ctx.format}
-      onValueChange={(v) => ctx.setFormat(v as ColorFormat)}
+      onValueChange={(v) => {
+        if (isColorFormat(v)) ctx.setFormat(v);
+      }}
       className={className}
     >
       <TabsList className="w-full">
@@ -235,7 +244,7 @@ const ChannelInput = ({ value, max, onCommit, 'aria-label': ariaLabel }: Channel
   const [draft, setDraft] = React.useState<string | null>(null);
   const parse = (raw: string) => (/^\d+$/.test(raw.trim()) ? Number(raw) : null);
 
-  const commit = () => {
+  const handleCommit = () => {
     const n = draft === null ? null : parse(draft);
     if (n !== null) onCommit(Math.min(max, n));
     setDraft(null);
@@ -249,9 +258,9 @@ const ChannelInput = ({ value, max, onCommit, 'aria-label': ariaLabel }: Channel
         const n = parse(e.target.value);
         if (n !== null && n <= max) onCommit(n);
       }}
-      onBlur={commit}
+      onBlur={handleCommit}
       onKeyDown={(e) => {
-        if (e.key === 'Enter') commit();
+        if (e.key === 'Enter') handleCommit();
       }}
       inputMode="numeric"
       aria-label={ariaLabel}
@@ -280,7 +289,7 @@ const ColorPickerFormatInputs = ({
   const [hexDraft, setHexDraft] = React.useState<string | null>(null);
 
   if (ctx.format === 'hex') {
-    const commitHex = () => {
+    const handleCommitHex = () => {
       const next = hexDraft && colord(hexDraft.startsWith('#') ? hexDraft : `#${hexDraft}`);
       if (next && next.isValid()) {
         ctx.setHex(next.toHex());
@@ -298,9 +307,9 @@ const ColorPickerFormatInputs = ({
             const next = colord(e.target.value.startsWith('#') ? e.target.value : `#${e.target.value}`);
             if (/^#?[0-9a-f]{6}$/i.test(e.target.value.trim()) && next.isValid()) ctx.setHex(next.toHex());
           }}
-          onBlur={commitHex}
+          onBlur={handleCommitHex}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') commitHex();
+            if (e.key === 'Enter') handleCommitHex();
           }}
           aria-label={hexLabel}
           className="h-8 text-xs uppercase tabular-nums"
@@ -340,7 +349,17 @@ const ColorPickerFormatInputs = ({
 interface EyeDropperResult {
   sRGBHex: string;
 }
-type EyeDropperCtor = new () => { open: () => Promise<EyeDropperResult> };
+interface EyeDropperInstance {
+  open: () => Promise<EyeDropperResult>;
+}
+
+type EyeDropperCtor = new () => EyeDropperInstance;
+
+interface EyeDropperWindow extends Window {
+  EyeDropper: EyeDropperCtor;
+}
+
+const hasEyeDropper = (target: Window): target is EyeDropperWindow => 'EyeDropper' in target;
 
 const ColorPickerEyedropper = ({
   'aria-label': ariaLabel = 'Pick color from screen',
@@ -350,7 +369,7 @@ const ColorPickerEyedropper = ({
   const ctx = useColorPicker();
   const supported = React.useSyncExternalStore(
     () => () => {},
-    () => 'EyeDropper' in window,
+    () => hasEyeDropper(window),
     () => false,
   );
 
@@ -366,8 +385,8 @@ const ColorPickerEyedropper = ({
       aria-label={ariaLabel}
       onClick={async () => {
         try {
-          const Ctor = (window as unknown as { EyeDropper: EyeDropperCtor }).EyeDropper;
-          const dropper = new Ctor();
+          if (!hasEyeDropper(window)) return;
+          const dropper = new window.EyeDropper();
           const res = await dropper.open();
           const next = res.sRGBHex.toLowerCase();
           ctx.setHex(next);

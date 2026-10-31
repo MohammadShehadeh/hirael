@@ -53,6 +53,7 @@ async function loadExamples(name: string): Promise<ExampleSources[]> {
       return {
         slug,
         title,
+        // fromEntries types its keys as string; entries holds one per base.
         sources: Object.fromEntries(entries) as ExampleSources['sources'],
       };
     }),
@@ -71,6 +72,7 @@ export const RegistryItemDetail = async ({ entry, breadcrumb }: RegistryItemDeta
     loadExamples(entry.name),
     getDetailExtras(entry),
   ]);
+  // JSON imports widen every string; scripts/extract-props.mts writes these as ApiPart[].
   const api = (registryProps as Record<string, ApiPart[]>)[entry.name] ?? null;
   const usageCode = buildUsageCode(entry.files, (file) => sources[DEFAULT_BASE][file]?.code, api);
   const usage = usageCode

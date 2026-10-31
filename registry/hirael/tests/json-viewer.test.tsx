@@ -10,9 +10,10 @@ const registry = {
 };
 
 const circularValue = () => {
-  const node: Record<string, unknown> = { name: 'root', list: [1, 2] };
+  const list: unknown[] = [1, 2];
+  const node: Record<string, unknown> = { name: 'root', list };
   node.self = node;
-  (node.list as unknown[]).push(node);
+  list.push(node);
 
   return node;
 };

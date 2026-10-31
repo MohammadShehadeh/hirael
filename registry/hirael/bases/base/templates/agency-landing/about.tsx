@@ -13,7 +13,7 @@ export const About = () => {
     <section className="overflow-hidden bg-background pt-16 pb-12 sm:pt-20 sm:pb-16 lg:pt-32 lg:pb-24">
       <div className="mx-auto w-full max-w-[1440px]">
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-semibold text-background sm:h-7 sm:w-7 sm:text-[12px]">
+          <span className="flex size-6 items-center justify-center rounded-full bg-foreground text-[11px] font-semibold text-background sm:size-7 sm:text-[12px]">
             1
           </span>
           <span
@@ -37,13 +37,13 @@ export const About = () => {
             <p className="text-[15px] leading-[1.6] font-medium text-foreground sm:text-[17px]">{PARAGRAPH}</p>
             <OrangeButton label="About our studio" className="mt-6" />
             <div className="mt-8 flex flex-col gap-4 sm:mt-10 sm:flex-row sm:items-end sm:gap-5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
               <img
                 src={SMALL_IMAGE}
                 alt=""
                 className="aspect-[438/346] w-full rounded-[0.75rem] object-cover sm:w-[45%] sm:rounded-2xl"
               />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
               <img
                 src={LARGE_IMAGE}
                 alt=""
@@ -53,13 +53,13 @@ export const About = () => {
           </div>
 
           <div className="hidden lg:grid lg:grid-cols-[24%_minmax(0,1fr)_44%] lg:items-end lg:gap-6 xl:gap-8">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
             <img src={SMALL_IMAGE} alt="" className="aspect-[438/346] w-full rounded-2xl object-cover" />
             <div className="pb-1">
               <p className="text-[16px] leading-[1.65] font-medium text-foreground xl:text-[18px]">{PARAGRAPH}</p>
               <OrangeButton label="About our studio" className="mt-6" />
             </div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
+            {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
             <img src={LARGE_IMAGE} alt="" className="aspect-[3/2] w-full rounded-2xl object-cover" />
           </div>
         </div>

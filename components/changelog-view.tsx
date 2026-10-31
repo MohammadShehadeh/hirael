@@ -10,8 +10,13 @@ import { entryHref, REGISTRY_BY_NAME } from '@/registry/hirael/registry-meta';
 
 export type ChangelogViewProps = Changelog;
 
+interface ItemLinksProps {
+  label: string;
+  names: string[];
+}
+
 /** Names that no longer resolve (an item renamed or removed later) are skipped rather than linked to a 404. */
-const ItemLinks = ({ label, names }: { label: string; names: string[] }) => {
+const ItemLinks = ({ label, names }: ItemLinksProps) => {
   const entries = names.flatMap((name) => {
     const entry = REGISTRY_BY_NAME[name];
 

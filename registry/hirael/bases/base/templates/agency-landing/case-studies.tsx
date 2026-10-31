@@ -12,7 +12,7 @@ export const CaseStudies = () => {
     <section className="bg-muted pt-16 pb-16 sm:pt-20 sm:pb-20 lg:pt-28 lg:pb-28">
       <div className="mx-auto w-full max-w-[1440px]">
         <div className="mb-6 flex items-center gap-3 px-5 sm:mb-8 sm:px-8 lg:px-12">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-foreground text-[11px] font-semibold text-background sm:h-7 sm:w-7 sm:text-[12px]">
+          <span className="flex size-6 items-center justify-center rounded-full bg-foreground text-[11px] font-semibold text-background sm:size-7 sm:text-[12px]">
             2
           </span>
           <span
@@ -32,11 +32,11 @@ export const CaseStudies = () => {
         <div className="grid grid-cols-1 gap-5 px-5 sm:gap-6 sm:px-8 md:grid-cols-2 lg:gap-7 lg:px-12">
           <div>
             <div className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-[#1a1d2e]">
-              <video src={NARRATIV_VIDEO} autoPlay muted loop playsInline className="h-full w-full object-cover" />
+              <video src={NARRATIV_VIDEO} autoPlay muted loop playsInline className="size-full object-cover" />
               <div className="absolute start-4 bottom-4">
-                <div className="flex h-9 w-9 items-center overflow-hidden rounded-full bg-background transition-all duration-300 ease-in-out group-hover:w-[148px]">
-                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center">
-                    <LinkIcon className="h-[14px] w-[14px] -rotate-45 text-foreground transition-transform duration-300 group-hover:rotate-0" />
+                <div className="flex size-9 items-center overflow-hidden rounded-full bg-background transition-all duration-300 ease-in-out group-hover:w-[148px]">
+                  <span className="flex size-9 flex-shrink-0 items-center justify-center">
+                    <LinkIcon className="size-[14px] -rotate-45 text-foreground transition-transform duration-300 group-hover:rotate-0" />
                   </span>
                   <span className="text-[13px] font-medium whitespace-nowrap text-foreground opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
                     Learn more
@@ -52,10 +52,10 @@ export const CaseStudies = () => {
 
           <div>
             <div className="group relative aspect-[4/3] cursor-pointer overflow-hidden rounded-2xl bg-[#6b6b6b]">
-              <video src={LUMINAR_VIDEO} autoPlay muted loop playsInline className="h-full w-full object-cover" />
+              <video src={LUMINAR_VIDEO} autoPlay muted loop playsInline className="size-full object-cover" />
               <div className="absolute start-4 bottom-4">
-                <div className="flex h-9 w-9 items-center overflow-hidden rounded-full bg-foreground transition-all duration-300 ease-in-out group-hover:w-[168px]">
-                  <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center">
+                <div className="flex size-9 items-center overflow-hidden rounded-full bg-foreground transition-all duration-300 ease-in-out group-hover:w-[168px]">
+                  <span className="flex size-9 flex-shrink-0 items-center justify-center">
                     <ArrowRight
                       size={14}
                       className="-rotate-45 text-background transition-transform duration-300 group-hover:rotate-0 rtl:rotate-[225deg] rtl:group-hover:rotate-180"

@@ -15,9 +15,18 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-type Range = '7d' | '14d' | '28d';
+const RANGE_VALUES = ['7d', '14d', '28d'] as const;
 
-const RANGES: { value: Range; label: string }[] = [
+type Range = (typeof RANGE_VALUES)[number];
+
+const isRange = (value: unknown): value is Range => RANGE_VALUES.some((option) => option === value);
+
+interface RangeOption {
+  value: Range;
+  label: string;
+}
+
+const RANGES: RangeOption[] = [
   { value: '7d', label: 'Last 7 days' },
   { value: '14d', label: 'Last 14 days' },
   { value: '28d', label: 'Last 28 days' },
@@ -205,15 +214,29 @@ const UNIT_WORD: Record<Kpi['unit'], string> = {
   s: 'seconds',
 };
 
+type Direction = 'up' | 'down' | 'unchanged';
+
+const directionOf = (delta: number): Direction => {
+  if (delta > 0) return 'up';
+  if (delta < 0) return 'down';
+
+  return 'unchanged';
+};
+
+const DIRECTION_ICON = { up: ArrowUpRight, down: ArrowDownRight, unchanged: Minus };
+
+// Negative deltas use a true minus sign (U+2212), not a hyphen.
+const DIRECTION_SIGN: Record<Direction, string> = { up: '+', down: '\u2212', unchanged: '' };
+
 interface DeltaChipProps {
   kpi: Kpi;
 }
 
 const DeltaChip = ({ kpi }: DeltaChipProps) => {
   const { delta, unit, label } = kpi;
-  const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
-  const direction = delta > 0 ? 'up' : delta < 0 ? 'down' : 'unchanged';
-  const sign = delta > 0 ? '+' : delta < 0 ? '\u2212' : '';
+  const direction = directionOf(delta);
+  const Icon = DIRECTION_ICON[direction];
+  const sign = DIRECTION_SIGN[direction];
 
   return (
     <span
@@ -241,6 +264,8 @@ const linePath = (values: number[], max: number) => {
     .join(' ');
 };
 
+const count = new Intl.NumberFormat('en-US');
+
 const Dashboard02 = () => {
   const [range, setRange] = React.useState<Range>('7d');
   const [copied, setCopied] = React.useState(false);
@@ -252,7 +277,7 @@ const Dashboard02 = () => {
     return () => clearTimeout(timeout);
   }, [copied]);
 
-  const onShare = async () => {
+  const handleShare = async () => {
     const url = new URL(window.location.href);
     url.searchParams.set('range', range);
     try {
@@ -288,7 +313,12 @@ const Dashboard02 = () => {
             <h2 className="font-serif text-4xl font-medium tracking-tight sm:text-5xl">Traffic, end to end.</h2>
           </div>
           <div className="flex items-center gap-2">
-            <Select value={range} onValueChange={(v) => setRange(v as Range)}>
+            <Select
+              value={range}
+              onValueChange={(v) => {
+                if (isRange(v)) setRange(v);
+              }}
+            >
               <SelectTrigger size="sm" className="w-[150px]" aria-label="Date range">
                 <SelectValue />
               </SelectTrigger>
@@ -303,7 +333,7 @@ const Dashboard02 = () => {
             <Button
               variant="outline"
               size="sm"
-              onClick={onShare}
+              onClick={handleShare}
               aria-label={copied ? 'Link copied' : 'Copy link to report'}
             >
               {copied ? (
@@ -418,8 +448,8 @@ const Dashboard02 = () => {
                     {chart.map((b) => (
                       <tr key={b.label}>
                         <th scope="row">{b.label}</th>
-                        <td>{b.views.toLocaleString('en-US')}</td>
-                        <td>{b.visitors.toLocaleString('en-US')}</td>
+                        <td>{count.format(b.views)}</td>
+                        <td>{count.format(b.visitors)}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -431,7 +461,7 @@ const Dashboard02 = () => {
               <p className="flex flex-wrap gap-x-3 text-xs text-muted-foreground uppercase">
                 <span>Peak</span>
                 <span className="text-foreground">{peak.label}</span>
-                <span className="tabular-nums">{max.toLocaleString('en-US')} views</span>
+                <span className="tabular-nums">{count.format(max)} views</span>
               </p>
             </CardContent>
           </Card>

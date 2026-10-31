@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { Boxes, Frame, History, LayoutTemplate } from 'lucide-react';
+import { Boxes, Frame, History, LayoutTemplate, type LucideIcon } from 'lucide-react';
 
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/registry/hirael/bases/radix/ui/dialog';
 import {
@@ -38,7 +38,7 @@ const KIND_ICONS = {
   component: Boxes,
   block: LayoutTemplate,
   template: Frame,
-} satisfies Record<RecentKind, React.ComponentType<{ className?: string }>>;
+} satisfies Record<RecentKind, LucideIcon>;
 
 const recentKind = (entry: RegistryEntryMeta): RecentKind => {
   if (entry.category === 'blocks') return 'block';
@@ -51,6 +51,74 @@ export interface CommandPaletteProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
+
+interface EntryItemProps {
+  doc: SearchDoc;
+  onSelect: (item: RecentItem) => void;
+}
+
+const EntryItem = ({ doc, onSelect }: EntryItemProps) => {
+  const { entry } = doc;
+  const kind = recentKind(entry);
+  const Icon = KIND_ICONS[kind];
+
+  return (
+    <CommandItem
+      value={entry.name}
+      onSelect={() => onSelect({ name: entry.name, title: entry.title, href: entryHref(entry), kind })}
+    >
+      <Icon className="text-muted-foreground" />
+      <span className="truncate">{entry.title}</span>
+      <span className={CATEGORY_HINT_CLASS}>{doc.kindLabel}</span>
+    </CommandItem>
+  );
+};
+
+interface BrowseGroupProps {
+  heading: string;
+  docs: SearchDoc[];
+  onSelect: (item: RecentItem) => void;
+}
+
+const BrowseGroup = ({ heading, docs, onSelect }: BrowseGroupProps) => {
+  return (
+    <CommandGroup heading={heading}>
+      {docs.map((doc) => (
+        <EntryItem key={doc.entry.name} doc={doc} onSelect={onSelect} />
+      ))}
+    </CommandGroup>
+  );
+};
+
+interface KbdProps {
+  children: React.ReactNode;
+}
+
+const Kbd = ({ children }: KbdProps) => {
+  return <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">{children}</kbd>;
+};
+
+interface RecentGroupProps {
+  onSelect: (item: RecentItem) => void;
+}
+
+const RecentGroup = ({ onSelect }: RecentGroupProps) => {
+  const recents = React.useSyncExternalStore(subscribeRecents, recentsSnapshot, serverRecents);
+
+  if (recents.length === 0) return null;
+
+  return (
+    <CommandGroup heading="Recent">
+      {recents.map((item) => (
+        <CommandItem key={item.href} value={`recent:${item.href}`} onSelect={() => onSelect(item)}>
+          <History className="text-muted-foreground" />
+          <span>{item.title}</span>
+          <span className={CATEGORY_HINT_CLASS}>{RECENT_KIND_LABELS[item.kind]}</span>
+        </CommandItem>
+      ))}
+    </CommandGroup>
+  );
+};
 
 export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
   const router = useRouter();
@@ -124,73 +192,5 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
         </div>
       </DialogContent>
     </Dialog>
-  );
-};
-
-interface EntryItemProps {
-  doc: SearchDoc;
-  onSelect: (item: RecentItem) => void;
-}
-
-const EntryItem = ({ doc, onSelect }: EntryItemProps) => {
-  const { entry } = doc;
-  const kind = recentKind(entry);
-  const Icon = KIND_ICONS[kind];
-
-  return (
-    <CommandItem
-      value={entry.name}
-      onSelect={() => onSelect({ name: entry.name, title: entry.title, href: entryHref(entry), kind })}
-    >
-      <Icon className="text-muted-foreground" />
-      <span className="truncate">{entry.title}</span>
-      <span className={CATEGORY_HINT_CLASS}>{doc.kindLabel}</span>
-    </CommandItem>
-  );
-};
-
-interface BrowseGroupProps {
-  heading: string;
-  docs: SearchDoc[];
-  onSelect: (item: RecentItem) => void;
-}
-
-const BrowseGroup = ({ heading, docs, onSelect }: BrowseGroupProps) => {
-  return (
-    <CommandGroup heading={heading}>
-      {docs.map((doc) => (
-        <EntryItem key={doc.entry.name} doc={doc} onSelect={onSelect} />
-      ))}
-    </CommandGroup>
-  );
-};
-
-interface KbdProps {
-  children: React.ReactNode;
-}
-
-const Kbd = ({ children }: KbdProps) => {
-  return <kbd className="rounded-sm border border-border bg-background px-1 py-0.5 leading-none">{children}</kbd>;
-};
-
-interface RecentGroupProps {
-  onSelect: (item: RecentItem) => void;
-}
-
-const RecentGroup = ({ onSelect }: RecentGroupProps) => {
-  const recents = React.useSyncExternalStore(subscribeRecents, recentsSnapshot, serverRecents);
-
-  if (recents.length === 0) return null;
-
-  return (
-    <CommandGroup heading="Recent">
-      {recents.map((item) => (
-        <CommandItem key={item.href} value={`recent:${item.href}`} onSelect={() => onSelect(item)}>
-          <History className="text-muted-foreground" />
-          <span>{item.title}</span>
-          <span className={CATEGORY_HINT_CLASS}>{RECENT_KIND_LABELS[item.kind]}</span>
-        </CommandItem>
-      ))}
-    </CommandGroup>
   );
 };

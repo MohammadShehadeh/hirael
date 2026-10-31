@@ -21,7 +21,11 @@ const LEGEND_GRID =
   'grid grid-cols-[minmax(0,1fr)_4rem_2.5rem_3rem] gap-x-2 sm:grid-cols-[0.75rem_minmax(0,1fr)_4rem_2.5rem_3rem] sm:gap-x-3';
 
 type Channel = 'organic' | 'direct' | 'paid' | 'referral' | 'email';
-type Period = '30d' | '90d' | '12m';
+const PERIOD_VALUES = ['30d', '90d', '12m'] as const;
+
+type Period = (typeof PERIOD_VALUES)[number];
+
+const isPeriod = (value: unknown): value is Period => PERIOD_VALUES.some((option) => option === value);
 
 // Colour follows the channel in this fixed order, never its rank, so a reshuffle doesn't repaint slices.
 const chartConfig = {
@@ -32,6 +36,7 @@ const chartConfig = {
   email: { label: 'Email', color: 'var(--chart-5)' },
 } satisfies ChartConfig;
 
+// Object.keys widens to string[]; chartConfig has a key per channel.
 const CHANNELS = Object.keys(chartConfig) as Channel[];
 
 interface PeriodData {
@@ -87,7 +92,7 @@ const PERIODS: Record<Period, PeriodData> = {
   },
 };
 
-const PERIOD_KEYS = Object.keys(PERIODS) as Period[];
+const PERIOD_KEYS = PERIOD_VALUES;
 
 interface ChannelRow {
   key: Channel;
@@ -212,13 +217,13 @@ const Chart03 = () => {
   const [pinned, setPinned] = React.useState<Channel | null>(null);
   const isRtl = useDirection() === 'rtl';
 
-  const rows = React.useMemo(() => toRows(period), [period]);
+  const rows = toRows(period);
   const summary = summarize(period, rows);
   const total = rows.reduce((acc, row) => acc + row.value, 0);
   const activeKey = hovered ?? pinned;
   const active = rows.find((row) => row.key === activeKey);
 
-  const pin = (key: Channel) => setPinned((current) => (current === key ? null : key));
+  const handlePin = (key: Channel) => setPinned((current) => (current === key ? null : key));
 
   return (
     <section
@@ -247,7 +252,7 @@ const Chart03 = () => {
               variant="outline"
               value={period}
               onValueChange={(next) => {
-                if (next) setPeriod(next as Period);
+                if (isPeriod(next)) setPeriod(next);
               }}
               aria-label="Period"
               data-slot="channel-chart-period"
@@ -278,7 +283,7 @@ const Chart03 = () => {
                       onMouseLeave={() => setHovered(null)}
                       onClick={(_, index) => {
                         const key = rows[index]?.key;
-                        if (key) pin(key);
+                        if (key) handlePin(key);
                       }}
                       className="cursor-pointer"
                     >
@@ -334,7 +339,7 @@ const Chart03 = () => {
                       dimmed={activeKey !== null && activeKey !== row.key}
                       pinned={pinned === row.key}
                       onHover={setHovered}
-                      onPin={pin}
+                      onPin={handlePin}
                     />
                   ))}
                 </ol>

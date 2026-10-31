@@ -56,7 +56,7 @@ export const Services = () => {
 
                   return (
                     <article key={service.title} className="border-s border-border/20 ps-8">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
                       <img
                         src={service.icon}
                         alt=""

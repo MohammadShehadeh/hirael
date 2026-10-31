@@ -10,6 +10,7 @@ import {
   ImageCompareHandle,
   ImageCompareLabel,
 } from '@/registry/hirael/bases/radix/components/image-compare';
+import { cn } from '@/lib/utils';
 
 const PHOTO = '/media/components/image-compare/valley.jpg';
 const PHOTO_ALT = '/media/components/image-compare/ridge.jpg';
@@ -22,22 +23,12 @@ const MockPanel = ({ styled }: MockPanelProps) => {
   return (
     <div className="size-full bg-background p-4">
       <div className="grid h-full content-start gap-3 rounded-lg border border-border bg-card p-4">
-        <div className={styled ? 'h-3 w-1/3 rounded bg-foreground' : 'h-3 w-1/3 rounded bg-muted'} />
-        <div className={styled ? 'h-2 w-2/3 rounded bg-muted-foreground/60' : 'h-2 w-2/3 rounded bg-muted'} />
-        <div className={styled ? 'h-2 w-1/2 rounded bg-muted-foreground/60' : 'h-2 w-1/2 rounded bg-muted'} />
+        <div className={cn('h-3 w-1/3 rounded', styled ? 'bg-foreground' : 'bg-muted')} />
+        <div className={cn('h-2 w-2/3 rounded', styled ? 'bg-muted-foreground/60' : 'bg-muted')} />
+        <div className={cn('h-2 w-1/2 rounded', styled ? 'bg-muted-foreground/60' : 'bg-muted')} />
         <div className="mt-2 flex gap-2">
-          <div
-            className={
-              styled ? 'h-7 w-20 rounded-md bg-primary' : 'h-7 w-20 rounded-md border border-dashed border-border'
-            }
-          />
-          <div
-            className={
-              styled
-                ? 'h-7 w-20 rounded-md border border-border bg-secondary'
-                : 'h-7 w-20 rounded-md border border-dashed border-border'
-            }
-          />
+          <div className={cn('h-7 w-20 rounded-md', styled ? 'bg-primary' : 'border border-dashed border-border')} />
+          <div className={cn('h-7 w-20 rounded-md border border-border', styled ? 'bg-secondary' : 'border-dashed')} />
         </div>
       </div>
     </div>

@@ -34,7 +34,12 @@ interface BoardCard {
   meta: string;
 }
 
-const BOARD: { name: string; cards: BoardCard[] }[] = [
+interface BoardColumn {
+  name: string;
+  cards: BoardCard[];
+}
+
+const BOARD: BoardColumn[] = [
   {
     name: 'Up next',
     cards: [

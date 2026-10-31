@@ -167,14 +167,20 @@ describe.each(Object.entries(registry))(
 
       fireEvent.pointerDown(increase, { button: 0, pointerType: 'mouse' });
       expect(input).toHaveValue('1');
-      act(() => vi.advanceTimersByTime(399));
+      act(() => {
+        vi.advanceTimersByTime(399);
+      });
       expect(input).toHaveValue('1');
-      act(() => vi.advanceTimersByTime(1000));
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
       const held = Number(input.getAttribute('aria-valuenow'));
       expect(held).toBeGreaterThan(10);
 
       fireEvent.pointerUp(window);
-      act(() => vi.advanceTimersByTime(1000));
+      act(() => {
+        vi.advanceTimersByTime(1000);
+      });
       expect(input).toHaveAttribute('aria-valuenow', String(held));
     });
 

@@ -35,6 +35,13 @@ const UNIT = '[data-slot=text-reveal-unit] > span';
  * Server HTML stays visible, so nothing waits on hydration. Once mounted, text that is off
  * screen is hidden and motion reveals it on arrival; text already in view is left alone.
  */
+const splitText = (text: string, by: TextRevealBy) => {
+  if (by === 'char') return Array.from(text);
+  if (by === 'line') return text.split('\n');
+
+  return text.split(' ');
+};
+
 const TextReveal = ({
   children,
   as,
@@ -50,46 +57,44 @@ const TextReveal = ({
 }: TextRevealProps) => {
   const nodeRef = React.useRef<HTMLElement>(null);
   const reduced = useReducedMotion();
+  // The handle is read after mount, when the node is attached.
   React.useImperativeHandle(ref, () => nodeRef.current as HTMLElement);
   const Tag = as ?? 'p';
 
   // A callback ref, not an effect: observation starts when the node attaches and stops when it
   // detaches. It watches the container because each unit starts clipped by its mask.
-  const revealRef = React.useCallback(
-    (node: HTMLElement | null) => {
-      nodeRef.current = node;
-      if (!node || reduced) return;
-      let isHidden = false;
-      const stop = observeReveal(node, amount, (inView) => {
-        const units = node.querySelectorAll<HTMLElement>(UNIT);
-        if (!inView) {
-          if (isHidden) return;
-          isHidden = true;
-          animate(units, { y: '120%', opacity: 0 }, { duration: 0 });
+  const revealRef = (node: HTMLElement | null) => {
+    nodeRef.current = node;
+    if (!node || reduced) return;
+    let isHidden = false;
+    const stop = observeReveal(node, amount, (inView) => {
+      const units = node.querySelectorAll<HTMLElement>(UNIT);
+      if (!inView) {
+        if (isHidden) return;
+        isHidden = true;
+        animate(units, { y: '120%', opacity: 0 }, { duration: 0 });
 
-          return;
-        }
-        if (isHidden) {
-          isHidden = false;
-          animate(
-            units,
-            { y: 0, opacity: 1 },
-            {
-              duration: duration / 1000,
-              delay: staggerDelay(stagger / 1000, { startDelay: delay / 1000 }),
-              ease: EASE,
-            },
-          );
-        }
-        if (once) stop();
-      });
+        return;
+      }
+      if (isHidden) {
+        isHidden = false;
+        animate(
+          units,
+          { y: 0, opacity: 1 },
+          {
+            duration: duration / 1000,
+            delay: staggerDelay(stagger / 1000, { startDelay: delay / 1000 }),
+            ease: EASE,
+          },
+        );
+      }
+      if (once) stop();
+    });
 
-      return stop;
-    },
-    [reduced, amount, once, duration, delay, stagger],
-  );
+    return stop;
+  };
 
-  const units = by === 'char' ? Array.from(children) : by === 'line' ? children.split('\n') : children.split(' ');
+  const units = splitText(children, by);
 
   return (
     <Tag ref={revealRef} data-slot="text-reveal" className={cn(by === 'line' && 'flex flex-col', className)} {...props}>

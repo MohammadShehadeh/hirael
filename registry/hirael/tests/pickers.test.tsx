@@ -7,11 +7,16 @@ import * as radixYear from '@/registry/hirael/bases/radix/components/year-picker
 
 const yearCell = (year: number) => document.querySelector<HTMLButtonElement>(`[data-year="${year}"]`);
 
+interface SetupProps {
+  defaultValue: number;
+  maxYear: number;
+}
+
 describe.each([
   ['radix', radixYear],
   ['base', baseYear],
 ] as const)('YearPicker (%s)', (_, { YearPicker, YearPickerContent, YearPickerTrigger }) => {
-  const setup = (props: { defaultValue: number; maxYear: number }) => {
+  const setup = (props: SetupProps) => {
     render(
       <YearPicker defaultOpen minYear={1900} {...props}>
         <YearPickerTrigger />

@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
-import { ChatGptIcon, GoogleAiIcon, PerplexityIcon, Serif, useFadeUp } from './primitives';
+import { ChatGptIcon, GoogleAiIcon, PerplexityIcon, Serif, fadeUp } from './primitives';
 
 const PLATFORMS = [
   {
@@ -24,25 +24,25 @@ const PLATFORMS = [
 ];
 
 export const Search = () => {
-  const fade = useFadeUp();
+  const reduce = useReducedMotion();
 
   return (
     <section id="use-cases" className="px-8 pt-52 pb-6 md:px-28 md:pt-64 md:pb-9">
       <div className="mx-auto max-w-5xl text-center">
-        <motion.h2 {...fade(0)} className="text-5xl tracking-[-2px] md:text-7xl lg:text-8xl">
+        <motion.h2 {...fadeUp(reduce, 0)} className="text-5xl tracking-[-2px] md:text-7xl lg:text-8xl">
           Search has <Serif>changed.</Serif> Have you?
         </motion.h2>
 
-        <motion.p {...fade(0.1)} className="mx-auto mt-8 mb-24 max-w-2xl text-lg text-muted-foreground">
+        <motion.p {...fadeUp(reduce, 0.1)} className="mx-auto mt-8 mb-24 max-w-2xl text-lg text-muted-foreground">
           People used to type keywords and scroll. Now they ask a question and read one answer. Make sure it sounds like
           you.
         </motion.p>
 
         <div className="mb-20 grid gap-12 md:grid-cols-3 md:gap-8">
           {PLATFORMS.map((platform, i) => (
-            <motion.div key={platform.name} {...fade(0.1 * i)} className="flex flex-col items-center">
+            <motion.div key={platform.name} {...fadeUp(reduce, 0.1 * i)} className="flex flex-col items-center">
               <div className="liquid-glass flex aspect-square w-full max-w-[200px] items-center justify-center rounded-[2rem]">
-                <platform.Icon className="h-24 w-24 text-foreground" />
+                <platform.Icon className="size-24 text-foreground" />
               </div>
               <h3 className="mt-8 text-base font-semibold">{platform.name}</h3>
               <p className="mt-2 max-w-xs text-sm text-muted-foreground">{platform.description}</p>
@@ -50,7 +50,7 @@ export const Search = () => {
           ))}
         </div>
 
-        <motion.p {...fade(0)} className="text-center text-sm text-muted-foreground">
+        <motion.p {...fadeUp(reduce, 0)} className="text-center text-sm text-muted-foreground">
           If you don&apos;t answer the questions, someone else will.
         </motion.p>
       </div>

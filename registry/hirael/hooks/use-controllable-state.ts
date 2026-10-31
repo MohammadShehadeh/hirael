@@ -23,13 +23,10 @@ export const useControllableState = <T>({ prop, defaultProp, onChange }: UseCont
     onChangeRef.current = onChange;
   });
 
-  const setValue = React.useCallback(
-    (next: T) => {
-      if (!isControlled) setUncontrolled(next);
-      onChangeRef.current?.(next);
-    },
-    [isControlled],
-  );
+  const setValue = (next: T) => {
+    if (!isControlled) setUncontrolled(next);
+    onChangeRef.current?.(next);
+  };
 
   return [value, setValue] as const;
 };

@@ -36,7 +36,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  const openPalette = () => {
+  const handleOpenPalette = () => {
     setArmed(true);
     setOpen(true);
   };
@@ -46,7 +46,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
       {variant === 'field' ? (
         <button
           type="button"
-          onClick={openPalette}
+          onClick={handleOpenPalette}
           aria-label="Search components and blocks"
           className={cn(
             'flex h-10 w-full items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 text-sm text-muted-foreground transition-colors outline-none hover:bg-muted/70 hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
@@ -62,7 +62,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
           type="button"
           variant="outline"
           size="sm"
-          onClick={openPalette}
+          onClick={handleOpenPalette}
           aria-label="Search components and blocks"
           className={className}
         >

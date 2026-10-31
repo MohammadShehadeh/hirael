@@ -98,7 +98,8 @@ const suggest = (query: string, customers: readonly Customer[], limit = 2) => {
       const words = customer.name.toLowerCase().split(/[^a-z0-9]+/);
       const distance = Math.min(...words.map((word) => levenshtein(q, word)));
       const prefix = words.some((word) => word.startsWith(q.slice(0, 3)));
-      const score = distance <= threshold ? distance : prefix ? threshold + 1 : Infinity;
+      const prefixScore = prefix ? threshold + 1 : Infinity;
+      const score = distance <= threshold ? distance : prefixScore;
 
       return { customer, score };
     })
@@ -120,14 +121,14 @@ const EmptyState02 = () => {
   const suggestions = hidden === 0 ? suggest(trimmed, CUSTOMERS) : [];
   const hasFilters = plans.length + statuses.length > 0;
 
-  const clearFilters = () => {
+  const handleClearFilters = () => {
     setPlans([]);
     setStatuses([]);
   };
 
   const applySuggestion = (customer: Customer) => {
     setQuery(customer.name);
-    if (!matchesFilters(customer, plans, statuses)) clearFilters();
+    if (!matchesFilters(customer, plans, statuses)) handleClearFilters();
   };
 
   return (
@@ -249,7 +250,12 @@ const EmptyState02 = () => {
 
                 <div className="flex flex-wrap justify-center gap-2">
                   {hasFilters ? (
-                    <Button type="button" variant={hidden > 0 ? 'default' : 'outline'} size="sm" onClick={clearFilters}>
+                    <Button
+                      type="button"
+                      variant={hidden > 0 ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={handleClearFilters}
+                    >
                       Clear filters
                     </Button>
                   ) : null}

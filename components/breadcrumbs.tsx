@@ -28,7 +28,7 @@ export const Breadcrumbs = ({ items, className }: BreadcrumbsProps) => {
                 {item.label}
               </Link>
             ) : (
-              <span className={isLast ? 'text-foreground' : undefined}>{item.label}</span>
+              <span className={cn(isLast && 'text-foreground')}>{item.label}</span>
             )}
             {!isLast && <span className="text-muted-foreground/50">/</span>}
           </span>

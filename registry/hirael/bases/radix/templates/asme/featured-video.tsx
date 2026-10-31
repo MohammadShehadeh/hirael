@@ -12,7 +12,7 @@ export const FeaturedVideo = () => {
       <div className="mx-auto max-w-6xl">
         <motion.div {...reveal({ y: 60, duration: 0.9 })} className="relative aspect-video overflow-hidden rounded-3xl">
           <video
-            className="h-full w-full object-cover"
+            className="size-full object-cover"
             src={FEATURED_VIDEO_URL}
             muted
             autoPlay

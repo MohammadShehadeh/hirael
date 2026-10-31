@@ -66,11 +66,11 @@ const PROVIDERS = [
 
 type Pending = (typeof PROVIDERS)[number]['id'] | 'email' | null;
 
-type Errors = Partial<{
-  name: string;
-  email: string;
-  password: string;
-}>;
+interface Errors {
+  name?: string;
+  email?: string;
+  password?: string;
+}
 
 const Signup01 = () => {
   const [name, setName] = React.useState('');
@@ -90,7 +90,7 @@ const Signup01 = () => {
     return next;
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const next = validate();
     setErrors(next);
@@ -133,7 +133,7 @@ const Signup01 = () => {
                 </Button>
               </div>
             ) : (
-              <form data-slot="signup-form" noValidate onSubmit={onSubmit}>
+              <form data-slot="signup-form" noValidate onSubmit={handleSubmit}>
                 <FieldGroup className="gap-5">
                   <div className="flex flex-col gap-3">
                     {PROVIDERS.map(({ id, label, icon: Icon }) => (

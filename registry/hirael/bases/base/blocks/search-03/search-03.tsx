@@ -31,7 +31,12 @@ const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\
 
 const tokenize = (query: string) => query.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
-const Highlight = ({ text, query }: { text: string; query: string }) => {
+interface HighlightProps {
+  text: string;
+  query: string;
+}
+
+const Highlight = ({ text, query }: HighlightProps) => {
   // Longest first so a longer term wins over its own prefix inside the alternation.
   const terms = tokenize(query).sort((a, b) => b.length - a.length);
   if (terms.length === 0) return text;
@@ -82,7 +87,12 @@ interface FileResult {
 type Result = DocResult | PersonResult | FileResult;
 type Tab = 'all' | Result['kind'];
 
-const TABS: readonly { value: Tab; label: string }[] = [
+interface TabOption {
+  value: Tab;
+  label: string;
+}
+
+const TABS: readonly TabOption[] = [
   { value: 'all', label: 'All' },
   { value: 'doc', label: 'Docs' },
   { value: 'person', label: 'People' },
@@ -352,6 +362,11 @@ const secondaryText = (record: Result) =>
       ? `${record.role} ${record.team} ${record.email}`
       : record.owner;
 
+interface ScoredResult {
+  record: Result;
+  score: number;
+}
+
 // Every term must appear; a hit in the title or name outranks one in the body.
 const runSearch = (query: string) => {
   const terms = tokenize(query);
@@ -369,7 +384,7 @@ const runSearch = (query: string) => {
 
     return { record, score };
   })
-    .filter((match): match is { record: Result; score: number } => match !== null)
+    .filter((match): match is ScoredResult => match !== null)
     .sort((a, b) => b.score - a.score)
     .map((match) => match.record);
 };
@@ -431,8 +446,9 @@ const formatSize = (bytes: number) => {
   return `${sizeFormat.format(bytes / 1_000)} KB`;
 };
 
-const formatDate = (date: string) =>
-  new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(date));
+const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+const formatDate = (date: string) => shortDate.format(new Date(date));
 
 const formatElapsed = (ms: number) => (ms < 1 ? `${ms.toFixed(2)} ms` : `${Math.round(ms)} ms`);
 
@@ -443,7 +459,12 @@ const initials = (name: string) =>
     .join('')
     .slice(0, 2);
 
-const DocRow = ({ record, query }: { record: DocResult; query: string }) => (
+interface DocRowProps {
+  record: DocResult;
+  query: string;
+}
+
+const DocRow = ({ record, query }: DocRowProps) => (
   <div data-slot="search-result-doc" className="flex flex-col gap-1 py-4">
     <div className="flex flex-wrap items-center gap-1 text-xs text-muted-foreground">
       {record.path.map((segment, index) => (
@@ -467,7 +488,12 @@ const DocRow = ({ record, query }: { record: DocResult; query: string }) => (
   </div>
 );
 
-const PersonRow = ({ record, query }: { record: PersonResult; query: string }) => (
+interface PersonRowProps {
+  record: PersonResult;
+  query: string;
+}
+
+const PersonRow = ({ record, query }: PersonRowProps) => (
   <div data-slot="search-result-person" className="flex items-center gap-3 py-3">
     <Avatar>
       <AvatarFallback>{initials(record.name)}</AvatarFallback>
@@ -491,7 +517,12 @@ const PersonRow = ({ record, query }: { record: PersonResult; query: string }) =
   </div>
 );
 
-const FileRow = ({ record, query }: { record: FileResult; query: string }) => {
+interface FileRowProps {
+  record: FileResult;
+  query: string;
+}
+
+const FileRow = ({ record, query }: FileRowProps) => {
   const Icon = FILE_ICONS[record.ext];
 
   return (
@@ -627,7 +658,9 @@ const Search03 = () => {
           <Tabs
             value={tab}
             onValueChange={(value) => {
-              setTab(value as Tab);
+              const option = TABS.find((item) => item.value === value);
+              if (!option) return;
+              setTab(option.value);
               setLimit(PAGE_SIZE);
             }}
           >

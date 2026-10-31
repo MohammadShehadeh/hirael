@@ -3,15 +3,19 @@
 import * as React from 'react';
 
 type Rgb = [number, number, number];
-type Oklch = { l: number; c: number; h: number };
+interface Oklch {
+  l: number;
+  c: number;
+  h: number;
+}
 
-type Palette = {
+interface Palette {
   base: Rgb;
   wisp: Rgb;
   sky: Rgb;
   deep: Rgb;
   blue: Rgb;
-};
+}
 
 // Accent share per stop, the rest is `--background`; dark canvases need more to lift off it.
 const SHADES = {
@@ -19,21 +23,15 @@ const SHADES = {
   dark: { wisp: 0.26, sky: 0.72, deep: 0.58, blue: 0.36 },
 } as const;
 
-let probe: CanvasRenderingContext2D | null | undefined;
-
-const getProbe = () => {
-  if (probe !== undefined) return probe;
+const createProbe = () => {
   const canvas = document.createElement('canvas');
   canvas.width = 1;
   canvas.height = 1;
-  probe = canvas.getContext('2d', { willReadFrequently: true });
 
-  return probe;
+  return canvas.getContext('2d', { willReadFrequently: true });
 };
 
-const resolveCssColor = (value: string): Rgb | null => {
-  const ctx = getProbe();
-  if (!ctx) return null;
+const resolveCssColor = (ctx: CanvasRenderingContext2D, value: string): Rgb | null => {
   // An unparseable value leaves fillStyle untouched, so a sentinel detects it.
   ctx.fillStyle = '#000000';
   ctx.fillStyle = value;
@@ -92,9 +90,10 @@ const oklchToSrgb = (color: Oklch): Rgb => {
     }
   }
 
-  return oklchToLinearSrgb({ ...color, c: lo }).map((c) =>
-    Math.min(1, Math.max(0, toGamma(Math.min(1, Math.max(0, c))))),
-  ) as Rgb;
+  const [r, g, b] = oklchToLinearSrgb({ ...color, c: lo });
+  const toChannel = (c: number) => Math.min(1, Math.max(0, toGamma(Math.min(1, Math.max(0, c)))));
+
+  return [toChannel(r), toChannel(g), toChannel(b)];
 };
 
 // Oklab, not Oklch: interpolating hue would sweep a cream background to the cool accent through green.
@@ -117,10 +116,12 @@ const mixOklab = (a: Oklch, b: Oklch, t: number): Oklch => {
 };
 
 const buildPalette = (): Palette | null => {
+  const probe = createProbe();
+  if (!probe) return null;
   const styles = getComputedStyle(document.documentElement);
-  const backgroundRgb = resolveCssColor(styles.getPropertyValue('--background'));
-  const primaryRgb = resolveCssColor(styles.getPropertyValue('--primary'));
-  const coolRgb = resolveCssColor(styles.getPropertyValue('--primary'));
+  const backgroundRgb = resolveCssColor(probe, styles.getPropertyValue('--background'));
+  const primaryRgb = resolveCssColor(probe, styles.getPropertyValue('--primary'));
+  const coolRgb = resolveCssColor(probe, styles.getPropertyValue('--primary'));
   if (!backgroundRgb || !primaryRgb || !coolRgb) return null;
 
   const background = srgbToOklch(backgroundRgb);
@@ -202,6 +203,107 @@ const compile = (gl: WebGLRenderingContext, type: number, source: string) => {
   return shader;
 };
 
+// Outside the component: the React Compiler reads WebGL's `gl.useProgram` as a hook call.
+const startBackdrop = (canvas: HTMLCanvasElement) => {
+  const gl = canvas.getContext('webgl');
+  if (!gl) return;
+
+  const program = gl.createProgram();
+  const vertexShader = compile(gl, gl.VERTEX_SHADER, VERTEX_SHADER);
+  const fragmentShader = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER);
+  if (!program || !vertexShader || !fragmentShader) return;
+
+  gl.attachShader(program, vertexShader);
+  gl.attachShader(program, fragmentShader);
+  gl.linkProgram(program);
+
+  const buffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([1, -1, -1, -1, 1, 1, -1, 1]), gl.STATIC_DRAW);
+
+  const position = gl.getAttribLocation(program, 'p');
+  const uResolution = gl.getUniformLocation(program, 'u_resolution');
+  const uTime = gl.getUniformLocation(program, 'u_time');
+  const start = Date.now();
+
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let frame = 0;
+  let running = false;
+  let ready = false;
+  // Assume on-screen so the hero paints at load; the observer's first callback corrects it.
+  let onScreen = true;
+
+  const draw = () => {
+    if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+    }
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    gl.useProgram(program);
+    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+    gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(position);
+    gl.uniform2f(uResolution, canvas.width, canvas.height);
+    gl.uniform1f(uTime, still ? 0 : (Date.now() - start) / 1000);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    if (running && !still) frame = requestAnimationFrame(draw);
+  };
+
+  const play = () => {
+    if (running || !ready || !onScreen || document.hidden) return;
+    running = true;
+    frame = requestAnimationFrame(draw);
+  };
+  const pause = () => {
+    running = false;
+    cancelAnimationFrame(frame);
+  };
+
+  // Next frame: the theme toggle flips the class in a parent effect, which runs after this one.
+  const paletteFrame = requestAnimationFrame(() => {
+    const palette = buildPalette();
+    if (!palette) return;
+
+    gl.useProgram(program);
+    gl.uniform3fv(gl.getUniformLocation(program, 'u_base'), palette.base);
+    gl.uniform3fv(gl.getUniformLocation(program, 'u_wisp'), palette.wisp);
+    gl.uniform3fv(gl.getUniformLocation(program, 'u_sky'), palette.sky);
+    gl.uniform3fv(gl.getUniformLocation(program, 'u_deep'), palette.deep);
+    gl.uniform3fv(gl.getUniformLocation(program, 'u_blue'), palette.blue);
+    gl.uniform1f(gl.getUniformLocation(program, 'u_dark'), srgbToOklch(palette.base).l < 0.5 ? 1 : 0);
+    ready = true;
+    play();
+  });
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      onScreen = entries[0]?.isIntersecting ?? false;
+      if (onScreen) play();
+      else pause();
+    },
+    { rootMargin: '200px' },
+  );
+  observer.observe(canvas);
+
+  const onVisibility = () => (document.hidden ? pause() : play());
+  document.addEventListener('visibilitychange', onVisibility);
+
+  // Resizing the backing store clears the canvas, so repaint even when parked on a still frame.
+  const onResize = () => {
+    if (ready && still) draw();
+  };
+  window.addEventListener('resize', onResize);
+
+  return () => {
+    cancelAnimationFrame(paletteFrame);
+    pause();
+    observer.disconnect();
+    document.removeEventListener('visibilitychange', onVisibility);
+    window.removeEventListener('resize', onResize);
+  };
+};
+
 interface Hero09BackdropProps {
   className?: string;
 }
@@ -227,103 +329,8 @@ const Hero09Backdrop = ({ className }: Hero09BackdropProps) => {
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const gl = canvas.getContext('webgl');
-    if (!gl) return;
 
-    const program = gl.createProgram();
-    const vertexShader = compile(gl, gl.VERTEX_SHADER, VERTEX_SHADER);
-    const fragmentShader = compile(gl, gl.FRAGMENT_SHADER, FRAGMENT_SHADER);
-    if (!program || !vertexShader || !fragmentShader) return;
-
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([1, -1, -1, -1, 1, 1, -1, 1]), gl.STATIC_DRAW);
-
-    const position = gl.getAttribLocation(program, 'p');
-    const uResolution = gl.getUniformLocation(program, 'u_resolution');
-    const uTime = gl.getUniformLocation(program, 'u_time');
-    const start = Date.now();
-
-    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    let frame = 0;
-    let running = false;
-    let ready = false;
-    // Assume on-screen so the hero paints at load; the observer's first callback corrects it.
-    let onScreen = true;
-
-    const draw = () => {
-      if (canvas.width !== canvas.clientWidth || canvas.height !== canvas.clientHeight) {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
-      }
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.useProgram(program);
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-      gl.vertexAttribPointer(position, 2, gl.FLOAT, false, 0, 0);
-      gl.enableVertexAttribArray(position);
-      gl.uniform2f(uResolution, canvas.width, canvas.height);
-      gl.uniform1f(uTime, still ? 0 : (Date.now() - start) / 1000);
-      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-      if (running && !still) frame = requestAnimationFrame(draw);
-    };
-
-    const play = () => {
-      if (running || !ready || !onScreen || document.hidden) return;
-      running = true;
-      frame = requestAnimationFrame(draw);
-    };
-    const pause = () => {
-      running = false;
-      cancelAnimationFrame(frame);
-    };
-
-    // Next frame: the theme toggle flips the class in a parent effect, which runs after this one.
-    const paletteFrame = requestAnimationFrame(() => {
-      const palette = buildPalette();
-      if (!palette) return;
-
-      gl.useProgram(program);
-      gl.uniform3fv(gl.getUniformLocation(program, 'u_base'), palette.base);
-      gl.uniform3fv(gl.getUniformLocation(program, 'u_wisp'), palette.wisp);
-      gl.uniform3fv(gl.getUniformLocation(program, 'u_sky'), palette.sky);
-      gl.uniform3fv(gl.getUniformLocation(program, 'u_deep'), palette.deep);
-      gl.uniform3fv(gl.getUniformLocation(program, 'u_blue'), palette.blue);
-      gl.uniform1f(gl.getUniformLocation(program, 'u_dark'), srgbToOklch(palette.base).l < 0.5 ? 1 : 0);
-      ready = true;
-      play();
-    });
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        onScreen = entries[0]?.isIntersecting ?? false;
-        if (onScreen) play();
-        else pause();
-      },
-      { rootMargin: '200px' },
-    );
-    observer.observe(canvas);
-
-    const onVisibility = () => (document.hidden ? pause() : play());
-    document.addEventListener('visibilitychange', onVisibility);
-
-    // Resizing the backing store clears the canvas, so repaint even when parked on a still frame.
-    const onResize = () => {
-      if (ready && still) draw();
-    };
-    window.addEventListener('resize', onResize);
-
-    return () => {
-      cancelAnimationFrame(paletteFrame);
-      pause();
-      observer.disconnect();
-      document.removeEventListener('visibilitychange', onVisibility);
-      window.removeEventListener('resize', onResize);
-    };
+    return startBackdrop(canvas);
   }, [themeTick]);
 
   return <canvas ref={canvasRef} data-slot="hero-09-backdrop" aria-hidden className={className} />;

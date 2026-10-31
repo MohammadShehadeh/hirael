@@ -10,8 +10,12 @@ export function generateStaticParams() {
   return REGISTRY.filter((entry) => entry.category === 'templates').map((entry) => ({ template: entry.name }));
 }
 
+interface TemplateRouteParams {
+  template: string;
+}
+
 interface TemplateOpenGraphImageProps {
-  params: Promise<{ template: string }>;
+  params: Promise<TemplateRouteParams>;
 }
 
 export default async function TemplateOpenGraphImage({ params }: TemplateOpenGraphImageProps) {

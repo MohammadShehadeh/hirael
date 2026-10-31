@@ -34,7 +34,7 @@ export const Hero = () => {
           <nav className="flex items-center justify-between rounded-full bg-white p-[5px]">
             <div className="flex items-center gap-6">
               <a href="#" aria-label="Hirael home" className="flex items-center gap-2">
-                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white sm:h-10 sm:w-10">
+                <span className="flex size-9 items-center justify-center rounded-full bg-black text-white sm:size-10">
                   <HiraelMark className="h-5 w-4 sm:h-6 sm:w-5" />
                 </span>
                 <span className="text-[15px] font-semibold tracking-tight text-black sm:text-[16px]">Hirael</span>
@@ -59,7 +59,7 @@ export const Hero = () => {
                 className={cn(PILL_BUTTON, 'group h-auto bg-black py-2 ps-5 pe-2 text-[13px] text-white')}
               >
                 <RollText>Book a strategy call</RollText>
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white">
+                <span className="flex size-6 items-center justify-center rounded-full bg-white">
                   <ArrowRight
                     className={cn(
                       'size-3.5 text-black transition-transform duration-500 group-hover:-rotate-45 rtl:rotate-180 rtl:group-hover:rotate-[225deg]',
@@ -99,7 +99,7 @@ export const Hero = () => {
             <div className="mt-8 flex flex-col items-start gap-4 sm:mt-12 sm:flex-row sm:items-center sm:gap-5">
               <OrangeButton label="Start a project" />
               <div className="flex items-center gap-2 rounded-[4px] bg-white px-2.5 py-2 shadow-[0_2px_8px_rgba(0,0,0,0.08)] transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)]">
-                <PartnerIcon className="h-5 w-5 fill-current text-primary sm:h-6 sm:w-6" />
+                <PartnerIcon className="size-5 fill-current text-primary sm:size-6" />
                 <span className="text-[13px] font-medium text-black sm:text-[14px]">Certified Partner</span>
                 <span className="inline-flex items-center rounded bg-black px-1.5 py-0.5 text-[10px] font-normal whitespace-nowrap text-white sm:px-2 sm:text-[11px]">
                   Featured

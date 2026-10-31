@@ -24,6 +24,12 @@ import { Empty, EmptyDescription, EmptyHeader, EmptyMedia } from '@/registry/hir
 
 type RunState = 'success' | 'failure' | 'skipped' | 'running';
 
+interface RunStep {
+  name: string;
+  state: RunState;
+  durationLabel: string;
+}
+
 interface Run {
   id: string;
   number: number;
@@ -33,7 +39,7 @@ interface Run {
   state: RunState;
   durationSec: number;
   startedLabel: string;
-  steps: { name: string; state: RunState; durationLabel: string }[];
+  steps: RunStep[];
 }
 
 const STATE_TOKEN: Record<RunState, string> = {
@@ -50,7 +56,12 @@ const STATE_LABEL: Record<RunState, string> = {
   running: 'Running',
 };
 
-const LEGEND: { state: RunState; label: string }[] = [
+interface LegendItem {
+  state: RunState;
+  label: string;
+}
+
+const LEGEND: LegendItem[] = [
   { state: 'success', label: 'Passed' },
   { state: 'failure', label: 'Failed' },
   { state: 'skipped', label: 'Skipped' },
@@ -228,7 +239,7 @@ const chartConfig = {
   duration: { label: 'Duration' },
 } satisfies ChartConfig;
 
-const CHART_DATA = [...RUNS].reverse().map((run) => ({
+const CHART_DATA = RUNS.toReversed().map((run) => ({
   run,
   label: `#${run.number}`,
   duration: run.durationSec,
@@ -466,6 +477,7 @@ const Dashboard06 = () => {
                   data={CHART_DATA}
                   margin={{ left: 4, right: 4, top: 4, bottom: 0 }}
                   onClick={(e) => {
+                    // Recharts doesn't type the clicked bar's payload; it's a CHART_DATA row.
                     const payload = (e as { activePayload?: { payload?: unknown }[] }).activePayload?.[0]?.payload as
                       (typeof CHART_DATA)[number] | undefined;
                     if (payload?.run) toggleRun(payload.run.id);
@@ -483,13 +495,14 @@ const Dashboard06 = () => {
                     axisLine={false}
                     tickMargin={4}
                     width={52}
-                    tickFormatter={(v) => formatSeconds(v as number)}
+                    tickFormatter={(v: number) => formatSeconds(v)}
                     tick={{ fontSize: 12, fill: 'var(--muted-foreground)' }}
                   />
                   <ChartTooltip
                     cursor={{ fill: 'var(--muted)', opacity: 0.5 }}
                     content={({ active, payload }) => {
                       if (!active || !payload?.length) return null;
+                      // Recharts types the payload as any; it's a CHART_DATA row.
                       const { run, state } = payload[0].payload as (typeof CHART_DATA)[number];
 
                       return (

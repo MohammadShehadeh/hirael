@@ -17,7 +17,11 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
-type Billing = 'monthly' | 'yearly';
+const BILLING_VALUES = ['monthly', 'yearly'] as const;
+
+type Billing = (typeof BILLING_VALUES)[number];
+
+const isBilling = (value: unknown): value is Billing => BILLING_VALUES.some((option) => option === value);
 
 const TIERS = [
   {
@@ -70,7 +74,9 @@ const Pricing04 = () => {
           data-slot="pricing-billing"
           variant="outline"
           value={[billing]}
-          onValueChange={([next]) => next && setBilling(next as Billing)}
+          onValueChange={([next]) => {
+            if (isBilling(next)) setBilling(next);
+          }}
           aria-label="Billing period"
           style={stagger(3)}
           className={cn(ENTER, 'mt-4')}

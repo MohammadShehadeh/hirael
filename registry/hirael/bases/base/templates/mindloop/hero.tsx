@@ -1,21 +1,21 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Field, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 
-import { AvatarRow, Serif, useFadeUp } from './primitives';
+import { AvatarRow, Serif, fadeUp } from './primitives';
 
 const HERO_VIDEO = '/media/templates/mindloop/hero.mp4';
 
 export const Hero = () => {
-  const fade = useFadeUp();
+  const reduce = useReducedMotion();
 
   return (
     <section id="home" className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden">
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 size-full object-cover"
         src={HERO_VIDEO}
         autoPlay
         loop
@@ -26,28 +26,27 @@ export const Hero = () => {
       <div aria-hidden className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-background to-transparent" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center px-6 pt-28 text-center md:pt-32">
-        <motion.div {...fade(0)} className="flex flex-col items-center gap-3 sm:flex-row">
+        <motion.div {...fadeUp(reduce, 0)} className="flex flex-col items-center gap-3 sm:flex-row">
           <AvatarRow />
           <span className="text-sm text-muted-foreground">7,000+ people already subscribed</span>
         </motion.div>
 
         <motion.h1
-          {...fade(0.1, { fade: false })}
+          {...fadeUp(reduce, 0.1, { fade: false })}
           className="mt-6 w-full text-5xl font-medium tracking-[-2px] md:text-7xl lg:text-8xl"
         >
           Get <Serif>Inspired</Serif> with Us
         </motion.h1>
 
         <motion.p
-          {...fade(0.2, { fade: false })}
-          className="mt-6 w-full max-w-xl text-lg"
-          style={{ color: 'hsl(var(--hero-subtitle))' }}
+          {...fadeUp(reduce, 0.2, { fade: false })}
+          className="mt-6 w-full max-w-xl text-lg text-[hsl(var(--hero-subtitle))]"
         >
           Join our feed for meaningful updates, news around technology and a shared journey toward depth and direction.
         </motion.p>
 
         <motion.form
-          {...fade(0.3)}
+          {...fadeUp(reduce, 0.3)}
           onSubmit={(e) => e.preventDefault()}
           className="liquid-glass mt-10 w-full max-w-lg rounded-full p-2"
         >

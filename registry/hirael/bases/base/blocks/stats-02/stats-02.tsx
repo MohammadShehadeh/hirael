@@ -24,6 +24,8 @@ const RANGES = [
 
 type Range = (typeof RANGES)[number]['value'];
 
+const isRange = (value: unknown): value is Range => RANGES.some((option) => option.value === value);
+
 interface Reading {
   value: string;
   delta: string;
@@ -150,7 +152,7 @@ const Stats02 = () => {
             size="sm"
             value={[range]}
             onValueChange={([value]) => {
-              if (value) setRange(value as Range);
+              if (isRange(value)) setRange(value);
             }}
             aria-label="Time range"
             style={stagger(3)}

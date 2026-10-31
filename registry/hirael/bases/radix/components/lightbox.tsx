@@ -71,27 +71,21 @@ const Lightbox = ({
   const count = items.length;
   const [internalIndex, setInternalIndex] = React.useState(defaultIndex);
   const index = Math.min(Math.max(indexProp ?? internalIndex, 0), Math.max(count - 1, 0));
-  const setIndex = React.useCallback(
-    (next: number) => {
-      if (indexProp === undefined) setInternalIndex(next);
-      onIndexChange?.(next);
-    },
-    [indexProp, onIndexChange],
-  );
+  const setIndex = (next: number) => {
+    if (indexProp === undefined) setInternalIndex(next);
+    onIndexChange?.(next);
+  };
 
   const [zoomed, setZoomed] = React.useState(false);
 
-  const goTo = React.useCallback(
-    (i: number) => {
-      if (count === 0) return;
-      setIndex(loop ? wrap(i, count) : Math.min(Math.max(i, 0), count - 1));
-      setZoomed(false);
-    },
-    [count, loop, setIndex],
-  );
+  const goTo = (i: number) => {
+    if (count === 0) return;
+    setIndex(loop ? wrap(i, count) : Math.min(Math.max(i, 0), count - 1));
+    setZoomed(false);
+  };
 
-  const next = React.useCallback(() => goTo(index + 1), [goTo, index]);
-  const prev = React.useCallback(() => goTo(index - 1), [goTo, index]);
+  const next = () => goTo(index + 1);
+  const prev = () => goTo(index - 1);
 
   const canPrev = loop ? count > 1 : index > 0;
   const canNext = loop ? count > 1 : index < count - 1;
@@ -107,10 +101,7 @@ const Lightbox = ({
     }
   }, [open, index, items, count, loop]);
 
-  const value = React.useMemo<LightboxContextValue>(
-    () => ({ items, index, zoomed, setZoomed, goTo, next, prev, canPrev, canNext }),
-    [items, index, zoomed, goTo, next, prev, canPrev, canNext],
-  );
+  const value: LightboxContextValue = { items, index, zoomed, setZoomed, goTo, next, prev, canPrev, canNext };
 
   return (
     <LightboxContext.Provider value={value}>
@@ -209,7 +200,7 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
   const { items, index, zoomed, setZoomed, goTo, next, prev, canPrev, canNext } = useLightbox();
   const inPortal = React.useContext(LightboxPortalContext);
   const item = items[index];
-  const text = React.useMemo(() => ({ ...defaultLabels, ...labels }), [labels]);
+  const text = { ...defaultLabels, ...labels };
   const viewportRef = React.useRef<HTMLDivElement | null>(null);
   const imageRef = React.useRef<HTMLImageElement | null>(null);
 
@@ -250,16 +241,15 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
     if (event.defaultPrevented || isEditableTarget(event.target)) return;
     const rtl = isRtl(event.currentTarget);
     const toggleZoom = () => setZoomed(!zoomed);
-    const action = (
-      {
-        ArrowRight: rtl ? prev : next,
-        ArrowLeft: rtl ? next : prev,
-        Home: () => goTo(0),
-        End: () => goTo(items.length - 1),
-        z: toggleZoom,
-        Z: toggleZoom,
-      } as Record<string, () => void>
-    )[event.key];
+    const actionByKey: Partial<Record<string, () => void>> = {
+      ArrowRight: rtl ? prev : next,
+      ArrowLeft: rtl ? next : prev,
+      Home: () => goTo(0),
+      End: () => goTo(items.length - 1),
+      z: toggleZoom,
+      Z: toggleZoom,
+    };
+    const action = actionByKey[event.key];
     if (!action) return;
     event.preventDefault();
     action();
@@ -300,8 +290,7 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
 
       return;
     }
-    const target = event.target as HTMLElement;
-    if (!drag.moved && target.closest('[data-slot=lightbox-image]')) {
+    if (!drag.moved && event.target instanceof Element && event.target.closest('[data-slot=lightbox-image]')) {
       setZoomed(!zoomed);
     }
   }
@@ -337,7 +326,7 @@ const LightboxContent = ({ labels, className, children, onKeyDown, ...props }: L
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
       >
-        {item && ( // eslint-disable-next-line @next/next/no-img-element
+        {item && ( // eslint-disable-next-line @next/next/no-img-element -- photos can be any remote image
           <img
             ref={imageRef}
             data-slot="lightbox-image"
@@ -459,7 +448,7 @@ const LightboxThumbnails = ({ getLabel = defaultThumbnailLabel, className, ...pr
             i === index && 'opacity-100 ring-2 ring-ring',
           )}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
+          {/* eslint-disable-next-line @next/next/no-img-element -- photos can be any remote image */}
           <img src={item.thumbnail ?? item.src} alt="" draggable={false} className="size-full object-cover" />
         </button>
       ))}

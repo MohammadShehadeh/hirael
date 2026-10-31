@@ -23,7 +23,7 @@ export const UseCasesSection = () => {
             muted
             loop
             playsInline
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 size-full object-cover"
             src={USE_CASES_VIDEO}
           />
           <div
@@ -39,8 +39,8 @@ export const UseCasesSection = () => {
               letting your patrons earn with zero effort on your platform.
             </p>
             <a href="#" className="group inline-flex items-center gap-3 text-base font-medium text-foreground">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-background/80 backdrop-blur transition-colors duration-200 group-hover:bg-background">
-                <ArrowRight className="h-4 w-4 text-foreground rtl:rotate-180" />
+              <span className="flex size-9 items-center justify-center rounded-full bg-background/80 backdrop-blur transition-colors duration-200 group-hover:bg-background">
+                <ArrowRight className="size-4 text-foreground rtl:rotate-180" />
               </span>
               Know more
             </a>

@@ -8,17 +8,19 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Field, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 
 import { Navbar } from './navbar';
-import { InstagramIcon, TwitterIcon } from './primitives';
+import { InstagramIcon, TwitterIcon, type IconProps } from './primitives';
 
 const HERO_VIDEO_URL = '/media/templates/asme/hero.mp4';
 const FADE_MS = 500;
 const FADE_OUT_LEAD_S = 0.55;
 const RESTART_DELAY_MS = 100;
 
-const SOCIAL_LINKS: {
+interface SocialLink {
   label: string;
-  Icon: React.ComponentType<{ className?: string }>;
-}[] = [
+  Icon: React.ComponentType<IconProps>;
+}
+
+const SOCIAL_LINKS: SocialLink[] = [
   { label: 'Instagram', Icon: InstagramIcon },
   { label: 'Twitter', Icon: TwitterIcon },
   { label: 'Website', Icon: Globe },
@@ -40,13 +42,13 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: HeroProps) => {
   };
 
   // A video that buffered before hydration has already fired `canplay`; catch it on attach.
-  const attachVideo = React.useCallback((video: HTMLVideoElement | null) => {
+  const attachVideo = (video: HTMLVideoElement | null) => {
     if (video && video.readyState >= 3) setIsVisible(true);
 
     return () => {
       if (restartTimerRef.current) window.clearTimeout(restartTimerRef.current);
     };
-  }, []);
+  };
 
   return (
     <section className="relative flex min-h-screen flex-col overflow-hidden">
@@ -59,7 +61,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO_URL, posterSrc }: HeroProps) => {
       ) : (
         <motion.video
           ref={attachVideo}
-          className="absolute inset-0 h-full w-full object-cover object-bottom"
+          className="absolute inset-0 size-full object-cover object-bottom"
           src={videoSrc}
           poster={posterSrc}
           muted

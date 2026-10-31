@@ -67,10 +67,7 @@ const DateRangePicker = ({
     onChange: onOpenChange,
   });
 
-  const ctx = React.useMemo<DateRangePickerContextValue>(
-    () => ({ value, setValue, setOpen, locale, disabled }),
-    [value, setValue, setOpen, locale, disabled],
-  );
+  const ctx: DateRangePickerContextValue = { value, setValue, setOpen, locale, disabled };
 
   return (
     <DateRangePickerContext.Provider value={ctx}>
@@ -93,7 +90,7 @@ const DateRangePickerTrigger = ({
   ...props
 }: DateRangePickerTriggerProps) => {
   const ctx = useDateRangePicker();
-  const fmt = React.useMemo(() => new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium' }), [ctx.locale]);
+  const fmt = new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium' });
 
   return (
     <PopoverTrigger asChild>
@@ -123,7 +120,7 @@ export interface DateRangePreset {
   range: () => DateRange;
 }
 
-const lastDays = (days: number) => () => {
+const lastDays = (days: number): DateRange => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const from = new Date(today);
@@ -132,7 +129,7 @@ const lastDays = (days: number) => () => {
   return { from, to: today };
 };
 
-const calendarMonth = (offset: number) => () => {
+const calendarMonth = (offset: number): DateRange => {
   const today = new Date();
 
   return {
@@ -142,21 +139,20 @@ const calendarMonth = (offset: number) => () => {
 };
 
 const DEFAULT_PRESETS: DateRangePreset[] = [
-  { label: 'Today', range: lastDays(1) },
-  { label: 'Last 7 days', range: lastDays(7) },
-  { label: 'Last 30 days', range: lastDays(30) },
-  { label: 'This month', range: calendarMonth(0) },
-  { label: 'Last month', range: calendarMonth(-1) },
+  { label: 'Today', range: () => lastDays(1) },
+  { label: 'Last 7 days', range: () => lastDays(7) },
+  { label: 'Last 30 days', range: () => lastDays(30) },
+  { label: 'This month', range: () => calendarMonth(0) },
+  { label: 'Last month', range: () => calendarMonth(-1) },
 ];
 
-type DateRangePickerContentProps = Omit<
-  React.ComponentProps<typeof Calendar>,
-  'mode' | 'selected' | 'onSelect' | 'required'
-> &
-  Pick<React.ComponentProps<typeof PopoverContent>, 'align'> & {
-    /** Pass `[]` to hide the preset column. */
-    presets?: DateRangePreset[];
-  };
+interface DateRangePickerContentProps
+  extends
+    Omit<React.ComponentProps<typeof Calendar>, 'mode' | 'selected' | 'onSelect' | 'required'>,
+    Pick<React.ComponentProps<typeof PopoverContent>, 'align'> {
+  /** Pass `[]` to hide the preset column. */
+  presets?: DateRangePreset[];
+}
 
 /** Takes the calendar's props (`disabled`, `numberOfMonths`, `weekStartsOn`, …). */
 const DateRangePickerContent = ({

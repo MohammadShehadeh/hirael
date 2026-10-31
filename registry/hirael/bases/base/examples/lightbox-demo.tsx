@@ -93,7 +93,7 @@ const LightboxDemo = () => {
           <div className="grid grid-cols-4 gap-2">
             {photos.map((photo, i) => (
               <LightboxTrigger key={photo.src} index={i} className="group overflow-hidden">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
+                {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
                 <img
                   src={photo.thumbnail}
                   alt={photo.alt}

@@ -7,7 +7,7 @@ export const Navbar = () => {
     <nav className="absolute inset-x-0 top-0 z-20 px-6 py-5">
       <div className="mx-auto flex max-w-[88rem] items-center justify-between">
         <a href="#" aria-label="Halo home" className="flex items-center gap-2.5">
-          <LogoIcon className="h-7 w-7 text-foreground" />
+          <LogoIcon className="size-7 text-foreground" />
           <span className="text-2xl font-medium tracking-tight text-foreground">Halo</span>
         </a>
 

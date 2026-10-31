@@ -13,9 +13,35 @@ permissions:
   contents: read
 
 jobs:
-  verify:
+  # One job per check, so a failure can be re-run on its own and doesn't hide the others.
+  check:
+    name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Registry in sync
+            run: pnpm check:registry
+          - name: Format
+            run: pnpm format:check
+          - name: Lint
+            run: pnpm lint
+          - name: Typecheck
+            run: pnpm typecheck
+          - name: Test
+            run: pnpm test
+          - name: Build
+            run: pnpm build
+          # Verifies every item would install cleanly: applies shadcn's own
+          # import-rewrite rules to the built /r/*.json and asserts each lands
+          # under the right target with @/registry/hirael imports remapped to
+          # consumer aliases and cross-hirael deps emitted as /r URLs. Offline and
+          # deterministic: a real `shadcn add` can't run here (it stalls fetching
+          # base colors from ui.shadcn.com). It builds /r itself, so it doesn't wait for Build.
+          - name: Install resolution
+            run: pnpm check:install
     steps:
       - uses: actions/checkout@v7
 
@@ -27,32 +53,9 @@ jobs:
           node-version-file: .nvmrc
           cache: pnpm
 
+      # Also runs `prepare`, which generates the registry files every check reads.
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Registry in sync
-        run: pnpm check:registry
-
-      - name: Format
-        run: pnpm format:check
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Typecheck
-        run: pnpm typecheck
-
-      - name: Test
-        run: pnpm test
-
-      - name: Build
-        run: pnpm build
-
-      - name: Install resolution check
-        # Verifies every item would install cleanly: applies shadcn's own
-        # import-rewrite rules to the built /r/*.json and asserts each lands
-        # under the right target with @/registry/hirael imports remapped to
-        # consumer aliases and cross-hirael deps emitted as /r URLs. Offline and
-        # deterministic — a real `shadcn add` can't run here (it stalls fetching
-        # base colors from ui.shadcn.com).
-        run: pnpm check:install
+      - name: ${{ matrix.name }}
+        run: ${{ matrix.run }}

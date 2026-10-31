@@ -95,41 +95,32 @@ const MultiSelect = ({
     onChange: onOpenChange,
   });
 
-  const toggle = React.useCallback(
-    (v: string) => {
-      if (value.includes(v)) setValue(value.filter((x) => x !== v));
-      else if (maxCount === undefined || value.length < maxCount) setValue([...value, v]);
-    },
-    [value, setValue, maxCount],
-  );
+  const toggle = (v: string) => {
+    if (value.includes(v)) setValue(value.filter((x) => x !== v));
+    else if (maxCount === undefined || value.length < maxCount) setValue([...value, v]);
+  };
 
-  const remove = React.useCallback((v: string) => setValue(value.filter((x) => x !== v)), [value, setValue]);
+  const remove = (v: string) => setValue(value.filter((x) => x !== v));
 
   // Disabled options can't be toggled back on, so clearing keeps them.
-  const clear = React.useCallback(
-    () => setValue(value.filter((v) => options.some((o) => o.value === v && o.disabled))),
-    [value, setValue, options],
-  );
+  const clear = () => setValue(value.filter((v) => options.some((o) => o.value === v && o.disabled)));
 
   const listboxId = React.useId();
 
-  const ctx = React.useMemo<MultiSelectContextValue>(
-    () => ({
-      value,
-      setValue,
-      options,
-      open,
-      setOpen,
-      maxCount,
-      disabled,
-      loading,
-      toggle,
-      remove,
-      clear,
-      listboxId,
-    }),
-    [value, setValue, options, open, setOpen, maxCount, disabled, loading, toggle, remove, clear, listboxId],
-  );
+  const ctx: MultiSelectContextValue = {
+    value,
+    setValue,
+    options,
+    open,
+    setOpen,
+    maxCount,
+    disabled,
+    loading,
+    toggle,
+    remove,
+    clear,
+    listboxId,
+  };
 
   return (
     <MultiSelectContext.Provider value={ctx}>
@@ -240,6 +231,42 @@ interface MultiSelectContentProps extends React.ComponentProps<typeof PopoverCon
   children?: React.ReactNode;
 }
 
+interface MultiSelectItemProps extends Omit<
+  React.ComponentProps<typeof CommandItem>,
+  'value' | 'onSelect' | 'children'
+> {
+  option: MultiSelectOption;
+  children?: React.ReactNode;
+}
+
+const MultiSelectItem = ({ option, children, className, ...props }: MultiSelectItemProps) => {
+  const ctx = useMultiSelect();
+  const selected = ctx.value.includes(option.value);
+  const atCap = !selected && ctx.maxCount !== undefined && ctx.value.length >= ctx.maxCount;
+
+  return (
+    <CommandItem
+      value={`${option.label} ${option.value}`}
+      disabled={option.disabled || atCap}
+      onSelect={() => ctx.toggle(option.value)}
+      data-slot="multi-select-item"
+      className={cn('justify-between', className)}
+      {...props}
+    >
+      <span className="min-w-0 truncate">{children ?? option.label}</span>
+      <span
+        aria-hidden
+        className={cn(
+          'flex size-4 items-center justify-center rounded-sm border border-border transition-colors',
+          selected && 'border-primary bg-primary text-primary-foreground',
+        )}
+      >
+        {selected && <Check className="size-2.5" strokeWidth={3} />}
+      </span>
+    </CommandItem>
+  );
+};
+
 const MultiSelectContent = ({
   className,
   searchPlaceholder = 'Search…',
@@ -329,42 +356,6 @@ const MultiSelectContent = ({
         </CommandList>
       </Command>
     </PopoverContent>
-  );
-};
-
-interface MultiSelectItemProps extends Omit<
-  React.ComponentProps<typeof CommandItem>,
-  'value' | 'onSelect' | 'children'
-> {
-  option: MultiSelectOption;
-  children?: React.ReactNode;
-}
-
-const MultiSelectItem = ({ option, children, className, ...props }: MultiSelectItemProps) => {
-  const ctx = useMultiSelect();
-  const selected = ctx.value.includes(option.value);
-  const atCap = !selected && ctx.maxCount !== undefined && ctx.value.length >= ctx.maxCount;
-
-  return (
-    <CommandItem
-      value={`${option.label} ${option.value}`}
-      disabled={option.disabled || atCap}
-      onSelect={() => ctx.toggle(option.value)}
-      data-slot="multi-select-item"
-      className={cn('justify-between', className)}
-      {...props}
-    >
-      <span className="min-w-0 truncate">{children ?? option.label}</span>
-      <span
-        aria-hidden
-        className={cn(
-          'flex size-4 items-center justify-center rounded-sm border border-border transition-colors',
-          selected && 'border-primary bg-primary text-primary-foreground',
-        )}
-      >
-        {selected && <Check className="size-2.5" strokeWidth={3} />}
-      </span>
-    </CommandItem>
   );
 };
 

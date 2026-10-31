@@ -28,7 +28,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
         />
       ) : (
         <video
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 size-full object-cover"
           src={videoSrc}
           poster={posterSrc}
           autoPlay

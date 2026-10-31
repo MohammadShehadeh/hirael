@@ -55,16 +55,13 @@ const TwoFactorSetup = ({
   const isControlled = stepProp !== undefined;
   const step = isControlled ? stepProp : internal;
 
-  const setStep = React.useCallback(
-    (next: number) => {
-      const clamped = Math.max(0, Math.min(count - 1, next));
-      if (!isControlled) setInternal(clamped);
-      onStepChange?.(clamped);
-    },
-    [count, isControlled, onStepChange],
-  );
+  const setStep = (next: number) => {
+    const clamped = Math.max(0, Math.min(count - 1, next));
+    if (!isControlled) setInternal(clamped);
+    onStepChange?.(clamped);
+  };
 
-  const value = React.useMemo(() => ({ step, setStep, count }), [step, setStep, count]);
+  const value = { step, setStep, count };
 
   return (
     <TwoFactorSetupContext.Provider value={value}>
@@ -82,6 +79,13 @@ export interface TwoFactorSetupStepsProps extends React.ComponentProps<'ol'> {
   labels?: string[];
 }
 
+const stepState = (index: number, step: number) => {
+  if (index < step) return 'done';
+  if (index === step) return 'active';
+
+  return 'todo';
+};
+
 const TwoFactorSetupSteps = ({ labels, className, ...props }: TwoFactorSetupStepsProps) => {
   const { step, count } = useTwoFactorSetup('TwoFactorSetupSteps');
 
@@ -93,7 +97,7 @@ const TwoFactorSetupSteps = ({ labels, className, ...props }: TwoFactorSetupStep
       {...props}
     >
       {Array.from({ length: count }, (_, i) => {
-        const state = i < step ? 'done' : i === step ? 'active' : 'todo';
+        const state = stepState(i, step);
 
         return (
           <li
@@ -192,14 +196,11 @@ const TwoFactorSetupSecret = ({
   className,
   ...props
 }: TwoFactorSetupSecretProps) => {
-  const grouped = React.useMemo(
-    () =>
-      value
-        .replace(/\s+/g, '')
-        .match(/.{1,4}/g)
-        ?.join(' ') ?? value,
-    [value],
-  );
+  const grouped =
+    value
+      .replace(/\s+/g, '')
+      .match(/.{1,4}/g)
+      ?.join(' ') ?? value;
 
   return (
     <div data-slot="two-factor-setup-secret" className={cn('flex flex-col gap-1.5', className)} {...props}>
@@ -295,9 +296,9 @@ const TwoFactorSetupRecoveryCodes = ({
     defaultProp: defaultSaved,
     onChange: onSavedChange,
   });
-  const joined = React.useMemo(() => codes.join('\n'), [codes]);
+  const joined = codes.join('\n');
 
-  const download = React.useCallback(() => {
+  const download = () => {
     if (typeof document === 'undefined') return;
     const blob = new Blob([`${joined}\n`], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
@@ -308,7 +309,7 @@ const TwoFactorSetupRecoveryCodes = ({
     anchor.click();
     document.body.removeChild(anchor);
     URL.revokeObjectURL(url);
-  }, [joined, fileName]);
+  };
 
   return (
     <div data-slot="two-factor-setup-recovery-codes" className={cn('flex flex-col gap-4', className)} {...props}>

@@ -14,7 +14,7 @@ export interface ScrollProgressProps extends React.ComponentProps<'div'> {
 
 const ScrollProgress = ({ className, style, target, position = 'top', ref, ...props }: ScrollProgressProps) => {
   const barRef = React.useRef<HTMLDivElement | null>(null);
-  const setBarRef = React.useMemo(() => composeRefs(barRef, ref), [ref]);
+  const setBarRef = composeRefs(barRef, ref);
 
   React.useEffect(() => {
     const bar = barRef.current;

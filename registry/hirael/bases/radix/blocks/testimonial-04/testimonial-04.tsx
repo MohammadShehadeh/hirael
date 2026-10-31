@@ -89,8 +89,10 @@ const Testimonial04 = () => {
 
           <p
             data-slot="testimonial-description"
-            style={{ animationDelay: '240ms' }}
-            className={cn(ENTER, 'max-w-2xl text-base text-pretty text-muted-foreground sm:text-lg')}
+            className={cn(
+              ENTER,
+              'max-w-2xl text-base text-pretty text-muted-foreground [animation-delay:240ms] sm:text-lg',
+            )}
           >
             Teams shipping with Hirael, in their own words.
           </p>

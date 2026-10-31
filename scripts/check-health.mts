@@ -20,12 +20,17 @@ import { execSync, spawn } from 'node:child_process';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { createServer } from 'node:http';
 import { createRequire } from 'node:module';
-import type { AddressInfo } from 'node:net';
 import os from 'node:os';
 import path from 'node:path';
 import { registryItemSchema, registrySchema, type RegistryItem } from 'shadcn/schema';
 
-import { BASE_LABELS, REGISTRY_BASES, registryFilePath, type RegistryBase } from '@/registry/hirael/registry-meta';
+import {
+  BASE_LABELS,
+  REGISTRY_BASES,
+  isRegistryBase,
+  registryFilePath,
+  type RegistryBase,
+} from '@/registry/hirael/registry-meta';
 
 import { ALL_ENTRIES, REGISTRY_BASE_URL, ROOT, builtDir } from './shared.mts';
 
@@ -73,7 +78,8 @@ const args = Object.fromEntries(
     return [key, value ?? 'true'];
   }),
 );
-const bases = (args.base ? [args.base] : REGISTRY_BASES) as RegistryBase[];
+if (args.base && !isRegistryBase(args.base)) throw new Error(`--base must be one of: ${REGISTRY_BASES.join(', ')}`);
+const bases = args.base ? REGISTRY_BASES.filter((base) => base === args.base) : REGISTRY_BASES;
 const concurrency = Number(args.concurrency ?? Math.max(2, Math.min(8, os.cpus().length)));
 
 // execSync goes through a shell, which is what resolves pnpm's Windows shim.
@@ -85,11 +91,11 @@ const kb = (bytes: number) =>
 const plural = (count: number, word: string) => `${count} ${word}${count === 1 ? '' : 's'}`;
 
 // Prints one line per check; a failed check lists what failed under it and fails the run.
-let failedChecks = 0;
+const failedChecks: string[] = [];
 const check = (indent: string, ok: boolean, label: string, problems: string[] = []) => {
   console.log(`${indent}${ok ? '✓' : '✗'} ${label}`);
   if (ok) return;
-  failedChecks++;
+  failedChecks.push(label);
   for (const problem of problems.slice(0, MAX_PROBLEMS_SHOWN)) console.error(`${indent}  → ${problem}`);
   if (problems.length > MAX_PROBLEMS_SHOWN) {
     console.error(`${indent}  → …and ${problems.length - MAX_PROBLEMS_SHOWN} more`);
@@ -178,13 +184,14 @@ const serve = (dir: string) =>
       }
     });
     server.listen(0, '127.0.0.1', () => {
-      const { port } = server.address() as AddressInfo;
-      resolve({ url: `http://127.0.0.1:${port}`, close: () => server.close() });
+      const address = server.address();
+      if (!address || typeof address === 'string') throw new Error('the local server has no TCP address');
+      resolve({ url: `http://127.0.0.1:${address.port}`, close: () => server.close() });
     });
   });
 
 const fetchJson = async (url: string) => {
-  const response = await fetch(url);
+  const response = await fetch(url, { signal: AbortSignal.timeout(10_000) });
   const contentType = response.headers.get('content-type') ?? '';
 
   return { ok: response.ok, status: response.status, contentType, json: response.ok ? await response.json() : null };
@@ -323,7 +330,7 @@ const checkInstallability = async (names: string[], itemUrl: string) => {
     `${results.length - failed.length}/${results.length} \`shadcn add --dry-run\` into a blank project (${seconds(elapsed)}, avg ${seconds(average)} per item)`,
     failed.map((result) => `${result.item}: ${result.output}`),
   );
-  const slowest = [...results].sort((a, b) => b.ms - a.ms).slice(0, 3);
+  const slowest = results.toSorted((a, b) => b.ms - a.ms).slice(0, 3);
   if (slowest.length) console.log(`      slowest: ${slowest.map((r) => `${r.item} ${seconds(r.ms)}`).join(', ')}`);
   if (args.verbose) {
     for (const result of results.filter((r) => r.ok)) console.log(`      ${result.item}: ${result.output}`);
@@ -350,7 +357,7 @@ const printPayloadSummary = (items: BuiltItem[]) => {
   const withCssVars = items.filter((item) => item.json.cssVars).length;
   const totalFiles = items.reduce((sum, item) => sum + item.files, 0);
   const totalBytes = items.reduce((sum, item) => sum + item.bytes, 0);
-  const largest = [...items].sort((a, b) => b.bytes - a.bytes).slice(0, 3);
+  const largest = items.toSorted((a, b) => b.bytes - a.bytes).slice(0, 3);
 
   console.log('  Payload');
   console.log(`    ${plural(items.length, 'item')}: ${byType}`);
@@ -427,8 +434,20 @@ const liveHealth = async (): Promise<LiveHealth | undefined> => {
   }
 };
 
-const selected = args.items ? args.items.split(',') : args.changed ? changedItems() : null;
-const scope = args.items ? `items ${args.items}` : args.changed ? 'items changed on this branch' : 'every item';
+const selectedItems = () => {
+  if (args.items) return args.items.split(',');
+
+  return args.changed ? changedItems() : null;
+};
+
+const scopeLabel = () => {
+  if (args.items) return `items ${args.items}`;
+
+  return args.changed ? 'items changed on this branch' : 'every item';
+};
+
+const selected = selectedItems();
+const scope = scopeLabel();
 
 console.log(`Registry health: shadcn's monitor replayed against a local build`);
 console.log(
@@ -473,8 +492,8 @@ if (live) {
 }
 
 console.log('');
-if (failedChecks) {
-  console.error(`✗ registry health failed: ${plural(failedChecks, 'check')} failed.`);
+if (failedChecks.length) {
+  console.error(`✗ registry health failed: ${plural(failedChecks.length, 'check')} failed.`);
   process.exit(1);
 }
 console.log('✓ registry health OK: every signal shadcn scores from the code passes.');

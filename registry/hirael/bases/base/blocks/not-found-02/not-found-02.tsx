@@ -17,7 +17,11 @@ const POPULAR_LINKS = [
   { href: '#', label: 'Tools' },
 ] as const;
 
-const Crosshair = ({ className }: { className?: string }) => {
+interface CrosshairProps {
+  className?: string;
+}
+
+const Crosshair = ({ className }: CrosshairProps) => {
   return (
     <span
       aria-hidden

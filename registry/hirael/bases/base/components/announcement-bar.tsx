@@ -7,20 +7,6 @@ import { X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
-interface AnnouncementBarProps extends React.ComponentProps<'div'>, VariantProps<typeof announcementBarVariants> {
-  dismissible?: boolean;
-  /** Controlled-open. If provided, internal state is bypassed. */
-  open?: boolean;
-  /** Fires with `false` when the user dismisses via the close button. */
-  onOpenChange?: (open: boolean) => void;
-  /** Fires when the user dismisses via the close button. Same moment as `onOpenChange(false)`. */
-  onDismiss?: () => void;
-  /** Accessible name of the close button. */
-  dismissLabel?: string;
-  /** localStorage key. When set, the dismissed state is persisted across reloads. */
-  storageKey?: string;
-}
-
 const announcementBarVariants = cva(
   'relative isolate flex w-full items-center justify-center gap-3 border-b px-4 py-2 text-sm',
   {
@@ -37,29 +23,40 @@ const announcementBarVariants = cva(
   },
 );
 
+interface AnnouncementBarProps extends React.ComponentProps<'div'>, VariantProps<typeof announcementBarVariants> {
+  dismissible?: boolean;
+  /** Controlled-open. If provided, internal state is bypassed. */
+  open?: boolean;
+  /** Fires with `false` when the user dismisses via the close button. */
+  onOpenChange?: (open: boolean) => void;
+  /** Fires when the user dismisses via the close button. Same moment as `onOpenChange(false)`. */
+  onDismiss?: () => void;
+  /** Accessible name of the close button. */
+  dismissLabel?: string;
+  /** localStorage key. When set, the dismissed state is persisted across reloads. */
+  storageKey?: string;
+}
+
 // Server snapshot is false (visible) so hydration agrees; a returning user's bar hides after it.
 const useStoredDismiss = (storageKey?: string) => {
-  const subscribe = React.useCallback(
-    (cb: () => void) => {
-      if (!storageKey) return () => {};
-      const handler = (e: StorageEvent) => {
-        if (e.key === storageKey) cb();
-      };
-      window.addEventListener('storage', handler);
+  const subscribe = (cb: () => void) => {
+    if (!storageKey) return () => {};
+    const handler = (e: StorageEvent) => {
+      if (e.key === storageKey) cb();
+    };
+    window.addEventListener('storage', handler);
 
-      return () => window.removeEventListener('storage', handler);
-    },
-    [storageKey],
-  );
-  const getSnapshot = React.useCallback(() => {
+    return () => window.removeEventListener('storage', handler);
+  };
+  const getSnapshot = () => {
     if (!storageKey) return false;
     try {
       return window.localStorage.getItem(storageKey) === '1';
     } catch {
       return false;
     }
-  }, [storageKey]);
-  const getServerSnapshot = React.useCallback(() => false, []);
+  };
+  const getServerSnapshot = () => false;
 
   return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 };

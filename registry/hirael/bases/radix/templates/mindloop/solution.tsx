@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
-import { Serif, useFadeUp } from './primitives';
+import { Serif, fadeUp } from './primitives';
 
 const SOLUTION_VIDEO = '/media/templates/mindloop/solution.mp4';
 
@@ -26,20 +26,20 @@ const FEATURES = [
 ];
 
 export const Solution = () => {
-  const fade = useFadeUp();
+  const reduce = useReducedMotion();
 
   return (
     <section id="how-it-works" className="border-t border-border/30 px-8 py-32 md:px-28 md:py-44">
       <div className="mx-auto max-w-6xl">
-        <motion.p {...fade(0)} className="text-xs tracking-[3px] text-muted-foreground uppercase">
+        <motion.p {...fadeUp(reduce, 0)} className="text-xs tracking-[3px] text-muted-foreground uppercase">
           SOLUTION
         </motion.p>
 
-        <motion.h2 {...fade(0.1)} className="mt-6 max-w-3xl text-4xl tracking-[-1px] md:text-6xl">
+        <motion.h2 {...fadeUp(reduce, 0.1)} className="mt-6 max-w-3xl text-4xl tracking-[-1px] md:text-6xl">
           The platform for <Serif>meaningful</Serif> content
         </motion.h2>
 
-        <motion.div {...fade(0.2)} className="mt-12">
+        <motion.div {...fadeUp(reduce, 0.2)} className="mt-12">
           <video
             className="aspect-[3/1] w-full rounded-2xl object-cover"
             src={SOLUTION_VIDEO}
@@ -53,7 +53,7 @@ export const Solution = () => {
 
         <div className="mt-16 grid gap-8 md:grid-cols-4">
           {FEATURES.map((feature, i) => (
-            <motion.div key={feature.title} {...fade(0.1 * i)}>
+            <motion.div key={feature.title} {...fadeUp(reduce, 0.1 * i)}>
               <h3 className="text-base font-semibold">{feature.title}</h3>
               <p className="mt-2 text-sm text-muted-foreground">{feature.description}</p>
             </motion.div>

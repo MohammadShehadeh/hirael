@@ -14,8 +14,12 @@ export function generateStaticParams() {
   return REGISTRY.filter((entry) => entry.category === 'templates').map((entry) => ({ template: entry.name }));
 }
 
+interface TemplateRouteParams {
+  template: string;
+}
+
 interface TemplateRouteProps {
-  params: Promise<{ template: string }>;
+  params: Promise<TemplateRouteParams>;
 }
 
 export async function generateMetadata({ params }: TemplateRouteProps): Promise<Metadata> {

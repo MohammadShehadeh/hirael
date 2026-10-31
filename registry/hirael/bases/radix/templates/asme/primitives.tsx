@@ -30,7 +30,7 @@ export const Serif = ({ children, className }: SerifProps) => {
   return <span className={cn('[font-family:var(--font-asme-serif)] font-normal italic', className)}>{children}</span>;
 };
 
-interface IconProps {
+export interface IconProps {
   className?: string;
 }
 

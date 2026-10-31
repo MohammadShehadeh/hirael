@@ -64,6 +64,8 @@ const SIZES = ['S', 'M', 'L', 'XL'] as const;
 
 type Size = (typeof SIZES)[number];
 
+const isSize = (value: unknown): value is Size => SIZES.some((option) => option === value);
+
 const STOCK: Record<Colour, Record<Size, number>> = {
   graphite: { S: 12, M: 3, L: 8, XL: 0 },
   sand: { S: 0, M: 6, L: 2, XL: 5 },
@@ -94,6 +96,8 @@ const formatIndex = (index: number) => String(index + 1).padStart(2, '0');
 
 const subscribeNever = () => () => {};
 
+const deliveryDay = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
 const getDeliveryDate = () => {
   const date = new Date();
   let businessDays = 4;
@@ -103,7 +107,7 @@ const getDeliveryDate = () => {
     if (day !== 0 && day !== 6) businessDays -= 1;
   }
 
-  return new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' }).format(date);
+  return deliveryDay.format(date);
 };
 
 const getServerDeliveryDate = () => null;
@@ -128,8 +132,9 @@ const Ecommerce03 = () => {
 
   const showView = (next: number) => setView((next + VIEWS.length) % VIEWS.length);
 
-  const changeColour = (next: unknown) => {
-    const nextColour = next as Colour;
+  const handleChangeColour = (next: unknown) => {
+    const nextColour = COLOURS.find((colour) => colour.value === next)?.value;
+    if (!nextColour) return;
     setColour(nextColour);
     if (size && STOCK[nextColour][size] === 0) setSize('');
   };
@@ -139,7 +144,7 @@ const Ecommerce03 = () => {
     setQuantity(Math.min(Math.max(next, 1), stock));
   };
 
-  const addToCart = () => {
+  const handleAddToCart = () => {
     clearTimeout(addedTimer.current);
     setAdded(true);
     addedTimer.current = setTimeout(() => setAdded(false), 1500);
@@ -278,7 +283,7 @@ const Ecommerce03 = () => {
               <RadioGroup
                 aria-labelledby="ecommerce-03-colour"
                 value={colour}
-                onValueChange={changeColour}
+                onValueChange={handleChangeColour}
                 className="flex"
               >
                 {COLOURS.map((option) => (
@@ -311,7 +316,9 @@ const Ecommerce03 = () => {
                 spacing={2}
                 aria-labelledby="ecommerce-03-size"
                 value={size}
-                onValueChange={(next) => next && setSize(next as Size)}
+                onValueChange={(next) => {
+                  if (isSize(next)) setSize(next);
+                }}
                 className="grid w-full grid-cols-4"
               >
                 {SIZES.map((option) => {
@@ -380,7 +387,7 @@ const Ecommerce03 = () => {
             </div>
 
             <div className="flex gap-2">
-              <Button type="button" size="lg" disabled={!size} onClick={addToCart} className="flex-1">
+              <Button type="button" size="lg" disabled={!size} onClick={handleAddToCart} className="flex-1">
                 {added ? (
                   <span key="added" className={cn(SWAP, 'inline-flex items-center gap-2')}>
                     <Check />

@@ -18,7 +18,11 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
-type Billing = 'monthly' | 'yearly';
+const BILLING_VALUES = ['monthly', 'yearly'] as const;
+
+type Billing = (typeof BILLING_VALUES)[number];
+
+const isBilling = (value: unknown): value is Billing => BILLING_VALUES.some((option) => option === value);
 
 const PAID_MONTHS_PER_YEAR = 10;
 
@@ -89,7 +93,9 @@ const Pricing01 = () => {
               data-slot="pricing-billing"
               variant="outline"
               value={[billing]}
-              onValueChange={([next]) => next && setBilling(next as Billing)}
+              onValueChange={([next]) => {
+                if (isBilling(next)) setBilling(next);
+              }}
               aria-label="Billing period"
             >
               <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>

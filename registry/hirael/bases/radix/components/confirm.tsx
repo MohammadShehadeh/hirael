@@ -83,7 +83,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
   const closingRef = React.useRef(false);
   const closeTimerRef = React.useRef<number | undefined>(undefined);
 
-  const confirm = React.useCallback<ConfirmFn>((options = {}) => {
+  const confirm = ((options = {}) => {
     return new Promise<boolean>((resolve) => {
       const request: ConfirmRequest = { options, resolve };
       if (activeRef.current) {
@@ -95,9 +95,9 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       setActive(request);
       setOpen(true);
     });
-  }, []);
+  }) as ConfirmFn;
 
-  const settle = React.useCallback((value: boolean) => {
+  const settle = (value: boolean) => {
     const current = activeRef.current;
     if (!current || closingRef.current) return;
     closingRef.current = true;
@@ -111,7 +111,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       setActive(next);
       setOpen(next !== null);
     }, CLOSE_DURATION);
-  }, []);
+  };
 
   React.useEffect(
     () => () => {
@@ -123,7 +123,7 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
     [],
   );
 
-  const handleConfirm = React.useCallback(() => {
+  const handleConfirm = () => {
     if (closingRef.current) return;
     const onConfirm = activeRef.current?.options.onConfirm;
     if (!onConfirm) {
@@ -132,22 +132,19 @@ const ConfirmProvider = ({ children, defaultOptions }: ConfirmProviderProps) => 
       return;
     }
     setPending(true);
-    Promise.resolve()
+    void Promise.resolve()
       .then(onConfirm)
       .then(
         () => settle(true),
         // Back to idle so the user can retry; surfacing the error is onConfirm's job.
         () => setPending(false),
       );
-  }, [settle]);
+  };
 
-  const handleOpenChange = React.useCallback(
-    (next: boolean) => {
-      if (next || pending) return;
-      settle(false);
-    },
-    [pending, settle],
-  );
+  const handleOpenChange = (next: boolean) => {
+    if (next || pending) return;
+    settle(false);
+  };
 
   const options: ConfirmOptions = {
     title: DEFAULT_TITLE,

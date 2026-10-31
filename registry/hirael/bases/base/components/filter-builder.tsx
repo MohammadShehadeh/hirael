@@ -181,8 +181,10 @@ export const applyFilters = <Row,>(
 
           return filter.operator === 'before' ? day < a : day > a;
         }
-        default:
-          return true;
+        default: {
+          const unhandled: never = filter.operator;
+          throw new Error(`Unhandled filter operator: ${String(unhandled)}`);
+        }
       }
     }),
   );
@@ -248,49 +250,37 @@ const FilterBuilder = ({
   const [pendingEdit, setPendingEdit] = React.useState<string | null>(null);
   const counter = React.useRef(0);
 
-  const fieldById = React.useMemo(() => new Map(fields.map((field) => [field.id, field])), [fields]);
+  const fieldById = new Map(fields.map((field) => [field.id, field]));
 
-  const add = React.useCallback(
-    (field: FilterField, values: string[] = []) => {
-      counter.current += 1;
-      const id = `${field.id}-${Date.now().toString(36)}-${counter.current}`;
-      setFilters([...filters, { id, field: field.id, operator: FILTER_OPERATORS[field.type][0], values }]);
+  const add = (field: FilterField, values: string[] = []) => {
+    counter.current += 1;
+    const id = `${field.id}-${Date.now().toString(36)}-${counter.current}`;
+    setFilters([...filters, { id, field: field.id, operator: FILTER_OPERATORS[field.type][0], values }]);
 
-      return id;
-    },
-    [filters, setFilters],
-  );
+    return id;
+  };
 
-  const update = React.useCallback(
-    (id: string, patch: Partial<Omit<Filter, 'id'>>) =>
-      setFilters(filters.map((filter) => (filter.id === id ? { ...filter, ...patch } : filter))),
-    [filters, setFilters],
-  );
+  const update = (id: string, patch: Partial<Omit<Filter, 'id'>>) =>
+    setFilters(filters.map((filter) => (filter.id === id ? { ...filter, ...patch } : filter)));
 
-  const remove = React.useCallback(
-    (id: string) => setFilters(filters.filter((filter) => filter.id !== id)),
-    [filters, setFilters],
-  );
+  const remove = (id: string) => setFilters(filters.filter((filter) => filter.id !== id));
 
-  const clear = React.useCallback(() => setFilters([]), [setFilters]);
+  const clear = () => setFilters([]);
 
-  const ctx = React.useMemo<FilterBuilderContextValue>(
-    () => ({
-      fields,
-      fieldById,
-      filters,
-      add,
-      update,
-      remove,
-      clear,
-      labels: { ...DEFAULT_LABELS, ...labels },
-      operatorLabels: { ...DEFAULT_OPERATOR_LABELS, ...operatorLabels },
-      pendingEdit,
-      setPendingEdit,
-      locale,
-    }),
-    [fields, fieldById, filters, add, update, remove, clear, labels, operatorLabels, pendingEdit, locale],
-  );
+  const ctx: FilterBuilderContextValue = {
+    fields,
+    fieldById,
+    filters,
+    add,
+    update,
+    remove,
+    clear,
+    labels: { ...DEFAULT_LABELS, ...labels },
+    operatorLabels: { ...DEFAULT_OPERATOR_LABELS, ...operatorLabels },
+    pendingEdit,
+    setPendingEdit,
+    locale,
+  };
 
   return (
     <FilterBuilderContext.Provider value={ctx}>
@@ -362,7 +352,7 @@ const FilterBuilderAdd = ({ variant = 'outline', size = 'sm', className, ...prop
   const [field, setField] = React.useState<FilterField | null>(null);
   const [draft, setDraft] = React.useState<{ id: string; values: string[] } | null>(null);
 
-  const reset = (next: boolean) => {
+  const handleReset = (next: boolean) => {
     setOpen(next);
     if (!next) {
       setField(null);
@@ -371,7 +361,7 @@ const FilterBuilderAdd = ({ variant = 'outline', size = 'sm', className, ...prop
   };
 
   return (
-    <Popover open={open} onOpenChange={reset}>
+    <Popover open={open} onOpenChange={handleReset}>
       <PopoverTrigger
         render={
           <Button
@@ -409,7 +399,7 @@ const FilterBuilderAdd = ({ variant = 'outline', size = 'sm', className, ...prop
               onChange={(values) => {
                 if (draft) update(draft.id, { values });
                 setDraft({ id: draft?.id ?? add(field, values), values });
-                if (field.type === 'option') reset(false);
+                if (field.type === 'option') handleReset(false);
               }}
             />
           </div>
@@ -430,7 +420,7 @@ const FilterBuilderAdd = ({ variant = 'outline', size = 'sm', className, ...prop
                         return;
                       }
                       setPendingEdit(add(f));
-                      reset(false);
+                      handleReset(false);
                     }}
                   >
                     {f.icon}
@@ -576,7 +566,7 @@ const FilterBuilderChip = ({ filter, className, ...props }: FilterBuilderChipPro
   const open = editing || pendingEdit === filter.id;
   if (!field) return null;
 
-  const setOpen = (next: boolean) => {
+  const handleSetOpen = (next: boolean) => {
     setEditing(next);
     if (!next && pendingEdit === filter.id) setPendingEdit(null);
   };
@@ -616,7 +606,10 @@ const FilterBuilderChip = ({ filter, className, ...props }: FilterBuilderChipPro
         <DropdownMenuContent align="start">
           <DropdownMenuRadioGroup
             value={filter.operator}
-            onValueChange={(operator) => changeOperator(operator as FilterOperator)}
+            onValueChange={(operator) => {
+              const next = FILTER_OPERATORS[field.type].find((option) => option === operator);
+              if (next) changeOperator(next);
+            }}
           >
             {FILTER_OPERATORS[field.type].map((operator) => (
               <DropdownMenuRadioItem key={operator} value={operator}>
@@ -626,12 +619,12 @@ const FilterBuilderChip = ({ filter, className, ...props }: FilterBuilderChipPro
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onOpenChange={handleSetOpen}>
         <PopoverTrigger render={<button type="button" data-slot="filter-builder-value" className={chipPart} />}>
           <ValueSummary filter={filter} field={field} />
         </PopoverTrigger>
         <PopoverContent align="start" className={cn('p-0', field.type === 'date' ? 'w-auto' : 'w-60')}>
-          <ValueEditor filter={filter} field={field} onDone={() => setOpen(false)} />
+          <ValueEditor filter={filter} field={field} onDone={() => handleSetOpen(false)} />
         </PopoverContent>
       </Popover>
       <button

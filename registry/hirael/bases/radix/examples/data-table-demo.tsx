@@ -53,6 +53,13 @@ const DATA: Account[] = Array.from({ length: 37 }, (_, i) => {
   };
 });
 
+const STATUS_VARIANT: Record<Account['status'], React.ComponentProps<typeof Badge>['variant']> = {
+  active: 'default',
+  trial: 'secondary',
+  past_due: 'destructive',
+  canceled: 'secondary',
+};
+
 const useColumns = (): ColumnDef<DataTableFeatures, Account>[] => {
   const t = useT();
 
@@ -111,7 +118,7 @@ const useColumns = (): ColumnDef<DataTableFeatures, Account>[] => {
         header: t({ en: 'Status', ar: 'الحالة' }),
         cell: ({ row }) => {
           const status = row.original.status;
-          const tone = status === 'active' ? 'default' : status === 'past_due' ? 'destructive' : 'secondary';
+          const tone = STATUS_VARIANT[status];
 
           return <Badge variant={tone}>{statusLabel[status]}</Badge>;
         },

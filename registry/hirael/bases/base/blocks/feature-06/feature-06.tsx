@@ -39,10 +39,10 @@ const GridPattern = () => {
     <div
       aria-hidden
       data-slot="grid-pattern"
-      className="pointer-events-none absolute start-1/2 top-0 -ms-20 -mt-2 h-full w-full [mask-image:linear-gradient(black,transparent)]"
+      className="pointer-events-none absolute start-1/2 top-0 -ms-20 -mt-2 size-full [mask-image:linear-gradient(black,transparent)]"
     >
       <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent [mask-image:radial-gradient(farthest-side_at_top,black,transparent)]">
-        <svg className="absolute inset-0 h-full w-full fill-primary/5 stroke-primary/25 mix-blend-overlay">
+        <svg className="absolute inset-0 size-full fill-primary/5 stroke-primary/25 mix-blend-overlay">
           <pattern id={id} width="20" height="20" patternUnits="userSpaceOnUse" x="-12" y="4">
             <path d="M.5 20V.5H20" fill="none" />
           </pattern>

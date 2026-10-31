@@ -58,6 +58,7 @@ const readBuiltItems = (base: RegistryBase = 'radix') =>
       return {
         base,
         file,
+        // These are the payloads shadcn build just wrote.
         item: JSON.parse(readFileSync(file, 'utf8')) as RegistryItem,
       };
     });

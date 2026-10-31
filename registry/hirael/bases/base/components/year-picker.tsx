@@ -84,6 +84,7 @@ const YearPicker = (props: YearPickerProps) => {
     value: valueProp,
     defaultValue,
     onValueChange,
+    // Destructuring loses the mode union; `mode` still decides which value shape these are.
   } = props as {
     value?: number | YearRange | null;
     defaultValue?: number | YearRange | null;
@@ -116,29 +117,33 @@ const YearPicker = (props: YearPickerProps) => {
     if (open) setDecadeStart(viewStartFor(anchorYear));
   }
 
-  const setValue = React.useCallback(
-    (year: number) => {
-      const current = value as YearRange | undefined;
-      const next: number | YearRange =
-        mode === 'single'
-          ? year
-          : !current || current.to !== undefined
-            ? { from: year }
-            : year < current.from
-              ? { from: year, to: current.from }
-              : { from: current.from, to: year };
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(next);
-      if (mode === 'single' || (next as YearRange).to !== undefined) setOpen(false);
-    },
-    [mode, value, valueProp, onValueChange, setOpen],
-  );
+  const setValue = (year: number) => {
+    // This branch is range mode, where the value is a range.
+    const current = value as YearRange | undefined;
+    const next: number | YearRange =
+      mode === 'single'
+        ? year
+        : !current || current.to !== undefined
+          ? { from: year }
+          : year < current.from
+            ? { from: year, to: current.from }
+            : { from: current.from, to: year };
+    if (valueProp === undefined) setInternal(next);
+    onValueChange?.(next);
+    // Outside single mode, `next` is a range.
+    if (mode === 'single' || (next as YearRange).to !== undefined) setOpen(false);
+  };
 
-  const ctx = React.useMemo(
-    () =>
-      ({ mode, value, setValue, minYear, maxYear, decadeStart, setDecadeStart, disabled }) as YearPickerContextValue,
-    [mode, value, setValue, minYear, maxYear, decadeStart, setDecadeStart, disabled],
-  );
+  const ctx = {
+    mode,
+    value,
+    setValue,
+    minYear,
+    maxYear,
+    decadeStart,
+    setDecadeStart,
+    disabled,
+  } as YearPickerContextValue;
 
   return (
     <YearPickerContext.Provider value={ctx}>
@@ -156,15 +161,12 @@ const formatYearValue = (ctx: YearPickerContextValue, placeholder: string) => {
   return `${ctx.value.from} – ${ctx.value.to ?? '…'}`;
 };
 
-const YearPickerTrigger = ({
-  placeholder = 'Pick a year',
-  className,
-  children,
-  ...props
-}: Omit<React.ComponentProps<'button'>, 'children'> & {
+interface YearPickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
   children?: React.ReactNode;
-}) => {
+}
+
+const YearPickerTrigger = ({ placeholder = 'Pick a year', className, children, ...props }: YearPickerTriggerProps) => {
   const ctx = useYearPicker();
   const empty = ctx.value === undefined;
 
@@ -200,6 +202,8 @@ interface YearPickerContentProps extends React.ComponentProps<typeof PopoverCont
   gridLabel?: string;
 }
 
+type PageStep = -1 | 1;
+
 const YearPickerContent = ({
   previousLabel = 'Previous years',
   nextLabel = 'Next years',
@@ -232,12 +236,15 @@ const YearPickerContent = ({
   const handleKey = (e: React.KeyboardEvent, year: number) => {
     const forward = getComputedStyle(e.currentTarget).direction === 'rtl' ? -1 : 1;
     const column = (year - ctx.decadeStart) % 4;
-    const delta = (
-      { ArrowLeft: -forward, ArrowRight: forward, ArrowUp: -4, ArrowDown: 4, Home: -column, End: 3 - column } as Record<
-        string,
-        number
-      >
-    )[e.key];
+    const deltaByKey: Partial<Record<string, number>> = {
+      ArrowLeft: -forward,
+      ArrowRight: forward,
+      ArrowUp: -4,
+      ArrowDown: 4,
+      Home: -column,
+      End: 3 - column,
+    };
+    const delta = deltaByKey[e.key];
     if (e.key === 'PageUp' || e.key === 'PageDown') {
       e.preventDefault();
       const up = e.key === 'PageUp';
@@ -269,7 +276,7 @@ const YearPickerContent = ({
     }
   };
 
-  const navButton = (step: -1 | 1) => (
+  const navButton = (step: PageStep) => (
     <Button
       type="button"
       variant="ghost"

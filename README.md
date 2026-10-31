@@ -92,6 +92,11 @@ that uses shadcn/ui can install from it right away.
 npx shadcn@latest init
 ```
 
+Hirael is written for the [React Compiler](https://react.dev/learn/react-compiler)
+and leaves memoization to it, so turn it on too. In Next.js that's
+`reactCompiler: true` in `next.config.ts`; in Vite, see the
+[setup guide](https://react.dev/learn/react-compiler/installation).
+
 **2. Add the components you need.** The CLI also installs anything they depend
 on, including the shadcn/ui components they're built from.
 

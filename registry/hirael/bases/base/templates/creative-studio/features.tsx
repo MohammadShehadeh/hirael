@@ -172,7 +172,7 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
           <FeatureCard index={0} className="min-h-[320px] lg:h-full lg:min-h-0">
             {videoSrc ? (
               <video
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 size-full object-cover"
                 src={videoSrc}
                 autoPlay
                 loop
@@ -196,8 +196,8 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
             >
               <div className="flex h-full flex-col gap-4 p-5">
                 <div className="flex items-start justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-black/40 sm:h-12 sm:w-12">
-                    <card.Icon className="h-5 w-5 text-(--cs-ink) sm:h-6 sm:w-6" />
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-black/40 sm:size-12">
+                    <card.Icon className="size-5 text-(--cs-ink) sm:size-6" />
                   </div>
                   <span className="text-[10px] text-(--cs-muted) tabular-nums">{card.number}</span>
                 </div>
@@ -207,7 +207,7 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
                 <ul className="flex flex-col gap-2">
                   {card.items.map((item) => (
                     <li key={item} className="flex items-start gap-2 text-xs text-(--cs-muted) sm:text-sm">
-                      <Check className="mt-0.5 h-3.5 w-3.5 shrink-0 text-(--cs-ink)" />
+                      <Check className="mt-0.5 size-3.5 shrink-0 text-(--cs-ink)" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -218,7 +218,7 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
                   className="group mt-auto inline-flex items-center gap-1.5 text-xs font-medium text-(--cs-ink) sm:text-sm"
                 >
                   Learn more
-                  <ArrowRight className="h-3.5 w-3.5 -rotate-45 transition-transform duration-200 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
+                  <ArrowRight className="size-3.5 -rotate-45 transition-transform duration-200 group-hover:translate-x-0.5 rtl:-scale-x-100 rtl:group-hover:-translate-x-0.5" />
                 </a>
               </div>
             </FeatureCard>

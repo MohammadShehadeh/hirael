@@ -168,17 +168,10 @@ const NO_PRIORITY: readonly string[] = [];
 
 /** Country names in `locale` from `Intl`, with the list in that locale's alphabetical order. */
 export const useLocalizedCountries = (countries: readonly Country[], locale: string | undefined) => {
-  const regionNames = React.useMemo(
-    () => (locale ? new Intl.DisplayNames([locale], { type: 'region' }) : null),
-    [locale],
-  );
-  const nameOf = React.useCallback((country: Country) => regionNames?.of(country.iso2) ?? country.name, [regionNames]);
-  const sorted = React.useMemo(() => {
-    if (!locale) return countries;
-    const collator = new Intl.Collator(locale);
-
-    return [...countries].sort((a, b) => collator.compare(nameOf(a), nameOf(b)));
-  }, [countries, locale, nameOf]);
+  const regionNames = locale ? new Intl.DisplayNames([locale], { type: 'region' }) : null;
+  const nameOf = (country: Country) => regionNames?.of(country.iso2) ?? country.name;
+  const collator = locale ? new Intl.Collator(locale) : null;
+  const sorted = collator ? countries.toSorted((a, b) => collator.compare(nameOf(a), nameOf(b))) : countries;
 
   return { countries: sorted, nameOf };
 };
@@ -207,7 +200,7 @@ const CountrySelect = (props: CountrySelectProps) => {
   const { countries: localized, nameOf } = useLocalizedCountries(countries, locale);
 
   const [internal, setInternal] = React.useState<string[]>(() => toList(defaultValue));
-  const selected = React.useMemo(() => (valueProp === undefined ? internal : toList(valueProp)), [valueProp, internal]);
+  const selected = valueProp === undefined ? internal : toList(valueProp);
 
   const [open, setOpen] = useControllableState({
     prop: openProp,
@@ -215,72 +208,47 @@ const CountrySelect = (props: CountrySelectProps) => {
     onChange: onOpenChange,
   });
 
+  // Narrowing `multiple` doesn't narrow the callback; it's called with the value of the mode in use.
   const onValueChange = props.onValueChange as ((value: string | string[]) => void) | undefined;
 
-  const emit = React.useCallback(
-    (next: string[]) => {
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(multiple ? next : (next[0] ?? ''));
-    },
-    [valueProp, multiple, onValueChange],
-  );
+  const emit = (next: string[]) => {
+    if (valueProp === undefined) setInternal(next);
+    onValueChange?.(multiple ? next : (next[0] ?? ''));
+  };
 
-  const select = React.useCallback(
-    (iso2: string) => {
-      const code = iso2.toUpperCase();
-      if (multiple) {
-        emit(selected.includes(code) ? selected.filter((c) => c !== code) : [...selected, code]);
+  const select = (iso2: string) => {
+    const code = iso2.toUpperCase();
+    if (multiple) {
+      emit(selected.includes(code) ? selected.filter((c) => c !== code) : [...selected, code]);
 
-        return;
-      }
-      emit([code]);
-      setOpen(false);
-    },
-    [multiple, selected, emit, setOpen],
-  );
+      return;
+    }
+    emit([code]);
+    setOpen(false);
+  };
 
-  const { priorityList, rest } = React.useMemo(() => {
-    const priorityList = priority
-      .map((p) => localized.find((c) => c.iso2 === p.toUpperCase()))
-      .filter((c): c is Country => Boolean(c));
+  const priorityList = priority
+    .map((p) => localized.find((c) => c.iso2 === p.toUpperCase()))
+    .filter((c): c is Country => Boolean(c));
+  const rest = localized.filter((c) => !priorityList.includes(c));
 
-    return { priorityList, rest: localized.filter((c) => !priorityList.includes(c)) };
-  }, [localized, priority]);
-
-  const ctx = React.useMemo<CountrySelectContextValue>(
-    () => ({
-      id: selectId,
-      countries: localized,
-      priority: priorityList,
-      rest,
-      selected,
-      isSelected: (iso2) => selected.includes(iso2.toUpperCase()),
-      select,
-      multiple,
-      showDialCode,
-      disabled,
-      open,
-      setOpen,
-      find: (iso2) => localized.find((c) => c.iso2 === iso2.toUpperCase()),
-      nameOf,
-      listboxId,
-    }),
-    [
-      selectId,
-      localized,
-      priorityList,
-      rest,
-      selected,
-      select,
-      multiple,
-      showDialCode,
-      disabled,
-      open,
-      setOpen,
-      nameOf,
-      listboxId,
-    ],
-  );
+  const ctx: CountrySelectContextValue = {
+    id: selectId,
+    countries: localized,
+    priority: priorityList,
+    rest,
+    selected,
+    isSelected: (iso2) => selected.includes(iso2.toUpperCase()),
+    select,
+    multiple,
+    showDialCode,
+    disabled,
+    open,
+    setOpen,
+    find: (iso2) => localized.find((c) => c.iso2 === iso2.toUpperCase()),
+    nameOf,
+    listboxId,
+  };
 
   return (
     <CountrySelectContext.Provider value={ctx}>
@@ -311,44 +279,17 @@ const CountrySelectFlag = ({ iso2, className, ...props }: CountrySelectFlagProps
 
 type CountrySelectTriggerProps = Omit<React.ComponentProps<typeof Button>, 'type' | 'role'>;
 
-const CountrySelectTrigger = ({ className, children, variant = 'outline', ...props }: CountrySelectTriggerProps) => {
-  const ctx = useCountrySelect();
-
-  return (
-    <PopoverTrigger asChild>
-      <Button
-        type="button"
-        variant={variant}
-        role="combobox"
-        id={ctx.id}
-        aria-controls={ctx.listboxId}
-        aria-haspopup="listbox"
-        disabled={ctx.disabled}
-        data-slot="country-select-trigger"
-        className={cn('w-full justify-between gap-2 px-3 font-normal', className)}
-        {...props}
-      >
-        {children ?? <CountrySelectValue />}
-        <ChevronDown
-          className={cn(
-            'size-4 shrink-0 text-muted-foreground transition-transform duration-150 motion-reduce:transition-none',
-            ctx.open && 'rotate-180',
-          )}
-        />
-      </Button>
-    </PopoverTrigger>
-  );
-};
-
 interface CountrySelectValueProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   placeholder?: string;
   /** Label once more than two countries are picked, e.g. `(n) => \`${n} countries\``. */
   countLabel?: (count: number) => string;
 }
 
+const defaultCountLabel = (n: number) => `${n} countries`;
+
 const CountrySelectValue = ({
   placeholder = 'Select a country',
-  countLabel = (n) => `${n} countries`,
+  countLabel = defaultCountLabel,
   className,
   ...props
 }: CountrySelectValueProps) => {
@@ -394,34 +335,36 @@ const CountrySelectValue = ({
   );
 };
 
-type CountrySelectContentProps = React.ComponentProps<typeof PopoverContent>;
+const CountrySelectTrigger = ({ className, children, variant = 'outline', ...props }: CountrySelectTriggerProps) => {
+  const ctx = useCountrySelect();
 
-const CountrySelectContent = ({
-  className,
-  children,
-  align = 'start',
-  sideOffset = 6,
-  ...props
-}: CountrySelectContentProps) => {
   return (
-    <PopoverContent
-      align={align}
-      sideOffset={sideOffset}
-      data-slot="country-select-content"
-      className={cn('w-[var(--radix-popover-trigger-width)] min-w-64 p-0', className)}
-      {...props}
-    >
-      <Command loop data-slot="country-select-command">
-        {children ?? (
-          <>
-            <CountrySelectSearch />
-            <CountrySelectList />
-          </>
-        )}
-      </Command>
-    </PopoverContent>
+    <PopoverTrigger asChild>
+      <Button
+        type="button"
+        variant={variant}
+        role="combobox"
+        id={ctx.id}
+        aria-controls={ctx.listboxId}
+        aria-haspopup="listbox"
+        disabled={ctx.disabled}
+        data-slot="country-select-trigger"
+        className={cn('w-full justify-between gap-2 px-3 font-normal', className)}
+        {...props}
+      >
+        {children ?? <CountrySelectValue />}
+        <ChevronDown
+          className={cn(
+            'size-4 shrink-0 text-muted-foreground transition-transform duration-150 motion-reduce:transition-none',
+            ctx.open && 'rotate-180',
+          )}
+        />
+      </Button>
+    </PopoverTrigger>
   );
 };
+
+type CountrySelectContentProps = React.ComponentProps<typeof PopoverContent>;
 
 type CountrySelectSearchProps = React.ComponentProps<typeof CommandInput>;
 
@@ -434,37 +377,6 @@ interface CountrySelectListProps extends Omit<React.ComponentProps<typeof Comman
   priorityLabel?: string;
   allLabel?: string;
 }
-
-const CountrySelectList = ({
-  emptyLabel = 'No country found.',
-  priorityLabel = 'Suggested',
-  allLabel,
-  className,
-  ...props
-}: CountrySelectListProps) => {
-  const ctx = useCountrySelect();
-
-  return (
-    <CommandList id={ctx.listboxId} data-slot="country-select-list" className={cn('max-h-64', className)} {...props}>
-      <CommandEmpty>{emptyLabel}</CommandEmpty>
-      {ctx.priority.length > 0 && (
-        <>
-          <CommandGroup heading={priorityLabel}>
-            {ctx.priority.map((c) => (
-              <CountrySelectItem key={c.iso2} country={c} />
-            ))}
-          </CommandGroup>
-          <CommandSeparator />
-        </>
-      )}
-      <CommandGroup heading={ctx.priority.length > 0 ? allLabel : undefined}>
-        {ctx.rest.map((c) => (
-          <CountrySelectItem key={c.iso2} country={c} />
-        ))}
-      </CommandGroup>
-    </CommandList>
-  );
-};
 
 interface CountrySelectItemProps extends Omit<
   React.ComponentProps<typeof CommandItem>,
@@ -501,6 +413,64 @@ const CountrySelectItem = ({ country, className, children, ...props }: CountrySe
         </>
       )}
     </CommandItem>
+  );
+};
+
+const CountrySelectList = ({
+  emptyLabel = 'No country found.',
+  priorityLabel = 'Suggested',
+  allLabel,
+  className,
+  ...props
+}: CountrySelectListProps) => {
+  const ctx = useCountrySelect();
+
+  return (
+    <CommandList id={ctx.listboxId} data-slot="country-select-list" className={cn('max-h-64', className)} {...props}>
+      <CommandEmpty>{emptyLabel}</CommandEmpty>
+      {ctx.priority.length > 0 && (
+        <>
+          <CommandGroup heading={priorityLabel}>
+            {ctx.priority.map((c) => (
+              <CountrySelectItem key={c.iso2} country={c} />
+            ))}
+          </CommandGroup>
+          <CommandSeparator />
+        </>
+      )}
+      <CommandGroup heading={ctx.priority.length > 0 ? allLabel : undefined}>
+        {ctx.rest.map((c) => (
+          <CountrySelectItem key={c.iso2} country={c} />
+        ))}
+      </CommandGroup>
+    </CommandList>
+  );
+};
+
+const CountrySelectContent = ({
+  className,
+  children,
+  align = 'start',
+  sideOffset = 6,
+  ...props
+}: CountrySelectContentProps) => {
+  return (
+    <PopoverContent
+      align={align}
+      sideOffset={sideOffset}
+      data-slot="country-select-content"
+      className={cn('w-[var(--radix-popover-trigger-width)] min-w-64 p-0', className)}
+      {...props}
+    >
+      <Command loop data-slot="country-select-command">
+        {children ?? (
+          <>
+            <CountrySelectSearch />
+            <CountrySelectList />
+          </>
+        )}
+      </Command>
+    </PopoverContent>
   );
 };
 

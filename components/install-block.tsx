@@ -6,7 +6,7 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { SegmentedControl } from '@/components/segmented-control';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
-import { PACKAGE_MANAGERS, type PackageManager, getShadcnAddCommand, usePackageManager } from '@/lib/package-managers';
+import { PACKAGE_MANAGERS, getShadcnAddCommand, isPackageManager, usePackageManager } from '@/lib/package-managers';
 import { SITE } from '@/lib/site';
 import { useRegistryBase } from '@/components/active-theme';
 import { registryItemPath } from '@/registry/hirael/registry-meta';
@@ -49,36 +49,6 @@ interface InstallBlockProps extends VariantProps<typeof installBlockVariants> {
   className?: string;
 }
 
-export const InstallBlock = ({ name, className, variant }: InstallBlockProps) => {
-  const { packageManager, setPackageManager } = usePackageManager();
-  const origin = React.useSyncExternalStore(subscribeNoop, getClientOrigin, getServerOrigin);
-
-  const url = `${origin}${registryItemPath(useRegistryBase(), name)}`;
-  const command = getShadcnAddCommand(packageManager, url);
-
-  return (
-    <div className={cn(installBlockVariants({ variant }), className)}>
-      <div className={commandVariants({ variant })}>
-        <span aria-hidden className="font-mono text-xs text-muted-foreground select-none">
-          $
-        </span>
-        <CommandLine command={command} />
-      </div>
-
-      <div className={controlsVariants({ variant })}>
-        <SegmentedControl
-          role="radio"
-          ariaLabel="Package manager"
-          value={packageManager}
-          onValueChange={(value) => setPackageManager(value as PackageManager)}
-          items={PACKAGE_MANAGERS.map((manager) => ({ value: manager, label: manager }))}
-        />
-        <CopyButton value={command} size="sm" aria-label="Copy install command" />
-      </div>
-    </div>
-  );
-};
-
 // The static HTML uses the public origin. The browser swaps in its own after hydration.
 const subscribeNoop = () => () => {};
 const getServerOrigin = () => SITE.registry.origin;
@@ -120,5 +90,37 @@ const CommandLine = ({ command }: CommandLineProps) => {
         </React.Fragment>
       ))}
     </code>
+  );
+};
+
+export const InstallBlock = ({ name, className, variant }: InstallBlockProps) => {
+  const { packageManager, setPackageManager } = usePackageManager();
+  const origin = React.useSyncExternalStore(subscribeNoop, getClientOrigin, getServerOrigin);
+
+  const url = `${origin}${registryItemPath(useRegistryBase(), name)}`;
+  const command = getShadcnAddCommand(packageManager, url);
+
+  return (
+    <div className={cn(installBlockVariants({ variant }), className)}>
+      <div className={commandVariants({ variant })}>
+        <span aria-hidden className="font-mono text-xs text-muted-foreground select-none">
+          $
+        </span>
+        <CommandLine command={command} />
+      </div>
+
+      <div className={controlsVariants({ variant })}>
+        <SegmentedControl
+          role="radio"
+          ariaLabel="Package manager"
+          value={packageManager}
+          onValueChange={(value) => {
+            if (isPackageManager(value)) setPackageManager(value);
+          }}
+          items={PACKAGE_MANAGERS.map((manager) => ({ value: manager, label: manager }))}
+        />
+        <CopyButton value={command} size="sm" aria-label="Copy install command" />
+      </div>
+    </div>
   );
 };

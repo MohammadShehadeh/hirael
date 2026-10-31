@@ -30,7 +30,12 @@ const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\
 
 const tokenize = (query: string) => query.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
-const Highlight = ({ text, query }: { text: string; query: string }) => {
+interface HighlightProps {
+  text: string;
+  query: string;
+}
+
+const Highlight = ({ text, query }: HighlightProps) => {
   // Longest first so a longer term wins over its own prefix inside the alternation.
   const terms = tokenize(query).sort((a, b) => b.length - a.length);
   if (terms.length === 0) return text;
@@ -56,7 +61,12 @@ interface Article {
   excerpt: string;
 }
 
-const CATEGORIES: readonly { id: CategoryId; label: string }[] = [
+interface CategoryOption {
+  id: CategoryId;
+  label: string;
+}
+
+const CATEGORIES: readonly CategoryOption[] = [
   { id: 'start', label: 'Getting started' },
   { id: 'account', label: 'Account and login' },
   { id: 'billing', label: 'Billing' },
@@ -65,6 +75,7 @@ const CATEGORIES: readonly { id: CategoryId; label: string }[] = [
   { id: 'privacy', label: 'Privacy and security' },
 ];
 
+// fromEntries types its keys as string; CATEGORIES lists every id.
 const CATEGORY_LABEL = Object.fromEntries(CATEGORIES.map((category) => [category.id, category.label])) as Record<
   CategoryId,
   string
@@ -245,6 +256,11 @@ const POPULAR_TOPICS: readonly string[] = ['Reset password', 'Invoices', 'Slack'
 
 const SUPPORT_EMAIL = 'support@hirael.com';
 
+interface ScoredArticle {
+  article: Article;
+  score: number;
+}
+
 // Every term must appear; title hits rank above excerpt and category hits.
 const searchArticles = (query: string) => {
   const terms = tokenize(query);
@@ -261,9 +277,15 @@ const searchArticles = (query: string) => {
 
     return { article, score };
   })
-    .filter((match): match is { article: Article; score: number } => match !== null)
+    .filter((match): match is ScoredArticle => match !== null)
     .sort((a, b) => b.score - a.score)
     .map((match) => match.article);
+};
+
+const viewMode = (query: string, resultCount: number) => {
+  if (!query) return 'browse';
+
+  return resultCount > 0 ? 'results' : 'empty';
 };
 
 const Search04 = () => {
@@ -272,7 +294,7 @@ const Search04 = () => {
 
   const trimmed = query.trim();
   const results = trimmed ? searchArticles(trimmed) : [];
-  const mode = !trimmed ? 'browse' : results.length > 0 ? 'results' : 'empty';
+  const mode = viewMode(trimmed, results.length);
 
   const fillQuery = (value: string) => {
     setQuery(value);

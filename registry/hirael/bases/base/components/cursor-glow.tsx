@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { motion, useMotionTemplate, useMotionValue, useReducedMotion } from 'motion/react';
+import { motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react';
 
 import { cn } from '@/lib/utils';
 
@@ -26,9 +26,12 @@ const CursorGlow = ({
   const reduced = useReducedMotion();
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const background = useMotionTemplate`radial-gradient(${size}px circle at ${x}px ${y}px, ${color}, transparent 70%)`;
+  const background = useTransform(
+    [x, y],
+    ([px, py]) => `radial-gradient(${size}px circle at ${px}px ${py}px, ${color}, transparent 70%)`,
+  );
 
-  const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
+  const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     onPointerMoveProp?.(event);
     if (event.defaultPrevented || reduced || event.pointerType !== 'mouse') return;
     const rect = event.currentTarget.getBoundingClientRect();
@@ -41,7 +44,7 @@ const CursorGlow = ({
       data-slot="cursor-glow"
       className={cn('group relative overflow-hidden', className)}
       {...props}
-      onPointerMove={onPointerMove}
+      onPointerMove={handlePointerMove}
     >
       {/* The layer never tracks the pointer under reduced motion, so it would sit pinned at 0,0. */}
       {reduced ? null : (

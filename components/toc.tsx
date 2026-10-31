@@ -26,6 +26,40 @@ const tocLinkVariants = cva('block border-s py-1 ps-3 text-[13px] leading-snug t
   defaultVariants: { active: false },
 });
 
+const useActiveSection = (ids: string[]) => {
+  const [active, setActive] = React.useState<string | null>(ids[0] ?? null);
+  // Joined so the effect reruns when the ids change, not when the array is a new object.
+  const key = ids.join('|');
+
+  React.useEffect(() => {
+    const sectionIds = key ? key.split('|') : [];
+    if (sectionIds.length === 0) return;
+
+    const visible = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) visible.add(entry.target.id);
+          else visible.delete(entry.target.id);
+        }
+        const current = sectionIds.find((id) => visible.has(id));
+        if (current) setActive(current);
+      },
+      // Clear the sticky tabs, and mark a heading active before it leaves the top third.
+      { rootMargin: '-72px 0px -66% 0px', threshold: 0 },
+    );
+
+    for (const id of sectionIds) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+
+    return () => observer.disconnect();
+  }, [key]);
+
+  return active;
+};
+
 export const Toc = ({ items, className }: TocProps) => {
   const active = useActiveSection(items.map((i) => i.id));
 
@@ -75,38 +109,4 @@ export const TocChips = ({ items, className }: TocProps) => {
       })}
     </nav>
   );
-};
-
-const useActiveSection = (ids: string[]) => {
-  const [active, setActive] = React.useState<string | null>(ids[0] ?? null);
-  // Joined so the effect reruns when the ids change, not when the array is a new object.
-  const key = ids.join('|');
-
-  React.useEffect(() => {
-    const sectionIds = key ? key.split('|') : [];
-    if (sectionIds.length === 0) return;
-
-    const visible = new Set<string>();
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) visible.add(entry.target.id);
-          else visible.delete(entry.target.id);
-        }
-        const current = sectionIds.find((id) => visible.has(id));
-        if (current) setActive(current);
-      },
-      // Clear the sticky tabs, and mark a heading active before it leaves the top third.
-      { rootMargin: '-72px 0px -66% 0px', threshold: 0 },
-    );
-
-    for (const id of sectionIds) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
-
-    return () => observer.disconnect();
-  }, [key]);
-
-  return active;
 };

@@ -57,7 +57,7 @@ const Testimonial03 = () => {
               the work speak
               <span
                 aria-hidden="true"
-                className="absolute inset-x-0 top-1/2 -z-10 hidden h-full w-full -translate-y-[45%] rounded-lg bg-primary/20 sm:block"
+                className="absolute inset-x-0 top-1/2 -z-10 hidden size-full -translate-y-[45%] rounded-lg bg-primary/20 sm:block"
               />
             </span>
           </p>

@@ -197,7 +197,12 @@ const ACTIVITY: ActivityEvent[] = [
   },
 ];
 
-const FILTERS: { value: ActivityFilter; label: string }[] = [
+interface FilterOption {
+  value: ActivityFilter;
+  label: string;
+}
+
+const FILTERS: FilterOption[] = [
   { value: 'all', label: 'All' },
   { value: 'code', label: 'Code' },
   { value: 'comment', label: 'Comments' },
@@ -224,7 +229,8 @@ const ActivityFeedBlock = () => {
             variant="outline"
             value={[filter]}
             onValueChange={([value]) => {
-              if (value) setFilter(value as ActivityFilter);
+              const option = FILTERS.find((item) => item.value === value);
+              if (option) setFilter(option.value);
             }}
             aria-label="Filter by type"
           >

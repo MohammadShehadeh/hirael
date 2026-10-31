@@ -71,16 +71,16 @@ const ChatThread = ({
     if (!atBottom && !latestFromSelf) setUnseen(true);
   }
 
-  const scrollToBottom = React.useCallback(() => {
+  const scrollToBottom = () => {
     const el = viewportRef.current;
     if (!el) return;
     pinnedRef.current = true;
     // Already at the bottom means no scroll event will come to clear the flag.
     autoScrollingRef.current = el.scrollHeight - el.scrollTop - el.clientHeight > 1;
     el.scrollTo({ top: el.scrollHeight, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
-  }, []);
+  };
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
@@ -92,7 +92,7 @@ const ChatThread = ({
     pinnedRef.current = pinned;
     setAtBottom(pinned);
     if (pinned) setUnseen(false);
-  }, [threshold]);
+  };
 
   // Reactions and replies grow the content without scrolling it, so follow the box size.
   React.useLayoutEffect(() => {
@@ -108,11 +108,12 @@ const ChatThread = ({
     return () => observer.disconnect();
   }, []);
 
+  const followOwnMessage = React.useEffectEvent(scrollToBottom);
   React.useLayoutEffect(() => {
-    if (latestFromSelf) scrollToBottom();
-  }, [latestId, latestFromSelf, scrollToBottom]);
+    if (latestFromSelf) followOwnMessage();
+  }, [latestId, latestFromSelf]);
 
-  const context = React.useMemo(() => ({ atBottom, unseen, scrollToBottom }), [atBottom, unseen, scrollToBottom]);
+  const context = { atBottom, unseen, scrollToBottom };
 
   return (
     <ChatThreadContext.Provider value={context}>
@@ -573,7 +574,9 @@ const toMinutes = (time: string) => {
   return hours * 60 + minutes;
 };
 
-const clock = () => new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' }).format(new Date());
+const clockFormat = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit' });
+
+const clock = () => clockFormat.format(new Date());
 
 const firstName = (id: string) => (id === ME ? 'You' : MEMBERS[id].name.split(' ')[0]);
 
@@ -672,7 +675,7 @@ const ChannelComposer = ({ placeholder, label, onSend, autoFocus }: ChannelCompo
   const [value, setValue] = React.useState('');
   const canSend = value.trim().length > 0;
 
-  const send = () => {
+  const handleSend = () => {
     if (!canSend) return;
     onSend(value.trim());
     setValue('');
@@ -683,7 +686,7 @@ const ChannelComposer = ({ placeholder, label, onSend, autoFocus }: ChannelCompo
       data-slot="channel-composer"
       onSubmit={(event) => {
         event.preventDefault();
-        send();
+        handleSend();
       }}
       className="flex flex-col gap-1.5 border-t border-border p-3"
     >
@@ -698,7 +701,7 @@ const ChannelComposer = ({ placeholder, label, onSend, autoFocus }: ChannelCompo
           emptyMessage="Nobody by that name in this channel."
           className="min-w-0 flex-1"
         >
-          <ComposerTextarea onSend={send} aria-label={label} autoFocus={autoFocus} />
+          <ComposerTextarea onSend={handleSend} aria-label={label} autoFocus={autoFocus} />
           <MentionInputList />
         </MentionInput>
         <Button type="submit" size="icon" aria-label="Send" disabled={!canSend}>
@@ -745,21 +748,24 @@ const Chat03 = () => {
   const timersRef = React.useRef(new Set<number>());
   const counterRef = React.useRef(0);
 
-  const schedule = React.useCallback((fn: () => void, ms: number) => {
+  const schedule = (fn: () => void, ms: number) => {
     const id = window.setTimeout(() => {
       timersRef.current.delete(id);
       fn();
     }, ms);
     timersRef.current.add(id);
-  }, []);
+  };
 
+  const scheduleIncoming = React.useEffectEvent(() =>
+    schedule(() => setMessages((current) => [...current, { ...INCOMING, time: clock() }]), 25000),
+  );
   React.useEffect(() => {
     const timers = timersRef.current;
     // One message from a teammate arrives while you read, so the "New messages" pill has something to announce.
-    schedule(() => setMessages((current) => [...current, { ...INCOMING, time: clock() }]), 25000);
+    scheduleIncoming();
 
     return () => timers.forEach((id) => window.clearTimeout(id));
-  }, [schedule]);
+  }, []);
 
   const nextId = (prefix: string) => {
     counterRef.current += 1;
@@ -809,7 +815,7 @@ const Chat03 = () => {
     );
   };
 
-  const postToChannel = (text: string) => {
+  const handlePostToChannel = (text: string) => {
     const id = nextId('post');
     setMessages((current) => [
       ...current,
@@ -995,7 +1001,7 @@ const Chat03 = () => {
             <ChannelComposer
               placeholder="Message #design-review"
               label="Message #design-review"
-              onSend={postToChannel}
+              onSend={handlePostToChannel}
             />
           </div>
 

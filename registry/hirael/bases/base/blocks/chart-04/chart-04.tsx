@@ -14,16 +14,30 @@ const SWAP = `animate-in fade-in slide-in-from-bottom-1 duration-300 ${EASE} fil
 
 const stagger = (index: number, step = 80): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
-type Segment = 'all' | 'organic' | 'paid';
+const SEGMENT_VALUES = ['all', 'organic', 'paid'] as const;
+
+type Segment = (typeof SEGMENT_VALUES)[number];
+
+const isSegment = (value: unknown): value is Segment => SEGMENT_VALUES.some((option) => option === value);
 
 const STEPS = ['Visited', 'Signed up', 'Activated', 'Subscribed'] as const;
 
-const SEGMENTS: Record<Exclude<Segment, 'all'>, { label: string; counts: number[] }> = {
+interface SegmentSeries {
+  label: string;
+  counts: number[];
+}
+
+const SEGMENTS: Record<Exclude<Segment, 'all'>, SegmentSeries> = {
   organic: { label: 'Organic', counts: [7200, 2380, 1390, 560] },
   paid: { label: 'Paid', counts: [5200, 1340, 660, 220] },
 };
 
-const SEGMENT_OPTIONS: readonly { value: Segment; label: string }[] = [
+interface SegmentOption {
+  value: Segment;
+  label: string;
+}
+
+const SEGMENT_OPTIONS: readonly SegmentOption[] = [
   { value: 'all', label: 'All' },
   { value: 'organic', label: 'Organic' },
   { value: 'paid', label: 'Paid' },
@@ -103,12 +117,14 @@ const FunnelBar = ({ step, index }: FunnelBarProps) => {
         {index > 0 ? (
           <span
             aria-hidden
+            // React's CSSProperties type has no custom properties.
             style={{ '--fill': `${step.previousOfTop}%` } as React.CSSProperties}
             className="absolute inset-0 -translate-x-[calc(100%-var(--fill))] rounded-e-[4px] bg-chart-1 opacity-25 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:translate-x-[calc(100%-var(--fill))]"
           />
         ) : null}
         <span
           aria-hidden
+          // React's CSSProperties type has no custom properties.
           style={{ '--fill': `max(${step.ofTop}%, 4px)` } as React.CSSProperties}
           className="absolute inset-0 -translate-x-[calc(100%-var(--fill))] rounded-e-[4px] bg-chart-1 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:translate-x-[calc(100%-var(--fill))]"
         />
@@ -152,7 +168,7 @@ const FunnelDrop = ({ step }: FunnelDropProps) => {
 const Chart04 = () => {
   const [segment, setSegment] = React.useState<Segment>('all');
 
-  const steps = React.useMemo(() => toSteps(segment), [segment]);
+  const steps = toSteps(segment);
   const summary = summarize(segment, steps);
   const last = steps[steps.length - 1];
 
@@ -182,7 +198,7 @@ const Chart04 = () => {
               variant="outline"
               value={[segment]}
               onValueChange={([next]) => {
-                if (next) setSegment(next as Segment);
+                if (isSegment(next)) setSegment(next);
               }}
               aria-label="Segment"
               data-slot="funnel-chart-segment"

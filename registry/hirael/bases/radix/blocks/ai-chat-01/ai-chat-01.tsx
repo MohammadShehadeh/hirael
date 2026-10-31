@@ -72,18 +72,15 @@ const AiChat = ({ className, ...props }: AiChatProps) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [mobileSide, setMobileSide] = React.useState<SheetSide>('left');
 
-  const context = React.useMemo<AiChatContextValue>(
-    () => ({
-      mobileOpen,
-      mobileSide,
-      openMobile: (side) => {
-        setMobileSide(side);
-        setMobileOpen(true);
-      },
-      closeMobile: () => setMobileOpen(false),
-    }),
-    [mobileOpen, mobileSide],
-  );
+  const context: AiChatContextValue = {
+    mobileOpen,
+    mobileSide,
+    openMobile: (side) => {
+      setMobileSide(side);
+      setMobileOpen(true);
+    },
+    closeMobile: () => setMobileOpen(false),
+  };
 
   return (
     <AiChatContext.Provider value={context}>
@@ -270,7 +267,7 @@ const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) 
   const autoScrollingRef = React.useRef(false);
   const [atBottom, setAtBottom] = React.useState(true);
 
-  const scrollToBottom = React.useCallback(() => {
+  const scrollToBottom = () => {
     const el = viewportRef.current;
     if (!el) return;
     pinnedRef.current = true;
@@ -279,9 +276,9 @@ const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) 
       top: el.scrollHeight,
       behavior: prefersReducedMotion() ? 'auto' : 'smooth',
     });
-  }, []);
+  };
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < 48;
@@ -291,7 +288,7 @@ const AiChatMessages = ({ className, children, ...props }: AiChatMessagesProps) 
     }
     pinnedRef.current = pinned;
     setAtBottom(pinned);
-  }, []);
+  };
 
   React.useLayoutEffect(() => {
     const viewport = viewportRef.current;
@@ -390,8 +387,7 @@ const AiChatMessage = ({
           {streaming ? (
             <span
               aria-hidden
-              className="ms-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] animate-pulse rounded-[1px] bg-foreground align-baseline motion-reduce:animate-none"
-              style={{ animationDuration: '1s' }}
+              className="ms-0.5 inline-block h-[1em] w-[0.5em] translate-y-[0.15em] animate-pulse rounded-[1px] bg-foreground align-baseline [animation-duration:1s] motion-reduce:animate-none"
             />
           ) : null}
         </div>
@@ -413,6 +409,13 @@ interface AiChatComposerProps extends Omit<React.ComponentProps<'form'>, 'onSubm
   maxRows?: number;
 }
 
+const DEFAULT_HINT = (
+  <>
+    <span>Enter to send</span>
+    <span>Shift+Enter for a new line</span>
+  </>
+);
+
 const AiChatComposer = ({
   value: valueProp,
   defaultValue = '',
@@ -422,12 +425,7 @@ const AiChatComposer = ({
   onStop,
   disabled = false,
   placeholder = 'Message the assistant',
-  hint = (
-    <>
-      <span>Enter to send</span>
-      <span>Shift+Enter for a new line</span>
-    </>
-  ),
+  hint = DEFAULT_HINT,
   maxRows = 6,
   className,
   ...props
@@ -555,6 +553,37 @@ const HISTORY: readonly HistoryGroup[] = [
   },
 ];
 
+const SUGGESTIONS = [
+  "Summarize the last deploy's changes",
+  'Write a runbook for a failed migration',
+  'Explain this error: ECONNRESET',
+  'Draft release notes for v2.4',
+] as const;
+
+const REPLIES: Record<string, string> = {
+  [SUGGESTIONS[0]]:
+    'Deploy #4821 touched three things: the list endpoint now joins events for the new activity column, the worker retries upstream timeouts three times with backoff, and the cache eviction threshold moved from 90% to 80% memory.\n\nThe events join is the one to watch. It runs without an index and is the likely cause of the p95 climb.',
+  [SUGGESTIONS[1]]:
+    'Runbook: failed migration\n\n1. Stop the deploy. Do not retry the migration blindly; a second run can double-apply partial steps.\n2. Check which step failed with the migration table and the worker logs.\n3. If the failed step is idempotent, rerun it alone. If not, roll back to the previous snapshot.\n4. Confirm the schema matches the app version that is live, then resume the deploy.\n5. Write down what failed and why in the incident channel before closing.',
+  [SUGGESTIONS[2]]:
+    "ECONNRESET means the other side closed the TCP connection while you were still using it. Common causes: a keep-alive socket reused after the server dropped it, a load balancer idle timeout shorter than your client's, or the upstream process crashing mid-response.\n\nStart by comparing the client keep-alive timeout with the server's. If the server closes at 5s and the client reuses sockets for 10s, you will see exactly this.",
+  [SUGGESTIONS[3]]:
+    'v2.4\n\nNew: activity column on the accounts list, scheduled exports to S3, and a dark mode toggle in settings.\n\nImproved: list endpoints respond about 40% faster after the events index. Search now matches on plan and status.\n\nFixed: OTP inputs no longer lose focus on paste. Billing emails go out once, not twice.',
+};
+
+const replyFor = (prompt: string) => {
+  return (
+    REPLIES[prompt] ??
+    `Here is a first pass on "${prompt}".\n\nThis is a canned reply in the preview, but the streaming, Stop, and scroll behavior are the real thing. Wire onSubmit to your model and stream tokens into the last assistant message.`
+  );
+};
+
+interface ChatMessage {
+  id: string;
+  role: AiChatRole;
+  text: string;
+}
+
 const PAST_CONVERSATIONS: Record<string, readonly ChatMessage[]> = {
   c1: [
     {
@@ -608,35 +637,10 @@ const PAST_CONVERSATIONS: Record<string, readonly ChatMessage[]> = {
   ],
 };
 
-const SUGGESTIONS = [
-  "Summarize the last deploy's changes",
-  'Write a runbook for a failed migration',
-  'Explain this error: ECONNRESET',
-  'Draft release notes for v2.4',
-] as const;
-
-const REPLIES: Record<string, string> = {
-  [SUGGESTIONS[0]]:
-    'Deploy #4821 touched three things: the list endpoint now joins events for the new activity column, the worker retries upstream timeouts three times with backoff, and the cache eviction threshold moved from 90% to 80% memory.\n\nThe events join is the one to watch. It runs without an index and is the likely cause of the p95 climb.',
-  [SUGGESTIONS[1]]:
-    'Runbook: failed migration\n\n1. Stop the deploy. Do not retry the migration blindly; a second run can double-apply partial steps.\n2. Check which step failed with the migration table and the worker logs.\n3. If the failed step is idempotent, rerun it alone. If not, roll back to the previous snapshot.\n4. Confirm the schema matches the app version that is live, then resume the deploy.\n5. Write down what failed and why in the incident channel before closing.',
-  [SUGGESTIONS[2]]:
-    "ECONNRESET means the other side closed the TCP connection while you were still using it. Common causes: a keep-alive socket reused after the server dropped it, a load balancer idle timeout shorter than your client's, or the upstream process crashing mid-response.\n\nStart by comparing the client keep-alive timeout with the server's. If the server closes at 5s and the client reuses sockets for 10s, you will see exactly this.",
-  [SUGGESTIONS[3]]:
-    'v2.4\n\nNew: activity column on the accounts list, scheduled exports to S3, and a dark mode toggle in settings.\n\nImproved: list endpoints respond about 40% faster after the events index. Search now matches on plan and status.\n\nFixed: OTP inputs no longer lose focus on paste. Billing emails go out once, not twice.',
-};
-
-const replyFor = (prompt: string) => {
-  return (
-    REPLIES[prompt] ??
-    `Here is a first pass on "${prompt}".\n\nThis is a canned reply in the preview, but the streaming, Stop, and scroll behavior are the real thing. Wire onSubmit to your model and stream tokens into the last assistant message.`
-  );
-};
-
-interface ChatMessage {
-  id: string;
-  role: AiChatRole;
-  text: string;
+interface ChatTimers {
+  timeout?: number;
+  interval?: number;
+  copied?: number;
 }
 
 const AiChat01 = () => {
@@ -651,7 +655,7 @@ const AiChat01 = () => {
   const [titleDraft, setTitleDraft] = React.useState('');
   const [copied, setCopied] = React.useState(false);
   const [deleteOpen, setDeleteOpen] = React.useState(false);
-  const timers = React.useRef<{ timeout?: number; interval?: number; copied?: number }>({});
+  const timers = React.useRef<ChatTimers>({});
   const sequence = React.useRef(0);
   const renameInputRef = React.useRef<HTMLInputElement>(null);
   const renameRequested = React.useRef(false);
@@ -671,13 +675,13 @@ const AiChat01 = () => {
     if (renaming) renameInputRef.current?.select();
   }, [renaming]);
 
-  const stop = () => {
+  const handleStop = () => {
     window.clearTimeout(timers.current.timeout);
     window.clearInterval(timers.current.interval);
     setStreamingId(null);
   };
 
-  const send = (text: string) => {
+  const handleSend = (text: string) => {
     const prompt = text.trim();
     if (!prompt || streamingId) return;
     sequence.current += 1;
@@ -707,7 +711,7 @@ const AiChat01 = () => {
   };
 
   const openChat = (id: string | null) => {
-    stop();
+    handleStop();
     setMessages(id ? [...(PAST_CONVERSATIONS[id] ?? [])] : []);
     setDraft('');
     setActiveId(id);
@@ -726,9 +730,10 @@ const AiChat01 = () => {
     openChat(null);
   };
 
-  const shareChat = async () => {
+  const handleShareChat = async () => {
+    const shareUrl = `https://chat.hirael.com/share/${activeId ?? 'draft'}`;
     try {
-      await navigator.clipboard.writeText(`https://chat.hirael.com/share/${activeId ?? 'draft'}`);
+      await navigator.clipboard.writeText(shareUrl);
     } catch {
       return;
     }
@@ -753,14 +758,14 @@ const AiChat01 = () => {
   const firstPrompt = messages.find((m) => m.role === 'user')?.text;
   const title = titles[titleKey] ?? (activeEntry ? activeEntry.title : firstPrompt) ?? 'New chat';
 
-  const startRename = () => {
+  const handleStartRename = () => {
     renameRequested.current = true;
     renameCancelled.current = false;
     setTitleDraft(title);
     setRenaming(true);
   };
 
-  const commitRename = () => {
+  const handleCommitRename = () => {
     if (renameCancelled.current) {
       renameCancelled.current = false;
 
@@ -820,7 +825,7 @@ const AiChat01 = () => {
                 className="min-w-0 flex-1"
                 onSubmit={(event) => {
                   event.preventDefault();
-                  commitRename();
+                  handleCommitRename();
                 }}
               >
                 <InputGroup className="h-8 max-w-sm">
@@ -828,7 +833,7 @@ const AiChat01 = () => {
                     ref={renameInputRef}
                     value={titleDraft}
                     onChange={(event) => setTitleDraft(event.target.value)}
-                    onBlur={commitRename}
+                    onBlur={handleCommitRename}
                     onKeyDown={(event) => {
                       if (event.key !== 'Escape') return;
                       renameCancelled.current = true;
@@ -846,7 +851,12 @@ const AiChat01 = () => {
             <Badge variant="outline" className="hidden sm:inline-flex">
               hirael-2-pro
             </Badge>
-            <Button variant="ghost" size="sm" aria-label={copied ? 'Link copied' : 'Share chat'} onClick={shareChat}>
+            <Button
+              variant="ghost"
+              size="sm"
+              aria-label={copied ? 'Link copied' : 'Share chat'}
+              onClick={handleShareChat}
+            >
               {copied ? <Check aria-hidden /> : <Share2 aria-hidden />}
               {copied ? <span className={cn(SWAP, 'text-xs')}>Copied</span> : null}
             </Button>
@@ -866,7 +876,7 @@ const AiChat01 = () => {
                   renameInputRef.current?.focus();
                 }}
               >
-                <DropdownMenuItem onSelect={startRename}>
+                <DropdownMenuItem onSelect={handleStartRename}>
                   <Pencil />
                   Rename
                 </DropdownMenuItem>
@@ -915,7 +925,7 @@ const AiChat01 = () => {
               </div>
               <AiChatSuggestions>
                 {SUGGESTIONS.map((suggestion) => (
-                  <AiChatSuggestion key={suggestion} onClick={() => send(suggestion)}>
+                  <AiChatSuggestion key={suggestion} onClick={() => handleSend(suggestion)}>
                     {suggestion}
                   </AiChatSuggestion>
                 ))}
@@ -940,9 +950,9 @@ const AiChat01 = () => {
           <AiChatComposer
             value={draft}
             onValueChange={setDraft}
-            onSubmit={send}
+            onSubmit={handleSend}
             isStreaming={streamingId !== null}
-            onStop={stop}
+            onStop={handleStop}
             placeholder="Ask about the last deploy, or paste an error"
           />
         </AiChatMain>

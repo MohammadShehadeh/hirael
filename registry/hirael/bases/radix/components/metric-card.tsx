@@ -82,6 +82,8 @@ const MetricCardValue = ({ unit, className, children, ...props }: MetricCardValu
   );
 };
 
+const TREND_ICON = { up: TrendingUp, down: TrendingDown, flat: Minus };
+
 interface MetricCardTrendProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   direction: 'up' | 'down' | 'flat';
   tone?: MetricTone;
@@ -89,7 +91,7 @@ interface MetricCardTrendProps extends Omit<React.ComponentProps<'span'>, 'child
 }
 
 const MetricCardTrend = ({ direction, tone = 'neutral', className, children, ...props }: MetricCardTrendProps) => {
-  const Icon = direction === 'up' ? TrendingUp : direction === 'down' ? TrendingDown : Minus;
+  const Icon = TREND_ICON[direction];
   const resolvedTone = resolveMetricTone(tone);
 
   return (

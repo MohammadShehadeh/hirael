@@ -179,7 +179,7 @@ const FlyoutRow = ({ link }: FlyoutRowProps) => {
   return (
     <li>
       <NavigationMenuLink href={link.href} className="flex-row items-start">
-        <Icon aria-hidden className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
+        <Icon aria-hidden className="mt-0.5 shrink-0 text-muted-foreground" />
         <span className="flex min-w-0 flex-col gap-0.5">
           <span className="text-sm font-medium text-foreground">{link.title}</span>
           <span className="text-sm leading-snug text-pretty text-muted-foreground">{link.description}</span>

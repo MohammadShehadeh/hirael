@@ -5,7 +5,7 @@ import { FilePlus, Upload } from 'lucide-react';
 
 import { useT } from '@/lib/demo-locale';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
-import { UploadQueue, useUploadQueue } from '@/registry/hirael/bases/base/components/upload-queue';
+import { UploadQueue, useUploadQueue, type UploadContext } from '@/registry/hirael/bases/base/components/upload-queue';
 
 const SAMPLES: [string, number, string][] = [
   ['quarterly-report.pdf', 2_400_000, 'application/pdf'],
@@ -21,7 +21,7 @@ const sampleFiles = () =>
 
 // Pretends to upload: bigger files take longer, and the video fails once so retry has something to do.
 const failedOnce = new Set<string>();
-const fakeUpload = (file: File, { onProgress, signal }: { onProgress: (p: number) => void; signal: AbortSignal }) =>
+const fakeUpload = (file: File, { onProgress, signal }: UploadContext) =>
   new Promise<void>((resolve, reject) => {
     let progress = 0;
     const step = Math.max(2, 40 - Math.log2(file.size) * 1.5);

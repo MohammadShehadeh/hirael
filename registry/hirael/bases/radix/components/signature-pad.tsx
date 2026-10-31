@@ -88,13 +88,15 @@ const SignaturePad = ({
     onStrokeEndRef.current = onStrokeEnd;
   });
 
-  const setEmptyState = React.useCallback((next: boolean) => {
+  const setEmptyState = (next: boolean) => {
     setEmpty((prev) => {
       if (prev !== next) onChangeRef.current?.(next);
 
       return next;
     });
-  }, []);
+  };
+
+  const onBeginStroke = React.useEffectEvent(() => setEmptyState(false));
 
   React.useEffect(() => {
     const canvas = canvasRef.current;
@@ -102,7 +104,7 @@ const SignaturePad = ({
     const ink = () => penColor ?? (getComputedStyle(canvas).color || '#000');
     const pad = new SignaturePadLib(canvas, { minWidth: minStrokeWidth, maxWidth: maxStrokeWidth, penColor: ink() });
     padRef.current = pad;
-    pad.addEventListener('beginStroke', () => setEmptyState(false));
+    pad.addEventListener('beginStroke', () => onBeginStroke());
     pad.addEventListener('endStroke', () => onStrokeEndRef.current?.());
 
     const resize = () => {
@@ -124,50 +126,44 @@ const SignaturePad = ({
       pad.off();
       padRef.current = null;
     };
-  }, [penColor, minStrokeWidth, maxStrokeWidth, setEmptyState]);
+  }, [penColor, minStrokeWidth, maxStrokeWidth]);
 
-  const clear = React.useCallback(() => {
+  const clear = () => {
     padRef.current?.clear();
     setEmptyState(true);
-  }, [setEmptyState]);
+  };
 
-  const undo = React.useCallback(() => {
+  const undo = () => {
     const pad = padRef.current;
     if (!pad) return;
     const strokes = pad.toData();
     strokes.pop();
     pad.fromData(strokes);
     setEmptyState(strokes.length === 0);
-  }, [setEmptyState]);
+  };
 
-  React.useImperativeHandle(
-    ref,
-    () => ({
-      clear,
-      undo,
-      isEmpty: () => padRef.current?.isEmpty() ?? true,
-      toDataURL: (type = 'image/png', opts) => {
-        const canvas = canvasRef.current;
-        const pad = padRef.current;
-        if (!canvas || !pad) return '';
-        const off = document.createElement('canvas');
-        off.width = canvas.width;
-        off.height = canvas.height;
-        const exporter = new SignaturePadLib(off, { backgroundColor: opts?.backgroundColor });
-        paint(off, pad, exporter, opts?.inkColor ?? exportColor ?? penColor ?? '#000000');
-        const url = exporter.toDataURL(type);
-        exporter.off();
+  // No deps: the handle is rebuilt each render, so it always holds the current clear and undo.
+  React.useImperativeHandle(ref, () => ({
+    clear,
+    undo,
+    isEmpty: () => padRef.current?.isEmpty() ?? true,
+    toDataURL: (type = 'image/png', opts) => {
+      const canvas = canvasRef.current;
+      const pad = padRef.current;
+      if (!canvas || !pad) return '';
+      const off = document.createElement('canvas');
+      off.width = canvas.width;
+      off.height = canvas.height;
+      const exporter = new SignaturePadLib(off, { backgroundColor: opts?.backgroundColor });
+      paint(off, pad, exporter, opts?.inkColor ?? exportColor ?? penColor ?? '#000000');
+      const url = exporter.toDataURL(type);
+      exporter.off();
 
-        return url;
-      },
-    }),
-    [clear, undo, exportColor, penColor],
-  );
+      return url;
+    },
+  }));
 
-  const ctxValue = React.useMemo<SignaturePadContextValue>(
-    () => ({ clear, undo, empty, disabled }),
-    [clear, undo, empty, disabled],
-  );
+  const ctxValue: SignaturePadContextValue = { clear, undo, empty, disabled };
 
   return (
     <SignaturePadContext.Provider value={ctxValue}>

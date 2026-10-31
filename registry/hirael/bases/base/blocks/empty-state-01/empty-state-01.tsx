@@ -92,7 +92,7 @@ const NewProjectDialog = ({ trigger, taken, onCreate }: NewProjectDialogProps) =
   const error = validateName(name.trim(), taken);
   const showError = submitted && error !== null;
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);
     if (error) return;
@@ -113,7 +113,7 @@ const NewProjectDialog = ({ trigger, taken, onCreate }: NewProjectDialogProps) =
     >
       <DialogTrigger render={trigger} />
       <DialogContent data-slot="empty-state-01-dialog" className="sm:max-w-md">
-        <form noValidate onSubmit={submit} className="flex flex-col gap-5">
+        <form noValidate onSubmit={handleSubmit} className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle>New project</DialogTitle>
             <DialogDescription>You can connect a repository after it is created.</DialogDescription>
@@ -188,11 +188,7 @@ const ImportDialog = ({ trigger, imported, taken, onCreate }: ImportDialogProps)
             <DialogDescription>Pick a repository from the hirael organization.</DialogDescription>
           </DialogHeader>
 
-          <RadioGroup
-            aria-label="Repositories"
-            value={selected ?? ''}
-            onValueChange={(value) => setSelected(value as string)}
-          >
+          <RadioGroup aria-label="Repositories" value={selected ?? ''} onValueChange={(value) => setSelected(value)}>
             {REPOS.map((repo) => {
               const done = imported.includes(repo.fullName);
               const id = `${listId}-${repo.fullName.replace('/', '-')}`;
@@ -232,7 +228,7 @@ const EmptyState01 = () => {
 
   const taken = projects.map((project) => project.name);
   const imported = projects.flatMap((project) => (project.repo ? [project.repo] : []));
-  const create = (project: Project) => setProjects((current) => [project, ...current]);
+  const handleCreate = (project: Project) => setProjects((current) => [project, ...current]);
 
   return (
     <section data-slot="empty-state-01" className="bg-background">
@@ -255,7 +251,7 @@ const EmptyState01 = () => {
             {projects.length > 0 ? (
               <NewProjectDialog
                 taken={taken}
-                onCreate={create}
+                onCreate={handleCreate}
                 trigger={
                   <Button type="button" size="sm">
                     <Plus aria-hidden />
@@ -283,7 +279,7 @@ const EmptyState01 = () => {
                   <div className="flex flex-wrap justify-center gap-2">
                     <NewProjectDialog
                       taken={taken}
-                      onCreate={create}
+                      onCreate={handleCreate}
                       trigger={
                         <Button type="button">
                           <Plus aria-hidden />
@@ -294,7 +290,7 @@ const EmptyState01 = () => {
                     <ImportDialog
                       taken={taken}
                       imported={imported}
-                      onCreate={create}
+                      onCreate={handleCreate}
                       trigger={
                         <Button type="button" variant="outline">
                           <FolderGit2 aria-hidden />

@@ -45,7 +45,7 @@ const OtpVerify01 = () => {
     return () => window.clearTimeout(id);
   }, [secondsLeft]);
 
-  const verify = async (value: string) => {
+  const handleVerify = async (value: string) => {
     if (status === 'verifying') return;
     if (value.length < CODE_LENGTH) {
       setError(`Enter all ${CODE_LENGTH} digits.`);
@@ -58,15 +58,15 @@ const OtpVerify01 = () => {
     setStatus('success');
   };
 
-  const resend = () => {
+  const handleResend = () => {
     setCode('');
     setError(null);
     setSecondsLeft(RESEND_SECONDS);
   };
 
-  const onSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    void verify(code);
+    void handleVerify(code);
   };
 
   const verified = status === 'success';
@@ -93,7 +93,7 @@ const OtpVerify01 = () => {
                 </Button>
               </div>
             ) : (
-              <form data-slot="otp-verify-form" noValidate onSubmit={onSubmit}>
+              <form data-slot="otp-verify-form" noValidate onSubmit={handleSubmit}>
                 <FieldGroup className="gap-5">
                   <FieldSet>
                     <FieldLegend variant="label">Verification code</FieldLegend>
@@ -109,7 +109,7 @@ const OtpVerify01 = () => {
                           setCode(value);
                           if (error) setError(null);
                         }}
-                        onComplete={verify}
+                        onComplete={handleVerify}
                         pattern="^\d+$"
                         inputMode="numeric"
                         autoComplete="one-time-code"
@@ -158,7 +158,7 @@ const OtpVerify01 = () => {
                 Didn&apos;t get it?{' '}
                 <button
                   type="button"
-                  onClick={resend}
+                  onClick={handleResend}
                   className="font-medium text-primary underline-offset-4 hover:underline"
                 >
                   Resend code

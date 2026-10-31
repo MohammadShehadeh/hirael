@@ -214,77 +214,6 @@ export interface CodeBlockProps extends React.ComponentProps<'div'> {
   showLessLabel?: React.ReactNode;
 }
 
-const CodeBlock = ({
-  code,
-  language,
-  filename,
-  highlight = true,
-  showLineNumbers = true,
-  highlightLines = NO_LINES,
-  addedLines = NO_LINES,
-  removedLines = NO_LINES,
-  wrap = false,
-  maxHeight,
-  copyable = true,
-  showMoreLabel,
-  showLessLabel,
-  className,
-  children,
-  ...props
-}: CodeBlockProps) => {
-  const rawCode = (code ?? (typeof children === 'string' ? children : '')).replace(/\n$/, '');
-  const hasCustomChildren = children != null && typeof children !== 'string';
-  const showHeader = Boolean(filename || language || copyable);
-
-  const contextValue = React.useMemo<CodeBlockContextValue>(
-    () => ({
-      code: rawCode,
-      language,
-      filename,
-      highlight,
-      showLineNumbers,
-      highlightLines,
-      addedLines,
-      removedLines,
-      wrap,
-      maxHeight,
-      copyable,
-    }),
-    [
-      rawCode,
-      language,
-      filename,
-      highlight,
-      showLineNumbers,
-      highlightLines,
-      addedLines,
-      removedLines,
-      wrap,
-      maxHeight,
-      copyable,
-    ],
-  );
-
-  return (
-    <CodeBlockContext.Provider value={contextValue}>
-      <div
-        data-slot="code-block"
-        className={cn('overflow-hidden rounded-md border border-border bg-card text-card-foreground', className)}
-        {...props}
-      >
-        {hasCustomChildren ? (
-          children
-        ) : (
-          <>
-            {showHeader && <CodeBlockHeader />}
-            <CodeBlockContent showMoreLabel={showMoreLabel} showLessLabel={showLessLabel} />
-          </>
-        )}
-      </div>
-    </CodeBlockContext.Provider>
-  );
-};
-
 const CodeBlockHeader = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
   const { code, language, filename, copyable } = useCodeBlock();
 
@@ -335,7 +264,7 @@ const CodeBlockContent = ({
   const [overflowing, setOverflowing] = React.useState(false);
 
   const lines = code.split('\n');
-  const tokenLines = React.useMemo(() => (highlight ? tokenize(code, language) : null), [highlight, code, language]);
+  const tokenLines = highlight ? tokenize(code, language) : null;
   const hasDiff = addedLines.length > 0 || removedLines.length > 0;
   const collapsible = maxHeight != null;
   const collapsed = collapsible && !expanded;
@@ -450,6 +379,62 @@ const CodeBlockContent = ({
         </div>
       )}
     </div>
+  );
+};
+
+const CodeBlock = ({
+  code,
+  language,
+  filename,
+  highlight = true,
+  showLineNumbers = true,
+  highlightLines = NO_LINES,
+  addedLines = NO_LINES,
+  removedLines = NO_LINES,
+  wrap = false,
+  maxHeight,
+  copyable = true,
+  showMoreLabel,
+  showLessLabel,
+  className,
+  children,
+  ...props
+}: CodeBlockProps) => {
+  const rawCode = (code ?? (typeof children === 'string' ? children : '')).replace(/\n$/, '');
+  const hasCustomChildren = children != null && typeof children !== 'string';
+  const showHeader = Boolean(filename || language || copyable);
+
+  const contextValue: CodeBlockContextValue = {
+    code: rawCode,
+    language,
+    filename,
+    highlight,
+    showLineNumbers,
+    highlightLines,
+    addedLines,
+    removedLines,
+    wrap,
+    maxHeight,
+    copyable,
+  };
+
+  return (
+    <CodeBlockContext.Provider value={contextValue}>
+      <div
+        data-slot="code-block"
+        className={cn('overflow-hidden rounded-md border border-border bg-card text-card-foreground', className)}
+        {...props}
+      >
+        {hasCustomChildren ? (
+          children
+        ) : (
+          <>
+            {showHeader && <CodeBlockHeader />}
+            <CodeBlockContent showMoreLabel={showMoreLabel} showLessLabel={showLessLabel} />
+          </>
+        )}
+      </div>
+    </CodeBlockContext.Provider>
   );
 };
 

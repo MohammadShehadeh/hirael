@@ -54,9 +54,8 @@ export default function GlobalError() {
                 <RefreshCw className="size-4" />
                 Refresh page
               </Button>
-              {/* Plain anchor: recovery needs a full document load, not a client navigation. */}
               <Button asChild variant="outline" size="lg">
-                {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- recovery needs a full document load, not a client navigation */}
                 <a href="/">Back to home</a>
               </Button>
             </div>

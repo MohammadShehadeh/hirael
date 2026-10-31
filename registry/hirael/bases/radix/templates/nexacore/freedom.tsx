@@ -96,7 +96,7 @@ export const Freedom = () => {
               muted
               playsInline
               aria-hidden
-              className="absolute top-1/2 left-1/2 h-[160%] w-[160%] -translate-x-1/2 -translate-y-1/2 object-cover"
+              className="absolute top-1/2 left-1/2 size-[160%] -translate-x-1/2 -translate-y-1/2 object-cover"
             />
           </div>
         </div>

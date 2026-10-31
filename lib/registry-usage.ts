@@ -25,10 +25,14 @@ export const installTarget = (file: RegistryFileMeta): string => {
   return `components/ui/${file.path.split('/').pop()}`;
 };
 
+interface DocumentedPart {
+  name: string;
+}
+
 export const buildUsageCode = (
   files: RegistryFileMeta[] | undefined,
   readCode: (path: string) => string | undefined,
-  api?: { name: string }[] | null,
+  api?: DocumentedPart[] | null,
 ): string | null => {
   const documented = new Set((api ?? []).map((part) => part.name));
   const isHook = (name: string) => /^use[A-Z]/.test(name);

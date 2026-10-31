@@ -52,9 +52,16 @@ interface UsageItemProps extends React.ComponentProps<'div'> {
   unit?: React.ReactNode;
 }
 
+const usageTone = (pct: number) => {
+  if (pct >= 100) return 'bg-destructive';
+  if (pct >= 90) return 'bg-warning';
+
+  return 'bg-foreground';
+};
+
 const UsageItem = ({ label, value, max, caption, unit, className, ...props }: UsageItemProps) => {
   const pct = Math.max(0, Math.min(100, max ? (value / max) * 100 : 0));
-  const tone = pct >= 100 ? 'bg-destructive' : pct >= 90 ? 'bg-warning' : 'bg-foreground';
+  const tone = usageTone(pct);
 
   return (
     <div data-slot="usage-item" className={cn('flex flex-col gap-1.5', className)} {...props}>

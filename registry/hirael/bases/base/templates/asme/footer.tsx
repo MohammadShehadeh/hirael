@@ -2,7 +2,7 @@
 
 import { Globe } from 'lucide-react';
 
-import { InstagramIcon, Serif, TwitterIcon } from './primitives';
+import { InstagramIcon, Serif, TwitterIcon, type IconProps } from './primitives';
 
 const FOOTER_COLUMNS = [
   {
@@ -19,10 +19,12 @@ const FOOTER_COLUMNS = [
   },
 ];
 
-const SOCIAL_LINKS: {
+interface SocialLink {
   label: string;
-  Icon: React.ComponentType<{ className?: string }>;
-}[] = [
+  Icon: React.ComponentType<IconProps>;
+}
+
+const SOCIAL_LINKS: SocialLink[] = [
   { label: 'Instagram', Icon: InstagramIcon },
   { label: 'Twitter', Icon: TwitterIcon },
   { label: 'Website', Icon: Globe },
@@ -52,7 +54,7 @@ export const Footer = () => {
                   aria-label={label}
                   className="liquid-glass rounded-full p-3 text-foreground/80 transition-all hover:bg-foreground/5 hover:text-foreground"
                 >
-                  <Icon className="h-4 w-4" />
+                  <Icon className="size-4" />
                 </a>
               ))}
             </div>

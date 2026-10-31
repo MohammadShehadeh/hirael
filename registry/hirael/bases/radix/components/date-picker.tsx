@@ -64,10 +64,7 @@ const DatePicker = ({
     onChange: onOpenChange,
   });
 
-  const ctx = React.useMemo<DatePickerContextValue>(
-    () => ({ value, setValue, setOpen, locale, disabled }),
-    [value, setValue, setOpen, locale, disabled],
-  );
+  const ctx: DatePickerContextValue = { value, setValue, setOpen, locale, disabled };
 
   return (
     <DatePickerContext.Provider value={ctx}>
@@ -85,7 +82,7 @@ interface DatePickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'c
 
 const DatePickerTrigger = ({ placeholder = 'Pick a date', className, children, ...props }: DatePickerTriggerProps) => {
   const ctx = useDatePicker();
-  const fmt = React.useMemo(() => new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium' }), [ctx.locale]);
+  const fmt = new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium' });
 
   return (
     <PopoverTrigger asChild>

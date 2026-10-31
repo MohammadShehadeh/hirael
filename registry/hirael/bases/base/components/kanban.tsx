@@ -22,10 +22,15 @@ import { useControllableState } from '@/registry/hirael/hooks/use-controllable-s
 
 export type KanbanValue = Record<string, string[]>;
 
+interface KanbanPosition {
+  columnId: string;
+  index: number;
+}
+
 export interface KanbanMove {
   cardId: string;
-  from: { columnId: string; index: number };
-  to: { columnId: string; index: number };
+  from: KanbanPosition;
+  to: KanbanPosition;
 }
 
 const CARD_CLASS =
@@ -37,11 +42,16 @@ const columnOf = (board: KanbanValue, id: string) =>
     ? id
     : Object.keys(board).find((column) => board[column].includes(id));
 
+interface KanbanCardContent {
+  className?: string;
+  children: React.ReactNode;
+}
+
 interface KanbanCtx {
   value: KanbanValue;
   disabled: boolean;
   /** Each card hands its content here so the drag overlay can render it outside the column. */
-  cardContent: React.RefObject<Map<string, { className?: string; children: React.ReactNode }>>;
+  cardContent: React.RefObject<Map<string, KanbanCardContent>>;
 }
 
 const KanbanContext = React.createContext<KanbanCtx | null>(null);
@@ -100,13 +110,13 @@ const Kanban = ({
   });
   // The board mid-drag: cards hop columns here, and only the drop commits it.
   const [preview, setPreview] = React.useState<KanbanValue | null>(null);
-  const [active, setActive] = React.useState<{ className?: string; children: React.ReactNode } | null>(null);
+  const [active, setActive] = React.useState<KanbanCardContent | null>(null);
   const value = preview ?? committed;
-  const cardContent = React.useRef(new Map<string, { className?: string; children: React.ReactNode }>());
+  const cardContent = React.useRef(new Map<string, KanbanCardContent>());
   const id = React.useId();
   const sensors = useSortableSensors();
 
-  const reset = () => {
+  const handleReset = () => {
     setActive(null);
     setPreview(null);
   };
@@ -138,7 +148,7 @@ const Kanban = ({
 
   const handleDragEnd = ({ active, over }: DragEndEvent) => {
     const board = preview ?? committed;
-    reset();
+    handleReset();
     const cardId = String(active.id);
     const column = columnOf(board, cardId);
     if (!over || !column) return;
@@ -158,7 +168,7 @@ const Kanban = ({
     onCardMove?.({ cardId, from, to });
   };
 
-  const ctx = React.useMemo<KanbanCtx>(() => ({ value, disabled, cardContent }), [value, disabled]);
+  const ctx: KanbanCtx = { value, disabled, cardContent };
 
   return (
     <DndContext
@@ -168,7 +178,7 @@ const Kanban = ({
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
-      onDragCancel={reset}
+      onDragCancel={handleReset}
     >
       <KanbanContext.Provider value={ctx}>
         <div
@@ -306,10 +316,14 @@ const KanbanCard = ({ id, disabled: disabledProp = false, className, style, chil
     };
   }, [cardContent, id, className, children]);
 
-  const cardCtx = React.useMemo<KanbanCardCtx>(
-    () => ({ attributes, listeners, setActivatorNodeRef, setHasHandle, dragging: isDragging, disabled }),
-    [attributes, listeners, setActivatorNodeRef, isDragging, disabled],
-  );
+  const cardCtx: KanbanCardCtx = {
+    attributes,
+    listeners,
+    setActivatorNodeRef,
+    setHasHandle,
+    dragging: isDragging,
+    disabled,
+  };
   const interactive = !hasHandle && !disabled;
 
   return (

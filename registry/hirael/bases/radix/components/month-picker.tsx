@@ -111,6 +111,7 @@ const MonthPicker = (props: MonthPickerProps) => {
     value: valueProp,
     defaultValue,
     onValueChange,
+    // Destructuring loses the mode union; `mode` still decides which value shape these are.
   } = props as {
     value?: MonthValue | MonthRange | null;
     defaultValue?: MonthValue | MonthRange | null;
@@ -127,14 +128,8 @@ const MonthPicker = (props: MonthPickerProps) => {
   const minMonthValue = minProp?.month ?? 0;
   const maxYearValue = maxProp?.year ?? maxYear;
   const maxMonthValue = maxProp?.month ?? 11;
-  const min = React.useMemo<MonthValue>(
-    () => ({ year: minYearValue, month: minMonthValue }),
-    [minYearValue, minMonthValue],
-  );
-  const max = React.useMemo<MonthValue>(
-    () => ({ year: maxYearValue, month: maxMonthValue }),
-    [maxYearValue, maxMonthValue],
-  );
+  const min: MonthValue = { year: minYearValue, month: minMonthValue };
+  const max: MonthValue = { year: maxYearValue, month: maxMonthValue };
 
   const [internal, setInternal] = React.useState(defaultValue ?? undefined);
   const value = valueProp !== undefined ? (valueProp ?? undefined) : internal;
@@ -156,29 +151,33 @@ const MonthPicker = (props: MonthPickerProps) => {
     if (open) setDisplayYear(anchor.year);
   }
 
-  const setValue = React.useCallback(
-    (v: MonthValue) => {
-      const current = value as MonthRange | undefined;
-      const next: MonthValue | MonthRange =
-        mode === 'single'
-          ? v
-          : !current || current.to
-            ? { from: v }
-            : compareMonth(v, current.from) < 0
-              ? { from: v, to: current.from }
-              : { from: current.from, to: v };
-      if (valueProp === undefined) setInternal(next);
-      onValueChange?.(next);
-      if (mode === 'single' || 'to' in next) setOpen(false);
-    },
-    [mode, value, valueProp, onValueChange, setOpen],
-  );
+  const setValue = (v: MonthValue) => {
+    // This branch is range mode, where the value is a range.
+    const current = value as MonthRange | undefined;
+    const next: MonthValue | MonthRange =
+      mode === 'single'
+        ? v
+        : !current || current.to
+          ? { from: v }
+          : compareMonth(v, current.from) < 0
+            ? { from: v, to: current.from }
+            : { from: current.from, to: v };
+    if (valueProp === undefined) setInternal(next);
+    onValueChange?.(next);
+    if (mode === 'single' || 'to' in next) setOpen(false);
+  };
 
-  const ctx = React.useMemo(
-    () =>
-      ({ mode, value, setValue, min, max, locale, displayYear, setDisplayYear, disabled }) as MonthPickerContextValue,
-    [mode, value, setValue, min, max, locale, displayYear, disabled],
-  );
+  const ctx = {
+    mode,
+    value,
+    setValue,
+    min,
+    max,
+    locale,
+    displayYear,
+    setDisplayYear,
+    disabled,
+  } as MonthPickerContextValue;
 
   return (
     <MonthPickerContext.Provider value={ctx}>
@@ -197,21 +196,20 @@ const formatMonthValue = (ctx: MonthPickerContextValue, placeholder: string, fmt
   return `${label(ctx.value.from)} – ${ctx.value.to ? label(ctx.value.to) : '…'}`;
 };
 
+interface MonthPickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
+  placeholder?: string;
+  children?: React.ReactNode;
+}
+
 const MonthPickerTrigger = ({
   placeholder = 'Pick a month',
   className,
   children,
   ...props
-}: Omit<React.ComponentProps<'button'>, 'children'> & {
-  placeholder?: string;
-  children?: React.ReactNode;
-}) => {
+}: MonthPickerTriggerProps) => {
   const ctx = useMonthPicker();
   const empty = ctx.value === undefined;
-  const fmt = React.useMemo(
-    () => new Intl.DateTimeFormat(ctx.locale, { month: 'short', year: 'numeric' }),
-    [ctx.locale],
-  );
+  const fmt = new Intl.DateTimeFormat(ctx.locale, { month: 'short', year: 'numeric' });
 
   return (
     <PopoverTrigger asChild>
@@ -248,6 +246,8 @@ interface MonthPickerContentProps extends React.ComponentProps<typeof PopoverCon
 
 const defaultGridLabel = (year: number) => `Months in ${year}`;
 
+type PageStep = -1 | 1;
+
 const MonthPickerContent = ({
   previousLabel = 'Previous year',
   nextLabel = 'Next year',
@@ -258,11 +258,8 @@ const MonthPickerContent = ({
   const ctx = useMonthPicker();
   const today = currentMonth();
 
-  const labelsShort = React.useMemo(() => shortMonthLabels(ctx.locale), [ctx.locale]);
-  const yearMonthFmt = React.useMemo(
-    () => new Intl.DateTimeFormat(ctx.locale, { month: 'long', year: 'numeric' }),
-    [ctx.locale],
-  );
+  const labelsShort = shortMonthLabels(ctx.locale);
+  const yearMonthFmt = new Intl.DateTimeFormat(ctx.locale, { month: 'long', year: 'numeric' });
 
   const canPrev = ctx.displayYear - 1 >= ctx.min.year;
   const canNext = ctx.displayYear + 1 <= ctx.max.year;
@@ -287,18 +284,17 @@ const MonthPickerContent = ({
 
   const handleKey = (e: React.KeyboardEvent, year: number, month: number) => {
     const forward = getComputedStyle(e.currentTarget).direction === 'rtl' ? -1 : 1;
-    const delta = (
-      {
-        ArrowLeft: -forward,
-        ArrowRight: forward,
-        ArrowUp: -4,
-        ArrowDown: 4,
-        Home: -(month % 4),
-        End: 3 - (month % 4),
-        PageUp: -12,
-        PageDown: 12,
-      } as Record<string, number>
-    )[e.key];
+    const deltaByKey: Partial<Record<string, number>> = {
+      ArrowLeft: -forward,
+      ArrowRight: forward,
+      ArrowUp: -4,
+      ArrowDown: 4,
+      Home: -(month % 4),
+      End: 3 - (month % 4),
+      PageUp: -12,
+      PageDown: 12,
+    };
+    const delta = deltaByKey[e.key];
     if (delta === undefined) return;
     e.preventDefault();
     const key = year * 12 + month + delta;
@@ -314,7 +310,7 @@ const MonthPickerContent = ({
     }
   };
 
-  const navButton = (step: -1 | 1) => (
+  const navButton = (step: PageStep) => (
     <Button
       type="button"
       variant="ghost"

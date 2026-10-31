@@ -226,6 +226,8 @@ const DEPARTMENTS = ['All', 'Leadership', 'Engineering', 'Design and product'] a
 
 type Department = (typeof DEPARTMENTS)[number];
 
+const isDepartment = (value: unknown): value is Department => DEPARTMENTS.some((option) => option === value);
+
 interface Member {
   name: string;
   initials: string;
@@ -337,7 +339,7 @@ const Team01Block = () => {
             spacing={2}
             value={department}
             onValueChange={(next) => {
-              if (next) setDepartment(next as Department);
+              if (isDepartment(next)) setDepartment(next);
             }}
             aria-label="Filter the team by department"
             data-slot="team-filter"

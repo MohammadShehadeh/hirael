@@ -35,7 +35,7 @@ const ServiceVideo = ({ src, posterSrc }: ServiceVideoProps) => {
     return (
       <div
         aria-hidden
-        className="glow-center h-full w-full bg-card bg-cover bg-center"
+        className="glow-center size-full bg-card bg-cover bg-center"
         style={posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined}
       />
     );
@@ -43,7 +43,7 @@ const ServiceVideo = ({ src, posterSrc }: ServiceVideoProps) => {
 
   return (
     <video
-      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+      className="size-full object-cover transition-transform duration-700 group-hover:scale-105"
       src={src}
       poster={posterSrc}
       muted

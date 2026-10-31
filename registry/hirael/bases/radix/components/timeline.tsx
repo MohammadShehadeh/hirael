@@ -83,8 +83,15 @@ interface TimelineDotProps extends Omit<React.ComponentProps<'span'>, 'children'
   children?: React.ReactNode;
 }
 
+const resolveTone = (tone: TimelineTone): ResolvedTimelineTone => {
+  if (tone === 'default') return 'neutral';
+  if (tone === 'danger') return 'destructive';
+
+  return tone;
+};
+
 const TimelineDot = ({ className, tone = 'neutral', children, ...props }: TimelineDotProps) => {
-  const resolvedTone: ResolvedTimelineTone = tone === 'default' ? 'neutral' : tone === 'danger' ? 'destructive' : tone;
+  const resolvedTone = resolveTone(tone);
   const variants = children ? timelineIconDotVariants : timelineDotVariants;
 
   return (

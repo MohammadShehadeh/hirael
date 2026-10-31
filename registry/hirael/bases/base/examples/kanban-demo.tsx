@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useT, type Localized } from '@/lib/demo-locale';
 import {
   Kanban,
   KanbanCard,
@@ -19,8 +19,8 @@ import { Avatar, AvatarFallback } from '@/registry/hirael/bases/base/ui/avatar';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 
 interface Task {
-  title: { en: string; ar: string };
-  tag: { en: string; ar: string };
+  title: Localized<string>;
+  tag: Localized<string>;
   assignee: string;
 }
 
@@ -69,6 +69,27 @@ const INITIAL: KanbanValue = {
   todo: ['t-1', 't-2', 't-3'],
   progress: ['t-4', 't-5'],
   done: ['t-6', 't-7'],
+};
+
+const COMPACT: Record<string, Localized<string>> = {
+  'c-1': { en: 'Dark mode for emails', ar: 'الوضع الداكن للرسائل' },
+  'c-2': { en: 'Export to CSV', ar: 'تصدير إلى CSV' },
+  'c-3': { en: 'Audit log filters', ar: 'مرشحات سجل التدقيق' },
+  'c-4': { en: 'Webhook retries', ar: 'إعادة محاولات Webhook' },
+};
+
+interface CompactCardProps {
+  id: string;
+  children: React.ReactNode;
+}
+
+const CompactCard = ({ id, children }: CompactCardProps) => {
+  return (
+    <KanbanCard id={id} className="flex-row items-center">
+      <KanbanCardHandle />
+      <span className="ms-1.5 truncate text-xs">{children}</span>
+    </KanbanCard>
+  );
 };
 
 const KanbanDemo = () => {
@@ -183,27 +204,6 @@ const KanbanDemo = () => {
         </Kanban>
       </div>
     </div>
-  );
-};
-
-const COMPACT: Record<string, { en: string; ar: string }> = {
-  'c-1': { en: 'Dark mode for emails', ar: 'الوضع الداكن للرسائل' },
-  'c-2': { en: 'Export to CSV', ar: 'تصدير إلى CSV' },
-  'c-3': { en: 'Audit log filters', ar: 'مرشحات سجل التدقيق' },
-  'c-4': { en: 'Webhook retries', ar: 'إعادة محاولات Webhook' },
-};
-
-interface CompactCardProps {
-  id: string;
-  children: React.ReactNode;
-}
-
-const CompactCard = ({ id, children }: CompactCardProps) => {
-  return (
-    <KanbanCard id={id} className="flex-row items-center">
-      <KanbanCardHandle />
-      <span className="ms-1.5 truncate text-xs">{children}</span>
-    </KanbanCard>
   );
 };
 

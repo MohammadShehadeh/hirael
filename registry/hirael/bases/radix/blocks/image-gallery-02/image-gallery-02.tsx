@@ -123,7 +123,7 @@ const ImageGallery02 = () => {
   const tileRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const transitionId = React.useId().replace(/[^a-zA-Z0-9-]/g, '');
 
-  const changeView = (next: string) => {
+  const handleChangeView = (next: string) => {
     if ((next !== 'grid' && next !== 'rows') || next === view) return;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (reduce || typeof document.startViewTransition !== 'function') {
@@ -166,7 +166,7 @@ const ImageGallery02 = () => {
               variant="outline"
               size="sm"
               value={view}
-              onValueChange={changeView}
+              onValueChange={handleChangeView}
               aria-label="Gallery layout"
               data-slot="image-gallery-view"
             >

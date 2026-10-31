@@ -44,13 +44,10 @@ export interface SourcesProps extends React.ComponentProps<typeof Collapsible> {
   label?: (count: number) => React.ReactNode;
 }
 
+const defaultLabel = (count: number) => `Used ${count} ${count === 1 ? 'source' : 'sources'}`;
+
 /** A collapsed "Used 4 sources" line that opens into a numbered list. */
-const Sources = ({
-  sources,
-  label = (count) => `Used ${count} ${count === 1 ? 'source' : 'sources'}`,
-  className,
-  ...props
-}: SourcesProps) => {
+const Sources = ({ sources, label = defaultLabel, className, ...props }: SourcesProps) => {
   return (
     <Collapsible data-slot="sources" className={cn('flex flex-col gap-2', className)} {...props}>
       <CollapsibleTrigger asChild>

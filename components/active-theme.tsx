@@ -79,7 +79,8 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
 
   React.useLayoutEffect(() => {
     const css = isEmbed ? embedCss : mainCss;
-    let styleElement = document.getElementById(STYLE_ELEMENT_ID) as HTMLStyleElement | null;
+    const existing = document.getElementById(STYLE_ELEMENT_ID);
+    let styleElement = existing instanceof HTMLStyleElement ? existing : null;
     if (!css) {
       styleElement?.remove();
 

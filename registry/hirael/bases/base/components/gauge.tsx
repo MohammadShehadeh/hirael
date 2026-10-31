@@ -160,106 +160,6 @@ export interface GaugeProps extends Omit<React.ComponentProps<'div'>, 'children'
   children?: React.ReactNode;
 }
 
-const Gauge = ({
-  value,
-  min = 0,
-  max = 100,
-  startAngle = -120,
-  endAngle = 120,
-  thickness = 10,
-  tone = 'primary',
-  thresholds,
-  size = 'default',
-  getValueText,
-  className,
-  style,
-  children,
-  ...props
-}: GaugeProps) => {
-  const [labelId, setLabelId] = React.useState<string | null>(null);
-
-  const span = max - min || 1;
-  const ratio = clamp((value - min) / span, 0, 1);
-
-  const bands = React.useMemo<GaugeBand[]>(() => {
-    const sorted = (thresholds ?? []).filter((t) => t.value < max).sort((a, b) => a.value - b.value);
-    const starts: GaugeThreshold[] = sorted[0]?.value <= min ? sorted : [{ value: min, tone }, ...sorted];
-
-    return starts.map((s, i) => ({
-      from: Math.max(s.value, min),
-      to: starts[i + 1]?.value ?? max,
-      tone: s.tone,
-      label: s.label,
-    }));
-  }, [thresholds, min, max, tone]);
-
-  const clamped = clamp(value, min, max);
-  let active = bands[0];
-  for (const band of bands) if (clamped >= band.from) active = band;
-
-  const geometry = React.useMemo(() => measure(startAngle, endAngle, thickness), [startAngle, endAngle, thickness]);
-
-  const ctx = React.useMemo<GaugeContextValue>(
-    () => ({
-      value,
-      min,
-      max,
-      ratio,
-      startAngle,
-      endAngle,
-      thickness,
-      tone: active.tone,
-      bands: thresholds?.length ? bands : [],
-      geometry,
-      setLabelId,
-    }),
-    [value, min, max, ratio, startAngle, endAngle, thickness, active.tone, thresholds, bands, geometry],
-  );
-
-  const valueText =
-    getValueText?.(value, min, max) ?? [numberFormat.format(value), active.label].filter(Boolean).join(', ');
-
-  return (
-    <GaugeContext.Provider value={ctx}>
-      <div
-        role="meter"
-        aria-valuenow={clamped}
-        aria-valuemin={min}
-        aria-valuemax={max}
-        aria-valuetext={valueText}
-        aria-labelledby={props['aria-label'] ? undefined : (labelId ?? undefined)}
-        data-slot="gauge"
-        data-size={size}
-        data-tone={active.tone}
-        className={cn(
-          'group/gauge relative inline-grid shrink-0 justify-items-center text-center',
-          SIZE_CLASS[size],
-          className,
-        )}
-        style={{
-          aspectRatio: geometry.aspectRatio,
-          gridTemplateRows: `${geometry.above}fr auto auto ${geometry.below}fr`,
-          ...style,
-        }}
-        {...props}
-      >
-        {/* href + precedence let React hoist one copy into <head>, however many gauges render. */}
-        <style href="hirael-gauge" precedence="default">
-          {GAUGE_KEYFRAMES}
-        </style>
-        {children ?? (
-          <>
-            <GaugeTrack />
-            <GaugeBands />
-            <GaugeIndicator />
-            <GaugeValue />
-          </>
-        )}
-      </div>
-    </GaugeContext.Provider>
-  );
-};
-
 const GaugeSvg = ({ className, children, ...props }: React.ComponentProps<'svg'>) => {
   const { geometry } = useGauge();
 
@@ -361,6 +261,100 @@ const GaugeValue = ({ format, className, children, ...props }: GaugeValueProps) 
     >
       {children ?? (format ? format(value) : numberFormat.format(value))}
     </span>
+  );
+};
+
+const Gauge = ({
+  value,
+  min = 0,
+  max = 100,
+  startAngle = -120,
+  endAngle = 120,
+  thickness = 10,
+  tone = 'primary',
+  thresholds,
+  size = 'default',
+  getValueText,
+  className,
+  style,
+  children,
+  ...props
+}: GaugeProps) => {
+  const [labelId, setLabelId] = React.useState<string | null>(null);
+
+  const span = max - min || 1;
+  const ratio = clamp((value - min) / span, 0, 1);
+
+  const sorted = (thresholds ?? []).filter((t) => t.value < max).sort((a, b) => a.value - b.value);
+  const starts: GaugeThreshold[] = sorted[0]?.value <= min ? sorted : [{ value: min, tone }, ...sorted];
+  const bands: GaugeBand[] = starts.map((s, i) => ({
+    from: Math.max(s.value, min),
+    to: starts[i + 1]?.value ?? max,
+    tone: s.tone,
+    label: s.label,
+  }));
+
+  const clamped = clamp(value, min, max);
+  let active = bands[0];
+  for (const band of bands) if (clamped >= band.from) active = band;
+
+  const geometry = measure(startAngle, endAngle, thickness);
+
+  const ctx: GaugeContextValue = {
+    value,
+    min,
+    max,
+    ratio,
+    startAngle,
+    endAngle,
+    thickness,
+    tone: active.tone,
+    bands: thresholds?.length ? bands : [],
+    geometry,
+    setLabelId,
+  };
+
+  const valueText =
+    getValueText?.(value, min, max) ?? [numberFormat.format(value), active.label].filter(Boolean).join(', ');
+
+  return (
+    <GaugeContext.Provider value={ctx}>
+      <div
+        role="meter"
+        aria-valuenow={clamped}
+        aria-valuemin={min}
+        aria-valuemax={max}
+        aria-valuetext={valueText}
+        aria-labelledby={props['aria-label'] ? undefined : (labelId ?? undefined)}
+        data-slot="gauge"
+        data-size={size}
+        data-tone={active.tone}
+        className={cn(
+          'group/gauge relative inline-grid shrink-0 justify-items-center text-center',
+          SIZE_CLASS[size],
+          className,
+        )}
+        style={{
+          aspectRatio: geometry.aspectRatio,
+          gridTemplateRows: `${geometry.above}fr auto auto ${geometry.below}fr`,
+          ...style,
+        }}
+        {...props}
+      >
+        {/* href + precedence let React hoist one copy into <head>, however many gauges render. */}
+        <style href="hirael-gauge" precedence="default">
+          {GAUGE_KEYFRAMES}
+        </style>
+        {children ?? (
+          <>
+            <GaugeTrack />
+            <GaugeBands />
+            <GaugeIndicator />
+            <GaugeValue />
+          </>
+        )}
+      </div>
+    </GaugeContext.Provider>
   );
 };
 

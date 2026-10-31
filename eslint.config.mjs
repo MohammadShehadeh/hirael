@@ -35,6 +35,13 @@ const LAYOUT_SLOTS = [
   { pattern: '^PopoverContent$', allow: ['layout', 'spacing'] },
 ];
 
+// These opt out with 'use no memo' (TanStack Table getters read stale under the compiler), so they memoize by hand.
+const NO_MEMO_FILES = [
+  'registry/hirael/bases/*/components/data-table/**',
+  'registry/hirael/bases/*/components/virtual-list.tsx',
+  'registry/hirael/bases/*/examples/data-table-demo.tsx',
+];
+
 const eslintConfig = [
   { ignores: ['.next/**', 'out/**', 'public/r/**'] },
   // eslint-plugin-react (inside eslint-config-next) still calls context APIs ESLint 10 removed.
@@ -118,6 +125,25 @@ const eslintConfig = [
     files: ['registry/hirael/bases/*/ui/**'],
     rules: {
       '@typescript-eslint/no-unused-vars': 'off',
+    },
+  },
+  {
+    // The React Compiler memoizes everything it compiles. ui/ mirrors shadcn verbatim, and 'use no memo' files opt out.
+    files: ['**/*.{ts,tsx}'],
+    ignores: ['registry/hirael/bases/*/ui/**', ...NO_MEMO_FILES],
+    rules: {
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            "ImportDeclaration[source.value='react'] > ImportSpecifier[imported.name=/^(useMemo|useCallback|memo)$/]",
+          message: 'The React Compiler memoizes for you. Write the plain value or function.',
+        },
+        {
+          selector: "MemberExpression[object.name='React'][property.name=/^(useMemo|useCallback|memo)$/]",
+          message: 'The React Compiler memoizes for you. Write the plain value or function.',
+        },
+      ],
     },
   },
   {

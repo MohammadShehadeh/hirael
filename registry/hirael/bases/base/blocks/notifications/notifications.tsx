@@ -145,7 +145,12 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-type NotificationFilter = 'all' | 'unread';
+const NOTIFICATION_FILTER_VALUES = ['all', 'unread'] as const;
+
+type NotificationFilter = (typeof NOTIFICATION_FILTER_VALUES)[number];
+
+const isNotificationFilter = (value: unknown): value is NotificationFilter =>
+  NOTIFICATION_FILTER_VALUES.some((option) => option === value);
 
 interface NotificationEntry {
   id: string;
@@ -232,7 +237,7 @@ const NotificationsBlock = () => {
             size="sm"
             value={[filter]}
             onValueChange={([value]) => {
-              if (value) setFilter(value as NotificationFilter);
+              if (isNotificationFilter(value)) setFilter(value);
             }}
             aria-label="Filter notifications"
           >

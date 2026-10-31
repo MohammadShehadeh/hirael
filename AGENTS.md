@@ -15,10 +15,11 @@ Next.js 16, React 19, Tailwind v4, pnpm 12, Vitest 5. Check the `nextjs` /
 - **`output: "export"`, no runtime server.** Data is read at `next build` and
   frozen into `out/`. Images are `unoptimized`, route `params` are Promises,
   `dynamicParams = false`: routes come from `registry-meta.ts`.
-- **React Compiler is on.** No hand-written `useMemo`/`useCallback` in showcase
-  code (`app/`, `components/`, `lib/`, `examples/`). **Keep** them in shipped
-  source (`ui/`, `components/` under `bases/`), since consumers may not run the
-  compiler. TanStack Table components need `"use no memo"`.
+- **React Compiler is required.** It compiles the site, the tests and every
+  shipped item, and consumers are expected to enable it. No hand-written
+  `useMemo` / `useCallback` / `memo` anywhere outside `ui/`; lint rejects them.
+  The exception is a file under `"use no memo"` (TanStack Table components),
+  which opts out of the compiler and keeps its own memoization.
 - **Tailwind is CSS-first.** No config file; tokens live in `@theme inline` in
   `app/globals.css`.
 

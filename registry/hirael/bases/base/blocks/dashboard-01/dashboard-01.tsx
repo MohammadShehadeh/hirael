@@ -34,9 +34,18 @@ interface Metric {
   goodWhen: 'up' | 'down';
 }
 
-type Range = '1d' | '7d' | '30d' | '90d';
+const RANGE_VALUES = ['1d', '7d', '30d', '90d'] as const;
 
-const RANGES: { value: Range; label: string }[] = [
+type Range = (typeof RANGE_VALUES)[number];
+
+const isRange = (value: unknown): value is Range => RANGE_VALUES.some((option) => option === value);
+
+interface RangeOption {
+  value: Range;
+  label: string;
+}
+
+const RANGES: RangeOption[] = [
   { value: '1d', label: 'Today' },
   { value: '7d', label: '7 days' },
   { value: '30d', label: '30 days' },
@@ -118,7 +127,13 @@ const METRICS_BY_RANGE: Record<Range, readonly Metric[]> = {
   ],
 };
 
-const CHART_BY_RANGE: Record<Range, readonly { d: string; a: number; b: number }[]> = {
+interface ChartPoint {
+  d: string;
+  a: number;
+  b: number;
+}
+
+const CHART_BY_RANGE: Record<Range, readonly ChartPoint[]> = {
   '1d': [
     { d: '00', a: 6, b: 3 },
     { d: '04', a: 4, b: 2 },
@@ -157,7 +172,12 @@ const CHART_BY_RANGE: Record<Range, readonly { d: string; a: number; b: number }
   ],
 };
 
-const SIGNUPS_BY_RANGE: Record<Range, { count: string; conversion: string }> = {
+interface SignupStats {
+  count: string;
+  conversion: string;
+}
+
+const SIGNUPS_BY_RANGE: Record<Range, SignupStats> = {
   '1d': { count: '82', conversion: '3.91%' },
   '7d': { count: '486', conversion: '3.42%' },
   '30d': { count: '2,154', conversion: '3.18%' },
@@ -167,6 +187,8 @@ const SIGNUPS_BY_RANGE: Record<Range, { count: string; conversion: string }> = {
 const TEAMS = ['All teams', 'Growth', 'Platform', 'Support'] as const;
 
 type Team = (typeof TEAMS)[number];
+
+const isTeam = (value: unknown): value is Team => TEAMS.some((option) => option === value);
 
 interface Activity {
   initials: string;
@@ -228,16 +250,32 @@ const deltaTone = ({ delta, goodWhen }: Metric) => {
   return improving ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive';
 };
 
+type Direction = 'up' | 'down' | 'unchanged';
+
+const directionOf = (delta: number): Direction => {
+  if (delta > 0) return 'up';
+  if (delta < 0) return 'down';
+
+  return 'unchanged';
+};
+
+const DIRECTION_ICON = { up: ArrowUpRight, down: ArrowDownRight, unchanged: Minus };
+
+// Negative deltas use a true minus sign (U+2212), not a hyphen.
+const DIRECTION_SIGN: Record<Direction, string> = { up: '+', down: '−', unchanged: '' };
+
+const UNIT_MEASURE: Record<Metric['unit'], string> = { '%': 'percent', pt: 'points', s: 'seconds' };
+
 interface DeltaChipProps {
   metric: Metric;
 }
 
 const DeltaChip = ({ metric }: DeltaChipProps) => {
   const { delta, unit, label } = metric;
-  const Icon = delta > 0 ? ArrowUpRight : delta < 0 ? ArrowDownRight : Minus;
-  const direction = delta > 0 ? 'up' : delta < 0 ? 'down' : 'unchanged';
-  const measure = unit === '%' ? 'percent' : unit === 'pt' ? 'points' : 'seconds';
-  const sign = delta > 0 ? '+' : delta < 0 ? '−' : '';
+  const direction = directionOf(delta);
+  const Icon = DIRECTION_ICON[direction];
+  const measure = UNIT_MEASURE[unit];
+  const sign = DIRECTION_SIGN[direction];
 
   return (
     <span
@@ -277,12 +315,12 @@ const Dashboard01 = () => {
     return () => clearTimeout(timeout);
   }, [exported]);
 
-  const onExport = () => {
+  const handleExport = () => {
     setExported(true);
     setStatus(`Exported ${signups.count} sign-ups`);
   };
 
-  const onRefresh = async () => {
+  const handleRefresh = async () => {
     setRefreshing(true);
     setStatus('Refreshing data');
     await new Promise((r) => setTimeout(r, 600));
@@ -307,7 +345,13 @@ const Dashboard01 = () => {
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            <Tabs value={range} onValueChange={(v) => setRange(v as Range)} className="w-fit">
+            <Tabs
+              value={range}
+              onValueChange={(v) => {
+                if (isRange(v)) setRange(v);
+              }}
+              className="w-fit"
+            >
               <TabsList>
                 {RANGES.map((r) => (
                   <TabsTrigger key={r.value} value={r.value}>
@@ -316,7 +360,12 @@ const Dashboard01 = () => {
                 ))}
               </TabsList>
             </Tabs>
-            <Select value={team} onValueChange={(v) => setTeam(v as Team)}>
+            <Select
+              value={team}
+              onValueChange={(v) => {
+                if (isTeam(v)) setTeam(v);
+              }}
+            >
               <SelectTrigger size="sm" className="hidden w-32 sm:flex" aria-label="Filter activity by team">
                 <SelectValue />
               </SelectTrigger>
@@ -328,7 +377,7 @@ const Dashboard01 = () => {
                 ))}
               </SelectContent>
             </Select>
-            <Button variant="ghost" size="sm" onClick={onRefresh} disabled={refreshing}>
+            <Button variant="ghost" size="sm" onClick={handleRefresh} disabled={refreshing}>
               <RefreshCw aria-hidden className={cn('size-3.5', refreshing && 'motion-safe:animate-spin')} />
               <span className="sr-only sm:not-sr-only sm:inline">Refresh</span>
             </Button>
@@ -367,7 +416,12 @@ const Dashboard01 = () => {
                 <span className="text-lg tabular-nums">{signups.count} new sign-ups</span>
               </CardTitle>
               <CardAction>
-                <Button variant="outline" size="sm" onClick={onExport} aria-label={exported ? 'Exported' : 'Export'}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleExport}
+                  aria-label={exported ? 'Exported' : 'Export'}
+                >
                   {exported ? (
                     <Check
                       className="size-3.5 animate-in duration-250 zoom-in-50 motion-reduce:animate-none"

@@ -5417,10 +5417,7 @@ export const DISTRIBUTION_ONLY: DistributionOnlyEntry[] = [
   },
 ];
 
-export const REGISTRY_BY_NAME = Object.fromEntries(REGISTRY.map((r) => [r.name, r])) as Record<
-  string,
-  RegistryEntryMeta
->;
+export const REGISTRY_BY_NAME: Record<string, RegistryEntryMeta> = Object.fromEntries(REGISTRY.map((r) => [r.name, r]));
 
 export const CATEGORY_LABELS: Record<ComponentCategory, string> = {
   inputs: 'Inputs',
@@ -5504,8 +5501,7 @@ export const BASE_LABELS: Record<RegistryBase, string> = {
   radix: 'Radix UI',
   base: 'Base UI',
 };
-export const isRegistryBase = (value: unknown): value is RegistryBase =>
-  typeof value === 'string' && (REGISTRY_BASES as readonly string[]).includes(value);
+export const isRegistryBase = (value: unknown): value is RegistryBase => REGISTRY_BASES.some((base) => base === value);
 export const registryBaseDir = (base: RegistryBase) => `registry/hirael/bases/${base}`;
 /** Hooks and utilities touch no primitive, so one copy in `registry/hirael/{hooks,lib}` serves both bases. */
 export const isSharedRegistryFile = (file: string) => file.startsWith('hooks/') || file.startsWith('lib/');
@@ -5806,18 +5802,23 @@ const catalogListFor = (entry: RegistryEntryMeta): RegistryEntryMeta[] =>
         ? UTILITIES
         : COMPONENTS_ORDERED;
 
-export const entryPosition = (entry: RegistryEntryMeta): { index: number; total: number } => {
+interface EntryPosition {
+  index: number;
+  total: number;
+}
+
+export const entryPosition = (entry: RegistryEntryMeta): EntryPosition => {
   const list = catalogListFor(entry);
 
   return { index: list.findIndex((e) => e.name === entry.name) + 1, total: list.length };
 };
 
-export const entrySiblings = (
-  entry: RegistryEntryMeta,
-): {
+interface EntrySiblings {
   prev: RegistryEntryMeta | null;
   next: RegistryEntryMeta | null;
-} => {
+}
+
+export const entrySiblings = (entry: RegistryEntryMeta): EntrySiblings => {
   const list = catalogListFor(entry);
   const i = list.findIndex((e) => e.name === entry.name);
   if (i === -1) return { prev: null, next: null };

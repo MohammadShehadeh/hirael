@@ -62,11 +62,11 @@ const PROVIDERS = [
 
 type Pending = (typeof PROVIDERS)[number]['id'] | 'email' | null;
 
-type Errors = Partial<{
-  email: string;
-  password: string;
-  form: string;
-}>;
+interface Errors {
+  email?: string;
+  password?: string;
+  form?: string;
+}
 
 const Login02 = () => {
   const [email, setEmail] = React.useState('');
@@ -83,7 +83,7 @@ const Login02 = () => {
     return next;
   };
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const next = validate();
     setErrors(next);
@@ -134,7 +134,7 @@ const Login02 = () => {
 
           <FieldSeparator>or</FieldSeparator>
 
-          <form data-slot="login-form" noValidate onSubmit={onSubmit}>
+          <form data-slot="login-form" noValidate onSubmit={handleSubmit}>
             <FieldGroup className="gap-5">
               {errors.form && (
                 <Alert variant="destructive" data-slot="login-error">

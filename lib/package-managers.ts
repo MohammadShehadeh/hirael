@@ -22,8 +22,8 @@ export const getShadcnAddCommand = (packageManager: PackageManager, url: string)
 export const getShadcnInitCommand = (packageManager: PackageManager, flags: string): string =>
   `${RUNNERS[packageManager]} shadcn@latest init ${flags}`.trim();
 
-const isPackageManager = (value: string | null): value is PackageManager => {
-  return value !== null && (PACKAGE_MANAGERS as readonly string[]).includes(value);
+export const isPackageManager = (value: string | null): value is PackageManager => {
+  return PACKAGE_MANAGERS.some((manager) => manager === value);
 };
 
 let current: PackageManager | null = null;
@@ -65,7 +65,7 @@ export const setPackageManager = (next: PackageManager) => {
 };
 
 export const usePackageManager = () => {
-  const packageManager = React.useSyncExternalStore(subscribe, snapshot, () => 'npm' as PackageManager);
+  const packageManager = React.useSyncExternalStore(subscribe, snapshot, (): PackageManager => 'npm');
 
   return { packageManager, setPackageManager };
 };

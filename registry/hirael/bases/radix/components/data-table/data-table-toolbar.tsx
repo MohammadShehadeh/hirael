@@ -18,54 +18,6 @@ interface DataTableToolbarProps<TData extends RowData> extends React.ComponentPr
   table: ReactTable<DataTableFeatures, TData>;
 }
 
-export const DataTableToolbar = <TData extends RowData>({
-  table,
-  children,
-  className,
-  ...props
-}: DataTableToolbarProps<TData>) => {
-  const labels = useDataTableLabels();
-  const isFiltered = table.state.columnFilters.length > 0;
-
-  const columns = table.getAllColumns().filter((column) => column.getCanFilter());
-
-  const onReset = () => {
-    table.resetColumnFilters();
-  };
-
-  return (
-    <div
-      role="toolbar"
-      aria-orientation="horizontal"
-      data-slot="data-table-toolbar"
-      className={cn('flex w-full items-start justify-between gap-2 p-1', className)}
-      {...props}
-    >
-      <div className="flex flex-1 flex-wrap items-center gap-2">
-        {columns.map((column) => (
-          <DataTableToolbarFilter key={column.id} column={column} />
-        ))}
-        {isFiltered && (
-          <Button
-            aria-label={labels.resetFiltersLabel}
-            variant="outline"
-            size="sm"
-            className="border-dashed"
-            onClick={onReset}
-          >
-            <X />
-            {labels.resetFilters}
-          </Button>
-        )}
-      </div>
-      <div className="flex items-center gap-2">
-        {children}
-        <DataTableViewOptions table={table} align="end" />
-      </div>
-    </div>
-  );
-};
-
 interface DataTableToolbarFilterProps<TData extends RowData> {
   column: Column<DataTableFeatures, TData>;
 }
@@ -81,7 +33,7 @@ const DataTableToolbarFilter = <TData extends RowData>({ column }: DataTableTool
         <Input
           aria-label={columnMeta.label ?? column.id}
           placeholder={columnMeta.placeholder ?? columnMeta.label}
-          value={(column.getFilterValue() as string) ?? ''}
+          value={String(column.getFilterValue() ?? '')}
           onChange={(event) => column.setFilterValue(event.target.value)}
           className="h-8 w-40 lg:w-56"
         />
@@ -95,7 +47,7 @@ const DataTableToolbarFilter = <TData extends RowData>({ column }: DataTableTool
             inputMode="numeric"
             aria-label={columnMeta.label ?? column.id}
             placeholder={columnMeta.placeholder ?? columnMeta.label}
-            value={(column.getFilterValue() as string) ?? ''}
+            value={String(column.getFilterValue() ?? '')}
             onChange={(event) => column.setFilterValue(event.target.value)}
             className={cn('h-8 w-[120px]', columnMeta.unit && 'pe-8')}
           />
@@ -131,7 +83,57 @@ const DataTableToolbarFilter = <TData extends RowData>({ column }: DataTableTool
         />
       );
 
-    default:
-      return null;
+    default: {
+      const unhandled: never = columnMeta.variant;
+      throw new Error(`Unhandled filter variant: ${String(unhandled)}`);
+    }
   }
+};
+
+export const DataTableToolbar = <TData extends RowData>({
+  table,
+  children,
+  className,
+  ...props
+}: DataTableToolbarProps<TData>) => {
+  const labels = useDataTableLabels();
+  const isFiltered = table.state.columnFilters.length > 0;
+
+  const columns = table.getAllColumns().filter((column) => column.getCanFilter());
+
+  const handleReset = () => {
+    table.resetColumnFilters();
+  };
+
+  return (
+    <div
+      role="toolbar"
+      aria-orientation="horizontal"
+      data-slot="data-table-toolbar"
+      className={cn('flex w-full items-start justify-between gap-2 p-1', className)}
+      {...props}
+    >
+      <div className="flex flex-1 flex-wrap items-center gap-2">
+        {columns.map((column) => (
+          <DataTableToolbarFilter key={column.id} column={column} />
+        ))}
+        {isFiltered && (
+          <Button
+            aria-label={labels.resetFiltersLabel}
+            variant="outline"
+            size="sm"
+            className="border-dashed"
+            onClick={handleReset}
+          >
+            <X />
+            {labels.resetFilters}
+          </Button>
+        )}
+      </div>
+      <div className="flex items-center gap-2">
+        {children}
+        <DataTableViewOptions table={table} align="end" />
+      </div>
+    </div>
+  );
 };

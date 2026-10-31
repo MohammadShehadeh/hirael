@@ -77,76 +77,13 @@ export interface PdfViewerProps extends React.ComponentProps<'div'> {
   labels?: Partial<PdfViewerLabels>;
 }
 
-const PdfViewer = ({ file, defaultPage = 1, workerUrl, labels, className, children, ...props }: PdfViewerProps) => {
-  const [lib, setLib] = React.useState<ReactPdf | null>(null);
-  const [page, setPage] = React.useState(defaultPage);
-  const [pages, setPages] = React.useState(0);
-  const [zoom, setZoom] = React.useState(1);
-  const [prevFile, setPrevFile] = React.useState(file);
-  if (prevFile !== file) {
-    setPrevFile(file);
-    setPage(defaultPage);
-    setPages(0);
-  }
-
-  // pdf.js needs browser APIs at import time, so it loads after mount.
-  React.useEffect(() => {
-    let cancelled = false;
-    void import('react-pdf').then((mod) => {
-      mod.pdfjs.GlobalWorkerOptions.workerSrc =
-        workerUrl ?? `https://unpkg.com/pdfjs-dist@${mod.pdfjs.version}/build/pdf.worker.min.mjs`;
-      if (!cancelled) setLib(mod);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [workerUrl]);
-
-  const ctx = React.useMemo<PdfViewerContextValue>(
-    () => ({
-      file,
-      lib,
-      page,
-      setPage: (next) => setPage(Math.min(Math.max(1, next), pages || Number.MAX_SAFE_INTEGER)),
-      pages,
-      // The page asked for may not exist, like a `defaultPage` past the end, so it is clamped once the count is known.
-      setPages: (count) => {
-        setPages(count);
-        setPage((current) => Math.min(Math.max(1, current), Math.max(1, count)));
-      },
-      zoom,
-      setZoom,
-      labels: { ...DEFAULT_LABELS, ...labels },
-    }),
-    [file, lib, page, pages, zoom, labels],
-  );
-
-  return (
-    <PdfViewerContext.Provider value={ctx}>
-      <div
-        data-slot="pdf-viewer"
-        className={cn('flex h-[36rem] flex-col overflow-hidden rounded-lg border border-border bg-card', className)}
-        {...props}
-      >
-        {children ?? (
-          <>
-            <PdfViewerToolbar />
-            <PdfViewerContent />
-          </>
-        )}
-      </div>
-    </PdfViewerContext.Provider>
-  );
-};
-
 /** Page arrows and number, zoom, fit to width and download. */
 const PdfViewerToolbar = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const { file, page, setPage, pages, zoom, setZoom, labels } = usePdfViewer();
   const [draft, setDraft] = React.useState<string | null>(null);
   const zoomIndex = ZOOM_STEPS.findIndex((step) => step >= zoom - 0.001);
 
-  const commitDraft = () => {
+  const handleCommitDraft = () => {
     if (draft !== null) setPage(Number(draft) || page);
     setDraft(null);
   };
@@ -171,7 +108,7 @@ const PdfViewerToolbar = ({ className, ...props }: React.ComponentProps<'div'>) 
         className="flex items-center gap-1.5 text-sm"
         onSubmit={(event) => {
           event.preventDefault();
-          commitDraft();
+          handleCommitDraft();
         }}
       >
         <Input
@@ -179,7 +116,7 @@ const PdfViewerToolbar = ({ className, ...props }: React.ComponentProps<'div'>) 
           inputMode="numeric"
           value={draft ?? String(page)}
           onChange={(event) => setDraft(event.target.value.replace(/\D/g, ''))}
-          onBlur={commitDraft}
+          onBlur={handleCommitDraft}
           className="h-8 w-12 text-center tabular-nums"
         />
         <span className="text-muted-foreground tabular-nums">
@@ -295,6 +232,68 @@ const PdfViewerContent = ({ className, ...props }: React.ComponentProps<'div'>) 
         </lib.Document>
       )}
     </div>
+  );
+};
+
+const loadReactPdf = () => import('react-pdf');
+
+const PdfViewer = ({ file, defaultPage = 1, workerUrl, labels, className, children, ...props }: PdfViewerProps) => {
+  const [lib, setLib] = React.useState<ReactPdf | null>(null);
+  const [page, setPage] = React.useState(defaultPage);
+  const [pages, setPages] = React.useState(0);
+  const [zoom, setZoom] = React.useState(1);
+  const [prevFile, setPrevFile] = React.useState(file);
+  if (prevFile !== file) {
+    setPrevFile(file);
+    setPage(defaultPage);
+    setPages(0);
+  }
+
+  // pdf.js needs browser APIs at import time, so it loads after mount.
+  React.useEffect(() => {
+    let cancelled = false;
+    void loadReactPdf().then((mod) => {
+      mod.pdfjs.GlobalWorkerOptions.workerSrc =
+        workerUrl ?? `https://unpkg.com/pdfjs-dist@${mod.pdfjs.version}/build/pdf.worker.min.mjs`;
+      if (!cancelled) setLib(mod);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [workerUrl]);
+
+  const ctx: PdfViewerContextValue = {
+    file,
+    lib,
+    page,
+    setPage: (next) => setPage(Math.min(Math.max(1, next), pages || Number.MAX_SAFE_INTEGER)),
+    pages,
+    // The page asked for may not exist, like a `defaultPage` past the end, so it is clamped once the count is known.
+    setPages: (count) => {
+      setPages(count);
+      setPage((current) => Math.min(Math.max(1, current), Math.max(1, count)));
+    },
+    zoom,
+    setZoom,
+    labels: { ...DEFAULT_LABELS, ...labels },
+  };
+
+  return (
+    <PdfViewerContext.Provider value={ctx}>
+      <div
+        data-slot="pdf-viewer"
+        className={cn('flex h-[36rem] flex-col overflow-hidden rounded-lg border border-border bg-card', className)}
+        {...props}
+      >
+        {children ?? (
+          <>
+            <PdfViewerToolbar />
+            <PdfViewerContent />
+          </>
+        )}
+      </div>
+    </PdfViewerContext.Provider>
   );
 };
 

@@ -16,6 +16,39 @@ interface CategoryPageProps {
 const chipStyle =
   'inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 text-xs uppercase text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0';
 
+interface RoadmapStateProps {
+  category: CategoryMeta;
+}
+
+const RoadmapState = ({ category }: RoadmapStateProps) => {
+  return (
+    <section className="flex flex-col gap-8">
+      <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-dot-grid mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] opacity-50"
+        />
+        <div className="relative flex flex-col gap-4">
+          <span className="text-xs text-muted-foreground uppercase">In design</span>
+          <h3 className="text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
+            {category.title} blocks are on the roadmap.
+          </h3>
+          <p className="max-w-xl text-sm text-muted-foreground">
+            {category.description} We&apos;re drafting variants now, first one ships when it&apos;s good enough that
+            we&apos;d copy it into our own products.
+          </p>
+          <div className="mt-2 flex flex-wrap items-center gap-3">
+            <Link href="/blocks" className={chipStyle}>
+              <ChevronLeft className="rtl:rotate-180" />
+              All categories
+            </Link>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export const CategoryPage = ({ category }: CategoryPageProps) => {
   const blocks: RegistryEntryMeta[] = category.blockKind ? BLOCKS_BY_KIND[category.blockKind] : [];
   const total = blocks.length;
@@ -106,38 +139,5 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
         </>
       )}
     </div>
-  );
-};
-
-interface RoadmapStateProps {
-  category: CategoryMeta;
-}
-
-const RoadmapState = ({ category }: RoadmapStateProps) => {
-  return (
-    <section className="flex flex-col gap-8">
-      <div className="relative overflow-hidden rounded-md border border-border bg-card/30 p-8 sm:p-12">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-dot-grid mask-[radial-gradient(ellipse_at_top,black,transparent_70%)] opacity-50"
-        />
-        <div className="relative flex flex-col gap-4">
-          <span className="text-xs text-muted-foreground uppercase">In design</span>
-          <h3 className="text-2xl font-medium tracking-[-0.02em] sm:text-3xl">
-            {category.title} blocks are on the roadmap.
-          </h3>
-          <p className="max-w-xl text-sm text-muted-foreground">
-            {category.description} We&apos;re drafting variants now, first one ships when it&apos;s good enough that
-            we&apos;d copy it into our own products.
-          </p>
-          <div className="mt-2 flex flex-wrap items-center gap-3">
-            <Link href="/blocks" className={chipStyle}>
-              <ChevronLeft className="rtl:rotate-180" />
-              All categories
-            </Link>
-          </div>
-        </div>
-      </div>
-    </section>
   );
 };

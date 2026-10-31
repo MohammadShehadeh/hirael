@@ -57,6 +57,18 @@ const writeClipboard = async (text: string) => {
   copyWithExecCommand(text);
 };
 
+// Outside the component: the React Compiler can't compile a try/catch around optional calls.
+const copyValue = async (value: CopyButtonProps['value']) => {
+  try {
+    const text = typeof value === 'function' ? value() : value;
+    await writeClipboard(text);
+
+    return { ok: true as const, text };
+  } catch (error) {
+    return { ok: false as const, error };
+  }
+};
+
 const CopyButton = ({
   value,
   variant = 'ghost',
@@ -77,35 +89,28 @@ const CopyButton = ({
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
-  const settle = React.useCallback(
-    (next: CopyButtonState) => {
-      setState(next);
-      clearTimeout(timer.current);
-      timer.current = setTimeout(() => setState('idle'), timeout);
-    },
-    [timeout],
-  );
+  const settle = (next: CopyButtonState) => {
+    setState(next);
+    clearTimeout(timer.current);
+    timer.current = setTimeout(() => setState('idle'), timeout);
+  };
 
-  const handleCopy = React.useCallback(
-    async (event: React.MouseEvent<HTMLButtonElement>) => {
-      onClick?.(event);
-      if (event.defaultPrevented) return;
-      try {
-        const text = typeof value === 'function' ? value() : value;
-        await writeClipboard(text);
-        settle('copied');
-        onCopy?.(text);
-      } catch (error) {
-        settle('error');
-        onCopyError?.(error);
-      }
-    },
-    [value, onCopy, onCopyError, onClick, settle],
-  );
+  const handleCopy = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    onClick?.(event);
+    if (event.defaultPrevented) return;
+    const result = await copyValue(value);
+    if (result.ok) {
+      settle('copied');
+      onCopy?.(result.text);
+    } else {
+      settle('error');
+      onCopyError?.(result.error);
+    }
+  };
 
   const copied = state === 'copied';
   const hasLabel = children != null;
-  const announcement = state === 'copied' ? copiedLabel : state === 'error' ? errorLabel : '';
+  const announcement = { idle: '', copied: copiedLabel, error: errorLabel }[state];
 
   return (
     <>

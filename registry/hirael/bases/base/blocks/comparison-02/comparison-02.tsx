@@ -24,7 +24,12 @@ const COLUMNS: readonly Column[] = [
   { name: 'Component library', summary: 'Fast to add, harder to bend later' },
 ];
 
-const ROWS: readonly { label: string; cells: readonly [Cell, Cell, Cell] }[] = [
+interface ComparisonRow {
+  label: string;
+  cells: readonly [Cell, Cell, Cell];
+}
+
+const ROWS: readonly ComparisonRow[] = [
   { label: 'You own the source', cells: [true, true, false] },
   { label: 'Ships without a runtime dependency', cells: [true, true, false] },
   { label: 'Time to a working combobox', cells: ['Two days', 'One command', 'One command'] },

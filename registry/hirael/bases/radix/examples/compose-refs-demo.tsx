@@ -10,9 +10,8 @@ import { Input } from '@/registry/hirael/bases/radix/ui/input';
 /** Selects its text on focus through its own ref, and still forwards the element to the parent. */
 const SelectOnFocusInput = ({ ref, ...props }: React.ComponentProps<typeof Input>) => {
   const ownRef = React.useRef<HTMLInputElement>(null);
-  const composedRef = React.useMemo(() => composeRefs(ownRef, ref), [ref]);
 
-  return <Input ref={composedRef} onFocus={() => ownRef.current?.select()} {...props} />;
+  return <Input ref={composeRefs(ownRef, ref)} onFocus={() => ownRef.current?.select()} {...props} />;
 };
 
 const ComposeRefsDemo = () => {

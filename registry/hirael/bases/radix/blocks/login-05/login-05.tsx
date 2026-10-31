@@ -82,7 +82,7 @@ const Login05 = () => {
     setPending(null);
   };
 
-  const onEmailSubmit = async (e: React.FormEvent) => {
+  const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!EMAIL_PATTERN.test(email)) {
       setError('Enter a valid email address.');
@@ -97,7 +97,7 @@ const Login05 = () => {
     setView('sent');
   };
 
-  const backToMethods = () => {
+  const handleBackToMethods = () => {
     setError(null);
     setView('methods');
   };
@@ -120,7 +120,7 @@ const Login05 = () => {
                 We sent a sign-in link to <span className="font-medium break-all text-foreground">{email}</span>.
               </p>
             </div>
-            <Button type="button" variant="outline" onClick={backToMethods} className="w-full">
+            <Button type="button" variant="outline" onClick={handleBackToMethods} className="w-full">
               Use another method
             </Button>
           </div>
@@ -175,7 +175,7 @@ const Login05 = () => {
         )}
 
         {view === 'email' && (
-          <form key="email" noValidate onSubmit={onEmailSubmit} className={SWAP}>
+          <form key="email" noValidate onSubmit={handleEmailSubmit} className={SWAP}>
             <FieldGroup className="gap-4">
               <Field data-invalid={Boolean(error) || undefined}>
                 <FieldLabel htmlFor="login05-email" className="sr-only">
@@ -198,7 +198,7 @@ const Login05 = () => {
                 {pending === 'email' && <Spinner />}
                 Continue with email
               </Button>
-              <Button type="button" variant="ghost" onClick={backToMethods} className="w-full">
+              <Button type="button" variant="ghost" onClick={handleBackToMethods} className="w-full">
                 Other login options
               </Button>
             </FieldGroup>

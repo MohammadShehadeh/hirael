@@ -16,7 +16,12 @@ const SWAP =
 
 const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
-type PlanKey = 'starter' | 'team' | 'enterprise';
+const PLAN_KEY_VALUES = ['starter', 'team', 'enterprise'] as const;
+
+type PlanKey = (typeof PLAN_KEY_VALUES)[number];
+
+const isPlanKey = (value: unknown): value is PlanKey => PLAN_KEY_VALUES.some((option) => option === value);
+
 type Value = boolean | string;
 
 interface Plan {
@@ -34,9 +39,14 @@ const PLANS: readonly Plan[] = [
   { key: 'enterprise', name: 'Enterprise', price: 'Custom', cadence: 'billed yearly', cta: 'Talk to sales' },
 ];
 
+interface FeatureRow {
+  feature: string;
+  values: Record<PlanKey, Value>;
+}
+
 interface Group {
   name: string;
-  rows: readonly { feature: string; values: Record<PlanKey, Value> }[];
+  rows: readonly FeatureRow[];
 }
 
 const GROUPS: readonly Group[] = [
@@ -158,7 +168,9 @@ const Comparison04 = () => {
             <ToggleGroup
               variant="outline"
               value={[selected]}
-              onValueChange={([next]) => next && setPicked(next as PlanKey)}
+              onValueChange={([next]) => {
+                if (isPlanKey(next)) setPicked(next);
+              }}
               aria-label="Plan to compare"
               className="w-full sm:w-auto md:hidden"
             >

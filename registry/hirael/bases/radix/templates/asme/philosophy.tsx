@@ -35,7 +35,7 @@ export const Philosophy = () => {
             className="aspect-[4/3] overflow-hidden rounded-3xl"
           >
             <video
-              className="h-full w-full object-cover"
+              className="size-full object-cover"
               src={PHILOSOPHY_VIDEO_URL}
               muted
               autoPlay

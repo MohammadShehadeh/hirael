@@ -94,26 +94,23 @@ const ComingSoonForm = ({
   const [error, setError] = React.useState<string | null>(null);
   const [subscribed, setSubscribed] = React.useState(false);
 
-  const handleSubmit = React.useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const value = email.trim();
-      if (!value) {
-        setError('Enter your email to get the launch note.');
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const value = email.trim();
+    if (!value) {
+      setError('Enter your email to get the launch note.');
 
-        return;
-      }
-      if (!EMAIL_PATTERN.test(value)) {
-        setError("That doesn't look like a valid email.");
+      return;
+    }
+    if (!EMAIL_PATTERN.test(value)) {
+      setError("That doesn't look like a valid email.");
 
-        return;
-      }
-      setError(null);
-      onSubscribe?.(value);
-      setSubscribed(true);
-    },
-    [email, onSubscribe],
-  );
+      return;
+    }
+    setError(null);
+    onSubscribe?.(value);
+    setSubscribed(true);
+  };
 
   if (subscribed) {
     return (

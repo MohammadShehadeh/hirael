@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useDemoLocale, useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT, type Localized } from '@/lib/demo-locale';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import {
   TimeSlotPicker,
@@ -23,19 +23,24 @@ const getSlots = (day: Date): TimeSlot[] => {
   });
 };
 
+const BOOKED_OPTIONS: Intl.DateTimeFormatOptions = {
+  weekday: 'long',
+  month: 'long',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: '2-digit',
+};
+
+const bookedFormat: Localized<Intl.DateTimeFormat> = {
+  en: new Intl.DateTimeFormat('en-US', BOOKED_OPTIONS),
+  ar: new Intl.DateTimeFormat('ar', BOOKED_OPTIONS),
+};
+
 const TimeSlotPickerDemo = () => {
   const t = useT();
   const locale = useDemoLocale() === 'ar' ? 'ar' : 'en-US';
   const [slot, setSlot] = React.useState<Date | undefined>();
-  const booked = slot
-    ? new Intl.DateTimeFormat(locale, {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-      }).format(slot)
-    : null;
+  const booked = slot ? t(bookedFormat).format(slot) : null;
 
   return (
     <div className="grid w-full max-w-2xl gap-4 rounded-lg border border-border bg-card p-4 text-card-foreground">

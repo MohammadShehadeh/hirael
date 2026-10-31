@@ -19,10 +19,12 @@ const GREETINGS: Record<string, string> = {
   'pt-BR': 'Bem-vindo de volta',
 };
 
+type TextDirection = 'ltr' | 'rtl';
+
 const LanguageSwitcherDemo = () => {
   const t = useT();
   const [code, setCode] = React.useState('en');
-  const [dir, setDir] = React.useState<'ltr' | 'rtl'>('ltr');
+  const [dir, setDir] = React.useState<TextDirection>('ltr');
   const handleChange = (next: string, language: Language | undefined) => {
     setCode(next);
     setDir(language?.dir ?? 'ltr');

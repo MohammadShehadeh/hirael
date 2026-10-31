@@ -170,7 +170,7 @@ const ContactCopy = ({ value, label = 'Copy to clipboard', className, ...props }
 
   React.useEffect(() => () => clearTimeout(timer.current), []);
 
-  const copy = async () => {
+  const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(true);
@@ -189,7 +189,7 @@ const ContactCopy = ({ value, label = 'Copy to clipboard', className, ...props }
       data-slot="contact-copy"
       data-state={copied ? 'copied' : 'idle'}
       aria-label={copied ? 'Copied' : label}
-      onClick={copy}
+      onClick={handleCopy}
       className={className}
       {...props}
     >

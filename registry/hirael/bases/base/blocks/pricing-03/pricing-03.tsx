@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { ArrowRight, Check, Shield, Star, Zap } from 'lucide-react';
+import { ArrowRight, Check, Shield, Star, Zap, type LucideIcon } from 'lucide-react';
 
 import { AnimatedNumber } from '@/registry/hirael/bases/base/components/animated-number';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
@@ -26,12 +26,16 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
-type Frequency = 'monthly' | 'yearly';
+const FREQUENCY_VALUES = ['monthly', 'yearly'] as const;
+
+type Frequency = (typeof FREQUENCY_VALUES)[number];
+
+const isFrequency = (value: unknown): value is Frequency => FREQUENCY_VALUES.some((option) => option === value);
 
 interface Plan {
   id: string;
   name: string;
-  icon: React.ComponentType<{ className?: string }>;
+  icon: LucideIcon;
   price: Record<Frequency, number | string>;
   description: string;
   features: readonly string[];
@@ -114,7 +118,9 @@ const Pricing03 = () => {
           data-slot="pricing-billing"
           variant="outline"
           value={[frequency]}
-          onValueChange={([next]) => next && setFrequency(next as Frequency)}
+          onValueChange={([next]) => {
+            if (isFrequency(next)) setFrequency(next);
+          }}
           aria-label="Billing period"
           style={stagger(3)}
           className={ENTER}

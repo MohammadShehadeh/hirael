@@ -138,12 +138,14 @@ describe.each(Object.entries(registry))('SegmentedControl (%s)', (_, { Segmented
       Object.defineProperty(HTMLElement.prototype, 'animate', { configurable: true, value: animate });
       Object.defineProperty(window, 'matchMedia', {
         configurable: true,
+        // Test double: only what the component reads.
         value: (query: string) => ({ matches: reducedMotion, media: query }) as MediaQueryList,
       });
       vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function (this: HTMLElement) {
         const item = this.closest<HTMLElement>('[data-slot="segmented-control-item"]');
         const [left, width] = item ? (widths[item.dataset.value ?? ''] ?? [0, 0]) : [0, 280];
 
+        // Test double: only what the component reads.
         return { left, top: 0, width, height: 32, right: left + width, bottom: 32, x: left, y: 0 } as DOMRect;
       });
 
@@ -161,6 +163,7 @@ describe.each(Object.entries(registry))('SegmentedControl (%s)', (_, { Segmented
       const { user, radio } = setup();
       await user.click(radio('Calendar'));
 
+      // vi.fn records loosely typed arguments; animate is called with keyframes first.
       const keyframes = animate.mock.calls.flatMap((call) => (call as unknown as [Keyframe[]])[0]);
       expect(keyframes.length).toBeGreaterThan(0);
       for (const frame of keyframes) {

@@ -83,42 +83,11 @@ export interface DocsSidebarProps {
   releases: SidebarRelease[];
 }
 
-export const DocsSidebar = ({ releases }: DocsSidebarProps) => {
-  return (
-    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-sidebar shrink-0 overflow-y-auto border-e border-border md:block">
-      <DocsSidebarNav releases={releases} className="p-4" />
-    </aside>
-  );
-};
-
 export interface DocsSidebarNavProps {
   releases: SidebarRelease[];
   className?: string;
   onNavigate?: (hash: string) => void;
 }
-
-export const DocsSidebarNav = ({ releases, className, onNavigate }: DocsSidebarNavProps) => {
-  const pathname = usePathname();
-  const ref = React.useRef<HTMLElement>(null);
-  const section = sectionForPath(pathname);
-
-  React.useEffect(() => {
-    if (ref.current) scrollCurrentPageIntoView(ref.current);
-  }, [pathname]);
-
-  return (
-    <nav ref={ref} aria-label="Sidebar" className={cn('flex flex-col gap-4', className)}>
-      <CommandMenu variant="field" />
-      <div className="flex flex-col gap-3">
-        {section === 'components' && <ComponentTree pathname={pathname} />}
-        {section === 'blocks' && <BlockTree pathname={pathname} />}
-        {section === 'templates' && <TemplateTree pathname={pathname} />}
-        {section === 'utilities' && <UtilityTree pathname={pathname} />}
-        {section === 'changelog' && <ReleaseTree releases={releases} onNavigate={onNavigate} />}
-      </div>
-    </nav>
-  );
-};
 
 const scrollCurrentPageIntoView = (tree: HTMLElement) => {
   const current = tree.querySelector<HTMLElement>('[aria-current="page"]');
@@ -348,5 +317,36 @@ const ReleaseTree = ({ releases, onNavigate }: ReleaseTreeProps) => {
         );
       })}
     </Folder>
+  );
+};
+
+export const DocsSidebarNav = ({ releases, className, onNavigate }: DocsSidebarNavProps) => {
+  const pathname = usePathname();
+  const ref = React.useRef<HTMLElement>(null);
+  const section = sectionForPath(pathname);
+
+  React.useEffect(() => {
+    if (ref.current) scrollCurrentPageIntoView(ref.current);
+  }, [pathname]);
+
+  return (
+    <nav ref={ref} aria-label="Sidebar" className={cn('flex flex-col gap-4', className)}>
+      <CommandMenu variant="field" />
+      <div className="flex flex-col gap-3">
+        {section === 'components' && <ComponentTree pathname={pathname} />}
+        {section === 'blocks' && <BlockTree pathname={pathname} />}
+        {section === 'templates' && <TemplateTree pathname={pathname} />}
+        {section === 'utilities' && <UtilityTree pathname={pathname} />}
+        {section === 'changelog' && <ReleaseTree releases={releases} onNavigate={onNavigate} />}
+      </div>
+    </nav>
+  );
+};
+
+export const DocsSidebar = ({ releases }: DocsSidebarProps) => {
+  return (
+    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-sidebar shrink-0 overflow-y-auto border-e border-border md:block">
+      <DocsSidebarNav releases={releases} className="p-4" />
+    </aside>
   );
 };

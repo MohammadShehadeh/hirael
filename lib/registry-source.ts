@@ -36,5 +36,6 @@ export const loadSources = async (
 ): Promise<Record<RegistryBase, Record<string, SourceFile>>> => {
   const entries = await Promise.all(REGISTRY_BASES.map(async (base) => [base, await loadSource(files, base)] as const));
 
+  // fromEntries types its keys as string; entries holds one per base.
   return Object.fromEntries(entries) as Record<RegistryBase, Record<string, SourceFile>>;
 };

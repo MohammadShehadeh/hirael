@@ -7,18 +7,31 @@ import { cn } from '@/lib/utils';
 import { useT } from '@/lib/demo-locale';
 import { SegmentedControl, SegmentedControlItem } from '@/registry/hirael/bases/radix/components/segmented-control';
 
-type View = 'list' | 'board' | 'calendar';
+const VIEW_VALUES = ['list', 'board', 'calendar'] as const;
+
+type View = (typeof VIEW_VALUES)[number];
 type Status = 'todo' | 'doing' | 'done';
 type Billing = 'monthly' | 'yearly';
 
-const isView = (value: string): value is View => ['list', 'board', 'calendar'].includes(value);
+const isView = (value: unknown): value is View => VIEW_VALUES.some((option) => option === value);
+
+interface StatusOption {
+  id: Status;
+  label: string;
+}
+
+interface Task {
+  title: string;
+  status: Status;
+  day: number;
+}
 
 const SegmentedControlDemo = () => {
   const t = useT();
   const [view, setView] = React.useState<View>('board');
   const [billing, setBilling] = React.useState<Billing>('yearly');
 
-  const statuses: { id: Status; label: string }[] = [
+  const statuses: StatusOption[] = [
     { id: 'todo', label: t({ en: 'To do', ar: 'للتنفيذ' }) },
     { id: 'doing', label: t({ en: 'In progress', ar: 'قيد التنفيذ' }) },
     { id: 'done', label: t({ en: 'Done', ar: 'منجز' }) },
@@ -32,7 +45,7 @@ const SegmentedControlDemo = () => {
     t({ en: 'Fri', ar: 'الجمعة' }),
   ];
 
-  const tasks: { title: string; status: Status; day: number }[] = [
+  const tasks: Task[] = [
     { title: t({ en: 'Write release notes', ar: 'كتابة ملاحظات الإصدار' }), status: 'doing', day: 1 },
     { title: t({ en: 'Fix login redirect', ar: 'إصلاح إعادة توجيه الدخول' }), status: 'todo', day: 3 },
     { title: t({ en: 'Review pricing page', ar: 'مراجعة صفحة الأسعار' }), status: 'done', day: 0 },

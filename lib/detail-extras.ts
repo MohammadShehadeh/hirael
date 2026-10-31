@@ -30,9 +30,15 @@ export const getDetailExtras = async (entry: RegistryEntryMeta): Promise<DetailE
   };
 };
 
+// The registry index breaks ties between items added on the same day.
+interface IndexedDatedEntry extends DatedEntry {
+  addedAt: string;
+  index: number;
+}
+
 const recentlyAdded = (dates: Record<string, string>): DatedEntry[] =>
   REGISTRY.map((entry, index) => ({ entry, addedAt: dates[entry.name], index }))
-    .filter((item): item is { entry: RegistryEntryMeta; addedAt: string; index: number } => item.addedAt !== undefined)
+    .filter((item): item is IndexedDatedEntry => item.addedAt !== undefined)
     .sort((a, b) => b.addedAt.localeCompare(a.addedAt) || a.index - b.index)
     .map(({ entry, addedAt }) => ({ entry, addedAt }));
 

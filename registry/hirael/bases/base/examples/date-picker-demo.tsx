@@ -7,13 +7,15 @@ import { useT } from '@/lib/demo-locale';
 import { Field, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import { DatePicker, DatePickerContent, DatePickerTrigger } from '@/registry/hirael/bases/base/components/date-picker';
 
+const mediumDate = new Intl.DateTimeFormat('en', { dateStyle: 'medium' });
+
 const DatePickerDemo = () => {
   const t = useT();
   const [date, setDate] = React.useState<Date | undefined>(new Date(2026, 5, 12));
   const [inline, setInline] = React.useState<Date | undefined>(new Date(2026, 5, 8));
   const [bounded, setBounded] = React.useState<Date | undefined>();
 
-  const fmt = new Intl.DateTimeFormat('en', { dateStyle: 'medium' });
+  const fmt = mediumDate;
   const print = (d: Date | undefined) => (d ? fmt.format(d) : '-');
 
   return (

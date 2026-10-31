@@ -69,7 +69,7 @@ const Changelog = ({
     onChange: onFilterChange,
   });
 
-  const value = React.useMemo(() => ({ filter, setFilter }), [filter, setFilter]);
+  const value = { filter, setFilter };
 
   return (
     <ChangelogContext.Provider value={value}>
@@ -206,7 +206,12 @@ const ChangelogSubscribe = ({ className, children = 'Subscribe', ...props }: Cha
   );
 };
 
-const FILTERS: readonly { value: ChangelogFilterValue; label: string }[] = [
+interface FilterOption {
+  value: ChangelogFilterValue;
+  label: string;
+}
+
+const FILTERS: readonly FilterOption[] = [
   { value: 'all', label: 'All' },
   { value: 'new', label: 'New' },
   { value: 'improved', label: 'Improved' },
@@ -277,16 +282,18 @@ const ChangelogEmpty = ({
   );
 };
 
+const releaseDate = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
 const formatDate = (date: string) => {
   const parsed = new Date(date);
   if (Number.isNaN(parsed.getTime())) return date;
 
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  }).format(parsed);
+  return releaseDate.format(parsed);
 };
 
 interface ChangelogEntryDateProps extends Omit<React.ComponentProps<'time'>, 'children'> {
@@ -319,30 +326,6 @@ interface ChangelogEntryProps extends React.ComponentProps<'article'> {
   /** Used by the filter; the entry hides itself when it has no matching tag. */
   tags?: readonly ChangelogTagKind[];
 }
-
-const ChangelogEntry = ({ version, date, tags = [], className, children, ...props }: ChangelogEntryProps) => {
-  const { filter } = useChangelog();
-  if (filter !== 'all' && !tags.includes(filter)) return null;
-
-  return (
-    <article
-      data-slot="changelog-entry"
-      data-version={version}
-      className={cn(
-        SWAP,
-        'grid grid-cols-1 gap-4 border-b border-border py-10 last-of-type:border-b-0 lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-10',
-        className,
-      )}
-      {...props}
-    >
-      <div className="flex flex-row items-center gap-3 self-start lg:sticky lg:top-6 lg:flex-col lg:items-start lg:gap-2">
-        <ChangelogEntryDate date={date} />
-        <ChangelogEntryVersion>v{version}</ChangelogEntryVersion>
-      </div>
-      <div className="flex min-w-0 flex-col gap-4">{children}</div>
-    </article>
-  );
-};
 
 type ChangelogEntryTagsProps = React.ComponentProps<'div'>;
 
@@ -417,13 +400,39 @@ export {
   useChangelog,
 };
 
-const ENTRIES: readonly {
+interface ChangelogRelease {
   version: string;
   date: string;
   title: string;
   tags: readonly ChangelogTagKind[];
   items: readonly string[];
-}[] = [
+}
+
+const ChangelogEntry = ({ version, date, tags = [], className, children, ...props }: ChangelogEntryProps) => {
+  const { filter } = useChangelog();
+  if (filter !== 'all' && !tags.includes(filter)) return null;
+
+  return (
+    <article
+      data-slot="changelog-entry"
+      data-version={version}
+      className={cn(
+        SWAP,
+        'grid grid-cols-1 gap-4 border-b border-border py-10 last-of-type:border-b-0 lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-10',
+        className,
+      )}
+      {...props}
+    >
+      <div className="flex flex-row items-center gap-3 self-start lg:sticky lg:top-6 lg:flex-col lg:items-start lg:gap-2">
+        <ChangelogEntryDate date={date} />
+        <ChangelogEntryVersion>v{version}</ChangelogEntryVersion>
+      </div>
+      <div className="flex min-w-0 flex-col gap-4">{children}</div>
+    </article>
+  );
+};
+
+const ENTRIES: readonly ChangelogRelease[] = [
   {
     version: '2.6.0',
     date: '2026-08-19',

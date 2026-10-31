@@ -68,7 +68,7 @@ const SelectionHighlight = Extension.create({
         state: {
           init: () => DecorationSet.empty,
           apply: (tr, old) => {
-            const meta = tr.getMeta(fakeSelectionPluginKey) as FakeSelectionMeta | undefined;
+            const meta: FakeSelectionMeta | undefined = tr.getMeta(fakeSelectionPluginKey);
             if (meta === 'clear') return DecorationSet.empty;
             if (meta) {
               const deco = Decoration.inline(meta.from, meta.to, {
@@ -180,140 +180,6 @@ export interface RichTextEditorProps extends Omit<React.ComponentProps<'div'>, '
   children?: React.ReactNode;
 }
 
-const RichTextEditor = ({
-  value,
-  onValueChange,
-  onChange,
-  defaultValue = '',
-  placeholder = 'Write something…',
-  editable = true,
-  disabled = false,
-  onFocus,
-  onBlur,
-  className,
-  labels,
-  children,
-  ...props
-}: RichTextEditorProps) => {
-  const resolvedLabels = React.useMemo(() => ({ ...DEFAULT_LABELS, ...labels }), [labels]);
-  const isEditable = editable && !disabled;
-
-  const onChangeRef = React.useRef(onValueChange ?? onChange);
-  const onFocusRef = React.useRef(onFocus);
-  const onBlurRef = React.useRef(onBlur);
-  const placeholderRef = React.useRef(placeholder);
-  React.useLayoutEffect(() => {
-    onChangeRef.current = onValueChange ?? onChange;
-    onFocusRef.current = onFocus;
-    onBlurRef.current = onBlur;
-  });
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit.configure({
-        heading: { levels: [1, 2, 3] },
-        bulletList: { keepMarks: true, keepAttributes: false },
-        orderedList: { keepMarks: true, keepAttributes: false },
-        link: {
-          openOnClick: false,
-          HTMLAttributes: {
-            class: 'text-primary underline underline-offset-2 hover:text-primary/80',
-            rel: 'noopener noreferrer',
-            target: '_blank',
-          },
-        },
-      }),
-      TextAlign.configure({ types: ['heading', 'paragraph'] }),
-      Highlight.configure({ multicolor: false }),
-      // eslint-disable-next-line react-hooks/refs
-      Placeholder.configure({
-        placeholder: () => placeholderRef.current,
-        emptyEditorClass: 'is-editor-empty',
-      }),
-      SelectionHighlight,
-    ],
-    content: value ?? defaultValue,
-    editable: isEditable,
-    immediatelyRender: false,
-    onUpdate: ({ editor: e }) => onChangeRef.current?.(e.getHTML()),
-    onFocus: () => onFocusRef.current?.(),
-    onBlur: () => onBlurRef.current?.(),
-    editorProps: {
-      attributes: {
-        class: 'focus:outline-none min-h-[150px] px-3 py-2 text-base md:text-sm',
-      },
-    },
-  });
-
-  React.useEffect(() => {
-    if (!editor) return;
-    if (value !== undefined && value !== editor.getHTML()) {
-      // A parent-driven value is not a user edit: don't echo it through onValueChange.
-      const { from, to } = editor.state.selection;
-      editor.commands.setContent(value, { emitUpdate: false });
-      const end = editor.state.doc.content.size;
-      editor.commands.setTextSelection({ from: Math.min(from, end), to: Math.min(to, end) });
-    }
-  }, [value, editor]);
-
-  React.useEffect(() => {
-    if (editor && editor.isEditable !== isEditable) {
-      editor.setEditable(isEditable);
-    }
-  }, [isEditable, editor]);
-
-  React.useEffect(() => {
-    if (placeholderRef.current === placeholder) return;
-    placeholderRef.current = placeholder;
-    if (editor) editor.view.dispatch(editor.state.tr);
-  }, [placeholder, editor]);
-
-  if (!editor) {
-    return (
-      <div
-        data-slot="rich-text-editor"
-        className={cn('grow rounded-md border border-input bg-transparent shadow-xs', className)}
-      >
-        <div className="flex flex-wrap items-center gap-2 border-b border-border p-2">
-          {Array.from({ length: 18 }).map((_, i) => (
-            <Skeleton key={i} className="size-7 rounded" />
-          ))}
-        </div>
-        <div className="min-h-[150px] space-y-2.5 px-3 py-3">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-5/6" />
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <RichTextEditorContext.Provider value={editor}>
-      <RichTextEditorLabelsContext.Provider value={resolvedLabels}>
-        <div
-          data-slot="rich-text-editor"
-          aria-disabled={disabled || undefined}
-          className={cn(
-            'rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40',
-            disabled && 'cursor-not-allowed opacity-50',
-            className,
-          )}
-          {...props}
-        >
-          {children ?? (
-            <>
-              {isEditable && <RichTextEditorToolbar />}
-              <RichTextEditorContent />
-              {isEditable && <RichTextEditorLinkBubble />}
-            </>
-          )}
-        </div>
-      </RichTextEditorLabelsContext.Provider>
-    </RichTextEditorContext.Provider>
-  );
-};
-
 const RichTextEditorContent = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const editor = useRichTextEditor();
 
@@ -321,20 +187,6 @@ const RichTextEditorContent = ({ className, ...props }: React.ComponentProps<'di
     <div data-slot="rich-text-editor-content" className={cn(contentClassName, className)} {...props}>
       <EditorContent editor={editor} />
     </div>
-  );
-};
-
-const RichTextEditorToolbar = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
-  return (
-    <TooltipProvider>
-      <div
-        data-slot="rich-text-editor-toolbar"
-        className={cn('flex flex-wrap items-center gap-0.5 border-b border-border p-1', className)}
-        {...props}
-      >
-        {children ?? <DefaultToolbar />}
-      </div>
-    </TooltipProvider>
   );
 };
 
@@ -419,8 +271,8 @@ const RichTextEditorLinkPopover = () => {
 
   const handleOpen = (nextOpen: boolean) => {
     if (nextOpen) {
-      const existing = editor.getAttributes('link').href as string | undefined;
-      setUrl(existing ?? '');
+      const existing: unknown = editor.getAttributes('link').href;
+      setUrl(typeof existing === 'string' ? existing : '');
       showFakeSelection(editor);
     } else {
       clearFakeSelection(editor);
@@ -443,7 +295,7 @@ const RichTextEditorLinkPopover = () => {
     setOpen(false);
   };
 
-  const removeLink = () => {
+  const handleRemoveLink = () => {
     clearFakeSelection(editor);
     editor.chain().focus().extendMarkRange('link').unsetLink().run();
     setOpen(false);
@@ -455,7 +307,7 @@ const RichTextEditorLinkPopover = () => {
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
             <Toggle data-slot="rich-text-editor-link-trigger" size="sm" pressed={isLink} aria-label={labels.link}>
-              <LinkIcon className="size-4" />
+              <LinkIcon />
             </Toggle>
           </PopoverTrigger>
         </TooltipTrigger>
@@ -489,11 +341,17 @@ const RichTextEditorLinkPopover = () => {
             className="h-8 text-sm"
           />
           <Button type="submit" variant="ghost" size="icon-sm" aria-label={labels.applyLink}>
-            <Check className="size-4" />
+            <Check />
           </Button>
           {isLink && (
-            <Button type="button" variant="ghost" size="icon-sm" aria-label={labels.removeLink} onClick={removeLink}>
-              <Trash2 className="size-4 text-destructive" />
+            <Button
+              type="button"
+              variant="ghost"
+              size="icon-sm"
+              aria-label={labels.removeLink}
+              onClick={handleRemoveLink}
+            >
+              <Trash2 className="text-destructive" />
             </Button>
           )}
         </form>
@@ -506,6 +364,12 @@ interface LinkTarget {
   el: HTMLAnchorElement;
   href: string;
 }
+
+const linkFromNode = (node: Node | null | undefined): HTMLAnchorElement | null => {
+  const el = node instanceof HTMLElement ? node : node?.parentElement;
+
+  return el?.closest('a') ?? null;
+};
 
 const RichTextEditorLinkBubble = () => {
   const labels = React.useContext(RichTextEditorLabelsContext);
@@ -523,39 +387,33 @@ const RichTextEditorLinkBubble = () => {
     editingRef.current = editing;
   }, [editing]);
 
-  const clearHide = React.useCallback(() => {
+  const clearHide = () => {
     if (hideTimer.current) {
       clearTimeout(hideTimer.current);
       hideTimer.current = null;
     }
-  }, []);
+  };
 
   React.useEffect(
     () => () => {
       cancelAnimationFrame(rafRef.current);
-      clearHide();
+      if (hideTimer.current) clearTimeout(hideTimer.current);
     },
-    [clearHide],
+    [],
   );
 
-  const linkFromNode = React.useCallback((node: Node | null | undefined): HTMLAnchorElement | null => {
-    const el = node instanceof HTMLElement ? node : node?.parentElement;
-
-    return el?.closest('a') ?? null;
-  }, []);
-
-  const linkAtSelection = React.useCallback((): HTMLAnchorElement | null => {
+  const linkAtSelection = (): HTMLAnchorElement | null => {
     if (!editor.isEditable || !editor.isActive('link')) return null;
 
     return linkFromNode(editor.view.domAtPos(editor.state.selection.from).node);
-  }, [editor, linkFromNode]);
+  };
 
-  const show = React.useCallback((el: HTMLAnchorElement) => {
+  const show = (el: HTMLAnchorElement) => {
     const href = el.getAttribute('href') ?? '';
     setTarget((prev) => (prev && prev.el === el && prev.href === href ? prev : { el, href }));
-  }, []);
+  };
 
-  const scheduleHide = React.useCallback(() => {
+  const scheduleHide = () => {
     clearHide();
     hideTimer.current = setTimeout(() => {
       if (editingRef.current) return;
@@ -563,37 +421,43 @@ const RichTextEditorLinkBubble = () => {
       if (el) show(el);
       else setTarget(null);
     }, 200);
-  }, [clearHide, linkAtSelection, show]);
+  };
+
+  const onSelectionUpdate = React.useEffectEvent(() => {
+    if (editingRef.current) return;
+    const el = linkAtSelection();
+    if (el) {
+      clearHide();
+      show(el);
+    } else {
+      scheduleHide();
+    }
+  });
+
+  const onLinkOver = React.useEffectEvent((e: Event) => {
+    if (!editor.isEditable) return;
+    const el = linkFromNode(e.target instanceof Node ? e.target : null);
+    if (el) {
+      clearHide();
+      show(el);
+    }
+  });
+
+  const onLinkOut = React.useEffectEvent(() => scheduleHide());
 
   React.useEffect(() => {
-    const onSelect = () => {
-      if (editingRef.current) return;
-      const el = linkAtSelection();
-      if (el) {
-        clearHide();
-        show(el);
-      } else {
-        scheduleHide();
-      }
-    };
+    const onSelect = () => onSelectionUpdate();
     editor.on('selectionUpdate', onSelect);
 
     return () => {
       editor.off('selectionUpdate', onSelect);
     };
-  }, [editor, linkAtSelection, show, clearHide, scheduleHide]);
+  }, [editor]);
 
   React.useEffect(() => {
     const dom = editor.view.dom;
-    const onOver = (e: Event) => {
-      if (!editor.isEditable) return;
-      const el = linkFromNode(e.target as Node | null);
-      if (el) {
-        clearHide();
-        show(el);
-      }
-    };
-    const onOut = () => scheduleHide();
+    const onOver = (e: Event) => onLinkOver(e);
+    const onOut = () => onLinkOut();
     dom.addEventListener('mouseover', onOver);
     dom.addEventListener('mouseout', onOut);
 
@@ -601,7 +465,7 @@ const RichTextEditorLinkBubble = () => {
       dom.removeEventListener('mouseover', onOver);
       dom.removeEventListener('mouseout', onOut);
     };
-  }, [editor, linkFromNode, show, clearHide, scheduleHide]);
+  }, [editor]);
 
   React.useEffect(() => {
     if (!target) return;
@@ -709,7 +573,7 @@ const RichTextEditorLinkBubble = () => {
             className="h-8 w-56 text-sm"
           />
           <Button type="submit" variant="ghost" size="icon-sm" aria-label={labels.applyLink}>
-            <Check className="size-4" />
+            <Check />
           </Button>
           <Button
             type="button"
@@ -718,7 +582,7 @@ const RichTextEditorLinkBubble = () => {
             aria-label={labels.cancel}
             onClick={() => setEditing(false)}
           >
-            <X className="size-4" />
+            <X />
           </Button>
         </form>
       ) : (
@@ -942,6 +806,154 @@ const DefaultToolbar = () => {
         <Minus className="size-4" />
       </RichTextEditorButton>
     </>
+  );
+};
+
+const RichTextEditorToolbar = ({ className, children, ...props }: React.ComponentProps<'div'>) => {
+  return (
+    <TooltipProvider>
+      <div
+        data-slot="rich-text-editor-toolbar"
+        className={cn('flex flex-wrap items-center gap-0.5 border-b border-border p-1', className)}
+        {...props}
+      >
+        {children ?? <DefaultToolbar />}
+      </div>
+    </TooltipProvider>
+  );
+};
+
+const RichTextEditor = ({
+  value,
+  onValueChange,
+  onChange,
+  defaultValue = '',
+  placeholder = 'Write something…',
+  editable = true,
+  disabled = false,
+  onFocus,
+  onBlur,
+  className,
+  labels,
+  children,
+  ...props
+}: RichTextEditorProps) => {
+  const resolvedLabels = { ...DEFAULT_LABELS, ...labels };
+  const isEditable = editable && !disabled;
+
+  const onChangeRef = React.useRef(onValueChange ?? onChange);
+  const onFocusRef = React.useRef(onFocus);
+  const onBlurRef = React.useRef(onBlur);
+  React.useLayoutEffect(() => {
+    onChangeRef.current = onValueChange ?? onChange;
+    onFocusRef.current = onFocus;
+    onBlurRef.current = onBlur;
+  });
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit.configure({
+        heading: { levels: [1, 2, 3] },
+        bulletList: { keepMarks: true, keepAttributes: false },
+        orderedList: { keepMarks: true, keepAttributes: false },
+        link: {
+          openOnClick: false,
+          HTMLAttributes: {
+            class: 'text-primary underline underline-offset-2 hover:text-primary/80',
+            rel: 'noopener noreferrer',
+            target: '_blank',
+          },
+        },
+      }),
+      TextAlign.configure({ types: ['heading', 'paragraph'] }),
+      Highlight.configure({ multicolor: false }),
+      Placeholder.configure({
+        placeholder,
+        emptyEditorClass: 'is-editor-empty',
+      }),
+      SelectionHighlight,
+    ],
+    content: value ?? defaultValue,
+    editable: isEditable,
+    immediatelyRender: false,
+    onUpdate: ({ editor: e }) => onChangeRef.current?.(e.getHTML()),
+    onFocus: () => onFocusRef.current?.(),
+    onBlur: () => onBlurRef.current?.(),
+    editorProps: {
+      attributes: {
+        class: 'focus:outline-none min-h-[150px] px-3 py-2 text-base md:text-sm',
+      },
+    },
+  });
+
+  React.useEffect(() => {
+    if (!editor) return;
+    if (value !== undefined && value !== editor.getHTML()) {
+      // A parent-driven value is not a user edit: don't echo it through onValueChange.
+      const { from, to } = editor.state.selection;
+      editor.commands.setContent(value, { emitUpdate: false });
+      const end = editor.state.doc.content.size;
+      editor.commands.setTextSelection({ from: Math.min(from, end), to: Math.min(to, end) });
+    }
+  }, [value, editor]);
+
+  React.useEffect(() => {
+    if (editor && editor.isEditable !== isEditable) {
+      editor.setEditable(isEditable);
+    }
+  }, [isEditable, editor]);
+
+  // The editor is created once, so a new placeholder is written into the live extension and redrawn.
+  React.useEffect(() => {
+    const extension = editor?.extensionManager.extensions.find((e) => e.name === Placeholder.name);
+    if (!editor || !extension || extension.options.placeholder === placeholder) return;
+    extension.options.placeholder = placeholder;
+    editor.view.dispatch(editor.state.tr);
+  }, [placeholder, editor]);
+
+  if (!editor) {
+    return (
+      <div
+        data-slot="rich-text-editor"
+        className={cn('grow rounded-md border border-input bg-transparent shadow-xs', className)}
+      >
+        <div className="flex flex-wrap items-center gap-2 border-b border-border p-2">
+          {Array.from({ length: 18 }).map((_, i) => (
+            <Skeleton key={i} className="size-7 rounded" />
+          ))}
+        </div>
+        <div className="min-h-[150px] space-y-2.5 px-3 py-3">
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <RichTextEditorContext.Provider value={editor}>
+      <RichTextEditorLabelsContext.Provider value={resolvedLabels}>
+        <div
+          data-slot="rich-text-editor"
+          aria-disabled={disabled || undefined}
+          className={cn(
+            'rounded-md border border-input bg-transparent shadow-xs transition-[color,box-shadow] focus-within:border-ring focus-within:ring-[3px] focus-within:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40',
+            disabled && 'cursor-not-allowed opacity-50',
+            className,
+          )}
+          {...props}
+        >
+          {children ?? (
+            <>
+              {isEditable && <RichTextEditorToolbar />}
+              <RichTextEditorContent />
+              {isEditable && <RichTextEditorLinkBubble />}
+            </>
+          )}
+        </div>
+      </RichTextEditorLabelsContext.Provider>
+    </RichTextEditorContext.Provider>
   );
 };
 

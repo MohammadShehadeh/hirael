@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { CalendarDays, Circle, CircleCheck, CircleDashed, CircleDot, Hash, Tag, Text, User } from 'lucide-react';
 
-import { useDemoLocale, useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT, type Localized } from '@/lib/demo-locale';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import {
   FilterBuilder,
@@ -17,7 +17,7 @@ import {
 
 interface Issue {
   id: string;
-  title: { en: string; ar: string };
+  title: Localized<string>;
   status: string;
   labels: string[];
   assignee: string;
@@ -135,6 +135,7 @@ const FilterBuilderDemo = () => {
   ];
 
   const rows = applyFilters(ISSUES, filters, (issue, field) =>
+    // The getter only receives the field ids defined above, all keys of Issue.
     field === 'title' ? t(issue.title) : issue[field as keyof Issue],
   );
 

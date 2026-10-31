@@ -59,7 +59,12 @@ import {
   TagInputTags,
 } from '@/registry/hirael/bases/radix/components/tag-input';
 
-type MemberRole = 'Owner' | 'Admin' | 'Member' | 'Viewer';
+const MEMBER_ROLE_VALUES = ['Owner', 'Admin', 'Member', 'Viewer'] as const;
+
+type MemberRole = (typeof MEMBER_ROLE_VALUES)[number];
+
+const isMemberRole = (value: unknown): value is MemberRole => MEMBER_ROLE_VALUES.some((option) => option === value);
+
 type MemberStatus = 'Active' | 'Pending' | 'Suspended';
 
 interface Member {
@@ -80,6 +85,7 @@ interface PendingInvite {
 }
 
 const ROLES: readonly MemberRole[] = ['Owner', 'Admin', 'Member', 'Viewer'];
+const ASSIGNABLE_ROLES = ROLES.filter((r) => r !== 'Owner');
 
 const ROLE_HINT: Record<MemberRole, string> = {
   Owner: 'Full access, including billing and deleting the workspace.',
@@ -88,7 +94,12 @@ const ROLE_HINT: Record<MemberRole, string> = {
   Viewer: 'Read-only.',
 };
 
-const STATUS_TONE: Record<MemberStatus, { dot: string; text: string }> = {
+interface StatusTone {
+  dot: string;
+  text: string;
+}
+
+const STATUS_TONE: Record<MemberStatus, StatusTone> = {
   Active: { dot: 'bg-success', text: 'text-success' },
   Pending: {
     dot: 'border border-warning bg-transparent',
@@ -168,7 +179,7 @@ const MembersRoleSelect = ({
   value,
   onValueChange,
   disabled,
-  roles = ROLES.filter((r) => r !== 'Owner'),
+  roles = ASSIGNABLE_ROLES,
   size = 'sm',
   className,
   id,
@@ -177,7 +188,13 @@ const MembersRoleSelect = ({
   const options = roles.includes(value) ? roles : [value, ...roles];
 
   return (
-    <Select value={value} onValueChange={(next) => onValueChange?.(next as MemberRole)} disabled={disabled}>
+    <Select
+      value={value}
+      onValueChange={(next) => {
+        if (isMemberRole(next)) onValueChange?.(next);
+      }}
+      disabled={disabled}
+    >
       <SelectTrigger
         id={id}
         size={size}
@@ -314,7 +331,9 @@ const MembersRow = ({ member, isYou = false, onRoleChange, onResend, onRemove, c
               <DropdownMenuSubContent>
                 <DropdownMenuRadioGroup
                   value={member.role}
-                  onValueChange={(next) => onRoleChange?.(next as MemberRole)}
+                  onValueChange={(next) => {
+                    if (isMemberRole(next)) onRoleChange?.(next);
+                  }}
                 >
                   {ROLES.filter((r) => r !== 'Owner').map((role) => (
                     <DropdownMenuRadioItem key={role} value={role}>
@@ -381,26 +400,23 @@ const MembersInviteDialog = ({
   const roleId = React.useId();
   const emailsId = React.useId();
 
-  const taken = React.useMemo(() => new Set(existingEmails.map((e) => e.toLowerCase())), [existingEmails]);
+  const taken = new Set(existingEmails.map((e) => e.toLowerCase()));
 
-  const validate = React.useCallback(
-    (candidate: string) => {
-      if (!EMAIL_RE.test(candidate)) return 'That is not an email address.';
-      if (taken.has(candidate.toLowerCase())) {
-        return `${candidate} is already on the team.`;
-      }
+  const validate = (candidate: string) => {
+    if (!EMAIL_RE.test(candidate)) return 'That is not an email address.';
+    if (taken.has(candidate.toLowerCase())) {
+      return `${candidate} is already on the team.`;
+    }
 
-      return true as const;
-    },
-    [taken],
-  );
+    return true as const;
+  };
 
   const reset = () => {
     setEmails([]);
     setRole(defaultRole);
   };
 
-  const submit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (emails.length === 0) return;
     onInvite?.(emails, role);
@@ -425,7 +441,7 @@ const MembersInviteDialog = ({
         )}
       </DialogTrigger>
       <DialogContent data-slot="members-invite-dialog" className="sm:max-w-md">
-        <form onSubmit={submit} className="flex flex-col gap-5">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
           <DialogHeader>
             <DialogTitle>Invite people</DialogTitle>
             <DialogDescription>They get an email with a link that works for 7 days.</DialogDescription>
@@ -708,7 +724,7 @@ const Members01 = () => {
 
   const revoke = (id: string) => setPending((list) => list.filter((p) => p.id !== id));
 
-  const invite = (emails: string[], role: MemberRole) =>
+  const handleInvite = (emails: string[], role: MemberRole) =>
     setPending((list) => [
       ...emails.map((email, i) => ({
         id: `p-${Date.now()}-${i}`,
@@ -747,7 +763,7 @@ const Members01 = () => {
                 }}
               />
             </InputGroup>
-            <MembersInviteDialog onInvite={invite} existingEmails={existingEmails} />
+            <MembersInviteDialog onInvite={handleInvite} existingEmails={existingEmails} />
           </MembersHeader>
 
           {visible.length === 0 ? (
@@ -794,7 +810,7 @@ const Members01 = () => {
                 <MembersPendingItem
                   key={p.id}
                   invite={p}
-                  className={p.invited === 'just now' ? SWAP : undefined}
+                  className={cn(p.invited === 'just now' && SWAP)}
                   resent={resent.has(p.id)}
                   onResend={() => resend(p.id)}
                   onRevoke={() => revoke(p.id)}

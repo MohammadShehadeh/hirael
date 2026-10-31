@@ -175,7 +175,7 @@ const ApplyForm = () => {
     if (submitted) setErrors(validate(next));
   };
 
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);
     const next = validate(state);
@@ -191,7 +191,7 @@ const ApplyForm = () => {
     setStatus('sent');
   };
 
-  const reset = () => {
+  const handleReset = () => {
     setState(INITIAL);
     setErrors({});
     setSubmitted(false);
@@ -219,7 +219,7 @@ const ApplyForm = () => {
             A copy is on its way to <span className="text-foreground">{state.email.trim()}</span>.
           </p>
         </div>
-        <Button type="button" variant="outline" size="sm" onClick={reset}>
+        <Button type="button" variant="outline" size="sm" onClick={handleReset}>
           Start a new application
         </Button>
       </div>
@@ -227,7 +227,7 @@ const ApplyForm = () => {
   }
 
   return (
-    <form noValidate onSubmit={onSubmit} data-slot="careers-apply-form" aria-busy={submitting || undefined}>
+    <form noValidate onSubmit={handleSubmit} data-slot="careers-apply-form" aria-busy={submitting || undefined}>
       <FieldGroup className="gap-5">
         <Field data-invalid={Boolean(errors.name) || undefined} className="gap-2">
           <FieldLabel htmlFor="careers-02-name">Full name</FieldLabel>

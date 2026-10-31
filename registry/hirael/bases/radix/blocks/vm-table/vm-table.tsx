@@ -26,7 +26,14 @@ import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/t
 
 export type VmState = 'running' | 'stopped' | 'starting' | 'stopping' | 'error' | 'suspended';
 
-const vmStateMeta: Record<VmState, { dot: string; text: string; label: string; live?: boolean }> = {
+interface VmStateMeta {
+  dot: string;
+  text: string;
+  label: string;
+  live?: boolean;
+}
+
+const vmStateMeta: Record<VmState, VmStateMeta> = {
   running: { dot: 'bg-success', text: 'text-success', label: 'Running' },
   stopped: {
     dot: 'bg-muted-foreground',
@@ -145,7 +152,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-type VmRow = {
+interface VmRow {
   name: string;
   id: string;
   state: VmState;
@@ -153,7 +160,7 @@ type VmRow = {
   region: string;
   ip: string | null;
   uptime: string | null;
-};
+}
 
 const VM_ROWS: VmRow[] = [
   {
@@ -212,7 +219,13 @@ const VM_ROWS: VmRow[] = [
   },
 ];
 
-const VM_FILTERS: { value: string; label: string; states: VmState[] }[] = [
+interface VmFilter {
+  value: string;
+  label: string;
+  states: VmState[];
+}
+
+const VM_FILTERS: VmFilter[] = [
   { value: 'all', label: 'All', states: ['running', 'starting', 'stopping', 'error', 'stopped', 'suspended'] },
   { value: 'running', label: 'Running', states: ['running'] },
   { value: 'pending', label: 'Pending', states: ['starting', 'stopping'] },
@@ -222,10 +235,16 @@ const VM_FILTERS: { value: string; label: string; states: VmState[] }[] = [
 
 type SortDirection = 'asc' | 'desc' | null;
 
-const nextSort = (current: SortDirection): SortDirection =>
-  current === null ? 'asc' : current === 'asc' ? 'desc' : null;
+const nextSort = (current: SortDirection): SortDirection => {
+  if (current === null) return 'asc';
+  if (current === 'asc') return 'desc';
+
+  return null;
+};
 
 const ARIA_SORT = { asc: 'ascending', desc: 'descending' } as const;
+
+const SORT_ICON = { asc: ArrowUp, desc: ArrowDown };
 
 interface MutedValueProps {
   value: string | null;
@@ -250,9 +269,9 @@ const VmTableBlock = () => {
   const visibleRows =
     sort === null
       ? filteredRows
-      : [...filteredRows].sort((a, b) => (sort === 'asc' ? 1 : -1) * a.name.localeCompare(b.name));
+      : filteredRows.toSorted((a, b) => (sort === 'asc' ? 1 : -1) * a.name.localeCompare(b.name));
   const regionCount = new Set(rows.map((row) => row.region)).size;
-  const SortIcon = sort === 'asc' ? ArrowUp : sort === 'desc' ? ArrowDown : ArrowUpDown;
+  const SortIcon = sort ? SORT_ICON[sort] : ArrowUpDown;
 
   const setRowState = (id: string, patch: Partial<VmRow>) =>
     setRows((current) => current.map((row) => (row.id === id ? { ...row, ...patch } : row)));

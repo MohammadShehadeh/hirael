@@ -220,7 +220,13 @@ const CONVERSATIONS: readonly Conversation[] = [
   },
 ];
 
-const RAIL: { icon: LucideIcon; label: string; current?: boolean }[] = [
+interface RailItem {
+  icon: LucideIcon;
+  label: string;
+  current?: boolean;
+}
+
+const RAIL: RailItem[] = [
   { icon: Inbox, label: 'Inbox', current: true },
   { icon: Send, label: 'Sent' },
   { icon: Archive, label: 'Archive' },
@@ -244,9 +250,15 @@ const BrandMark = ({ className }: BrandMarkProps) => {
   );
 };
 
-type InboxFilter = 'all' | 'unread';
+const INBOX_FILTER_VALUES = ['all', 'unread'] as const;
+
+type InboxFilter = (typeof INBOX_FILTER_VALUES)[number];
+
+const isInboxFilter = (value: unknown): value is InboxFilter => INBOX_FILTER_VALUES.some((option) => option === value);
 
 type MobilePane = 'list' | 'thread';
+
+const LIST_KEYS = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
 
 const AppShell03 = () => {
   const [selectedId, setSelectedId] = React.useState<string | null>(CONVERSATIONS[0].id);
@@ -263,36 +275,32 @@ const AppShell03 = () => {
 
   const optionRefs = React.useRef(new Map<string, HTMLLIElement>());
 
-  const isUnread = React.useCallback((c: Conversation) => !!c.unread && !readIds.includes(c.id), [readIds]);
+  const isUnread = (c: Conversation) => !!c.unread && !readIds.includes(c.id);
 
-  const inbox = React.useMemo(() => CONVERSATIONS.filter((c) => !removedIds.includes(c.id)), [removedIds]);
+  const inbox = CONVERSATIONS.filter((c) => !removedIds.includes(c.id));
 
   const unreadCount = inbox.filter(isUnread).length;
 
-  const visible = React.useMemo(() => {
-    const normalized = query.trim().toLowerCase();
+  const normalized = query.trim().toLowerCase();
+  const visible = inbox.filter((c) => {
+    if (filter === 'unread' && !isUnread(c)) return false;
+    if (!normalized) return true;
 
-    return inbox.filter((c) => {
-      if (filter === 'unread' && !isUnread(c)) return false;
-      if (!normalized) return true;
-
-      return c.sender.toLowerCase().includes(normalized) || c.subject.toLowerCase().includes(normalized);
-    });
-  }, [inbox, filter, query, isUnread]);
+    return c.sender.toLowerCase().includes(normalized) || c.subject.toLowerCase().includes(normalized);
+  });
 
   const selected = inbox.find((c) => c.id === selectedId) ?? null;
   const thread = selected ? [...selected.thread, ...(replies[selected.id] ?? [])] : [];
   const isStarred = selected ? starred.includes(selected.id) : false;
 
-  const openConversation = React.useCallback((id: string) => {
+  const openConversation = (id: string) => {
     setSelectedId(id);
     setDraft('');
     setReadIds((prev) => (prev.includes(id) ? prev : [...prev, id]));
-  }, []);
+  };
 
-  const onListKeyDown = (event: React.KeyboardEvent<HTMLUListElement>) => {
-    const keys = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
-    if (!keys.includes(event.key) || visible.length === 0) return;
+  const handleListKeyDown = (event: React.KeyboardEvent<HTMLUListElement>) => {
+    if (!LIST_KEYS.includes(event.key) || visible.length === 0) return;
     event.preventDefault();
 
     const current = visible.findIndex((c) => c.id === selectedId);
@@ -311,7 +319,7 @@ const AppShell03 = () => {
     optionRefs.current.get(target.id)?.focus();
   };
 
-  const toggleStar = () => {
+  const handleToggleStar = () => {
     if (!selected) return;
     setStarred((prev) => (prev.includes(selected.id) ? prev.filter((s) => s !== selected.id) : [...prev, selected.id]));
   };
@@ -328,14 +336,14 @@ const AppShell03 = () => {
     if (!neighbour) setMobilePane('list');
   };
 
-  const undoRemoval = () => {
+  const handleUndoRemoval = () => {
     if (!lastRemoval) return;
     setRemovedIds((prev) => prev.filter((id) => id !== lastRemoval.id));
     setSelectedId(lastRemoval.id);
     setLastRemoval(null);
   };
 
-  const sendReply = () => {
+  const handleSendReply = () => {
     const body = draft.trim();
     if (!body || !selected) return;
     const existing = replies[selected.id] ?? [];
@@ -436,7 +444,13 @@ const AppShell03 = () => {
             />
           </InputGroup>
           <div className="flex items-center justify-between gap-2">
-            <Tabs value={filter} onValueChange={(v) => setFilter(v as InboxFilter)} className="w-fit">
+            <Tabs
+              value={filter}
+              onValueChange={(v) => {
+                if (isInboxFilter(v)) setFilter(v);
+              }}
+              className="w-fit"
+            >
               <TabsList className="h-7">
                 <TabsTrigger value="all">All</TabsTrigger>
                 <TabsTrigger value="unread">Unread</TabsTrigger>
@@ -452,7 +466,7 @@ const AppShell03 = () => {
         {lastRemoval && (
           <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/40 px-4 py-2">
             <span className="truncate text-xs text-muted-foreground uppercase">conversation {lastRemoval.kind}</span>
-            <Button variant="ghost" size="xs" className="shrink-0" onClick={undoRemoval}>
+            <Button variant="ghost" size="xs" className="shrink-0" onClick={handleUndoRemoval}>
               <Undo2 className="size-3 rtl:rotate-180" aria-hidden />
               Undo
             </Button>
@@ -487,7 +501,7 @@ const AppShell03 = () => {
             role="listbox"
             aria-label="Conversations"
             aria-orientation="vertical"
-            onKeyDown={onListKeyDown}
+            onKeyDown={handleListKeyDown}
             className="flex-1 overflow-y-auto"
           >
             {visible.map((c) => {
@@ -553,7 +567,7 @@ const AppShell03 = () => {
                   onClick={() => setMobilePane('list')}
                   aria-label="Back to conversations"
                 >
-                  <ChevronLeft className="size-4 rtl:rotate-180" aria-hidden />
+                  <ChevronLeft className="rtl:rotate-180" aria-hidden />
                 </Button>
                 <h2 className="truncate text-sm font-medium tracking-[-0.01em]">{selected.subject}</h2>
               </div>
@@ -562,7 +576,7 @@ const AppShell03 = () => {
                   variant="ghost"
                   size="icon"
                   className="size-8"
-                  onClick={toggleStar}
+                  onClick={handleToggleStar}
                   aria-pressed={isStarred}
                   aria-label={isStarred ? 'Unstar conversation' : 'Star conversation'}
                 >
@@ -584,7 +598,7 @@ const AppShell03 = () => {
                   onClick={() => remove('deleted')}
                   aria-label="Delete conversation"
                 >
-                  <Trash2 className="size-4" aria-hidden />
+                  <Trash2 aria-hidden />
                 </Button>
               </div>
             </div>
@@ -638,7 +652,7 @@ const AppShell03 = () => {
                   // Enter writes a new line in a mail composer; ⌘/Ctrl sends.
                   if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                     e.preventDefault();
-                    sendReply();
+                    handleSendReply();
                   }
                 }}
                 placeholder={`Reply to ${selected.sender}…`}
@@ -648,7 +662,7 @@ const AppShell03 = () => {
               />
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xs text-muted-foreground uppercase">⌘ + enter to send</span>
-                <Button size="sm" onClick={sendReply} disabled={!draft.trim()}>
+                <Button size="sm" onClick={handleSendReply} disabled={!draft.trim()}>
                   Send
                   <SendHorizonal className="size-3.5 rtl:rotate-180" aria-hidden />
                 </Button>
@@ -666,7 +680,7 @@ const AppShell03 = () => {
             </EmptyHeader>
             {lastRemoval && (
               <EmptyContent>
-                <Button variant="outline" size="sm" onClick={undoRemoval}>
+                <Button variant="outline" size="sm" onClick={handleUndoRemoval}>
                   <Undo2 className="size-3.5 rtl:rotate-180" aria-hidden />
                   Undo {lastRemoval.kind === 'archived' ? 'archive' : 'delete'}
                 </Button>

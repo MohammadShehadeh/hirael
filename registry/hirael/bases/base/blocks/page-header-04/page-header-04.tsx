@@ -121,6 +121,21 @@ const AnalyticsMetricValue = ({ value, className, ...props }: AnalyticsMetricVal
 
 type Direction = 'up' | 'down' | 'flat';
 
+const directionOf = (change: number): Direction => {
+  if (change > 0) return 'up';
+  if (change < 0) return 'down';
+
+  return 'flat';
+};
+
+const DIRECTION_WORD: Record<Direction, string> = { up: 'Up', down: 'Down', flat: 'No change,' };
+
+const toneOf = (direction: Direction, goodWhen: Direction) => {
+  if (direction === 'flat') return 'flat';
+
+  return direction === goodWhen ? 'good' : 'bad';
+};
+
 interface AnalyticsMetricDeltaProps extends Omit<React.ComponentProps<'span'>, 'children'> {
   /** Percent change from the previous period; negative when it went down. */
   change: number;
@@ -143,10 +158,10 @@ const AnalyticsMetricDelta = ({
   className,
   ...props
 }: AnalyticsMetricDeltaProps) => {
-  const direction: Direction = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
-  const tone = direction === 'flat' ? 'flat' : direction === goodWhen ? 'good' : 'bad';
+  const direction = directionOf(change);
+  const tone = toneOf(direction, goodWhen);
   const Icon = direction === 'down' ? ArrowDown : ArrowUp;
-  const word = direction === 'up' ? 'Up' : direction === 'down' ? 'Down' : 'No change,';
+  const word = DIRECTION_WORD[direction];
 
   return (
     <span
@@ -187,7 +202,12 @@ const SWAP = `animate-in fade-in slide-in-from-bottom-1 duration-300 ${EASE} fil
 
 const stagger = (index: number, step = 60): React.CSSProperties => ({ animationDelay: `${index * step}ms` });
 
-type Range = '7d' | '30d' | '90d';
+const RANGE_VALUES = ['7d', '30d', '90d'] as const;
+
+type Range = (typeof RANGE_VALUES)[number];
+
+const isRange = (value: unknown): value is Range => RANGE_VALUES.some((option) => option === value);
+
 type MetricId = 'revenue' | 'orders' | 'conversion' | 'refunds';
 
 interface Reading {
@@ -203,7 +223,13 @@ interface MetricDefinition {
   number: Pick<AnimatedNumberProps, 'decimals' | 'format' | 'prefix' | 'suffix'>;
 }
 
-const RANGES: readonly { value: Range; label: string; previous: string }[] = [
+interface RangeOption {
+  value: Range;
+  label: string;
+  previous: string;
+}
+
+const RANGES: readonly RangeOption[] = [
   { value: '7d', label: 'Last 7 days', previous: 'previous 7 days' },
   { value: '30d', label: 'Last 30 days', previous: 'previous 30 days' },
   { value: '90d', label: 'Last 90 days', previous: 'previous 90 days' },
@@ -242,7 +268,12 @@ const DATA: Record<Range, Record<MetricId, Reading>> = {
   },
 };
 
-const TOP_PRODUCTS: Record<Range, readonly { name: string; revenue: number }[]> = {
+interface ProductRevenue {
+  name: string;
+  revenue: number;
+}
+
+const TOP_PRODUCTS: Record<Range, readonly ProductRevenue[]> = {
   '7d': [
     { name: 'Atlas headphones', revenue: 8420 },
     { name: 'Meridian watch', revenue: 6150 },
@@ -307,7 +338,7 @@ const PageHeader04 = () => {
                 value={[range]}
                 onValueChange={([next]) => {
                   // Keep one range selected when the active one is clicked again.
-                  if (next) setRange(next as Range);
+                  if (isRange(next)) setRange(next);
                 }}
                 aria-label="Date range"
               >

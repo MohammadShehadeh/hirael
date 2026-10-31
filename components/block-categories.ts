@@ -1,12 +1,12 @@
 import { type BlockKind } from '@/registry/hirael/registry-meta';
 
-export type CategoryGroup = keyof typeof CATEGORY_GROUP_LABELS;
-
 export const CATEGORY_GROUP_LABELS = {
   marketing: 'Marketing',
   site: 'Site pages',
   app: 'Product & app',
 } as const;
+
+export type CategoryGroup = keyof typeof CATEGORY_GROUP_LABELS;
 
 const CATEGORY_GROUP_ORDER: CategoryGroup[] = ['marketing', 'site', 'app'];
 
@@ -306,9 +306,9 @@ export const CATEGORY_REGISTRY: CategoryMeta[] = [
   },
 ];
 
-export const CATEGORY_BY_SLUG = Object.fromEntries(
+export const CATEGORY_BY_SLUG: Record<string, CategoryMeta> = Object.fromEntries(
   CATEGORY_REGISTRY.map((category) => [category.slug, category]),
-) as Record<string, CategoryMeta>;
+);
 
 export const CATEGORIES_BY_GROUP = CATEGORY_GROUP_ORDER.map((group) => ({
   group,

@@ -39,27 +39,6 @@ interface NpsScaleProps extends Omit<React.ComponentProps<typeof QuestionnairePr
   max?: number;
 }
 
-const NpsScale = ({ value, onValueChange, max = 10, className, style, children, ...props }: NpsScaleProps) => {
-  return (
-    <QuestionnairePrimitive.Choices
-      data-slot="nps-scale"
-      className={cn('grid gap-1 sm:gap-1.5', className)}
-      style={{ gridTemplateColumns: `repeat(${max + 1}, minmax(0, 1fr))`, ...style }}
-      {...props}
-    >
-      {children ??
-        Array.from({ length: max + 1 }, (_, score) => (
-          <NpsScaleChoice
-            key={score}
-            value={score}
-            checked={value === undefined ? undefined : value === score}
-            onChange={() => onValueChange?.(score)}
-          />
-        ))}
-    </QuestionnairePrimitive.Choices>
-  );
-};
-
 interface NpsScaleChoiceProps extends Omit<React.ComponentProps<typeof QuestionnairePrimitive.Choice>, 'value'> {
   /** The score this choice selects. */
   value: number;
@@ -84,6 +63,27 @@ const NpsScaleChoice = ({ value, className, children, ...props }: NpsScaleChoice
         {children ?? value}
       </QuestionnairePrimitive.ChoiceLabel>
     </QuestionnairePrimitive.Choice>
+  );
+};
+
+const NpsScale = ({ value, onValueChange, max = 10, className, style, children, ...props }: NpsScaleProps) => {
+  return (
+    <QuestionnairePrimitive.Choices
+      data-slot="nps-scale"
+      className={cn('grid gap-1 sm:gap-1.5', className)}
+      style={{ gridTemplateColumns: `repeat(${max + 1}, minmax(0, 1fr))`, ...style }}
+      {...props}
+    >
+      {children ??
+        Array.from({ length: max + 1 }, (_, score) => (
+          <NpsScaleChoice
+            key={score}
+            value={score}
+            checked={value === undefined ? undefined : value === score}
+            onChange={() => onValueChange?.(score)}
+          />
+        ))}
+    </QuestionnairePrimitive.Choices>
   );
 };
 
@@ -114,7 +114,13 @@ const ITEMS = [
   { name: 'comment', required: true },
 ] as const;
 
-const FOLLOW_UP: Record<NpsBand, { question: string; placeholder: string; thanks: string }> = {
+interface FollowUpCopy {
+  question: string;
+  placeholder: string;
+  thanks: string;
+}
+
+const FOLLOW_UP: Record<NpsBand, FollowUpCopy> = {
   detractor: {
     question: 'What was missing or disappointing?',
     placeholder: 'Search was slow and we missed a Salesforce sync',
@@ -143,7 +149,10 @@ const Survey01 = () => {
   // The built-in `shortcuts="numbers"` maps keys 1 to 9 onto choices in order, which can't reach 0 or line up with the scores.
   const handleShortcut = (event: React.KeyboardEvent<HTMLFormElement>) => {
     if (item !== 'score' || event.metaKey || event.ctrlKey || event.altKey || !/^[0-9]$/.test(event.key)) return;
-    if ((event.target as HTMLElement).closest('input:not([type=radio]), textarea, select, [contenteditable="true"]')) {
+    if (
+      event.target instanceof Element &&
+      event.target.closest('input:not([type=radio]), textarea, select, [contenteditable="true"]')
+    ) {
       return;
     }
     const input = event.currentTarget.querySelector<HTMLInputElement>(
@@ -161,7 +170,7 @@ const Survey01 = () => {
     setSubmitted(true);
   };
 
-  const changeAnswer = () => {
+  const handleChangeAnswer = () => {
     setItem('score');
     setSubmitted(false);
   };
@@ -197,7 +206,7 @@ const Survey01 = () => {
                 </div>
               </dl>
 
-              <Button type="button" variant="outline" className="w-fit" onClick={changeAnswer}>
+              <Button type="button" variant="outline" className="w-fit" onClick={handleChangeAnswer}>
                 <RotateCcw aria-hidden />
                 Change answer
               </Button>

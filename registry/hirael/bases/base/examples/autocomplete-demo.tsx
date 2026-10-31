@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { SearchIcon } from 'lucide-react';
 
-import { useT } from '@/lib/demo-locale';
+import { useT, type Localized } from '@/lib/demo-locale';
 import { Field, FieldDescription, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import { InputGroupAddon } from '@/registry/hirael/bases/base/ui/input-group';
 import {
@@ -15,7 +15,7 @@ import {
 
 type Region = 'europe' | 'middleEast' | 'asia' | 'americas' | 'africa';
 
-const REGIONS: Record<Region, { en: string; ar: string }> = {
+const REGIONS: Record<Region, Localized<string>> = {
   europe: { en: 'Europe', ar: 'أوروبا' },
   middleEast: { en: 'Middle East', ar: 'الشرق الأوسط' },
   asia: { en: 'Asia', ar: 'آسيا' },
@@ -23,7 +23,14 @@ const REGIONS: Record<Region, { en: string; ar: string }> = {
   africa: { en: 'Africa', ar: 'أفريقيا' },
 };
 
-const CITIES: { en: string; ar: string; country: { en: string; ar: string }; region: Region }[] = [
+interface City {
+  en: string;
+  ar: string;
+  country: Localized<string>;
+  region: Region;
+}
+
+const CITIES: City[] = [
   { en: 'Paris', ar: 'باريس', country: { en: 'France', ar: 'فرنسا' }, region: 'europe' },
   { en: 'Porto', ar: 'بورتو', country: { en: 'Portugal', ar: 'البرتغال' }, region: 'europe' },
   { en: 'Prague', ar: 'براغ', country: { en: 'Czechia', ar: 'التشيك' }, region: 'europe' },
@@ -64,7 +71,12 @@ const CITIES: { en: string; ar: string; country: { en: string; ar: string }; reg
   { en: 'Cape Town', ar: 'كيب تاون', country: { en: 'South Africa', ar: 'جنوب أفريقيا' }, region: 'africa' },
 ];
 
-const PACKAGES: { name: string; description: { en: string; ar: string } }[] = [
+interface Package {
+  name: string;
+  description: Localized<string>;
+}
+
+const PACKAGES: Package[] = [
   { name: 'react', description: { en: 'Build user interfaces from components', ar: 'بناء الواجهات من المكونات' } },
   { name: 'react-dom', description: { en: 'React renderer for the web', ar: 'عارض React للويب' } },
   { name: 'react-hook-form', description: { en: 'Forms with hooks and validation', ar: 'نماذج مع الخطافات والتحقق' } },
@@ -109,14 +121,14 @@ const AutocompleteDemo = () => {
   const [recentKeys, setRecentKeys] = React.useState(['Lisbon', 'Tokyo']);
   const recent = recentKeys.map((key) => cities.find((city) => city.key === key)?.value ?? key);
 
-  const remember = (value: string) => {
+  const handleRemember = (value: string) => {
     const key = cities.find((city) => city.value === value)?.key ?? value;
     setRecentKeys((prev) => [key, ...prev.filter((k) => k !== key)].slice(0, 3));
   };
 
   const [requests, setRequests] = React.useState({ sent: 0, cancelled: 0 });
 
-  const searchPackages = (query: string, signal: AbortSignal) => {
+  const handleSearchPackages = (query: string, signal: AbortSignal) => {
     setRequests((prev) => ({ ...prev, sent: prev.sent + 1 }));
 
     return new Promise<AutocompleteOption[]>((resolve, reject) => {
@@ -147,7 +159,7 @@ const AutocompleteDemo = () => {
           inlineComplete
           recent={recent}
           recentLabel={t({ en: 'Recent', ar: 'الأخيرة' })}
-          onValueCommit={remember}
+          onValueCommit={handleRemember}
           name="city"
         >
           <AutocompleteInput id="autocomplete-city" placeholder={t({ en: 'Where to?', ar: 'إلى أين؟' })} />
@@ -166,7 +178,7 @@ const AutocompleteDemo = () => {
 
       <Field>
         <FieldLabel htmlFor="autocomplete-package">{t({ en: 'Package', ar: 'الحزمة' })}</FieldLabel>
-        <Autocomplete onSearch={searchPackages} name="package">
+        <Autocomplete onSearch={handleSearchPackages} name="package">
           <AutocompleteInput id="autocomplete-package" placeholder={t({ en: 'Search packages', ar: 'ابحث عن الحزم' })}>
             <InputGroupAddon>
               <SearchIcon />

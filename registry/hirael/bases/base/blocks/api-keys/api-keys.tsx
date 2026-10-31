@@ -179,7 +179,7 @@ const ApiKeysBlock = () => {
 
   const revealedRow = rows.find((row) => row.id === revealedId);
 
-  const createKey = () => {
+  const handleCreateKey = () => {
     createdCount.current += 1;
     const count = createdCount.current;
     const id = `key-${count}`;
@@ -207,7 +207,7 @@ const ApiKeysBlock = () => {
       <ApiKeys className={cn(ENTER, 'w-full max-w-xl')}>
         <ApiKeysHeader>
           <ApiKeysTitle>API keys</ApiKeysTitle>
-          <Button type="button" size="sm" onClick={createKey}>
+          <Button type="button" size="sm" onClick={handleCreateKey}>
             <Plus />
             Create key
           </Button>

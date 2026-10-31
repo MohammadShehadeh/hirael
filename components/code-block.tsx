@@ -25,79 +25,6 @@ export interface CodeBlockProps {
   collapsible?: boolean;
 }
 
-export const CodeBlock = ({
-  tabs,
-  defaultTab,
-  className,
-  maxHeight = 'max-h-[640px]',
-  layout = 'tabs',
-  collapsible = false,
-}: CodeBlockProps) => {
-  const [activeLabel, setActiveLabel] = React.useState(() => defaultTab ?? tabs[0]?.label);
-  const [isExpanded, setIsExpanded] = React.useState(false);
-  const currentTab = tabs.find((tab) => tab.label === activeLabel) ?? tabs[0];
-
-  if (!currentTab) return null;
-
-  if (layout === 'tree') {
-    return (
-      <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
-        <div className="flex min-h-0">
-          <FileTree
-            paths={tabs.map((tab) => tab.label)}
-            activePath={currentTab.label}
-            onSelect={setActiveLabel}
-            maxHeight={maxHeight}
-          />
-          <div className="flex min-w-0 flex-1 flex-col">
-            <div className="flex items-center justify-between gap-2 border-b border-l border-border px-2.5 py-1.5">
-              <span title={currentTab.label} className="truncate text-xs text-muted-foreground">
-                {currentTab.label}
-              </span>
-              <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" />
-            </div>
-            <CodePane
-              html={currentTab.html}
-              maxHeight={maxHeight}
-              isCollapsible={collapsible}
-              isExpanded={isExpanded}
-              onExpandedChange={setIsExpanded}
-              className="border-l border-border"
-            />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
-      <div className="flex items-center justify-between gap-2 border-b border-border px-1 py-1">
-        <SegmentedControl
-          role="tab"
-          ariaLabel="Source files"
-          value={currentTab.label}
-          onValueChange={setActiveLabel}
-          className="min-w-0 overflow-x-auto"
-          items={tabs.map((tab) => ({
-            value: tab.label,
-            label: tab.label.split('/').slice(-1)[0],
-            title: tab.label,
-          }))}
-        />
-        <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" className="mr-0.5" />
-      </div>
-      <CodePane
-        html={currentTab.html}
-        maxHeight={maxHeight}
-        isCollapsible={collapsible}
-        isExpanded={isExpanded}
-        onExpandedChange={setIsExpanded}
-      />
-    </div>
-  );
-};
-
 interface CodePaneProps {
   html: string;
   maxHeight: string;
@@ -180,18 +107,6 @@ interface FileTreeProps {
   maxHeight: string;
 }
 
-const FileTree = ({ paths, activePath, onSelect, maxHeight }: FileTreeProps) => {
-  const tree = buildTree(paths);
-
-  return (
-    <div role="tree" aria-label="Files" className={cn('w-56 shrink-0 overflow-auto px-1 py-2 text-[12px]', maxHeight)}>
-      {tree.map((node) => (
-        <TreeRow key={node.name} node={node} depth={0} activePath={activePath} onSelect={onSelect} />
-      ))}
-    </div>
-  );
-};
-
 interface TreeRowProps {
   node: TreeNode;
   depth: number;
@@ -251,6 +166,91 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
       <File className="size-3 shrink-0" aria-hidden />
       <span className="truncate">{node.name}</span>
     </button>
+  );
+};
+
+const FileTree = ({ paths, activePath, onSelect, maxHeight }: FileTreeProps) => {
+  const tree = buildTree(paths);
+
+  return (
+    <div role="tree" aria-label="Files" className={cn('w-56 shrink-0 overflow-auto px-1 py-2 text-[12px]', maxHeight)}>
+      {tree.map((node) => (
+        <TreeRow key={node.name} node={node} depth={0} activePath={activePath} onSelect={onSelect} />
+      ))}
+    </div>
+  );
+};
+
+export const CodeBlock = ({
+  tabs,
+  defaultTab,
+  className,
+  maxHeight = 'max-h-[640px]',
+  layout = 'tabs',
+  collapsible = false,
+}: CodeBlockProps) => {
+  const [activeLabel, setActiveLabel] = React.useState(() => defaultTab ?? tabs[0]?.label);
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const currentTab = tabs.find((tab) => tab.label === activeLabel) ?? tabs[0];
+
+  if (!currentTab) return null;
+
+  if (layout === 'tree') {
+    return (
+      <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
+        <div className="flex min-h-0">
+          <FileTree
+            paths={tabs.map((tab) => tab.label)}
+            activePath={currentTab.label}
+            onSelect={setActiveLabel}
+            maxHeight={maxHeight}
+          />
+          <div className="flex min-w-0 flex-1 flex-col">
+            <div className="flex items-center justify-between gap-2 border-b border-l border-border px-2.5 py-1.5">
+              <span title={currentTab.label} className="truncate text-xs text-muted-foreground">
+                {currentTab.label}
+              </span>
+              <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" />
+            </div>
+            <CodePane
+              html={currentTab.html}
+              maxHeight={maxHeight}
+              isCollapsible={collapsible}
+              isExpanded={isExpanded}
+              onExpandedChange={setIsExpanded}
+              className="border-l border-border"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
+      <div className="flex items-center justify-between gap-2 border-b border-border px-1 py-1">
+        <SegmentedControl
+          role="tab"
+          ariaLabel="Source files"
+          value={currentTab.label}
+          onValueChange={setActiveLabel}
+          className="min-w-0 overflow-x-auto"
+          items={tabs.map((tab) => ({
+            value: tab.label,
+            label: tab.label.split('/').slice(-1)[0],
+            title: tab.label,
+          }))}
+        />
+        <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" className="mr-0.5" />
+      </div>
+      <CodePane
+        html={currentTab.html}
+        maxHeight={maxHeight}
+        isCollapsible={collapsible}
+        isExpanded={isExpanded}
+        onExpandedChange={setIsExpanded}
+      />
+    </div>
   );
 };
 

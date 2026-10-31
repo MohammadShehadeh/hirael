@@ -12,7 +12,7 @@ export const Cta = () => {
     <section data-slot="cta" className="flex w-full items-center justify-center bg-background p-3 md:p-5">
       <div className="relative flex min-h-[600px] w-full max-w-[1536px] items-center justify-center overflow-hidden rounded-[1.5rem] p-8 md:min-h-[720px] md:rounded-[3rem]">
         <video
-          className="absolute inset-0 z-0 h-full w-full object-cover"
+          className="absolute inset-0 z-0 size-full object-cover"
           src={CTA_VIDEO}
           autoPlay
           loop

@@ -154,7 +154,7 @@ const BillingCardBlock = () => {
   const upgraded = step === 'done';
   const plan = upgraded ? PLANS.next : PLANS.current;
 
-  const confirmUpgrade = () => {
+  const handleConfirmUpgrade = () => {
     setStep('pending');
     clearTimeout(timer.current);
     timer.current = setTimeout(() => setStep('done'), 1200);
@@ -208,7 +208,7 @@ const BillingCardBlock = () => {
                 >
                   Cancel
                 </Button>
-                <Button type="button" className="flex-1" disabled={step === 'pending'} onClick={confirmUpgrade}>
+                <Button type="button" className="flex-1" disabled={step === 'pending'} onClick={handleConfirmUpgrade}>
                   {step === 'pending' ? (
                     <>
                       <Spinner aria-hidden className="motion-reduce:animate-none" />

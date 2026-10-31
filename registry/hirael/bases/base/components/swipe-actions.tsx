@@ -35,20 +35,15 @@ const SwipeActions = ({ onOpenChange, className, ...props }: SwipeActionsProps) 
   const [open, setOpenState] = React.useState<Side | null>(null);
   const [widths, setWidths] = React.useState<Record<Side, number>>({ start: 0, end: 0 });
 
-  const setOpen = React.useCallback(
-    (side: Side | null) => {
-      setOpenState(side);
-      onOpenChange?.(side);
-    },
-    [onOpenChange],
-  );
+  const setOpen = (side: Side | null) => {
+    setOpenState(side);
+    onOpenChange?.(side);
+  };
 
-  const setWidth = React.useCallback(
-    (side: Side, width: number) => setWidths((prev) => (prev[side] === width ? prev : { ...prev, [side]: width })),
-    [],
-  );
+  const setWidth = (side: Side, width: number) =>
+    setWidths((prev) => (prev[side] === width ? prev : { ...prev, [side]: width }));
 
-  const ctx = React.useMemo(() => ({ open, setOpen, widths, setWidth }), [open, setOpen, widths, setWidth]);
+  const ctx = { open, setOpen, widths, setWidth };
 
   return (
     <SwipeActionsContext.Provider value={ctx}>
@@ -67,6 +62,14 @@ const SwipeActions = ({ onOpenChange, className, ...props }: SwipeActionsProps) 
 };
 
 /** The row itself. It slides over the action groups and follows the finger or mouse. */
+// Offset along the reading direction: positive reveals the start actions.
+const restingOffset = (open: Side | null, widths: Record<Side, number>) => {
+  if (open === 'start') return widths.start;
+  if (open === 'end') return -widths.end;
+
+  return 0;
+};
+
 const SwipeActionsContent = ({
   ref,
   className,
@@ -78,7 +81,7 @@ const SwipeActionsContent = ({
   const { open, setOpen, widths } = useSwipeActions();
   const [drag, setDrag] = React.useState<number | null>(null);
   const contentRef = React.useRef<HTMLDivElement>(null);
-  const composedRef = React.useMemo(() => composeRefs(contentRef, ref), [ref]);
+  const composedRef = composeRefs(contentRef, ref);
   // The click that ends a drag must not count as a tap on the row.
   const draggedRef = React.useRef(false);
   const [rtl, setRtl] = React.useState(false);
@@ -95,8 +98,7 @@ const SwipeActionsContent = ({
     return () => observer.disconnect();
   }, []);
 
-  // Offset along the reading direction: positive reveals the start actions.
-  const resting = open === 'start' ? widths.start : open === 'end' ? -widths.end : 0;
+  const resting = restingOffset(open, widths);
   const offset = drag ?? resting;
 
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {

@@ -91,10 +91,7 @@ const MaskedInput = ({
   inputMode,
   ...props
 }: MaskedInputProps) => {
-  const slots = React.useMemo(
-    () => [...mask].filter((char) => Object.hasOwn(replacement, char)).length,
-    [mask, replacement],
-  );
+  const slots = [...mask].filter((char) => Object.hasOwn(replacement, char)).length;
   const maskRef = useMask({
     mask,
     replacement,
@@ -103,7 +100,7 @@ const MaskedInput = ({
       ? ({ data }) => (data === null ? data : transform === 'uppercase' ? data.toUpperCase() : data.toLowerCase())
       : undefined,
   });
-  const composedRef = React.useMemo(() => composeRefs(maskRef, ref), [maskRef, ref]);
+  const composedRef = composeRefs(maskRef, ref);
   const numeric = Object.values(replacement).every((pattern) => pattern.test('5') && !pattern.test('a'));
 
   return (

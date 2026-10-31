@@ -73,7 +73,9 @@ const ORDER_NUMBER = 'HR-20417';
 
 type CheckoutState = 'idle' | 'pending' | 'placed';
 
-const usd = (n: number) => n.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+const usdFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+
+const usd = (n: number) => usdFormat.format(n);
 
 const Ecommerce02 = () => {
   const [items, setItems] = React.useState<readonly LineItem[]>(INITIAL_ITEMS);
@@ -113,7 +115,7 @@ const Ecommerce02 = () => {
     }, REMOVE_MS);
   };
 
-  const applyPromo = () => {
+  const handleApplyPromo = () => {
     if (code.trim().toUpperCase() === PROMO_CODE) {
       setPromoApplied(true);
       setPromoError(false);
@@ -122,7 +124,7 @@ const Ecommerce02 = () => {
     }
   };
 
-  const placeOrder = () => {
+  const handlePlaceOrder = () => {
     if (checkout !== 'idle' || active.length === 0) return;
     setCheckout('pending');
     later(() => {
@@ -131,7 +133,7 @@ const Ecommerce02 = () => {
     }, CHECKOUT_MS);
   };
 
-  const startOver = () => {
+  const handleStartOver = () => {
     setItems(INITIAL_ITEMS);
     setPromoApplied(false);
     setCode('');
@@ -195,7 +197,7 @@ const Ecommerce02 = () => {
                 <dd className="font-medium tabular-nums">{usd(placedTotal)}</dd>
               </div>
             </dl>
-            <Button variant="outline" size="sm" className="w-fit" onClick={startOver}>
+            <Button variant="outline" size="sm" className="w-fit" onClick={handleStartOver}>
               Start a new order
             </Button>
           </div>
@@ -365,7 +367,7 @@ const Ecommerce02 = () => {
                             setPromoError(false);
                           }}
                           onKeyDown={(e) => {
-                            if (e.key === 'Enter') applyPromo();
+                            if (e.key === 'Enter') handleApplyPromo();
                           }}
                           placeholder="Promo code"
                           aria-label="Promo code"
@@ -374,7 +376,7 @@ const Ecommerce02 = () => {
                           disabled={pending}
                         />
                         <InputGroupAddon align="inline-end">
-                          <InputGroupButton size="sm" onClick={applyPromo} disabled={pending}>
+                          <InputGroupButton size="sm" onClick={handleApplyPromo} disabled={pending}>
                             Apply
                           </InputGroupButton>
                         </InputGroupAddon>
@@ -396,7 +398,7 @@ const Ecommerce02 = () => {
                   <Button
                     data-slot="ecommerce-checkout"
                     className="group mt-1 w-full"
-                    onClick={placeOrder}
+                    onClick={handlePlaceOrder}
                     disabled={pending || active.length === 0}
                     aria-busy={pending || undefined}
                   >

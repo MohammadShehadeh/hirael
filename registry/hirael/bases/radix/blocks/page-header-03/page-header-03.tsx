@@ -111,8 +111,17 @@ const stagger = (index: number, step = 60): React.CSSProperties => ({ animationD
 
 type Status = 'paid' | 'due' | 'overdue';
 type StatusFilter = 'all' | Status;
-type Sort = 'newest' | 'oldest' | 'amount-desc' | 'amount-asc' | 'due';
-type View = 'list' | 'grid';
+const SORT_VALUES = ['newest', 'oldest', 'amount-desc', 'amount-asc', 'due'] as const;
+
+type Sort = (typeof SORT_VALUES)[number];
+
+const isSort = (value: unknown): value is Sort => SORT_VALUES.some((option) => option === value);
+
+const VIEW_VALUES = ['list', 'grid'] as const;
+
+type View = (typeof VIEW_VALUES)[number];
+
+const isView = (value: unknown): value is View => VIEW_VALUES.some((option) => option === value);
 
 interface Invoice {
   id: string;
@@ -264,14 +273,24 @@ const INVOICES: readonly Invoice[] = [
   { id: 'INV-2064', customer: 'Yardline Sports', amount: 2245, status: 'due', issued: '2026-09-22', due: '2026-10-22' },
 ];
 
-const STATUS_OPTIONS: readonly { value: StatusFilter; label: string }[] = [
+interface StatusOption {
+  value: StatusFilter;
+  label: string;
+}
+
+const STATUS_OPTIONS: readonly StatusOption[] = [
   { value: 'all', label: 'All statuses' },
   { value: 'paid', label: 'Paid' },
   { value: 'due', label: 'Due' },
   { value: 'overdue', label: 'Overdue' },
 ];
 
-const SORT_OPTIONS: readonly { value: Sort; label: string }[] = [
+interface SortOption {
+  value: Sort;
+  label: string;
+}
+
+const SORT_OPTIONS: readonly SortOption[] = [
   { value: 'newest', label: 'Newest first' },
   { value: 'oldest', label: 'Oldest first' },
   { value: 'due', label: 'Due soonest' },
@@ -298,8 +317,9 @@ const SORTERS: Record<Sort, (a: Invoice, b: Invoice) => number> = {
 const money = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
 const moneyRounded = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
-const formatDate = (date: string) =>
-  new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(new Date(date));
+const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+
+const formatDate = (date: string) => shortDate.format(new Date(date));
 
 const addDays = (date: string, days: number) => {
   const next = new Date(`${date}T00:00:00Z`);
@@ -308,12 +328,106 @@ const addDays = (date: string, days: number) => {
   return next.toISOString().slice(0, 10);
 };
 
-const InvoiceStatus = ({ status }: { status: Status }) => (
+interface InvoiceStatusProps {
+  status: Status;
+}
+
+const InvoiceStatus = ({ status }: InvoiceStatusProps) => (
   <Badge variant="outline" data-slot="invoice-status" data-status={status}>
     <span aria-hidden className={cn('size-1.5 rounded-full', STATUS_DOT[status])} />
     {STATUS_LABEL[status]}
   </Badge>
 );
+
+interface NewInvoiceDialogProps {
+  onCreate: (customer: string, amount: number) => void;
+}
+
+const NewInvoiceDialog = ({ onCreate }: NewInvoiceDialogProps) => {
+  const [open, setOpen] = React.useState(false);
+  const [customer, setCustomer] = React.useState('');
+  const [amount, setAmount] = React.useState('');
+  const [submitted, setSubmitted] = React.useState(false);
+
+  const parsed = Number(amount);
+  const customerError = customer.trim() === '' ? 'Enter a customer name.' : null;
+  const amountError = !(parsed > 0) ? 'Enter an amount above zero.' : null;
+
+  const reset = () => {
+    setCustomer('');
+    setAmount('');
+    setSubmitted(false);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setSubmitted(true);
+    if (customerError || amountError) return;
+    onCreate(customer.trim(), Math.round(parsed * 100) / 100);
+    setOpen(false);
+    reset();
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        setOpen(next);
+        if (!next) reset();
+      }}
+    >
+      <DialogTrigger asChild>
+        <Button type="button">
+          <Plus aria-hidden />
+          New invoice
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-md">
+        <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-5">
+          <DialogHeader>
+            <DialogTitle>New invoice</DialogTitle>
+            <DialogDescription>It is issued today and due in 30 days.</DialogDescription>
+          </DialogHeader>
+          <FieldGroup className="gap-4">
+            <Field data-invalid={(submitted && Boolean(customerError)) || undefined}>
+              <FieldLabel htmlFor="page-header-03-customer">Customer</FieldLabel>
+              <Input
+                id="page-header-03-customer"
+                value={customer}
+                autoComplete="off"
+                placeholder="Harbor & Pine"
+                aria-invalid={(submitted && Boolean(customerError)) || undefined}
+                onChange={(event) => setCustomer(event.target.value)}
+              />
+              {submitted && customerError ? <FieldError>{customerError}</FieldError> : null}
+            </Field>
+            <Field data-invalid={(submitted && Boolean(amountError)) || undefined}>
+              <FieldLabel htmlFor="page-header-03-amount">Amount in USD</FieldLabel>
+              <Input
+                id="page-header-03-amount"
+                type="number"
+                inputMode="decimal"
+                min="0"
+                step="0.01"
+                placeholder="1200.00"
+                value={amount}
+                aria-invalid={(submitted && Boolean(amountError)) || undefined}
+                onChange={(event) => setAmount(event.target.value)}
+              />
+              {submitted && amountError ? <FieldError>{amountError}</FieldError> : null}
+            </Field>
+          </FieldGroup>
+          <DialogFooter>
+            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
+              Cancel
+            </Button>
+            <Button type="submit">Create invoice</Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const PageHeader03 = () => {
   const [invoices, setInvoices] = React.useState<readonly Invoice[]>(INVOICES);
@@ -339,12 +453,12 @@ const PageHeader03 = () => {
     .filter((invoice) => invoice.status !== 'paid')
     .reduce((sum, invoice) => sum + invoice.amount, 0);
 
-  const clearFilters = () => {
+  const handleClearFilters = () => {
     setQuery('');
     setStatus('all');
   };
 
-  const create = (customer: string, amount: number) => {
+  const handleCreate = (customer: string, amount: number) => {
     const lastNumber = Math.max(...invoices.map((invoice) => Number(invoice.id.slice(4))));
     setInvoices((current) => [
       ...current,
@@ -357,7 +471,7 @@ const PageHeader03 = () => {
         due: addDays(TODAY, 30),
       },
     ]);
-    clearFilters();
+    handleClearFilters();
     setSort('newest');
   };
 
@@ -378,7 +492,7 @@ const PageHeader03 = () => {
               </ListHeaderCount>
             </ListHeaderContent>
             <ListHeaderActions style={stagger(2, 80)} className={ENTER}>
-              <NewInvoiceDialog onCreate={create} />
+              <NewInvoiceDialog onCreate={handleCreate} />
             </ListHeaderActions>
           </ListHeaderRow>
 
@@ -396,7 +510,13 @@ const PageHeader03 = () => {
               />
             </InputGroup>
             <div className="flex flex-wrap items-center gap-2 md:flex-1">
-              <Select value={status} onValueChange={(value) => setStatus(value as StatusFilter)}>
+              <Select
+                value={status}
+                onValueChange={(value) => {
+                  const option = STATUS_OPTIONS.find((item) => item.value === value);
+                  if (option) setStatus(option.value);
+                }}
+              >
                 <SelectTrigger aria-label="Status" className="min-w-0 flex-1 md:w-40 md:flex-none">
                   <SelectValue />
                 </SelectTrigger>
@@ -408,7 +528,12 @@ const PageHeader03 = () => {
                   ))}
                 </SelectContent>
               </Select>
-              <Select value={sort} onValueChange={(value) => setSort(value as Sort)}>
+              <Select
+                value={sort}
+                onValueChange={(value) => {
+                  if (isSort(value)) setSort(value);
+                }}
+              >
                 <SelectTrigger aria-label="Sort" className="min-w-0 flex-1 md:w-40 md:flex-none">
                   <SelectValue />
                 </SelectTrigger>
@@ -421,7 +546,7 @@ const PageHeader03 = () => {
                 </SelectContent>
               </Select>
               {filtering ? (
-                <Button type="button" variant="ghost" onClick={clearFilters} className={SWAP}>
+                <Button type="button" variant="ghost" onClick={handleClearFilters} className={SWAP}>
                   <X aria-hidden />
                   Clear filters
                 </Button>
@@ -432,7 +557,7 @@ const PageHeader03 = () => {
                 value={view}
                 onValueChange={(next) => {
                   // Keep one view selected when the active one is clicked again.
-                  if (next) setView(next as View);
+                  if (isView(next)) setView(next);
                 }}
                 aria-label="Layout"
                 className="ms-auto"
@@ -461,7 +586,7 @@ const PageHeader03 = () => {
                 </EmptyDescription>
               </EmptyHeader>
               <EmptyContent>
-                <Button type="button" variant="outline" size="sm" onClick={clearFilters}>
+                <Button type="button" variant="outline" size="sm" onClick={handleClearFilters}>
                   Clear filters
                 </Button>
               </EmptyContent>
@@ -533,96 +658,6 @@ const PageHeader03 = () => {
         )}
       </div>
     </section>
-  );
-};
-
-interface NewInvoiceDialogProps {
-  onCreate: (customer: string, amount: number) => void;
-}
-
-const NewInvoiceDialog = ({ onCreate }: NewInvoiceDialogProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [customer, setCustomer] = React.useState('');
-  const [amount, setAmount] = React.useState('');
-  const [submitted, setSubmitted] = React.useState(false);
-
-  const parsed = Number(amount);
-  const customerError = customer.trim() === '' ? 'Enter a customer name.' : null;
-  const amountError = !(parsed > 0) ? 'Enter an amount above zero.' : null;
-
-  const reset = () => {
-    setCustomer('');
-    setAmount('');
-    setSubmitted(false);
-  };
-
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSubmitted(true);
-    if (customerError || amountError) return;
-    onCreate(customer.trim(), Math.round(parsed * 100) / 100);
-    setOpen(false);
-    reset();
-  };
-
-  return (
-    <Dialog
-      open={open}
-      onOpenChange={(next) => {
-        setOpen(next);
-        if (!next) reset();
-      }}
-    >
-      <DialogTrigger asChild>
-        <Button type="button">
-          <Plus aria-hidden />
-          New invoice
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
-        <form onSubmit={submit} noValidate className="flex flex-col gap-5">
-          <DialogHeader>
-            <DialogTitle>New invoice</DialogTitle>
-            <DialogDescription>It is issued today and due in 30 days.</DialogDescription>
-          </DialogHeader>
-          <FieldGroup className="gap-4">
-            <Field data-invalid={(submitted && Boolean(customerError)) || undefined}>
-              <FieldLabel htmlFor="page-header-03-customer">Customer</FieldLabel>
-              <Input
-                id="page-header-03-customer"
-                value={customer}
-                autoComplete="off"
-                placeholder="Harbor & Pine"
-                aria-invalid={(submitted && Boolean(customerError)) || undefined}
-                onChange={(event) => setCustomer(event.target.value)}
-              />
-              {submitted && customerError ? <FieldError>{customerError}</FieldError> : null}
-            </Field>
-            <Field data-invalid={(submitted && Boolean(amountError)) || undefined}>
-              <FieldLabel htmlFor="page-header-03-amount">Amount in USD</FieldLabel>
-              <Input
-                id="page-header-03-amount"
-                type="number"
-                inputMode="decimal"
-                min="0"
-                step="0.01"
-                placeholder="1200.00"
-                value={amount}
-                aria-invalid={(submitted && Boolean(amountError)) || undefined}
-                onChange={(event) => setAmount(event.target.value)}
-              />
-              {submitted && amountError ? <FieldError>{amountError}</FieldError> : null}
-            </Field>
-          </FieldGroup>
-          <DialogFooter>
-            <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit">Create invoice</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
   );
 };
 

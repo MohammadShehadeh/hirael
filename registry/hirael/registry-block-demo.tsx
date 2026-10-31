@@ -5,8 +5,8 @@ import * as React from 'react';
 import { lazyDemo, LazyDemo, type DemoModule } from '@/registry/hirael/registry-lazy';
 import { DEFAULT_BASE, type RegistryBase } from '@/registry/hirael/registry-meta';
 
-const loadBlock = (base: RegistryBase, name: string) =>
-  import(`./bases/${base}/blocks/${name}/${name}`) as Promise<DemoModule>;
+const loadBlock = (base: RegistryBase, name: string): Promise<DemoModule> =>
+  import(`./bases/${base}/blocks/${name}/${name}`);
 
 export interface RegistryBlockProps {
   name: string;

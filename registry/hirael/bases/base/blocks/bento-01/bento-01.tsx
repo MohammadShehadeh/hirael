@@ -396,7 +396,7 @@ const UptimeStrip = (props: UptimeStripProps) => {
   const incidentCount = Object.keys(service.incidents).length;
   const activeIncident = active === null ? undefined : service.incidents[active];
 
-  const onKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
     const step = { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 }[event.key];
     const current = active ?? DAYS - 1;
@@ -461,7 +461,7 @@ const UptimeStrip = (props: UptimeStripProps) => {
           role="group"
           tabIndex={0}
           aria-label={`${service.label} uptime by day`}
-          onKeyDown={onKeyDown}
+          onKeyDown={handleKeyDown}
           onFocus={() => setActive((current) => current ?? DAYS - 1)}
           onBlur={() => setActive(null)}
           onPointerLeave={() => setActive(null)}
@@ -526,6 +526,9 @@ const PACKAGE_MANAGERS = [
 
 type PackageManager = (typeof PACKAGE_MANAGERS)[number]['id'];
 
+const isPackageManager = (value: unknown): value is PackageManager =>
+  PACKAGE_MANAGERS.some((option) => option.id === value);
+
 const NEXT_STEPS = ['Install the CLI', 'Run hirael login', 'Run hirael deploy in your project'] as const;
 
 type InstallCommandProps = Omit<BentoTileProps, 'title' | 'description' | 'action' | 'children'>;
@@ -548,7 +551,7 @@ const InstallCommand = (props: InstallCommandProps) => {
           size="sm"
           value={[manager]}
           onValueChange={([next]) => {
-            if (next) setManager(next as PackageManager);
+            if (isPackageManager(next)) setManager(next);
           }}
           aria-label="Package manager"
         >
@@ -593,7 +596,11 @@ const InstallCommand = (props: InstallCommandProps) => {
   );
 };
 
-type UsageRange = '24h' | '7d' | '30d';
+const USAGE_RANGE_VALUES = ['24h', '7d', '30d'] as const;
+
+type UsageRange = (typeof USAGE_RANGE_VALUES)[number];
+
+const isUsageRange = (value: unknown): value is UsageRange => USAGE_RANGE_VALUES.some((option) => option === value);
 
 interface SeriesShape {
   base: number;
@@ -614,7 +621,14 @@ const buildSeries = (length: number, { base, period, swing, growth, seed }: Seri
     return Math.round(base * trend * (1 + swing * cycle) * jitter);
   });
 
-const USAGE: Record<UsageRange, { label: string; data: number[]; previous: number; start: string }> = {
+interface UsageSeries {
+  label: string;
+  data: number[];
+  previous: number;
+  start: string;
+}
+
+const USAGE: Record<UsageRange, UsageSeries> = {
   '24h': {
     label: 'Last 24 hours',
     data: buildSeries(24, { base: 51_000, period: 24, swing: 0.45, growth: 0, seed: 11 }),
@@ -639,6 +653,8 @@ const COMPACT: Intl.NumberFormatOptions = { notation: 'compact', maximumFraction
 
 type UsageChartProps = Omit<BentoTileProps, 'title' | 'description' | 'action' | 'children'>;
 
+const wholeNumber = new Intl.NumberFormat('en-US');
+
 const UsageChart = (props: UsageChartProps) => {
   const [range, setRange] = React.useState<UsageRange>('7d');
   const usage = USAGE[range];
@@ -656,7 +672,7 @@ const UsageChart = (props: UsageChartProps) => {
           size="sm"
           value={[range]}
           onValueChange={([next]) => {
-            if (next) setRange(next as UsageRange);
+            if (isUsageRange(next)) setRange(next);
           }}
           aria-label="Range"
         >
@@ -682,7 +698,7 @@ const UsageChart = (props: UsageChartProps) => {
           data={usage.data}
           curve
           min={0}
-          label={`${usage.label}: ${total.toLocaleString('en-US')} requests`}
+          label={`${usage.label}: ${wholeNumber.format(total)} requests`}
           className="mt-auto h-28 w-full"
         >
           <SparklineArea fillOpacity={0.08} />

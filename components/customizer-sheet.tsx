@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { RotateCcw, SlidersHorizontal } from 'lucide-react';
 
-import { BASES, ICON_LIBRARIES, RADII, formatThemeCss, type CustomizerConfig } from '@/lib/customizer';
+import { BASES, ICON_LIBRARIES, RADII, formatThemeCss } from '@/lib/customizer';
 import { FONTS } from '@/lib/fonts';
 import { themeSwatch, type SwatchKind } from '@/lib/theme-swatch';
 import { getShadcnInitCommand, usePackageManager } from '@/lib/package-managers';
@@ -35,172 +35,6 @@ import { Switch } from '@/registry/hirael/bases/radix/ui/switch';
 export interface CustomizerTriggerProps {
   className?: string;
 }
-
-export const CustomizerTrigger = ({ className }: CustomizerTriggerProps) => {
-  const [isOpen, setIsOpen] = React.useState(false);
-
-  return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Open customizer" className={className}>
-          <SlidersHorizontal className="size-3.5" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="w-full gap-0 sm:max-w-md" onOpenAutoFocus={(event) => event.preventDefault()}>
-        <CustomizerBody />
-      </SheetContent>
-    </Sheet>
-  );
-};
-
-const CustomizerBody = () => {
-  const { config, tokens, isDefault, mode, setConfig, reset } = useTheme();
-  const { packageManager } = usePackageManager();
-
-  const themes = getThemesForBaseColor(config.baseColor);
-  const css = formatThemeCss(tokens);
-  const initCommand = getShadcnInitCommand(packageManager, `--base ${config.base}`);
-  const setup = `${initCommand}\n\n// components.json\n"iconLibrary": "${config.iconLibrary}"`;
-
-  const buildThemeItems = (kind: SwatchKind): PickerItem[] =>
-    themes.map((theme, index) => ({
-      value: theme.name,
-      label: theme.title,
-      swatch: themeSwatch(theme, kind, mode),
-      separatorAfter: index === 0 && isBaseColor(theme.name),
-    }));
-
-  return (
-    <>
-      <SheetHeader className="pe-12">
-        <SheetTitle>Customizer</SheetTitle>
-        <SheetDescription>
-          Preview Hirael against your stack. Base switches every preview and install command between Radix UI and Base
-          UI. Styles re-skin the site.
-        </SheetDescription>
-      </SheetHeader>
-      <Separator />
-
-      <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
-        <Section title="Config" hint="Icons stay lucide">
-          <Rows>
-            <Row label="Base">
-              <Picker
-                ariaLabel="Base"
-                value={config.base}
-                onValueChange={(base) => setConfig({ base: base as CustomizerConfig['base'] })}
-                items={BASES.map((base) => ({ value: base.name, label: base.title }))}
-              />
-            </Row>
-            <Row label="Icon library">
-              <Picker
-                ariaLabel="Icon library"
-                value={config.iconLibrary}
-                onValueChange={(iconLibrary) =>
-                  setConfig({
-                    iconLibrary: iconLibrary as CustomizerConfig['iconLibrary'],
-                  })
-                }
-                items={ICON_LIBRARIES.map((library) => ({
-                  value: library.name,
-                  label: library.title,
-                }))}
-              />
-            </Row>
-          </Rows>
-          <CodeCard title="Setup" code={setup} copyLabel="Copy" />
-        </Section>
-
-        <Section title="Styles">
-          <Rows>
-            <Row label="Preview only" hint="Demos and previews, not the site">
-              <Switch
-                aria-label="Preview only"
-                checked={config.previewOnly}
-                onCheckedChange={(previewOnly) => setConfig({ previewOnly })}
-              />
-            </Row>
-            <Row label="Base color">
-              <Picker
-                ariaLabel="Base color"
-                value={config.baseColor}
-                onValueChange={(baseColor) =>
-                  setConfig({
-                    baseColor: baseColor as CustomizerConfig['baseColor'],
-                  })
-                }
-                items={BASE_COLORS.map((baseColor) => ({
-                  value: baseColor.name,
-                  label: baseColor.title,
-                  swatch: themeSwatch(baseColor, 'base', mode),
-                }))}
-              />
-            </Row>
-            <Row label="Theme">
-              <Picker
-                ariaLabel="Theme"
-                value={config.theme}
-                onValueChange={(theme) => setConfig({ theme })}
-                items={buildThemeItems('theme')}
-              />
-            </Row>
-            <Row label="Chart color">
-              <Picker
-                ariaLabel="Chart color"
-                value={config.chartColor}
-                onValueChange={(chartColor) => setConfig({ chartColor })}
-                items={buildThemeItems('chart')}
-              />
-            </Row>
-            <Row label="Font">
-              <Picker
-                ariaLabel="Font"
-                value={config.font}
-                onValueChange={(font) => setConfig({ font })}
-                items={FONTS.map((font) => ({
-                  value: font.name,
-                  label: font.title,
-                  style: { fontFamily: font.family },
-                }))}
-              />
-            </Row>
-            <Row label="Radius">
-              <Picker
-                ariaLabel="Radius"
-                value={config.radius}
-                onValueChange={(radius) => setConfig({ radius: radius as CustomizerConfig['radius'] })}
-                items={RADII.map((radius, index) => ({
-                  value: radius.name,
-                  label: radius.title,
-                  radius: radius.value || 'var(--radius)',
-                  separatorAfter: index === 0,
-                }))}
-              />
-            </Row>
-          </Rows>
-        </Section>
-
-        <Section title="Export" hint={isDefault ? 'Hirael defaults' : 'Custom'}>
-          <CodeCard
-            title="globals.css"
-            code={css}
-            copyLabel="Copy CSS"
-            placeholder="Pick a base color, theme, chart color or radius to generate overrides."
-          />
-        </Section>
-      </div>
-
-      <Separator />
-      <SheetFooter className="flex-row items-center justify-between">
-        <p className="text-xs text-muted-foreground uppercase">Saved in this browser</p>
-        <Button type="button" size="sm" variant="ghost" onClick={reset} disabled={isDefault}>
-          <RotateCcw className="size-3.5" />
-          Reset
-        </Button>
-      </SheetFooter>
-    </>
-  );
-};
 
 interface PickerItem {
   value: string;
@@ -316,5 +150,174 @@ const Section = ({ title, hint, children }: SectionProps) => {
       </div>
       {children}
     </section>
+  );
+};
+
+const CustomizerBody = () => {
+  const { config, tokens, isDefault, mode, setConfig, reset } = useTheme();
+  const { packageManager } = usePackageManager();
+
+  const themes = getThemesForBaseColor(config.baseColor);
+  const css = formatThemeCss(tokens);
+  const initCommand = getShadcnInitCommand(packageManager, `--base ${config.base}`);
+  const setup = `${initCommand}\n\n// components.json\n"iconLibrary": "${config.iconLibrary}"`;
+
+  const buildThemeItems = (kind: SwatchKind): PickerItem[] =>
+    themes.map((theme, index) => ({
+      value: theme.name,
+      label: theme.title,
+      swatch: themeSwatch(theme, kind, mode),
+      separatorAfter: index === 0 && isBaseColor(theme.name),
+    }));
+
+  return (
+    <>
+      <SheetHeader className="pe-12">
+        <SheetTitle>Customizer</SheetTitle>
+        <SheetDescription>
+          Preview Hirael against your stack. Base switches every preview and install command between Radix UI and Base
+          UI. Styles re-skin the site.
+        </SheetDescription>
+      </SheetHeader>
+      <Separator />
+
+      <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4">
+        <Section title="Config" hint="Icons stay lucide">
+          <Rows>
+            <Row label="Base">
+              <Picker
+                ariaLabel="Base"
+                value={config.base}
+                onValueChange={(base) => {
+                  const option = BASES.find((item) => item.name === base);
+                  if (option) setConfig({ base: option.name });
+                }}
+                items={BASES.map((base) => ({ value: base.name, label: base.title }))}
+              />
+            </Row>
+            <Row label="Icon library">
+              <Picker
+                ariaLabel="Icon library"
+                value={config.iconLibrary}
+                onValueChange={(iconLibrary) => {
+                  const option = ICON_LIBRARIES.find((item) => item.name === iconLibrary);
+                  if (option) setConfig({ iconLibrary: option.name });
+                }}
+                items={ICON_LIBRARIES.map((library) => ({
+                  value: library.name,
+                  label: library.title,
+                }))}
+              />
+            </Row>
+          </Rows>
+          <CodeCard title="Setup" code={setup} copyLabel="Copy" />
+        </Section>
+
+        <Section title="Styles">
+          <Rows>
+            <Row label="Preview only" hint="Demos and previews, not the site">
+              <Switch
+                aria-label="Preview only"
+                checked={config.previewOnly}
+                onCheckedChange={(previewOnly) => setConfig({ previewOnly })}
+              />
+            </Row>
+            <Row label="Base color">
+              <Picker
+                ariaLabel="Base color"
+                value={config.baseColor}
+                onValueChange={(baseColor) => {
+                  if (isBaseColor(baseColor)) setConfig({ baseColor });
+                }}
+                items={BASE_COLORS.map((baseColor) => ({
+                  value: baseColor.name,
+                  label: baseColor.title,
+                  swatch: themeSwatch(baseColor, 'base', mode),
+                }))}
+              />
+            </Row>
+            <Row label="Theme">
+              <Picker
+                ariaLabel="Theme"
+                value={config.theme}
+                onValueChange={(theme) => setConfig({ theme })}
+                items={buildThemeItems('theme')}
+              />
+            </Row>
+            <Row label="Chart color">
+              <Picker
+                ariaLabel="Chart color"
+                value={config.chartColor}
+                onValueChange={(chartColor) => setConfig({ chartColor })}
+                items={buildThemeItems('chart')}
+              />
+            </Row>
+            <Row label="Font">
+              <Picker
+                ariaLabel="Font"
+                value={config.font}
+                onValueChange={(font) => setConfig({ font })}
+                items={FONTS.map((font) => ({
+                  value: font.name,
+                  label: font.title,
+                  style: { fontFamily: font.family },
+                }))}
+              />
+            </Row>
+            <Row label="Radius">
+              <Picker
+                ariaLabel="Radius"
+                value={config.radius}
+                onValueChange={(radius) => {
+                  const option = RADII.find((item) => item.name === radius);
+                  if (option) setConfig({ radius: option.name });
+                }}
+                items={RADII.map((radius, index) => ({
+                  value: radius.name,
+                  label: radius.title,
+                  radius: radius.value || 'var(--radius)',
+                  separatorAfter: index === 0,
+                }))}
+              />
+            </Row>
+          </Rows>
+        </Section>
+
+        <Section title="Export" hint={isDefault ? 'Hirael defaults' : 'Custom'}>
+          <CodeCard
+            title="globals.css"
+            code={css}
+            copyLabel="Copy CSS"
+            placeholder="Pick a base color, theme, chart color or radius to generate overrides."
+          />
+        </Section>
+      </div>
+
+      <Separator />
+      <SheetFooter className="flex-row items-center justify-between">
+        <p className="text-xs text-muted-foreground uppercase">Saved in this browser</p>
+        <Button type="button" size="sm" variant="ghost" onClick={reset} disabled={isDefault}>
+          <RotateCcw className="size-3.5" />
+          Reset
+        </Button>
+      </SheetFooter>
+    </>
+  );
+};
+
+export const CustomizerTrigger = ({ className }: CustomizerTriggerProps) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <SheetTrigger asChild>
+        <Button variant="ghost" size="icon-sm" aria-label="Open customizer" className={className}>
+          <SlidersHorizontal className="size-3.5" />
+        </Button>
+      </SheetTrigger>
+      <SheetContent className="w-full gap-0 sm:max-w-md" onOpenAutoFocus={(event) => event.preventDefault()}>
+        <CustomizerBody />
+      </SheetContent>
+    </Sheet>
   );
 };

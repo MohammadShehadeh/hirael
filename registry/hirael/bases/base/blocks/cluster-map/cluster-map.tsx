@@ -20,6 +20,9 @@ const healthLabel: Record<NodeHealth, string> = {
   idle: 'Idle',
 };
 
+// Object.keys widens to string[]; healthLabel has a key per health.
+const HEALTHS = Object.keys(healthLabel) as NodeHealth[];
+
 interface ClusterMapProps extends React.ComponentProps<'div'> {
   columns?: number;
 }
@@ -205,7 +208,7 @@ const ClusterMapBlock = () => {
         </div>
 
         <ClusterMapLegend>
-          {(Object.keys(healthLabel) as NodeHealth[]).map((health) => (
+          {HEALTHS.map((health) => (
             <ClusterMapLegendItem key={health} health={health}>
               {healthLabel[health]}
               <span className="text-foreground tabular-nums">{counts[health]}</span>

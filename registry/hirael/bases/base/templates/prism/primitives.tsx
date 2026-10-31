@@ -123,7 +123,7 @@ export const VideoBackdrop = ({
         />
       ) : (
         <video
-          className={cn('absolute inset-0 z-0 h-full w-full object-cover', className)}
+          className={cn('absolute inset-0 z-0 size-full object-cover', className)}
           src={src}
           poster={posterSrc}
           autoPlay

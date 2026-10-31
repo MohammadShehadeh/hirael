@@ -43,7 +43,12 @@ const listVariants: Variants = {
   closed: { transition: { staggerChildren: 0.03, staggerDirection: -1 } },
 };
 
-const itemVariant = (offset: { x?: number; y?: number }): Variants => ({
+interface ItemOffset {
+  x?: number;
+  y?: number;
+}
+
+const itemVariant = (offset: ItemOffset): Variants => ({
   open: { opacity: 1, x: 0, y: 0, visibility: 'visible' },
   closed: { opacity: 0, ...offset, transitionEnd: { visibility: 'hidden' } },
 });
@@ -88,9 +93,9 @@ const FloatingActionButton = ({
 
     const onPointerDown = (event: PointerEvent) => {
       const root = rootRef.current;
-      const target = event.target as Node;
+      const target = event.target;
 
-      if (root && !root.contains(target)) {
+      if (root && target instanceof Node && !root.contains(target)) {
         setOpen(false);
       }
     };
@@ -100,13 +105,13 @@ const FloatingActionButton = ({
     return () => document.removeEventListener('pointerdown', onPointerDown);
   }, [open, setOpen]);
 
-  const focusTrigger = React.useCallback(() => {
+  const focusTrigger = () => {
     rootRef.current?.querySelector<HTMLElement>(TRIGGER_SELECTOR)?.focus();
-  }, []);
+  };
 
   // Items stay `visibility: hidden` until their staggered entrance starts, so focus retries for a moment.
   // The budget is in time, not frames: on a 120Hz screen a few frames pass before the first item shows.
-  const focusFirstItem = React.useCallback(() => {
+  const focusFirstItem = () => {
     const deadline = performance.now() + 200;
     const attempt = () => {
       const item = rootRef.current?.querySelector<HTMLElement>(ITEM_SELECTOR);
@@ -114,7 +119,7 @@ const FloatingActionButton = ({
       if (item && document.activeElement !== item && performance.now() < deadline) requestAnimationFrame(attempt);
     };
     requestAnimationFrame(attempt);
-  }, []);
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     onKeyDown?.(event);
@@ -124,10 +129,7 @@ const FloatingActionButton = ({
     focusTrigger();
   };
 
-  const value = React.useMemo<FabContextValue>(
-    () => ({ open, setOpen, side, focusFirstItem, focusTrigger }),
-    [open, setOpen, side, focusFirstItem, focusTrigger],
-  );
+  const value: FabContextValue = { open, setOpen, side, focusFirstItem, focusTrigger };
 
   return (
     <FabContext.Provider value={value}>
@@ -192,7 +194,7 @@ const FloatingActionButtonList = ({ className, onKeyDown, ...props }: FloatingAc
     // `top` and `left` render reversed, so moving down or right walks the DOM backwards.
     const step = side === 'top' || side === 'left' ? -1 : 1;
     const items = Array.from(event.currentTarget.querySelectorAll<HTMLElement>(ITEM_SELECTOR));
-    const current = items.indexOf(document.activeElement as HTMLElement);
+    const current = items.findIndex((item) => item === document.activeElement);
 
     let index: number;
     switch (event.key) {

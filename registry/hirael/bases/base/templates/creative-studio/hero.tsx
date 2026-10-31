@@ -28,7 +28,7 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
       <div className="relative flex h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden rounded-2xl bg-black md:h-[calc(100dvh-3rem)] md:rounded-[2rem]">
         {videoSrc ? (
           <video
-            className="absolute inset-0 h-full w-full object-cover"
+            className="absolute inset-0 size-full object-cover"
             src={videoSrc}
             poster={posterSrc}
             autoPlay
@@ -74,8 +74,7 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
               {/* The lead only rises: text that starts at opacity 0 holds back Largest Contentful Paint. */}
               <motion.p
                 {...enter(0.5, { fade: false })}
-                className="max-w-md text-sm text-(--cs-ink)/70 sm:text-base"
-                style={{ lineHeight: 1.3 }}
+                className="max-w-md text-sm leading-[1.3] text-(--cs-ink)/70 sm:text-base"
               >
                 Hirael is a worldwide network of visual artists, filmmakers and storytellers, held together by craft and
                 curiosity, not place or title.
@@ -87,7 +86,7 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
                   className="group inline-flex w-fit items-center gap-2 rounded-full bg-(--cs-ink) py-1.5 ps-5 pe-1.5 text-sm font-medium text-black transition-all duration-300 hover:gap-3 sm:text-base"
                 >
                   Join the lab
-                  <span className="flex size-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:h-10 sm:w-10">
+                  <span className="flex size-9 items-center justify-center rounded-full bg-black transition-transform duration-300 group-hover:scale-110 sm:size-10">
                     <ArrowRight className="size-4 text-(--cs-cream) rtl:rotate-180" />
                   </span>
                 </a>

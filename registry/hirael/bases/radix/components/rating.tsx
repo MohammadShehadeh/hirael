@@ -48,105 +48,6 @@ const sizeMap = {
   lg: 'size-6',
 } as const;
 
-const Rating = ({
-  value: valueProp,
-  defaultValue,
-  onValueChange,
-  max = 5,
-  step = 1,
-  readOnly,
-  disabled,
-  size = 'md',
-  name,
-  className,
-  onKeyDown,
-  onMouseLeave,
-  children,
-  ...props
-}: RatingProps) => {
-  const [hover, setHover] = React.useState<number | null>(null);
-
-  const [value, setValue] = useControllableState({
-    prop: valueProp,
-    defaultProp: defaultValue ?? 0,
-    onChange: onValueChange,
-  });
-  const display = hover ?? value;
-
-  const interactive = !readOnly && !disabled;
-  const iconSize = sizeMap[size];
-
-  const commit = React.useCallback(
-    (next: number) => {
-      if (readOnly || disabled) return;
-      setValue(next);
-    },
-    [readOnly, disabled, setValue],
-  );
-
-  const stepAligned = value > 0 && value <= max && Number.isInteger(value / step);
-  const tabStop = stepAligned ? value : step;
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    onKeyDown?.(e);
-    if (e.defaultPrevented || !interactive) return;
-    const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
-    const next = (
-      {
-        ArrowRight: value + (rtl ? -step : step),
-        ArrowLeft: value + (rtl ? step : -step),
-        ArrowUp: value + step,
-        ArrowDown: value - step,
-        Home: step,
-        End: max,
-      } as Record<string, number>
-    )[e.key];
-    if (next === undefined) return;
-    e.preventDefault();
-    const clamped = Math.min(max, Math.max(step, next));
-    commit(clamped);
-    e.currentTarget.querySelector<HTMLButtonElement>(`[data-slot="rating-radio"][data-value="${clamped}"]`)?.focus();
-  };
-
-  const ctx = React.useMemo<RatingContextValue>(
-    () => ({
-      value,
-      display,
-      max,
-      step,
-      interactive,
-      iconSize,
-      tabStop,
-      setHover,
-      commit,
-    }),
-    [value, display, max, step, interactive, iconSize, tabStop, commit],
-  );
-
-  return (
-    <RatingContext.Provider value={ctx}>
-      <div
-        data-slot="rating"
-        data-readonly={readOnly || undefined}
-        data-disabled={disabled || undefined}
-        role={interactive ? 'radiogroup' : 'img'}
-        aria-label={props['aria-label'] ?? `Rating: ${value} of ${max}`}
-        className={cn('inline-flex items-center gap-0.5', disabled && 'pointer-events-none opacity-50', className)}
-        onMouseLeave={(e) => {
-          onMouseLeave?.(e);
-          setHover(null);
-        }}
-        onKeyDown={handleKeyDown}
-        {...props}
-      >
-        {children ?? Array.from({ length: max }).map((_, i) => <RatingItem key={i} index={i} />)}
-
-        {name && <input type="hidden" name={name} value={value} />}
-      </div>
-    </RatingContext.Provider>
-  );
-};
-
 interface RatingRadioProps {
   value: number;
   className?: string;
@@ -211,6 +112,98 @@ const RatingItem = ({ index, className, ...props }: RatingItemProps) => {
       )}
       {ctx.interactive && ctx.step === 1 && <RatingRadio value={fullValue} className="absolute inset-0" />}
     </span>
+  );
+};
+
+const Rating = ({
+  value: valueProp,
+  defaultValue,
+  onValueChange,
+  max = 5,
+  step = 1,
+  readOnly,
+  disabled,
+  size = 'md',
+  name,
+  className,
+  onKeyDown,
+  onMouseLeave,
+  children,
+  ...props
+}: RatingProps) => {
+  const [hover, setHover] = React.useState<number | null>(null);
+
+  const [value, setValue] = useControllableState({
+    prop: valueProp,
+    defaultProp: defaultValue ?? 0,
+    onChange: onValueChange,
+  });
+  const display = hover ?? value;
+
+  const interactive = !readOnly && !disabled;
+  const iconSize = sizeMap[size];
+
+  const commit = (next: number) => {
+    if (readOnly || disabled) return;
+    setValue(next);
+  };
+
+  const stepAligned = value > 0 && value <= max && Number.isInteger(value / step);
+  const tabStop = stepAligned ? value : step;
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    onKeyDown?.(e);
+    if (e.defaultPrevented || !interactive) return;
+    const rtl = getComputedStyle(e.currentTarget).direction === 'rtl';
+    const nextByKey: Partial<Record<string, number>> = {
+      ArrowRight: value + (rtl ? -step : step),
+      ArrowLeft: value + (rtl ? step : -step),
+      ArrowUp: value + step,
+      ArrowDown: value - step,
+      Home: step,
+      End: max,
+    };
+    const next = nextByKey[e.key];
+    if (next === undefined) return;
+    e.preventDefault();
+    const clamped = Math.min(max, Math.max(step, next));
+    commit(clamped);
+    e.currentTarget.querySelector<HTMLButtonElement>(`[data-slot="rating-radio"][data-value="${clamped}"]`)?.focus();
+  };
+
+  const ctx: RatingContextValue = {
+    value,
+    display,
+    max,
+    step,
+    interactive,
+    iconSize,
+    tabStop,
+    setHover,
+    commit,
+  };
+
+  return (
+    <RatingContext.Provider value={ctx}>
+      <div
+        data-slot="rating"
+        data-readonly={readOnly || undefined}
+        data-disabled={disabled || undefined}
+        role={interactive ? 'radiogroup' : 'img'}
+        aria-label={props['aria-label'] ?? `Rating: ${value} of ${max}`}
+        className={cn('inline-flex items-center gap-0.5', disabled && 'pointer-events-none opacity-50', className)}
+        onMouseLeave={(e) => {
+          onMouseLeave?.(e);
+          setHover(null);
+        }}
+        onKeyDown={handleKeyDown}
+        {...props}
+      >
+        {children ?? Array.from({ length: max }).map((_, i) => <RatingItem key={i} index={i} />)}
+
+        {name && <input type="hidden" name={name} value={value} />}
+      </div>
+    </RatingContext.Provider>
   );
 };
 

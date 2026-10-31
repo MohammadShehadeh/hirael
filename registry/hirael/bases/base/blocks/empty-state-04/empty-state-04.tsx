@@ -26,6 +26,8 @@ const SWAP = `animate-in fade-in slide-in-from-bottom-2 duration-300 ${EASE} fil
 const ROLES = ['Admin', 'Member', 'Viewer'] as const;
 type Role = (typeof ROLES)[number];
 
+const isRole = (value: unknown): value is Role => ROLES.some((option) => option === value);
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const OWNER_EMAIL = 'hello@mohammadshehadeh.com';
 
@@ -73,7 +75,7 @@ const InviteForm = ({ taken, onInvite, inputRef }: InviteFormProps) => {
   const errorId = React.useId();
   const hintId = React.useId();
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const result = parseEmails(value, taken);
     if (result.error !== undefined) {
@@ -87,7 +89,7 @@ const InviteForm = ({ taken, onInvite, inputRef }: InviteFormProps) => {
   };
 
   return (
-    <form noValidate onSubmit={submit} data-slot="empty-state-04-form" className="w-full text-start">
+    <form noValidate onSubmit={handleSubmit} data-slot="empty-state-04-form" className="w-full text-start">
       <Field data-invalid={error ? true : undefined} className="gap-2">
         <div className="flex flex-col gap-2 sm:flex-row">
           <Input
@@ -107,7 +109,12 @@ const InviteForm = ({ taken, onInvite, inputRef }: InviteFormProps) => {
             className="sm:flex-1"
           />
           <div className="flex gap-2">
-            <Select value={role} onValueChange={(next) => setRole(next as Role)}>
+            <Select
+              value={role}
+              onValueChange={(next) => {
+                if (isRole(next)) setRole(next);
+              }}
+            >
               <SelectTrigger aria-label="Role" className="flex-1 sm:w-28 sm:flex-none">
                 <SelectValue />
               </SelectTrigger>
@@ -151,7 +158,7 @@ const EmptyState04 = () => {
     inputRef.current?.focus();
   }, [isEmpty]);
 
-  const invite = (emails: string[], role: Role) => {
+  const handleInvite = (emails: string[], role: Role) => {
     if (isEmpty) refocus.current = true;
     setInvites((current) => [...emails.map((email) => ({ email, role })), ...current]);
     setAnnouncement(emails.length === 1 ? `Invite sent to ${emails[0]}.` : `${emails.length} invites sent.`);
@@ -202,13 +209,13 @@ const EmptyState04 = () => {
                 </EmptyDescription>
               </EmptyHeader>
               <EmptyContent className="max-w-lg">
-                <InviteForm taken={taken} onInvite={invite} inputRef={inputRef} />
+                <InviteForm taken={taken} onInvite={handleInvite} inputRef={inputRef} />
               </EmptyContent>
             </Empty>
           ) : (
             <div className={SWAP}>
               <div data-slot="empty-state-04-invite" className="border-b border-border px-5 py-4">
-                <InviteForm taken={taken} onInvite={invite} inputRef={inputRef} />
+                <InviteForm taken={taken} onInvite={handleInvite} inputRef={inputRef} />
               </div>
 
               <div className="px-5 pt-4 pb-2">

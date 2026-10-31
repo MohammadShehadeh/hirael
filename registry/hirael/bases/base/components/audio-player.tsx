@@ -35,7 +35,7 @@ const useAudioPlayer = () => {
 };
 
 /** Base UI passes a bare number for a single thumb on pointer drags and an array from the keyboard. */
-const sliderValue = (value: number | readonly number[]) => (Array.isArray(value) ? (value[0] ?? 0) : (value as number));
+const sliderValue = (value: number | readonly number[]) => (typeof value === 'number' ? value : (value[0] ?? 0));
 
 const formatTime = (seconds: number) => {
   if (!Number.isFinite(seconds) || seconds < 0) return '--:--';
@@ -55,167 +55,6 @@ export interface AudioPlayerProps extends Omit<React.ComponentProps<'div'>, 'onP
   onPause?: () => void;
   onEnded?: () => void;
 }
-
-const AudioPlayer = ({
-  src,
-  crossOrigin,
-  onPlay,
-  onPause,
-  onEnded,
-  className,
-  children,
-  ...props
-}: AudioPlayerProps) => {
-  const audioRef = React.useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = React.useState(false);
-  const [duration, setDuration] = React.useState(Number.NaN);
-  const [currentTime, setCurrentTime] = React.useState(0);
-  const [buffered, setBuffered] = React.useState(0);
-  const [volume, setVolumeState] = React.useState(1);
-  const [muted, setMuted] = React.useState(false);
-  const [rate, setRateState] = React.useState(1);
-
-  const toggle = React.useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio || !audio.getAttribute('src')) return;
-    if (audio.paused) void audio.play().catch(() => undefined);
-    else audio.pause();
-  }, []);
-
-  const [lastSrc, setLastSrc] = React.useState(src);
-  if (src !== lastSrc) {
-    setLastSrc(src);
-    setPlaying(false);
-    setDuration(Number.NaN);
-    setCurrentTime(0);
-    setBuffered(0);
-  }
-
-  const seek = React.useCallback((time: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    const max = Number.isFinite(audio.duration) ? audio.duration : time;
-    audio.currentTime = Math.min(Math.max(time, 0), max);
-    setCurrentTime(audio.currentTime);
-  }, []);
-
-  const skip = React.useCallback(
-    (seconds: number) => {
-      const audio = audioRef.current;
-      if (!audio) return;
-      seek(audio.currentTime + seconds);
-    },
-    [seek],
-  );
-
-  const setVolume = React.useCallback((next: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.volume = Math.min(Math.max(next, 0), 1);
-    if (next > 0) audio.muted = false;
-  }, []);
-
-  const toggleMute = React.useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.muted = !audio.muted;
-  }, []);
-
-  const setRate = React.useCallback((next: number) => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    audio.playbackRate = next;
-  }, []);
-
-  const syncDuration = React.useCallback(() => {
-    const audio = audioRef.current;
-    if (audio) setDuration(audio.duration);
-  }, []);
-
-  const syncBuffered = React.useCallback(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-    const ranges = audio.buffered;
-    setBuffered(ranges.length > 0 ? ranges.end(ranges.length - 1) : 0);
-  }, []);
-
-  const ctx = React.useMemo<AudioPlayerCtx>(
-    () => ({
-      playing,
-      duration,
-      currentTime,
-      buffered,
-      volume,
-      muted,
-      rate,
-      toggle,
-      seek,
-      skip,
-      setVolume,
-      toggleMute,
-      setRate,
-    }),
-    [playing, duration, currentTime, buffered, volume, muted, rate, toggle, seek, skip, setVolume, toggleMute, setRate],
-  );
-
-  return (
-    <AudioPlayerContext.Provider value={ctx}>
-      <div
-        data-slot="audio-player"
-        data-state={playing ? 'playing' : 'paused'}
-        className={cn('flex w-full items-center gap-2', className)}
-        {...props}
-      >
-        <audio
-          ref={audioRef}
-          data-slot="audio-player-audio"
-          src={src}
-          preload="metadata"
-          crossOrigin={crossOrigin}
-          hidden
-          onPlay={() => {
-            setPlaying(true);
-            onPlay?.();
-          }}
-          onPause={() => {
-            setPlaying(false);
-            onPause?.();
-          }}
-          onEnded={() => {
-            setPlaying(false);
-            onEnded?.();
-          }}
-          onTimeUpdate={() => {
-            const audio = audioRef.current;
-            if (audio) setCurrentTime(audio.currentTime);
-          }}
-          onLoadedMetadata={syncDuration}
-          onDurationChange={syncDuration}
-          onProgress={syncBuffered}
-          onVolumeChange={() => {
-            const audio = audioRef.current;
-            if (!audio) return;
-            setVolumeState(audio.volume);
-            setMuted(audio.muted);
-          }}
-          onRateChange={() => {
-            const audio = audioRef.current;
-            if (audio) setRateState(audio.playbackRate);
-          }}
-        />
-        {children ?? (
-          <>
-            <AudioPlayerPlay />
-            <AudioPlayerTime mode="elapsed" />
-            <AudioPlayerSeek />
-            <AudioPlayerTime mode="duration" />
-            <AudioPlayerVolume />
-          </>
-        )}
-      </div>
-    </AudioPlayerContext.Provider>
-  );
-};
 
 export interface AudioPlayerPlayProps extends React.ComponentProps<typeof Button> {
   playLabel?: string;
@@ -296,10 +135,17 @@ export interface AudioPlayerTimeProps extends React.ComponentProps<'span'> {
   mode?: 'elapsed' | 'remaining' | 'duration';
 }
 
+const displayedTime = (mode: AudioPlayerTimeProps['mode'], duration: number, currentTime: number) => {
+  if (mode === 'duration') return duration;
+  if (mode === 'remaining') return duration - currentTime;
+
+  return currentTime;
+};
+
 const AudioPlayerTime = ({ mode = 'elapsed', className, ...props }: AudioPlayerTimeProps) => {
   const { currentTime, duration } = useAudioPlayer();
 
-  const value = mode === 'duration' ? duration : mode === 'remaining' ? duration - currentTime : currentTime;
+  const value = displayedTime(mode, duration, currentTime);
   const label = formatTime(value);
 
   return (
@@ -353,6 +199,161 @@ const AudioPlayerVolume = ({
         className="w-16"
       />
     </div>
+  );
+};
+
+const AudioPlayer = ({
+  src,
+  crossOrigin,
+  onPlay,
+  onPause,
+  onEnded,
+  className,
+  children,
+  ...props
+}: AudioPlayerProps) => {
+  const audioRef = React.useRef<HTMLAudioElement>(null);
+  const [playing, setPlaying] = React.useState(false);
+  const [duration, setDuration] = React.useState(Number.NaN);
+  const [currentTime, setCurrentTime] = React.useState(0);
+  const [buffered, setBuffered] = React.useState(0);
+  const [volume, setVolumeState] = React.useState(1);
+  const [muted, setMuted] = React.useState(false);
+  const [rate, setRateState] = React.useState(1);
+
+  const toggle = () => {
+    const audio = audioRef.current;
+    if (!audio || !audio.getAttribute('src')) return;
+    if (audio.paused) void audio.play().catch(() => undefined);
+    else audio.pause();
+  };
+
+  const [lastSrc, setLastSrc] = React.useState(src);
+  if (src !== lastSrc) {
+    setLastSrc(src);
+    setPlaying(false);
+    setDuration(Number.NaN);
+    setCurrentTime(0);
+    setBuffered(0);
+  }
+
+  const seek = (time: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const max = Number.isFinite(audio.duration) ? audio.duration : time;
+    audio.currentTime = Math.min(Math.max(time, 0), max);
+    setCurrentTime(audio.currentTime);
+  };
+
+  const skip = (seconds: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    seek(audio.currentTime + seconds);
+  };
+
+  const setVolume = (next: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.volume = Math.min(Math.max(next, 0), 1);
+    if (next > 0) audio.muted = false;
+  };
+
+  const toggleMute = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.muted = !audio.muted;
+  };
+
+  const setRate = (next: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.playbackRate = next;
+  };
+
+  const syncDuration = () => {
+    const audio = audioRef.current;
+    if (audio) setDuration(audio.duration);
+  };
+
+  const syncBuffered = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    const ranges = audio.buffered;
+    setBuffered(ranges.length > 0 ? ranges.end(ranges.length - 1) : 0);
+  };
+
+  const ctx: AudioPlayerCtx = {
+    playing,
+    duration,
+    currentTime,
+    buffered,
+    volume,
+    muted,
+    rate,
+    toggle,
+    seek,
+    skip,
+    setVolume,
+    toggleMute,
+    setRate,
+  };
+
+  return (
+    <AudioPlayerContext.Provider value={ctx}>
+      <div
+        data-slot="audio-player"
+        data-state={playing ? 'playing' : 'paused'}
+        className={cn('flex w-full items-center gap-2', className)}
+        {...props}
+      >
+        <audio
+          ref={audioRef}
+          data-slot="audio-player-audio"
+          src={src}
+          preload="metadata"
+          crossOrigin={crossOrigin}
+          hidden
+          onPlay={() => {
+            setPlaying(true);
+            onPlay?.();
+          }}
+          onPause={() => {
+            setPlaying(false);
+            onPause?.();
+          }}
+          onEnded={() => {
+            setPlaying(false);
+            onEnded?.();
+          }}
+          onTimeUpdate={() => {
+            const audio = audioRef.current;
+            if (audio) setCurrentTime(audio.currentTime);
+          }}
+          onLoadedMetadata={syncDuration}
+          onDurationChange={syncDuration}
+          onProgress={syncBuffered}
+          onVolumeChange={() => {
+            const audio = audioRef.current;
+            if (!audio) return;
+            setVolumeState(audio.volume);
+            setMuted(audio.muted);
+          }}
+          onRateChange={() => {
+            const audio = audioRef.current;
+            if (audio) setRateState(audio.playbackRate);
+          }}
+        />
+        {children ?? (
+          <>
+            <AudioPlayerPlay />
+            <AudioPlayerTime mode="elapsed" />
+            <AudioPlayerSeek />
+            <AudioPlayerTime mode="duration" />
+            <AudioPlayerVolume />
+          </>
+        )}
+      </div>
+    </AudioPlayerContext.Provider>
   );
 };
 

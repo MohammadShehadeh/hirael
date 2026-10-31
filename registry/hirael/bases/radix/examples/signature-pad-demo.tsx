@@ -56,7 +56,7 @@ const SignaturePadDemo = () => {
             {t({ en: 'Export PNG', ar: 'تصدير PNG' })}
           </Button>
           {dataUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
+            // eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image
             <img
               src={dataUrl}
               alt={t({ en: 'Exported signature', ar: 'التوقيع المصدَّر' })}

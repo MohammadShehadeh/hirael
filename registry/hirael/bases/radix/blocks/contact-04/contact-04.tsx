@@ -38,13 +38,15 @@ const REPLY_COPY: Record<ReplyStatus, string> = {
   monday: 'Back Monday 08:00 Lisbon time',
 };
 
+const supportClock = new Intl.DateTimeFormat('en-US', {
+  timeZone: SUPPORT_TIME_ZONE,
+  weekday: 'short',
+  hour: 'numeric',
+  hourCycle: 'h23',
+});
+
 const getReplyStatus = (): ReplyStatus => {
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone: SUPPORT_TIME_ZONE,
-    weekday: 'short',
-    hour: 'numeric',
-    hourCycle: 'h23',
-  }).formatToParts(new Date());
+  const parts = supportClock.formatToParts(new Date());
   const weekday = parts.find((part) => part.type === 'weekday')?.value ?? '';
   const hour = Number(parts.find((part) => part.type === 'hour')?.value ?? 0);
   const workday = WEEKDAYS.includes(weekday);
@@ -128,7 +130,12 @@ interface Article {
   summary: string;
 }
 
-const ARTICLES: readonly { keywords: readonly string[]; articles: readonly Article[] }[] = [
+interface ArticleGroup {
+  keywords: readonly string[];
+  articles: readonly Article[];
+}
+
+const ARTICLES: readonly ArticleGroup[] = [
   {
     keywords: ['refund', 'charge', 'cancel'],
     articles: [
@@ -245,7 +252,7 @@ const Contact04 = () => {
     if (submitted) setErrors(validate(next));
   };
 
-  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setSubmitted(true);
     const nextErrors = validate(form);
@@ -256,7 +263,7 @@ const Contact04 = () => {
     timer.current = setTimeout(() => setStatus('sent'), 1200);
   };
 
-  const reset = () => {
+  const handleReset = () => {
     setForm(INITIAL);
     setErrors({});
     setSubmitted(false);
@@ -371,12 +378,12 @@ const Contact04 = () => {
                   add details, it lands in the same ticket.
                 </p>
               </div>
-              <Button type="button" variant="outline" onClick={reset}>
+              <Button type="button" variant="outline" onClick={handleReset}>
                 Send another
               </Button>
             </div>
           ) : (
-            <form key="form" noValidate onSubmit={onSubmit} className={cn(ticket > FIRST_TICKET && SWAP)}>
+            <form key="form" noValidate onSubmit={handleSubmit} className={cn(ticket > FIRST_TICKET && SWAP)}>
               <FieldGroup className="gap-6">
                 <div className="grid gap-6 sm:grid-cols-2">
                   <Field data-invalid={Boolean(errors.topic)}>

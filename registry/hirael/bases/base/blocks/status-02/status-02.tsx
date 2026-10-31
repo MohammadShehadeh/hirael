@@ -96,6 +96,24 @@ const SERVICES: readonly Service[] = [
   },
 ];
 
+interface MetricProps {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+}
+
+const Metric = ({ icon: Icon, label, value }: MetricProps) => {
+  return (
+    <div className="flex flex-col gap-1.5 p-3">
+      <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <Icon aria-hidden className="size-3" />
+        {label}
+      </dt>
+      <dd className="text-lg font-semibold tabular-nums">{value}</dd>
+    </div>
+  );
+};
+
 const Status02 = () => {
   return (
     <section data-slot="status" className="bg-background py-20 sm:py-28" aria-labelledby="status-02-heading">
@@ -155,24 +173,6 @@ const Status02 = () => {
         </ul>
       </div>
     </section>
-  );
-};
-
-interface MetricProps {
-  icon: LucideIcon;
-  label: string;
-  value: string;
-}
-
-const Metric = ({ icon: Icon, label, value }: MetricProps) => {
-  return (
-    <div className="flex flex-col gap-1.5 p-3">
-      <dt className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <Icon aria-hidden className="size-3" />
-        {label}
-      </dt>
-      <dd className="text-lg font-semibold tabular-nums">{value}</dd>
-    </div>
   );
 };
 

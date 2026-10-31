@@ -78,10 +78,7 @@ const TimeSlotPicker = ({
     onChange: onDayChange,
   });
 
-  const ctx = React.useMemo<TimeSlotPickerContextValue>(
-    () => ({ day, setDay, value, setValue, getSlots, locale, hour12 }),
-    [day, setDay, value, setValue, getSlots, locale, hour12],
-  );
+  const ctx: TimeSlotPickerContextValue = { day, setDay, value, setValue, getSlots, locale, hour12 };
 
   return (
     <TimeSlotPickerContext.Provider value={ctx}>
@@ -126,6 +123,8 @@ export interface TimeSlotPickerSlotsProps extends React.ComponentProps<'div'> {
   label?: string;
 }
 
+const ARROW_STEP: Partial<Record<string, number>> = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 };
+
 /** The times on the picked day, as a single-choice grid. Arrow keys move between free slots. */
 const TimeSlotPickerSlots = ({
   placeholder = 'Pick a day to see times',
@@ -137,14 +136,13 @@ const TimeSlotPickerSlots = ({
   const refs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const slots = day ? getSlots(day) : [];
   const timeFormat = new Intl.DateTimeFormat(locale, { hour: 'numeric', minute: '2-digit', hour12 });
-  const heading = day
-    ? new Intl.DateTimeFormat(locale, { weekday: 'long', month: 'long', day: 'numeric' }).format(day)
-    : null;
+  const headingFormat = new Intl.DateTimeFormat(locale, { weekday: 'long', month: 'long', day: 'numeric' });
+  const heading = day ? headingFormat.format(day) : null;
   const selectedIndex = slots.findIndex((slot) => value && slot.start.getTime() === value.getTime());
   const tabbable = selectedIndex >= 0 ? selectedIndex : slots.findIndex((slot) => !slot.unavailable);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
-    const step = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[event.key];
+    const step = ARROW_STEP[event.key];
     if (!step) return;
     event.preventDefault();
     const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';

@@ -39,15 +39,11 @@ const AnimatedNumber = ({
   const [display, setDisplay] = React.useState(startValue);
   const displayRef = React.useRef(startValue);
 
-  const formatter = React.useMemo(
-    () =>
-      new Intl.NumberFormat(locale, {
-        minimumFractionDigits: decimals,
-        maximumFractionDigits: decimals,
-        ...format,
-      }),
-    [locale, decimals, format],
-  );
+  const formatter = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: decimals,
+    maximumFractionDigits: decimals,
+    ...format,
+  });
 
   const animated = !useReducedMotion() && duration > 0;
 

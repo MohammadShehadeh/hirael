@@ -40,92 +40,6 @@ const spokePosition = (angle: number) => {
   return { x: 50 + ORBIT * Math.cos(rad), y: 50 + ORBIT * Math.sin(rad) };
 };
 
-const Integrations01 = () => {
-  const [active, setActive] = React.useState<string | null>(null);
-
-  return (
-    <section
-      data-slot="integrations"
-      className="relative isolate overflow-hidden bg-background py-20 sm:py-28"
-      aria-labelledby="integrations-01-heading"
-    >
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,var(--border)_1px,transparent_0)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[20px_20px] opacity-[0.18]"
-      />
-
-      <div className="mx-auto w-full max-w-[1480px] px-4">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <div data-slot="integrations-header" className="flex flex-col gap-5 lg:col-span-5">
-            <Badge variant="outline" className={cn(ENTER, 'w-fit')}>
-              Integrations
-            </Badge>
-            <h2
-              id="integrations-01-heading"
-              style={stagger(1)}
-              className={cn(
-                ENTER,
-                'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
-              )}
-            >
-              Plays well with the rest of your stack.
-            </h2>
-            <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
-              Hirael is the surface. Your backend, your storage, your CI, your secrets; pick whatever you already use.
-              We don&apos;t lock you in, and we don&apos;t bring our own server.
-            </p>
-
-            <ul
-              data-slot="integrations-list"
-              aria-label="Supported integrations"
-              className="mt-2 grid grid-cols-1 gap-x-6 gap-y-1 min-[420px]:grid-cols-2 sm:max-w-md"
-              onMouseLeave={() => setActive(null)}
-            >
-              {SPOKES.map((spoke, index) => (
-                <li key={spoke.name} style={stagger(index, 50, 180)} className={ENTER}>
-                  <a
-                    href={spoke.href}
-                    data-active={active === spoke.name || undefined}
-                    onMouseEnter={() => setActive(spoke.name)}
-                    onFocus={() => setActive(spoke.name)}
-                    onBlur={() => setActive(null)}
-                    className="flex items-center gap-2 rounded-sm px-1.5 py-1.5 text-sm text-foreground transition-colors duration-150 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none data-active:bg-accent"
-                  >
-                    <spoke.icon aria-hidden className="size-3.5 shrink-0 text-muted-foreground" />
-                    <span className="font-medium">{spoke.name}</span>
-                    <Badge variant="outline" className="ms-auto">
-                      {spoke.category}
-                    </Badge>
-                  </a>
-                </li>
-              ))}
-            </ul>
-
-            <Button
-              asChild
-              variant="link"
-              style={stagger(SPOKES.length, 50, 180)}
-              className={cn(ENTER, 'group mt-4 h-auto w-fit')}
-            >
-              <a href="#">
-                Browse all 40+ integrations
-                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-              </a>
-            </Button>
-          </div>
-
-          <div
-            style={stagger(0, 0, 240)}
-            className={cn(ENTER, 'relative flex items-center justify-center lg:col-span-7')}
-          >
-            <Hub active={active} onActiveChange={setActive} />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 interface HubProps {
   active: string | null;
   onActiveChange: (name: string | null) => void;
@@ -239,6 +153,92 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
         );
       })}
     </div>
+  );
+};
+
+const Integrations01 = () => {
+  const [active, setActive] = React.useState<string | null>(null);
+
+  return (
+    <section
+      data-slot="integrations"
+      className="relative isolate overflow-hidden bg-background py-20 sm:py-28"
+      aria-labelledby="integrations-01-heading"
+    >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,var(--border)_1px,transparent_0)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[20px_20px] opacity-[0.18]"
+      />
+
+      <div className="mx-auto w-full max-w-[1480px] px-4">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div data-slot="integrations-header" className="flex flex-col gap-5 lg:col-span-5">
+            <Badge variant="outline" className={cn(ENTER, 'w-fit')}>
+              Integrations
+            </Badge>
+            <h2
+              id="integrations-01-heading"
+              style={stagger(1)}
+              className={cn(
+                ENTER,
+                'font-serif text-4xl leading-[1.04] font-medium tracking-tight sm:text-5xl md:text-6xl',
+              )}
+            >
+              Plays well with the rest of your stack.
+            </h2>
+            <p style={stagger(2)} className={cn(ENTER, 'text-base text-muted-foreground sm:text-lg')}>
+              Hirael is the surface. Your backend, your storage, your CI, your secrets; pick whatever you already use.
+              We don&apos;t lock you in, and we don&apos;t bring our own server.
+            </p>
+
+            <ul
+              data-slot="integrations-list"
+              aria-label="Supported integrations"
+              className="mt-2 grid grid-cols-1 gap-x-6 gap-y-1 min-[420px]:grid-cols-2 sm:max-w-md"
+              onMouseLeave={() => setActive(null)}
+            >
+              {SPOKES.map((spoke, index) => (
+                <li key={spoke.name} style={stagger(index, 50, 180)} className={ENTER}>
+                  <a
+                    href={spoke.href}
+                    data-active={active === spoke.name || undefined}
+                    onMouseEnter={() => setActive(spoke.name)}
+                    onFocus={() => setActive(spoke.name)}
+                    onBlur={() => setActive(null)}
+                    className="flex items-center gap-2 rounded-sm px-1.5 py-1.5 text-sm text-foreground transition-colors duration-150 hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none data-active:bg-accent"
+                  >
+                    <spoke.icon aria-hidden className="size-3.5 shrink-0 text-muted-foreground" />
+                    <span className="font-medium">{spoke.name}</span>
+                    <Badge variant="outline" className="ms-auto">
+                      {spoke.category}
+                    </Badge>
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <Button
+              asChild
+              variant="link"
+              style={stagger(SPOKES.length, 50, 180)}
+              className={cn(ENTER, 'group mt-4 h-auto w-fit')}
+            >
+              <a href="#">
+                Browse all 40+ integrations
+                <ArrowRight className="size-4 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+              </a>
+            </Button>
+          </div>
+
+          <div
+            style={stagger(0, 0, 240)}
+            className={cn(ENTER, 'relative flex items-center justify-center lg:col-span-7')}
+          >
+            <Hub active={active} onActiveChange={setActive} />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 

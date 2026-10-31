@@ -132,9 +132,9 @@ const CurrencyInput = ({
     onChange: onValueChange,
   });
 
-  const symbol = React.useMemo(() => resolveCurrencySymbol(currency, locale), [currency, locale]);
+  const symbol = resolveCurrencySymbol(currency, locale);
 
-  const decimalSeparator = React.useMemo(() => resolveDecimalSeparator(locale), [locale]);
+  const decimalSeparator = resolveDecimalSeparator(locale);
 
   const [view, setView] = React.useState<string>(() => (value === null ? '' : formatNumber(value, locale, decimals)));
   const [focused, setFocused] = React.useState(false);
@@ -152,22 +152,19 @@ const CurrencyInput = ({
     }
   }
 
-  const ctx = React.useMemo<Ctx>(
-    () => ({
-      id: fieldId,
-      value,
-      setValue,
-      view,
-      setView,
-      setFocused,
-      locale,
-      decimals,
-      disabled,
-      symbol,
-      decimalSeparator,
-    }),
-    [fieldId, value, setValue, view, locale, decimals, disabled, symbol, decimalSeparator],
-  );
+  const ctx: Ctx = {
+    id: fieldId,
+    value,
+    setValue,
+    view,
+    setView,
+    setFocused,
+    locale,
+    decimals,
+    disabled,
+    symbol,
+    decimalSeparator,
+  };
 
   return (
     <CurrencyInputContext.Provider value={ctx}>

@@ -71,10 +71,16 @@ const DateTimePicker = ({
   });
   const [open, setOpen] = useControllableState({ prop: openProp, defaultProp: defaultOpen, onChange: onOpenChange });
 
-  const ctx = React.useMemo<DateTimePickerContextValue>(
-    () => ({ value, setValue, open, setOpen, format, minuteStep: Math.max(1, minuteStep), locale, disabled }),
-    [value, setValue, open, setOpen, format, minuteStep, locale, disabled],
-  );
+  const ctx: DateTimePickerContextValue = {
+    value,
+    setValue,
+    open,
+    setOpen,
+    format,
+    minuteStep: Math.max(1, minuteStep),
+    locale,
+    disabled,
+  };
 
   return (
     <DateTimePickerContext.Provider value={ctx}>
@@ -97,15 +103,11 @@ const DateTimePickerTrigger = ({
   ...props
 }: DateTimePickerTriggerProps) => {
   const ctx = useDateTimePicker();
-  const formatter = React.useMemo(
-    () =>
-      new Intl.DateTimeFormat(ctx.locale, {
-        dateStyle: 'medium',
-        timeStyle: 'short',
-        hourCycle: ctx.format === '12h' ? 'h12' : 'h23',
-      }),
-    [ctx.locale, ctx.format],
-  );
+  const formatter = new Intl.DateTimeFormat(ctx.locale, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+    hourCycle: ctx.format === '12h' ? 'h12' : 'h23',
+  });
 
   return (
     <PopoverTrigger asChild>
@@ -155,9 +157,8 @@ const TimeColumn = ({ label, options, selected, onSelect }: TimeColumnProps) => 
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
     const last = options.length - 1;
-    const next = ({ ArrowDown: index + 1, ArrowUp: index - 1, Home: 0, End: last } as Record<string, number>)[
-      event.key
-    ];
+    const nextByKey: Partial<Record<string, number>> = { ArrowDown: index + 1, ArrowUp: index - 1, Home: 0, End: last };
+    const next = nextByKey[event.key];
     if (next === undefined) return;
     event.preventDefault();
     const option = options[Math.min(last, Math.max(0, next))];
@@ -254,7 +255,7 @@ const DateTimePickerContent = ({
     value: i * ctx.minuteStep,
     label: pad2(i * ctx.minuteStep),
   }));
-  const displayHour = hour === undefined ? undefined : twelve ? ((hour + 11) % 12) + 1 : hour;
+  const displayHour = hour !== undefined && twelve ? ((hour + 11) % 12) + 1 : hour;
   const minute = value?.getMinutes();
   // A minute off the step grid (from a typed or server value) still shows as selected.
   if (minute !== undefined && !minuteOptions.some((option) => option.value === minute)) {
@@ -262,7 +263,7 @@ const DateTimePickerContent = ({
     minuteOptions.sort((a, b) => a.value - b.value);
   }
 
-  const setHour = (display: number) => update({ hour: twelve ? (display % 12) + (pm ? 12 : 0) : display });
+  const handleSetHour = (display: number) => update({ hour: twelve ? (display % 12) + (pm ? 12 : 0) : display });
 
   return (
     <PopoverContent align={align} data-slot="date-time-picker-content" className="w-auto p-0">
@@ -278,7 +279,7 @@ const DateTimePickerContent = ({
           data-slot="date-time-picker-time"
           className="flex h-48 border-t border-border sm:h-auto sm:border-s sm:border-t-0"
         >
-          <TimeColumn label={text.hour} options={hourOptions} selected={displayHour} onSelect={setHour} />
+          <TimeColumn label={text.hour} options={hourOptions} selected={displayHour} onSelect={handleSetHour} />
           <TimeColumn
             label={text.minute}
             options={minuteOptions}

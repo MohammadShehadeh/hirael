@@ -8,6 +8,18 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Slider } from '@/registry/hirael/bases/base/ui/slider';
 
+type MediaHandlerName =
+  | 'onPlay'
+  | 'onPause'
+  | 'onEnded'
+  | 'onTimeUpdate'
+  | 'onDurationChange'
+  | 'onLoadedMetadata'
+  | 'onProgress'
+  | 'onVolumeChange';
+
+type MediaHandlers = Record<MediaHandlerName, React.ReactEventHandler<HTMLVideoElement>>;
+
 interface VideoPlayerCtx {
   attachVideo: (video: HTMLVideoElement | null) => void;
   playing: boolean;
@@ -27,18 +39,6 @@ interface VideoPlayerCtx {
   wake: () => void;
   media: MediaHandlers;
 }
-
-type MediaHandlerName =
-  | 'onPlay'
-  | 'onPause'
-  | 'onEnded'
-  | 'onTimeUpdate'
-  | 'onDurationChange'
-  | 'onLoadedMetadata'
-  | 'onProgress'
-  | 'onVolumeChange';
-
-type MediaHandlers = Record<MediaHandlerName, React.ReactEventHandler<HTMLVideoElement>>;
 
 const VideoPlayerContext = React.createContext<VideoPlayerCtx | null>(null);
 
@@ -63,10 +63,15 @@ const formatTime = (seconds: number) => {
 };
 
 /** Base UI passes a bare number for a single thumb on pointer drags and an array from the keyboard. */
-const sliderValue = (value: number | readonly number[]) => (Array.isArray(value) ? (value[0] ?? 0) : (value as number));
+const sliderValue = (value: number | readonly number[]) => (typeof value === 'number' ? value : (value[0] ?? 0));
 
 /** iOS Safari only offers native fullscreen on the video element itself. */
-type WebkitVideoElement = HTMLVideoElement & { webkitEnterFullscreen?: () => void };
+interface WebkitVideoElement extends HTMLVideoElement {
+  webkitEnterFullscreen: () => void;
+}
+
+const hasNativeFullscreen = (video: HTMLVideoElement | null): video is WebkitVideoElement =>
+  !!video && 'webkitEnterFullscreen' in video && typeof video.webkitEnterFullscreen === 'function';
 
 export interface VideoPlayerProps extends React.ComponentProps<'div'> {
   /** Hide the controls and cursor after this many ms without pointer or key input while playing. */
@@ -87,27 +92,26 @@ const VideoPlayer = ({ idleDelay = 2500, className, children, onPointerMove, ...
   const [fullscreenSupported, setFullscreenSupported] = React.useState(true);
 
   // Idle lives on the DOM and motion fades the controls: pointer movement never re-renders the player.
-  const setIdle = React.useCallback((idle: boolean) => {
+  const setIdle = (idle: boolean) => {
     const root = rootRef.current;
     if (!root || root.dataset.idle === String(idle)) return;
     root.dataset.idle = String(idle);
     const controls = root.querySelector('[data-slot=video-player-controls]');
     if (controls) animate(controls, { opacity: idle ? 0 : 1 }, { duration: 0.3, ease: 'easeOut' });
-  }, []);
+  };
 
-  const wake = React.useCallback(() => {
+  const wake = () => {
     setIdle(false);
     if (idleTimerRef.current) window.clearTimeout(idleTimerRef.current);
     idleTimerRef.current = window.setTimeout(() => {
       if (videoRef.current && !videoRef.current.paused) setIdle(true);
     }, idleDelay);
-  }, [idleDelay, setIdle]);
+  };
 
   React.useEffect(() => {
-    const video = videoRef.current as WebkitVideoElement | null;
     setFullscreenSupported(
       Boolean(document.fullscreenEnabled && rootRef.current?.requestFullscreen) ||
-        typeof video?.webkitEnterFullscreen === 'function',
+        hasNativeFullscreen(videoRef.current),
     );
     const onFullscreen = () => setFullscreen(document.fullscreenElement === rootRef.current);
     document.addEventListener('fullscreenchange', onFullscreen);
@@ -119,7 +123,7 @@ const VideoPlayer = ({ idleDelay = 2500, className, children, onPointerMove, ...
   }, []);
 
   // Metadata can load before hydration, when React isn't listening yet; read it off the element on attach.
-  const attachVideo = React.useCallback((video: HTMLVideoElement | null) => {
+  const attachVideo = (video: HTMLVideoElement | null) => {
     videoRef.current = video;
     if (!video) return;
     setDuration(video.duration);
@@ -128,67 +132,64 @@ const VideoPlayer = ({ idleDelay = 2500, className, children, onPointerMove, ...
     setMuted(video.muted);
     setPlaying(!video.paused);
     if (video.buffered.length > 0) setBuffered(video.buffered.end(video.buffered.length - 1));
-  }, []);
+  };
 
-  const media = React.useMemo<MediaHandlers>(
-    () => ({
-      onPlay: () => {
-        setPlaying(true);
-        wake();
-      },
-      onPause: () => {
-        setPlaying(false);
-        setIdle(false);
-      },
-      onEnded: () => setPlaying(false),
-      onTimeUpdate: (event) => setCurrentTime(event.currentTarget.currentTime),
-      onDurationChange: (event) => setDuration(event.currentTarget.duration),
-      onLoadedMetadata: (event) => {
-        const video = event.currentTarget;
-        setDuration(video.duration);
-        setVolumeState(video.volume);
-        setMuted(video.muted);
-      },
-      onProgress: (event) => {
-        const ranges = event.currentTarget.buffered;
-        setBuffered(ranges.length > 0 ? ranges.end(ranges.length - 1) : 0);
-      },
-      onVolumeChange: (event) => {
-        setVolumeState(event.currentTarget.volume);
-        setMuted(event.currentTarget.muted);
-      },
-    }),
-    [wake, setIdle],
-  );
+  const media: MediaHandlers = {
+    onPlay: () => {
+      setPlaying(true);
+      wake();
+    },
+    onPause: () => {
+      setPlaying(false);
+      setIdle(false);
+    },
+    onEnded: () => setPlaying(false),
+    onTimeUpdate: (event) => setCurrentTime(event.currentTarget.currentTime),
+    onDurationChange: (event) => setDuration(event.currentTarget.duration),
+    onLoadedMetadata: (event) => {
+      const video = event.currentTarget;
+      setDuration(video.duration);
+      setVolumeState(video.volume);
+      setMuted(video.muted);
+    },
+    onProgress: (event) => {
+      const ranges = event.currentTarget.buffered;
+      setBuffered(ranges.length > 0 ? ranges.end(ranges.length - 1) : 0);
+    },
+    onVolumeChange: (event) => {
+      setVolumeState(event.currentTarget.volume);
+      setMuted(event.currentTarget.muted);
+    },
+  };
 
-  const toggle = React.useCallback(() => {
+  const toggle = () => {
     const video = videoRef.current;
     if (!video || !video.currentSrc) return;
     if (video.paused) void video.play().catch(() => undefined);
     else video.pause();
-  }, []);
+  };
 
-  const seek = React.useCallback((time: number) => {
+  const seek = (time: number) => {
     const video = videoRef.current;
     if (!video) return;
     const max = Number.isFinite(video.duration) ? video.duration : time;
     video.currentTime = Math.min(Math.max(time, 0), max);
     setCurrentTime(video.currentTime);
-  }, []);
+  };
 
-  const setVolume = React.useCallback((next: number) => {
+  const setVolume = (next: number) => {
     const video = videoRef.current;
     if (!video) return;
     video.volume = Math.min(Math.max(next, 0), 1);
     if (next > 0) video.muted = false;
-  }, []);
+  };
 
-  const toggleMute = React.useCallback(() => {
+  const toggleMute = () => {
     const video = videoRef.current;
     if (video) video.muted = !video.muted;
-  }, []);
+  };
 
-  const toggleFullscreen = React.useCallback(() => {
+  const toggleFullscreen = () => {
     const root = rootRef.current;
     if (!root) return;
     if (document.fullscreenElement) {
@@ -201,15 +202,16 @@ const VideoPlayer = ({ idleDelay = 2500, className, children, onPointerMove, ...
 
       return;
     }
-    (videoRef.current as WebkitVideoElement | null)?.webkitEnterFullscreen?.();
-  }, []);
+    const video = videoRef.current;
+    if (hasNativeFullscreen(video)) video.webkitEnterFullscreen();
+  };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     props.onKeyDown?.(event);
     wake();
     if (event.defaultPrevented) return;
-    const target = event.target as HTMLElement;
-    if (target.closest("button, input, textarea, select, [role='slider']")) return;
+    if (event.target instanceof Element && event.target.closest("button, input, textarea, select, [role='slider']"))
+      return;
     if (event.key === ' ' || event.key === 'k') {
       event.preventDefault();
       toggle();
@@ -222,44 +224,24 @@ const VideoPlayer = ({ idleDelay = 2500, className, children, onPointerMove, ...
     }
   };
 
-  const ctx = React.useMemo<VideoPlayerCtx>(
-    () => ({
-      attachVideo,
-      playing,
-      duration,
-      currentTime,
-      buffered,
-      volume,
-      muted,
-      fullscreen,
-      toggle,
-      seek,
-      setVolume,
-      toggleMute,
-      toggleFullscreen,
-      fullscreenSupported,
-      wake,
-      media,
-    }),
-    [
-      attachVideo,
-      playing,
-      duration,
-      currentTime,
-      buffered,
-      volume,
-      muted,
-      fullscreen,
-      toggle,
-      seek,
-      setVolume,
-      toggleMute,
-      toggleFullscreen,
-      fullscreenSupported,
-      wake,
-      media,
-    ],
-  );
+  const ctx: VideoPlayerCtx = {
+    attachVideo,
+    playing,
+    duration,
+    currentTime,
+    buffered,
+    volume,
+    muted,
+    fullscreen,
+    toggle,
+    seek,
+    setVolume,
+    toggleMute,
+    toggleFullscreen,
+    fullscreenSupported,
+    wake,
+    media,
+  };
 
   return (
     <VideoPlayerContext.Provider value={ctx}>
@@ -295,17 +277,15 @@ const VideoPlayerVideo = ({ className, onClick, onPointerDown, ref, ...props }: 
     consumerRef.current = ref;
   });
   // The player needs the element too, so a consumer ref is attached alongside, not instead.
-  const composedRef = React.useCallback(
-    (video: HTMLVideoElement | null) => {
-      attachVideo(video);
-      const current = consumerRef.current;
-      if (typeof current === 'function') current(video);
-      else if (current) current.current = video;
-    },
-    [attachVideo],
-  );
+  const composedRef = (video: HTMLVideoElement | null) => {
+    attachVideo(video);
+    const current = consumerRef.current;
+    if (typeof current === 'function') current(video);
+    else if (current) current.current = video;
+  };
   // The player's own media handlers always run; a consumer's run after them instead of replacing them.
   const handlers = Object.fromEntries(
+    // Object.keys widens to string[]; media has exactly the handler names.
     (Object.keys(media) as MediaHandlerName[]).map((name) => [
       name,
       (event: React.SyntheticEvent<HTMLVideoElement>) => {
@@ -434,10 +414,17 @@ export interface VideoPlayerTimeProps extends React.ComponentProps<'span'> {
   mode?: 'elapsed' | 'remaining' | 'duration';
 }
 
+const displayedTime = (mode: VideoPlayerTimeProps['mode'], duration: number, currentTime: number) => {
+  if (mode === 'duration') return duration;
+  if (mode === 'remaining') return duration - currentTime;
+
+  return currentTime;
+};
+
 const VideoPlayerTime = ({ mode = 'elapsed', className, ...props }: VideoPlayerTimeProps) => {
   const { currentTime, duration } = useVideoPlayer();
 
-  const value = mode === 'duration' ? duration : mode === 'remaining' ? duration - currentTime : currentTime;
+  const value = displayedTime(mode, duration, currentTime);
   const label = formatTime(value);
 
   return (

@@ -62,6 +62,7 @@ const Marquee = ({
     <div
       data-slot="marquee"
       data-pause={pauseOnHover ? 'true' : undefined}
+      // React's CSSProperties type has no custom properties.
       style={
         {
           ...style,

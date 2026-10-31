@@ -65,10 +65,7 @@ const Dock = ({
   ...props
 }: DockProps) => {
   const mouseX = useMotionValue(Number.POSITIVE_INFINITY);
-  const value = React.useMemo<DockContextValue>(
-    () => ({ mouseX, baseSize, magnification, distance }),
-    [mouseX, baseSize, magnification, distance],
-  );
+  const value: DockContextValue = { mouseX, baseSize, magnification, distance };
 
   return (
     <DockContext.Provider value={value}>
@@ -90,7 +87,7 @@ const Dock = ({
           const items = Array.from(
             event.currentTarget.querySelectorAll<HTMLElement>('[data-slot="dock-item"]:not(:disabled)'),
           );
-          const index = items.indexOf(document.activeElement as HTMLElement);
+          const index = items.findIndex((item) => item === document.activeElement);
           if (index === -1) return;
           event.preventDefault();
           const rtl = getComputedStyle(event.currentTarget).direction === 'rtl';
@@ -122,7 +119,7 @@ const DockItem = ({
   ...props
 }: DockItemProps) => {
   const ref = React.useRef<HTMLButtonElement>(null);
-  const composedRef = React.useMemo(() => composeRefs(ref, consumerRef), [consumerRef]);
+  const composedRef = composeRefs(ref, consumerRef);
   const { mouseX, baseSize, magnification, distance } = useDock();
   const [hovered, setHovered] = React.useState(false);
   const reducedMotion = useReducedMotion();
@@ -136,7 +133,7 @@ const DockItem = ({
   const widthTarget = useTransform(distanceFromMouse, [-distance, 0, distance], [baseSize, magnification, baseSize]);
   const width = useSpring(widthTarget, { mass: 0.1, stiffness: 170, damping: 14 });
 
-  const itemCtx = React.useMemo(() => ({ hovered }), [hovered]);
+  const itemCtx = { hovered };
 
   return (
     <DockItemContext.Provider value={itemCtx}>

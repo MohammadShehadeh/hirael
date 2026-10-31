@@ -82,9 +82,9 @@ const useModelSelector = () => {
   return ctx;
 };
 
-export type ModelSelectorLabelOverrides = Partial<Omit<ModelSelectorLabels, 'capabilities'>> & {
+export interface ModelSelectorLabelOverrides extends Partial<Omit<ModelSelectorLabels, 'capabilities'>> {
   capabilities?: Partial<ModelSelectorLabels['capabilities']>;
-};
+}
 
 export interface ModelSelectorProps {
   models: ModelOption[];
@@ -98,62 +98,6 @@ export interface ModelSelectorProps {
   disabled?: boolean;
   children?: React.ReactNode;
 }
-
-const ModelSelector = ({
-  models,
-  value: valueProp,
-  defaultValue,
-  onValueChange,
-  open: openProp,
-  defaultOpen = false,
-  onOpenChange,
-  labels,
-  disabled,
-  children,
-}: ModelSelectorProps) => {
-  const [value, setValue] = useControllableState<string | undefined>({
-    prop: valueProp,
-    defaultProp: defaultValue,
-    onChange: (id) =>
-      id &&
-      onValueChange?.(
-        id,
-        models.find((m) => m.id === id),
-      ),
-  });
-  const [open, setOpen] = useControllableState({ prop: openProp, defaultProp: defaultOpen, onChange: onOpenChange });
-
-  const ctx = React.useMemo<ModelSelectorContextValue>(
-    () => ({
-      models,
-      value,
-      select: (id) => {
-        setValue(id);
-        setOpen(false);
-      },
-      labels: {
-        ...DEFAULT_LABELS,
-        ...labels,
-        capabilities: { ...DEFAULT_LABELS.capabilities, ...labels?.capabilities },
-      },
-      disabled,
-    }),
-    [models, value, setValue, setOpen, labels, disabled],
-  );
-
-  return (
-    <ModelSelectorContext.Provider value={ctx}>
-      <Popover open={open} onOpenChange={setOpen}>
-        {children ?? (
-          <>
-            <ModelSelectorTrigger />
-            <ModelSelectorContent />
-          </>
-        )}
-      </Popover>
-    </ModelSelectorContext.Provider>
-  );
-};
 
 const ModelSelectorTrigger = ({
   variant = 'ghost',
@@ -260,6 +204,59 @@ const ModelSelectorContent = ({
         </CommandList>
       </Command>
     </PopoverContent>
+  );
+};
+
+const ModelSelector = ({
+  models,
+  value: valueProp,
+  defaultValue,
+  onValueChange,
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
+  labels,
+  disabled,
+  children,
+}: ModelSelectorProps) => {
+  const [value, setValue] = useControllableState<string | undefined>({
+    prop: valueProp,
+    defaultProp: defaultValue,
+    onChange: (id) =>
+      id &&
+      onValueChange?.(
+        id,
+        models.find((m) => m.id === id),
+      ),
+  });
+  const [open, setOpen] = useControllableState({ prop: openProp, defaultProp: defaultOpen, onChange: onOpenChange });
+
+  const ctx: ModelSelectorContextValue = {
+    models,
+    value,
+    select: (id) => {
+      setValue(id);
+      setOpen(false);
+    },
+    labels: {
+      ...DEFAULT_LABELS,
+      ...labels,
+      capabilities: { ...DEFAULT_LABELS.capabilities, ...labels?.capabilities },
+    },
+    disabled,
+  };
+
+  return (
+    <ModelSelectorContext.Provider value={ctx}>
+      <Popover open={open} onOpenChange={setOpen}>
+        {children ?? (
+          <>
+            <ModelSelectorTrigger />
+            <ModelSelectorContent />
+          </>
+        )}
+      </Popover>
+    </ModelSelectorContext.Provider>
   );
 };
 

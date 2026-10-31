@@ -62,7 +62,7 @@ export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: FeatureProps) =
       <div className="grid min-h-[520px] gap-4 overflow-hidden rounded-2xl md:grid-cols-2">
         <div className="flex flex-col justify-between rounded-2xl bg-card p-10 md:p-14">
           <div>
-            <span className="mb-8 inline-block h-8 w-8 rounded-full border border-border" />
+            <span className="mb-8 inline-block size-8 rounded-full border border-border" />
             <h2 className="mb-6 [font-family:var(--font-velorah-serif)] text-3xl tracking-[-1px] text-foreground sm:text-5xl">
               {active.heading}
             </h2>
@@ -108,7 +108,7 @@ export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: FeatureProps) =
             />
           ) : (
             <video
-              className="absolute inset-0 h-full w-full object-cover"
+              className="absolute inset-0 size-full object-cover"
               src={videoSrc}
               poster={posterSrc}
               autoPlay

@@ -9,7 +9,7 @@ interface ServiceIconProps {
 
 const ServiceIcon = ({ level }: ServiceIconProps) => {
   return (
-    <svg viewBox="0 0 16 16" fill="none" aria-hidden className="h-[17px] w-[17px] shrink-0 text-[var(--nexa-accent)]">
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden className="size-[17px] shrink-0 text-[var(--nexa-accent)]">
       <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.3" />
       {level >= 2 ? <circle cx="11.5" cy="4.5" r="2" fill="currentColor" /> : null}
       {level >= 3 ? <circle cx="4" cy="11" r="3" fill="currentColor" /> : null}
@@ -20,7 +20,7 @@ const ServiceIcon = ({ level }: ServiceIconProps) => {
 
 const Bullet = () => {
   return (
-    <svg viewBox="0 0 16 16" fill="none" aria-hidden className="mt-1.5 h-3.5 w-3.5 shrink-0 text-[var(--nexa-accent)]">
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden className="mt-1.5 size-3.5 shrink-0 text-[var(--nexa-accent)]">
       <circle cx="8" cy="8" r="6.5" stroke="currentColor" strokeWidth="1.2" />
       <circle cx="8" cy="8" r="2.5" fill="currentColor" />
     </svg>

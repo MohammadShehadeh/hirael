@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useT, type Localized } from '@/lib/demo-locale';
 import {
   Comment,
   CommentBody,
@@ -19,7 +19,7 @@ interface Reply {
   id: number;
   author: string;
   text: string;
-  time: { en: string; ar: string };
+  time: Localized<string>;
 }
 
 const toggleReaction = (list: CommentReaction[], emoji: string) => {

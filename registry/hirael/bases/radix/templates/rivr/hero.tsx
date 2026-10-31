@@ -121,7 +121,7 @@ export const Hero = () => {
     >
       <div className="group relative flex min-h-[640px] w-full max-w-[1536px] flex-col items-center overflow-hidden rounded-[1.5rem] md:rounded-[3rem]">
         <video
-          className="absolute inset-0 z-0 h-full w-full object-cover"
+          className="absolute inset-0 z-0 size-full object-cover"
           src={HERO_VIDEO}
           autoPlay
           loop

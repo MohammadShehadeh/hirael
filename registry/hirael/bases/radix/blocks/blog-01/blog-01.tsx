@@ -24,11 +24,16 @@ const stagger = (index: number, step = 70, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
+interface Author {
+  name: string;
+  initials: string;
+}
+
 interface Post {
   category: string;
   title: string;
   excerpt: string;
-  author: { name: string; initials: string };
+  author: Author;
   date: string;
   readMin: number;
   href: string;

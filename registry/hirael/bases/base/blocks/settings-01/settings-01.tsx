@@ -311,14 +311,14 @@ const Settings01 = () => {
   const [deleteOpen, setDeleteOpen] = React.useState(false);
   const [deletionScheduled, setDeletionScheduled] = React.useState(false);
 
-  const saveProfile = () => {
+  const handleSaveProfile = () => {
     setProfileAttempted(true);
     if (Object.keys(validateProfile(profile)).length > 0) return;
     setSavedProfile(profile);
     setProfileAttempted(false);
   };
 
-  const saveRecovery = () => {
+  const handleSaveRecovery = () => {
     setRecoveryAttempted(true);
     if (validateRecovery(recovery)) return;
     setSavedRecovery(recovery);
@@ -357,11 +357,9 @@ const Settings01 = () => {
                 href={`#${section.id}`}
                 active={active === section.id}
                 onClick={() => setActive(section.id)}
-                className={
-                  section.id === 'danger' && active !== section.id
-                    ? 'text-destructive/80 hover:text-destructive'
-                    : undefined
-                }
+                className={cn(
+                  section.id === 'danger' && active !== section.id && 'text-destructive/80 hover:text-destructive',
+                )}
               >
                 {section.label}
               </SettingsNavItem>
@@ -478,7 +476,7 @@ const Settings01 = () => {
                 >
                   Cancel
                 </Button>
-                <Button type="button" size="sm" disabled={!profileDirty} onClick={saveProfile}>
+                <Button type="button" size="sm" disabled={!profileDirty} onClick={handleSaveProfile}>
                   Save changes
                 </Button>
               </SettingsFooter>
@@ -545,7 +543,7 @@ const Settings01 = () => {
                 >
                   Cancel
                 </Button>
-                <Button type="button" size="sm" disabled={!recoveryDirty} onClick={saveRecovery}>
+                <Button type="button" size="sm" disabled={!recoveryDirty} onClick={handleSaveRecovery}>
                   Save changes
                 </Button>
               </SettingsFooter>

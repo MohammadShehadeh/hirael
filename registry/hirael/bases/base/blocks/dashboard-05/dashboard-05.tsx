@@ -9,9 +9,18 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/registry/hirael/bases/base/ui/select';
 import { Sparkline, SparklineArea, SparklineLine } from '@/registry/hirael/bases/base/components/sparkline';
 
-type Range = '4h' | '24h' | '7d';
+const RANGE_VALUES = ['4h', '24h', '7d'] as const;
 
-const RANGES: { value: Range; label: string }[] = [
+type Range = (typeof RANGE_VALUES)[number];
+
+const isRange = (value: unknown): value is Range => RANGE_VALUES.some((option) => option === value);
+
+interface RangeOption {
+  value: Range;
+  label: string;
+}
+
+const RANGES: RangeOption[] = [
   { value: '4h', label: 'Last 4 hours' },
   { value: '24h', label: 'Last 24 hours' },
   { value: '7d', label: 'Last 7 days' },
@@ -171,7 +180,13 @@ const DEPLOYS: readonly Deploy[] = [
   },
 ];
 
-const STATUS_META: Record<Deploy['status'], { label: string; dot: string; pulse: boolean }> = {
+interface StatusMeta {
+  label: string;
+  dot: string;
+  pulse: boolean;
+}
+
+const STATUS_META: Record<Deploy['status'], StatusMeta> = {
   live: { label: 'Live', dot: 'bg-primary', pulse: true },
   stable: { label: 'Stable', dot: 'bg-muted-foreground/50', pulse: false },
   canary: { label: 'Canary', dot: 'bg-warning', pulse: true },
@@ -187,17 +202,32 @@ interface DeltaChipProps {
   label: string;
 }
 
+type Direction = 'up' | 'down' | 'unchanged';
+
+const directionOf = (value: number): Direction => {
+  if (value > 0) return 'up';
+  if (value < 0) return 'down';
+
+  return 'unchanged';
+};
+
+const DIRECTION_ICON = { up: ArrowUpRight, down: ArrowDownRight, unchanged: Minus };
+
+// Negative deltas use a true minus sign (U+2212), not a hyphen.
+const DIRECTION_SIGN: Record<Direction, string> = { up: '+', down: '−', unchanged: '' };
+
+const deltaTone = ({ value, goodWhen }: DeltaChipProps['delta']) => {
+  if (value === 0) return 'bg-accent text-muted-foreground';
+
+  return value > 0 === (goodWhen === 'up') ? 'bg-success/10 text-success' : 'bg-destructive/10 text-destructive';
+};
+
 const DeltaChip = ({ delta, label }: DeltaChipProps) => {
-  const { value, unit, goodWhen } = delta;
-  const Icon = value > 0 ? ArrowUpRight : value < 0 ? ArrowDownRight : Minus;
-  const direction = value > 0 ? 'up' : value < 0 ? 'down' : 'unchanged';
-  const sign = value > 0 ? '+' : value < 0 ? '−' : '';
-  const tone =
-    value === 0
-      ? 'bg-accent text-muted-foreground'
-      : value > 0 === (goodWhen === 'up')
-        ? 'bg-success/10 text-success'
-        : 'bg-destructive/10 text-destructive';
+  const { value, unit } = delta;
+  const direction = directionOf(value);
+  const Icon = DIRECTION_ICON[direction];
+  const sign = DIRECTION_SIGN[direction];
+  const tone = deltaTone(delta);
 
   return (
     <span
@@ -246,7 +276,7 @@ interface SparkProps {
 const Spark = ({ points, className }: SparkProps) => {
   return (
     <div className={cn('flex w-full', className)}>
-      <Sparkline data={[...points]} aria-hidden className="h-full w-full">
+      <Sparkline data={[...points]} aria-hidden className="size-full">
         <SparklineArea fillOpacity={0.06} />
         <SparklineLine strokeOpacity={0.6} />
       </Sparkline>
@@ -300,7 +330,12 @@ const Dashboard05 = () => {
               </span>
               <h2 className="font-serif text-3xl font-medium tracking-tight">All systems steady.</h2>
             </div>
-            <Select value={range} onValueChange={(v) => setRange(v as Range)}>
+            <Select
+              value={range}
+              onValueChange={(v) => {
+                if (isRange(v)) setRange(v);
+              }}
+            >
               <SelectTrigger size="sm" className="w-[150px]" aria-label="Time range">
                 <SelectValue />
               </SelectTrigger>

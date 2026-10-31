@@ -1,4 +1,5 @@
 import { BrandMark, GradientText } from './primitives';
+import { cn } from '@/lib/utils';
 
 const PRECISION_BG = '/media/templates/nexacore/precision-bg.webp';
 
@@ -115,7 +116,7 @@ const MobileStack = () => {
         const end = i % 2 === 1;
 
         return (
-          <div key={pillar.label} className={end ? 'flex flex-col items-end' : 'flex flex-col items-start'}>
+          <div key={pillar.label} className={cn('flex flex-col', end ? 'items-end' : 'items-start')}>
             <PillarChip label={pillar.label} small />
             <div className="mt-4 flex gap-4" style={{ flexDirection: end ? 'row-reverse' : 'row' }}>
               <div className="nexa-grad-line-bg min-h-[120px] w-px shrink-0" />

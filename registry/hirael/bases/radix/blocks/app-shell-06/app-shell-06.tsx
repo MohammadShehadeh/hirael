@@ -48,19 +48,6 @@ import {
   SidebarTrigger,
 } from '@/registry/hirael/bases/radix/ui/sidebar';
 
-interface NavGroup {
-  label?: string;
-  items: readonly NavNode[];
-}
-
-/** A sidebar entry. One with `groups` replaces the whole list instead of opening a page. */
-interface NavNode {
-  id: string;
-  label: string;
-  icon: LucideIcon;
-  groups?: readonly NavGroup[];
-}
-
 type Direction = 'none' | 'forward' | 'back';
 
 const WORKSPACE = 'Hirael';
@@ -76,6 +63,27 @@ const BrandMark = ({ className }: BrandMarkProps) => {
     </svg>
   );
 };
+
+// tw-animate's from-start/end only read dir on the element itself, so the rtl: variant flips the slide instead.
+const SLIDE: Record<Direction, string> = {
+  none: '',
+  forward:
+    'animate-in fade-in slide-in-from-right-8 rtl:slide-in-from-left-8 duration-300 ease-out motion-reduce:animate-none',
+  back: 'animate-in fade-in slide-in-from-left-8 rtl:slide-in-from-right-8 duration-300 ease-out motion-reduce:animate-none',
+};
+
+interface NavGroup {
+  label?: string;
+  items: readonly NavNode[];
+}
+
+/** A sidebar entry. One with `groups` replaces the whole list instead of opening a page. */
+interface NavNode {
+  id: string;
+  label: string;
+  icon: LucideIcon;
+  groups?: readonly NavGroup[];
+}
 
 const projectNode = (name: string, label: string, icon: LucideIcon): NavNode => ({
   id: name,
@@ -142,14 +150,6 @@ const ROOT: readonly NavGroup[] = [
 ];
 
 const itemsOf = (groups: readonly NavGroup[]) => groups.flatMap((group) => group.items);
-
-// tw-animate's from-start/end only read dir on the element itself, so the rtl: variant flips the slide instead.
-const SLIDE: Record<Direction, string> = {
-  none: '',
-  forward:
-    'animate-in fade-in slide-in-from-right-8 rtl:slide-in-from-left-8 duration-300 ease-out motion-reduce:animate-none',
-  back: 'animate-in fade-in slide-in-from-left-8 rtl:slide-in-from-right-8 duration-300 ease-out motion-reduce:animate-none',
-};
 
 const AppShell06 = () => {
   const [stack, setStack] = React.useState<NavNode[]>([]);

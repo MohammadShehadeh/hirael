@@ -74,7 +74,7 @@ const RequestIntegration = () => {
   const [pending, setPending] = React.useState(false);
   const [sent, setSent] = React.useState<string | null>(null);
 
-  const onOpenChange = (next: boolean) => {
+  const handleOpenChange = (next: boolean) => {
     setOpen(next);
     if (!next && sent) {
       setSent(null);
@@ -82,7 +82,7 @@ const RequestIntegration = () => {
     }
   };
 
-  const onSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const name = tool.trim();
     if (name.length < 2) {
@@ -98,7 +98,7 @@ const RequestIntegration = () => {
   };
 
   return (
-    <Popover open={open} onOpenChange={onOpenChange}>
+    <Popover open={open} onOpenChange={handleOpenChange}>
       <PopoverTrigger render={<Button type="button" variant="outline" size="sm" className="group mt-4" />}>
         Request an integration
         <ArrowRight className="size-3.5 transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
@@ -119,7 +119,7 @@ const RequestIntegration = () => {
             key="form"
             data-slot="integrations-request"
             noValidate
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
             className="flex flex-col gap-3"
           >
             <Field className="gap-1.5" data-invalid={Boolean(error) || undefined}>

@@ -22,6 +22,8 @@ export interface GithubLinkProps {
   stars?: number | null;
 }
 
+const starCount = new Intl.NumberFormat();
+
 export const GithubLink = ({ stars }: GithubLinkProps) => {
   return (
     <Button variant="outline" size="sm" asChild>
@@ -30,7 +32,7 @@ export const GithubLink = ({ stars }: GithubLinkProps) => {
         target="_blank"
         rel="noreferrer"
         aria-label={
-          stars ? `Star ${SITE.name} on GitHub, ${stars.toLocaleString()} stars` : `Star ${SITE.name} on GitHub`
+          stars ? `Star ${SITE.name} on GitHub, ${starCount.format(stars)} stars` : `Star ${SITE.name} on GitHub`
         }
       >
         <GithubIcon />

@@ -23,6 +23,30 @@ const glow = (w: number, h: number) =>
 
 const STATIC_GLOW = glow(120, 135);
 
+interface AnimatedTitleProps extends React.ComponentProps<'h2'> {
+  text: string;
+}
+
+const AnimatedTitle = ({ text, className, ...props }: AnimatedTitleProps) => {
+  const words = text.split(' ');
+
+  return (
+    <h2
+      className={cn(
+        'mx-auto max-w-3xl font-serif text-3xl leading-tight font-medium tracking-tight text-foreground md:text-5xl',
+        className,
+      )}
+      {...props}
+    >
+      {words.map((word, i) => (
+        <span key={i} className={cn('me-2 inline-block', RISE)} style={stagger(i, 40, 120)}>
+          {word}
+        </span>
+      ))}
+    </h2>
+  );
+};
+
 const Cta05 = () => {
   const reduced = useReducedMotion();
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -36,7 +60,7 @@ const Cta05 = () => {
   const gradientWidth = useTransform(scrollYProgress, [0, 1], [100, 140]);
   const gradientHeight = useTransform(scrollYProgress, [0, 1], [110, 160]);
   const scrollGlow = useTransform([gradientWidth, gradientHeight], (values) => {
-    const [width = 120, height = 135] = values as number[];
+    const [width = 120, height = 135] = values.map(Number);
 
     return glow(Math.round(width), Math.round(height));
   });
@@ -113,26 +137,6 @@ const Cta05 = () => {
         </div>
       </div>
     </section>
-  );
-};
-
-const AnimatedTitle = ({ text, className, ...props }: React.ComponentProps<'h2'> & { text: string }) => {
-  const words = text.split(' ');
-
-  return (
-    <h2
-      className={cn(
-        'mx-auto max-w-3xl font-serif text-3xl leading-tight font-medium tracking-tight text-foreground md:text-5xl',
-        className,
-      )}
-      {...props}
-    >
-      {words.map((word, i) => (
-        <span key={i} className={cn('me-2 inline-block', RISE)} style={stagger(i, 40, 120)}>
-          {word}
-        </span>
-      ))}
-    </h2>
   );
 };
 

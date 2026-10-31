@@ -1,0 +1,43 @@
+---
+title: Built for the React Compiler
+version: '8.0.0'
+date: 2026-10-31
+description: 'Every component, block and template now leaves memoization to the React Compiler, so the code you install is shorter and easier to read. Turn the compiler on in your app before you update.'
+updated:
+  - masonry
+  - rich-text-editor
+  - copy-button
+  - tour
+  - tree-view
+  - lazy-select
+  - unsaved-guard
+  - signature-pad
+  - upload-queue
+  - cursor-glow
+  - tilt-card
+  - sources
+  - hero-09
+  - page-header-01
+---
+
+Breaking:
+
+- **The React Compiler is now required.** Components, blocks and templates
+  no longer wrap values in `useMemo`, `useCallback` or `memo`; the compiler
+  does that for you. In Next.js, set `reactCompiler: true` in
+  `next.config.ts`. In Vite, follow the
+  [React Compiler setup guide](https://react.dev/learn/react-compiler/installation).
+  Without it, some components re-render far more than they should, and a few,
+  like Checkbox Group, can get stuck re-rendering.
+- **React 19.2 or newer.** Several components now use `useEffectEvent`.
+
+Improved:
+
+- **Shorter source.** Removing the hand-written memoization takes about 1,500
+  lines out of the code you own.
+- **Every item compiles.** A handful of components, including Masonry, Rich
+  Text Editor, Tilt Card and Cursor Glow, used patterns the compiler skips.
+  They're rewritten so the compiler optimizes them too.
+- **Data Table and Virtual List are unchanged.** They opt out of the compiler
+  with `"use no memo"` and keep their own memoization, because TanStack Table
+  and TanStack Virtual read values the compiler would cache.

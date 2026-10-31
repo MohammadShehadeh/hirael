@@ -167,8 +167,10 @@ interface DetailHeaderShareProps extends Omit<React.ComponentProps<typeof Button
   resetAfter?: number;
 }
 
+type ShareStatus = 'idle' | 'copied' | 'failed';
+
 const DetailHeaderShare = ({ url, resetAfter = 1500, variant = 'outline', ...props }: DetailHeaderShareProps) => {
-  const [state, setState] = React.useState<'idle' | 'copied' | 'failed'>('idle');
+  const [state, setState] = React.useState<ShareStatus>('idle');
 
   React.useEffect(() => {
     if (state === 'idle') return;
@@ -177,9 +179,10 @@ const DetailHeaderShare = ({ url, resetAfter = 1500, variant = 'outline', ...pro
     return () => window.clearTimeout(timer);
   }, [state, resetAfter]);
 
-  const copy = async () => {
+  const handleCopy = async () => {
+    const shareUrl = url ?? window.location.href;
     try {
-      await navigator.clipboard.writeText(url ?? window.location.href);
+      await navigator.clipboard.writeText(shareUrl);
       setState('copied');
     } catch {
       // Clipboard access is blocked in some embeds and insecure origins.
@@ -193,7 +196,7 @@ const DetailHeaderShare = ({ url, resetAfter = 1500, variant = 'outline', ...pro
       variant={variant}
       data-slot="detail-header-share"
       data-state={state}
-      onClick={copy}
+      onClick={handleCopy}
       {...props}
     >
       {state === 'copied' ? (
@@ -298,10 +301,14 @@ const MILESTONE_LABEL: Record<MilestoneState, string> = {
 
 const CREATED = '2026-08-12';
 
-const formatDate = (date: string) =>
-  new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(
-    new Date(date),
-  );
+const shortDate = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+});
+
+const formatDate = (date: string) => shortDate.format(new Date(date));
 
 type Notice = { kind: 'duplicated'; name: string } | null;
 
@@ -327,7 +334,7 @@ const PageHeader01 = () => {
   const editing = draft !== null;
   const draftInvalid = editing && draft.name.trim() === '';
 
-  const save = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!draft || draftInvalid) return;
     setName(draft.name.trim());
@@ -335,7 +342,7 @@ const PageHeader01 = () => {
     setDraft(null);
   };
 
-  const duplicate = () => {
+  const handleDuplicate = () => {
     const next = copies + 1;
     setCopies(next);
     setNotice({ kind: 'duplicated', name: next === 1 ? `${name} (copy)` : `${name} (copy ${next})` });
@@ -412,7 +419,7 @@ const PageHeader01 = () => {
           </div>
 
           {editing ? (
-            <form onSubmit={save} className={cn(SWAP, 'flex flex-col gap-5')} aria-label="Edit project details">
+            <form onSubmit={handleSave} className={cn(SWAP, 'flex flex-col gap-5')} aria-label="Edit project details">
               <FieldGroup className="max-w-2xl gap-4">
                 <Field data-invalid={draftInvalid || undefined}>
                   <FieldLabel htmlFor={`${formId}-name`}>Project name</FieldLabel>
@@ -509,7 +516,7 @@ const PageHeader01 = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-44">
-                    <DropdownMenuItem onSelect={duplicate}>
+                    <DropdownMenuItem onSelect={handleDuplicate}>
                       <Copy aria-hidden />
                       Duplicate
                     </DropdownMenuItem>

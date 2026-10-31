@@ -92,6 +92,8 @@ export interface SegmentedControlProps extends Omit<React.ComponentProps<'div'>,
   name?: string;
 }
 
+type Edge = 'left' | 'right';
+
 const SegmentedControl = ({
   value: valueProp,
   defaultValue = null,
@@ -114,22 +116,19 @@ const SegmentedControl = ({
   });
 
   const rootRef = React.useRef<HTMLDivElement | null>(null);
-  const composedRef = React.useMemo(() => composeRefs(rootRef, ref), [ref]);
+  const composedRef = composeRefs(rootRef, ref);
   const fromRectRef = React.useRef<ThumbRect | null>(null);
   const prevValueRef = React.useRef(value);
   const slideRef = React.useRef<Slide | null>(null);
 
-  const select = React.useCallback(
-    (next: string) => {
-      if (disabled || next === value) return;
-      const indicator = rootRef.current?.querySelector(INDICATOR_SELECTOR);
-      fromRectRef.current =
-        (slideRef.current && currentSlideRect(slideRef.current)) ??
-        (indicator ? toThumbRect(indicator.getBoundingClientRect()) : null);
-      setValue(next);
-    },
-    [disabled, value, setValue],
-  );
+  const select = (next: string) => {
+    if (disabled || next === value) return;
+    const indicator = rootRef.current?.querySelector(INDICATOR_SELECTOR);
+    fromRectRef.current =
+      (slideRef.current && currentSlideRect(slideRef.current)) ??
+      (indicator ? toThumbRect(indicator.getBoundingClientRect()) : null);
+    setValue(next);
+  };
 
   // Scaling the thumb between options of different widths would stretch its corners, so the slide uses
   // full-width layers that only translate and clip. The fill is one layer: two translucent halves would seam.
@@ -164,7 +163,7 @@ const SegmentedControl = ({
         clipPath: `inset(${top}px ${right}px ${bottom}px ${rect.left - box.left}px round ${radius})`,
       };
     };
-    const edgeFrame = (rect: ThumbRect, side: 'left' | 'right'): Keyframe => {
+    const edgeFrame = (rect: ThumbRect, side: Edge): Keyframe => {
       const cut = box.width - rect.width / 2;
       const x = side === 'left' ? rect.left - box.left : rect.left + rect.width - box.right;
       const [right, left] = side === 'left' ? [cut, -SHADOW_BLEED] : [-SHADOW_BLEED, cut];
@@ -229,10 +228,7 @@ const SegmentedControl = ({
     if (target.dataset.value !== undefined) select(target.dataset.value);
   };
 
-  const ctx = React.useMemo<SegmentedControlContextValue>(
-    () => ({ value, select, size, fullWidth, disabled }),
-    [value, select, size, fullWidth, disabled],
-  );
+  const ctx: SegmentedControlContextValue = { value, select, size, fullWidth, disabled };
 
   return (
     <SegmentedControlContext.Provider value={ctx}>

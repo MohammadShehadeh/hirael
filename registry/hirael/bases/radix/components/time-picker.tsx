@@ -107,38 +107,22 @@ const TimePicker = ({
     onChange: onValueChange,
   });
 
-  const clearValue = React.useCallback(() => setValue(null), [setValue]);
+  const clearValue = () => setValue(null);
 
-  const ctx = React.useMemo<TimePickerContextValue>(
-    () => ({
-      value,
-      setValue,
-      clearValue,
-      clearable,
-      format,
-      meridiemLabels,
-      showSeconds,
-      minuteStep,
-      secondStep,
-      open,
-      setOpen,
-      disabled,
-    }),
-    [
-      value,
-      setValue,
-      clearValue,
-      clearable,
-      format,
-      meridiemLabels,
-      showSeconds,
-      minuteStep,
-      secondStep,
-      open,
-      setOpen,
-      disabled,
-    ],
-  );
+  const ctx: TimePickerContextValue = {
+    value,
+    setValue,
+    clearValue,
+    clearable,
+    format,
+    meridiemLabels,
+    showSeconds,
+    minuteStep,
+    secondStep,
+    open,
+    setOpen,
+    disabled,
+  };
 
   return (
     <TimePickerContext.Provider value={ctx}>
@@ -158,15 +142,12 @@ const formatTimeValue = (v: TimeValue, format: TimeFormat, showSeconds: boolean,
   return `${pad2(to12Hour(v.hour))}:${pad2(v.minute)}${tail} ${v.hour >= 12 ? labels.pm : labels.am}`;
 };
 
-const TimePickerTrigger = ({
-  placeholder = 'Pick a time',
-  className,
-  children,
-  ...props
-}: Omit<React.ComponentProps<'button'>, 'children'> & {
+interface TimePickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'children'> {
   placeholder?: string;
   children?: React.ReactNode;
-}) => {
+}
+
+const TimePickerTrigger = ({ placeholder = 'Pick a time', className, children, ...props }: TimePickerTriggerProps) => {
   const ctx = useTimePicker();
   const label = ctx.value ? formatTimeValue(ctx.value, ctx.format, ctx.showSeconds, ctx.meridiemLabels) : null;
 
@@ -200,11 +181,8 @@ interface ScrollColumnProps {
 const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnProps) => {
   const listRef = React.useRef<HTMLDivElement>(null);
 
-  const displayValues = React.useMemo(() => {
-    if (selected === undefined || values.includes(selected)) return values;
-
-    return [...values, selected].sort((a, b) => a - b);
-  }, [values, selected]);
+  const displayValues =
+    selected === undefined || values.includes(selected) ? values : [...values, selected].toSorted((a, b) => a - b);
 
   const tabbableValue = selected ?? displayValues[0];
 
@@ -219,12 +197,13 @@ const ScrollColumn = ({ values, selected, onSelect, ariaLabel }: ScrollColumnPro
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>, index: number) => {
     const last = displayValues.length - 1;
-    const nextIndex = (
-      { ArrowDown: Math.min(last, index + 1), ArrowUp: Math.max(0, index - 1), Home: 0, End: last } as Record<
-        string,
-        number
-      >
-    )[e.key];
+    const nextIndexByKey: Partial<Record<string, number>> = {
+      ArrowDown: Math.min(last, index + 1),
+      ArrowUp: Math.max(0, index - 1),
+      Home: 0,
+      End: last,
+    };
+    const nextIndex = nextIndexByKey[e.key];
     if (nextIndex === undefined) return;
     e.preventDefault();
     const n = displayValues[nextIndex];
@@ -282,6 +261,12 @@ interface TimePickerContentProps extends React.ComponentProps<typeof PopoverCont
   labels?: Partial<typeof DEFAULT_LABELS>;
 }
 
+const MERIDIEM_VALUES = ['AM', 'PM'] as const;
+
+type Meridiem = (typeof MERIDIEM_VALUES)[number];
+
+const isMeridiem = (value: unknown): value is Meridiem => MERIDIEM_VALUES.some((option) => option === value);
+
 const TimePickerContent = ({ labels, className, ...props }: TimePickerContentProps) => {
   const text = { ...DEFAULT_LABELS, ...labels };
   const ctx = useTimePicker();
@@ -289,21 +274,19 @@ const TimePickerContent = ({ labels, className, ...props }: TimePickerContentPro
   const twelve = ctx.format === '12h';
   const baseValue: TimeValue = ctx.value ?? { hour: 0, minute: 0, second: ctx.showSeconds ? 0 : undefined };
 
-  const hourValues = React.useMemo(
-    () => Array.from({ length: twelve ? 12 : 24 }, (_, i) => (twelve ? i + 1 : i)),
-    [twelve],
-  );
-  const minuteValues = React.useMemo(() => stepValues(ctx.minuteStep), [ctx.minuteStep]);
-  const secondValues = React.useMemo(() => stepValues(ctx.secondStep), [ctx.secondStep]);
+  const hourValues = Array.from({ length: twelve ? 12 : 24 }, (_, i) => (twelve ? i + 1 : i));
+  const minuteValues = stepValues(ctx.minuteStep);
+  const secondValues = stepValues(ctx.secondStep);
 
-  const displayHour = ctx.value ? (twelve ? to12Hour(ctx.value.hour) : ctx.value.hour) : undefined;
+  const hour = ctx.value?.hour;
+  const displayHour = hour !== undefined && twelve ? to12Hour(hour) : hour;
 
-  const setHour = (h: number) => {
+  const handleSetHour = (h: number) => {
     const hour = twelve ? (h % 12) + (isAM ? 0 : 12) : h;
     ctx.setValue({ ...baseValue, hour });
   };
 
-  const setMeridiem = (next: 'AM' | 'PM') => {
+  const setMeridiem = (next: Meridiem) => {
     if ((next === 'AM') === isAM) return;
     ctx.setValue({ ...baseValue, hour: (baseValue.hour % 12) + (next === 'AM' ? 0 : 12) });
   };
@@ -311,7 +294,7 @@ const TimePickerContent = ({ labels, className, ...props }: TimePickerContentPro
   return (
     <PopoverContent align="start" data-slot="time-picker-content" className={cn('w-auto p-3', className)} {...props}>
       <div data-slot="time-picker-columns" className="flex items-stretch gap-2">
-        <ScrollColumn values={hourValues} selected={displayHour} onSelect={setHour} ariaLabel={text.hour} />
+        <ScrollColumn values={hourValues} selected={displayHour} onSelect={handleSetHour} ariaLabel={text.hour} />
         <span aria-hidden className="flex items-center text-sm text-muted-foreground">
           :
         </span>
@@ -336,7 +319,13 @@ const TimePickerContent = ({ labels, className, ...props }: TimePickerContentPro
         )}
       </div>
       {twelve && (
-        <Tabs value={isAM ? 'AM' : 'PM'} onValueChange={(v) => setMeridiem(v as 'AM' | 'PM')} className="mt-3">
+        <Tabs
+          value={isAM ? 'AM' : 'PM'}
+          onValueChange={(v) => {
+            if (isMeridiem(v)) setMeridiem(v);
+          }}
+          className="mt-3"
+        >
           <TabsList className="w-full">
             <TabsTrigger value="AM" className="text-xs uppercase">
               {ctx.meridiemLabels.am}

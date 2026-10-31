@@ -8,6 +8,8 @@ import { Input } from '@/registry/hirael/bases/radix/ui/input';
 
 const SAMPLES = [1536, 2_621_440, 5_368_709_120];
 
+const count = new Intl.NumberFormat('en-US');
+
 const FormatBytesDemo = () => {
   const t = useT();
   const [raw, setRaw] = React.useState('1048576');
@@ -36,7 +38,7 @@ const FormatBytesDemo = () => {
       <ul className="grid divide-y divide-border rounded-md border border-border text-sm">
         {SAMPLES.map((sample) => (
           <li key={sample} className="flex items-center justify-between gap-4 px-3 py-2 tabular-nums" dir="ltr">
-            <span className="text-muted-foreground">{sample.toLocaleString('en-US')}</span>
+            <span className="text-muted-foreground">{count.format(sample)}</span>
             <span className="font-medium whitespace-nowrap">{formatBytes(sample)}</span>
           </li>
         ))}

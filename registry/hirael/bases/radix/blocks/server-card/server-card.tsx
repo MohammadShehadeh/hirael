@@ -126,11 +126,18 @@ interface ServerCardMeterProps extends React.ComponentProps<'div'> {
   thresholds?: [warn: number, crit: number];
 }
 
+const meterTone = (frac: number, warn: number, crit: number) => {
+  if (frac >= crit) return 'bg-destructive';
+  if (frac >= warn) return 'bg-warning';
+
+  return 'bg-foreground/60';
+};
+
 const ServerCardMeter = ({ label, value, thresholds = [0.75, 0.9], className, ...props }: ServerCardMeterProps) => {
   const pct = Math.max(0, Math.min(100, value));
   const frac = pct / 100;
   const [warn, crit] = thresholds;
-  const tone = frac >= crit ? 'bg-destructive' : frac >= warn ? 'bg-warning' : 'bg-foreground/60';
+  const tone = meterTone(frac, warn, crit);
 
   return (
     <div data-slot="server-card-meter" className={cn('flex flex-col gap-1.5', className)} {...props}>
@@ -161,15 +168,28 @@ export {
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-2 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-const SERVERS: {
+interface ServerSpecs {
+  cpu: string;
+  memory: string;
+  disk: string;
+}
+
+interface ServerMeter {
+  label: string;
+  value: number;
+}
+
+interface ServerRow {
   name: string;
   region: string;
   provider: string;
   status: ServerStatus;
   statusLabel: string;
-  specs: { cpu: string; memory: string; disk: string };
-  meters: { label: string; value: number }[];
-}[] = [
+  specs: ServerSpecs;
+  meters: ServerMeter[];
+}
+
+const SERVERS: ServerRow[] = [
   {
     name: 'web-prod-01',
     region: 'us-east-1',

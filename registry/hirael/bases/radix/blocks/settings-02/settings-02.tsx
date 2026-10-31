@@ -304,10 +304,12 @@ interface NotificationRow {
   description: string;
 }
 
-const NOTIFICATION_GROUPS: readonly {
+interface NotificationGroup {
   label: string;
   rows: readonly NotificationRow[];
-}[] = [
+}
+
+const NOTIFICATION_GROUPS: readonly NotificationGroup[] = [
   {
     label: 'Activity',
     rows: [
@@ -379,24 +381,26 @@ const validatePassword = (current: string, next: string, confirm: string, submit
   return errors;
 };
 
+type PasswordStatus = 'idle' | 'pending' | 'updated';
+
 const Settings02 = () => {
   const [current, setCurrent] = React.useState('');
   const [next, setNext] = React.useState('');
   const [confirm, setConfirm] = React.useState('');
   const [passwordSubmitted, setPasswordSubmitted] = React.useState(false);
-  const [passwordStatus, setPasswordStatus] = React.useState<'idle' | 'pending' | 'updated'>('idle');
+  const [passwordStatus, setPasswordStatus] = React.useState<PasswordStatus>('idle');
   const passwordTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const passwordErrors = validatePassword(current, next, confirm, passwordSubmitted);
   const passwordTouched = current.length > 0 || next.length > 0 || confirm.length > 0;
 
   React.useEffect(() => () => clearTimeout(passwordTimer.current), []);
 
-  const editPassword = (setter: (value: string) => void) => (value: string) => {
+  const handlePasswordChange = (setter: (value: string) => void, value: string) => {
     setter(value);
     if (passwordStatus === 'updated') setPasswordStatus('idle');
   };
 
-  const updatePassword = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleUpdatePassword = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setPasswordSubmitted(true);
     if (Object.keys(validatePassword(current, next, confirm, true)).length > 0) return;
@@ -423,6 +427,7 @@ const Settings02 = () => {
     paused: false,
     prefs: NOTIFICATION_DEFAULTS,
   });
+  // Object.keys widens to string[]; prefs has exactly the notification keys.
   const notificationsDirty =
     paused !== saved.paused || (Object.keys(prefs) as NotificationKey[]).some((k) => prefs[k] !== saved.prefs[k]);
 
@@ -458,14 +463,14 @@ const Settings02 = () => {
                     </SettingsPanelDescription>
                   </div>
                 </SettingsPanelHeader>
-                <form id="settings-password-form" noValidate className="px-5 py-5" onSubmit={updatePassword}>
+                <form id="settings-password-form" noValidate className="px-5 py-5" onSubmit={handleUpdatePassword}>
                   <FieldGroup className="gap-5">
                     <Field className="gap-2" data-invalid={passwordErrors.current ? true : undefined}>
                       <FieldLabel htmlFor="settings-current-password">Current password</FieldLabel>
                       <PasswordInput
                         id="settings-current-password"
                         value={current}
-                        onValueChange={editPassword(setCurrent)}
+                        onValueChange={(value) => handlePasswordChange(setCurrent, value)}
                       >
                         <PasswordInputField
                           autoComplete="current-password"
@@ -478,7 +483,11 @@ const Settings02 = () => {
                     <div className="grid gap-5 sm:grid-cols-2">
                       <Field className="gap-2" data-invalid={passwordErrors.next ? true : undefined}>
                         <FieldLabel htmlFor="settings-new-password">New password</FieldLabel>
-                        <PasswordInput id="settings-new-password" value={next} onValueChange={editPassword(setNext)}>
+                        <PasswordInput
+                          id="settings-new-password"
+                          value={next}
+                          onValueChange={(value) => handlePasswordChange(setNext, value)}
+                        >
                           <PasswordInputField
                             autoComplete="new-password"
                             minLength={PASSWORD_MIN}
@@ -494,7 +503,7 @@ const Settings02 = () => {
                         <PasswordInput
                           id="settings-confirm-password"
                           value={confirm}
-                          onValueChange={editPassword(setConfirm)}
+                          onValueChange={(value) => handlePasswordChange(setConfirm, value)}
                         >
                           <PasswordInputField
                             autoComplete="new-password"

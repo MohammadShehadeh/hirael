@@ -137,7 +137,12 @@ const STATUS_RANK: Record<Status, number> = {
   'Past due': 2,
 };
 
-const STATUS_TONE: Record<Status, { dot: string; text: string }> = {
+interface StatusTone {
+  dot: string;
+  text: string;
+}
+
+const STATUS_TONE: Record<Status, StatusTone> = {
   Active: { dot: 'bg-success', text: 'text-success' },
   Trial: { dot: 'bg-warning', text: 'text-warning' },
   'Past due': { dot: 'bg-destructive', text: 'text-destructive' },
@@ -167,12 +172,14 @@ const usd = new Intl.NumberFormat('en-US', {
 type SortKey = 'name' | 'plan' | 'mrr' | 'status';
 type SortDirection = 'asc' | 'desc';
 
-const COLUMNS: readonly {
+interface Column {
   key: SortKey;
   label: string;
   align: 'start' | 'end';
   hideBelowSm?: boolean;
-}[] = [
+}
+
+const COLUMNS: readonly Column[] = [
   { key: 'name', label: 'Account', align: 'start' },
   { key: 'plan', label: 'Plan', align: 'start' },
   { key: 'mrr', label: 'MRR', align: 'end', hideBelowSm: true },
@@ -187,9 +194,20 @@ const compareBy = (a: Account, b: Account, key: SortKey) => {
   return a.name.localeCompare(b.name);
 };
 
-/** Negative deltas use a true minus sign (U+2212), not a hyphen. */
+type Direction = 'up' | 'down' | 'unchanged';
+
+const directionOf = (delta: number): Direction => {
+  if (delta > 0) return 'up';
+  if (delta < 0) return 'down';
+
+  return 'unchanged';
+};
+
+// Negative deltas use a true minus sign (U+2212), not a hyphen.
+const DIRECTION_SIGN: Record<Direction, string> = { up: '+', down: '−', unchanged: '' };
+
 const formatDelta = ({ delta, unit }: Pick<Metric, 'delta' | 'unit'>) => {
-  const sign = delta > 0 ? '+' : delta < 0 ? '−' : '';
+  const sign = DIRECTION_SIGN[directionOf(delta)];
 
   return `${sign}${Math.abs(delta)}${unit}`;
 };
@@ -202,7 +220,7 @@ const deltaTone = ({ delta, goodWhen }: Pick<Metric, 'delta' | 'goodWhen'>) => {
 };
 
 const deltaLabel = ({ label, delta, unit }: Metric) => {
-  const direction = delta > 0 ? 'up' : delta < 0 ? 'down' : 'unchanged';
+  const direction = directionOf(delta);
   const measure = unit === '%' ? 'percent' : 'points';
 
   return `${label} ${direction} ${Math.abs(delta)} ${measure} against the previous 30 days`;
@@ -246,18 +264,15 @@ const AppShell01 = () => {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, []);
 
-  const visibleRows = React.useMemo(() => {
-    const q = query.trim().toLowerCase();
-    const matches = q
-      ? ROWS.filter(
-          (r) =>
-            r.name.toLowerCase().includes(q) || r.plan.toLowerCase().includes(q) || r.status.toLowerCase().includes(q),
-        )
-      : ROWS;
-    const sorted = [...matches].sort((a, b) => compareBy(a, b, sortKey));
-
-    return sortDirection === 'asc' ? sorted : sorted.reverse();
-  }, [query, sortKey, sortDirection]);
+  const q = query.trim().toLowerCase();
+  const matches = q
+    ? ROWS.filter(
+        (r) =>
+          r.name.toLowerCase().includes(q) || r.plan.toLowerCase().includes(q) || r.status.toLowerCase().includes(q),
+      )
+    : ROWS;
+  const sorted = matches.toSorted((a, b) => compareBy(a, b, sortKey));
+  const visibleRows = sortDirection === 'asc' ? sorted : sorted.reverse();
 
   const toggleSort = (key: SortKey) => {
     if (key === sortKey) {

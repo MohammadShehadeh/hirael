@@ -258,63 +258,55 @@ const CreditCardInput = ({
     cvc: false,
   });
 
-  const brand = React.useMemo(() => detectCardBrand(value.number), [value.number]);
-  const spec = React.useMemo(() => getCardBrandSpec(brand), [brand]);
-  const errors = React.useMemo(() => computeErrors(value, spec, new Date()), [value, spec]);
+  const brand = detectCardBrand(value.number);
+  const spec = getCardBrandSpec(brand);
+  const errors = computeErrors(value, spec, new Date());
 
-  const focusField = React.useCallback(
-    (field: CreditCardField) => {
-      const el = document.getElementById(`${rootId}-${field}`) as HTMLInputElement | null;
-      el?.focus();
-      el?.select();
-    },
-    [rootId],
-  );
+  const focusField = (field: CreditCardField) => {
+    const el = document.getElementById(`${rootId}-${field}`);
+    if (!(el instanceof HTMLInputElement)) return;
+    el.focus();
+    el.select();
+  };
 
-  const setField = React.useCallback(
-    (field: CreditCardField, raw: string) => {
-      const next: CreditCardValue = { ...value };
-      if (field === 'number') next.number = digitsOnly(raw);
-      else if (field === 'expiry') next.expiry = formatCardExpiry(raw);
-      else next.cvc = digitsOnly(raw);
-      // Brand patterns match on the prefix only, so detecting before truncation is safe.
-      const nextBrand = detectCardBrand(next.number);
-      const nextSpec = getCardBrandSpec(nextBrand);
-      next.number = next.number.slice(0, Math.max(...nextSpec.lengths));
-      // A brand switch (Amex 4 -> Visa 3) shortens the CVC in state, not just on screen.
-      next.cvc = next.cvc.slice(0, nextSpec.cvcLength);
-      if (valueProp === undefined) setInternal(next);
-      const nextErrors = computeErrors(next, nextSpec, new Date());
-      onValueChange?.({
-        ...next,
-        brand: nextBrand,
-        valid: nextErrors.length === 0,
-        errors: nextErrors,
-      });
-    },
-    [value, valueProp, onValueChange],
-  );
+  const setField = (field: CreditCardField, raw: string) => {
+    const next: CreditCardValue = { ...value };
+    if (field === 'number') next.number = digitsOnly(raw);
+    else if (field === 'expiry') next.expiry = formatCardExpiry(raw);
+    else next.cvc = digitsOnly(raw);
+    // Brand patterns match on the prefix only, so detecting before truncation is safe.
+    const nextBrand = detectCardBrand(next.number);
+    const nextSpec = getCardBrandSpec(nextBrand);
+    next.number = next.number.slice(0, Math.max(...nextSpec.lengths));
+    // A brand switch (Amex 4 -> Visa 3) shortens the CVC in state, not just on screen.
+    next.cvc = next.cvc.slice(0, nextSpec.cvcLength);
+    if (valueProp === undefined) setInternal(next);
+    const nextErrors = computeErrors(next, nextSpec, new Date());
+    onValueChange?.({
+      ...next,
+      brand: nextBrand,
+      valid: nextErrors.length === 0,
+      errors: nextErrors,
+    });
+  };
 
-  const touch = React.useCallback((field: CreditCardField) => {
+  const touch = (field: CreditCardField) => {
     setTouched((prev) => (prev[field] ? prev : { ...prev, [field]: true }));
-  }, []);
+  };
 
-  const ctx = React.useMemo<CreditCardInputContextValue>(
-    () => ({
-      id: rootId,
-      value,
-      brand,
-      spec,
-      errors,
-      touched,
-      touch,
-      setField,
-      focusField,
-      variant,
-      disabled,
-    }),
-    [rootId, value, brand, spec, errors, touched, touch, setField, focusField, variant, disabled],
-  );
+  const ctx: CreditCardInputContextValue = {
+    id: rootId,
+    value,
+    brand,
+    spec,
+    errors,
+    touched,
+    touch,
+    setField,
+    focusField,
+    variant,
+    disabled,
+  };
 
   return (
     <CreditCardInputContext.Provider value={ctx}>
@@ -375,6 +367,73 @@ interface CreditCardInputNumberProps extends FieldProps {
   /** Rendered at the end of the field. Defaults to `<CreditCardInputBrand />`. */
   children?: React.ReactNode;
 }
+
+const CreditCardInputExpiry = ({ placeholder = 'MM/YY', className, onBlur, onKeyDown, ...props }: FieldProps) => {
+  const ctx = useCreditCardInput();
+  const fieldProps = useFieldProps('expiry', { onBlur, onKeyDown }, 'number');
+
+  return (
+    <Input
+      {...fieldProps}
+      autoComplete="cc-exp"
+      placeholder={placeholder}
+      value={ctx.value.expiry}
+      aria-label="Expiry date"
+      data-slot="credit-card-input-expiry"
+      className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-20 border-s border-input'), className)}
+      onChange={(e) => {
+        ctx.setField('expiry', e.target.value);
+        if (digitsOnly(e.target.value).length >= 4) ctx.focusField('cvc');
+      }}
+      {...props}
+    />
+  );
+};
+
+const CreditCardInputCvc = ({ placeholder = 'CVC', className, onBlur, onKeyDown, ...props }: FieldProps) => {
+  const ctx = useCreditCardInput();
+  const fieldProps = useFieldProps('cvc', { onBlur, onKeyDown }, 'expiry');
+
+  return (
+    <Input
+      {...fieldProps}
+      autoComplete="cc-csc"
+      placeholder={placeholder}
+      maxLength={ctx.spec.cvcLength}
+      value={ctx.value.cvc}
+      aria-label="Security code"
+      data-slot="credit-card-input-cvc"
+      className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-16 border-s border-input'), className)}
+      onChange={(e) => ctx.setField('cvc', e.target.value)}
+      {...props}
+    />
+  );
+};
+
+interface CreditCardInputBrandProps extends Omit<React.ComponentProps<'span'>, 'children'> {
+  labels?: Partial<Record<CardBrand, string>>;
+}
+
+const CreditCardInputBrand = ({ labels, className, ...props }: CreditCardInputBrandProps) => {
+  const ctx = useCreditCardInput();
+  const label = labels?.[ctx.brand] ?? ctx.spec.label;
+
+  return (
+    <span
+      data-slot="credit-card-input-brand"
+      data-brand={ctx.brand}
+      aria-live="polite"
+      className={cn(
+        'inline-flex h-5 items-center justify-center rounded-sm border border-border bg-muted px-1.5 text-xs font-medium text-muted-foreground uppercase',
+        ctx.brand !== 'unknown' && 'text-foreground',
+        className,
+      )}
+      {...props}
+    >
+      {ctx.brand === 'unknown' ? <CreditCard className="size-3.5" aria-label={label} /> : label}
+    </span>
+  );
+};
 
 const CreditCardInputNumber = ({
   placeholder = '1234 5678 9012 3456',
@@ -450,73 +509,6 @@ const CreditCardInputNumber = ({
         {children ?? <CreditCardInputBrand />}
       </span>
     </div>
-  );
-};
-
-const CreditCardInputExpiry = ({ placeholder = 'MM/YY', className, onBlur, onKeyDown, ...props }: FieldProps) => {
-  const ctx = useCreditCardInput();
-  const fieldProps = useFieldProps('expiry', { onBlur, onKeyDown }, 'number');
-
-  return (
-    <Input
-      {...fieldProps}
-      autoComplete="cc-exp"
-      placeholder={placeholder}
-      value={ctx.value.expiry}
-      aria-label="Expiry date"
-      data-slot="credit-card-input-expiry"
-      className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-20 border-s border-input'), className)}
-      onChange={(e) => {
-        ctx.setField('expiry', e.target.value);
-        if (digitsOnly(e.target.value).length >= 4) ctx.focusField('cvc');
-      }}
-      {...props}
-    />
-  );
-};
-
-const CreditCardInputCvc = ({ placeholder = 'CVC', className, onBlur, onKeyDown, ...props }: FieldProps) => {
-  const ctx = useCreditCardInput();
-  const fieldProps = useFieldProps('cvc', { onBlur, onKeyDown }, 'expiry');
-
-  return (
-    <Input
-      {...fieldProps}
-      autoComplete="cc-csc"
-      placeholder={placeholder}
-      maxLength={ctx.spec.cvcLength}
-      value={ctx.value.cvc}
-      aria-label="Security code"
-      data-slot="credit-card-input-cvc"
-      className={cn('tabular-nums', ctx.variant === 'row' && cn(ROW_INPUT, 'w-16 border-s border-input'), className)}
-      onChange={(e) => ctx.setField('cvc', e.target.value)}
-      {...props}
-    />
-  );
-};
-
-interface CreditCardInputBrandProps extends Omit<React.ComponentProps<'span'>, 'children'> {
-  labels?: Partial<Record<CardBrand, string>>;
-}
-
-const CreditCardInputBrand = ({ labels, className, ...props }: CreditCardInputBrandProps) => {
-  const ctx = useCreditCardInput();
-  const label = labels?.[ctx.brand] ?? ctx.spec.label;
-
-  return (
-    <span
-      data-slot="credit-card-input-brand"
-      data-brand={ctx.brand}
-      aria-live="polite"
-      className={cn(
-        'inline-flex h-5 items-center justify-center rounded-sm border border-border bg-muted px-1.5 text-xs font-medium text-muted-foreground uppercase',
-        ctx.brand !== 'unknown' && 'text-foreground',
-        className,
-      )}
-      {...props}
-    >
-      {ctx.brand === 'unknown' ? <CreditCard className="size-3.5" aria-label={label} /> : label}
-    </span>
   );
 };
 

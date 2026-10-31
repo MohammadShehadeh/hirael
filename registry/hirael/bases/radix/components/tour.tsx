@@ -67,123 +67,7 @@ export interface TourProps {
   children?: React.ReactNode;
 }
 
-const Tour = ({
-  steps,
-  open: openProp,
-  defaultOpen = false,
-  onOpenChange,
-  step: stepProp,
-  defaultStep = 0,
-  onStepChange,
-  onFinish,
-  scrollIntoView = true,
-  spotlightPadding = 8,
-  labels,
-  children,
-}: TourProps) => {
-  const [open, setOpen] = useControllableState({
-    prop: openProp,
-    defaultProp: defaultOpen,
-    onChange: onOpenChange,
-  });
-
-  const [step, setStep] = useControllableState({
-    prop: stepProp,
-    defaultProp: defaultStep,
-    onChange: onStepChange,
-  });
-
-  const findResolvable = React.useCallback(
-    (from: number, dir: 1 | -1) => {
-      for (let i = from; i >= 0 && i < steps.length; i += dir) {
-        if (resolveTarget(steps[i]?.target)) return i;
-      }
-
-      return -1;
-    },
-    [steps],
-  );
-
-  const stop = React.useCallback(() => setOpen(false), [setOpen]);
-
-  const finish = React.useCallback(() => {
-    onFinish?.();
-    setOpen(false);
-  }, [onFinish, setOpen]);
-
-  const start = React.useCallback(
-    (at?: number) => {
-      setStep(at ?? 0);
-      setOpen(true);
-    },
-    [setStep, setOpen],
-  );
-
-  const next = React.useCallback(() => {
-    const idx = findResolvable(step + 1, 1);
-    if (idx === -1) {
-      finish();
-    } else {
-      setStep(idx);
-    }
-  }, [findResolvable, step, finish, setStep]);
-
-  const back = React.useCallback(() => {
-    const idx = findResolvable(step - 1, -1);
-    if (idx !== -1) setStep(idx);
-  }, [findResolvable, step, setStep]);
-
-  const restoreFocusRef = React.useRef<HTMLElement | null>(null);
-  React.useEffect(() => {
-    if (!open) return;
-    restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-
-    return () => restoreFocusRef.current?.focus();
-  }, [open]);
-
-  React.useEffect(() => {
-    if (!open) return;
-    if (resolveTarget(steps[step]?.target)) return;
-    const idx = findResolvable(step + 1, 1);
-    if (idx === -1) {
-      setOpen(false);
-    } else {
-      setStep(idx);
-    }
-  }, [open, step, steps, findResolvable, setOpen, setStep]);
-
-  const mounted = React.useSyncExternalStore(
-    NEVER_CHANGES,
-    () => true,
-    () => false,
-  );
-
-  const ctx = React.useMemo<TourContextValue>(
-    () => ({ open, step, start, stop, next, back }),
-    [open, step, start, stop, next, back],
-  );
-
-  return (
-    <TourContext.Provider value={ctx}>
-      {children}
-      {mounted &&
-        open &&
-        createPortal(
-          <TourOverlay
-            steps={steps}
-            step={step}
-            stop={stop}
-            next={next}
-            back={back}
-            scrollIntoView={scrollIntoView}
-            padding={spotlightPadding}
-            labels={labels}
-          />,
-          document.body,
-        )}
-    </TourContext.Provider>
-  );
-};
+type StepDirection = 1 | -1;
 
 interface Rect {
   top: number;
@@ -215,6 +99,8 @@ const padRect = (rect: Rect, padding: number): Rect => ({
   height: rect.height + padding * 2,
 });
 
+const OPPOSITE_SIDE = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' } as const;
+
 const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, labels }: TourOverlayProps) => {
   const current = steps[step];
   const side = current?.side ?? 'bottom';
@@ -227,7 +113,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
   const titleId = React.useId();
   const descriptionId = React.useId();
 
-  const measure = React.useCallback(() => {
+  const measure = React.useEffectEvent(() => {
     const el = resolveTarget(target);
     if (!el) {
       setRect(null);
@@ -237,14 +123,14 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     const r = el.getBoundingClientRect();
     setRect({ top: r.top, left: r.left, width: r.width, height: r.height });
     setViewport({ w: window.innerWidth, h: window.innerHeight });
-  }, [target]);
+  });
 
   React.useLayoutEffect(() => {
     const el = resolveTarget(target);
     if (el && scrollIntoView) el.scrollIntoView({ block: 'center' });
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- the target's box is only readable from the DOM once it has scrolled into view
     measure();
-  }, [target, scrollIntoView, measure]);
+  }, [target, scrollIntoView]);
 
   React.useEffect(() => {
     let raf = 0;
@@ -267,7 +153,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
       window.removeEventListener('resize', schedule);
       window.removeEventListener('scroll', schedule, { capture: true });
     };
-  }, [measure, target]);
+  }, [target]);
 
   React.useLayoutEffect(() => {
     const card = cardRef.current;
@@ -291,8 +177,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
 
       return c.top >= edge && c.left >= edge && c.top + h <= viewport.h - edge && c.left + w <= viewport.w - edge;
     };
-    const opposite = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' } as const;
-    const placed = !fits(side) && fits(opposite[side]) ? opposite[side] : side;
+    const placed = !fits(side) && fits(OPPOSITE_SIDE[side]) ? OPPOSITE_SIDE[side] : side;
     const c = coords(placed);
     setPos({
       top: Math.min(Math.max(c.top, edge), Math.max(edge, viewport.h - h - edge)),
@@ -323,7 +208,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [stop, next, back]);
 
-  const onCardKeyDown = (e: React.KeyboardEvent) => {
+  const handleCardKeyDown = (e: React.KeyboardEvent) => {
     if (e.key !== 'Tab') return;
     const card = cardRef.current;
     if (!card) return;
@@ -338,7 +223,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
     const first = focusables[0];
     const last = focusables[focusables.length - 1];
     const active = document.activeElement;
-    const outside = active === null || !Array.from(focusables).includes(active as HTMLElement);
+    const outside = active === null || !Array.from(focusables).some((element) => element === active);
     if (e.shiftKey && (active === first || outside)) {
       e.preventDefault();
       last.focus();
@@ -387,7 +272,7 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
         aria-describedby={current?.description ? descriptionId : undefined}
         tabIndex={-1}
         data-slot="tour-card"
-        onKeyDown={onCardKeyDown}
+        onKeyDown={handleCardKeyDown}
         className={cn(
           'pointer-events-auto fixed w-72 max-w-[calc(100vw-2rem)] rounded-md border border-border bg-popover p-4 text-popover-foreground shadow-lg outline-none',
           'animate-in duration-200 ease-out fade-in-0 zoom-in-95',
@@ -425,6 +310,115 @@ const TourOverlay = ({ steps, step, stop, next, back, scrollIntoView, padding, l
         </div>
       </div>
     </div>
+  );
+};
+
+const findResolvable = (steps: TourStep[], from: number, dir: StepDirection) => {
+  for (let i = from; i >= 0 && i < steps.length; i += dir) {
+    if (resolveTarget(steps[i]?.target)) return i;
+  }
+
+  return -1;
+};
+
+const Tour = ({
+  steps,
+  open: openProp,
+  defaultOpen = false,
+  onOpenChange,
+  step: stepProp,
+  defaultStep = 0,
+  onStepChange,
+  onFinish,
+  scrollIntoView = true,
+  spotlightPadding = 8,
+  labels,
+  children,
+}: TourProps) => {
+  const [open, setOpen] = useControllableState({
+    prop: openProp,
+    defaultProp: defaultOpen,
+    onChange: onOpenChange,
+  });
+
+  const [step, setStep] = useControllableState({
+    prop: stepProp,
+    defaultProp: defaultStep,
+    onChange: onStepChange,
+  });
+
+  const stop = () => setOpen(false);
+
+  const finish = () => {
+    onFinish?.();
+    setOpen(false);
+  };
+
+  const start = (at?: number) => {
+    setStep(at ?? 0);
+    setOpen(true);
+  };
+
+  const next = () => {
+    const idx = findResolvable(steps, step + 1, 1);
+    if (idx === -1) {
+      finish();
+    } else {
+      setStep(idx);
+    }
+  };
+
+  const back = () => {
+    const idx = findResolvable(steps, step - 1, -1);
+    if (idx !== -1) setStep(idx);
+  };
+
+  const restoreFocusRef = React.useRef<HTMLElement | null>(null);
+  React.useEffect(() => {
+    if (!open) return;
+    restoreFocusRef.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    return () => restoreFocusRef.current?.focus();
+  }, [open]);
+
+  React.useEffect(() => {
+    if (!open) return;
+    if (resolveTarget(steps[step]?.target)) return;
+    const idx = findResolvable(steps, step + 1, 1);
+    if (idx === -1) {
+      setOpen(false);
+    } else {
+      setStep(idx);
+    }
+  }, [open, step, steps, setOpen, setStep]);
+
+  const mounted = React.useSyncExternalStore(
+    NEVER_CHANGES,
+    () => true,
+    () => false,
+  );
+
+  const ctx: TourContextValue = { open, step, start, stop, next, back };
+
+  return (
+    <TourContext.Provider value={ctx}>
+      {children}
+      {mounted &&
+        open &&
+        createPortal(
+          <TourOverlay
+            steps={steps}
+            step={step}
+            stop={stop}
+            next={next}
+            back={back}
+            scrollIntoView={scrollIntoView}
+            padding={spotlightPadding}
+            labels={labels}
+          />,
+          document.body,
+        )}
+    </TourContext.Provider>
   );
 };
 

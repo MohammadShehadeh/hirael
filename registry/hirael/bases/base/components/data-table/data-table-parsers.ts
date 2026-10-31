@@ -2,19 +2,27 @@ import type { ExtendedColumnSort } from './data-table-utils';
 import { createParser } from 'nuqs/server';
 import { z } from 'zod';
 
-const sortingItemSchema = z.object({
-  id: z.string(),
-  desc: z.boolean(),
-});
+const sortingSchema = z.array(
+  z.object({
+    id: z.string(),
+    desc: z.boolean(),
+  }),
+);
+
+const toKeySet = (columnIds: string[] | Set<string> | undefined) => {
+  if (!columnIds) return null;
+
+  return columnIds instanceof Set ? columnIds : new Set(columnIds);
+};
 
 export const getSortingStateParser = <TData>(columnIds?: string[] | Set<string>) => {
-  const validKeys = columnIds ? (columnIds instanceof Set ? columnIds : new Set(columnIds)) : null;
+  const validKeys = toKeySet(columnIds);
 
   return createParser({
     parse: (value) => {
       try {
         const parsed = JSON.parse(value);
-        const result = z.array(sortingItemSchema).safeParse(parsed);
+        const result = sortingSchema.safeParse(parsed);
 
         if (!result.success) return null;
 
@@ -22,7 +30,9 @@ export const getSortingStateParser = <TData>(columnIds?: string[] | Set<string>)
           return null;
         }
 
-        return result.data as ExtendedColumnSort<TData>[];
+        const sorting: ExtendedColumnSort<TData>[] = result.data;
+
+        return sorting;
       } catch {
         return null;
       }

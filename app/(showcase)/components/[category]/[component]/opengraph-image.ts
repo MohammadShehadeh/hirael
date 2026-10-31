@@ -14,8 +14,13 @@ export function generateStaticParams() {
   }));
 }
 
+interface ComponentRouteParams {
+  category: string;
+  component: string;
+}
+
 interface ComponentOpenGraphImageProps {
-  params: Promise<{ category: string; component: string }>;
+  params: Promise<ComponentRouteParams>;
 }
 
 export default async function ComponentOpenGraphImage({ params }: ComponentOpenGraphImageProps) {

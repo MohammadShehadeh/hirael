@@ -54,6 +54,8 @@ const COLOURS = [
 
 type Colour = (typeof COLOURS)[number]['value'];
 
+const isColour = (value: unknown): value is Colour => COLOURS.some((colour) => colour.value === value);
+
 const RATINGS = [
   { value: 'any', label: 'Any rating', min: 0 },
   { value: '4', label: '4 stars & up', min: 4 },
@@ -61,6 +63,8 @@ const RATINGS = [
 ] as const;
 
 type RatingFilter = (typeof RATINGS)[number]['value'];
+
+const isRatingFilter = (value: unknown): value is RatingFilter => RATINGS.some((option) => option.value === value);
 
 const SORTS = [
   { value: 'featured', label: 'Featured' },
@@ -70,6 +74,8 @@ const SORTS = [
 ] as const;
 
 type Sort = (typeof SORTS)[number]['value'];
+
+const isSort = (value: unknown): value is Sort => SORTS.some((option) => option.value === value);
 
 const PRICE_MIN = 0;
 const PRICE_MAX = 400;
@@ -254,7 +260,12 @@ const EMPTY_FILTERS: Filters = {
   rating: 'any',
 };
 
-const labelOf = <T extends string>(options: readonly { value: T; label: string }[], value: T) =>
+interface Option<T> {
+  value: T;
+  label: string;
+}
+
+const labelOf = <T extends string>(options: readonly Option<T>[], value: T) =>
   options.find((option) => option.value === value)?.label ?? value;
 
 const usd = (amount: number) => `$${amount}`;
@@ -273,9 +284,9 @@ const matches = (product: Product, filters: Filters, ignoreCategory = false) => 
 };
 
 const sortProducts = (products: Product[], sort: Sort) => {
-  if (sort === 'price-asc') return products.sort((a, b) => a.price - b.price);
-  if (sort === 'price-desc') return products.sort((a, b) => b.price - a.price);
-  if (sort === 'newest') return products.sort((a, b) => b.added.localeCompare(a.added));
+  if (sort === 'price-asc') return products.toSorted((a, b) => a.price - b.price);
+  if (sort === 'price-desc') return products.toSorted((a, b) => b.price - a.price);
+  if (sort === 'newest') return products.toSorted((a, b) => b.added.localeCompare(a.added));
 
   return products;
 };
@@ -366,7 +377,8 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
           minStepsBetweenValues={1}
           value={filters.price}
           onValueChange={(next) => {
-            const [min, max] = next as number[];
+            if (typeof next === 'number') return;
+            const [min, max] = next;
             update({ price: [min, max] });
           }}
           aria-label="Price range"
@@ -390,7 +402,7 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
           multiple
           spacing={2}
           value={filters.colours}
-          onValueChange={(next) => update({ colours: next as Colour[] })}
+          onValueChange={(next) => update({ colours: next.filter(isColour) })}
           className="flex-wrap"
         >
           {COLOURS.map((colour) => (
@@ -416,7 +428,12 @@ const FilterPanel = ({ filters, onFiltersChange }: FilterPanelProps) => {
 
       <FieldSet className="gap-3 pt-6">
         <FieldLegend variant="label">Rating</FieldLegend>
-        <RadioGroup value={filters.rating} onValueChange={(next) => update({ rating: next as RatingFilter })}>
+        <RadioGroup
+          value={filters.rating}
+          onValueChange={(next) => {
+            if (isRatingFilter(next)) update({ rating: next });
+          }}
+        >
           {RATINGS.map((option) => (
             <Field key={option.value} orientation="horizontal">
               <RadioGroupItem id={`${id}-rating-${option.value}`} value={option.value} />
@@ -436,6 +453,8 @@ interface ProductCardProps {
   product: Product;
   index: number;
 }
+
+const reviewCount = new Intl.NumberFormat('en-US');
 
 const ProductCard = ({ product, index }: ProductCardProps) => {
   return (
@@ -480,7 +499,7 @@ const ProductCard = ({ product, index }: ProductCardProps) => {
             aria-label={`Rated ${product.rating} out of 5`}
           />
           <span className="tabular-nums">{product.rating.toFixed(1)}</span>
-          <span className="tabular-nums">({product.reviews.toLocaleString('en-US')})</span>
+          <span className="tabular-nums">({reviewCount.format(product.reviews)})</span>
         </span>
       </div>
     </article>
@@ -497,7 +516,7 @@ const Ecommerce04 = () => {
   );
   const active = getActiveFilters(filters);
   const resultKey = JSON.stringify([filters, sort]);
-  const clearAll = () => setFilters(EMPTY_FILTERS);
+  const handleClearAll = () => setFilters(EMPTY_FILTERS);
   const resultLabel = `${results.length} ${results.length === 1 ? 'product' : 'products'}`;
 
   return (
@@ -525,7 +544,7 @@ const Ecommerce04 = () => {
           >
             <div className="flex items-center justify-between border-b border-border pb-3">
               <span className="text-sm font-medium">Filters</span>
-              <Button type="button" variant="ghost" size="xs" onClick={clearAll} disabled={active.length === 0}>
+              <Button type="button" variant="ghost" size="xs" onClick={handleClearAll} disabled={active.length === 0}>
                 Clear all
               </Button>
             </div>
@@ -556,7 +575,12 @@ const Ecommerce04 = () => {
                       </div>
                       <div className="border-t border-border">
                         <SheetFooter className="flex-row">
-                          <Button type="button" variant="outline" onClick={clearAll} disabled={active.length === 0}>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={handleClearAll}
+                            disabled={active.length === 0}
+                          >
                             Clear all
                           </Button>
                           <SheetClose render={<Button type="button" className="flex-1" />}>
@@ -572,7 +596,13 @@ const Ecommerce04 = () => {
                     {resultLabel}
                   </p>
                 </div>
-                <Select items={SORTS} value={sort} onValueChange={(next) => setSort(next as Sort)}>
+                <Select
+                  items={SORTS}
+                  value={sort}
+                  onValueChange={(next) => {
+                    if (isSort(next)) setSort(next);
+                  }}
+                >
                   <SelectTrigger size="sm" aria-label="Sort products" className="min-w-44">
                     <SelectValue />
                   </SelectTrigger>
@@ -611,7 +641,7 @@ const Ecommerce04 = () => {
                     </li>
                   ))}
                   <li>
-                    <Button type="button" variant="link" size="xs" onClick={clearAll}>
+                    <Button type="button" variant="link" size="xs" onClick={handleClearAll}>
                       Clear all
                     </Button>
                   </li>
@@ -638,7 +668,7 @@ const Ecommerce04 = () => {
                   </EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent>
-                  <Button type="button" variant="outline" onClick={clearAll}>
+                  <Button type="button" variant="outline" onClick={handleClearAll}>
                     Clear filters
                   </Button>
                 </EmptyContent>

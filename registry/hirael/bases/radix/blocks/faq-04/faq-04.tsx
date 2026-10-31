@@ -15,9 +15,14 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
+interface Faq {
+  q: string;
+  a: string;
+}
+
 interface Group {
   label: string;
-  faqs: readonly { q: string; a: string }[];
+  faqs: readonly Faq[];
 }
 
 const GROUPS: readonly Group[] = [

@@ -10,7 +10,7 @@ export const Hero = () => {
       className="relative flex min-h-svh items-center justify-center overflow-hidden px-4"
     >
       <video
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 size-full object-cover"
         src={HERO_VIDEO}
         autoPlay
         muted

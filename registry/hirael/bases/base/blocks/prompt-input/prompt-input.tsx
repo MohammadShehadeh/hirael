@@ -55,13 +55,9 @@ const usePromptInput = () => {
   return context;
 };
 
-let attachmentSeq = 0;
-
-const toAttachment = (file: File): PromptAttachment => {
-  attachmentSeq += 1;
-
+const toAttachment = (file: File, seq: number): PromptAttachment => {
   return {
-    id: `${file.name}-${file.size}-${attachmentSeq}`,
+    id: `${file.name}-${file.size}-${seq}`,
     name: file.name,
     size: file.size,
     type: file.type,
@@ -110,38 +106,34 @@ const PromptInput = ({
   const value = isControlled ? valueProp : internalValue;
   const [attachments, setAttachments] = React.useState<PromptAttachment[]>(() => defaultAttachments ?? []);
   const textareaId = React.useId();
+  const lastSeqRef = React.useRef(0);
 
-  const setValue = React.useCallback(
-    (next: string) => {
-      if (!isControlled) setInternalValue(next);
-      onValueChange?.(next);
-    },
-    [isControlled, onValueChange],
-  );
+  const setValue = (next: string) => {
+    if (!isControlled) setInternalValue(next);
+    onValueChange?.(next);
+  };
 
-  const addFiles = React.useCallback(
-    (files: Iterable<File>) => {
-      const added = Array.from(files).map(toAttachment);
-      if (added.length === 0) return;
-      const next = [...attachments, ...added];
-      setAttachments(next);
-      onAttachmentsChange?.(next);
-    },
-    [attachments, onAttachmentsChange],
-  );
+  const addFiles = (files: Iterable<File>) => {
+    const added = Array.from(files).map((file) => {
+      lastSeqRef.current += 1;
 
-  const removeAttachment = React.useCallback(
-    (id: string) => {
-      const next = attachments.filter((a) => a.id !== id);
-      setAttachments(next);
-      onAttachmentsChange?.(next);
-    },
-    [attachments, onAttachmentsChange],
-  );
+      return toAttachment(file, lastSeqRef.current);
+    });
+    if (added.length === 0) return;
+    const next = [...attachments, ...added];
+    setAttachments(next);
+    onAttachmentsChange?.(next);
+  };
+
+  const removeAttachment = (id: string) => {
+    const next = attachments.filter((a) => a.id !== id);
+    setAttachments(next);
+    onAttachmentsChange?.(next);
+  };
 
   const canSubmit = !disabled && (value.trim().length > 0 || attachments.length > 0);
 
-  const submit = React.useCallback(() => {
+  const submit = () => {
     if (isStreaming || !canSubmit) return;
     onSubmit?.(value.trim(), { attachments });
     if (!isControlled) setInternalValue('');
@@ -149,38 +141,23 @@ const PromptInput = ({
       setAttachments([]);
       onAttachmentsChange?.([]);
     }
-  }, [isStreaming, canSubmit, onSubmit, value, attachments, isControlled, onAttachmentsChange]);
+  };
 
-  const stop = React.useCallback(() => onStop?.(), [onStop]);
+  const stop = () => onStop?.();
 
-  const context = React.useMemo<PromptInputContextValue>(
-    () => ({
-      value,
-      setValue,
-      attachments,
-      addFiles,
-      removeAttachment,
-      disabled,
-      isStreaming,
-      canSubmit,
-      submit,
-      stop,
-      textareaId,
-    }),
-    [
-      value,
-      setValue,
-      attachments,
-      addFiles,
-      removeAttachment,
-      disabled,
-      isStreaming,
-      canSubmit,
-      submit,
-      stop,
-      textareaId,
-    ],
-  );
+  const context: PromptInputContextValue = {
+    value,
+    setValue,
+    attachments,
+    addFiles,
+    removeAttachment,
+    disabled,
+    isStreaming,
+    canSubmit,
+    submit,
+    stop,
+    textareaId,
+  };
 
   return (
     <PromptInputContext.Provider value={context}>
@@ -337,25 +314,6 @@ const PromptInputAttach = ({ accept, multiple = true, className, children, ...pr
 
 type PromptInputAttachmentsProps = React.ComponentProps<'div'>;
 
-const PromptInputAttachments = ({ className, children, ...props }: PromptInputAttachmentsProps) => {
-  const { attachments, removeAttachment } = usePromptInput();
-  if (children == null && attachments.length === 0) return null;
-
-  return (
-    <div data-slot="prompt-input-attachments" className={cn('flex flex-wrap gap-1.5 px-1 pt-1', className)} {...props}>
-      {children ??
-        attachments.map((attachment) => (
-          <PromptInputAttachment
-            key={attachment.id}
-            name={attachment.name}
-            size={attachment.size}
-            onRemove={() => removeAttachment(attachment.id)}
-          />
-        ))}
-    </div>
-  );
-};
-
 interface PromptInputAttachmentProps extends Omit<React.ComponentProps<'div'>, 'children'> {
   name: string;
   /** Bytes. */
@@ -391,6 +349,25 @@ const PromptInputAttachment = ({ name, size, icon, onRemove, className, ...props
           <X className="size-3" aria-hidden />
         </Button>
       ) : null}
+    </div>
+  );
+};
+
+const PromptInputAttachments = ({ className, children, ...props }: PromptInputAttachmentsProps) => {
+  const { attachments, removeAttachment } = usePromptInput();
+  if (children == null && attachments.length === 0) return null;
+
+  return (
+    <div data-slot="prompt-input-attachments" className={cn('flex flex-wrap gap-1.5 px-1 pt-1', className)} {...props}>
+      {children ??
+        attachments.map((attachment) => (
+          <PromptInputAttachment
+            key={attachment.id}
+            name={attachment.name}
+            size={attachment.size}
+            onRemove={() => removeAttachment(attachment.id)}
+          />
+        ))}
     </div>
   );
 };
@@ -495,16 +472,14 @@ const PromptInputSubmit = ({ className, ...props }: PromptInputSubmitProps) => {
 
 type PromptInputHintProps = React.ComponentProps<'p'>;
 
-const PromptInputHint = ({
-  className,
-  children = (
-    <>
-      <span>Enter to send</span>
-      <span>Shift+Enter for a new line</span>
-    </>
-  ),
-  ...props
-}: PromptInputHintProps) => {
+const DEFAULT_HINT = (
+  <>
+    <span>Enter to send</span>
+    <span>Shift+Enter for a new line</span>
+  </>
+);
+
+const PromptInputHint = ({ className, children = DEFAULT_HINT, ...props }: PromptInputHintProps) => {
   return (
     <p
       data-slot="prompt-input-hint"
@@ -568,6 +543,8 @@ interface CharacterCounterProps {
   max: number;
 }
 
+const count = new Intl.NumberFormat('en-US');
+
 const CharacterCounter = ({ max }: CharacterCounterProps) => {
   const { value } = usePromptInput();
   const over = value.length > max;
@@ -578,7 +555,7 @@ const CharacterCounter = ({ max }: CharacterCounterProps) => {
       aria-live="polite"
       className={cn('shrink-0 px-1 text-xs tabular-nums', over ? 'text-destructive' : 'text-muted-foreground')}
     >
-      {value.length.toLocaleString('en-US')} / {max.toLocaleString('en-US')}
+      {count.format(value.length)} / {count.format(max)}
     </span>
   );
 };
@@ -597,7 +574,7 @@ const PromptInputBlock = () => {
 
   React.useEffect(() => () => window.clearTimeout(timer.current), []);
 
-  const stop = () => {
+  const handleStop = () => {
     window.clearTimeout(timer.current);
     setIsStreaming(false);
   };
@@ -618,7 +595,7 @@ const PromptInputBlock = () => {
         <PromptInput
           onSubmit={handleSubmit}
           isStreaming={isStreaming}
-          onStop={stop}
+          onStop={handleStop}
           defaultAttachments={SEED_ATTACHMENTS}
           aria-label="Message composer"
         >

@@ -10,7 +10,9 @@ import {
   NumberRangeSlider,
 } from '@/registry/hirael/bases/base/components/number-range';
 
-const usd = (n: number) => new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(n);
+const wholeNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 });
+
+const usd = (n: number) => wholeNumber.format(n);
 const parseNum = (s: string) => Number(s.replace(/[^\d.-]/g, '')) || 0;
 
 const NumberRangeDemo = () => {

@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Monitor, Smartphone, Tablet } from 'lucide-react';
+import { Monitor, Smartphone, Tablet, type LucideIcon } from 'lucide-react';
 
 import { useRegistryBase } from '@/components/active-theme';
 import { DirectionToggle } from '@/components/direction-toggle';
@@ -20,15 +20,24 @@ import {
 import { SegmentedControl } from '@/components/segmented-control';
 import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-type Viewport = 'mobile' | 'tablet' | 'desktop';
+const VIEWPORT_VALUES = ['mobile', 'tablet', 'desktop'] as const;
 
-const SIZES: Record<Viewport, { width: number; label: string }> = {
+type Viewport = (typeof VIEWPORT_VALUES)[number];
+
+const isViewport = (value: string): value is Viewport => VIEWPORT_VALUES.some((option) => option === value);
+
+interface ViewportSize {
+  width: number;
+  label: string;
+}
+
+const SIZES: Record<Viewport, ViewportSize> = {
   mobile: { width: 380, label: 'Mobile' },
   tablet: { width: 768, label: 'Tablet' },
   desktop: { width: 1280, label: 'Desktop' },
 };
 
-const ICONS: Record<Viewport, React.ComponentType<{ className?: string }>> = {
+const ICONS: Record<Viewport, LucideIcon> = {
   mobile: Smartphone,
   tablet: Tablet,
   desktop: Monitor,
@@ -84,7 +93,9 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
           role="tab"
           ariaLabel="Preview viewport"
           value={viewport}
-          onValueChange={(v) => setViewport(v as Viewport)}
+          onValueChange={(v) => {
+            if (isViewport(v)) setViewport(v);
+          }}
           className="rounded-sm border border-border bg-background p-0.5"
           itemClassName="h-6 rounded-[2px] px-2 text-xs uppercase"
           items={ORDER.map((v) => {

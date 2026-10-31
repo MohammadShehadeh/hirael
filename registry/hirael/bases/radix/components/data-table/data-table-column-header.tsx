@@ -30,6 +30,7 @@ export const DataTableColumnHeader = <TData extends RowData, TValue extends Cell
   const labels = useDataTableLabels();
   if (!column.getCanSort() && !column.getCanHide()) {
     return (
+      // Without sort or hide there is no trigger, so the trigger props land on a div.
       <div data-slot="data-table-column-header" className={cn(className)} {...(props as React.ComponentProps<'div'>)}>
         {label}
       </div>

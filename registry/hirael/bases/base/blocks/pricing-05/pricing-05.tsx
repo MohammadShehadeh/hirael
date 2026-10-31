@@ -21,7 +21,11 @@ const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => (
   animationDelay: `${offset + index * step}ms`,
 });
 
-type Billing = 'monthly' | 'yearly';
+const BILLING_VALUES = ['monthly', 'yearly'] as const;
+
+type Billing = (typeof BILLING_VALUES)[number];
+
+const isBilling = (value: unknown): value is Billing => BILLING_VALUES.some((option) => option === value);
 
 const PRICING = {
   base: 49,
@@ -133,7 +137,7 @@ const UsageSlider = ({ id, label, unit, value, range, onChange }: UsageSliderPro
         min={range.min}
         max={range.max}
         step={range.step}
-        onValueChange={(next) => onChange((next as number[])[0])}
+        onValueChange={(next) => onChange(typeof next === 'number' ? next : next[0])}
       />
       <div aria-hidden className="relative h-4 text-xs text-muted-foreground tabular-nums">
         {range.ticks.map((tick) => {
@@ -242,7 +246,9 @@ const Pricing05 = () => {
               size="sm"
               variant="outline"
               value={[billing]}
-              onValueChange={([next]) => next && setBilling(next as Billing)}
+              onValueChange={([next]) => {
+                if (isBilling(next)) setBilling(next);
+              }}
               aria-label="Billing period"
             >
               <ToggleGroupItem value="monthly">Monthly</ToggleGroupItem>

@@ -50,7 +50,7 @@ export const Navbar = () => {
           </Button>
           <Button type="button" size="sm">
             Get Started
-            <ArrowUpRight className="size-4 rtl:-scale-x-100" />
+            <ArrowUpRight className="rtl:-scale-x-100" />
           </Button>
         </div>
       </nav>

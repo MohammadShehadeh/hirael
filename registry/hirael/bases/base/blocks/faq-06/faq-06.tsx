@@ -11,7 +11,13 @@ import { Badge } from '@/registry/hirael/bases/base/ui/badge';
 
 const HEADLINE = 'Answers before you ask';
 
-const FAQS: readonly { id: string; q: string; a: string }[] = [
+interface Faq {
+  id: string;
+  q: string;
+  a: string;
+}
+
+const FAQS: readonly Faq[] = [
   {
     id: 'item-1',
     q: 'What do I actually install?',

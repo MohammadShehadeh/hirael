@@ -72,7 +72,7 @@ export const SelectedWorks = () => {
                 project.span,
               )}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image */}
               <img
                 src={project.image}
                 alt={project.title}

@@ -55,7 +55,7 @@ const ForgotPassword01 = () => {
   const [status, setStatus] = React.useState<SendStatus>('idle');
   const [resend, setResend] = React.useState<SendStatus>('idle');
 
-  const onSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!EMAIL_PATTERN.test(email)) {
       setError(email.trim() ? 'Enter a valid email address.' : 'Enter your email address.');
@@ -69,7 +69,7 @@ const ForgotPassword01 = () => {
     setStatus('sent');
   };
 
-  const onResend = async () => {
+  const handleResend = async () => {
     setResend('sending');
     await wait(900);
     setResend('sent');
@@ -102,7 +102,7 @@ const ForgotPassword01 = () => {
                 </Button>
               </div>
             ) : (
-              <form data-slot="forgot-password-form" noValidate onSubmit={onSubmit}>
+              <form data-slot="forgot-password-form" noValidate onSubmit={handleSubmit}>
                 <FieldGroup className="gap-5">
                   <Field data-invalid={Boolean(error) || undefined}>
                     <FieldLabel htmlFor="forgot01-email">Email address</FieldLabel>
@@ -133,7 +133,7 @@ const ForgotPassword01 = () => {
 
         <p className="text-center text-sm text-muted-foreground">
           {sent ? (
-            <ResendLine status={resend} onResend={onResend} />
+            <ResendLine status={resend} onResend={handleResend} />
           ) : (
             <a href="#" className="font-medium text-primary underline-offset-4 hover:underline">
               Back to sign in

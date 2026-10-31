@@ -55,25 +55,22 @@ const MorphingDialog = ({ children, open: openProp, defaultOpen, onOpenChange }:
   const [hasTitle, setHasTitle] = React.useState(false);
   const [hasDescription, setHasDescription] = React.useState(false);
 
-  const open = React.useCallback(() => setOpen(true), [setOpen]);
-  const close = React.useCallback(() => setOpen(false), [setOpen]);
+  const open = () => setOpen(true);
+  const close = () => setOpen(false);
 
-  const value = React.useMemo<MorphingDialogContextValue>(
-    () => ({
-      isOpen,
-      open,
-      close,
-      uniqueId: reactId,
-      titleId: `${reactId}-title`,
-      descriptionId: `${reactId}-description`,
-      hasTitle,
-      hasDescription,
-      setHasTitle,
-      setHasDescription,
-      triggerRef,
-    }),
-    [isOpen, open, close, reactId, hasTitle, hasDescription],
-  );
+  const value: MorphingDialogContextValue = {
+    isOpen,
+    open,
+    close,
+    uniqueId: reactId,
+    titleId: `${reactId}-title`,
+    descriptionId: `${reactId}-description`,
+    hasTitle,
+    hasDescription,
+    setHasTitle,
+    setHasDescription,
+    triggerRef,
+  };
 
   return (
     <MorphingDialogContext.Provider value={value}>
@@ -94,7 +91,7 @@ const MorphingDialogTrigger = ({
   ...props
 }: MorphingDialogTriggerProps) => {
   const { open, isOpen, uniqueId, triggerRef } = useMorphingDialog();
-  const composedRef = React.useMemo(() => composeRefs(triggerRef, ref), [triggerRef, ref]);
+  const composedRef = composeRefs(triggerRef, ref);
 
   return (
     <motion.div
@@ -139,7 +136,7 @@ export type MorphingDialogContentProps = HTMLMotionProps<'div'>;
 const MorphingDialogContent = ({ className, children, style, ref, ...props }: MorphingDialogContentProps) => {
   const { isOpen, close, uniqueId, titleId, descriptionId, hasTitle, hasDescription, triggerRef } = useMorphingDialog();
   const panelRef = React.useRef<HTMLDivElement>(null);
-  const composedRef = React.useMemo(() => composeRefs(panelRef, ref), [ref]);
+  const composedRef = composeRefs(panelRef, ref);
   const mounted = React.useSyncExternalStore(
     NEVER_CHANGES,
     () => true,

@@ -46,7 +46,7 @@ const ImageCropperDemo = () => {
             {t({ en: 'Export', ar: 'تصدير' })}
           </Button>
           {avatar && (
-            // eslint-disable-next-line @next/next/no-img-element
+            // eslint-disable-next-line @next/next/no-img-element -- registry source can't assume next/image
             <img
               src={avatar}
               alt={t({

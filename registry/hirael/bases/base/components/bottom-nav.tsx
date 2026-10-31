@@ -46,7 +46,7 @@ const BottomNav = ({
     defaultProp: defaultValue,
     onChange: (next) => next !== undefined && onValueChange?.(next),
   });
-  const ctx = React.useMemo<BottomNavContextValue>(() => ({ value, setValue }), [value, setValue]);
+  const ctx: BottomNavContextValue = { value, setValue };
 
   return (
     <BottomNavContext.Provider value={ctx}>

@@ -45,7 +45,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
   const autoScrollingRef = React.useRef(false);
   const [atBottom, setAtBottom] = React.useState(true);
 
-  const scrollToBottom = React.useCallback(() => {
+  const scrollToBottom = () => {
     const el = viewportRef.current;
     if (!el) return;
     pinnedRef.current = true;
@@ -54,9 +54,9 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
       top: el.scrollHeight,
       behavior: prefersReducedMotion() ? 'auto' : 'smooth',
     });
-  }, []);
+  };
 
-  const onScroll = React.useCallback(() => {
+  const onScroll = () => {
     const el = viewportRef.current;
     if (!el) return;
     const pinned = el.scrollHeight - el.scrollTop - el.clientHeight < threshold;
@@ -67,7 +67,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
     }
     pinnedRef.current = pinned;
     setAtBottom(pinned);
-  }, [threshold]);
+  };
 
   // Streaming children grow without re-rendering this container, so watch
   // the content box instead of relying on a render.
@@ -84,7 +84,7 @@ const MessageThread = ({ follow = true, threshold = 48, className, children, ...
     return () => observer.disconnect();
   }, [follow]);
 
-  const context = React.useMemo(() => ({ atBottom, scrollToBottom }), [atBottom, scrollToBottom]);
+  const context = { atBottom, scrollToBottom };
 
   return (
     <MessageThreadContext.Provider value={context}>
@@ -290,7 +290,12 @@ const toPretty = (value: unknown) => {
   }
 };
 
-const TOOL_STATUS: Record<MessageToolCallStatus, { dot: string; label: string }> = {
+interface ToolStatusMeta {
+  dot: string;
+  label: string;
+}
+
+const TOOL_STATUS: Record<MessageToolCallStatus, ToolStatusMeta> = {
   running: {
     dot: 'bg-primary animate-pulse motion-reduce:animate-none',
     label: 'running',
@@ -645,7 +650,7 @@ const StreamedMessage = ({ text, onReplay }: StreamedMessageProps) => {
 
 const MessageThreadBlock = () => {
   const [run, setRun] = React.useState(0);
-  const replay = () => setRun((r) => r + 1);
+  const handleReplay = () => setRun((r) => r + 1);
 
   return (
     <section data-slot="message-thread-block" className="flex w-full justify-center bg-background p-6 sm:p-10">
@@ -655,7 +660,7 @@ const MessageThreadBlock = () => {
             <span>Latency regression</span>
             <span>hirael-assistant</span>
           </span>
-          <Button variant="outline" size="xs" onClick={replay}>
+          <Button variant="outline" size="xs" onClick={handleReplay}>
             <RefreshCw aria-hidden />
             Replay
           </Button>
@@ -725,7 +730,7 @@ const MessageThreadBlock = () => {
             </MessageBody>
           </Message>
 
-          <StreamedMessage key={run} text={STREAMED_ANSWER} onReplay={replay} />
+          <StreamedMessage key={run} text={STREAMED_ANSWER} onReplay={handleReplay} />
 
           <MessageThreadScrollButton />
         </MessageThread>

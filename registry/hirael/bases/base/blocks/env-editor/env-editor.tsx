@@ -34,20 +34,16 @@ export interface EnvVar {
   environments?: EnvEnvironment[];
 }
 
-const ENVIRONMENTS: readonly { id: EnvEnvironment; label: string }[] = [
+interface EnvironmentOption {
+  id: EnvEnvironment;
+  label: string;
+}
+
+const ENVIRONMENTS: readonly EnvironmentOption[] = [
   { id: 'production', label: 'Prod' },
   { id: 'preview', label: 'Preview' },
   { id: 'development', label: 'Dev' },
 ];
-
-let envVarSeed = 0;
-const createEnvVarId = () => {
-  envVarSeed += 1;
-
-  return `env-var-${envVarSeed}`;
-};
-
-const withId = (item: EnvVar): EnvVar => (item.id ? item : { ...item, id: createEnvVarId() });
 
 const KEY_PATTERN = /^[A-Z_][A-Z0-9_]*$/;
 const SECRET_HINT = /(SECRET|TOKEN|PASSWORD|PRIVATE|API_KEY)/;
@@ -154,114 +150,93 @@ const EnvEditor = ({
   const [baseline, setBaseline] = React.useState<EnvVar[]>(vars);
   const [query, setQuery] = React.useState('');
   const [adding, setAdding] = React.useState(false);
+  const lastIdRef = React.useRef(0);
 
-  const setVars = React.useCallback(
-    (next: EnvVar[]) => {
-      if (!isControlled) setValueState(next);
-      onValueChange?.(next);
-    },
-    [isControlled, onValueChange],
-  );
+  const setVars = (next: EnvVar[]) => {
+    if (!isControlled) setValueState(next);
+    onValueChange?.(next);
+  };
 
-  const update = React.useCallback(
-    (index: number, patch: Partial<EnvVar>) => {
-      setVars(vars.map((v, i) => (i === index ? { ...v, ...patch } : v)));
-    },
-    [vars, setVars],
-  );
+  const update = (index: number, patch: Partial<EnvVar>) => {
+    setVars(vars.map((v, i) => (i === index ? { ...v, ...patch } : v)));
+  };
 
-  const remove = React.useCallback(
-    (index: number) => {
-      setVars(vars.filter((_, i) => i !== index));
-    },
-    [vars, setVars],
-  );
+  const remove = (index: number) => {
+    setVars(vars.filter((_, i) => i !== index));
+  };
 
-  const add = React.useCallback(
-    (incoming: EnvVar | EnvVar[]) => {
-      const list = Array.isArray(incoming) ? incoming : [incoming];
-      const next = [...vars];
-      for (const item of list) {
-        const existing = next.findIndex((v) => v.key === item.key);
-        if (existing === -1) next.push(withId(item));
-        else next[existing] = { ...next[existing], ...item, id: next[existing].id };
+  const add = (incoming: EnvVar | EnvVar[]) => {
+    const list = Array.isArray(incoming) ? incoming : [incoming];
+    const next = [...vars];
+    for (const item of list) {
+      const existing = next.findIndex((v) => v.key === item.key);
+      if (existing === -1) {
+        lastIdRef.current += 1;
+        next.push(item.id ? item : { ...item, id: `env-var-${lastIdRef.current}` });
+      } else {
+        next[existing] = { ...next[existing], ...item, id: next[existing].id };
       }
-      setVars(next);
-    },
-    [vars, setVars],
-  );
+    }
+    setVars(next);
+  };
 
-  const save = React.useCallback(() => {
+  const save = () => {
     setBaseline(vars);
     onSave?.(vars);
-  }, [vars, onSave]);
+  };
 
-  const discard = React.useCallback(() => {
+  const discard = () => {
     setVars(baseline);
     setAdding(false);
     onDiscard?.();
-  }, [baseline, setVars, onDiscard]);
+  };
 
-  const errors = React.useMemo(() => {
-    const result: Record<number, string> = {};
-    const seen = new Map<string, number>();
-    vars.forEach((v, i) => {
-      const message = validateKey(v.key);
-      if (message) {
-        result[i] = message;
+  const errors: Record<number, string> = {};
+  const seen = new Map<string, number>();
+  vars.forEach((v, i) => {
+    const message = validateKey(v.key);
+    if (message) {
+      errors[i] = message;
 
-        return;
-      }
-      const first = seen.get(v.key);
-      if (first !== undefined) {
-        result[i] = `Duplicate of row ${first + 1}.`;
-      } else {
-        seen.set(v.key, i);
-      }
-    });
+      return;
+    }
+    const first = seen.get(v.key);
+    if (first !== undefined) {
+      errors[i] = `Duplicate of row ${first + 1}.`;
+    } else {
+      seen.set(v.key, i);
+    }
+  });
 
-    return result;
-  }, [vars]);
+  const q = query.trim().toLowerCase();
+  const visible = vars
+    .map((v, i) => ({ v, i }))
+    .filter(({ v }) => !q || v.key.toLowerCase().includes(q) || (!v.secret && v.value.toLowerCase().includes(q)))
+    .map(({ i }) => i);
 
-  const visible = React.useMemo(() => {
-    const q = query.trim().toLowerCase();
+  let dirtyCount = 0;
+  vars.forEach((v, i) => {
+    const before = baseline[i];
+    if (!before || !sameVar(v, before)) dirtyCount += 1;
+  });
+  dirtyCount += Math.max(0, baseline.length - vars.length);
 
-    return vars
-      .map((v, i) => ({ v, i }))
-      .filter(({ v }) => !q || v.key.toLowerCase().includes(q) || (!v.secret && v.value.toLowerCase().includes(q)))
-      .map(({ i }) => i);
-  }, [vars, query]);
-
-  const dirtyCount = React.useMemo(() => {
-    let count = 0;
-    vars.forEach((v, i) => {
-      const before = baseline[i];
-      if (!before || !sameVar(v, before)) count += 1;
-    });
-    count += Math.max(0, baseline.length - vars.length);
-
-    return count;
-  }, [vars, baseline]);
-
-  const ctx = React.useMemo<EnvEditorContextValue>(
-    () => ({
-      vars,
-      visible,
-      query,
-      setQuery,
-      errors,
-      hasErrors: Object.keys(errors).length > 0,
-      dirtyCount,
-      adding,
-      setAdding,
-      update,
-      remove,
-      add,
-      save,
-      discard,
-    }),
-    [vars, visible, query, errors, dirtyCount, adding, update, remove, add, save, discard],
-  );
+  const ctx: EnvEditorContextValue = {
+    vars,
+    visible,
+    query,
+    setQuery,
+    errors,
+    hasErrors: Object.keys(errors).length > 0,
+    dirtyCount,
+    adding,
+    setAdding,
+    update,
+    remove,
+    add,
+    save,
+    discard,
+  };
 
   return (
     <EnvEditorContext.Provider value={ctx}>
@@ -284,6 +259,72 @@ interface EnvEditorHeaderProps extends Omit<React.ComponentProps<'div'>, 'title'
   /** Set to false to hide the search box. */
   searchable?: boolean;
 }
+
+type EnvEditorImportProps = React.ComponentProps<typeof Button>;
+
+const EnvEditorImport = ({ className, children = 'Import .env', ...props }: EnvEditorImportProps) => {
+  const { add } = useEnvEditor();
+  const [open, setOpen] = React.useState(false);
+  const [text, setText] = React.useState('');
+
+  const parsed = parseDotEnv(text);
+
+  const handleSubmit = () => {
+    add(
+      parsed.map((v) => ({
+        ...v,
+        secret: SECRET_HINT.test(v.key),
+        environments: ['production', 'preview', 'development'],
+      })),
+    );
+    setText('');
+    setOpen(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            data-slot="env-editor-import"
+            className={className}
+            {...props}
+          />
+        }
+      >
+        <Upload aria-hidden />
+        {children}
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Import from .env</DialogTitle>
+          <DialogDescription>
+            Paste the file contents. Comments and blank lines are ignored; existing keys are updated in place.
+          </DialogDescription>
+        </DialogHeader>
+        <Textarea
+          value={text}
+          onChange={(event) => setText(event.target.value)}
+          spellCheck={false}
+          aria-label=".env contents"
+          placeholder={'DATABASE_URL="postgres://..."\n# comments are fine\nLOG_LEVEL=debug'}
+          className="min-h-40"
+        />
+        <DialogFooter className="sm:items-center sm:justify-between">
+          <span className="text-[11px] text-muted-foreground tabular-nums">
+            {parsed.length} {parsed.length === 1 ? 'variable' : 'variables'} found
+          </span>
+          <Button type="button" size="sm" disabled={parsed.length === 0} onClick={handleSubmit}>
+            Import {parsed.length > 0 ? parsed.length : ''}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 const EnvEditorHeader = ({
   title = 'Environment variables',
@@ -335,114 +376,9 @@ const EnvEditorHeader = ({
   );
 };
 
-type EnvEditorImportProps = React.ComponentProps<typeof Button>;
-
-const EnvEditorImport = ({ className, children = 'Import .env', ...props }: EnvEditorImportProps) => {
-  const { add } = useEnvEditor();
-  const [open, setOpen] = React.useState(false);
-  const [text, setText] = React.useState('');
-
-  const parsed = React.useMemo(() => parseDotEnv(text), [text]);
-
-  const submit = () => {
-    add(
-      parsed.map((v) => ({
-        ...v,
-        secret: SECRET_HINT.test(v.key),
-        environments: ['production', 'preview', 'development'],
-      })),
-    );
-    setText('');
-    setOpen(false);
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
-        render={
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            data-slot="env-editor-import"
-            className={className}
-            {...props}
-          />
-        }
-      >
-        <Upload aria-hidden />
-        {children}
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Import from .env</DialogTitle>
-          <DialogDescription>
-            Paste the file contents. Comments and blank lines are ignored; existing keys are updated in place.
-          </DialogDescription>
-        </DialogHeader>
-        <Textarea
-          value={text}
-          onChange={(event) => setText(event.target.value)}
-          spellCheck={false}
-          aria-label=".env contents"
-          placeholder={'DATABASE_URL="postgres://..."\n# comments are fine\nLOG_LEVEL=debug'}
-          className="min-h-40"
-        />
-        <DialogFooter className="sm:items-center sm:justify-between">
-          <span className="text-[11px] text-muted-foreground tabular-nums">
-            {parsed.length} {parsed.length === 1 ? 'variable' : 'variables'} found
-          </span>
-          <Button type="button" size="sm" disabled={parsed.length === 0} onClick={submit}>
-            Import {parsed.length > 0 ? parsed.length : ''}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
 const ROW_GRID = 'md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)_auto_auto] md:items-start md:gap-3';
 
 type EnvEditorTableProps = React.ComponentProps<'div'>;
-
-const EnvEditorTable = ({ className, children, ...props }: EnvEditorTableProps) => {
-  const { vars, visible, query } = useEnvEditor();
-
-  return (
-    <div
-      data-slot="env-editor-table"
-      role="table"
-      aria-label="Environment variables"
-      className={cn('flex flex-col', className)}
-      {...props}
-    >
-      <div
-        role="row"
-        className={cn('hidden border-b border-border px-4 py-2 text-xs text-muted-foreground uppercase', ROW_GRID)}
-      >
-        <span role="columnheader">Key</span>
-        <span role="columnheader">Value</span>
-        <span role="columnheader">Environments</span>
-        <span role="columnheader" className="sr-only">
-          Actions
-        </span>
-      </div>
-      {children ??
-        (visible.length === 0 ? (
-          <EnvEditorEmpty>
-            <EmptyHeader>
-              <EmptyTitle>{vars.length === 0 ? 'No variables yet' : 'No matches'}</EmptyTitle>
-              <EmptyDescription>
-                {vars.length === 0 ? 'Add one or import a .env file.' : `Nothing matches "${query}".`}
-              </EmptyDescription>
-            </EmptyHeader>
-          </EnvEditorEmpty>
-        ) : (
-          visible.map((index) => <EnvEditorRow key={vars[index].id ?? `index-${index}`} index={index} />)
-        ))}
-    </div>
-  );
-};
 
 interface EnvironmentChipsProps {
   value: EnvEnvironment[];
@@ -586,7 +522,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
 
   const keyError = validateKey(key) ?? (vars.some((v) => v.key === key) ? 'That key already exists.' : null);
 
-  const reset = () => {
+  const handleReset = () => {
     setKey('');
     setValue('');
     setSecret(false);
@@ -598,8 +534,8 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
     event.preventDefault();
     setTouched(true);
     if (keyError) return;
-    add({ id: createEnvVarId(), key, value, secret, environments });
-    reset();
+    add({ key, value, secret, environments });
+    handleReset();
   };
 
   return (
@@ -607,7 +543,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
       data-slot="env-editor-add"
       onSubmit={submit}
       onKeyDown={(event) => {
-        if (event.key === 'Escape') reset();
+        if (event.key === 'Escape') handleReset();
       }}
       className={cn(
         'flex animate-in flex-col gap-2 border-t border-border bg-muted/40 px-4 py-3 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none',
@@ -658,7 +594,7 @@ const EnvEditorAdd = ({ className, ...props }: EnvEditorAddProps) => {
         <EnvironmentChips label="Environments for the new variable" value={environments} onChange={setEnvironments} />
       </div>
       <div className="flex items-center justify-end gap-1 md:h-8">
-        <Button type="button" variant="ghost" size="sm" onClick={reset}>
+        <Button type="button" variant="ghost" size="sm" onClick={handleReset}>
           Cancel
         </Button>
         <Button type="submit" size="sm">
@@ -681,6 +617,45 @@ const EnvEditorEmpty = ({ className, ...props }: EnvEditorEmptyProps) => {
       )}
       {...props}
     />
+  );
+};
+
+const EnvEditorTable = ({ className, children, ...props }: EnvEditorTableProps) => {
+  const { vars, visible, query } = useEnvEditor();
+
+  return (
+    <div
+      data-slot="env-editor-table"
+      role="table"
+      aria-label="Environment variables"
+      className={cn('flex flex-col', className)}
+      {...props}
+    >
+      <div
+        role="row"
+        className={cn('hidden border-b border-border px-4 py-2 text-xs text-muted-foreground uppercase', ROW_GRID)}
+      >
+        <span role="columnheader">Key</span>
+        <span role="columnheader">Value</span>
+        <span role="columnheader">Environments</span>
+        <span role="columnheader" className="sr-only">
+          Actions
+        </span>
+      </div>
+      {children ??
+        (visible.length === 0 ? (
+          <EnvEditorEmpty>
+            <EmptyHeader>
+              <EmptyTitle>{vars.length === 0 ? 'No variables yet' : 'No matches'}</EmptyTitle>
+              <EmptyDescription>
+                {vars.length === 0 ? 'Add one or import a .env file.' : `Nothing matches "${query}".`}
+              </EmptyDescription>
+            </EmptyHeader>
+          </EnvEditorEmpty>
+        ) : (
+          visible.map((index) => <EnvEditorRow key={vars[index].id ?? `index-${index}`} index={index} />)
+        ))}
+    </div>
   );
 };
 

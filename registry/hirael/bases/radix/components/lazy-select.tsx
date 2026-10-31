@@ -104,22 +104,17 @@ const LazySelect = ({
   let pendingLabels: Record<string, string> | null = null;
   for (const option of options) {
     if (labelCache[option.value] === option.label) continue;
-    pendingLabels ??= { ...labelCache };
+    if (!pendingLabels) pendingLabels = { ...labelCache };
     pendingLabels[option.value] = option.label;
   }
   if (pendingLabels) setLabelCache(pendingLabels);
 
-  const setValue = React.useCallback(
-    (next: string | undefined, option?: LazySelectOption) => {
-      if (option) {
-        setLabelCache((prev) =>
-          prev[option.value] === option.label ? prev : { ...prev, [option.value]: option.label },
-        );
-      }
-      setControlledValue(next);
-    },
-    [setControlledValue],
-  );
+  const setValue = (next: string | undefined, option?: LazySelectOption) => {
+    if (option) {
+      setLabelCache((prev) => (prev[option.value] === option.label ? prev : { ...prev, [option.value]: option.label }));
+    }
+    setControlledValue(next);
+  };
 
   const [open, setOpen] = useControllableState({
     prop: openProp,
@@ -128,54 +123,32 @@ const LazySelect = ({
   });
 
   const [search, setSearchState] = React.useState('');
-  const setSearch = React.useCallback(
-    (next: string) => {
-      setSearchState(next);
-      onSearchChange?.(next);
-    },
-    [onSearchChange],
-  );
+  const setSearch = (next: string) => {
+    setSearchState(next);
+    onSearchChange?.(next);
+  };
 
   const listboxId = React.useId();
 
   const selectedLabel = value !== undefined ? (labelCache[value] ?? value) : undefined;
 
-  const ctx = React.useMemo<Ctx>(
-    () => ({
-      value,
-      setValue,
-      selectedLabel,
-      options,
-      open,
-      setOpen,
-      search,
-      setSearch,
-      loading,
-      loadingMore,
-      hasMore,
-      onLoadMore,
-      disabled,
-      clearable,
-      listboxId,
-    }),
-    [
-      value,
-      setValue,
-      selectedLabel,
-      options,
-      open,
-      setOpen,
-      search,
-      setSearch,
-      loading,
-      loadingMore,
-      hasMore,
-      onLoadMore,
-      disabled,
-      clearable,
-      listboxId,
-    ],
-  );
+  const ctx: Ctx = {
+    value,
+    setValue,
+    selectedLabel,
+    options,
+    open,
+    setOpen,
+    search,
+    setSearch,
+    loading,
+    loadingMore,
+    hasMore,
+    onLoadMore,
+    disabled,
+    clearable,
+    listboxId,
+  };
 
   return (
     <LazySelectContext.Provider value={ctx}>
@@ -262,6 +235,37 @@ interface LazySelectContentProps extends React.ComponentProps<typeof PopoverCont
   endMessage?: string;
 }
 
+interface LazySelectItemProps extends Omit<
+  React.ComponentProps<typeof CommandItem>,
+  'value' | 'onSelect' | 'children'
+> {
+  option: LazySelectOption;
+  children?: React.ReactNode;
+}
+
+const LazySelectItem = ({ option, children, className, ...props }: LazySelectItemProps) => {
+  const ctx = useLazySelect();
+  const selected = ctx.value === option.value;
+
+  return (
+    <CommandItem
+      value={option.value}
+      disabled={option.disabled}
+      onSelect={() => {
+        if (!selected) ctx.setValue(option.value, option);
+        else if (ctx.clearable) ctx.setValue(undefined);
+        ctx.setOpen(false);
+      }}
+      data-slot="lazy-select-item"
+      className={cn('justify-between', className)}
+      {...props}
+    >
+      <span className="min-w-0 truncate">{children ?? option.label}</span>
+      {selected && <Check className="size-3.5 text-foreground" strokeWidth={3} />}
+    </CommandItem>
+  );
+};
+
 const LazySelectContent = ({
   className,
   searchPlaceholder = 'Search…',
@@ -285,7 +289,7 @@ const LazySelectContent = ({
       (entries) => {
         if (entries[0]?.isIntersecting) onLoadMore();
       },
-      { root: root as Element | null, rootMargin: '80px' },
+      { root, rootMargin: '80px' },
     );
     observer.observe(el);
 
@@ -341,41 +345,10 @@ const LazySelectContent = ({
   );
 };
 
-interface LazySelectItemProps extends Omit<
-  React.ComponentProps<typeof CommandItem>,
-  'value' | 'onSelect' | 'children'
-> {
-  option: LazySelectOption;
-  children?: React.ReactNode;
-}
-
-const LazySelectItem = ({ option, children, className, ...props }: LazySelectItemProps) => {
-  const ctx = useLazySelect();
-  const selected = ctx.value === option.value;
-
-  return (
-    <CommandItem
-      value={option.value}
-      disabled={option.disabled}
-      onSelect={() => {
-        if (!selected) ctx.setValue(option.value, option);
-        else if (ctx.clearable) ctx.setValue(undefined);
-        ctx.setOpen(false);
-      }}
-      data-slot="lazy-select-item"
-      className={cn('justify-between', className)}
-      {...props}
-    >
-      <span className="min-w-0 truncate">{children ?? option.label}</span>
-      {selected && <Check className="size-3.5 text-foreground" strokeWidth={3} />}
-    </CommandItem>
-  );
-};
-
-export type LazyPage<T> = {
+export interface LazyPage<T> {
   items: T[];
   hasMore: boolean;
-};
+}
 
 interface LazySelectLoaderParams {
   query: string;
@@ -414,55 +387,53 @@ export const useLazySelectOptions = <T,>(
     mapRef.current = map;
   });
 
-  const setLoadingBoth = React.useCallback((next: boolean) => {
+  const setLoadingBoth = (next: boolean) => {
     loadingRef.current = next;
     setLoading(next);
-  }, []);
-  const setHasMoreBoth = React.useCallback((next: boolean) => {
+  };
+  const setHasMoreBoth = (next: boolean) => {
     hasMoreRef.current = next;
     setHasMore(next);
-  }, []);
+  };
 
   // Clear the old results as soon as the query changes, so the sentinel can't
   // fetch the old query's next page during the debounce.
-  const setQuery = React.useCallback(
-    (next: string) => {
-      if (next === queryRef.current) return;
-      queryRef.current = next;
-      setQueryState(next);
-      if (!enabled) return;
-      reqId.current += 1;
+  const setQuery = (next: string) => {
+    if (next === queryRef.current) return;
+    queryRef.current = next;
+    setQueryState(next);
+    if (!enabled) return;
+    reqId.current += 1;
+    pageRef.current = 0;
+    setLoadingBoth(true);
+    setHasMoreBoth(false);
+    setOptions([]);
+  };
+
+  const loadFirstPage = React.useEffectEvent(async (id: number, forQuery: string) => {
+    setLoadingBoth(true);
+    setError(null);
+    try {
+      const res = await loaderRef.current({ query: forQuery, page: 0 });
+      if (id !== reqId.current) return;
+      setOptions(res.items.map(mapRef.current));
       pageRef.current = 0;
-      setLoadingBoth(true);
-      setHasMoreBoth(false);
-      setOptions([]);
-    },
-    [enabled, setLoadingBoth, setHasMoreBoth],
-  );
+      setHasMoreBoth(res.hasMore);
+    } catch (e) {
+      if (id === reqId.current) setError(e);
+    }
+    if (id === reqId.current) setLoadingBoth(false);
+  });
 
   React.useEffect(() => {
     if (!enabled) return;
     const id = ++reqId.current;
-    const t = setTimeout(async () => {
-      setLoadingBoth(true);
-      setError(null);
-      try {
-        const res = await loaderRef.current({ query, page: 0 });
-        if (id !== reqId.current) return;
-        setOptions(res.items.map(mapRef.current));
-        pageRef.current = 0;
-        setHasMoreBoth(res.hasMore);
-      } catch (e) {
-        if (id === reqId.current) setError(e);
-      } finally {
-        if (id === reqId.current) setLoadingBoth(false);
-      }
-    }, debounce);
+    const t = setTimeout(() => void loadFirstPage(id, query), debounce);
 
     return () => clearTimeout(t);
-  }, [query, enabled, debounce, setLoadingBoth, setHasMoreBoth]);
+  }, [query, enabled, debounce]);
 
-  const loadMore = React.useCallback(async () => {
+  const loadMore = async () => {
     if (!enabled || loadingRef.current || loadingMoreRef.current || !hasMoreRef.current) {
       return;
     }
@@ -472,17 +443,17 @@ export const useLazySelectOptions = <T,>(
     setLoadingMore(true);
     try {
       const res = await loaderRef.current({ query: queryRef.current, page: nextPage });
-      if (id !== reqId.current) return;
-      setOptions((prev) => [...prev, ...res.items.map(mapRef.current)]);
-      pageRef.current = nextPage;
-      setHasMoreBoth(res.hasMore);
+      if (id === reqId.current) {
+        setOptions((prev) => [...prev, ...res.items.map(mapRef.current)]);
+        pageRef.current = nextPage;
+        setHasMoreBoth(res.hasMore);
+      }
     } catch (e) {
       if (id === reqId.current) setError(e);
-    } finally {
-      loadingMoreRef.current = false;
-      setLoadingMore(false);
     }
-  }, [enabled, setHasMoreBoth]);
+    loadingMoreRef.current = false;
+    setLoadingMore(false);
+  };
 
   return {
     query,

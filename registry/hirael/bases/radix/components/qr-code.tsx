@@ -26,6 +26,22 @@ export interface QRCodeProps extends Omit<React.ComponentProps<'svg'>, 'children
   onError?: (error: unknown) => void;
 }
 
+const toPath = (value: string, level: QRCodeLevel, margin: number) => {
+  try {
+    const { data, size: dim } = encode(value, { ecc: level, border: margin });
+    let path = '';
+    data.forEach((row, y) =>
+      row.forEach((dark, x) => {
+        if (dark) path += `M${x} ${y}h1v1h-1z`;
+      }),
+    );
+
+    return { d: path, dim, error: null };
+  } catch (err) {
+    return { d: '', dim: margin * 2, error: err };
+  }
+};
+
 const QRCode = ({
   value,
   level = 'M',
@@ -38,21 +54,7 @@ const QRCode = ({
   className,
   ...props
 }: QRCodeProps) => {
-  const { d, dim, error } = React.useMemo(() => {
-    try {
-      const { data, size: dim } = encode(value, { ecc: level, border: margin });
-      let path = '';
-      data.forEach((row, y) =>
-        row.forEach((dark, x) => {
-          if (dark) path += `M${x} ${y}h1v1h-1z`;
-        }),
-      );
-
-      return { d: path, dim, error: null };
-    } catch (err) {
-      return { d: '', dim: margin * 2, error: err };
-    }
-  }, [value, level, margin]);
+  const { d, dim, error } = toPath(value, level, margin);
 
   // Latest-ref: an inline `onError` changes identity every parent render and
   // must not re-report the same failure each time.

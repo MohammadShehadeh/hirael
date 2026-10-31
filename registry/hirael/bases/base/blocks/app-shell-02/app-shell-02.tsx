@@ -54,7 +54,11 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-type SectionId = 'profile' | 'security' | 'api' | 'billing' | 'integrations';
+const SECTION_ID_VALUES = ['profile', 'security', 'api', 'billing', 'integrations'] as const;
+
+type SectionId = (typeof SECTION_ID_VALUES)[number];
+
+const isSectionId = (value: unknown): value is SectionId => SECTION_ID_VALUES.some((option) => option === value);
 
 interface Section {
   id: SectionId;
@@ -351,44 +355,37 @@ const AppShell02 = () => {
 
   React.useEffect(() => () => clearTimeout(savedTimer.current), []);
 
-  const markSaved = React.useCallback(() => {
+  const markSaved = () => {
     setSaveState('saved');
     clearTimeout(savedTimer.current);
     savedTimer.current = setTimeout(() => setSaveState('idle'), 2000);
-  }, []);
+  };
 
-  const commitValue = React.useCallback(
-    async (id: string, value: string) => {
-      setSaveState('saving');
-      // Stands in for the request a real settings screen would fire.
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      setValues((prev) => ({ ...prev, [id]: value }));
-      markSaved();
-    },
-    [markSaved],
-  );
+  const commitValue = async (id: string, value: string) => {
+    setSaveState('saving');
+    // Stands in for the request a real settings screen would fire.
+    await new Promise((resolve) => setTimeout(resolve, 400));
+    setValues((prev) => ({ ...prev, [id]: value }));
+    markSaved();
+  };
 
-  const commitToggle = React.useCallback(
-    (id: string, next: boolean) => {
-      setToggles((prev) => ({ ...prev, [id]: next }));
-      markSaved();
-    },
-    [markSaved],
-  );
+  const commitToggle = (id: string, next: boolean) => {
+    setToggles((prev) => ({ ...prev, [id]: next }));
+    markSaved();
+  };
 
   const normalized = query.trim().toLowerCase();
 
-  const matchesBySection = React.useMemo(() => {
-    return SECTIONS.reduce<Record<SectionId, readonly Field[]>>(
-      (acc, s) => {
-        const fields = SECTION_FIELDS[s.id];
-        acc[s.id] = normalized ? fields.filter((f) => fieldMatches(f, normalized)) : fields;
+  const matchesBySection = SECTIONS.reduce<Record<SectionId, readonly Field[]>>(
+    (acc, s) => {
+      const fields = SECTION_FIELDS[s.id];
+      acc[s.id] = normalized ? fields.filter((f) => fieldMatches(f, normalized)) : fields;
 
-        return acc;
-      },
-      {} as Record<SectionId, readonly Field[]>,
-    );
-  }, [normalized]);
+      return acc;
+    },
+    // The reduce fills in every section id.
+    {} as Record<SectionId, readonly Field[]>,
+  );
 
   const totalMatches = SECTIONS.reduce((sum, s) => sum + matchesBySection[s.id].length, 0);
 
@@ -500,7 +497,9 @@ const AppShell02 = () => {
 
         <Tabs
           value={section}
-          onValueChange={(v) => setSection(v as SectionId)}
+          onValueChange={(v) => {
+            if (isSectionId(v)) setSection(v);
+          }}
           orientation="vertical"
           className="mt-6 grid grid-cols-1 items-start lg:grid-cols-12"
         >

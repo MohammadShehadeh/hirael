@@ -110,7 +110,7 @@ const EmptyState03 = () => {
 
   const errorRef = ERROR_REFS[Math.min(failures, ERROR_REFS.length) - 1];
 
-  const retry = () => {
+  const handleRetry = () => {
     setPhase('loading');
     clearTimeout(timer.current);
     timer.current = setTimeout(() => {
@@ -175,7 +175,7 @@ const EmptyState03 = () => {
                   <CopyButton value={errorRef} size="sm" label="Copy error reference" />
                 </div>
                 <div className="flex flex-wrap justify-center gap-2">
-                  <Button type="button" onClick={retry}>
+                  <Button type="button" onClick={handleRetry}>
                     <RotateCw aria-hidden />
                     Try again
                   </Button>

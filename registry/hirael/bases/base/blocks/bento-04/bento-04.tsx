@@ -42,9 +42,9 @@ const useTimeouts = () => {
     return () => pending.forEach((id) => window.clearTimeout(id));
   }, []);
 
-  return React.useCallback((fn: () => void, ms: number) => {
+  return (fn: () => void, ms: number) => {
     timers.current.push(window.setTimeout(fn, ms));
-  }, []);
+  };
 };
 
 interface BentoTileProps extends Omit<React.ComponentProps<'article'>, 'title'> {
@@ -194,7 +194,7 @@ const AuditTrail = (props: TileProps) => {
     return () => window.clearInterval(id);
   }, [paused]);
 
-  const togglePause = () => {
+  const handleTogglePause = () => {
     if (paused) {
       setTrail((current) => ({
         ...current,
@@ -211,7 +211,7 @@ const AuditTrail = (props: TileProps) => {
       title="Every action, as it happens"
       description="Sign-ins, exports, key rotations and access grants land here within a second. Kept for 7 years."
       action={
-        <Button variant="outline" size="sm" aria-pressed={paused} onClick={togglePause}>
+        <Button variant="outline" size="sm" aria-pressed={paused} onClick={handleTogglePause}>
           {paused ? <Play aria-hidden /> : <Pause aria-hidden />}
           {paused ? 'Resume' : 'Pause'}
         </Button>
@@ -283,7 +283,13 @@ const AuditTrail = (props: TileProps) => {
 type Method = 'passkey' | 'app' | 'sms';
 
 const MEMBERS = 50;
-const METHODS: readonly { id: Method; label: string; swatch: string }[] = [
+interface MethodOption {
+  id: Method;
+  label: string;
+  swatch: string;
+}
+
+const METHODS: readonly MethodOption[] = [
   { id: 'passkey', label: 'Passkey', swatch: 'bg-chart-1' },
   { id: 'app', label: 'Authenticator app', swatch: 'bg-chart-2' },
   { id: 'sms', label: 'SMS', swatch: 'bg-chart-3' },
@@ -300,7 +306,13 @@ const NOT_ENROLLED = [
   'Nora Quinn',
 ];
 
-const AFTER_REMINDER: readonly { name: string; method: Method; delay: number }[] = [
+interface Reminder {
+  name: string;
+  method: Method;
+  delay: number;
+}
+
+const AFTER_REMINDER: readonly Reminder[] = [
   { name: 'Chris Moreau', method: 'passkey', delay: 1200 },
   { name: 'Ines Duarte', method: 'app', delay: 2600 },
   { name: 'Yuki Tanaka', method: 'passkey', delay: 4200 },
@@ -316,7 +328,7 @@ const TwoFactorMeter = (props: TileProps) => {
   const enrolled = counts.passkey + counts.app + counts.sms;
   const cells = METHODS.flatMap((method) => Array.from({ length: counts[method.id] }, () => method.swatch));
 
-  const remind = () => {
+  const handleRemind = () => {
     setReminded(true);
     AFTER_REMINDER.forEach(({ name, method, delay }) =>
       later(() => {
@@ -383,7 +395,7 @@ const TwoFactorMeter = (props: TileProps) => {
               <Switch id="bento-04-require" checked={required} onCheckedChange={(on) => setRequired(on === true)} />
               Require at next sign-in
             </label>
-            <Button variant="outline" size="sm" onClick={remind} disabled={reminded || pending.length === 0}>
+            <Button variant="outline" size="sm" onClick={handleRemind} disabled={reminded || pending.length === 0}>
               {reminded ? <Check aria-hidden /> : null}
               {reminded ? 'Reminder sent' : `Remind ${pending.length}`}
             </Button>
@@ -420,6 +432,13 @@ const formatCountdown = (seconds: number) => {
     .join(':');
 
   return `${days}d ${clock}`;
+};
+
+const certificateStatus = (msLeft: number) => {
+  if (msLeft <= 0) return 'expired';
+  if (msLeft < 14 * DAY) return 'soon';
+
+  return 'valid';
 };
 
 const CertificateList = (props: TileProps) => {
@@ -468,7 +487,7 @@ const CertificateList = (props: TileProps) => {
         {CERTIFICATES.map((cert) => {
           const left = expiry[cert.domain] - elapsed;
           const busy = renewing.has(cert.domain);
-          const status = left <= 0 ? 'expired' : left < 14 * DAY ? 'soon' : 'valid';
+          const status = certificateStatus(left);
 
           return (
             <li
@@ -666,6 +685,8 @@ const RESOURCES = [
 const DURATIONS = ['1h', '4h', '8h'] as const;
 type Duration = (typeof DURATIONS)[number];
 
+const isDuration = (value: unknown): value is Duration => DURATIONS.some((option) => option === value);
+
 const TICKET_PATTERN = /\b[A-Z]{2,6}-\d{2,6}\b/;
 
 interface RequestForm {
@@ -687,10 +708,12 @@ const validate = (form: RequestForm): RequestErrors => {
 
 const EMPTY_REQUEST: RequestForm = { resource: '', duration: '4h', reason: '' };
 
+type RequestStatus = 'idle' | 'sending' | 'sent';
+
 const RequestAccess = (props: TileProps) => {
   const [form, setForm] = React.useState<RequestForm>(EMPTY_REQUEST);
   const [errors, setErrors] = React.useState<RequestErrors>({});
-  const [status, setStatus] = React.useState<'idle' | 'sending' | 'sent'>('idle');
+  const [status, setStatus] = React.useState<RequestStatus>('idle');
   const later = useTimeouts();
 
   const update = <K extends keyof RequestForm>(key: K, value: RequestForm[K]) => {
@@ -698,7 +721,7 @@ const RequestAccess = (props: TileProps) => {
     if (key in errors) setErrors((current) => ({ ...current, [key]: undefined }));
   };
 
-  const submit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const next = validate(form);
     setErrors(next);
@@ -741,7 +764,7 @@ const RequestAccess = (props: TileProps) => {
           </Button>
         </div>
       ) : (
-        <form noValidate onSubmit={submit} className="flex flex-1 flex-col">
+        <form noValidate onSubmit={handleSubmit} className="flex flex-1 flex-col">
           <FieldGroup className="gap-4">
             <Field data-invalid={Boolean(errors.resource)}>
               <FieldLabel htmlFor="bento-04-resource">Resource</FieldLabel>
@@ -776,7 +799,7 @@ const RequestAccess = (props: TileProps) => {
                 size="sm"
                 value={[form.duration]}
                 onValueChange={([next]) => {
-                  if (next) update('duration', next as Duration);
+                  if (isDuration(next)) update('duration', next);
                 }}
                 disabled={status === 'sending'}
                 aria-labelledby="bento-04-duration"

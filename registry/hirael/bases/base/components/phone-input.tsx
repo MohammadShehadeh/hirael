@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { AsYouType, parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js';
+import { AsYouType, isSupportedCountry, parsePhoneNumberFromString, type CountryCode } from 'libphonenumber-js';
 import { Check, ChevronDown } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -39,7 +39,8 @@ interface ParsedE164 {
 }
 
 const parseE164 = (value: string | undefined, fallback: Country): ParsedE164 => {
-  const parsed = value ? parsePhoneNumberFromString(value, fallback.iso2 as CountryCode) : undefined;
+  const fallbackCountry = isSupportedCountry(fallback.iso2) ? fallback.iso2 : undefined;
+  const parsed = value ? parsePhoneNumberFromString(value, fallbackCountry) : undefined;
   const dialCode = parsed && `+${parsed.countryCallingCode}`;
   // An unrecognised number still has a dial code; on a shared one (+1 is US and CA) prefer the fallback.
   const country =
@@ -97,10 +98,7 @@ const PhoneInput = ({
   const reactId = React.useId();
   const fieldId = id ?? reactId;
 
-  const fallback = React.useMemo<Country>(
-    () => COUNTRIES.find((c) => c.iso2 === defaultCountry.toUpperCase()) ?? COUNTRIES[0],
-    [defaultCountry],
-  );
+  const fallback: Country = COUNTRIES.find((c) => c.iso2 === defaultCountry.toUpperCase()) ?? COUNTRIES[0];
 
   const [phone, setPhone] = React.useState(() => parseE164(valueProp ?? defaultValue, fallback));
 
@@ -112,18 +110,12 @@ const PhoneInput = ({
     if (valueProp !== toE164(phone.country, phone.national)) setPhone(parseE164(valueProp, fallback));
   }
 
-  const update = React.useCallback(
-    (next: ParsedE164) => {
-      setPhone(next);
-      onValueChange?.(toE164(next.country, next.national));
-    },
-    [onValueChange],
-  );
+  const update = (next: ParsedE164) => {
+    setPhone(next);
+    onValueChange?.(toE164(next.country, next.national));
+  };
 
-  const ctx = React.useMemo<Ctx>(
-    () => ({ id: fieldId, ...phone, update, locale, disabled }),
-    [fieldId, phone, update, locale, disabled],
-  );
+  const ctx: Ctx = { id: fieldId, ...phone, update, locale, disabled };
 
   return (
     <PhoneInputContext.Provider value={ctx}>

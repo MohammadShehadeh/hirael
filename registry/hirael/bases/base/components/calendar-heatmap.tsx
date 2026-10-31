@@ -47,6 +47,8 @@ interface CalendarHeatmapCell {
   inRange: boolean;
 }
 
+const NO_CELLS: CalendarHeatmapCell[] = [];
+
 type CalendarHeatmapCellSize = 'sm' | 'md' | 'lg' | number;
 
 const resolveCellSize = (cellSize: CalendarHeatmapCellSize): number => {
@@ -77,6 +79,121 @@ interface CalendarHeatmapProps extends Omit<React.ComponentProps<'div'>, 'onSele
   onSelectDay?: (date: Date, value: number) => void;
 }
 
+interface MonthLabel {
+  weekIndex: number;
+  label: string;
+}
+
+interface HeatmapOptions {
+  data: CalendarHeatmapDatum[];
+  endDate?: Date;
+  startDate?: Date;
+  months: number;
+  weekStartsOn: 0 | 1;
+  levels: number;
+  thresholds?: number[];
+  locale: string;
+  todayKey: ReturnType<typeof getTodayKey> | null;
+}
+
+const buildHeatmap = ({
+  data,
+  endDate,
+  startDate,
+  months,
+  weekStartsOn,
+  levels,
+  thresholds,
+  locale,
+  todayKey,
+}: HeatmapOptions) => {
+  const dayFormatter = new Intl.DateTimeFormat(locale, { weekday: 'short' });
+  const monthFormatter = new Intl.DateTimeFormat(locale, { month: 'short' });
+
+  const weekdays = Array.from({ length: 7 }, (_, row) => {
+    const day = (weekStartsOn + row) % 7;
+
+    return {
+      label: dayFormatter.format(new Date(2024, 0, 7 + day)),
+      visible: day === 1 || day === 3 || day === 5,
+    };
+  });
+
+  const today = todayKey === null ? null : fromDayKey(todayKey);
+  const rangeEnd = endDate ? toLocalDate(endDate) : today;
+  if (!rangeEnd) {
+    return { cells: NO_CELLS, weekCount: 0, monthLabels: [], weekdayLabels: weekdays };
+  }
+  const rangeStart = startDate ? toLocalDate(startDate) : addDays(addMonths(rangeEnd, -months), 1);
+
+  const values = new Map<number, number>();
+  for (const datum of data) {
+    const key = dayKey(toLocalDate(datum.date));
+    values.set(key, (values.get(key) ?? 0) + datum.value);
+  }
+
+  const leading = (rangeStart.getDay() - weekStartsOn + 7) % 7;
+  const gridStart = addDays(rangeStart, -leading);
+  const totalDays = Math.round((rangeEnd.getTime() - gridStart.getTime()) / 86400000) + 1;
+  const weeks = Math.ceil(totalDays / 7);
+
+  let max = 0;
+  for (let i = 0; i < weeks * 7; i++) {
+    const date = addDays(gridStart, i);
+    if (date < rangeStart || date > rangeEnd) continue;
+    max = Math.max(max, values.get(dayKey(date)) ?? 0);
+  }
+  if (max <= 0) max = 1;
+
+  const cuts =
+    thresholds ?? Array.from({ length: Math.max(levels - 1, 0) }, (_, i) => (max * (i + 1)) / Math.max(levels - 1, 1));
+
+  const levelFor = (value: number) => {
+    if (value <= 0) return 0;
+    let level = 0;
+    for (const cut of cuts) {
+      if (value >= cut) level += 1;
+    }
+
+    return Math.min(level, levels - 1);
+  };
+
+  const grid: CalendarHeatmapCell[] = [];
+  for (let i = 0; i < weeks * 7; i++) {
+    const date = addDays(gridStart, i);
+    const inRange = date >= rangeStart && date <= rangeEnd;
+    const value = inRange ? (values.get(dayKey(date)) ?? 0) : 0;
+    grid.push({ date, value, level: inRange ? levelFor(value) : 0, inRange });
+  }
+
+  const candidates: MonthLabel[] = [];
+  let lastMonth = -1;
+  for (let i = 0; i < grid.length; i++) {
+    const cell = grid[i];
+    if (!cell.inRange) continue;
+    const month = cell.date.getMonth();
+    if (month !== lastMonth) {
+      lastMonth = month;
+      candidates.push({
+        weekIndex: Math.floor(i / 7),
+        label: monthFormatter.format(cell.date),
+      });
+    }
+  }
+  const labels = candidates.filter((candidate, i) => {
+    const next = candidates[i + 1];
+
+    return !next || next.weekIndex - candidate.weekIndex >= 3;
+  });
+
+  return {
+    cells: grid,
+    weekCount: weeks,
+    monthLabels: labels,
+    weekdayLabels: weekdays,
+  };
+};
+
 const CalendarHeatmap = ({
   data,
   endDate,
@@ -99,102 +216,23 @@ const CalendarHeatmap = ({
   const size = resolveCellSize(cellSize);
   const todayKey = React.useSyncExternalStore(subscribeNever, getTodayKey, getServerTodayKey);
 
-  const { cells, weekCount, monthLabels, weekdayLabels } = React.useMemo(() => {
-    const dayFormatter = new Intl.DateTimeFormat(locale, { weekday: 'short' });
-    const monthFormatter = new Intl.DateTimeFormat(locale, { month: 'short' });
-
-    const weekdays = Array.from({ length: 7 }, (_, row) => {
-      const day = (weekStartsOn + row) % 7;
-
-      return {
-        label: dayFormatter.format(new Date(2024, 0, 7 + day)),
-        visible: day === 1 || day === 3 || day === 5,
-      };
-    });
-
-    const rangeEnd = endDate ? toLocalDate(endDate) : todayKey === null ? null : fromDayKey(todayKey);
-    if (!rangeEnd) {
-      return { cells: [] as CalendarHeatmapCell[], weekCount: 0, monthLabels: [], weekdayLabels: weekdays };
-    }
-    const rangeStart = startDate ? toLocalDate(startDate) : addDays(addMonths(rangeEnd, -months), 1);
-
-    const values = new Map<number, number>();
-    for (const datum of data) {
-      const key = dayKey(toLocalDate(datum.date));
-      values.set(key, (values.get(key) ?? 0) + datum.value);
-    }
-
-    const leading = (rangeStart.getDay() - weekStartsOn + 7) % 7;
-    const gridStart = addDays(rangeStart, -leading);
-    const totalDays = Math.round((rangeEnd.getTime() - gridStart.getTime()) / 86400000) + 1;
-    const weeks = Math.ceil(totalDays / 7);
-
-    let max = 0;
-    for (let i = 0; i < weeks * 7; i++) {
-      const date = addDays(gridStart, i);
-      if (date < rangeStart || date > rangeEnd) continue;
-      max = Math.max(max, values.get(dayKey(date)) ?? 0);
-    }
-    if (max <= 0) max = 1;
-
-    const cuts =
-      thresholds ??
-      Array.from({ length: Math.max(levels - 1, 0) }, (_, i) => (max * (i + 1)) / Math.max(levels - 1, 1));
-
-    const levelFor = (value: number) => {
-      if (value <= 0) return 0;
-      let level = 0;
-      for (const cut of cuts) {
-        if (value >= cut) level += 1;
-      }
-
-      return Math.min(level, levels - 1);
-    };
-
-    const grid: CalendarHeatmapCell[] = [];
-    for (let i = 0; i < weeks * 7; i++) {
-      const date = addDays(gridStart, i);
-      const inRange = date >= rangeStart && date <= rangeEnd;
-      const value = inRange ? (values.get(dayKey(date)) ?? 0) : 0;
-      grid.push({ date, value, level: inRange ? levelFor(value) : 0, inRange });
-    }
-
-    const candidates: { weekIndex: number; label: string }[] = [];
-    let lastMonth = -1;
-    for (let i = 0; i < grid.length; i++) {
-      const cell = grid[i];
-      if (!cell.inRange) continue;
-      const month = cell.date.getMonth();
-      if (month !== lastMonth) {
-        lastMonth = month;
-        candidates.push({
-          weekIndex: Math.floor(i / 7),
-          label: monthFormatter.format(cell.date),
-        });
-      }
-    }
-    const labels = candidates.filter((candidate, i) => {
-      const next = candidates[i + 1];
-
-      return !next || next.weekIndex - candidate.weekIndex >= 3;
-    });
-
-    return {
-      cells: grid,
-      weekCount: weeks,
-      monthLabels: labels,
-      weekdayLabels: weekdays,
-    };
-  }, [data, endDate, startDate, months, weekStartsOn, levels, thresholds, locale, todayKey]);
+  const { cells, weekCount, monthLabels, weekdayLabels } = buildHeatmap({
+    data,
+    endDate,
+    startDate,
+    months,
+    weekStartsOn,
+    levels,
+    thresholds,
+    locale,
+    todayKey,
+  });
 
   const resolveLevelClass = classForLevel ?? ((level: number) => defaultClassForLevel(level, levels));
 
-  const defaultFormatter = React.useMemo(() => {
-    const dateFormat = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' });
-    const numberFormat = new Intl.NumberFormat(locale);
-
-    return (date: Date, value: number) => `${dateFormat.format(date)}: ${numberFormat.format(value)}`;
-  }, [locale]);
+  const dateFormat = new Intl.DateTimeFormat(locale, { month: 'short', day: 'numeric', year: 'numeric' });
+  const numberFormat = new Intl.NumberFormat(locale);
+  const defaultFormatter = (date: Date, value: number) => `${dateFormat.format(date)}: ${numberFormat.format(value)}`;
 
   const cellRefs = React.useRef(new Map<number, HTMLButtonElement | null>());
   const [focusedIndex, setFocusedIndex] = React.useState<number | null>(null);
@@ -202,19 +240,12 @@ const CalendarHeatmap = ({
   const activeCell = activeIndex !== null && cells[activeIndex]?.inRange ? cells[activeIndex] : null;
 
   const handleGridPointerOver = (event: React.PointerEvent<HTMLDivElement>) => {
-    const cell = (event.target as HTMLElement).closest<HTMLElement>('[data-index]');
+    const cell = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-index]') : null;
     setActiveIndex(cell ? Number(cell.dataset.index) : null);
   };
 
-  const defaultTabbableIndex = React.useMemo(() => {
-    const todayIndex = cells.findIndex((cell) => cell.inRange && dayKey(cell.date) === todayKey);
-    if (todayIndex !== -1) return todayIndex;
-    for (let i = cells.length - 1; i >= 0; i--) {
-      if (cells[i].inRange) return i;
-    }
-
-    return -1;
-  }, [cells, todayKey]);
+  const todayIndex = cells.findIndex((cell) => cell.inRange && dayKey(cell.date) === todayKey);
+  const defaultTabbableIndex = todayIndex === -1 ? cells.findLastIndex((cell) => cell.inRange) : todayIndex;
 
   const tabbableIndex = focusedIndex !== null && cells[focusedIndex]?.inRange ? focusedIndex : defaultTabbableIndex;
 

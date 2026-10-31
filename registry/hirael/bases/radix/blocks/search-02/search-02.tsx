@@ -23,7 +23,12 @@ const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\
 
 const tokenize = (query: string) => query.toLowerCase().trim().split(/\s+/).filter(Boolean);
 
-const Highlight = ({ text, query }: { text: string; query: string }) => {
+interface HighlightProps {
+  text: string;
+  query: string;
+}
+
+const Highlight = ({ text, query }: HighlightProps) => {
   // Longest first so a longer term wins over its own prefix inside the alternation.
   const terms = tokenize(query).sort((a, b) => b.length - a.length);
   if (terms.length === 0) return text;
@@ -182,7 +187,11 @@ const initials = (name: string) =>
     .join('')
     .slice(0, 2);
 
-const EntryMedia = ({ entry }: { entry: Entry }) =>
+interface EntryMediaProps {
+  entry: Entry;
+}
+
+const EntryMedia = ({ entry }: EntryMediaProps) =>
   entry.kind === 'person' ? (
     <Avatar size="sm">
       <AvatarFallback>{initials(entry.label)}</AvatarFallback>
@@ -234,8 +243,9 @@ const Search02 = () => {
   React.useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
-      const target = event.target as HTMLElement | null;
-      if (target?.isContentEditable || target?.closest('input, textarea, select')) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && (target.isContentEditable || target.closest('input, textarea, select')))
+        return;
       event.preventDefault();
       inputRef.current?.focus();
     };
@@ -248,10 +258,9 @@ const Search02 = () => {
     if (!open) return;
     // Blur alone misses a click outside while the input was never focused.
     const onPointerDown = (event: PointerEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-        setActiveIndex(-1);
-      }
+      if (event.target instanceof Node && rootRef.current?.contains(event.target)) return;
+      setOpen(false);
+      setActiveIndex(-1);
     };
     document.addEventListener('pointerdown', onPointerDown);
 
@@ -283,7 +292,7 @@ const Search02 = () => {
     close();
   };
 
-  const onInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     switch (event.key) {
       case 'ArrowDown':
         event.preventDefault();
@@ -296,7 +305,8 @@ const Search02 = () => {
         setActiveIndex(options.length === 0 ? -1 : active <= 0 ? options.length - 1 : active - 1);
         break;
       case 'Enter': {
-        const option = active >= 0 ? options[active] : terms.length > 0 ? options[0] : undefined;
+        const firstOption = terms.length > 0 ? options[0] : undefined;
+        const option = active >= 0 ? options[active] : firstOption;
         if (!open || !option) return;
         event.preventDefault();
         choose(option);
@@ -377,7 +387,7 @@ const Search02 = () => {
                   setOpen(true);
                   setActiveIndex(event.target.value.trim() ? 0 : -1);
                 }}
-                onKeyDown={onInputKeyDown}
+                onKeyDown={handleInputKeyDown}
               />
               <InputGroupAddon align="inline-end">
                 {query ? (

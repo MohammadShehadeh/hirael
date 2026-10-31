@@ -35,7 +35,6 @@ const builtItems = readAllBuiltItems();
 if (!builtItems.length) throw new Error('no /r/*.json were built');
 const itemNames = new Set(builtItems.map(({ item }) => item.name));
 
-let checkedFiles = 0;
 for (const { item } of builtItems) {
   for (const dep of item.registryDependencies ?? []) {
     if (!dep.includes('/') && itemNames.has(dep)) {
@@ -46,7 +45,6 @@ for (const { item } of builtItems) {
   const header = sourceHeader(item);
   for (const file of item.files ?? []) {
     if (typeof file.content !== 'string') continue;
-    checkedFiles++;
     const location = file.target ?? file.path;
 
     if (STAMPABLE_FILE.test(file.path) && !file.content.startsWith(header)) {
@@ -69,6 +67,9 @@ for (const { item } of builtItems) {
   }
 }
 
+const checkedFiles = builtItems
+  .flatMap(({ item }) => item.files ?? [])
+  .filter((file) => typeof file.content === 'string');
 report.finish(
-  `install OK — ${builtItems.length} items / ${checkedFiles} files: imports rewrite to consumer aliases, cross-hirael deps are URLs.`,
+  `install OK — ${builtItems.length} items / ${checkedFiles.length} files: imports rewrite to consumer aliases, cross-hirael deps are URLs.`,
 );

@@ -49,7 +49,7 @@ const Sparkles = ({
   ...props
 }: SparklesProps) => {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const composedRef = React.useMemo(() => composeRefs(containerRef, ref), [ref]);
+  const composedRef = composeRefs(containerRef, ref);
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
 
   React.useEffect(() => {

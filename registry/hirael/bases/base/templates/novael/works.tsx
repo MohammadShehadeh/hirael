@@ -10,6 +10,12 @@ const PROJECT_IDS = ['northwind', 'pipeline', 'cascade', 'bazaar', 'meridian', '
 
 type ProjectId = (typeof PROJECT_IDS)[number];
 
+interface ProjectCopy {
+  title: string;
+  category: string;
+  description: string;
+}
+
 const COPY = {
   en: {
     pretitle: 'Sit amet',
@@ -105,10 +111,7 @@ const COPY = {
       },
     },
   },
-} satisfies Record<
-  Lang,
-  { items: Record<ProjectId, { title: string; category: string; description: string }> } & Record<string, unknown>
->;
+} satisfies Record<Lang, { items: Record<ProjectId, ProjectCopy> } & Record<string, unknown>>;
 
 interface ProjectPlaceholderProps {
   index: number;

@@ -82,7 +82,7 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
     }
     animatingRef.current = true;
     setDisplayScene(current);
-    controls
+    void controls
       .start({
         y: '20%',
         scale: 1.1,
@@ -117,10 +117,9 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
           <Image src={SCENE_IMAGE[other]} alt="" fill sizes="100vw" className="object-cover object-center" />
         </div>
         <motion.div
-          className="absolute inset-0"
+          className="absolute inset-0 will-change-[transform,opacity]"
           initial={{ y: '0%', scale: 1.1, opacity: 1 }}
           animate={controls}
-          style={{ willChange: 'transform, opacity' }}
         >
           <Image
             src={SCENE_IMAGE[scene]}

@@ -11,8 +11,13 @@ export function generateStaticParams() {
 
 export const generateMetadata = exampleEmbedMetadata;
 
+interface ExampleEmbedRouteParams {
+  component: string;
+  example: string;
+}
+
 interface ExampleEmbedRouteProps {
-  params: Promise<{ component: string; example: string }>;
+  params: Promise<ExampleEmbedRouteParams>;
 }
 
 export default async function ExampleEmbedRoute({ params }: ExampleEmbedRouteProps) {

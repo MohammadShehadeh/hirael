@@ -2,6 +2,7 @@
 
 import { useT } from '@/lib/demo-locale';
 import { SplitView, SplitViewPanel, SplitViewResizer } from '@/registry/hirael/bases/radix/components/split-view';
+import { cn } from '@/lib/utils';
 
 const FILES = [
   { name: 'index.ts', meta: '2.1 KB' },
@@ -24,9 +25,10 @@ const SplitViewDemo = () => {
             <li key={file.name}>
               <button
                 type="button"
-                className={`flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-start text-sm transition-colors hover:bg-accent ${
-                  i === 1 ? 'bg-accent text-foreground' : 'text-muted-foreground'
-                }`}
+                className={cn(
+                  'flex w-full items-center justify-between gap-2 rounded-md px-2 py-1.5 text-start text-sm transition-colors hover:bg-accent',
+                  i === 1 ? 'bg-accent text-foreground' : 'text-muted-foreground',
+                )}
               >
                 <span className="truncate font-mono text-xs">{file.name}</span>
                 <span className="shrink-0 font-mono text-[10px] text-muted-foreground">{file.meta}</span>

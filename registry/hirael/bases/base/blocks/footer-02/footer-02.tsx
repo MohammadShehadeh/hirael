@@ -3,10 +3,15 @@ import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
 interface FooterColumn {
   title: string;
   href: string;
-  links: readonly { label: string; href: string }[];
+  links: readonly FooterLink[];
 }
 
 const ENTER =

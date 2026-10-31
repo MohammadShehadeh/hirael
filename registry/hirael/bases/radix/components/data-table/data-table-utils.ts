@@ -32,13 +32,15 @@ export interface DataTableColumnMeta {
   icon?: React.FC<React.SVGProps<SVGSVGElement>>;
 }
 
+interface ColumnPinningStyleOptions<TData extends RowData> {
+  column: Column<DataTableFeatures, TData>;
+  withBorder?: boolean;
+}
+
 export const getColumnPinningStyle = <TData extends RowData>({
   column,
   withBorder = false,
-}: {
-  column: Column<DataTableFeatures, TData>;
-  withBorder?: boolean;
-}): React.CSSProperties => {
+}: ColumnPinningStyleOptions<TData>): React.CSSProperties => {
   const isPinned = column.getIsPinned();
   const isLastStartPinnedColumn = isPinned === 'start' && column.getIsLastColumn('start');
   const isFirstEndPinnedColumn = isPinned === 'end' && column.getIsFirstColumn('end');

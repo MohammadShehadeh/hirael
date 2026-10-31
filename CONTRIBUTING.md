@@ -128,10 +128,11 @@ your desired date") and avoid em dashes. Translate demo text with
 code, so explain why, not what. Prop JSDoc stays, because it builds the API
 tables.
 
-**Performance.** The website uses the React Compiler, so don't add `useMemo` or
-`useCallback` in `app/`, `components/`, `lib/` or `examples/`. Keep them in
-shipped component, block and template source, since consumers may not use the
-compiler.
+**Performance.** Hirael is written for the React Compiler. The website, the
+tests and every item are compiled, and consumers need it enabled in their app.
+Don't write `useMemo`, `useCallback` or `memo`; the linter rejects them. The
+only exception is a file that opts out with `"use no memo"`, like the TanStack
+Table components, which keeps its memoization by hand.
 
 **Media.** Put placeholder images and videos in
 `public/media/{blocks,components,templates}/<name>/` and reference them with a

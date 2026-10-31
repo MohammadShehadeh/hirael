@@ -20,8 +20,17 @@ const stagger = (index: number, step = 80): React.CSSProperties => ({ animationD
 const PLOT_TEXT = 'tabular-nums [&_svg_text]:[direction:ltr]';
 
 type Plan = 'starter' | 'pro' | 'business';
-type Layout = 'stacked' | 'grouped';
-type Year = '2024' | '2025';
+const LAYOUT_VALUES = ['stacked', 'grouped'] as const;
+
+type Layout = (typeof LAYOUT_VALUES)[number];
+
+const isLayout = (value: unknown): value is Layout => LAYOUT_VALUES.some((option) => option === value);
+
+const YEAR_VALUES = ['2024', '2025'] as const;
+
+type Year = (typeof YEAR_VALUES)[number];
+
+const isYear = (value: unknown): value is Year => YEAR_VALUES.some((option) => option === value);
 
 const PLANS: readonly Plan[] = ['starter', 'pro', 'business'];
 
@@ -61,7 +70,7 @@ const REVENUE: Record<Year, Record<Plan, number[]>> = {
   },
 };
 
-const YEARS = Object.keys(REVENUE) as Year[];
+const YEARS = YEAR_VALUES;
 
 interface MonthRow {
   month: string;
@@ -107,9 +116,9 @@ const summarize = (year: Year) => {
   const total = sum(rows.map((row) => row.total));
   const best = rows.reduce((top, row, i) => (row.total > rows[top].total ? i : top), 0);
   const bestMonth = MONTH_NAMES[best];
-  const previous = String(Number(year) - 1) as Year;
+  const previous = YEAR_VALUES.find((option) => option === String(Number(year) - 1));
 
-  if (!(previous in REVENUE)) {
+  if (!previous) {
     const lead = PLANS.reduce((top, plan) => (sum(REVENUE[year][plan]) > sum(REVENUE[year][top]) ? plan : top));
     const share = Math.round((sum(REVENUE[year][lead]) / total) * 100);
 
@@ -152,9 +161,13 @@ const TotalLabel = ({ x, y, width, index, rows }: TotalLabelProps) => {
   );
 };
 
+interface TooltipEntry {
+  payload?: MonthRow;
+}
+
 interface TooltipBodyProps {
   active?: boolean;
-  payload?: readonly { payload?: MonthRow }[];
+  payload?: readonly TooltipEntry[];
   year: Year;
 }
 
@@ -170,7 +183,7 @@ const TooltipBody = ({ active, payload, year }: TooltipBodyProps) => {
       <p className="font-medium">
         {MONTH_NAMES[MONTHS.indexOf(row.month)]} {year}
       </p>
-      {[...PLANS].reverse().map((plan) => (
+      {PLANS.toReversed().map((plan) => (
         <div key={plan} className="flex items-center gap-2">
           <span
             aria-hidden
@@ -194,12 +207,12 @@ const Chart01 = () => {
   const [layout, setLayout] = React.useState<Layout>('stacked');
   const isRtl = useDirection() === 'rtl';
 
-  const rows = React.useMemo(() => toRows(year), [year]);
-  const summary = React.useMemo(() => summarize(year), [year]);
+  const rows = toRows(year);
+  const summary = summarize(year);
   const total = sum(rows.map((row) => row.total));
   const stacked = layout === 'stacked';
   // Recharts keeps bars in a group left to right even on a reversed axis, so RTL reverses them; the layout key remounts them so the new order registers.
-  const barOrder = !stacked && isRtl ? [...PLANS].reverse() : PLANS;
+  const barOrder = !stacked && isRtl ? PLANS.toReversed() : PLANS;
 
   return (
     <section
@@ -224,7 +237,12 @@ const Chart01 = () => {
         <CardContent style={stagger(1)} className={ENTER}>
           <div className="flex flex-col gap-6">
             <div data-slot="revenue-chart-toolbar" className="flex flex-wrap items-center justify-between gap-3">
-              <Select value={year} onValueChange={(next) => setYear(next as Year)}>
+              <Select
+                value={year}
+                onValueChange={(next) => {
+                  if (isYear(next)) setYear(next);
+                }}
+              >
                 <SelectTrigger aria-label="Year" data-slot="revenue-chart-year" className="w-28">
                   <SelectValue />
                 </SelectTrigger>
@@ -241,7 +259,7 @@ const Chart01 = () => {
                 variant="outline"
                 value={layout}
                 onValueChange={(next) => {
-                  if (next) setLayout(next as Layout);
+                  if (isLayout(next)) setLayout(next);
                 }}
                 aria-label="Bar layout"
                 data-slot="revenue-chart-layout"
@@ -287,6 +305,7 @@ const Chart01 = () => {
                   <ChartTooltip
                     cursor={{ fill: 'var(--muted)', opacity: 0.6 }}
                     content={({ active, payload }) => (
+                      // Recharts types each entry's payload as any; it's one of this chart's rows.
                       <TooltipBody active={active} payload={payload as TooltipBodyProps['payload']} year={year} />
                     )}
                   />

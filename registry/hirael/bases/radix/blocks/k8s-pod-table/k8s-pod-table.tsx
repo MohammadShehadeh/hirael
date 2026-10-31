@@ -27,7 +27,12 @@ import { ToggleGroup, ToggleGroupItem } from '@/registry/hirael/bases/radix/ui/t
 export type PodPhase =
   'Running' | 'Pending' | 'Succeeded' | 'Failed' | 'CrashLoopBackOff' | 'ContainerCreating' | 'Terminating';
 
-const phaseMeta: Record<PodPhase, { className: string; live?: boolean }> = {
+interface PhaseMeta {
+  className: string;
+  live?: boolean;
+}
+
+const phaseMeta: Record<PodPhase, PhaseMeta> = {
   Running: { className: 'border-success/30 bg-success/10 text-success' },
   Succeeded: {
     className: 'border-border bg-accent text-muted-foreground',
@@ -169,7 +174,7 @@ const ENTER =
 const SWAP =
   'animate-in fade-in slide-in-from-bottom-1 duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
-type PodRow = {
+interface PodRow {
   name: string;
   ns: string;
   phase: PodPhase;
@@ -177,7 +182,7 @@ type PodRow = {
   restarts: number;
   age: string;
   node: string;
-};
+}
 
 const POD_ROWS: PodRow[] = [
   {
@@ -227,7 +232,13 @@ const POD_ROWS: PodRow[] = [
   },
 ];
 
-const POD_FILTERS: { value: string; label: string; phases: PodPhase[] }[] = [
+interface PodFilter {
+  value: string;
+  label: string;
+  phases: PodPhase[];
+}
+
+const POD_FILTERS: PodFilter[] = [
   {
     value: 'all',
     label: 'All',
@@ -241,10 +252,16 @@ const POD_FILTERS: { value: string; label: string; phases: PodPhase[] }[] = [
 
 type SortDirection = 'asc' | 'desc' | null;
 
-const nextSort = (current: SortDirection): SortDirection =>
-  current === null ? 'desc' : current === 'desc' ? 'asc' : null;
+const nextSort = (current: SortDirection): SortDirection => {
+  if (current === null) return 'desc';
+  if (current === 'desc') return 'asc';
+
+  return null;
+};
 
 const ARIA_SORT = { asc: 'ascending', desc: 'descending' } as const;
+
+const SORT_ICON = { asc: ArrowUp, desc: ArrowDown };
 
 const isFailing = (phase: PodPhase) => phase === 'Failed' || phase === 'CrashLoopBackOff';
 
@@ -265,8 +282,8 @@ const K8sPodTableBlock = () => {
   const visiblePods =
     sort === null
       ? filteredPods
-      : [...filteredPods].sort((a, b) => (sort === 'asc' ? 1 : -1) * (a.restarts - b.restarts));
-  const SortIcon = sort === 'asc' ? ArrowUp : sort === 'desc' ? ArrowDown : ArrowUpDown;
+      : filteredPods.toSorted((a, b) => (sort === 'asc' ? 1 : -1) * (a.restarts - b.restarts));
+  const SortIcon = sort ? SORT_ICON[sort] : ArrowUpDown;
 
   const updatePod = (name: string, patch: Partial<PodRow>) =>
     setPods((current) => current.map((pod) => (pod.name === name ? { ...pod, ...patch } : pod)));

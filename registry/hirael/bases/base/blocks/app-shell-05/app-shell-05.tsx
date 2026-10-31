@@ -323,7 +323,7 @@ const AppSidebar = ({ active, onNavigate }: AppSidebarProps) => {
                   <span className="truncate font-medium">{USER.name}</span>
                   <span className="truncate text-xs text-muted-foreground">{USER.email}</span>
                 </div>
-                <ChevronsUpDown className="ms-auto size-4 shrink-0" />
+                <ChevronsUpDown className="ms-auto shrink-0" />
               </DropdownMenuTrigger>
               <DropdownMenuContent side="top" align="start" sideOffset={4} className="w-56">
                 <DropdownMenuGroup>

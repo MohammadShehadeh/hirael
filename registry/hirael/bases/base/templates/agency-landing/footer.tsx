@@ -26,7 +26,7 @@ export const Footer = () => {
         <div className="flex flex-col gap-8 border-b border-background/10 pb-12 sm:pb-16 lg:flex-row lg:items-end lg:justify-between lg:pb-20">
           <div className="max-w-2xl">
             <div className="mb-5 flex items-center gap-3 sm:mb-8">
-              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-background text-foreground sm:h-7 sm:w-7">
+              <span className="flex size-6 items-center justify-center rounded-full bg-background text-foreground sm:size-7">
                 <HiraelMark className="h-3.5 w-3 sm:h-4 sm:w-3.5" />
               </span>
               <span
@@ -59,7 +59,7 @@ export const Footer = () => {
         <div className="grid grid-cols-2 gap-x-6 gap-y-10 py-12 sm:py-16 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:py-20">
           <div className="col-span-2 flex flex-col gap-5 lg:col-span-1">
             <a href="#" aria-label="Hirael home" className="flex items-center gap-2">
-              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-background text-foreground sm:h-10 sm:w-10">
+              <span className="flex size-9 items-center justify-center rounded-full bg-background text-foreground sm:size-10">
                 <HiraelMark className="h-5 w-4 sm:h-6 sm:w-5" />
               </span>
               <span className="text-[15px] font-semibold tracking-tight sm:text-[16px]">Hirael</span>
@@ -73,7 +73,7 @@ export const Footer = () => {
                 'gap-2 border-background/15 px-3 py-1.5 text-[13px] font-normal text-background/75',
               )}
             >
-              <span className="flex h-2 w-2 rounded-full bg-primary" />
+              <span className="flex size-2 rounded-full bg-primary" />
               Taking on projects for Q1 2026
             </span>
           </div>

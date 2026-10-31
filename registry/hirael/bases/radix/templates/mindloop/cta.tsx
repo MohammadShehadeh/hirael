@@ -1,13 +1,13 @@
 'use client';
 
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
-import { Logo, Serif, useFadeUp } from './primitives';
+import { Logo, Serif, fadeUp } from './primitives';
 
 const CTA_VIDEO = '/media/templates/mindloop/cta.mp4';
 
 export const Cta = () => {
-  const fade = useFadeUp();
+  const reduce = useReducedMotion();
 
   return (
     <section className="relative overflow-hidden border-t border-border/30 px-8 py-32 md:px-28 md:py-44">
@@ -18,11 +18,14 @@ export const Cta = () => {
         muted
         playsInline
         aria-hidden
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        className="absolute inset-0 z-0 size-full object-cover"
       />
       <div aria-hidden className="absolute inset-0 z-[1] bg-background/45" />
 
-      <motion.div {...fade(0)} className="relative z-10 mx-auto flex max-w-2xl flex-col items-center text-center">
+      <motion.div
+        {...fadeUp(reduce, 0)}
+        className="relative z-10 mx-auto flex max-w-2xl flex-col items-center text-center"
+      >
         <Logo size="lg" />
 
         <h2 className="mt-8 w-full text-4xl tracking-[-1px] md:text-6xl">

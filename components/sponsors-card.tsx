@@ -18,17 +18,6 @@ const tileClassName =
 const hasOwnRightColumn = (pathname: string) =>
   /^\/(components|blocks|utilities)\/[^/]+\/[^/]+$/.test(pathname) || /^\/templates\/[^/]+$/.test(pathname);
 
-export const SponsorsRail = () => {
-  const pathname = usePathname();
-  if (hasOwnRightColumn(pathname)) return null;
-
-  return (
-    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-rail shrink-0 overflow-y-auto p-4 xl:block">
-      <SponsorsCard />
-    </aside>
-  );
-};
-
 interface SponsorsCardProps {
   className?: string;
 }
@@ -110,5 +99,16 @@ export const SponsorsCard = ({ className }: SponsorsCardProps) => {
         </Button>
       </div>
     </section>
+  );
+};
+
+export const SponsorsRail = () => {
+  const pathname = usePathname();
+  if (hasOwnRightColumn(pathname)) return null;
+
+  return (
+    <aside className="sticky top-11 hidden h-[calc(100svh-2.75rem)] w-rail shrink-0 overflow-y-auto p-4 xl:block">
+      <SponsorsCard />
+    </aside>
   );
 };

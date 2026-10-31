@@ -20,7 +20,11 @@ const stagger = (index: number, step = 80): React.CSSProperties => ({ animationD
 const PLOT_TEXT = 'tabular-nums [&_svg_text]:[direction:ltr]';
 
 type Series = 'visitors' | 'signups';
-type Range = '7' | '30' | '90';
+const RANGE_VALUES = ['7', '30', '90'] as const;
+
+type Range = (typeof RANGE_VALUES)[number];
+
+const isRange = (value: unknown): value is Range => RANGE_VALUES.some((option) => option === value);
 
 const SERIES: readonly Series[] = ['visitors', 'signups'];
 const RANGES: readonly Range[] = ['7', '30', '90'];
@@ -40,19 +44,14 @@ const DAY_MS = 86_400_000;
 const LAST_DAY = Date.UTC(2026, 8, 23);
 const HISTORY_DAYS = 180;
 
-// A fixed seed keeps the server and client render identical.
-const seeded = (seed: number) => {
-  let state = seed;
-
-  return () => {
+const buildDays = (): DayRow[] => {
+  // A fixed seed keeps the server and client render identical.
+  let state = 20260923;
+  const random = () => {
     state = (state * 16807) % 2147483647;
 
     return state / 2147483647;
   };
-};
-
-const DAYS: readonly DayRow[] = (() => {
-  const random = seeded(20260923);
 
   return Array.from({ length: HISTORY_DAYS }, (_, i) => {
     const time = LAST_DAY - (HISTORY_DAYS - 1 - i) * DAY_MS;
@@ -63,7 +62,9 @@ const DAYS: readonly DayRow[] = (() => {
 
     return { date: new Date(time).toISOString().slice(0, 10), visitors, signups };
   });
-})();
+};
+
+const DAYS: readonly DayRow[] = buildDays();
 
 const count = new Intl.NumberFormat('en-US');
 const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
@@ -109,9 +110,13 @@ const summarize = (range: Range, visible: readonly Series[]) => {
   return `${sentence} ${rate}% of visitors signed up, ${direction} ${previousRate}%.`;
 };
 
+interface TooltipEntry {
+  payload?: DayRow;
+}
+
 interface TooltipBodyProps {
   active?: boolean;
-  payload?: readonly { payload?: DayRow }[];
+  payload?: readonly TooltipEntry[];
   visible: readonly Series[];
 }
 
@@ -199,7 +204,7 @@ const Chart02 = () => {
   const isRtl = useDirection() === 'rtl';
 
   const visible = SERIES.filter((key) => !hidden.includes(key));
-  const { current, previous } = React.useMemo(() => sliceRange(range), [range]);
+  const { current, previous } = sliceRange(range);
   const summary = summarize(range, visible);
 
   const toggle = (key: Series) =>
@@ -231,7 +236,7 @@ const Chart02 = () => {
               variant="outline"
               value={[range]}
               onValueChange={([next]) => {
-                if (next) setRange(next as Range);
+                if (isRange(next)) setRange(next);
               }}
               aria-label="Date range"
               data-slot="traffic-chart-range"
@@ -309,6 +314,7 @@ const Chart02 = () => {
                             i === 0 ? (
                               <TooltipBody
                                 active={active}
+                                // Recharts types each entry's payload as any; it's one of this chart's rows.
                                 payload={payload as TooltipBodyProps['payload']}
                                 visible={visible}
                               />

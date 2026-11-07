@@ -11,7 +11,6 @@ import { ContactButton, Logo, useScrolled } from './primitives';
 const NAV_LINKS = [
   { label: 'What We Build', href: '#build' },
   { label: 'Our Method', href: '#method' },
-  { label: 'Who We Are', href: '#about' },
   { label: 'Thinking', href: '#thinking' },
 ];
 

@@ -11,8 +11,6 @@ import { Wordmark } from './primitives';
 export const NAV_LINKS = [
   { label: 'Services', href: '#services' },
   { label: 'About Us', href: '#about' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Team', href: '#team' },
   { label: 'Contacts', href: '#contacts' },
 ] as const;
 

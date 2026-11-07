@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { composeRefs } from '@/registry/hirael/lib/compose-refs';
 
 // The textarea sits over the highlighted <pre>, so both must render the same
 // font or the selection drifts. Preflight gives <pre> its own mono stack.
@@ -92,7 +93,7 @@ const HighlightLine = function HighlightLine({ line }: HighlightLineProps) {
   const tokens = tokenizeLine(line);
 
   return (
-    <span className="block min-h-[1.25rem]">
+    <span className="block min-h-[1.25rem] w-max min-w-full">
       {tokens.length === 0
         ? '​'
         : tokens.map((token, i) => (
@@ -138,6 +139,23 @@ const YamlEditor = ({
   const tabReleasedRef = React.useRef(false);
 
   React.useEffect(() => () => cancelAnimationFrame(caretRafRef.current), []);
+
+  // Classic scrollbars shrink only the textarea, so it could scroll one scrollbar further than the
+  // highlight and gutter. Padding them by the scrollbar size keeps all three on the same scroll range.
+  const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
+  const [scrollbar, setScrollbar] = React.useState({ width: 0, height: 0 });
+  React.useEffect(() => {
+    const el = textareaRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return;
+    const observer = new ResizeObserver(() => {
+      const width = el.offsetWidth - el.clientWidth;
+      const height = el.offsetHeight - el.clientHeight;
+      setScrollbar((prev) => (prev.width === width && prev.height === height ? prev : { width, height }));
+    });
+    observer.observe(el);
+
+    return () => observer.disconnect();
+  }, []);
 
   const lines = text.split('\n');
 
@@ -200,6 +218,7 @@ const YamlEditor = ({
         data-slot="yaml-editor-gutter"
         aria-hidden
         className="shrink-0 overflow-hidden border-e border-border bg-muted/40 py-3 text-end text-muted-foreground select-none"
+        style={{ paddingBottom: `calc(0.75rem + ${scrollbar.height}px)` }}
       >
         {lines.map((_, i) => (
           <div key={i} className="px-2.5">
@@ -214,6 +233,10 @@ const YamlEditor = ({
           data-slot="yaml-editor-highlight"
           aria-hidden
           className={cn(layerClass, 'pointer-events-none overflow-hidden text-foreground')}
+          style={{
+            paddingRight: `calc(0.75rem + ${scrollbar.width}px)`,
+            paddingBottom: `calc(0.75rem + ${scrollbar.height}px)`,
+          }}
         >
           {lines.map((line, i) => (
             <HighlightLine key={i} line={line} />
@@ -235,6 +258,7 @@ const YamlEditor = ({
             'resize-none overflow-auto bg-transparent text-transparent caret-foreground outline-none selection:text-transparent disabled:cursor-not-allowed',
           )}
           {...textareaProps}
+          ref={composeRefs(textareaRef, textareaProps?.ref)}
           // After the spread so consumer handlers compose with, not replace, the editor's own.
           onChange={(event) => {
             handleChange(event);

@@ -3961,7 +3961,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'Editable code field with dependency-free YAML syntax highlighting, a line-number gutter and tab-to-indent. Controlled or uncontrolled.',
     category: 'inputs',
     files: [{ path: 'components/yaml-editor.tsx' }],
-    registryDependencies: [],
+    registryDependencies: ['compose-refs'],
     dependencies: [],
     cssVars: STATUS_CSS_VARS,
   },

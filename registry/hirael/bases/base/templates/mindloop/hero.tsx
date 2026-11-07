@@ -64,7 +64,6 @@ export const Hero = () => {
             />
             <Button
               render={<motion.button type="submit" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.98 }} />}
-              nativeButton={false}
               size="lg"
             >
               SUBSCRIBE

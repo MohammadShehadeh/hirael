@@ -351,14 +351,14 @@ const Dashboard05 = () => {
 
           {kpis.map((k) => (
             <div key={k.label} data-slot="dashboard-kpi" className="flex flex-col justify-between gap-3 bg-card p-5">
-              <div key={range} className={cn(SWAP, 'flex flex-col gap-2')}>
+              <div key={`value-${range}`} className={cn(SWAP, 'flex flex-col gap-2')}>
                 <CellLabel>{k.label}</CellLabel>
                 <div className="flex items-end justify-between gap-2">
                   <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">{k.value}</span>
                   <DeltaChip delta={k.delta} label={k.label} />
                 </div>
               </div>
-              <Spark key={range} points={k.spark} className={cn(SWAP, 'h-10')} />
+              <Spark key={`spark-${range}`} points={k.spark} className={cn(SWAP, 'h-10')} />
             </div>
           ))}
 

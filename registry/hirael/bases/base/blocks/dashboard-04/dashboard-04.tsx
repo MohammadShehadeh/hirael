@@ -652,12 +652,12 @@ const Dashboard04 = () => {
             <div className={cn('grid grid-cols-1 gap-4 md:grid-cols-3', DENSE_GAP)}>
               {week.minis.map((m) => (
                 <PanelCard key={m.label} icon={CreditCard} label={m.label}>
-                  <div key={range} className={cn(SWAP, 'flex items-start justify-between gap-3')}>
+                  <div key={`value-${range}`} className={cn(SWAP, 'flex items-start justify-between gap-3')}>
                     <span className="text-2xl font-semibold tracking-[-0.03em] tabular-nums">{m.value}</span>
                     <DeltaChip delta={m.delta} label={m.label} />
                   </div>
                   <div
-                    key={range}
+                    key={`spark-${range}`}
                     className="mt-3 flex animate-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fade-in motion-reduce:animate-none"
                   >
                     <Sparkline data={[...m.spark]} tone="muted" aria-hidden className="h-12 w-full" />

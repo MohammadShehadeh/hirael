@@ -176,11 +176,14 @@ const QuickActionsBlock = () => {
               }}
             >
               <PopoverTrigger render={<QuickAction data-done={result ? '' : undefined} />}>
-                <QuickActionIcon key={result ? 'done' : 'idle'} className={cn(result && 'text-success', SWAP)}>
+                <QuickActionIcon
+                  key={result ? 'icon-done' : 'icon-idle'}
+                  className={cn(result && 'text-success', SWAP)}
+                >
                   {result ? <Check /> : <action.icon />}
                 </QuickActionIcon>
                 <QuickActionLabel>{action.label}</QuickActionLabel>
-                <QuickActionDescription key={result ?? 'idle'} className={SWAP} aria-live="polite">
+                <QuickActionDescription key={`description-${result ?? 'idle'}`} className={SWAP} aria-live="polite">
                   {result ?? action.description}
                 </QuickActionDescription>
               </PopoverTrigger>

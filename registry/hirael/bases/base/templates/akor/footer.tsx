@@ -3,7 +3,11 @@ import { Wordmark } from './primitives';
 
 export const Footer = () => {
   return (
-    <footer data-slot="footer" className="border-t border-border bg-[var(--akor-ink)] px-8 py-10 lg:px-16">
+    <footer
+      id="contacts"
+      data-slot="footer"
+      className="border-t border-border bg-[var(--akor-ink)] px-8 py-10 lg:px-16"
+    >
       <div className="flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
         <Wordmark />
         <nav className="flex flex-wrap gap-x-8 gap-y-3">

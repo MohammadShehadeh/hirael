@@ -14,7 +14,7 @@ const UseCopyToClipboardDemo = () => {
 
   return (
     <div className="grid w-full max-w-lg gap-3">
-      <div className="flex items-center gap-2 rounded-md border border-border bg-card p-2 ps-3 text-card-foreground">
+      <div className="flex min-w-0 items-center gap-2 rounded-md border border-border bg-card p-2 ps-3 text-card-foreground">
         <span dir="ltr" className="min-w-0 flex-1 truncate text-start text-sm">
           {INSTALL}
         </span>

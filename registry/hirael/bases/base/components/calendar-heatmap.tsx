@@ -145,13 +145,12 @@ const buildHeatmap = ({
   }
   if (max <= 0) max = 1;
 
-  const cuts =
-    thresholds ?? Array.from({ length: Math.max(levels - 1, 0) }, (_, i) => (max * (i + 1)) / Math.max(levels - 1, 1));
-
   const levelFor = (value: number) => {
-    if (value <= 0) return 0;
+    if (value <= 0 || levels <= 1) return 0;
+    // Without thresholds the scale splits (0, max] evenly, so any activity at all reads as level 1, not as empty.
+    if (!thresholds) return Math.min(levels - 1, Math.max(1, Math.ceil((value / max) * (levels - 1))));
     let level = 0;
-    for (const cut of cuts) {
+    for (const cut of thresholds) {
       if (value >= cut) level += 1;
     }
 

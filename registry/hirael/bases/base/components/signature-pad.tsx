@@ -98,11 +98,17 @@ const SignaturePad = ({
 
   const onBeginStroke = React.useEffectEvent(() => setEmptyState(false));
 
+  const ink = React.useEffectEvent(() => {
+    const canvas = canvasRef.current;
+
+    return penColor ?? ((canvas && getComputedStyle(canvas).color) || '#000');
+  });
+
+  // Built once: a new SignaturePadLib clears its canvas, so rebuilding on a prop change would erase the signature.
   React.useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ink = () => penColor ?? (getComputedStyle(canvas).color || '#000');
-    const pad = new SignaturePadLib(canvas, { minWidth: minStrokeWidth, maxWidth: maxStrokeWidth, penColor: ink() });
+    const pad = new SignaturePadLib(canvas, { penColor: ink() });
     padRef.current = pad;
     pad.addEventListener('beginStroke', () => onBeginStroke());
     pad.addEventListener('endStroke', () => onStrokeEndRef.current?.());
@@ -126,6 +132,15 @@ const SignaturePad = ({
       pad.off();
       padRef.current = null;
     };
+  }, []);
+
+  React.useEffect(() => {
+    const canvas = canvasRef.current;
+    const pad = padRef.current;
+    if (!canvas || !pad) return;
+    pad.minWidth = minStrokeWidth;
+    pad.maxWidth = maxStrokeWidth;
+    paint(canvas, pad, pad, ink());
   }, [penColor, minStrokeWidth, maxStrokeWidth]);
 
   const clear = () => {

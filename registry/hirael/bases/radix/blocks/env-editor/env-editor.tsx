@@ -48,6 +48,68 @@ const ENVIRONMENTS: readonly EnvironmentOption[] = [
 const KEY_PATTERN = /^[A-Z_][A-Z0-9_]*$/;
 const SECRET_HINT = /(SECRET|TOKEN|PASSWORD|PRIVATE|API_KEY)/;
 
+const ESCAPES: Record<string, string> = { n: '\n', r: '\r', '"': '"', '\\': '\\' };
+
+// Walks to the first unescaped quote, so a JSON value like "{\"a\":1}" isn't cut off at its first \".
+const readDoubleQuoted = (quoted: string) => {
+  let out = '';
+  for (let i = 1; i < quoted.length; i++) {
+    const ch = quoted[i];
+    if (ch === '"') break;
+    if (ch === '\\' && i + 1 < quoted.length) {
+      i += 1;
+      const next = quoted[i];
+      out += Object.hasOwn(ESCAPES, next) ? ESCAPES[next] : `\\${next}`;
+      continue;
+    }
+    out += ch;
+  }
+
+  return out;
+};
+
+// Rows without an id still need a stable identity, so unsaved changes are counted per row, not per position.
+const generatedIds = new WeakMap<EnvVar, string>();
+let lastGeneratedId = 0;
+const rowId = (row: EnvVar) => {
+  if (row.id) return row.id;
+  let id = generatedIds.get(row);
+  if (!id) {
+    lastGeneratedId += 1;
+    id = `env-var-${lastGeneratedId}`;
+    generatedIds.set(row, id);
+  }
+
+  return id;
+};
+
+const countChanges = (vars: EnvVar[], baseline: EnvVar[]) => {
+  const unmatched = new Map(baseline.map((row) => [rowId(row), row]));
+  const unpaired: EnvVar[] = [];
+  let changes = 0;
+  for (const row of vars) {
+    const before = unmatched.get(rowId(row));
+    if (!before) {
+      unpaired.push(row);
+      continue;
+    }
+    unmatched.delete(rowId(row));
+    if (!sameVar(row, before)) changes += 1;
+  }
+  // A row whose identity was lost (a consumer cloned it) still pairs with its saved version by key.
+  for (const row of unpaired) {
+    const before = [...unmatched.values()].find((candidate) => candidate.key === row.key);
+    if (before) {
+      unmatched.delete(rowId(before));
+      if (!sameVar(row, before)) changes += 1;
+    } else {
+      changes += 1;
+    }
+  }
+
+  return changes + unmatched.size;
+};
+
 const parseDotEnv = (text: string): EnvVar[] => {
   const vars: EnvVar[] = [];
   for (const rawLine of text.split(/\r?\n/)) {
@@ -61,9 +123,7 @@ const parseDotEnv = (text: string): EnvVar[] => {
     let value = match[2].trim();
 
     if (value.startsWith('"')) {
-      const end = value.indexOf('"', 1);
-      value = end === -1 ? value.slice(1) : value.slice(1, end);
-      value = value.replace(/\\n/g, '\n').replace(/\\"/g, '"');
+      value = readDoubleQuoted(value);
     } else if (value.startsWith("'")) {
       const end = value.indexOf("'", 1);
       value = end === -1 ? value.slice(1) : value.slice(1, end);
@@ -150,7 +210,6 @@ const EnvEditor = ({
   const [baseline, setBaseline] = React.useState<EnvVar[]>(vars);
   const [query, setQuery] = React.useState('');
   const [adding, setAdding] = React.useState(false);
-  const lastIdRef = React.useRef(0);
 
   const setVars = (next: EnvVar[]) => {
     if (!isControlled) setValueState(next);
@@ -158,7 +217,7 @@ const EnvEditor = ({
   };
 
   const update = (index: number, patch: Partial<EnvVar>) => {
-    setVars(vars.map((v, i) => (i === index ? { ...v, ...patch } : v)));
+    setVars(vars.map((v, i) => (i === index ? { ...v, ...patch, id: rowId(v) } : v)));
   };
 
   const remove = (index: number) => {
@@ -171,10 +230,9 @@ const EnvEditor = ({
     for (const item of list) {
       const existing = next.findIndex((v) => v.key === item.key);
       if (existing === -1) {
-        lastIdRef.current += 1;
-        next.push(item.id ? item : { ...item, id: `env-var-${lastIdRef.current}` });
+        next.push({ ...item, id: rowId(item) });
       } else {
-        next[existing] = { ...next[existing], ...item, id: next[existing].id };
+        next[existing] = { ...next[existing], ...item, id: rowId(next[existing]) };
       }
     }
     setVars(next);
@@ -214,12 +272,7 @@ const EnvEditor = ({
     .filter(({ v }) => !q || v.key.toLowerCase().includes(q) || (!v.secret && v.value.toLowerCase().includes(q)))
     .map(({ i }) => i);
 
-  let dirtyCount = 0;
-  vars.forEach((v, i) => {
-    const before = baseline[i];
-    if (!before || !sameVar(v, before)) dirtyCount += 1;
-  });
-  dirtyCount += Math.max(0, baseline.length - vars.length);
+  const dirtyCount = countChanges(vars, baseline);
 
   const ctx: EnvEditorContextValue = {
     vars,

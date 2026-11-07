@@ -397,6 +397,9 @@ const MembersInviteDialog = ({
 }: MembersInviteDialogProps) => {
   const [open, setOpen] = React.useState(false);
   const [emails, setEmails] = React.useState<string[]>([]);
+  // A typed address only becomes a tag on Enter, comma, space or blur, so the send button
+  // stays usable while one is pending: its click blurs the field and commits it first.
+  const [hasDraft, setHasDraft] = React.useState(false);
   const [role, setRole] = React.useState<MemberRole>(defaultRole);
   const roleId = React.useId();
   const emailsId = React.useId();
@@ -414,6 +417,7 @@ const MembersInviteDialog = ({
 
   const reset = () => {
     setEmails([]);
+    setHasDraft(false);
     setRole(defaultRole);
   };
 
@@ -455,14 +459,22 @@ const MembersInviteDialog = ({
               <FieldLabel htmlFor={emailsId}>Email addresses</FieldLabel>
               <TagInput
                 value={emails}
-                onValueChange={setEmails}
+                onValueChange={(next) => {
+                  setEmails(next);
+                  setHasDraft(false);
+                }}
                 validate={validate}
                 commitKeys={['Enter', ',', ' ']}
                 splitOn={/[,\s]+/}
               >
                 <TagInputContainer>
                   <TagInputTags />
-                  <TagInputField id={emailsId} autoComplete="off" placeholder="name@hirael.com, another@hirael.com" />
+                  <TagInputField
+                    id={emailsId}
+                    autoComplete="off"
+                    onInput={(event) => setHasDraft(event.currentTarget.value.trim() !== '')}
+                    placeholder="name@hirael.com, another@hirael.com"
+                  />
                 </TagInputContainer>
                 <TagInputError />
               </TagInput>
@@ -482,7 +494,7 @@ const MembersInviteDialog = ({
             <Button type="button" variant="ghost" onClick={() => setOpen(false)}>
               Cancel
             </Button>
-            <Button type="submit" disabled={emails.length === 0}>
+            <Button type="submit" disabled={emails.length === 0 && !hasDraft}>
               <MailPlus className="size-3.5" aria-hidden />
               {emails.length > 1 ? `Send ${emails.length} invites` : 'Send invite'}
             </Button>

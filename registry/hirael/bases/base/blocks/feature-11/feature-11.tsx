@@ -111,7 +111,7 @@ const RepliesPanel = () => {
             <span className="flex-1 truncate text-sm font-medium">{reply.title}</span>
             {index === 0 && (
               <span className="flex shrink-0 items-center gap-1 rounded border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                <CornerDownLeft aria-hidden className="size-3 rtl:rotate-180" />
+                <CornerDownLeft aria-hidden className="size-3 rtl:-scale-x-100" />
                 Insert
               </span>
             )}

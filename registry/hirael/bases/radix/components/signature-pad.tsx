@@ -258,7 +258,7 @@ const SignaturePadUndo = ({ className, children, onClick, ...props }: React.Comp
       className={className}
       {...props}
     >
-      <Undo2 />
+      <Undo2 className="rtl:-scale-x-100" />
       {children ?? 'Undo'}
     </Button>
   );

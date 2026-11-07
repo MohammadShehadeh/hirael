@@ -103,7 +103,9 @@ from `.../components/...`, and never import across the two version folders.
 
 **Right-to-left.** Use logical classes (`ms-2`, `ps-4`, `start-0`,
 `text-start`), add `rtl:rotate-180` to directional icons, and swap left and
-right arrow keys in right-to-left mode. Things that sit on one physical side of
+right arrow keys in right-to-left mode. An icon that isn't symmetric from top
+to bottom, like undo, redo or a corner arrow, needs `rtl:-scale-x-100` instead,
+because turning it half a circle draws it upside down. Things that sit on one physical side of
 the screen, like a sheet that opens from the left, stay there.
 
 **Restyling.** A `className` passed to a shadcn or Hirael component should only

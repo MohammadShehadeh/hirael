@@ -655,14 +655,14 @@ const DefaultToolbar = () => {
         onPressedChange={() => editor.chain().focus().undo().run()}
         disabled={!state.canUndo}
       >
-        <Undo className="size-4" />
+        <Undo className="size-4 rtl:-scale-x-100" />
       </RichTextEditorButton>
       <RichTextEditorButton
         tooltip={labels.redo}
         onPressedChange={() => editor.chain().focus().redo().run()}
         disabled={!state.canRedo}
       >
-        <Redo className="size-4" />
+        <Redo className="size-4 rtl:-scale-x-100" />
       </RichTextEditorButton>
 
       <RichTextEditorSeparator />

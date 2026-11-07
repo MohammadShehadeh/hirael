@@ -66,8 +66,10 @@ registries. They may not import from either base; `check:registry` enforces it.
   (`container`). `pnpm check:registry` enforces it. Tokens follow shadcn
   (`:root` light, `.dark` dark; dark is the default mode); both must work.
 - **RTL with no config.** Logical properties, `rtl:rotate-180` on directional
-  icons, mirrored arrow keys. Physical geometry (`data-[side]`, Sheet `side`)
-  stays physical.
+  icons, mirrored arrow keys. Icons that aren't symmetric top to bottom
+  (undo/redo, corner arrows) take `rtl:-scale-x-100` instead; a half turn draws
+  them upside down. Physical geometry (`data-[side]`, Sheet `side`) stays
+  physical.
 - **A demo in both bases** at `examples/<name>-demo.tsx`, strings through
   `useT()` (`t({ en, ar })`).
 - **Plain copy.** "Pick a date", not "Effortlessly select your desired date".

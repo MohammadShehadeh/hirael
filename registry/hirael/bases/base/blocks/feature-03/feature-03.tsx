@@ -153,8 +153,9 @@ const Feature03 = () => {
               </div>
               {tile.swatches ? (
                 <div aria-hidden className="mt-auto flex items-center gap-1.5 pt-2">
-                  {SWATCHES.map((swatch) => (
-                    <span key={swatch} className={cn('size-5 rounded-md border border-border', swatch)} />
+                  {SWATCHES.map((swatch, index) => (
+                    // The palette repeats a token, so the class alone is not a unique key.
+                    <span key={`${swatch}-${index}`} className={cn('size-5 rounded-md border border-border', swatch)} />
                   ))}
                 </div>
               ) : null}

@@ -467,7 +467,7 @@ const AppShell03 = () => {
           <div className="flex items-center justify-between gap-2 border-b border-border bg-muted/40 px-4 py-2">
             <span className="truncate text-xs text-muted-foreground uppercase">conversation {lastRemoval.kind}</span>
             <Button variant="ghost" size="xs" className="shrink-0" onClick={handleUndoRemoval}>
-              <Undo2 className="size-3 rtl:rotate-180" aria-hidden />
+              <Undo2 className="size-3 rtl:-scale-x-100" aria-hidden />
               Undo
             </Button>
           </div>
@@ -681,7 +681,7 @@ const AppShell03 = () => {
             {lastRemoval && (
               <EmptyContent>
                 <Button variant="outline" size="sm" onClick={handleUndoRemoval}>
-                  <Undo2 className="size-3.5 rtl:rotate-180" aria-hidden />
+                  <Undo2 className="size-3.5 rtl:-scale-x-100" aria-hidden />
                   Undo {lastRemoval.kind === 'archived' ? 'archive' : 'delete'}
                 </Button>
               </EmptyContent>

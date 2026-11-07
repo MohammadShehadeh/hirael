@@ -273,7 +273,8 @@ const MultiSelectContent = ({
 
   const enabled = ctx.options.filter((o) => !o.disabled);
   const locked = ctx.options.filter((o) => o.disabled && ctx.value.includes(o.value)).map((o) => o.value);
-  const allSelected = enabled.length > 0 && enabled.every((o) => ctx.value.includes(o.value));
+  const selectedEnabled = enabled.filter((o) => ctx.value.includes(o.value)).length;
+  const allSelected = enabled.length > 0 && selectedEnabled === enabled.length;
   const showSelectAllItem = enabled.length > 0;
   const showClearItem = ctx.value.length > locked.length && !(showSelectAllItem && allSelected);
 
@@ -318,15 +319,20 @@ const MultiSelectContent = ({
                           if (allSelected) {
                             ctx.clear();
                           } else {
-                            const room = Math.max(0, (ctx.maxCount ?? Infinity) - locked.length);
-                            ctx.setValue([...locked, ...enabled.map((o) => o.value).slice(0, room)]);
+                            // Keep what is already picked and fill the room left under maxCount.
+                            const room = Math.max(0, (ctx.maxCount ?? Infinity) - ctx.value.length);
+                            const additions = enabled
+                              .map((o) => o.value)
+                              .filter((v) => !ctx.value.includes(v))
+                              .slice(0, room);
+                            ctx.setValue([...ctx.value, ...additions]);
                           }
                         }}
                         className="justify-between"
                       >
                         <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
                         <span className="text-xs text-muted-foreground tabular-nums">
-                          {ctx.value.length} / {enabled.length}
+                          {selectedEnabled} / {enabled.length}
                         </span>
                       </CommandItem>
                     )}

@@ -235,12 +235,20 @@ const CalendarHeatmap = ({
 
   const cellRefs = React.useRef(new Map<number, HTMLButtonElement | null>());
   const [focusedIndex, setFocusedIndex] = React.useState<number | null>(null);
+  // The last day stays active after the tooltip closes, so the exit animation keeps its text and position.
   const [activeIndex, setActiveIndex] = React.useState<number | null>(null);
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
   const activeCell = activeIndex !== null && cells[activeIndex]?.inRange ? cells[activeIndex] : null;
 
+  const showDay = (index: number) => {
+    setActiveIndex(index);
+    setTooltipOpen(true);
+  };
+
+  // The gaps between cells keep the current day: closing there and reopening on the next cell drops the tooltip mid-move.
   const handleGridPointerOver = (event: React.PointerEvent<HTMLDivElement>) => {
     const cell = event.target instanceof Element ? event.target.closest<HTMLElement>('[data-index]') : null;
-    setActiveIndex(cell ? Number(cell.dataset.index) : null);
+    if (cell) showDay(Number(cell.dataset.index));
   };
 
   const todayIndex = cells.findIndex((cell) => cell.inRange && dayKey(cell.date) === todayKey);
@@ -333,7 +341,11 @@ const CalendarHeatmap = ({
                 ))}
               </div>
             )}
-            <div className="relative" onPointerOver={handleGridPointerOver} onPointerLeave={() => setActiveIndex(null)}>
+            <div
+              className="relative"
+              onPointerOver={handleGridPointerOver}
+              onPointerLeave={() => setTooltipOpen(false)}
+            >
               <div
                 data-slot="calendar-heatmap-grid"
                 className="grid grid-flow-col"
@@ -378,9 +390,9 @@ const CalendarHeatmap = ({
                       className={cellClassName}
                       onFocus={() => {
                         setFocusedIndex(index);
-                        setActiveIndex(index);
+                        showDay(index);
                       }}
-                      onBlur={() => setActiveIndex(null)}
+                      onBlur={() => setTooltipOpen(false)}
                       onKeyDown={(event) => handleCellKeyDown(event, index)}
                       onClick={() => onSelectDay(cell.date, cell.value)}
                     />
@@ -397,9 +409,12 @@ const CalendarHeatmap = ({
                   );
                 })}
               </div>
-              <Tooltip open={activeCell !== null} onOpenChange={(open) => !open && setActiveIndex(null)}>
+              <Tooltip
+                open={tooltipOpen && activeCell !== null}
+                disableHoverablePopup
+                onOpenChange={(open) => !open && setTooltipOpen(false)}
+              >
                 <TooltipTrigger
-                  key={activeIndex ?? 'none'}
                   render={
                     <span
                       aria-hidden
@@ -418,7 +433,7 @@ const CalendarHeatmap = ({
                     />
                   }
                 />
-                <TooltipContent>
+                <TooltipContent className="pointer-events-none">
                   {activeCell && (tooltipFormatter ?? defaultFormatter)(activeCell.date, activeCell.value)}
                 </TooltipContent>
               </Tooltip>

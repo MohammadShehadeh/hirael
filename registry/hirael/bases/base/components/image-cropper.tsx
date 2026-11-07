@@ -108,15 +108,17 @@ const ImageCropper = ({
       getCroppedDataUrl: ({ size, type = 'image/png', quality } = {}) => {
         const image = imageRef.current;
         const area = areaRef.current;
-        if (!image?.complete || !area) return null;
+        // A copy that failed to load (no CORS headers) is complete but broken, and drawImage throws on it.
+        if (!image?.complete || image.naturalWidth === 0 || !area) return null;
         const scale = size ? size / area.width : 1;
         const canvas = document.createElement('canvas');
         canvas.width = Math.round(area.width * scale);
         canvas.height = Math.round(area.height * scale);
         const context = canvas.getContext('2d');
         if (!context) return null;
-        context.drawImage(image, area.x, area.y, area.width, area.height, 0, 0, canvas.width, canvas.height);
         try {
+          context.drawImage(image, area.x, area.y, area.width, area.height, 0, 0, canvas.width, canvas.height);
+
           return canvas.toDataURL(type, quality);
         } catch {
           return null;

@@ -5,6 +5,7 @@ import './globals.css';
 
 import { ThemeProvider } from '@/components/active-theme';
 import { JsonLd } from '@/components/json-ld';
+import { SiteAnalytics } from '@/components/site-analytics';
 import { SkipLink } from '@/components/skip-link';
 import { siteJsonLd } from '@/lib/seo';
 import { SITE } from '@/lib/site';
@@ -12,7 +13,6 @@ import { customizerPrehydrationScript } from '@/lib/customizer';
 import { outfit } from '@/lib/fonts';
 import { cn } from '@/lib/utils';
 import { TooltipProvider } from '@/registry/hirael/bases/radix/ui/tooltip';
-import { GoogleAnalytics } from '@next/third-parties/google';
 
 const jetBrainsMono = JetBrains_Mono({
   variable: '--font-jet-brains-mono',
@@ -105,7 +105,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <TooltipProvider>
           <ThemeProvider>{children}</ThemeProvider>
         </TooltipProvider>
-        {GA_MEASUREMENT_ID && <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />}
+        {GA_MEASUREMENT_ID && <SiteAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>
     </html>
   );

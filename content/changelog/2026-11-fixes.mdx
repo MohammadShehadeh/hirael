@@ -1,0 +1,61 @@
+---
+title: Fixes from a full review
+version: '8.0.1'
+date: 2026-11-07
+description: 'A round of fixes across components, blocks and templates: inputs keep what you typed, previews stop counting as page views, and right-to-left icons point the right way.'
+updated:
+  - calendar-heatmap
+  - lazy-select
+  - multi-select
+  - yaml-editor
+  - signature-pad
+  - image-cropper
+  - rich-text-editor
+  - env-editor
+  - cookie-consent
+  - members-01
+  - dashboard-04
+  - dashboard-05
+  - quick-actions
+  - feature-03
+  - feature-11
+  - app-shell-03
+  - akor
+  - nexacore
+  - mindloop
+---
+
+Fixed:
+
+- **Calendar Heatmap** shades every day with activity. A quiet day used to look
+  the same as an empty one; now any value above zero gets at least the first
+  level. Custom `thresholds` work as before.
+- **Lazy Select** shows a saved value like `constructor` or `toString` before
+  its option loads, instead of an empty trigger.
+- **Multi Select** keeps what you already picked when you choose Select all
+  with `maxCount`, and its counter no longer counts locked options.
+- **YAML Editor** highlighting and line numbers stay lined up with the text at
+  the end of a long scroll on Windows and Linux, where scrollbars take up
+  space.
+- **Signature Pad** keeps the signature when `penColor` or a stroke width
+  changes. It is redrawn in the new ink instead of being erased.
+- **Image Cropper** returns `null` from `getCroppedDataUrl` for a remote image
+  served without CORS headers, as its type says, instead of throwing.
+- **Env Editor** imports quoted values with escaped quotes, like JSON, in
+  full, and deleting one variable counts as one unsaved change.
+- **Cookie Consent** reopens with the visitor's saved choice, so changing one
+  setting no longer resets the others.
+- **Members 01** sends an invite in one click when the address hasn't been
+  confirmed with Enter yet.
+- **Dashboard 04, Dashboard 05, Quick Actions and Feature 03** no longer
+  render two elements with the same React key.
+- **Undo and redo icons** in Rich Text Editor, Signature Pad and App Shell 03,
+  and the Enter icon in Feature 11, mirror in right-to-left layouts instead of
+  turning upside down.
+- **AKOR and NexaCore** header links only point at sections the page has.
+- **Mindloop** (Base UI) no longer logs a warning for its Subscribe button.
+
+Site:
+
+- Previews no longer count as page views in analytics.
+- The `useCopyToClipboard` example fits on a phone screen.

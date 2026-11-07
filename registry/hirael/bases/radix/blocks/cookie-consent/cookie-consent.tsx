@@ -37,8 +37,8 @@ const useCookieConsent = () => {
   return ctx;
 };
 
-// Server render reports "chosen" so the SSR HTML never shows the banner and
-// hydration agrees; the real storage value is read once hydration commits.
+// The raw stored choice: a string once read on the client, `null` when there is none, and
+// `undefined` on the server, which counts as "chosen" so the SSR HTML never shows the banner.
 const useStoredChoice = (storageKey: string) => {
   const subscribe = (cb: () => void) => {
     if (typeof window === 'undefined') return () => {};
@@ -49,17 +49,33 @@ const useStoredChoice = (storageKey: string) => {
 
     return () => window.removeEventListener('storage', handler);
   };
-  const getSnapshot = () => {
-    if (typeof window === 'undefined') return true;
+  const getSnapshot = (): string | null | undefined => {
+    if (typeof window === 'undefined') return undefined;
     try {
-      return window.localStorage.getItem(storageKey) !== null;
+      return window.localStorage.getItem(storageKey);
     } catch {
-      return false;
+      return null;
     }
   };
-  const getServerSnapshot = () => true;
+  const getServerSnapshot = () => undefined;
 
   return React.useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+};
+
+const parseStored = (raw: string | null | undefined): CookiePreferences | null => {
+  if (!raw) return null;
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) return null;
+    const prefs: CookiePreferences = {};
+    for (const [id, on] of Object.entries(parsed)) {
+      if (typeof on === 'boolean') prefs[id] = on;
+    }
+
+    return prefs;
+  } catch {
+    return null;
+  }
 };
 
 const writeStored = (key: string, prefs: CookiePreferences) => {
@@ -96,13 +112,16 @@ const CookieConsent = ({
   ...props
 }: CookieConsentProps) => {
   const isControlled = openProp !== undefined;
-  const hasStoredChoice = useStoredChoice(storageKey);
+  const storedRaw = useStoredChoice(storageKey);
+  const hasStoredChoice = storedRaw !== null;
   // Same-tab writes don't fire the storage event, so a local flag closes
   // the banner right after a choice is made.
   const [dismissed, setDismissed] = React.useState(false);
   const open = isControlled ? openProp : !hasStoredChoice && !dismissed;
 
-  const [prefs, setPrefs] = React.useState<CookiePreferences>(() => defaultPreferences ?? {});
+  // Unsaved switch changes win, then the visitor's saved choice, then the defaults.
+  const [draft, setDraft] = React.useState<CookiePreferences | null>(null);
+  const prefs = draft ?? parseStored(storedRaw) ?? defaultPreferences ?? {};
   const [expanded, setExpanded] = React.useState(false);
   const categoriesRef = React.useRef<Map<string, CategoryRecord>>(new Map());
 
@@ -120,12 +139,12 @@ const CookieConsent = ({
   };
 
   const setPref = (id: string, checked: boolean) => {
-    setPrefs((prev) => ({ ...prev, [id]: checked }));
+    setDraft({ ...prefs, [id]: checked });
   };
 
   const commit = (next: CookiePreferences) => {
     writeStored(storageKey, next);
-    setPrefs(next);
+    setDraft(next);
     onChange?.(next);
     setExpanded(false);
     setOpen(false);

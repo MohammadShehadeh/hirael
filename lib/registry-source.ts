@@ -2,6 +2,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
 import type { SourceFile } from '@/components/component-page';
+import { forConsumer } from '@/lib/consumer-source';
 import { highlightCode, langFromPath } from '@/lib/highlight';
 import { DEFAULT_BASE, REGISTRY_BASES, registryFilePath, type RegistryBase } from '@/registry/hirael/registry-meta';
 
@@ -16,7 +17,7 @@ const loadSource = async (
       const absolutePath = path.join(process.cwd(), registryFilePath(base, file));
       let code: string;
       try {
-        code = await fs.readFile(absolutePath, 'utf8');
+        code = forConsumer(await fs.readFile(absolutePath, 'utf8'));
       } catch (error) {
         const message = error instanceof Error ? error.message : String(error);
         console.error(`[loadSource] could not read ${absolutePath}: ${message}`);

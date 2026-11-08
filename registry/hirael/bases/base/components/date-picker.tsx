@@ -9,11 +9,20 @@ import { Calendar } from '@/registry/hirael/bases/base/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/registry/hirael/bases/base/ui/popover';
 import { useControllableState } from '@/registry/hirael/hooks/use-controllable-state';
 
+/** A non-Gregorian calendar, such as `hijriCalendar` from `hijri-calendar`. */
+export interface CalendarSystem {
+  /** Intl calendar id for the trigger label, such as `islamic-umalqura`. */
+  intl: string;
+  /** Spread onto the calendar before its own props. */
+  props: Pick<React.ComponentProps<typeof Calendar>, 'dateLib' | 'startMonth' | 'endMonth' | 'formatters'>;
+}
+
 interface DatePickerContextValue {
   value: Date | undefined;
   setValue: (value: Date | undefined) => void;
   setOpen: (open: boolean) => void;
   locale: string;
+  calendar?: CalendarSystem;
   disabled?: boolean;
 }
 
@@ -37,6 +46,8 @@ export interface DatePickerProps {
   onOpenChange?: (open: boolean) => void;
   /** BCP 47 tag for the trigger label. Defaults to `en-US` so server and client render the same text. */
   locale?: string;
+  /** Shows another calendar, such as `hijriCalendar` from `hijri-calendar`. Values stay `Date`s. */
+  calendar?: CalendarSystem;
   disabled?: boolean;
   children?: React.ReactNode;
 }
@@ -49,6 +60,7 @@ const DatePicker = ({
   defaultOpen = false,
   onOpenChange,
   locale = 'en-US',
+  calendar,
   disabled,
   children,
 }: DatePickerProps) => {
@@ -64,7 +76,7 @@ const DatePicker = ({
     onChange: onOpenChange,
   });
 
-  const ctx: DatePickerContextValue = { value, setValue, setOpen, locale, disabled };
+  const ctx: DatePickerContextValue = { value, setValue, setOpen, locale, calendar, disabled };
 
   return (
     <DatePickerContext.Provider value={ctx}>
@@ -82,7 +94,7 @@ interface DatePickerTriggerProps extends Omit<React.ComponentProps<'button'>, 'c
 
 const DatePickerTrigger = ({ placeholder = 'Pick a date', className, children, ...props }: DatePickerTriggerProps) => {
   const ctx = useDatePicker();
-  const fmt = new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium' });
+  const fmt = new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium', calendar: ctx.calendar?.intl });
 
   return (
     <PopoverTrigger
@@ -126,6 +138,7 @@ const DatePickerContent = ({ align = 'start', ...props }: DatePickerContentProps
           ctx.setValue(date);
           ctx.setOpen(false);
         }}
+        {...ctx.calendar?.props}
         {...props}
       />
     </PopoverContent>

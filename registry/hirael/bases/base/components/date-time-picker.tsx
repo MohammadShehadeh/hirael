@@ -11,6 +11,14 @@ import { useControllableState } from '@/registry/hirael/hooks/use-controllable-s
 
 export type DateTimeFormat = '12h' | '24h';
 
+/** A non-Gregorian calendar, such as `hijriCalendar` from `hijri-calendar`. */
+export interface CalendarSystem {
+  /** Intl calendar id for the trigger label, such as `islamic-umalqura`. */
+  intl: string;
+  /** Spread onto the calendar before its own props. */
+  props: Pick<React.ComponentProps<typeof Calendar>, 'dateLib' | 'startMonth' | 'endMonth' | 'formatters'>;
+}
+
 interface DateTimePickerContextValue {
   value: Date | undefined;
   setValue: (value: Date | undefined) => void;
@@ -19,6 +27,7 @@ interface DateTimePickerContextValue {
   format: DateTimeFormat;
   minuteStep: number;
   locale: string;
+  calendar?: CalendarSystem;
   disabled?: boolean;
 }
 
@@ -47,6 +56,8 @@ export interface DateTimePickerProps {
   minuteStep?: number;
   /** BCP 47 tag for the trigger label. Defaults to `en-US` so server and client render the same text. */
   locale?: string;
+  /** Shows another calendar, such as `hijriCalendar` from `hijri-calendar`. Values stay `Date`s. */
+  calendar?: CalendarSystem;
   disabled?: boolean;
   children?: React.ReactNode;
 }
@@ -61,6 +72,7 @@ const DateTimePicker = ({
   format = '24h',
   minuteStep = 5,
   locale = 'en-US',
+  calendar,
   disabled,
   children,
 }: DateTimePickerProps) => {
@@ -79,6 +91,7 @@ const DateTimePicker = ({
     format,
     minuteStep: Math.max(1, minuteStep),
     locale,
+    calendar,
     disabled,
   };
 
@@ -107,6 +120,7 @@ const DateTimePickerTrigger = ({
     dateStyle: 'medium',
     timeStyle: 'short',
     hourCycle: ctx.format === '12h' ? 'h12' : 'h23',
+    calendar: ctx.calendar?.intl,
   });
 
   return (
@@ -275,6 +289,7 @@ const DateTimePickerContent = ({
           selected={value}
           defaultMonth={value}
           onSelect={(day) => day && update({ day })}
+          {...ctx.calendar?.props}
           {...calendarProps}
         />
         <div

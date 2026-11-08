@@ -5122,6 +5122,16 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: [],
   },
   {
+    name: 'hijri-calendar',
+    title: 'hijriCalendar',
+    description:
+      'The Umm al-Qura Hijri calendar for the date, date range and date time pickers, or for shadcn Calendar on its own. Months, weekdays and the trigger label switch to Hijri while values stay plain Dates.',
+    category: 'utilities',
+    files: [{ path: 'lib/hijri-calendar.ts' }],
+    registryDependencies: [],
+    dependencies: ['@daypicker/hijri', 'react-day-picker'],
+  },
+  {
     name: 'use-media-query',
     title: 'useMediaQuery',
     description:
@@ -5536,10 +5546,21 @@ const EXAMPLE_OVERRIDES: Record<string, ExampleRef[]> = {
     { slug: 'tag-input-demo', title: 'Tags' },
     { slug: 'tag-input-emails', title: 'Validated emails' },
   ],
+  'date-picker': [
+    { slug: 'date-picker-demo', title: 'Popover' },
+    { slug: 'date-picker-inline', title: 'Inline calendar' },
+    { slug: 'date-picker-bounded', title: 'Bounded, weekends disabled' },
+    { slug: 'date-picker-hijri', title: 'Hijri calendar' },
+  ],
   'date-range-picker': [
     { slug: 'date-range-picker-demo', title: 'Presets' },
     { slug: 'date-range-picker-inline', title: 'Inline calendar' },
     { slug: 'date-range-picker-bounded', title: 'Bounded, weekends disabled' },
+    { slug: 'date-range-picker-hijri', title: 'Hijri calendar' },
+  ],
+  'date-time-picker': [
+    { slug: 'date-time-picker-demo', title: 'Example' },
+    { slug: 'date-time-picker-hijri', title: 'Hijri calendar' },
   ],
 };
 

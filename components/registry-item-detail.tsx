@@ -4,10 +4,11 @@ import type { Metadata } from 'next';
 
 import { ComponentPage } from '@/components/component-page';
 import { EntryJsonLd } from '@/components/entry-json-ld';
-import type { ApiPart, ExampleSources, SourceFile } from '@/components/component-page';
+import type { ApiPart, ExampleFile, ExampleSources } from '@/components/component-page';
+import { exampleDependencies, forConsumer } from '@/lib/consumer-source';
 import { highlightCode, highlightInline, langFromPath } from '@/lib/highlight';
 import { getDetailExtras } from '@/lib/detail-extras';
-import { buildUsageCode } from '@/lib/registry-usage';
+import { buildUsageCode, installTarget } from '@/lib/registry-usage';
 import { loadSources } from '@/lib/registry-source';
 import { detailMetadata } from '@/lib/seo';
 import {
@@ -17,6 +18,7 @@ import {
   registryFilePath,
   type RegistryBase,
   type RegistryEntryMeta,
+  type RegistryFileMeta,
 } from '@/registry/hirael/registry-meta';
 import registryProps from '@/registry/hirael/registry-props.json';
 
@@ -31,23 +33,55 @@ const titleSuffixFor = (entry: RegistryEntryMeta) =>
 export const registryItemMetadata = (entry: RegistryEntryMeta): Metadata =>
   detailMetadata(entry, { titleSuffix: titleSuffixFor(entry) });
 
-async function loadExampleSource(base: RegistryBase, slug: string): Promise<SourceFile | null> {
-  const relPath = registryFilePath(base, `examples/${slug}.tsx`);
+const readText = async (relPath: string): Promise<string | null> => {
   try {
-    const code = await fs.readFile(path.join(process.cwd(), relPath), 'utf8');
-    const lang = langFromPath(relPath);
-
-    return { code, html: await highlightCode(code, lang), lang };
+    return await fs.readFile(path.join(process.cwd(), relPath), 'utf8');
   } catch {
     return null;
   }
+};
+
+const exampleFile = async (label: string, code: string): Promise<ExampleFile> => {
+  const lang = langFromPath(label);
+  const consumerCode = forConsumer(code);
+
+  return { label, code: consumerCode, html: await highlightCode(consumerCode, lang), lang };
+};
+
+const loadRegistryFile = async (base: RegistryBase, file: RegistryFileMeta): Promise<ExampleFile | null> => {
+  const code = await readText(registryFilePath(base, file.path));
+
+  return code === null ? null : exampleFile(installTarget(file), code);
+};
+
+const loadSiteFile = async (file: string): Promise<ExampleFile | null> => {
+  for (const relPath of [`${file}.tsx`, `${file}.ts`]) {
+    const code = await readText(relPath);
+    if (code !== null) return exampleFile(relPath, code);
+  }
+
+  return null;
+};
+
+/** The example, then every file it needs that installing the item doesn't bring: other Hirael items and site helpers. */
+async function loadExampleFiles(base: RegistryBase, itemName: string, slug: string): Promise<ExampleFile[]> {
+  const code = await readText(registryFilePath(base, `examples/${slug}.tsx`));
+  if (code === null) return [];
+
+  const { registryFiles, siteFiles } = exampleDependencies(code, itemName);
+  const needed = await Promise.all([
+    ...registryFiles.map((file) => loadRegistryFile(base, file)),
+    ...siteFiles.map(loadSiteFile),
+  ]);
+
+  return [await exampleFile(`${slug}.tsx`, code), ...needed.filter((file): file is ExampleFile => file !== null)];
 }
 
 async function loadExamples(name: string): Promise<ExampleSources[]> {
   return Promise.all(
     getExamples(name).map(async ({ slug, title }) => {
       const entries = await Promise.all(
-        REGISTRY_BASES.map(async (base) => [base, await loadExampleSource(base, slug)] as const),
+        REGISTRY_BASES.map(async (base) => [base, await loadExampleFiles(base, name, slug)] as const),
       );
 
       return {

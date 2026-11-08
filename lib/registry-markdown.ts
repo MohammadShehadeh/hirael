@@ -1,7 +1,6 @@
+import { forConsumer } from '@/lib/consumer-source';
 import { buildUsageCode, installTarget } from '@/lib/registry-usage';
 import {
-  DISTRIBUTION_ONLY,
-  REGISTRY,
   entryHref,
   registryItemPath,
   type RegistryBase,
@@ -27,6 +26,12 @@ interface MarkdownExample {
   code: string;
 }
 
+/** A file the examples import that installing the item doesn't bring, labelled with where it goes. */
+export interface MarkdownExampleFile {
+  label: string;
+  code: string;
+}
+
 export interface RegistryMarkdownInput {
   entry: RegistryEntryMeta;
   base: RegistryBase;
@@ -34,27 +39,9 @@ export interface RegistryMarkdownInput {
   baseLabel: string;
   sources: Record<string, string>;
   examples: MarkdownExample[];
+  exampleFiles?: MarkdownExampleFile[];
   api: MarkdownApiPart[] | null;
 }
-
-const CONSUMER_IMPORTS = new Map<string, string>(
-  [...REGISTRY, ...DISTRIBUTION_ONLY].flatMap((entry) =>
-    (entry.files ?? []).map(
-      (file) => [file.path.replace(/\.tsx?$/, ''), `@/${installTarget(file).replace(/\.tsx?$/, '')}`] as const,
-    ),
-  ),
-);
-
-const BASE_IMPORT = /@\/registry\/hirael\/bases\/[a-z]+\/([\w./-]+)/g;
-
-// The CLI rewrites imports on install; a page that is only read has to do it here.
-const forConsumer = (code: string): string =>
-  code.replace(BASE_IMPORT, (_match, file: string) => {
-    const mapped = CONSUMER_IMPORTS.get(file);
-    if (mapped) return mapped;
-
-    return /^(?:ui|components)\//.test(file) ? `@/components/${file.replace(/^components\//, '')}` : `@/${file}`;
-  });
 
 const DEMO_LOCALE_IMPORT = '@/lib/demo-locale';
 
@@ -64,6 +51,21 @@ const cell = (value: string) => value.replace(/\|/g, '\|').replace(/\s+/g, ' ').
 
 const yaml = (key: string, value: string) => `${key}: ${JSON.stringify(value)}`;
 
+const exampleFilesSection = (files: MarkdownExampleFile[]): string[] => {
+  if (files.length === 0) return [];
+
+  return [
+    '### Files the examples also use',
+    '',
+    ...files.flatMap((file) => [
+      `#### \`${file.label}\``,
+      '',
+      ...codeFence(forConsumer(file.code), file.label.endsWith('.tsx') ? 'tsx' : 'ts'),
+      '',
+    ]),
+  ];
+};
+
 export const registryMarkdown = ({
   entry,
   base,
@@ -71,6 +73,7 @@ export const registryMarkdown = ({
   baseLabel,
   sources,
   examples,
+  exampleFiles = [],
   api,
 }: RegistryMarkdownInput): string => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
@@ -111,7 +114,7 @@ export const registryMarkdown = ({
     if (examples.some((example) => example.code.includes(DEMO_LOCALE_IMPORT))) {
       out.push(
         `The demos below read their copy through \`useT\` from \`${DEMO_LOCALE_IMPORT}\`, a helper that exists only on ` +
-          'this site so the previews can switch to Arabic. Replace `t({ en, ar })` with the English string.',
+          'this site so the previews can switch to Arabic. Copy it from below, or replace `t({ en, ar })` with the English string.',
         '',
       );
     }
@@ -119,6 +122,7 @@ export const registryMarkdown = ({
       if (examples.length > 1) out.push(`### ${example.title}`, '');
       out.push(...codeFence(forConsumer(example.code)), '');
     }
+    out.push(...exampleFilesSection(exampleFiles));
   } else if (isComposite) {
     out.push(
       '## Example',

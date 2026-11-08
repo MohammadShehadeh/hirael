@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { CalendarIcon } from 'lucide-react';
-import type { DateRange } from 'react-day-picker';
+import { DateLib, type DateRange } from 'react-day-picker';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -12,11 +12,20 @@ import { useControllableState } from '@/registry/hirael/hooks/use-controllable-s
 
 export type { DateRange };
 
+/** A non-Gregorian calendar, such as `hijriCalendar` from `hijri-calendar`. */
+export interface CalendarSystem {
+  /** Intl calendar id for the trigger label, such as `islamic-umalqura`. */
+  intl: string;
+  /** Spread onto the calendar before its own props. */
+  props: Pick<React.ComponentProps<typeof Calendar>, 'dateLib' | 'startMonth' | 'endMonth' | 'formatters'>;
+}
+
 interface DateRangePickerContextValue {
   value: DateRange | undefined;
   setValue: (value: DateRange | undefined) => void;
   setOpen: (open: boolean) => void;
   locale: string;
+  calendar?: CalendarSystem;
   disabled?: boolean;
 }
 
@@ -40,6 +49,8 @@ export interface DateRangePickerProps {
   onOpenChange?: (open: boolean) => void;
   /** BCP 47 tag for the trigger label. Defaults to `en-US` so server and client render the same text. */
   locale?: string;
+  /** Shows another calendar, such as `hijriCalendar` from `hijri-calendar`. Values stay `Date`s. */
+  calendar?: CalendarSystem;
   disabled?: boolean;
   children?: React.ReactNode;
 }
@@ -52,6 +63,7 @@ const DateRangePicker = ({
   defaultOpen = false,
   onOpenChange,
   locale = 'en-US',
+  calendar,
   disabled,
   children,
 }: DateRangePickerProps) => {
@@ -67,7 +79,7 @@ const DateRangePicker = ({
     onChange: onOpenChange,
   });
 
-  const ctx: DateRangePickerContextValue = { value, setValue, setOpen, locale, disabled };
+  const ctx: DateRangePickerContextValue = { value, setValue, setOpen, locale, calendar, disabled };
 
   return (
     <DateRangePickerContext.Provider value={ctx}>
@@ -90,7 +102,7 @@ const DateRangePickerTrigger = ({
   ...props
 }: DateRangePickerTriggerProps) => {
   const ctx = useDateRangePicker();
-  const fmt = new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium' });
+  const fmt = new Intl.DateTimeFormat(ctx.locale, { dateStyle: 'medium', calendar: ctx.calendar?.intl });
 
   return (
     <PopoverTrigger asChild>
@@ -117,7 +129,8 @@ const DateRangePickerTrigger = ({
 
 export interface DateRangePreset {
   label: string;
-  range: () => DateRange;
+  /** Gets the picker's date library, so month presets follow its calendar. */
+  range: (dateLib: DateLib) => DateRange;
 }
 
 const lastDays = (days: number): DateRange => {
@@ -129,21 +142,18 @@ const lastDays = (days: number): DateRange => {
   return { from, to: today };
 };
 
-const calendarMonth = (offset: number): DateRange => {
-  const today = new Date();
+const calendarMonth = (dateLib: DateLib, offset: number): DateRange => {
+  const from = dateLib.startOfMonth(dateLib.addMonths(new Date(), offset));
 
-  return {
-    from: new Date(today.getFullYear(), today.getMonth() + offset, 1),
-    to: new Date(today.getFullYear(), today.getMonth() + offset + 1, 0),
-  };
+  return { from, to: dateLib.startOfDay(dateLib.endOfMonth(from)) };
 };
 
 const DEFAULT_PRESETS: DateRangePreset[] = [
   { label: 'Today', range: () => lastDays(1) },
   { label: 'Last 7 days', range: () => lastDays(7) },
   { label: 'Last 30 days', range: () => lastDays(30) },
-  { label: 'This month', range: () => calendarMonth(0) },
-  { label: 'Last month', range: () => calendarMonth(-1) },
+  { label: 'This month', range: (dateLib) => calendarMonth(dateLib, 0) },
+  { label: 'Last month', range: (dateLib) => calendarMonth(dateLib, -1) },
 ];
 
 interface DateRangePickerContentProps
@@ -162,6 +172,7 @@ const DateRangePickerContent = ({
   ...props
 }: DateRangePickerContentProps) => {
   const ctx = useDateRangePicker();
+  const dateLib = new DateLib(undefined, ctx.calendar?.props.dateLib);
 
   return (
     <PopoverContent
@@ -183,7 +194,7 @@ const DateRangePickerContent = ({
                 data-slot="date-range-picker-preset"
                 className="justify-start font-normal"
                 onClick={() => {
-                  ctx.setValue(preset.range());
+                  ctx.setValue(preset.range(dateLib));
                   ctx.setOpen(false);
                 }}
               >
@@ -199,6 +210,7 @@ const DateRangePickerContent = ({
           defaultMonth={ctx.value?.from}
           onSelect={ctx.setValue}
           excludeDisabled
+          {...ctx.calendar?.props}
           {...props}
         />
       </div>

@@ -4,7 +4,14 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 
-import { registryMarkdown, type MarkdownApiPart, type RegistryMarkdownInput } from '@/lib/registry-markdown';
+import { exampleDependencies } from '@/lib/consumer-source';
+import {
+  registryMarkdown,
+  type MarkdownApiPart,
+  type MarkdownExampleFile,
+  type RegistryMarkdownInput,
+} from '@/lib/registry-markdown';
+import { installTarget } from '@/lib/registry-usage';
 import {
   BASE_LABELS,
   REGISTRY,
@@ -36,6 +43,31 @@ const read = (base: RegistryBase, file: string): string | undefined => {
   }
 };
 
+const readSite = (file: string): MarkdownExampleFile | undefined => {
+  const label = [`${file}.tsx`, `${file}.ts`].find((candidate) => existsSync(path.join(ROOT, candidate)));
+
+  return label ? { label, code: readFileSync(path.join(ROOT, label), 'utf8') } : undefined;
+};
+
+/** Files the examples import beyond the item, once each, in the order they first appear. */
+const exampleFilesFor = (base: RegistryBase, itemName: string, examples: MarkdownExample[]) => {
+  const files = new Map<string, MarkdownExampleFile>();
+  for (const example of examples) {
+    const { registryFiles, siteFiles } = exampleDependencies(example.code, itemName);
+    for (const file of registryFiles) {
+      const code = read(base, file.path);
+      const label = installTarget(file);
+      if (code !== undefined) files.set(label, { label, code });
+    }
+    for (const file of siteFiles) {
+      const site = readSite(file);
+      if (site) files.set(site.label, site);
+    }
+  }
+
+  return [...files.values()];
+};
+
 for (const base of REGISTRY_BASES) {
   const outDir = builtDir(base);
   mkdirSync(outDir, { recursive: true });
@@ -63,6 +95,7 @@ for (const base of REGISTRY_BASES) {
       baseLabel: BASE_LABELS[base],
       sources,
       examples,
+      exampleFiles: exampleFilesFor(base, entry.name, examples),
       api: api[entry.name] ?? null,
     });
 

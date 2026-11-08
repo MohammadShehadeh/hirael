@@ -66,16 +66,21 @@ export interface ApiPart {
   returnsHtml?: string | null;
 }
 
+/** One tab of an example's code: the example itself or a file it needs. */
+export interface ExampleFile extends SourceFile {
+  label: string;
+}
+
 export interface ExampleEntry {
   slug: string;
   title: string;
-  source: SourceFile | null;
+  files: ExampleFile[];
 }
 
 export interface ExampleSources {
   slug: string;
   title: string;
-  sources: Record<RegistryBase, SourceFile | null>;
+  sources: Record<RegistryBase, ExampleFile[]>;
 }
 
 export interface ComponentPageProps {
@@ -172,7 +177,7 @@ const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) =
   const [refreshKey, setRefreshKey] = React.useState(0);
   const previewTheme = usePreviewTheme();
   const base = useRegistryBase();
-  const hasCode = !!example.source;
+  const hasCode = example.files.length > 0;
   const src = previewSrc(exampleEmbedHref(entry, example.slug, base), { theme: previewTheme.previewMode, isRtl });
 
   return (
@@ -221,16 +226,8 @@ const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) =
             eager={eager}
             className="w-full"
           />
-        ) : example.source ? (
-          <CodeBlock
-            tabs={[
-              {
-                label: `${example.slug}.tsx`,
-                code: example.source.code,
-                html: example.source.html,
-              },
-            ]}
-          />
+        ) : hasCode ? (
+          <CodeBlock tabs={example.files.map(({ label, code, html }) => ({ label, code, html }))} />
         ) : null}
       </div>
     </section>
@@ -273,12 +270,13 @@ interface HighlightedCodeProps {
   fallback: string;
 }
 
-const HighlightedCode = ({ html, fallback }: HighlightedCodeProps) =>
-  html ? (
-    <code className="shiki-inline font-mono text-xs" dangerouslySetInnerHTML={{ __html: html }} />
-  ) : (
-    <code className="font-mono text-xs text-muted-foreground">{fallback}</code>
-  );
+const HighlightedCode = ({ html, fallback }: HighlightedCodeProps) => {
+  if (html) {
+    return <code className="shiki-inline font-mono text-xs" dangerouslySetInnerHTML={{ __html: html }} />;
+  }
+
+  return <code className="font-mono text-xs text-muted-foreground">{fallback}</code>;
+};
 
 const ApiPropRow = ({ prop }: ApiPropRowProps) => (
   <TableRow className="align-top">
@@ -377,7 +375,7 @@ export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb
   const exampleList: ExampleEntry[] = (examples ?? []).map((example) => ({
     slug: example.slug,
     title: example.title,
-    source: example.sources[base],
+    files: example.sources[base],
   }));
   const registryDeps = entry.registryDependencies ?? [];
   const npmDeps = entry.dependencies ?? [];

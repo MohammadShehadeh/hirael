@@ -1,0 +1,36 @@
+---
+title: Hijri dates in the date pickers
+version: '8.1.0'
+date: 2026-11-09
+description: 'The date, date range and date time pickers can show the Umm al-Qura Hijri calendar. Values stay plain Dates.'
+added:
+  - hijri-calendar
+updated:
+  - date-picker
+  - date-range-picker
+  - date-time-picker
+---
+
+Added:
+
+- **hijriCalendar** switches a picker to the Umm al-Qura Hijri calendar. Pass it as
+  `calendar={hijriCalendar}`: month names, weekdays, the month dropdown and the
+  trigger label all show Hijri dates. The value you get back is still a normal
+  `Date`, so nothing changes in how you store or compare it. It works on a plain
+  shadcn Calendar too: spread `hijriCalendar.props` onto it. Dates are supported
+  from 1924 to 2077, the range of the Umm al-Qura tables.
+
+Updated:
+
+- **Date Picker**, **Date Range Picker** and **Date Time Picker** take a
+  `calendar` prop. The pickers don't depend on the Hijri package; you only
+  install it when you add `hijri-calendar`.
+- **Date Range Picker** presets get the picker's date library, so "This month"
+  and "Last month" follow the calendar in use. Presets you wrote before keep
+  working.
+- Each picker page has a Hijri calendar example. The Date Picker page now
+  shows its cases as separate examples: popover, inline calendar, bounded
+  dates and Hijri.
+- Example code is ready to paste. Imports point where `shadcn add` puts each
+  file, and an example that uses other Hirael items or the site's
+  `demo-locale` helper shows those files as extra tabs.

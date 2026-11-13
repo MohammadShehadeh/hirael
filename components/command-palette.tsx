@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { Boxes, Frame, History, LayoutTemplate, type LucideIcon } from 'lucide-react';
+import { BookOpen, Boxes, Frame, History, LayoutTemplate, SlidersHorizontal, type LucideIcon } from 'lucide-react';
 
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from '@/registry/hirael/bases/radix/ui/dialog';
 import {
@@ -15,6 +15,8 @@ import {
 } from '@/registry/hirael/bases/radix/ui/command';
 import { REGISTRY, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 import { buildSearchIndex, searchIndex, type SearchDoc } from '@/lib/search';
+import { DOC_EXTRA_LINKS, DOC_PAGES, docHref, type DocLink } from '@/lib/docs-nav';
+import { useCustomizer } from '@/components/customizer-sheet';
 import {
   pushRecent,
   recentsSnapshot,
@@ -45,6 +47,54 @@ const recentKind = (entry: RegistryEntryMeta): RecentKind => {
   if (entry.category === 'templates') return 'template';
 
   return 'component';
+};
+
+const DOC_LINKS: DocLink[] = [
+  ...DOC_PAGES.map((page) => ({ href: docHref(page.slug), title: page.title })),
+  ...DOC_EXTRA_LINKS,
+];
+
+const matchesQuery = (text: string, query: string) => text.toLowerCase().includes(query.trim().toLowerCase());
+
+interface QuickGroupsProps {
+  query: string;
+  onClose: () => void;
+  onNavigate: (href: string) => void;
+}
+
+const QuickGroups = ({ query, onClose, onNavigate }: QuickGroupsProps) => {
+  const { setIsOpen: setCustomizerOpen } = useCustomizer();
+  const docLinks = query ? DOC_LINKS.filter((link) => matchesQuery(link.title, query)) : DOC_LINKS;
+  const showCustomizer = !query || matchesQuery('registry customizer theme font radius base', query);
+
+  return (
+    <>
+      {showCustomizer && (
+        <CommandGroup heading="Actions">
+          <CommandItem
+            value="action:customizer"
+            onSelect={() => {
+              onClose();
+              setCustomizerOpen(true);
+            }}
+          >
+            <SlidersHorizontal className="text-muted-foreground" />
+            <span>Open registry customizer</span>
+          </CommandItem>
+        </CommandGroup>
+      )}
+      {docLinks.length > 0 && (
+        <CommandGroup heading="Docs">
+          {docLinks.map((link) => (
+            <CommandItem key={link.href} value={`doc:${link.href}`} onSelect={() => onNavigate(link.href)}>
+              <BookOpen className="text-muted-foreground" />
+              <span>{link.title}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      )}
+    </>
+  );
 };
 
 export interface CommandPaletteProps {
@@ -136,6 +186,16 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
   };
 
   const results = search.trim() ? searchIndex(SEARCH_INDEX, search) : null;
+  const quickGroups = (
+    <QuickGroups
+      query={search.trim()}
+      onClose={() => handleOpenChange(false)}
+      onNavigate={(href) => {
+        handleOpenChange(false);
+        router.push(href);
+      }}
+    />
+  );
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -144,22 +204,26 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
         className="top-[14vh] w-[calc(100%-2rem)] max-w-lg translate-y-0 gap-0 overflow-hidden p-0"
       >
         <DialogTitle className="sr-only">Search</DialogTitle>
-        <DialogDescription className="sr-only">Search across all components and blocks.</DialogDescription>
+        <DialogDescription className="sr-only">Search components, blocks, templates and docs.</DialogDescription>
         <Command loop shouldFilter={false}>
           <CommandInput value={search} onValueChange={setSearch} placeholder="Search by name or what it does…" />
           <CommandList>
             <CommandEmpty>No results for “{search.trim()}”.</CommandEmpty>
             {results ? (
-              results.length > 0 && (
-                <CommandGroup heading="Results">
-                  {results.map((doc) => (
-                    <EntryItem key={doc.entry.name} doc={doc} onSelect={handleSelect} />
-                  ))}
-                </CommandGroup>
-              )
+              <>
+                {results.length > 0 && (
+                  <CommandGroup heading="Results">
+                    {results.map((doc) => (
+                      <EntryItem key={doc.entry.name} doc={doc} onSelect={handleSelect} />
+                    ))}
+                  </CommandGroup>
+                )}
+                {quickGroups}
+              </>
             ) : (
               <>
                 <RecentGroup onSelect={handleSelect} />
+                {quickGroups}
                 <BrowseGroup
                   heading="Components"
                   docs={SEARCH_INDEX.filter((doc) => recentKind(doc.entry) === 'component')}

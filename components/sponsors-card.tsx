@@ -16,7 +16,9 @@ const tileClassName =
   'flex h-11 items-center justify-center rounded-md px-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/40';
 
 const hasOwnRightColumn = (pathname: string) =>
-  /^\/(components|blocks|utilities)\/[^/]+\/[^/]+$/.test(pathname) || /^\/templates\/[^/]+$/.test(pathname);
+  /^\/(components|blocks|utilities)\/[^/]+\/[^/]+$/.test(pathname) ||
+  /^\/templates\/[^/]+$/.test(pathname) ||
+  /^\/docs(\/[^/]+)?$/.test(pathname);
 
 interface SponsorsCardProps {
   className?: string;

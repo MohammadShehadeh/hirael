@@ -9,6 +9,7 @@ import { cn } from '@/lib/utils';
 import { NAV_LINKS, SITE } from '@/lib/site';
 import { CommandMenu } from '@/components/command-menu';
 import { GithubLink } from '@/components/github-link';
+import { Hint } from '@/components/hint';
 import { Logo } from '@/components/logo';
 import { CustomizerTrigger } from '@/components/customizer-sheet';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -85,22 +86,26 @@ export const SiteHeader = ({ className, stars }: SiteHeaderProps) => {
           <CustomizerTrigger />
           <ThemeToggle />
           <Drawer direction="bottom" open={mobileOpen} onOpenChange={setMobileOpen}>
-            <DrawerTrigger asChild>
-              <Button type="button" variant="ghost" size="icon-sm" aria-label="Open menu" className="lg:hidden">
-                <Menu className="size-3.5" />
-              </Button>
-            </DrawerTrigger>
+            <Hint label="Menu">
+              <DrawerTrigger asChild>
+                <Button type="button" variant="ghost" size="icon-sm" aria-label="Open menu" className="lg:hidden">
+                  <Menu className="size-3.5" />
+                </Button>
+              </DrawerTrigger>
+            </Hint>
             <DrawerContent>
               <DrawerHeader className="flex flex-row items-center justify-between text-start">
                 <DrawerTitle className="flex items-center">
                   <Logo className="h-8" />
                   <span className="sr-only">Navigation</span>
                 </DrawerTitle>
-                <DrawerClose asChild>
-                  <Button type="button" variant="ghost" size="icon" aria-label="Close menu">
-                    <X className="size-3.5" />
-                  </Button>
-                </DrawerClose>
+                <Hint label="Close">
+                  <DrawerClose asChild>
+                    <Button type="button" variant="ghost" size="icon" aria-label="Close menu">
+                      <X className="size-3.5" />
+                    </Button>
+                  </DrawerClose>
+                </Hint>
               </DrawerHeader>
               <Separator />
               <nav className="flex flex-col gap-0.5 p-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">

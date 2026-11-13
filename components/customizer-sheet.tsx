@@ -1,9 +1,15 @@
 'use client';
 
 import * as React from 'react';
-import { RotateCcw, SlidersHorizontal } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Paintbrush, RotateCcw, SlidersHorizontal } from 'lucide-react';
 
-import { BASES, ICON_LIBRARIES, RADII, formatThemeCss } from '@/lib/customizer';
+import { BASES, ICON_LIBRARIES, RADII, formatThemeCss, isEmbedPath } from '@/lib/customizer';
+import { cn } from '@/lib/utils';
+import { useIsApple } from '@/hooks/use-is-apple';
+import { useMounted } from '@/hooks/use-mounted';
+import { Hint } from '@/components/hint';
 import { FONTS } from '@/lib/fonts';
 import { themeSwatch, type SwatchKind } from '@/lib/theme-swatch';
 import { getShadcnInitCommand, usePackageManager } from '@/lib/package-managers';
@@ -28,7 +34,6 @@ import {
   SheetFooter,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from '@/registry/hirael/bases/radix/ui/sheet';
 import { Switch } from '@/registry/hirael/bases/radix/ui/switch';
 
@@ -173,10 +178,16 @@ const CustomizerBody = () => {
   return (
     <>
       <SheetHeader className="pe-12">
-        <SheetTitle>Customizer</SheetTitle>
+        <SheetTitle>Registry Customizer</SheetTitle>
         <SheetDescription>
           Preview Hirael against your stack. Base switches every preview and install command between Radix UI and Base
-          UI. Styles re-skin the site.
+          UI. Styles re-skin the site.{' '}
+          <Link
+            href="/docs/customizer"
+            className="text-foreground underline decoration-border underline-offset-4 hover:decoration-foreground"
+          >
+            How it works
+          </Link>
         </SheetDescription>
       </SheetHeader>
       <Separator />
@@ -305,19 +316,122 @@ const CustomizerBody = () => {
   );
 };
 
-export const CustomizerTrigger = ({ className }: CustomizerTriggerProps) => {
+interface CustomizerContextValue {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}
+
+const CustomizerContext = React.createContext<CustomizerContextValue | null>(null);
+
+export const useCustomizer = (): CustomizerContextValue => {
+  const context = React.useContext(CustomizerContext);
+  if (!context) throw new Error('useCustomizer must be used within CustomizerProvider');
+
+  return context;
+};
+
+const CUSTOMIZER_KEY = '.';
+
+const useCustomizerShortcut = () => (useIsApple() ? '⌘.' : 'Ctrl .');
+
+export interface CustomizerProviderProps {
+  children: React.ReactNode;
+}
+
+/** One sheet for the whole site, so the header, preview toolbars, search and ⌘. all open the same one. */
+export const CustomizerProvider = ({ children }: CustomizerProviderProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const pathname = usePathname();
+  const isEmbed = isEmbedPath(pathname ?? '');
+
+  const [lastPathname, setLastPathname] = React.useState(pathname);
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
+    setIsOpen(false);
+  }
+
+  React.useEffect(() => {
+    if (isEmbed) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== CUSTOMIZER_KEY || !(event.metaKey || event.ctrlKey)) return;
+      event.preventDefault();
+      setIsOpen((prev) => !prev);
+    };
+
+    document.addEventListener('keydown', onKeyDown);
+
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [isEmbed]);
 
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild>
-        <Button variant="ghost" size="icon-sm" aria-label="Open customizer" className={className}>
-          <SlidersHorizontal className="size-3.5" />
-        </Button>
-      </SheetTrigger>
-      <SheetContent className="w-full gap-0 sm:max-w-md" onOpenAutoFocus={(event) => event.preventDefault()}>
-        <CustomizerBody />
-      </SheetContent>
-    </Sheet>
+    <CustomizerContext value={{ isOpen, setIsOpen }}>
+      {children}
+      {!isEmbed && (
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetContent className="w-full gap-0 sm:max-w-md" onOpenAutoFocus={(event) => event.preventDefault()}>
+            <CustomizerBody />
+          </SheetContent>
+        </Sheet>
+      )}
+    </CustomizerContext>
+  );
+};
+
+/** Marks a trigger while the previews run a non-default theme, so it is clear the customizer is in play. */
+const CustomizedDot = () => {
+  const { isDefault } = useTheme();
+  const isMounted = useMounted();
+  if (!isMounted || isDefault) return null;
+
+  return (
+    <span
+      aria-hidden
+      className="absolute -inset-e-0.5 -top-0.5 size-2 rounded-full border-2 border-background bg-primary"
+    />
+  );
+};
+
+const CUSTOMIZER_TITLE = 'Registry Customizer';
+
+export const CustomizerTrigger = ({ className }: CustomizerTriggerProps) => {
+  const { setIsOpen } = useCustomizer();
+  const shortcut = useCustomizerShortcut();
+
+  return (
+    <Hint label={CUSTOMIZER_TITLE} shortcut={shortcut}>
+      <Button
+        type="button"
+        variant="ghost"
+        size="icon-sm"
+        aria-label={`Open ${CUSTOMIZER_TITLE.toLowerCase()}`}
+        aria-keyshortcuts="Meta+. Control+."
+        onClick={() => setIsOpen(true)}
+        className={cn('relative', className)}
+      >
+        <SlidersHorizontal className="size-3.5" />
+        <CustomizedDot />
+      </Button>
+    </Hint>
+  );
+};
+
+/** The customizer entry point beside each live preview, where the change shows up. */
+export const PreviewCustomizeButton = () => {
+  const { setIsOpen } = useCustomizer();
+
+  return (
+    <Button
+      type="button"
+      variant="ghost"
+      size="xs"
+      aria-label="Customize preview"
+      onClick={() => setIsOpen(true)}
+      className="relative"
+    >
+      <Paintbrush />
+      <span className="hidden sm:inline">Customize</span>
+      <CustomizedDot />
+    </Button>
   );
 };

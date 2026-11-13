@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Check, CircleAlert, Copy, EllipsisVertical, ExternalLink, Moon, Package, RefreshCw, Sun } from 'lucide-react';
 
 import { useTheme } from '@/components/active-theme';
+import { Hint } from '@/components/hint';
 import { useDeferredMount } from '@/hooks/use-deferred-mount';
 import { useMounted } from '@/hooks/use-mounted';
 import type { ThemeMode } from '@/lib/customizer';
@@ -87,12 +88,7 @@ const PreviewToolbarButton = ({ label, onClick, href, children }: PreviewToolbar
     </Button>
   );
 
-  return (
-    <Tooltip>
-      <TooltipTrigger asChild>{button}</TooltipTrigger>
-      <TooltipContent side="bottom">{label}</TooltipContent>
-    </Tooltip>
-  );
+  return <Hint label={label}>{button}</Hint>;
 };
 
 export interface PreviewThemeButtonProps {

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { Monitor, Smartphone, Tablet, type LucideIcon } from 'lucide-react';
 
 import { useRegistryBase } from '@/components/active-theme';
+import { PreviewCustomizeButton } from '@/components/customizer-sheet';
 import { DirectionToggle } from '@/components/direction-toggle';
 import { InstallBlock } from '@/components/install-block';
 import {
@@ -115,6 +116,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
         />
 
         <div className="flex items-center gap-1">
+          <PreviewCustomizeButton />
           <PreviewZoomMenu value={zoom} onValueChange={setZoom} fitPercent={Math.round(fitScale * 100)} />
           <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
           <PreviewThemeButton theme={previewTheme} />

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   Anchor,
+  BookOpen,
   Bot,
   CalendarDays,
   Compass,
@@ -23,6 +24,7 @@ import {
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
+import { DOC_EXTRA_LINKS, DOC_PAGES, docHref } from '@/lib/docs-nav';
 import { CATEGORIES_BY_GROUP, type CategoryGroup } from '@/components/block-categories';
 import { CommandMenu } from '@/components/command-menu';
 import {
@@ -38,7 +40,7 @@ import {
   entryHref,
 } from '@/registry/hirael/registry-meta';
 
-type Section = 'components' | 'blocks' | 'templates' | 'utilities' | 'changelog';
+type Section = 'docs' | 'components' | 'blocks' | 'templates' | 'utilities' | 'changelog';
 
 const COMPONENT_CATEGORY_ICONS: Record<(typeof COMPONENT_CATEGORY_ORDER)[number], LucideIcon> = {
   inputs: TextCursorInput,
@@ -63,6 +65,7 @@ const BLOCK_GROUP_ICONS: Record<CategoryGroup, LucideIcon> = {
 };
 
 const sectionForPath = (pathname: string): Section => {
+  if (pathname === '/docs' || pathname.startsWith('/docs/')) return 'docs';
   if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
   if (pathname === '/templates' || pathname.startsWith('/templates/')) return 'templates';
   if (pathname === '/utilities' || pathname.startsWith('/utilities/')) return 'utilities';
@@ -183,6 +186,27 @@ const FolderPageLink = ({ href, isCurrent, count, children }: FolderPageLinkProp
 interface SectionTreeProps {
   pathname: string;
 }
+
+const DocsTree = ({ pathname }: SectionTreeProps) => {
+  return (
+    <Folder icon={BookOpen} label="Guide">
+      {DOC_PAGES.map((page) => {
+        const href = docHref(page.slug);
+
+        return (
+          <FolderPageLink key={href} href={href} isCurrent={pathname === href}>
+            {page.title}
+          </FolderPageLink>
+        );
+      })}
+      {DOC_EXTRA_LINKS.map((link) => (
+        <FolderPageLink key={link.href} href={link.href} isCurrent={pathname === link.href}>
+          {link.title}
+        </FolderPageLink>
+      ))}
+    </Folder>
+  );
+};
 
 const ComponentTree = ({ pathname }: SectionTreeProps) => {
   return (
@@ -333,6 +357,7 @@ export const DocsSidebarNav = ({ releases, className, onNavigate }: DocsSidebarN
     <nav ref={ref} aria-label="Sidebar" className={cn('flex flex-col gap-4', className)}>
       <CommandMenu variant="field" />
       <div className="flex flex-col gap-3">
+        {section === 'docs' && <DocsTree pathname={pathname} />}
         {section === 'components' && <ComponentTree pathname={pathname} />}
         {section === 'blocks' && <BlockTree pathname={pathname} />}
         {section === 'templates' && <TemplateTree pathname={pathname} />}

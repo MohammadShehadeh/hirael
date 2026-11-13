@@ -8,6 +8,7 @@ import { BlockViewer } from '@/components/block-viewer';
 import { Breadcrumbs, type Crumb } from '@/components/breadcrumbs';
 import { CodeBlock, InlineCodeBlock, type CodeBlockTab } from '@/components/code-block';
 import { useRegistryBase } from '@/components/active-theme';
+import { PreviewCustomizeButton } from '@/components/customizer-sheet';
 import { DirectionToggle } from '@/components/direction-toggle';
 import { InstallBlock } from '@/components/install-block';
 import { CopyPageButton } from '@/components/copy-page-button';
@@ -206,6 +207,7 @@ const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) =
           />
           {view === 'preview' && (
             <div className="flex items-center gap-1">
+              <PreviewCustomizeButton />
               <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
               <PreviewThemeButton theme={previewTheme} />
               <PreviewRefreshButton onRefresh={() => setRefreshKey((k) => k + 1)} />

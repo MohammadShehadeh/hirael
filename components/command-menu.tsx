@@ -47,7 +47,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
         <button
           type="button"
           onClick={handleOpenPalette}
-          aria-label="Search components and blocks"
+          aria-label="Search components, blocks and docs"
           className={cn(
             'flex h-10 w-full items-center gap-2 rounded-lg border border-border bg-muted/40 px-3 text-sm text-muted-foreground transition-colors outline-none hover:bg-muted/70 hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
             className,
@@ -63,7 +63,7 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
           variant="outline"
           size="sm"
           onClick={handleOpenPalette}
-          aria-label="Search components and blocks"
+          aria-label="Search components, blocks and docs"
           className={className}
         >
           <Search className="size-3.5 shrink-0" />

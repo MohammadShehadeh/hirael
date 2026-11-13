@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Beam, Shader, Swirl } from 'shaders/react';
 import { useReducedMotion } from '@/registry/hirael/hooks/use-reduced-motion';
 
-// The shader can't read `var()`, so tokens are resolved to absolute colors through the DOM.
+// The shader wants absolute colors, so CSS color syntax is resolved through the DOM.
 const resolveColor = (value: string) => {
   const probe = document.createElement('span');
   probe.style.color = value;
@@ -15,9 +15,30 @@ const resolveColor = (value: string) => {
   return resolved;
 };
 
-const readPalette = () => ({
-  beam: resolveColor('var(--primary)'),
-});
+// Shades of the theme's primary. Lightness and chroma are set outright per mode: mixing the raw
+// primary into the background instead greys it out, which reads as a brown haze on dark canvases.
+const BEAMS = {
+  light: {
+    wide: 'oklch(from var(--primary) 0.86 calc(c * 0.7) h)',
+    narrow: 'oklch(from var(--primary) 0.88 calc(c * 0.55) calc(h - 20))',
+    swirl: 'oklch(from var(--primary) 0.92 calc(c * 0.45) calc(h + 15))',
+  },
+  dark: {
+    wide: 'oklch(from var(--primary) 0.58 calc(c * 0.9) calc(h - 10))',
+    narrow: 'oklch(from var(--primary) 0.4 calc(c * 0.7) calc(h - 30))',
+    swirl: 'oklch(from var(--primary) 0.5 calc(c * 0.7) calc(h - 20))',
+  },
+};
+
+const readPalette = () => {
+  const beams = document.documentElement.classList.contains('dark') ? BEAMS.dark : BEAMS.light;
+
+  return {
+    wide: resolveColor(beams.wide),
+    narrow: resolveColor(beams.narrow),
+    swirl: resolveColor(beams.swirl),
+  };
+};
 
 type Palette = ReturnType<typeof readPalette>;
 
@@ -47,7 +68,7 @@ const Hero01Backdrop = ({ active = false }: Hero01BackdropProps) => {
 
   return (
     <Shader style={{ width: '100%', height: '100%' }}>
-      <Swirl speed={reduced ? 0 : active ? 0.5 : 0.16} detail={1.5} />
+      <Swirl speed={reduced ? 0 : active ? 0.5 : 0.16} detail={1.5} colorA={palette.swirl} colorB={palette.narrow} />
       <Beam
         startPosition={{ x: 0.32, y: -0.1 }}
         endPosition={{ x: 0.46, y: 1.1 }}
@@ -55,7 +76,7 @@ const Hero01Backdrop = ({ active = false }: Hero01BackdropProps) => {
         endThickness={0.42}
         startSoftness={5}
         endSoftness={1}
-        insideColor={palette.beam}
+        insideColor={palette.wide}
         outsideColor="transparent"
       />
       <Beam
@@ -65,7 +86,7 @@ const Hero01Backdrop = ({ active = false }: Hero01BackdropProps) => {
         endThickness={0.28}
         startSoftness={1}
         endSoftness={1}
-        insideColor={palette.beam}
+        insideColor={palette.narrow}
         outsideColor="transparent"
       />
     </Shader>

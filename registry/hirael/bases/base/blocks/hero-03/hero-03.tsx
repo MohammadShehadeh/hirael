@@ -4,6 +4,15 @@ import { ArrowRight, Compass, Dna, Gem, ShieldCheck, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
+// Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
+// primary at low opacity greys out against the background (a brown haze on dark canvases).
+const GLOW =
+  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
+const DEPTH =
+  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
+const WISP =
+  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
+
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 // Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
@@ -34,15 +43,24 @@ const Hero03 = () => {
       {/* Without the orbs, the grid alone reads as bare background in both themes. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute start-1/2 -top-40 -z-10 size-130 -translate-x-1/2 rounded-full bg-primary opacity-25 blur-3xl rtl:translate-x-1/2"
+        className={cn(
+          'pointer-events-none absolute start-1/2 -top-40 -z-10 size-130 -translate-x-1/2 rounded-full opacity-70 blur-3xl rtl:translate-x-1/2 dark:opacity-25',
+          GLOW,
+        )}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -start-24 top-40 -z-10 size-96 rounded-full bg-primary opacity-20 blur-3xl"
+        className={cn(
+          'pointer-events-none absolute -start-24 top-40 -z-10 size-96 rounded-full opacity-70 blur-3xl dark:opacity-25',
+          WISP,
+        )}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -end-24 bottom-0 -z-10 size-96 rounded-full bg-primary opacity-15 blur-3xl"
+        className={cn(
+          'pointer-events-none absolute -end-24 bottom-0 -z-10 size-96 rounded-full opacity-70 blur-3xl dark:opacity-25',
+          DEPTH,
+        )}
       />
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-8 px-6 py-24 text-center md:px-10 lg:py-32">

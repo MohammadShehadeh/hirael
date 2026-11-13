@@ -6,6 +6,15 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { cn } from '@/lib/utils';
 
+// Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
+// primary at low opacity greys out against the background (a brown haze on dark canvases).
+const GLOW =
+  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
+const DEPTH =
+  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
+const WISP =
+  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
+
 const HEADLINE = 'Build the page once, ship it everywhere';
 
 // Words only slide: starting them transparent or blurred would hold back Largest Contentful Paint.
@@ -172,8 +181,24 @@ const Hero07 = () => {
       <div
         aria-hidden
         data-slot="hero-backdrop"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_26%,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_60%),radial-gradient(80%_70%_at_6%_96%,color-mix(in_oklch,var(--primary)_24%,transparent),transparent_64%),radial-gradient(80%_70%_at_94%_92%,color-mix(in_oklch,var(--primary)_20%,transparent),transparent_64%)] [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
-      />
+        className="pointer-events-none absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
+      >
+        <div
+          className={cn(
+            'absolute start-1/2 top-0 size-180 -translate-x-1/2 rounded-full opacity-50 blur-3xl rtl:translate-x-1/2 dark:opacity-25',
+            GLOW,
+          )}
+        />
+        <div
+          className={cn(
+            'absolute -start-32 -bottom-32 size-140 rounded-full opacity-45 blur-3xl dark:opacity-20',
+            DEPTH,
+          )}
+        />
+        <div
+          className={cn('absolute -end-32 -bottom-32 size-140 rounded-full opacity-40 blur-3xl dark:opacity-20', WISP)}
+        />
+      </div>
 
       <Beam
         reduce={reduce}

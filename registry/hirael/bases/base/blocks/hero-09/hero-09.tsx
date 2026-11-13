@@ -9,6 +9,15 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 // WebGL can't paint before hydration; the CSS wash below carries the first frame.
+// Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
+// primary at low opacity greys out against the background (a brown haze on dark canvases).
+const GLOW =
+  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
+const DEPTH =
+  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
+const WISP =
+  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
+
 const Hero09Backdrop = dynamic(() => import('./hero-09-backdrop'), {
   ssr: false,
   loading: () => null,
@@ -90,7 +99,23 @@ const Hero09 = () => {
       <HeroZoom className="sticky top-2.5 mx-2.5 flex min-h-200 origin-top flex-col overflow-hidden rounded-[18px] bg-card will-change-transform lg:h-[calc(100svh-20px)]">
         <div aria-hidden className="absolute inset-0">
           {/* First frame, and the fallback wherever WebGL is unavailable. */}
-          <div className="absolute inset-0 bg-[radial-gradient(95%_65%_at_50%_-12%,color-mix(in_oklch,var(--primary)_34%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_104%,color-mix(in_oklch,var(--primary)_30%,transparent),transparent_66%),radial-gradient(60%_55%_at_96%_26%,color-mix(in_oklch,var(--chart-2)_20%,transparent),transparent_68%),radial-gradient(80%_50%_at_50%_108%,color-mix(in_oklch,var(--primary)_18%,transparent),transparent_70%)]" />
+          <div className="absolute inset-0 overflow-hidden">
+            <div
+              className={cn(
+                'absolute start-1/2 -top-64 size-200 -translate-x-1/2 rounded-full opacity-60 blur-3xl rtl:translate-x-1/2 dark:opacity-30',
+                WISP,
+              )}
+            />
+            <div
+              className={cn(
+                'absolute -start-32 -bottom-48 size-150 rounded-full opacity-55 blur-3xl dark:opacity-30',
+                GLOW,
+              )}
+            />
+            <div
+              className={cn('absolute -end-40 top-10 size-130 rounded-full opacity-50 blur-3xl dark:opacity-25', DEPTH)}
+            />
+          </div>
           <Hero09Backdrop className="absolute inset-0 size-full" />
 
           {/* Grain keeps the wide gradients from banding on large displays. */}

@@ -7,6 +7,15 @@ import { ArrowRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
+// Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
+// primary at low opacity greys out against the background (a brown haze on dark canvases).
+const GLOW =
+  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
+const DEPTH =
+  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
+const WISP =
+  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
+
 const Hero01Backdrop = dynamic(() => import('./hero-01-backdrop'), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
@@ -39,15 +48,30 @@ const Hero01 = () => {
         onMouseLeave={() => setActive(false)}
       >
         <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card text-card-foreground shadow-sm md:rounded-[40px]">
-          <div
-            aria-hidden
-            data-slot="hero-wash"
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(75%_55%_at_16%_4%,color-mix(in_oklch,var(--primary)_28%,transparent),transparent_62%),radial-gradient(65%_60%_at_90%_94%,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_66%),radial-gradient(95%_70%_at_50%_112%,color-mix(in_oklch,var(--primary)_18%,transparent),transparent_70%)]"
-          />
+          <div aria-hidden data-slot="hero-wash" className="pointer-events-none absolute inset-0 overflow-hidden">
+            <div
+              className={cn(
+                'absolute -start-24 -top-32 size-160 rounded-full opacity-60 blur-3xl dark:opacity-20',
+                GLOW,
+              )}
+            />
+            <div
+              className={cn(
+                'absolute -end-24 -bottom-40 size-150 rounded-full opacity-60 blur-3xl dark:opacity-20',
+                DEPTH,
+              )}
+            />
+            <div
+              className={cn(
+                'absolute start-1/4 -bottom-56 size-170 rounded-full opacity-50 blur-3xl dark:opacity-15',
+                WISP,
+              )}
+            />
+          </div>
           <div
             aria-hidden
             data-slot="hero-backdrop"
-            className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply dark:opacity-10 dark:mix-blend-screen"
+            className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply dark:opacity-15 dark:mix-blend-screen"
           >
             <Hero01Backdrop active={active} />
           </div>

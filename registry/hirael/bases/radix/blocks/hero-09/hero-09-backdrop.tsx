@@ -17,10 +17,23 @@ interface Palette {
   blue: Rgb;
 }
 
-// Accent share per stop, the rest is `--background`; dark canvases need more to lift off it.
+// Each stop is a shade of `--primary`: lightness set outright, chroma as a share of the primary's, hue as
+// an offset from it. Mixing the raw primary into the background instead greys it out, which reads as a
+// brown haze on dark canvases. `tint` is how far the stop moves off `--background`, so the wide stops
+// stay close to the page and only the glows carry full color.
 const SHADES = {
-  light: { wisp: 0.16, sky: 0.52, deep: 0.4, blue: 0.22 },
-  dark: { wisp: 0.26, sky: 0.72, deep: 0.58, blue: 0.36 },
+  light: {
+    wisp: { l: 0.93, c: 0.45, h: 15, tint: 1 },
+    sky: { l: 0.86, c: 0.7, h: 0, tint: 1 },
+    deep: { l: 0.88, c: 0.55, h: -20, tint: 0.8 },
+    blue: { l: 0.92, c: 0.4, h: -20, tint: 0.6 },
+  },
+  dark: {
+    wisp: { l: 0.72, c: 0.8, h: -5, tint: 0.85 },
+    sky: { l: 0.52, c: 0.85, h: -12, tint: 0.9 },
+    deep: { l: 0.34, c: 0.65, h: -30, tint: 0.7 },
+    blue: { l: 0.28, c: 0.5, h: -30, tint: 0.4 },
+  },
 } as const;
 
 const createProbe = () => {
@@ -121,21 +134,20 @@ const buildPalette = (): Palette | null => {
   const styles = getComputedStyle(document.documentElement);
   const backgroundRgb = resolveCssColor(probe, styles.getPropertyValue('--background'));
   const primaryRgb = resolveCssColor(probe, styles.getPropertyValue('--primary'));
-  const coolRgb = resolveCssColor(probe, styles.getPropertyValue('--primary'));
-  if (!backgroundRgb || !primaryRgb || !coolRgb) return null;
+  if (!backgroundRgb || !primaryRgb) return null;
 
   const background = srgbToOklch(backgroundRgb);
   const primary = srgbToOklch(primaryRgb);
-  const cool = srgbToOklch(coolRgb);
   const shades = background.l < 0.5 ? SHADES.dark : SHADES.light;
-  const shade = (accent: Oklch, amount: number) => oklchToSrgb(mixOklab(background, accent, amount));
+  const shade = ({ l, c, h, tint }: (typeof shades)[keyof typeof shades]) =>
+    oklchToSrgb(mixOklab(background, { l, c: primary.c * c, h: primary.h + h }, tint));
 
   return {
     base: backgroundRgb,
-    wisp: shade(primary, shades.wisp),
-    sky: shade(primary, shades.sky),
-    deep: shade(cool, shades.deep),
-    blue: shade(cool, shades.blue),
+    wisp: shade(shades.wisp),
+    sky: shade(shades.sky),
+    deep: shade(shades.deep),
+    blue: shade(shades.blue),
   };
 };
 

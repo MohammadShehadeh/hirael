@@ -4,7 +4,7 @@ import * as React from 'react';
 import { Aurora, FilmGrain, Shader } from 'shaders/react';
 import { useReducedMotion } from '@/registry/hirael/hooks/use-reduced-motion';
 
-// The shader can't read `var()`, so tokens are resolved to absolute colors through the DOM.
+// The shader wants absolute colors, so CSS color syntax is resolved through the DOM.
 const resolveColor = (value: string) => {
   const probe = document.createElement('span');
   probe.style.color = value;
@@ -15,11 +15,26 @@ const resolveColor = (value: string) => {
   return resolved;
 };
 
-const readPalette = () => ({
-  low: resolveColor('color-mix(in oklab, var(--primary) 45%, var(--background))'),
-  mid: resolveColor('var(--primary)'),
-  high: resolveColor('color-mix(in oklab, var(--primary) 40%, var(--foreground))'),
-});
+// Shades of the theme's primary. Lightness and chroma are set outright per mode: mixing the raw
+// primary into the background instead greys it out, which reads as a brown haze on dark canvases.
+const AURORA = {
+  light: {
+    low: 'oklch(from var(--primary) 0.9 calc(c * 0.5) calc(h - 20))',
+    mid: 'oklch(from var(--primary) 0.84 calc(c * 0.75) h)',
+    high: 'oklch(from var(--primary) 0.93 calc(c * 0.45) calc(h + 15))',
+  },
+  dark: {
+    low: 'oklch(from var(--primary) 0.3 calc(c * 0.6) calc(h - 30))',
+    mid: 'oklch(from var(--primary) 0.55 calc(c * 0.9) calc(h - 10))',
+    high: 'oklch(from var(--primary) 0.72 calc(c * 0.8) calc(h - 5))',
+  },
+};
+
+const readPalette = () => {
+  const aurora = document.documentElement.classList.contains('dark') ? AURORA.dark : AURORA.light;
+
+  return { low: resolveColor(aurora.low), mid: resolveColor(aurora.mid), high: resolveColor(aurora.high) };
+};
 
 type Palette = ReturnType<typeof readPalette>;
 

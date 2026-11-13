@@ -34,15 +34,15 @@ const Hero03 = () => {
       {/* Without the orbs, the grid alone reads as bare background in both themes. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute start-1/2 -top-40 -z-10 size-130 -translate-x-1/2 rounded-full bg-primary opacity-25 blur-3xl rtl:translate-x-1/2"
+        className="pointer-events-none absolute start-1/2 -top-40 -z-10 size-130 -translate-x-1/2 rounded-full bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] opacity-70 blur-3xl rtl:translate-x-1/2 dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))] dark:opacity-25"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -start-24 top-40 -z-10 size-96 rounded-full bg-primary opacity-20 blur-3xl"
+        className="pointer-events-none absolute -start-24 top-40 -z-10 size-96 rounded-full bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] opacity-70 blur-3xl dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))] dark:opacity-25"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -end-24 bottom-0 -z-10 size-96 rounded-full bg-primary opacity-15 blur-3xl"
+        className="pointer-events-none absolute -end-24 bottom-0 -z-10 size-96 rounded-full bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] opacity-70 blur-3xl dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))] dark:opacity-25"
       />
 
       <div className="mx-auto flex w-full max-w-4xl flex-col items-center gap-8 px-6 py-24 text-center md:px-10 lg:py-32">

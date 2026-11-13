@@ -37,8 +37,8 @@ const GeometricAccent = () => {
     <div data-slot="hero-accent" aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* A glow behind each nest of squares, so the corners carry color and not
           just a hairline that all but disappears on a light canvas. */}
-      <div className="absolute start-[-10rem] -top-40 size-120 rounded-full bg-primary opacity-20 blur-3xl" />
-      <div className="absolute end-[-10rem] -bottom-40 size-120 rounded-full bg-primary opacity-15 blur-3xl" />
+      <div className="absolute start-[-10rem] -top-40 size-120 rounded-full bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] opacity-70 blur-3xl dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))] dark:opacity-25" />
+      <div className="absolute end-[-10rem] -bottom-40 size-120 rounded-full bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] opacity-70 blur-3xl dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))] dark:opacity-25" />
 
       <div style={stagger(0, 0, 150)} className={cn(REVEAL, 'absolute start-[-5rem] -top-20 size-80')}>
         <div className="absolute inset-0 rotate-45 border border-primary/40" />

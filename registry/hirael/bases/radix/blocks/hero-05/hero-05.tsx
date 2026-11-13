@@ -44,7 +44,7 @@ const Hero05 = () => {
           <div
             aria-hidden
             data-slot="hero-wash"
-            className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,color-mix(in_oklch,var(--primary)_26%,transparent),transparent_48%),radial-gradient(70%_60%_at_84%_2%,color-mix(in_oklch,var(--primary)_32%,transparent),transparent_62%),radial-gradient(85%_60%_at_38%_110%,color-mix(in_oklch,var(--primary)_22%,transparent),transparent_70%)]"
+            className="pointer-events-none absolute inset-0 bg-[linear-gradient(160deg,color-mix(in_oklch,var(--hero-depth)_26%,transparent),transparent_48%),radial-gradient(70%_60%_at_84%_2%,color-mix(in_oklch,var(--hero-glow)_32%,transparent),transparent_62%),radial-gradient(85%_60%_at_38%_110%,color-mix(in_oklch,var(--hero-wisp)_22%,transparent),transparent_70%)] [--hero-depth:oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] [--hero-glow:oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] [--hero-wisp:oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:[--hero-depth:oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30)/0.6)] dark:[--hero-glow:oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))] dark:[--hero-wisp:oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5)/0.6)]"
           />
           <div
             aria-hidden

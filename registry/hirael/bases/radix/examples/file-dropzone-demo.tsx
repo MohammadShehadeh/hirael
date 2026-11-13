@@ -32,7 +32,10 @@ const FileDropzoneDemo = () => {
           maxSize={5 * 1024 * 1024}
           multiple
         >
-          <FileDropzoneZone />
+          <FileDropzoneZone
+            headline={t({ en: 'Drop files here, or click to browse', ar: 'أسقط الملفات هنا أو انقر للتصفح' })}
+            subline={t({ en: 'image/*, .pdf, up to 5.0 MB', ar: 'صور وملفات PDF، حتى 5 ميغابايت' })}
+          />
           <FileDropzoneList />
           <FileDropzoneErrors />
         </FileDropzone>

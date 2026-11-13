@@ -159,7 +159,7 @@ const OnboardingProgress = ({ className, ...props }: OnboardingProgressProps) =>
 
   return (
     <div data-slot="onboarding-progress" className={cn('flex items-center gap-3', className)} {...props}>
-      <Progress value={value} aria-label={`Step ${step + 1} of ${total}`} className="h-1 flex-1" />
+      <Progress value={value} aria-label={`Step ${step + 1} of ${total}`} className="h-1 flex-1 rtl:-scale-x-100" />
       <span className="text-xs text-muted-foreground tabular-nums">
         {step + 1}/{total}
       </span>

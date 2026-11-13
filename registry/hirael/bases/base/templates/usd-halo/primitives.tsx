@@ -68,6 +68,8 @@ interface MarqueeProps {
 }
 
 export const Marquee = ({ brands, trackClass, keyframesName, durationSeconds, itemClass }: MarqueeProps) => {
+  // Under RTL the track is anchored on the right and overflows to the left, so it travels the other way;
+  // sliding it left there would move the whole strip out of view.
   return (
     <>
       <style>{`
@@ -80,8 +82,12 @@ export const Marquee = ({ brands, trackClass, keyframesName, durationSeconds, it
           width: max-content;
           animation: ${keyframesName} ${durationSeconds}s linear infinite;
         }
+        @keyframes ${keyframesName}-rtl {
+          from { transform: translateX(0); }
+          to { transform: translateX(50%); }
+        }
         [dir="rtl"] .${trackClass} {
-          animation-direction: reverse;
+          animation-name: ${keyframesName}-rtl;
         }
       `}</style>
       <div className={trackClass}>

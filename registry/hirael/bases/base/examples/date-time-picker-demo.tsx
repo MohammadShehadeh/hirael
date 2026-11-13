@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import { ar } from 'react-day-picker/locale';
+
 import { useDemoLocale, useT } from '@/lib/demo-locale';
 import {
   DateTimePicker,
@@ -12,6 +14,7 @@ import {
 const DateTimePickerDemo = () => {
   const t = useT();
   const locale = useDemoLocale() === 'ar' ? 'ar' : 'en-US';
+  const calendarLocale = locale === 'ar' ? ar : undefined;
   const [meeting, setMeeting] = React.useState<Date | undefined>(() => new Date(2026, 9, 14, 14, 30));
   const [reminder, setReminder] = React.useState<Date | undefined>();
   const labels = {
@@ -28,7 +31,7 @@ const DateTimePickerDemo = () => {
         <p className="text-xs text-muted-foreground uppercase">{t({ en: '24-hour clock', ar: 'نظام 24 ساعة' })}</p>
         <DateTimePicker value={meeting} onValueChange={setMeeting} locale={locale}>
           <DateTimePickerTrigger placeholder={t({ en: 'Pick a date and time', ar: 'اختر التاريخ والوقت' })} />
-          <DateTimePickerContent timeLabels={labels} />
+          <DateTimePickerContent timeLabels={labels} locale={calendarLocale} />
         </DateTimePicker>
       </div>
       <div className="grid gap-2">
@@ -37,7 +40,7 @@ const DateTimePickerDemo = () => {
         </p>
         <DateTimePicker value={reminder} onValueChange={setReminder} format="12h" minuteStep={15} locale={locale}>
           <DateTimePickerTrigger placeholder={t({ en: 'Set a reminder', ar: 'اضبط تذكيرًا' })} />
-          <DateTimePickerContent timeLabels={labels} disabled={{ before: new Date() }} />
+          <DateTimePickerContent timeLabels={labels} disabled={{ before: new Date() }} locale={calendarLocale} />
         </DateTimePicker>
       </div>
     </div>

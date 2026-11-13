@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT } from '@/lib/demo-locale';
 import {
   CronEditor,
   CronEditorExpression,
@@ -14,6 +14,7 @@ import {
 
 const CronEditorDemo = () => {
   const t = useT();
+  const locale = useDemoLocale();
   const [schedule, setSchedule] = React.useState('0 9 * * 1,5');
   const [backup, setBackup] = React.useState('*/15 * * * *');
 
@@ -77,6 +78,7 @@ const CronEditorDemo = () => {
                 {t({ en: 'Next runs', ar: 'التشغيلات القادمة' })}
               </p>
               <CronEditorNextRuns
+                locale={locale === 'ar' ? 'ar' : 'en-US'}
                 emptyLabel={t({
                   en: 'No upcoming runs.',
                   ar: 'لا تشغيلات قادمة.',

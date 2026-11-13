@@ -141,7 +141,7 @@ const Newsletter02 = () => {
                 <Progress
                   value={progressFor(WAITLIST.invites)}
                   aria-label="Invite rewards progress"
-                  className="h-1.5"
+                  className="h-1.5 rtl:-scale-x-100"
                 />
                 <div aria-hidden className="absolute inset-0 grid grid-cols-3">
                   {TIERS.map((tier) => (

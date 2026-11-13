@@ -7,7 +7,10 @@ import { useDebouncedCallback, useDebouncedValue } from '@/registry/hirael/hooks
 import { Input } from '@/registry/hirael/bases/radix/ui/input';
 import { Textarea } from '@/registry/hirael/bases/radix/ui/textarea';
 
-const FRUITS = ['Apple', 'Apricot', 'Banana', 'Blueberry', 'Cherry', 'Grape', 'Lemon', 'Mango', 'Orange', 'Peach'];
+const FRUITS = {
+  en: ['Apple', 'Apricot', 'Banana', 'Blueberry', 'Cherry', 'Grape', 'Lemon', 'Mango', 'Orange', 'Peach'],
+  ar: ['تفاح', 'مشمش', 'موز', 'توت أزرق', 'كرز', 'عنب', 'ليمون', 'مانجو', 'برتقال', 'خوخ'],
+};
 
 const UseDebounceDemo = () => {
   const t = useT();
@@ -16,7 +19,7 @@ const UseDebounceDemo = () => {
   const [saves, setSaves] = React.useState(0);
   const save = useDebouncedCallback(() => setSaves((n) => n + 1), 800);
 
-  const results = FRUITS.filter((fruit) => fruit.toLowerCase().includes(debouncedQuery.trim().toLowerCase()));
+  const results = t(FRUITS).filter((fruit) => fruit.toLowerCase().includes(debouncedQuery.trim().toLowerCase()));
 
   return (
     <div className="grid w-full max-w-md gap-8">

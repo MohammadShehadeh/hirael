@@ -183,7 +183,11 @@ const UploadQueueItem = ({ item, labels, onRetry, onCancel, onRemove }: UploadQu
           {STATUS_ICON[item.status]}
         </div>
         {item.status === 'uploading' && (
-          <Progress value={item.progress} aria-label={`${item.file.name}: ${Math.round(item.progress)}%`} />
+          <Progress
+            value={item.progress}
+            aria-label={`${item.file.name}: ${Math.round(item.progress)}%`}
+            className="rtl:-scale-x-100"
+          />
         )}
         <span
           className={cn(
@@ -250,7 +254,7 @@ const UploadQueue = ({ queue, labels, className, ...props }: UploadQueueProps) =
             </Button>
           )}
         </div>
-        <Progress value={overall} aria-label={text.summary(done, counted.length)} />
+        <Progress value={overall} aria-label={text.summary(done, counted.length)} className="rtl:-scale-x-100" />
       </div>
       <ul className="grid gap-1">
         {items.map((item) => (

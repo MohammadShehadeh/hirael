@@ -182,6 +182,7 @@ const useColumns = (): ColumnDef<DataTableFeatures, Account>[] => {
 };
 
 const AccountsTable = () => {
+  const t = useT();
   const columns = useColumns();
   const { table } = useDataTable({
     data: DATA,
@@ -191,7 +192,36 @@ const AccountsTable = () => {
   });
 
   return (
-    <DataTable table={table}>
+    <DataTable
+      table={table}
+      labels={t({
+        en: {},
+        ar: {
+          view: 'عرض',
+          toggleColumns: 'إظهار الأعمدة',
+          searchColumns: 'ابحث في الأعمدة...',
+          noColumns: 'لا توجد أعمدة.',
+          noResults: 'لا توجد نتائج.',
+          rowsPerPage: 'عدد الصفوف في الصفحة',
+          rowsSelected: (selected: number, total: number) => `تم تحديد ${selected} من ${total} صف.`,
+          page: (page: number, count: number) => `الصفحة ${page} من ${count}`,
+          firstPage: 'الصفحة الأولى',
+          previousPage: 'الصفحة السابقة',
+          nextPage: 'الصفحة التالية',
+          lastPage: 'الصفحة الأخيرة',
+          sortAscending: 'تصاعدي',
+          sortDescending: 'تنازلي',
+          resetSorting: 'إعادة ضبط',
+          hideColumn: 'إخفاء',
+          resetFilters: 'إعادة ضبط',
+          resetFiltersLabel: 'إعادة ضبط عوامل التصفية',
+          clearFilters: 'مسح عوامل التصفية',
+          clearRange: 'مسح',
+          selectedCount: (count: number) => `${count} محدد`,
+          noOptions: 'لا توجد نتائج.',
+        },
+      })}
+    >
       <DataTableToolbar table={table} />
     </DataTable>
   );

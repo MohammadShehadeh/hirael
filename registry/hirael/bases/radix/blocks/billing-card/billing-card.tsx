@@ -88,7 +88,7 @@ const BillingCardMeter = ({ value, max, label, className, ...props }: BillingCar
           </span>
         </div>
       ) : null}
-      <Progress value={pct} aria-label={typeof label === 'string' ? label : undefined} />
+      <Progress value={pct} aria-label={typeof label === 'string' ? label : undefined} className="rtl:-scale-x-100" />
     </div>
   );
 };

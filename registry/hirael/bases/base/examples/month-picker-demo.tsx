@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { useDemoLocale, useT } from '@/lib/demo-locale';
 import { Field, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import {
   MonthPicker,
@@ -14,6 +14,7 @@ import {
 
 const MonthPickerDemo = () => {
   const t = useT();
+  const locale = useDemoLocale() === 'ar' ? 'ar' : 'en-US';
   const [month, setMonth] = React.useState<MonthValue | undefined>({
     year: 2026,
     month: 4,
@@ -27,7 +28,7 @@ const MonthPickerDemo = () => {
     <FieldGroup className="grid max-w-md grid-cols-1 gap-8 sm:grid-cols-2">
       <Field className="gap-2">
         <FieldLabel htmlFor="mp-launch">{t({ en: 'Launch month', ar: 'شهر الإطلاق' })}</FieldLabel>
-        <MonthPicker value={month} onValueChange={setMonth} minYear={2020} maxYear={2030}>
+        <MonthPicker value={month} onValueChange={setMonth} minYear={2020} maxYear={2030} locale={locale}>
           <MonthPickerTrigger id="mp-launch" placeholder={t({ en: 'Pick a month', ar: 'اختر شهرًا' })} />
           <MonthPickerContent />
         </MonthPicker>
@@ -42,6 +43,7 @@ const MonthPickerDemo = () => {
           onValueChange={setRange}
           min={{ year: 2024, month: 3 }}
           max={{ year: 2028, month: 8 }}
+          locale={locale}
         >
           <MonthPickerTrigger id="mp-quarter" placeholder={t({ en: 'Pick a range', ar: 'اختر نطاقًا' })} />
           <MonthPickerContent />

@@ -1,0 +1,41 @@
+Ask your editor for a component in plain words and let it do the installing. Here's what that looks like:
+
+<AgentSession />
+
+## Set up the MCP server
+
+The shadcn CLI ships an MCP server that lets AI editors browse, search and install from any registry. Pick your editor and run the command from your project root:
+
+<McpClientCommand />
+
+Restart the editor afterwards so it picks up the new server.
+
+## Add the registry
+
+Make sure `components.json` lists the `@hirael` namespace, so the server knows where to look:
+
+```json
+{
+  "registries": {
+    "@hirael": "https://hirael.com/r/{name}.json"
+  }
+}
+```
+
+On Base UI, use `https://hirael.com/r/base/{name}.json` instead. See [Installation](/docs/installation#base-ui-projects).
+
+## Things to ask
+
+```text
+Show me the date pickers in the @hirael registry.
+Add the hirael multi-select and use it in the signup form.
+Build a landing page with @hirael/hero-10, @hirael/pricing-04 and @hirael/faq-06.
+```
+
+## Share a page with any AI
+
+No MCP support, or using a chat assistant? Every item also has a Markdown version with its install command, usage, examples, full source and API table.
+
+- **Copy page** on any item puts that Markdown on your clipboard.
+- The same file lives at `https://hirael.com/r/<name>.md`, or `/r/base/<name>.md` for Base UI. Paste the link instead.
+- [`llms.txt`](https://hirael.com/llms.txt) lists every item with a short summary, so an agent can find the right one on its own.

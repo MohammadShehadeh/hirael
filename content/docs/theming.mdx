@@ -1,0 +1,45 @@
+## Your theme, unchanged
+
+Hirael items take every color from the CSS variables shadcn/ui already defines. No raw colors, no tokens of their own. Install one into a project with a custom theme and it matches without touching a class.
+
+<TokenSwatches />
+
+That covers the standard shadcn/ui set: surfaces like `background`, `card` and `muted`, accents like `primary` and `destructive` with their `-foreground` pairs, `border`, `input` and `ring`, `chart-1` to `chart-5`, the `sidebar` colors for app shells, and `--radius` for every rounded corner.
+
+## Status colors
+
+Toasts, status badges and uptime bars need three colors shadcn/ui doesn't define: `success`, `warning` and `info`. Items that use them bring the variables along, and the CLI adds them to your stylesheet on install. Change them like any other token:
+
+```css
+:root {
+  --success: oklch(0.527 0.154 150.069);
+  --warning: oklch(0.555 0.163 48.998);
+  --info: oklch(0.55 0.2 260);
+}
+
+.dark {
+  --success: oklch(0.696 0.17 162.48);
+  --warning: oklch(0.769 0.188 70.08);
+  --info: oklch(0.62 0.19 260);
+}
+```
+
+## Dark mode
+
+Same convention as shadcn/ui: light values under `:root`, dark values under `.dark`. Toggle the class the way your app already does, for example with `next-themes`. Every preview on this site has a light and dark switch, so you can check both before you install.
+
+## Right-to-left
+
+Every item works in Arabic, Hebrew, Persian and other right-to-left languages with no configuration. Set the direction on your document and the layout follows:
+
+```html
+<html lang="ar" dir="rtl"></html>
+```
+
+<RtlCompare />
+
+- Spacing uses logical properties, so padding, margins and borders flip with the text.
+- Arrow keys follow the reading direction in sliders, tabs, carousels and other keyboard controls.
+- Chevrons and arrows mirror. Icons that only make sense one way, like undo and redo, flip sideways instead of turning upside down.
+
+Use the **RTL** switch on any preview to see it before you install.

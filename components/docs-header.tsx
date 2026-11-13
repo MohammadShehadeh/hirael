@@ -3,12 +3,14 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { Heart, Menu } from 'lucide-react';
 
 import { SITE } from '@/lib/site';
+import { SPONSOR_URL } from '@/lib/sponsors';
 import { CommandMenu } from '@/components/command-menu';
 import { CustomizerTrigger } from '@/components/customizer-sheet';
 import { GithubLink } from '@/components/github-link';
+import { Hint } from '@/components/hint';
 import { Logo } from '@/components/logo';
 import { DocsSidebarNav, type SidebarRelease } from '@/components/sidebar';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -37,18 +39,20 @@ export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
       <div className="mx-auto flex size-full max-w-page items-center">
         <div className="flex shrink-0 items-center gap-1 px-4 md:w-sidebar">
           <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-            <SheetTrigger asChild>
-              <Button
-                ref={menuTriggerRef}
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                aria-label="Open navigation"
-                className="md:hidden"
-              >
-                <Menu />
-              </Button>
-            </SheetTrigger>
+            <Hint label="Navigation">
+              <SheetTrigger asChild>
+                <Button
+                  ref={menuTriggerRef}
+                  type="button"
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Open navigation"
+                  className="md:hidden"
+                >
+                  <Menu />
+                </Button>
+              </SheetTrigger>
+            </Hint>
             <SheetContent
               side="left"
               className="w-[85vw] max-w-sm overflow-y-auto p-0"
@@ -82,6 +86,12 @@ export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
         </div>
 
         <div className="flex min-w-0 flex-1 items-center justify-end gap-1.5 px-4 md:px-6 xl:px-8">
+          <Button variant="outline" size="sm" asChild>
+            <a href={SPONSOR_URL} target="_blank" rel="noreferrer" aria-label={`Sponsor ${SITE.name} on GitHub`}>
+              <Heart className="fill-destructive text-destructive" />
+              <span className="hidden sm:inline">Sponsor Me</span>
+            </a>
+          </Button>
           <GithubLink stars={stars} />
           <CommandMenu className="md:hidden" />
           <CustomizerTrigger />

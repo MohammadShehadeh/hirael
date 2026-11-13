@@ -2,6 +2,7 @@ import type { MetadataRoute } from 'next';
 
 import { CATEGORY_REGISTRY } from '@/components/block-categories';
 import { getChangelog, getReleaseDates } from '@/lib/changelog';
+import { DOC_PAGES, docHref } from '@/lib/docs-nav';
 import { SITE } from '@/lib/site';
 import {
   COMPONENT_CATEGORY_ORDER,
@@ -29,6 +30,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${SITE.url}/utilities`, lastModified: latest, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${SITE.url}/changelog`, lastModified: latest, changeFrequency: 'weekly', priority: 0.5 },
   ];
+
+  const docRoutes: MetadataRoute.Sitemap = DOC_PAGES.map((page) => ({
+    url: `${SITE.url}${docHref(page.slug)}`,
+    lastModified: latest,
+    changeFrequency: 'monthly',
+    priority: page.slug ? 0.7 : 0.8,
+  }));
 
   const componentCategoryRoutes: MetadataRoute.Sitemap = COMPONENT_CATEGORY_ORDER.map((category) => ({
     url: `${SITE.url}/components/${category}`,
@@ -83,6 +91,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   return [
     ...staticRoutes,
+    ...docRoutes,
     ...componentCategoryRoutes,
     ...componentRoutes,
     ...blockCategoryRoutes,

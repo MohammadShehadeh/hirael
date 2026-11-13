@@ -45,6 +45,7 @@ interface NavLink {
 }
 
 export const NAV_LINKS: NavLink[] = [
+  { href: '/docs', label: 'Docs' },
   { href: '/components', label: 'Components' },
   { href: '/blocks', label: 'Blocks' },
   { href: '/templates', label: 'Templates' },

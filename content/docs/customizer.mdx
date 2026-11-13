@@ -1,0 +1,51 @@
+The Registry Customizer shows you Hirael in your own style before you install anything. Pick a base, colors, font and radius, and every preview on the site redraws to match.
+
+## Try it
+
+Pick a theme or a radius. The preview below updates as you click, and so does every other page on the site.
+
+<CustomizerPlayground />
+
+<LivePreview name="pricing-04" />
+
+## Opening it
+
+The playground above covers the basics. For every setting, open the full Registry Customizer:
+
+- Click the sliders icon in the site header.
+- Click **Customize** in the toolbar above any preview, like the one above.
+- Press `⌘ .` on macOS or `Ctrl .` on Windows and Linux.
+- Search with `⌘ K` and pick **Open registry customizer**.
+
+A small dot on the icon means your previews differ from the defaults. Your choices are saved in this browser and follow you from page to page.
+
+## Base and icons
+
+**Base** switches between Radix UI and Base UI. Every preview reloads with that version, and every install command on the site points at it.
+
+**Icon library** fills in the `components.json` line you'll need. Previews keep using lucide icons. The **Setup** card holds the matching `shadcn init` command.
+
+## Styles
+
+- **Base color** sets the neutrals: backgrounds, borders and muted text.
+- **Theme** sets the accent color, `primary`, and the colors that follow it.
+- **Chart color** sets `chart-1` to `chart-5` for charts, sparklines and heatmaps.
+- **Font** swaps the sans font.
+- **Radius** sets `--radius`, which every rounded corner is based on.
+
+Styles re-skin the whole site. Turn on **Preview only** to keep the site as is and restyle just the previews.
+
+## Take it home
+
+When it looks right, copy the **globals.css** card. It holds the CSS variables for your choices in light and dark mode. Paste them over the matching variables in your own stylesheet, and installed items will look exactly like the previews. **Reset** brings back the defaults.
+
+## The preview toolbar
+
+Every preview has a toolbar like the one above. Its controls change that preview only:
+
+- **Mobile, Tablet, Desktop** resize blocks and templates to that width.
+- **Zoom** fits the frame to the page or shows it at 50, 75 or 100 percent.
+- **RTL** flips the preview to right-to-left, with the text in Arabic.
+- **Sun and moon** switch the preview between light and dark.
+- **Refresh** reloads it, and **Open preview** opens it full screen in a new tab.
+- **More** copies a link, reports an issue and lists the item's dependencies.

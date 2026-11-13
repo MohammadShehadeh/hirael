@@ -5,6 +5,7 @@ import { Moon, Sun } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/components/active-theme';
 import { useMounted } from '@/hooks/use-mounted';
+import { Hint } from '@/components/hint';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 export const ThemeToggle = () => {
@@ -14,26 +15,30 @@ export const ThemeToggle = () => {
   // Dark is the server default. Read the stored mode only after mount so hydration matches.
   const isLight = isMounted && mode === 'light';
 
+  const label = isLight ? 'Switch to dark mode' : 'Switch to light mode';
+
   return (
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      aria-checked={isLight}
-      aria-label={isLight ? 'Switch to dark mode' : 'Switch to light mode'}
-      onClick={() => setMode(isLight ? 'dark' : 'light')}
-    >
-      <Sun
-        className={cn(
-          'size-3.5 transition-all duration-200',
-          isMounted && isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0',
-        )}
-      />
-      <Moon
-        className={cn(
-          'absolute size-3.5 transition-all duration-200',
-          isMounted && !isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 rotate-90 opacity-0',
-        )}
-      />
-    </Button>
+    <Hint label={label}>
+      <Button
+        variant="ghost"
+        size="icon-sm"
+        aria-checked={isLight}
+        aria-label={label}
+        onClick={() => setMode(isLight ? 'dark' : 'light')}
+      >
+        <Sun
+          className={cn(
+            'size-3.5 transition-all duration-200',
+            isMounted && isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0',
+          )}
+        />
+        <Moon
+          className={cn(
+            'absolute size-3.5 transition-all duration-200',
+            isMounted && !isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 rotate-90 opacity-0',
+          )}
+        />
+      </Button>
+    </Hint>
   );
 };

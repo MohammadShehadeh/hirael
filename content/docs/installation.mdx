@@ -1,0 +1,102 @@
+## Set up shadcn/ui
+
+Hirael installs into any React project that uses shadcn/ui: Next.js, Vite, React Router, Astro and the rest. If your project doesn't have a `components.json` yet, initialize shadcn first.
+
+```bash
+npx shadcn@latest init
+```
+
+## Turn on the React Compiler
+
+Hirael components leave memoization to the [React Compiler](https://react.dev/learn/react-compiler), so enable it in your project. In Next.js, set it in `next.config.ts`:
+
+```ts
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+  reactCompiler: true,
+};
+
+export default nextConfig;
+```
+
+For Vite and other setups, follow the [React Compiler installation guide](https://react.dev/learn/react-compiler/installation).
+
+## Add a component
+
+Install any item by name. List several at once if you like. The CLI also brings in everything they depend on, including the shadcn/ui primitives they're built from.
+
+```bash
+npx shadcn@latest add @hirael/multi-select @hirael/date-range-picker @hirael/pricing-04
+```
+
+Every item page shows its command with a package manager switch. This one follows the base you picked in the Registry Customizer:
+
+<Install name="multi-select" />
+
+Here is everything that one command adds:
+
+<InstallTree name="multi-select" />
+
+## Use it
+
+Import the parts from your components folder and compose them, the same way you use shadcn/ui.
+
+```tsx
+'use client';
+
+import { useState } from 'react';
+
+import { MultiSelect, MultiSelectContent, MultiSelectTrigger } from '@/components/multi-select';
+
+const frameworks = [
+  { value: 'next', label: 'Next.js' },
+  { value: 'remix', label: 'Remix' },
+  { value: 'astro', label: 'Astro' },
+];
+
+export function FrameworkPicker() {
+  const [value, setValue] = useState<string[]>([]);
+
+  return (
+    <MultiSelect value={value} onValueChange={setValue} options={frameworks}>
+      <MultiSelectTrigger placeholder="Pick frameworks" />
+      <MultiSelectContent searchPlaceholder="Filter" />
+    </MultiSelect>
+  );
+}
+```
+
+## Base UI projects
+
+The `@hirael/` names install the Radix UI version. If your project is built on Base UI, install from the `base` path instead:
+
+```bash
+npx shadcn@latest add https://hirael.com/r/base/multi-select.json
+```
+
+To keep using short names, point the `@hirael` namespace at the Base UI registry in `components.json`:
+
+```json
+{
+  "registries": {
+    "@hirael": "https://hirael.com/r/base/{name}.json"
+  }
+}
+```
+
+Keep `{name}` exactly as written. The CLI replaces it with the item you ask for.
+
+## Updating an item
+
+Since the code lives in your project, updates are opt in. Run the same command with `--overwrite` to pull the latest version of an item.
+
+```bash
+npx shadcn@latest add @hirael/multi-select --overwrite
+```
+
+<Note>
+
+This replaces the files, including any changes you made to them. Commit first so you can review the diff.
+
+</Note>

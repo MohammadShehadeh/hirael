@@ -4,6 +4,7 @@ import { JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 import { ThemeProvider } from '@/components/active-theme';
+import { CustomizerProvider } from '@/components/customizer-sheet';
 import { JsonLd } from '@/components/json-ld';
 import { SiteAnalytics } from '@/components/site-analytics';
 import { SkipLink } from '@/components/skip-link';
@@ -103,7 +104,9 @@ export default function RootLayout({ children }: RootLayoutProps) {
       >
         <SkipLink />
         <TooltipProvider>
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            <CustomizerProvider>{children}</CustomizerProvider>
+          </ThemeProvider>
         </TooltipProvider>
         {GA_MEASUREMENT_ID && <SiteAnalytics gaId={GA_MEASUREMENT_ID} />}
       </body>

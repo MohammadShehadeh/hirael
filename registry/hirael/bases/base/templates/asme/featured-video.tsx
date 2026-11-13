@@ -24,7 +24,7 @@ export const FeaturedVideo = () => {
           />
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent"
+            className="absolute inset-0 bg-linear-to-t from-background/60 via-transparent to-transparent"
           />
 
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-6 p-6 md:flex-row md:items-end md:justify-between md:p-10">

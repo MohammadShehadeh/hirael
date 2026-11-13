@@ -61,11 +61,11 @@ export const Team = ({ lang }: TeamProps) => {
             </Marquee>
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent"
+              className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-linear-to-r from-background to-transparent"
             />
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent"
+              className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-linear-to-l from-background to-transparent"
             />
           </div>
         </Reveal>

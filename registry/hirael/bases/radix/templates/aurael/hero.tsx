@@ -133,9 +133,9 @@ export const Hero = ({ lang, setLang, scene: selected, setScene }: HeroProps) =>
         </motion.div>
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-t from-background from-3% via-background/65 via-50% to-background/10"
+          className="absolute inset-0 bg-linear-to-t from-background from-3% via-background/65 via-50% to-background/10"
         />
-        <div aria-hidden className="absolute inset-x-0 top-0 h-44 bg-gradient-to-b from-background/60 to-transparent" />
+        <div aria-hidden className="absolute inset-x-0 top-0 h-44 bg-linear-to-b from-background/60 to-transparent" />
         <div
           aria-hidden
           className="absolute inset-0 bg-[radial-gradient(120%_120%_at_50%_50%,transparent_35%,var(--background)_100%)] opacity-60"

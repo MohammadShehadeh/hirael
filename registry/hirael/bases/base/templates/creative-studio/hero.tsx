@@ -44,7 +44,7 @@ export const Hero = ({ videoSrc, posterSrc }: HeroProps) => {
 
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"
+          className="pointer-events-none absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/60"
         />
 
         <nav className="absolute top-0 left-1/2 z-20 flex max-w-[calc(100%-1.5rem)] -translate-x-1/2 rounded-b-2xl bg-black md:max-w-none md:rounded-b-3xl">

@@ -131,7 +131,7 @@ export const Hero = () => {
         />
         <div
           aria-hidden
-          className="absolute inset-0 z-[1] bg-gradient-to-b from-background/70 via-background/10 to-background/45"
+          className="absolute inset-0 z-[1] bg-linear-to-b from-background/70 via-background/10 to-background/45"
         />
 
         <div className="relative z-10 flex size-full flex-col items-center">

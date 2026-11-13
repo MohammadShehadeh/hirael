@@ -28,7 +28,7 @@ export const UseCasesSection = () => {
           />
           <div
             aria-hidden
-            className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/15 to-transparent"
+            className="absolute inset-0 bg-linear-to-b from-background/70 via-background/15 to-transparent"
           />
           <div className="relative z-10 p-10 md:p-12">
             <h3 className="mb-5 text-4xl leading-tight font-medium tracking-[-0.03em] text-foreground md:text-5xl">

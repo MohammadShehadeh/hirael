@@ -88,11 +88,11 @@ export const HeroSection = () => {
         />
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/20 to-background/10"
+          className="absolute inset-0 bg-linear-to-b from-background/70 via-background/20 to-background/10"
         />
         <div
           aria-hidden
-          className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-background/85 via-background/40 to-transparent"
+          className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-background/85 via-background/40 to-transparent"
         />
 
         <div className="relative z-10 flex h-full flex-col items-start justify-start p-12 pt-36">

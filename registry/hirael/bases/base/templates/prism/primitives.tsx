@@ -118,7 +118,7 @@ export const VideoBackdrop = ({
       {hasFailed ? (
         <div
           aria-hidden
-          className="absolute inset-0 z-0 bg-gradient-to-b from-muted via-background to-background bg-cover bg-center"
+          className="absolute inset-0 z-0 bg-linear-to-b from-muted via-background to-background bg-cover bg-center"
           style={posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined}
         />
       ) : (
@@ -138,13 +138,13 @@ export const VideoBackdrop = ({
       {fadeTop ? (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[200px] bg-gradient-to-b from-background to-transparent"
+          className="pointer-events-none absolute inset-x-0 top-0 z-[1] h-[200px] bg-linear-to-b from-background to-transparent"
         />
       ) : null}
       {fadeBottom ? (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[200px] bg-gradient-to-t from-background to-transparent"
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[200px] bg-linear-to-t from-background to-transparent"
         />
       ) : null}
     </>

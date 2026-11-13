@@ -168,7 +168,7 @@ export const Hero = ({ start = true }: HeroProps) => {
           className="absolute top-1/2 left-1/2 size-full min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 object-cover"
         />
         <div className="absolute inset-0 bg-black/20" />
-        <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-[hsl(var(--bg))] to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 h-48 bg-linear-to-t from-[hsl(var(--bg))] to-transparent" />
       </div>
 
       <div className="relative z-10 flex flex-col items-center px-6 text-center">

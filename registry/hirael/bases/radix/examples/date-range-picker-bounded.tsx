@@ -2,7 +2,9 @@
 
 import * as React from 'react';
 
-import { useT } from '@/lib/demo-locale';
+import { ar } from 'react-day-picker/locale';
+
+import { useDemoLocale, useT } from '@/lib/demo-locale';
 import { Field, FieldLabel } from '@/registry/hirael/bases/radix/ui/field';
 import {
   DateRangePicker,
@@ -17,6 +19,7 @@ const print = (r: DateRange | undefined) =>
 
 const DateRangePickerBounded = () => {
   const t = useT();
+  const calendarLocale = useDemoLocale() === 'ar' ? ar : undefined;
   const [bounded, setBounded] = React.useState<DateRange | undefined>();
 
   return (
@@ -31,6 +34,7 @@ const DateRangePickerBounded = () => {
           })}
         />
         <DateRangePickerContent
+          locale={calendarLocale}
           numberOfMonths={1}
           presets={[]}
           startMonth={new Date(2026, 5)}

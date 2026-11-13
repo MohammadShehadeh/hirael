@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import { ar } from 'react-day-picker/locale';
+
 import { useDemoLocale, useT, type Localized } from '@/lib/demo-locale';
 import { Field, FieldGroup, FieldLabel } from '@/registry/hirael/bases/base/ui/field';
 import {
@@ -28,6 +30,7 @@ const mediumDate: Localized<Intl.DateTimeFormat> = {
 const DateRangePickerDemo = () => {
   const t = useT();
   const locale = useDemoLocale();
+  const calendarLocale = locale === 'ar' ? ar : undefined;
 
   const fmt = mediumDate[locale];
   const print = (r: DateRange | undefined) =>
@@ -56,7 +59,7 @@ const DateRangePickerDemo = () => {
         <FieldLabel htmlFor="drp-basic">{t({ en: 'Basic', ar: 'أساسي' })}</FieldLabel>
         <DateRangePicker value={basic} onValueChange={setBasic} locale={locale}>
           <DateRangePickerTrigger id="drp-basic" />
-          <DateRangePickerContent />
+          <DateRangePickerContent locale={calendarLocale} />
         </DateRangePicker>
         <p className="text-xs text-muted-foreground uppercase">{print(basic)}</p>
       </Field>
@@ -71,7 +74,12 @@ const DateRangePickerDemo = () => {
               ar: 'اختر فترة التقرير',
             })}
           />
-          <DateRangePickerContent presets={presets} numberOfMonths={1} disabled={{ after: new Date() }} />
+          <DateRangePickerContent
+            presets={presets}
+            numberOfMonths={1}
+            disabled={{ after: new Date() }}
+            locale={calendarLocale}
+          />
         </DateRangePicker>
         <p className="text-xs text-muted-foreground uppercase">{print(composed)}</p>
       </Field>

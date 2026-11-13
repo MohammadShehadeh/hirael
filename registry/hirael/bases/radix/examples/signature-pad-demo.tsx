@@ -24,8 +24,8 @@ const SignaturePadDemo = () => {
         <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Basic', ar: 'أساسي' })}</p>
         <SignaturePad placeholder={t({ en: 'Sign here', ar: 'وقّع هنا' })}>
           <div className="absolute end-2 top-2 flex gap-1.5">
-            <SignaturePadUndo />
-            <SignaturePadClear />
+            <SignaturePadUndo>{t({ en: 'Undo', ar: 'تراجع' })}</SignaturePadUndo>
+            <SignaturePadClear>{t({ en: 'Clear', ar: 'مسح' })}</SignaturePadClear>
           </div>
         </SignaturePad>
       </div>
@@ -75,8 +75,8 @@ const SignaturePadDemo = () => {
           className="h-32"
         >
           <div className="absolute end-2 top-2 flex gap-1.5">
-            <SignaturePadUndo />
-            <SignaturePadClear />
+            <SignaturePadUndo>{t({ en: 'Undo', ar: 'تراجع' })}</SignaturePadUndo>
+            <SignaturePadClear>{t({ en: 'Clear', ar: 'مسح' })}</SignaturePadClear>
           </div>
         </SignaturePad>
       </div>

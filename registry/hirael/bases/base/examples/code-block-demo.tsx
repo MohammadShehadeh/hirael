@@ -79,7 +79,14 @@ const CodeBlockDemo = () => {
         <p className="text-xs text-muted-foreground uppercase">
           {t({ en: 'Max height with expand', ar: 'ارتفاع أقصى مع التوسيع' })}
         </p>
-        <CodeBlock code={longSnippet} filename="lib/fetch-json.ts" language="ts" maxHeight={180} />
+        <CodeBlock
+          code={longSnippet}
+          filename="lib/fetch-json.ts"
+          language="ts"
+          maxHeight={180}
+          showMoreLabel={t({ en: 'Show more', ar: 'عرض المزيد' })}
+          showLessLabel={t({ en: 'Show less', ar: 'عرض أقل' })}
+        />
       </div>
 
       <div className="grid gap-3">

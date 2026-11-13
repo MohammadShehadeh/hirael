@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import { ar } from 'react-day-picker/locale';
+
 import { useDemoLocale, useT, type Localized } from '@/lib/demo-locale';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 import {
@@ -58,7 +60,11 @@ const TimeSlotPickerDemo = () => {
         locale={locale}
       >
         <div className="w-fit rounded-md border border-border">
-          <TimeSlotPickerCalendar startMonth={new Date(2026, 9)} disabled={{ before: new Date(2026, 9, 5) }} />
+          <TimeSlotPickerCalendar
+            startMonth={new Date(2026, 9)}
+            disabled={{ before: new Date(2026, 9, 5) }}
+            locale={locale === 'ar' ? ar : undefined}
+          />
         </div>
         <TimeSlotPickerSlots
           label={t({ en: 'Available times', ar: 'الأوقات المتاحة' })}

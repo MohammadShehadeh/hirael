@@ -182,7 +182,7 @@ export const Features = ({ videoSrc }: FeaturesProps) => {
             ) : (
               <CinematicBackground variant="card" />
             )}
-            <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+            <div aria-hidden className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-5">
               <p className="text-lg font-medium text-(--cs-cream)">Your creative canvas.</p>
             </div>

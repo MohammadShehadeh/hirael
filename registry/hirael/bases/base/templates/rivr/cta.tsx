@@ -22,7 +22,7 @@ export const Cta = () => {
         />
         <div
           aria-hidden
-          className="absolute inset-0 z-[1] bg-gradient-to-t from-foreground/70 via-foreground/45 to-foreground/55"
+          className="absolute inset-0 z-[1] bg-linear-to-t from-foreground/70 via-foreground/45 to-foreground/55"
         />
 
         <motion.div {...fadeUp()} className="relative z-10 flex max-w-2xl flex-col items-center gap-8 text-center">

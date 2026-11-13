@@ -83,7 +83,7 @@ export const Services = ({ videoSrcs, posterSrcs }: ServicesProps) => {
             >
               <div className="relative aspect-video overflow-hidden">
                 <ServiceVideo src={videoSrcs?.[index] ?? service.videoUrl} posterSrc={posterSrcs?.[index]} />
-                <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
+                <div aria-hidden className="absolute inset-0 bg-linear-to-t from-background/40 to-transparent" />
               </div>
 
               <div className="p-6 md:p-8">

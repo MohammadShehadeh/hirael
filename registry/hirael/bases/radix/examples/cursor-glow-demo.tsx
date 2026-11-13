@@ -10,9 +10,7 @@ const CursorGlowDemo = () => {
     <div className="w-full max-w-xl overflow-hidden rounded-xl border border-border bg-card">
       <CursorGlow className="w-full">
         <div className="flex flex-col items-start gap-3 p-8">
-          <p className="text-xs text-muted-foreground uppercase">
-            {t({ en: 'Hover anywhere', ar: 'مرّر في أي مكان' })}
-          </p>
+          <p className="text-xs text-muted-foreground uppercase">{t({ en: 'Hover anywhere', ar: 'مرّر في أي مكان' })}</p>
           <h3 className="text-xl font-semibold tracking-tight text-foreground">
             {t({
               en: 'A glow that tracks the cursor',

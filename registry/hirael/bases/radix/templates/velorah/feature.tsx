@@ -103,7 +103,7 @@ export const Feature = ({ videoSrc = FEATURE_VIDEO, posterSrc }: FeatureProps) =
           {videoFailed ? (
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-br from-muted via-card to-background bg-cover bg-center"
+              className="absolute inset-0 bg-linear-to-br from-muted via-card to-background bg-cover bg-center"
               style={posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined}
             />
           ) : (

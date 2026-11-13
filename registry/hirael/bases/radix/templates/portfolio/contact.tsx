@@ -75,7 +75,7 @@ export const Contact = () => {
           className="absolute top-1/2 left-1/2 size-full min-h-full min-w-full -translate-x-1/2 -translate-y-1/2 -scale-y-100 object-cover"
         />
         <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-[hsl(var(--bg))] to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-linear-to-b from-[hsl(var(--bg))] to-transparent" />
       </div>
 
       <Marquee />

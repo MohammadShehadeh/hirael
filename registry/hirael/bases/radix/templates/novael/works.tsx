@@ -164,7 +164,7 @@ export const Works = ({ lang }: WorksProps) => {
                     <ProjectPlaceholder index={index} />
                     <div
                       aria-hidden
-                      className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"
+                      className="absolute inset-0 bg-linear-to-t from-black/90 via-black/30 to-transparent"
                     />
                     <div
                       aria-hidden

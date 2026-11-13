@@ -23,7 +23,7 @@ export const Hero = () => {
         playsInline
         aria-hidden
       />
-      <div aria-hidden className="absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-background to-transparent" />
+      <div aria-hidden className="absolute inset-x-0 bottom-0 h-64 bg-linear-to-t from-background to-transparent" />
 
       <div className="relative z-10 mx-auto flex w-full max-w-3xl flex-col items-center px-6 pt-28 text-center md:pt-32">
         <motion.div {...fadeUp(reduce, 0)} className="flex flex-col items-center gap-3 sm:flex-row">

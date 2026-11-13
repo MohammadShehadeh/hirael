@@ -23,7 +23,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
       {hasVideoFailed ? (
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-br from-muted via-[var(--akor-hero)] to-background bg-cover bg-center"
+          className="absolute inset-0 bg-linear-to-br from-muted via-[var(--akor-hero)] to-background bg-cover bg-center"
           style={posterSrc ? { backgroundImage: `url(${posterSrc})` } : undefined}
         />
       ) : (

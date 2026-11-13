@@ -5,6 +5,15 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
+// Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
+// primary at low opacity greys out against the background (a brown haze on dark canvases).
+const GLOW =
+  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
+const DEPTH =
+  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
+const WISP =
+  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
+
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 // Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
@@ -77,11 +86,20 @@ const Hero08 = () => {
       data-slot="hero"
       className="relative z-0 min-h-180 overflow-hidden rounded-sm border border-border bg-background pt-30"
     >
-      <div
-        data-slot="hero-backdrop"
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_50%_-12%,color-mix(in_oklch,var(--hero-glow)_30%,transparent),transparent_56%),radial-gradient(80%_70%_at_84%_110%,color-mix(in_oklch,var(--hero-depth)_26%,transparent),transparent_62%),radial-gradient(70%_60%_at_8%_78%,color-mix(in_oklch,var(--hero-wisp)_18%,transparent),transparent_66%)] opacity-80 [--hero-depth:oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] [--hero-glow:oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] [--hero-wisp:oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:[--hero-depth:oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30)/0.6)] dark:[--hero-glow:oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))] dark:[--hero-wisp:oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5)/0.6)]"
-      />
+      <div data-slot="hero-backdrop" aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className={cn(
+            'absolute start-1/2 -top-64 size-200 -translate-x-1/2 rounded-full opacity-50 blur-3xl rtl:translate-x-1/2 dark:opacity-25',
+            GLOW,
+          )}
+        />
+        <div
+          className={cn('absolute -end-24 -bottom-48 size-150 rounded-full opacity-45 blur-3xl dark:opacity-25', DEPTH)}
+        />
+        <div
+          className={cn('absolute -start-40 bottom-0 size-130 rounded-full opacity-40 blur-3xl dark:opacity-15', WISP)}
+        />
+      </div>
       <div
         data-slot="hero-grid"
         aria-hidden

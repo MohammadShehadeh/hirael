@@ -6,6 +6,13 @@ import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases/radix/ui/tooltip';
 
+// Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
+// primary at low opacity greys out against the background (a brown haze on dark canvases).
+const GLOW =
+  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
+const DEPTH =
+  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
+
 const ENTER =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 // Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
@@ -37,8 +44,18 @@ const GeometricAccent = () => {
     <div data-slot="hero-accent" aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
       {/* A glow behind each nest of squares, so the corners carry color and not
           just a hairline that all but disappears on a light canvas. */}
-      <div className="absolute start-[-10rem] -top-40 size-120 rounded-full bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] opacity-70 blur-3xl dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))] dark:opacity-25" />
-      <div className="absolute end-[-10rem] -bottom-40 size-120 rounded-full bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] opacity-70 blur-3xl dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))] dark:opacity-25" />
+      <div
+        className={cn(
+          'absolute start-[-10rem] -top-40 size-120 rounded-full opacity-70 blur-3xl dark:opacity-25',
+          GLOW,
+        )}
+      />
+      <div
+        className={cn(
+          'absolute end-[-10rem] -bottom-40 size-120 rounded-full opacity-70 blur-3xl dark:opacity-25',
+          DEPTH,
+        )}
+      />
 
       <div style={stagger(0, 0, 150)} className={cn(REVEAL, 'absolute start-[-5rem] -top-20 size-80')}>
         <div className="absolute inset-0 rotate-45 border border-primary/40" />

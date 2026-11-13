@@ -7,6 +7,15 @@ import { ArrowRight, Compass, Dna, Gem, Globe, Play, ShieldCheck, Sun } from 'lu
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
 
+// Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
+// primary at low opacity greys out against the background (a brown haze on dark canvases).
+const GLOW =
+  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
+const DEPTH =
+  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
+const WISP =
+  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
+
 const Hero02Backdrop = dynamic(() => import('./hero-02-backdrop'), {
   ssr: false,
   loading: () => <div className="size-full bg-muted/20" />,
@@ -39,11 +48,23 @@ const Hero02 = () => {
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
-      <div
-        aria-hidden
-        data-slot="hero-wash"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(55%_55%_at_50%_8%,color-mix(in_oklch,var(--hero-glow)_30%,transparent),transparent_64%),radial-gradient(60%_60%_at_10%_92%,color-mix(in_oklch,var(--hero-depth)_28%,transparent),transparent_68%),radial-gradient(60%_60%_at_90%_80%,color-mix(in_oklch,var(--hero-wisp)_20%,transparent),transparent_68%)] [--hero-depth:oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] [--hero-glow:oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] [--hero-wisp:oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:[--hero-depth:oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30)/0.6)] dark:[--hero-glow:oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))] dark:[--hero-wisp:oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5)/0.6)]"
-      />
+      <div aria-hidden data-slot="hero-wash" className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div
+          className={cn(
+            'absolute start-1/2 -top-48 size-160 -translate-x-1/2 rounded-full opacity-60 blur-3xl rtl:translate-x-1/2 dark:opacity-30',
+            GLOW,
+          )}
+        />
+        <div
+          className={cn(
+            'absolute -start-32 -bottom-40 size-140 rounded-full opacity-55 blur-3xl dark:opacity-25',
+            DEPTH,
+          )}
+        />
+        <div
+          className={cn('absolute -end-32 -bottom-32 size-140 rounded-full opacity-50 blur-3xl dark:opacity-20', WISP)}
+        />
+      </div>
       <div
         aria-hidden
         data-slot="hero-backdrop"

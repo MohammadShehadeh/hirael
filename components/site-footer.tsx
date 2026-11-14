@@ -62,6 +62,27 @@ const COMPACT_LINKS: FooterLink[] = [
   { href: '/llms.txt', label: 'llms.txt', isExternal: true },
 ];
 
+interface FooterLinkItemProps {
+  link: FooterLink;
+  className: string;
+}
+
+const FooterLinkItem = ({ link, className }: FooterLinkItemProps) => {
+  if (!link.isExternal) {
+    return (
+      <Link href={link.href} className={className}>
+        {link.label}
+      </Link>
+    );
+  }
+
+  return (
+    <a href={link.href} target="_blank" rel="noreferrer noopener" className={className}>
+      {link.label}
+    </a>
+  );
+};
+
 export interface SiteFooterCompactProps {
   className?: string;
 }
@@ -76,23 +97,9 @@ export const SiteFooterCompact = ({ className }: SiteFooterCompactProps) => {
           © {year} {SITE.author}. Built on shadcn/ui.
         </p>
         <nav aria-label="Footer" className="flex flex-wrap items-center gap-x-5 gap-y-2">
-          {COMPACT_LINKS.map((link) =>
-            link.isExternal ? (
-              <a
-                key={link.href}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="transition-colors hover:text-foreground"
-              >
-                {link.label}
-              </a>
-            ) : (
-              <Link key={link.href} href={link.href} className="transition-colors hover:text-foreground">
-                {link.label}
-              </Link>
-            ),
-          )}
+          {COMPACT_LINKS.map((link) => (
+            <FooterLinkItem key={link.href} link={link} className="transition-colors hover:text-foreground" />
+          ))}
           <a
             href={SITE.githubRepoUrl}
             target="_blank"
@@ -107,13 +114,89 @@ export const SiteFooterCompact = ({ className }: SiteFooterCompactProps) => {
   );
 };
 
+const FooterIntro = () => (
+  <div className="flex flex-col gap-8 border-b border-border/70 pb-10 md:flex-row md:items-end md:justify-between">
+    <div className="flex max-w-sm flex-col gap-4">
+      <Link
+        href="/"
+        aria-label={`${SITE.name} | home`}
+        className="inline-flex w-fit transition-opacity hover:opacity-80"
+      >
+        <Logo className="h-10" />
+      </Link>
+      <p className="text-display text-xl leading-snug text-foreground/90 sm:text-2xl">{SITE.description}</p>
+      <p className="text-sm leading-relaxed text-muted-foreground">
+        Install any item with the shadcn CLI and the source lands in your repo, styled for light, dark and RTL. There is
+        no package to depend on and nothing to keep up to date.
+      </p>
+    </div>
+
+    <Link
+      href="/components"
+      className="group inline-flex h-11 w-fit items-center gap-2 self-start rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors outline-none hover:bg-primary/90 focus-visible:ring-[3px] focus-visible:ring-ring/50 md:self-auto"
+    >
+      Browse components
+      <span className="flex size-7 items-center justify-center rounded-full bg-background/15 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
+        <ArrowRight className="size-4 rtl:rotate-180" />
+      </span>
+    </Link>
+  </div>
+);
+
+const FooterLinkGroups = () => (
+  <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4">
+    {FOOTER_LINKS.map((group) => (
+      <div key={group.label} className="flex flex-col gap-3.5">
+        <h3 className="text-xs text-foreground/70 uppercase">{group.label}</h3>
+        <ul className="flex flex-col gap-2.5">
+          {group.links.map((link) => (
+            <li key={link.href}>
+              <FooterLinkItem
+                link={link}
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+);
+
+const FooterBaseline = () => {
+  const year = new Date().getFullYear();
+
+  return (
+    <div className="relative">
+      <svg
+        aria-hidden
+        viewBox={HIRAEL_LOCKUP_VIEWBOX}
+        className="pointer-events-none absolute inset-x-0 -bottom-5 mx-auto w-[62vw] select-none sm:-bottom-9 lg:w-[32rem]"
+      >
+        <defs>
+          <linearGradient id="footer-wordmark" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.16} />
+            <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.04} />
+          </linearGradient>
+        </defs>
+        <path d={HIRAEL_MARK_PATH} fill="url(#footer-wordmark)" />
+        <path d={HIRAEL_WORDMARK_PATH} fill="url(#footer-wordmark)" />
+      </svg>
+      <div className="relative flex flex-col items-start justify-between gap-3 border-t border-border/70 px-6 py-6 sm:flex-row sm:items-center sm:px-10 lg:px-14">
+        <p className="text-xs tracking-widest text-muted-foreground uppercase">
+          © {year} {SITE.author}. Built on shadcn/ui.
+        </p>
+        <p className="text-xs tracking-widest text-muted-foreground uppercase">Source, not a package</p>
+      </div>
+    </div>
+  );
+};
+
 export interface SiteFooterProps {
   className?: string;
 }
 
 export const SiteFooter = ({ className }: SiteFooterProps) => {
-  const year = new Date().getFullYear();
-
   return (
     <footer className={cn('mt-auto pb-4 sm:pb-6', className)}>
       <div className="container w-full">
@@ -125,87 +208,12 @@ export const SiteFooter = ({ className }: SiteFooterProps) => {
           />
 
           <div className="relative px-6 pt-12 sm:px-10 sm:pt-14 lg:px-14">
-            <div className="flex flex-col gap-8 border-b border-border/70 pb-10 md:flex-row md:items-end md:justify-between">
-              <div className="flex max-w-sm flex-col gap-4">
-                <Link
-                  href="/"
-                  aria-label={`${SITE.name} | home`}
-                  className="inline-flex w-fit transition-opacity hover:opacity-80"
-                >
-                  <Logo className="h-10" />
-                </Link>
-                <p className="text-display text-xl leading-snug text-foreground/90 sm:text-2xl">{SITE.description}</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Install any item with the shadcn CLI and the source lands in your repo, styled for light, dark and
-                  RTL. There is no package to depend on and nothing to keep up to date.
-                </p>
-              </div>
+            <FooterIntro />
 
-              <Link
-                href="/components"
-                className="group inline-flex h-11 w-fit items-center gap-2 self-start rounded-full bg-primary ps-6 pe-2 text-sm font-medium text-primary-foreground transition-colors outline-none hover:bg-primary/90 focus-visible:ring-[3px] focus-visible:ring-ring/50 md:self-auto"
-              >
-                Browse components
-                <span className="flex size-7 items-center justify-center rounded-full bg-background/15 transition-transform group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5">
-                  <ArrowRight className="size-4 rtl:rotate-180" />
-                </span>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 gap-8 py-12 sm:grid-cols-4">
-              {FOOTER_LINKS.map((group) => (
-                <div key={group.label} className="flex flex-col gap-3.5">
-                  <h3 className="text-xs text-foreground/70 uppercase">{group.label}</h3>
-                  <ul className="flex flex-col gap-2.5">
-                    {group.links.map((link) => (
-                      <li key={link.href}>
-                        {link.isExternal ? (
-                          <a
-                            href={link.href}
-                            target="_blank"
-                            rel="noreferrer noopener"
-                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                          >
-                            {link.label}
-                          </a>
-                        ) : (
-                          <Link
-                            href={link.href}
-                            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                          >
-                            {link.label}
-                          </Link>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            <FooterLinkGroups />
           </div>
 
-          <div className="relative">
-            <svg
-              aria-hidden
-              viewBox={HIRAEL_LOCKUP_VIEWBOX}
-              className="pointer-events-none absolute inset-x-0 -bottom-5 mx-auto w-[62vw] select-none sm:-bottom-9 lg:w-[32rem]"
-            >
-              <defs>
-                <linearGradient id="footer-wordmark" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.16} />
-                  <stop offset="100%" stopColor="var(--primary)" stopOpacity={0.04} />
-                </linearGradient>
-              </defs>
-              <path d={HIRAEL_MARK_PATH} fill="url(#footer-wordmark)" />
-              <path d={HIRAEL_WORDMARK_PATH} fill="url(#footer-wordmark)" />
-            </svg>
-            <div className="relative flex flex-col items-start justify-between gap-3 border-t border-border/70 px-6 py-6 sm:flex-row sm:items-center sm:px-10 lg:px-14">
-              <p className="text-xs tracking-widest text-muted-foreground uppercase">
-                © {year} {SITE.author}. Built on shadcn/ui.
-              </p>
-              <p className="text-xs tracking-widest text-muted-foreground uppercase">Source, not a package</p>
-            </div>
-          </div>
+          <FooterBaseline />
         </div>
       </div>
     </footer>

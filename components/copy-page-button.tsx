@@ -95,6 +95,24 @@ const PageActionsMenu = ({ title, markdownPath }: PageActionsMenuProps) => {
   );
 };
 
+const copyMarkdown = async (markdownPath: string) => {
+  const markdown = fetch(markdownPath, { signal: AbortSignal.timeout(10_000) }).then((response) => {
+    if (!response.ok) throw new Error(String(response.status));
+
+    return response.text();
+  });
+
+  // Safari only allows a clipboard write during the click, so start it now and hand it the pending fetch.
+  if ('ClipboardItem' in window) {
+    const blob = markdown.then((text) => new Blob([text], { type: 'text/plain' }));
+    await navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]);
+
+    return;
+  }
+
+  await navigator.clipboard.writeText(await markdown);
+};
+
 export interface CopyPageButtonProps {
   name: string;
   title: string;
@@ -113,18 +131,7 @@ export const CopyPageButton = ({ name, title, className }: CopyPageButtonProps) 
   const handleCopyMarkdown = async () => {
     setCopyState('copying');
     try {
-      const markdown = fetch(markdownPath, { signal: AbortSignal.timeout(10_000) }).then((response) => {
-        if (!response.ok) throw new Error(String(response.status));
-
-        return response.text();
-      });
-      // Safari only allows a clipboard write during the click, so start it now and hand it the pending fetch.
-      if ('ClipboardItem' in window) {
-        const blob = markdown.then((text) => new Blob([text], { type: 'text/plain' }));
-        await navigator.clipboard.write([new ClipboardItem({ 'text/plain': blob })]);
-      } else {
-        await navigator.clipboard.writeText(await markdown);
-      }
+      await copyMarkdown(markdownPath);
       setCopyState('copied');
     } catch {
       setCopyState('error');

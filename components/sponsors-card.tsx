@@ -20,6 +20,48 @@ const hasOwnRightColumn = (pathname: string) =>
   /^\/templates\/[^/]+$/.test(pathname) ||
   /^\/docs(\/[^/]+)?$/.test(pathname);
 
+const SponsorTiles = () => {
+  if (SPONSORS.length === 0) {
+    return Array.from({ length: OPEN_SLOTS }, (_, i) => (
+      <a
+        key={i}
+        href={SPONSOR_URL}
+        target="_blank"
+        rel="noreferrer"
+        className={cn(
+          tileClassName,
+          'border border-dashed border-border text-xs text-muted-foreground hover:border-foreground/40 hover:text-foreground',
+        )}
+      >
+        Your logo here
+      </a>
+    ));
+  }
+
+  return SPONSORS.map((sponsor) => (
+    <a
+      key={sponsor.name}
+      href={sponsorHref(sponsor.href)}
+      target="_blank"
+      rel="noreferrer"
+      title={sponsor.name}
+      className={cn(tileClassName, 'gap-2 bg-muted/40 hover:bg-muted')}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element -- static export, images are unoptimized */}
+      <img
+        src={sponsor.logo}
+        alt={sponsor.name}
+        className={cn('max-h-6 w-auto max-w-full object-contain', sponsor.invertOnDark && 'dark:invert')}
+      />
+      {sponsor.showName && (
+        <span aria-hidden className="text-sm font-semibold tracking-tight">
+          {sponsor.name}
+        </span>
+      )}
+    </a>
+  ));
+};
+
 interface SponsorsCardProps {
   className?: string;
 }
@@ -49,43 +91,7 @@ export const SponsorsCard = ({ className }: SponsorsCardProps) => {
       </header>
 
       <div className="flex flex-col gap-1.5 rounded-lg border border-border/60 bg-background p-2">
-        {SPONSORS.length > 0
-          ? SPONSORS.map((sponsor) => (
-              <a
-                key={sponsor.name}
-                href={sponsorHref(sponsor.href)}
-                target="_blank"
-                rel="noreferrer"
-                title={sponsor.name}
-                className={cn(tileClassName, 'gap-2 bg-muted/40 hover:bg-muted')}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element -- static export, images are unoptimized */}
-                <img
-                  src={sponsor.logo}
-                  alt={sponsor.name}
-                  className={cn('max-h-6 w-auto max-w-full object-contain', sponsor.invertOnDark && 'dark:invert')}
-                />
-                {sponsor.showName && (
-                  <span aria-hidden className="text-sm font-semibold tracking-tight">
-                    {sponsor.name}
-                  </span>
-                )}
-              </a>
-            ))
-          : Array.from({ length: OPEN_SLOTS }, (_, i) => (
-              <a
-                key={i}
-                href={SPONSOR_URL}
-                target="_blank"
-                rel="noreferrer"
-                className={cn(
-                  tileClassName,
-                  'border border-dashed border-border text-xs text-muted-foreground hover:border-foreground/40 hover:text-foreground',
-                )}
-              >
-                Your logo here
-              </a>
-            ))}
+        <SponsorTiles />
       </div>
 
       <div className="flex flex-col gap-2.5 px-3 pt-3 pb-2">

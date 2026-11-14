@@ -17,65 +17,75 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/registry/hirael/bases/radix/ui/sheet';
 
-export interface DocsHeaderProps {
-  stars?: number | null;
+interface MobileNavProps {
   releases: SidebarRelease[];
 }
 
-export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
+const MobileNav = ({ releases }: MobileNavProps) => {
   const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   const menuTriggerRef = React.useRef<HTMLButtonElement>(null);
   const pendingHash = React.useRef<string | null>(null);
 
   const [lastPathname, setLastPathname] = React.useState(pathname);
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
-    setMenuOpen(false);
+    setIsOpen(false);
   }
 
+  return (
+    <Sheet open={isOpen} onOpenChange={setIsOpen}>
+      <Hint label="Navigation">
+        <SheetTrigger asChild>
+          <Button
+            ref={menuTriggerRef}
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Open navigation"
+            className="md:hidden"
+          >
+            <Menu />
+          </Button>
+        </SheetTrigger>
+      </Hint>
+      <SheetContent
+        side="left"
+        className="w-[85vw] max-w-sm overflow-y-auto p-0"
+        onCloseAutoFocus={(event) => {
+          const hash = pendingHash.current;
+          if (!hash) return;
+          pendingHash.current = null;
+          event.preventDefault();
+          menuTriggerRef.current?.focus({ preventScroll: true });
+          document.getElementById(hash.slice(1))?.scrollIntoView();
+        }}
+      >
+        <SheetTitle className="sr-only">Navigation</SheetTitle>
+        <DocsSidebarNav
+          releases={releases}
+          onNavigate={(hash) => {
+            pendingHash.current = hash;
+            setIsOpen(false);
+          }}
+          className="p-4 pt-12"
+        />
+      </SheetContent>
+    </Sheet>
+  );
+};
+
+export interface DocsHeaderProps {
+  stars?: number | null;
+  releases: SidebarRelease[];
+}
+
+export const DocsHeader = ({ stars, releases }: DocsHeaderProps) => {
   return (
     <header className="relative z-40 h-16 w-full border-b border-border bg-background/70 backdrop-blur-xl">
       <div className="mx-auto flex size-full max-w-page items-center">
         <div className="flex shrink-0 items-center gap-1 px-4 md:w-sidebar">
-          <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
-            <Hint label="Navigation">
-              <SheetTrigger asChild>
-                <Button
-                  ref={menuTriggerRef}
-                  type="button"
-                  variant="ghost"
-                  size="icon-sm"
-                  aria-label="Open navigation"
-                  className="md:hidden"
-                >
-                  <Menu />
-                </Button>
-              </SheetTrigger>
-            </Hint>
-            <SheetContent
-              side="left"
-              className="w-[85vw] max-w-sm overflow-y-auto p-0"
-              onCloseAutoFocus={(event) => {
-                const hash = pendingHash.current;
-                if (!hash) return;
-                pendingHash.current = null;
-                event.preventDefault();
-                menuTriggerRef.current?.focus({ preventScroll: true });
-                document.getElementById(hash.slice(1))?.scrollIntoView();
-              }}
-            >
-              <SheetTitle className="sr-only">Navigation</SheetTitle>
-              <DocsSidebarNav
-                releases={releases}
-                onNavigate={(hash) => {
-                  pendingHash.current = hash;
-                  setMenuOpen(false);
-                }}
-                className="p-4 pt-12"
-              />
-            </SheetContent>
-          </Sheet>
+          <MobileNav releases={releases} />
           <Link
             href="/"
             aria-label={`${SITE.name} | home`}

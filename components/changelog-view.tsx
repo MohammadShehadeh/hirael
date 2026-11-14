@@ -8,8 +8,6 @@ import type { Changelog } from '@/lib/changelog';
 import { Badge } from '@/registry/hirael/bases/radix/ui/badge';
 import { entryHref, REGISTRY_BY_NAME } from '@/registry/hirael/registry-meta';
 
-export type ChangelogViewProps = Changelog;
-
 interface ItemLinksProps {
   label: string;
   names: string[];
@@ -40,6 +38,54 @@ const ItemLinks = ({ label, names }: ItemLinksProps) => {
   );
 };
 
+interface ReleaseSectionProps {
+  entry: Changelog['entries'][number];
+  hasDivider: boolean;
+  isLatest: boolean;
+}
+
+const ReleaseSection = ({ entry, hasDivider, isLatest }: ReleaseSectionProps) => (
+  <section
+    id={`release-${entry.slug}`}
+    aria-labelledby={`release-${entry.slug}-title`}
+    className={cn(
+      'scroll-mt-24 md:grid md:grid-cols-[8.5rem_1fr] md:items-start md:gap-10',
+      hasDivider && 'mt-14 border-t border-border pt-14 sm:mt-16 sm:pt-16',
+    )}
+  >
+    <div className="flex flex-wrap items-center gap-3 md:sticky md:top-16 md:flex-col md:items-start md:gap-2.5">
+      <p className="text-xs text-muted-foreground uppercase">
+        <time dateTime={entry.isoDate}>{entry.displayDate}</time>
+      </p>
+      {isLatest ? (
+        <Badge variant="outline">
+          <span className="state-dot" />
+          Latest
+        </Badge>
+      ) : null}
+    </div>
+
+    <div className="mt-4 min-w-0 md:mt-0">
+      <h2 id={`release-${entry.slug}-title`} className="text-display text-3xl leading-tight sm:text-4xl">
+        {entry.version ?? entry.title}
+      </h2>
+
+      {entry.version && entry.title ? (
+        <p className="mt-3 text-base text-balance text-muted-foreground">{entry.title}</p>
+      ) : null}
+
+      <div className="mt-7">
+        <MDXRemote source={entry.body} components={mdxComponents} />
+      </div>
+
+      <ItemLinks label="Added" names={entry.added} />
+      <ItemLinks label="Updated" names={entry.updated} />
+    </div>
+  </section>
+);
+
+export type ChangelogViewProps = Changelog;
+
 export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogViewProps) => {
   return (
     <article className="relative container py-16 sm:py-20">
@@ -62,44 +108,12 @@ export const ChangelogView = ({ entries, lastUpdated, latestSlug }: ChangelogVie
       ) : (
         <div className="mt-16 sm:mt-20">
           {entries.map((entry, index) => (
-            <section
+            <ReleaseSection
               key={entry.slug}
-              id={`release-${entry.slug}`}
-              aria-labelledby={`release-${entry.slug}-title`}
-              className={cn(
-                'scroll-mt-24 md:grid md:grid-cols-[8.5rem_1fr] md:items-start md:gap-10',
-                index > 0 && 'mt-14 border-t border-border pt-14 sm:mt-16 sm:pt-16',
-              )}
-            >
-              <div className="flex flex-wrap items-center gap-3 md:sticky md:top-16 md:flex-col md:items-start md:gap-2.5">
-                <p className="text-xs text-muted-foreground uppercase">
-                  <time dateTime={entry.isoDate}>{entry.displayDate}</time>
-                </p>
-                {entry.slug === latestSlug ? (
-                  <Badge variant="outline">
-                    <span className="state-dot" />
-                    Latest
-                  </Badge>
-                ) : null}
-              </div>
-
-              <div className="mt-4 min-w-0 md:mt-0">
-                <h2 id={`release-${entry.slug}-title`} className="text-display text-3xl leading-tight sm:text-4xl">
-                  {entry.version ?? entry.title}
-                </h2>
-
-                {entry.version && entry.title ? (
-                  <p className="mt-3 text-base text-balance text-muted-foreground">{entry.title}</p>
-                ) : null}
-
-                <div className="mt-7">
-                  <MDXRemote source={entry.body} components={mdxComponents} />
-                </div>
-
-                <ItemLinks label="Added" names={entry.added} />
-                <ItemLinks label="Updated" names={entry.updated} />
-              </div>
-            </section>
+              entry={entry}
+              hasDivider={index > 0}
+              isLatest={entry.slug === latestSlug}
+            />
           ))}
         </div>
       )}

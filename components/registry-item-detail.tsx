@@ -27,8 +27,11 @@ interface BreadcrumbItem {
   href?: string;
 }
 
-const titleSuffixFor = (entry: RegistryEntryMeta) =>
-  entry.category !== 'utilities' ? 'component' : entry.name.startsWith('use-') ? 'hook' : 'utility';
+const titleSuffixFor = (entry: RegistryEntryMeta) => {
+  if (entry.category !== 'utilities') return 'component';
+
+  return entry.name.startsWith('use-') ? 'hook' : 'utility';
+};
 
 export const registryItemMetadata = (entry: RegistryEntryMeta): Metadata =>
   detailMetadata(entry, { titleSuffix: titleSuffixFor(entry) });

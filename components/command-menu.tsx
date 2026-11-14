@@ -20,25 +20,26 @@ export interface CommandMenuProps {
 }
 
 export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [armed, setArmed] = React.useState(false);
-  const isMac = useIsApple();
+  const [isOpen, setIsOpen] = React.useState(false);
+  // The palette chunk loads on first use and stays mounted after.
+  const [isArmed, setIsArmed] = React.useState(false);
+  const isApple = useIsApple();
 
   React.useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key.toLowerCase() !== 'k' || !(e.metaKey || e.ctrlKey)) return;
-      e.preventDefault();
-      setArmed(true);
-      setOpen((prev) => !prev);
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() !== 'k' || !(event.metaKey || event.ctrlKey)) return;
+      event.preventDefault();
+      setIsArmed(true);
+      setIsOpen((prev) => !prev);
     };
-    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
 
-    return () => document.removeEventListener('keydown', onKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   const handleOpenPalette = () => {
-    setArmed(true);
-    setOpen(true);
+    setIsArmed(true);
+    setIsOpen(true);
   };
 
   return (
@@ -68,11 +69,11 @@ export const CommandMenu = ({ className, variant = 'button' }: CommandMenuProps)
         >
           <Search className="size-3.5 shrink-0" />
           <span className="hidden text-[13px] tracking-tight sm:inline">Search…</span>
-          <Kbd className="ms-2 hidden sm:inline-flex">{isMac ? '⌘' : 'Ctrl '}K</Kbd>
+          <Kbd className="ms-2 hidden sm:inline-flex">{isApple ? '⌘' : 'Ctrl '}K</Kbd>
         </Button>
       )}
 
-      {armed && <CommandPalette open={open} onOpenChange={setOpen} />}
+      {isArmed && <CommandPalette open={isOpen} onOpenChange={setIsOpen} />}
     </>
   );
 };

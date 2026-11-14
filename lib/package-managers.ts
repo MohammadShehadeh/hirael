@@ -2,9 +2,9 @@
 
 import * as React from 'react';
 
-export type PackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun';
+export const PACKAGE_MANAGERS = ['npm', 'pnpm', 'yarn', 'bun'] as const;
 
-export const PACKAGE_MANAGERS: readonly PackageManager[] = ['npm', 'pnpm', 'yarn', 'bun'] as const;
+export type PackageManager = (typeof PACKAGE_MANAGERS)[number];
 
 const STORAGE_KEY = 'hirael:pm';
 const CHANGE_EVENT = 'hirael:pm-change';
@@ -22,9 +22,8 @@ export const getShadcnAddCommand = (packageManager: PackageManager, url: string)
 export const getShadcnInitCommand = (packageManager: PackageManager, flags: string): string =>
   `${RUNNERS[packageManager]} shadcn@latest init ${flags}`.trim();
 
-export const isPackageManager = (value: string | null): value is PackageManager => {
-  return PACKAGE_MANAGERS.some((manager) => manager === value);
-};
+export const isPackageManager = (value: string | null): value is PackageManager =>
+  PACKAGE_MANAGERS.some((manager) => manager === value);
 
 let current: PackageManager | null = null;
 

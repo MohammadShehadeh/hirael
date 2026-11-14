@@ -8,6 +8,10 @@ import { SegmentedControl } from '@/components/segmented-control';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
+const DEFAULT_MAX_HEIGHT = 'max-h-[640px]';
+
+const TREE_ROW_FOCUS = 'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50';
+
 export interface CodeBlockTab {
   label: string;
   code: string;
@@ -100,13 +104,6 @@ const buildTree = (paths: string[]): TreeNode[] => {
   return roots;
 };
 
-interface FileTreeProps {
-  paths: string[];
-  activePath: string;
-  onSelect: (path: string) => void;
-  maxHeight: string;
-}
-
 interface TreeRowProps {
   node: TreeNode;
   depth: number;
@@ -128,7 +125,7 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
           style={indent}
           className={cn(
             'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left text-muted-foreground transition-colors hover:text-foreground',
-            'outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+            TREE_ROW_FOCUS,
           )}
         >
           <ChevronRight className={cn('size-3 shrink-0 transition-transform', isOpen && 'rotate-90')} aria-hidden />
@@ -158,7 +155,7 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
       title={node.filePath}
       className={cn(
         'flex w-full items-center gap-1.5 rounded-sm py-1 pr-2 text-left transition-colors',
-        'focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+        TREE_ROW_FOCUS,
         isActive ? 'bg-accent text-foreground' : 'text-muted-foreground hover:text-foreground',
       )}
     >
@@ -168,6 +165,13 @@ const TreeRow = ({ node, depth, activePath, onSelect }: TreeRowProps) => {
     </button>
   );
 };
+
+interface FileTreeProps {
+  paths: string[];
+  activePath: string;
+  onSelect: (path: string) => void;
+  maxHeight: string;
+}
 
 const FileTree = ({ paths, activePath, onSelect, maxHeight }: FileTreeProps) => {
   const tree = buildTree(paths);
@@ -185,7 +189,7 @@ export const CodeBlock = ({
   tabs,
   defaultTab,
   className,
-  maxHeight = 'max-h-[640px]',
+  maxHeight = DEFAULT_MAX_HEIGHT,
   layout = 'tabs',
   collapsible = false,
 }: CodeBlockProps) => {
@@ -237,7 +241,7 @@ export const CodeBlock = ({
           className="min-w-0 overflow-x-auto"
           items={tabs.map((tab) => ({
             value: tab.label,
-            label: tab.label.split('/').slice(-1)[0],
+            label: tab.label.split('/').at(-1),
             title: tab.label,
           }))}
         />
@@ -261,7 +265,7 @@ export interface InlineCodeBlockProps {
   maxHeight?: string;
 }
 
-export const InlineCodeBlock = ({ html, code, className, maxHeight = 'max-h-[640px]' }: InlineCodeBlockProps) => {
+export const InlineCodeBlock = ({ html, code, className, maxHeight = DEFAULT_MAX_HEIGHT }: InlineCodeBlockProps) => {
   return (
     <div className={cn('group relative overflow-hidden rounded-md border border-border bg-card', className)}>
       <span className="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">

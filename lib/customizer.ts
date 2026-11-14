@@ -57,6 +57,10 @@ export const DEFAULT_CONFIG: CustomizerConfig = {
   radius: 'default',
 };
 
+const ICON_LIBRARY_NAMES = ICON_LIBRARIES.map((library) => library.name);
+const RADIUS_NAMES = RADII.map((radius) => radius.name);
+const FONT_NAMES = FONTS.map((font) => font.name);
+
 const pick = <T extends string>(value: unknown, allowed: readonly T[], fallback: T): T =>
   allowed.find((option) => option === value) ?? fallback;
 
@@ -67,30 +71,14 @@ export const normalizeConfig = (raw: Partial<CustomizerConfig> | null | undefine
   const chartColor = pick(raw?.chartColor, themeNames, theme);
 
   return {
-    base: pick(
-      raw?.base,
-      BASES.map((b) => b.name),
-      DEFAULT_CONFIG.base,
-    ),
-    iconLibrary: pick(
-      raw?.iconLibrary,
-      ICON_LIBRARIES.map((i) => i.name),
-      DEFAULT_CONFIG.iconLibrary,
-    ),
+    base: pick(raw?.base, REGISTRY_BASES, DEFAULT_CONFIG.base),
+    iconLibrary: pick(raw?.iconLibrary, ICON_LIBRARY_NAMES, DEFAULT_CONFIG.iconLibrary),
     previewOnly: raw?.previewOnly === true,
     baseColor,
     theme,
     chartColor,
-    font: pick(
-      raw?.font,
-      FONTS.map((f) => f.name),
-      DEFAULT_CONFIG.font,
-    ),
-    radius: pick(
-      raw?.radius,
-      RADII.map((r) => r.name),
-      DEFAULT_CONFIG.radius,
-    ),
+    font: pick(raw?.font, FONT_NAMES, DEFAULT_CONFIG.font),
+    radius: pick(raw?.radius, RADIUS_NAMES, DEFAULT_CONFIG.radius),
   };
 };
 

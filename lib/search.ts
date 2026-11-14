@@ -238,6 +238,12 @@ export interface SearchDoc {
   compactName: string;
 }
 
+const KIND_SEARCH_WORDS: Partial<Record<RegistryEntryMeta['category'], string>> = {
+  blocks: 'block section component',
+  templates: 'template page',
+  utilities: 'react hook utility helper',
+};
+
 const entryKindLabel = (entry: RegistryEntryMeta) => {
   if (entry.category === 'templates') return 'Template';
   if (entry.category === 'blocks') return entry.blockKind ? BLOCK_KIND_LABELS[entry.blockKind] : 'Block';
@@ -248,16 +254,7 @@ const entryKindLabel = (entry: RegistryEntryMeta) => {
 export const buildSearchIndex = (entries: RegistryEntryMeta[]): SearchDoc[] =>
   entries.map((entry) => {
     const kindLabel = entryKindLabel(entry);
-    const kindWords = [
-      kindLabel,
-      entry.blockKind ?? '',
-      entry.category === 'blocks' ? 'block section' : '',
-      entry.category === 'templates'
-        ? 'template page'
-        : entry.category === 'utilities'
-          ? 'react hook utility helper'
-          : 'component',
-    ].join(' ');
+    const kindWords = [kindLabel, entry.blockKind ?? '', KIND_SEARCH_WORDS[entry.category] ?? 'component'].join(' ');
 
     return {
       entry,

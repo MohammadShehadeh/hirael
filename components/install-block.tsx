@@ -6,8 +6,9 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 import { SegmentedControl } from '@/components/segmented-control';
 import { CopyButton } from '@/registry/hirael/bases/radix/components/copy-button';
-import { PACKAGE_MANAGERS, getShadcnAddCommand, isPackageManager, usePackageManager } from '@/lib/package-managers';
+import { PACKAGE_MANAGERS, getShadcnAddCommand, usePackageManager } from '@/lib/package-managers';
 import { SITE } from '@/lib/site';
+import { subscribeNever } from '@/lib/subscribe-never';
 import { useRegistryBase } from '@/components/active-theme';
 import { registryItemPath } from '@/registry/hirael/registry-meta';
 
@@ -50,7 +51,6 @@ interface InstallBlockProps extends VariantProps<typeof installBlockVariants> {
 }
 
 // The static HTML uses the public origin. The browser swaps in its own after hydration.
-const subscribeNoop = () => () => {};
 const getServerOrigin = () => SITE.registry.origin;
 const getClientOrigin = () => process.env.NEXT_PUBLIC_BASE_URL ?? window.location.origin;
 
@@ -95,7 +95,7 @@ const CommandLine = ({ command }: CommandLineProps) => {
 
 export const InstallBlock = ({ name, className, variant }: InstallBlockProps) => {
   const { packageManager, setPackageManager } = usePackageManager();
-  const origin = React.useSyncExternalStore(subscribeNoop, getClientOrigin, getServerOrigin);
+  const origin = React.useSyncExternalStore(subscribeNever, getClientOrigin, getServerOrigin);
 
   const url = `${origin}${registryItemPath(useRegistryBase(), name)}`;
   const command = getShadcnAddCommand(packageManager, url);
@@ -114,9 +114,7 @@ export const InstallBlock = ({ name, className, variant }: InstallBlockProps) =>
           role="radio"
           ariaLabel="Package manager"
           value={packageManager}
-          onValueChange={(value) => {
-            if (isPackageManager(value)) setPackageManager(value);
-          }}
+          onValueChange={setPackageManager}
           items={PACKAGE_MANAGERS.map((manager) => ({ value: manager, label: manager }))}
         />
         <CopyButton value={command} size="sm" aria-label="Copy install command" />

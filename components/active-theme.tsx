@@ -20,6 +20,7 @@ import {
   type ThemeMode,
 } from '@/lib/customizer';
 import { useMounted } from '@/hooks/use-mounted';
+import { subscribeNever } from '@/lib/subscribe-never';
 import type { RegistryBase } from '@/registry/hirael/registry-meta';
 
 interface ThemeContextValue {
@@ -146,12 +147,10 @@ const readEmbedForcedTheme = (): ThemeMode | undefined => {
   return theme === 'light' || theme === 'dark' ? theme : undefined;
 };
 
-/** Only a navigation changes the URL, so there is nothing to subscribe to. */
-const subscribeToForcedTheme = () => () => {};
-
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  // No URL on the server, so this stays empty and hydration matches.
-  const forcedTheme = React.useSyncExternalStore(subscribeToForcedTheme, readEmbedForcedTheme, () => undefined);
+  // Only a navigation changes the URL, so there is nothing to subscribe to. No URL on the server, so this stays
+  // empty and hydration matches.
+  const forcedTheme = React.useSyncExternalStore(subscribeNever, readEmbedForcedTheme, () => undefined);
 
   return (
     <NextThemesProvider

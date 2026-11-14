@@ -22,7 +22,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/registry/hirael/bases/radix/ui/dropdown-menu';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/registry/hirael/bases/radix/ui/tooltip';
 import { REGISTRY_BY_NAME, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
 const PREVIEW_ICON_BUTTON = 'size-7';
@@ -123,16 +122,13 @@ export const PreviewZoomMenu = ({ value, onValueChange, fitPercent }: PreviewZoo
 
   return (
     <DropdownMenu>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>
-            <Button type="button" variant="ghost" size="xs" aria-label={`Preview zoom, ${current}%`}>
-              <span className="tabular-nums">{current}%</span>
-            </Button>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">Zoom</TooltipContent>
-      </Tooltip>
+      <Hint label="Zoom">
+        <DropdownMenuTrigger asChild>
+          <Button type="button" variant="ghost" size="xs" aria-label={`Preview zoom, ${current}%`}>
+            <span className="tabular-nums">{current}%</span>
+          </Button>
+        </DropdownMenuTrigger>
+      </Hint>
       <DropdownMenuContent align="end" className="w-40">
         <DropdownMenuLabel>Zoom</DropdownMenuLabel>
         <DropdownMenuRadioGroup value={String(value)} onValueChange={(next) => onValueChange(parseZoom(next))}>
@@ -178,7 +174,7 @@ export const PreviewOpenButton = ({ href }: PreviewOpenButtonProps) => {
   );
 };
 
-const issueHref = (entry: RegistryEntryMeta) => {
+export const issueHref = (entry: RegistryEntryMeta) => {
   const params = new URLSearchParams({
     template: 'bug_report.yml',
     title: `[bug]: ${entry.title}`,
@@ -195,13 +191,14 @@ export interface PreviewMoreMenuProps {
 
 export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
   const pageUrl = `${SITE.url}${entryHref(entry)}`;
-  const [copied, setCopied] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [isCopied, setIsCopied] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
   const copyTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const npmDeps = entry.dependencies ?? [];
   const registryDeps = entry.registryDependencies ?? [];
   const hasDeps = npmDeps.length > 0 || registryDeps.length > 0;
+  const knownDeps = registryDeps.flatMap((name) => REGISTRY_BY_NAME[name] ?? []);
   const unknownDeps = registryDeps.filter((name) => !REGISTRY_BY_NAME[name]);
 
   React.useEffect(() => () => clearTimeout(copyTimer.current), []);
@@ -209,41 +206,38 @@ export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
   const copyPageLink = async () => {
     try {
       await navigator.clipboard.writeText(pageUrl);
-      setCopied(true);
+      setIsCopied(true);
       clearTimeout(copyTimer.current);
       copyTimer.current = setTimeout(() => {
-        setCopied(false);
-        setOpen(false);
+        setIsCopied(false);
+        setIsOpen(false);
       }, 1200);
     } catch {
-      setCopied(false);
+      setIsCopied(false);
     }
   };
 
   return (
     <DropdownMenu
-      open={open}
+      open={isOpen}
       onOpenChange={(next) => {
-        setOpen(next);
-        if (!next) setCopied(false);
+        setIsOpen(next);
+        if (!next) setIsCopied(false);
       }}
     >
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              aria-label="More preview actions"
-              className={PREVIEW_ICON_BUTTON}
-            >
-              <EllipsisVertical className="size-3.5" />
-            </Button>
-          </DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent side="bottom">More</TooltipContent>
-      </Tooltip>
+      <Hint label="More">
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label="More preview actions"
+            className={PREVIEW_ICON_BUTTON}
+          >
+            <EllipsisVertical className="size-3.5" />
+          </Button>
+        </DropdownMenuTrigger>
+      </Hint>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuItem
           onSelect={(event) => {
@@ -251,8 +245,8 @@ export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
             void copyPageLink();
           }}
         >
-          {copied ? <Check aria-hidden /> : <Copy aria-hidden />}
-          {copied ? 'Copied link' : 'Copy link'}
+          {isCopied ? <Check aria-hidden /> : <Copy aria-hidden />}
+          {isCopied ? 'Copied link' : 'Copy link'}
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <a href={issueHref(entry)} target="_blank" rel="noreferrer noopener">
@@ -274,15 +268,11 @@ export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
                 </a>
               </DropdownMenuItem>
             ))}
-            {registryDeps.map((name) => {
-              const dep = REGISTRY_BY_NAME[name];
-
-              return dep ? (
-                <DropdownMenuItem key={name} asChild>
-                  <Link href={entryHref(dep)}>{dep.title}</Link>
-                </DropdownMenuItem>
-              ) : null;
-            })}
+            {knownDeps.map((dep) => (
+              <DropdownMenuItem key={dep.name} asChild>
+                <Link href={entryHref(dep)}>{dep.title}</Link>
+              </DropdownMenuItem>
+            ))}
             {unknownDeps.length > 0 && (
               <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">{unknownDeps.join(', ')}</p>
             )}

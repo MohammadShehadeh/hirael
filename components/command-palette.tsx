@@ -49,6 +49,14 @@ const recentKind = (entry: RegistryEntryMeta): RecentKind => {
   return 'component';
 };
 
+const docsOfKind = (kind: RecentKind) => SEARCH_INDEX.filter((doc) => recentKind(doc.entry) === kind);
+
+const BROWSE_GROUPS = [
+  { heading: 'Components', docs: docsOfKind('component') },
+  { heading: 'Blocks', docs: docsOfKind('block') },
+  { heading: 'Templates', docs: docsOfKind('template') },
+];
+
 const DOC_LINKS: DocLink[] = [
   ...DOC_PAGES.map((page) => ({ href: docHref(page.slug), title: page.title })),
   ...DOC_EXTRA_LINKS,
@@ -96,11 +104,6 @@ const QuickGroups = ({ query, onClose, onNavigate }: QuickGroupsProps) => {
     </>
   );
 };
-
-export interface CommandPaletteProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-}
 
 interface EntryItemProps {
   doc: SearchDoc;
@@ -170,6 +173,11 @@ const RecentGroup = ({ onSelect }: RecentGroupProps) => {
   );
 };
 
+export interface CommandPaletteProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
+
 export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
   const router = useRouter();
   const [search, setSearch] = React.useState('');
@@ -224,21 +232,9 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
               <>
                 <RecentGroup onSelect={handleSelect} />
                 {quickGroups}
-                <BrowseGroup
-                  heading="Components"
-                  docs={SEARCH_INDEX.filter((doc) => recentKind(doc.entry) === 'component')}
-                  onSelect={handleSelect}
-                />
-                <BrowseGroup
-                  heading="Blocks"
-                  docs={SEARCH_INDEX.filter((doc) => recentKind(doc.entry) === 'block')}
-                  onSelect={handleSelect}
-                />
-                <BrowseGroup
-                  heading="Templates"
-                  docs={SEARCH_INDEX.filter((doc) => recentKind(doc.entry) === 'template')}
-                  onSelect={handleSelect}
-                />
+                {BROWSE_GROUPS.map((group) => (
+                  <BrowseGroup key={group.heading} heading={group.heading} docs={group.docs} onSelect={handleSelect} />
+                ))}
               </>
             )}
           </CommandList>

@@ -590,14 +590,13 @@ const ART: Record<string, React.ReactNode> = {
         />
       </svg>
       <div className="flex flex-1 flex-col gap-2">
-        {['42%', '24%', '34%'].map((share, i) => (
+        {[
+          ['42%', 'bg-warm'],
+          ['24%', 'bg-foreground/25'],
+          ['34%', 'bg-foreground/10'],
+        ].map(([share, dot], i) => (
           <div key={share} className="flex items-center gap-2">
-            <span
-              className={cn(
-                'size-1.5 shrink-0 rounded-full',
-                i === 0 ? 'bg-warm' : i === 1 ? 'bg-foreground/25' : 'bg-foreground/10',
-              )}
-            />
+            <span className={cn('size-1.5 shrink-0 rounded-full', dot)} />
             <Bar className="h-1 flex-1 bg-foreground/8" />
             <span className={cn('text-[9px] tabular-nums', i === 0 ? 'text-warm' : 'text-foreground/40')}>{share}</span>
           </div>

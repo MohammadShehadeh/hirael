@@ -64,17 +64,17 @@ const BLOCK_GROUP_ICONS: Record<CategoryGroup, LucideIcon> = {
   app: LayoutDashboard,
 };
 
+const isCurrentPath = (pathname: string, href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
 const sectionForPath = (pathname: string): Section => {
-  if (pathname === '/docs' || pathname.startsWith('/docs/')) return 'docs';
-  if (pathname === '/blocks' || pathname.startsWith('/blocks/')) return 'blocks';
-  if (pathname === '/templates' || pathname.startsWith('/templates/')) return 'templates';
-  if (pathname === '/utilities' || pathname.startsWith('/utilities/')) return 'utilities';
+  if (isCurrentPath(pathname, '/docs')) return 'docs';
+  if (isCurrentPath(pathname, '/blocks')) return 'blocks';
+  if (isCurrentPath(pathname, '/templates')) return 'templates';
+  if (isCurrentPath(pathname, '/utilities')) return 'utilities';
   if (pathname === '/changelog') return 'changelog';
 
   return 'components';
 };
-
-const isCurrentPath = (pathname: string, href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
 export interface SidebarRelease {
   slug: string;

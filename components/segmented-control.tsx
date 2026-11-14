@@ -4,25 +4,25 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 
-export interface SegmentedControlItem {
-  value: string;
+export interface SegmentedControlItem<T extends string = string> {
+  value: T;
   label: React.ReactNode | ((isActive: boolean) => React.ReactNode);
   ariaLabel?: string;
   title?: string;
   disabled?: boolean;
 }
 
-export interface SegmentedControlProps {
-  items: SegmentedControlItem[];
-  value: string;
-  onValueChange: (value: string) => void;
+export interface SegmentedControlProps<T extends string = string> {
+  items: SegmentedControlItem<T>[];
+  value: T;
+  onValueChange: (value: T) => void;
   role?: 'tab' | 'radio';
   ariaLabel: string;
   className?: string;
   itemClassName?: string;
 }
 
-export const SegmentedControl = ({
+export const SegmentedControl = <T extends string>({
   items,
   value,
   onValueChange,
@@ -30,7 +30,7 @@ export const SegmentedControl = ({
   ariaLabel,
   className,
   itemClassName,
-}: SegmentedControlProps) => {
+}: SegmentedControlProps<T>) => {
   const listRef = React.useRef<HTMLDivElement>(null);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {

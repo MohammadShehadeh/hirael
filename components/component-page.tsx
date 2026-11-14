@@ -22,6 +22,7 @@ import {
   PreviewOpenButton,
   PreviewRefreshButton,
   PreviewThemeButton,
+  issueHref,
   previewSrc,
   usePreviewTheme,
 } from '@/components/preview-frame';
@@ -154,22 +155,18 @@ const Section = ({ id, label, children }: SectionProps) => {
   );
 };
 
+// Same floor as the embed shell.
+const EXAMPLE_MIN_HEIGHT = 360;
+const EXAMPLE_MAX_HEIGHT = 1200;
+
+type ExampleView = 'preview' | 'code';
+
 interface ExampleBlockProps {
   entry: RegistryEntryMeta;
   example: ExampleEntry;
   showTitle: boolean;
   eager: boolean;
 }
-
-// Same floor as the embed shell.
-const EXAMPLE_MIN_HEIGHT = 360;
-const EXAMPLE_MAX_HEIGHT = 1200;
-
-const EXAMPLE_VIEW_VALUES = ['preview', 'code'] as const;
-
-type ExampleView = (typeof EXAMPLE_VIEW_VALUES)[number];
-
-const isExampleView = (value: string): value is ExampleView => EXAMPLE_VIEW_VALUES.some((option) => option === value);
 
 // Framed because a theme or direction class on this page can't reach dialogs and popovers that portal out.
 const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) => {
@@ -190,9 +187,7 @@ const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) =
             role="tab"
             ariaLabel="Example view"
             value={view}
-            onValueChange={(v) => {
-              if (isExampleView(v)) setView(v);
-            }}
+            onValueChange={setView}
             className="rounded-md border border-border/70 bg-card/30 p-0.5"
             itemClassName="rounded-sm px-2.5 py-1 text-xs uppercase"
             items={[
@@ -210,14 +205,14 @@ const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) =
               <PreviewCustomizeButton />
               <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
               <PreviewThemeButton theme={previewTheme} />
-              <PreviewRefreshButton onRefresh={() => setRefreshKey((k) => k + 1)} />
+              <PreviewRefreshButton onRefresh={() => setRefreshKey((count) => count + 1)} />
               <PreviewOpenButton href={src} />
               <PreviewMoreMenu entry={entry} />
             </div>
           )}
         </div>
 
-        {view === 'preview' ? (
+        {view === 'preview' && (
           <PreviewFrame
             src={src}
             title={`${entry.title} ${example.title.toLowerCase()} preview`}
@@ -228,9 +223,8 @@ const ExampleBlock = ({ entry, example, showTitle, eager }: ExampleBlockProps) =
             eager={eager}
             className="w-full"
           />
-        ) : hasCode ? (
-          <CodeBlock tabs={example.files.map(({ label, code, html }) => ({ label, code, html }))} />
-        ) : null}
+        )}
+        {view === 'code' && hasCode && <CodeBlock tabs={example.files} />}
       </div>
     </section>
   );
@@ -259,14 +253,6 @@ const DepGroup = ({ title, deps }: DepGroupProps) => {
 const API_TH = 'px-4 py-2 text-start';
 const API_TH_LABEL = 'text-xs font-normal uppercase text-muted-foreground';
 
-interface ApiPanelProps {
-  parts: ApiPart[];
-}
-
-interface ApiPropRowProps {
-  prop: ApiProp;
-}
-
 interface HighlightedCodeProps {
   html?: string | null;
   fallback: string;
@@ -279,6 +265,10 @@ const HighlightedCode = ({ html, fallback }: HighlightedCodeProps) => {
 
   return <code className="font-mono text-xs text-muted-foreground">{fallback}</code>;
 };
+
+interface ApiPropRowProps {
+  prop: ApiProp;
+}
 
 const ApiPropRow = ({ prop }: ApiPropRowProps) => (
   <TableRow className="align-top">
@@ -301,6 +291,17 @@ const ApiPropRow = ({ prop }: ApiPropRowProps) => (
     </TableCell>
   </TableRow>
 );
+
+const emptyPropsNote = (part: ApiPart) => {
+  if (part.kind === 'function') return 'Takes no arguments.';
+  if (part.extendsNative) return 'No props of its own; forwards everything to the underlying element.';
+
+  return 'No configurable props.';
+};
+
+interface ApiPanelProps {
+  parts: ApiPart[];
+}
 
 const ApiPanel = ({ parts }: ApiPanelProps) => {
   return (
@@ -337,194 +338,186 @@ const ApiPanel = ({ parts }: ApiPanelProps) => {
               </TableBody>
             </Table>
           ) : (
-            <p className="px-4 py-3 text-xs text-muted-foreground">
-              {part.kind === 'function'
-                ? 'Takes no arguments.'
-                : part.extendsNative
-                  ? 'No props of its own; forwards everything to the underlying element.'
-                  : 'No configurable props.'}
-            </p>
+            <p className="px-4 py-3 text-xs text-muted-foreground">{emptyPropsNote(part)}</p>
           )}
-          {part.returns ? (
+          {part.returns && (
             <div className="flex flex-wrap items-baseline gap-2 border-t border-border px-4 py-2.5">
               <span className={API_TH_LABEL}>Returns</span>
               <HighlightedCode html={part.returnsHtml} fallback={part.returns} />
             </div>
-          ) : null}
+          )}
         </section>
       ))}
     </div>
   );
 };
 
-export const ComponentPage = ({ entry, sources, examples, api, usage, breadcrumb, extras }: ComponentPageProps) => {
+interface ExamplesProps {
+  entry: RegistryEntryMeta;
+  examples: ExampleEntry[];
+}
+
+const Examples = ({ entry, examples }: ExamplesProps) => (
+  <div className="flex flex-col gap-8">
+    {examples.map((example, index) => (
+      <ExampleBlock
+        key={example.slug}
+        entry={entry}
+        example={example}
+        showTitle={examples.length > 1}
+        eager={index === 0}
+      />
+    ))}
+  </div>
+);
+
+interface UsageProps {
+  usage: SourceFile;
+  isUtility: boolean;
+}
+
+const Usage = ({ usage, isUtility }: UsageProps) => (
+  <div className="flex flex-col gap-3">
+    <InlineCodeBlock code={usage.code} html={usage.html} />
+    <p className="text-xs text-muted-foreground">
+      Paths assume the default <code className="font-mono">@/</code> alias from your{' '}
+      <code className="font-mono">components.json</code>.
+      {isUtility ? null : ' The example above shows the parts composed.'}
+    </p>
+  </div>
+);
+
+interface DependenciesProps {
+  registryDeps: string[];
+  npmDeps: string[];
+}
+
+const Dependencies = ({ registryDeps, npmDeps }: DependenciesProps) => (
+  <div className="grid gap-4 sm:grid-cols-2">
+    {registryDeps.length > 0 && <DepGroup title="shadcn registry" deps={registryDeps} />}
+    {npmDeps.length > 0 && <DepGroup title="npm" deps={npmDeps} />}
+  </div>
+);
+
+const buildCodeTabs = (entry: RegistryEntryMeta, source: Record<string, SourceFile>, isTree: boolean): CodeBlockTab[] =>
+  (entry.files ?? []).flatMap((file) => {
+    const sourceFile = source[file.path];
+    if (!sourceFile) return [];
+    const label = isTree ? (file.target ?? file.path) : file.path;
+
+    return [{ label, code: sourceFile.code, html: sourceFile.html }];
+  });
+
+const buildSections = (
+  { entry, sources, examples = [], api, usage, extras }: ComponentPageProps,
+  base: RegistryBase,
+): PageSection[] => {
   const isComposite = entry.category === 'blocks' || entry.category === 'templates';
   const isUtility = entry.category === 'utilities';
-  const treeView = isComposite || (entry.files ?? []).length > 1;
-  const base = useRegistryBase();
-  const source = sources[base];
-
-  const codeTabs: CodeBlockTab[] = (entry.files ?? [])
-    .map((f) => {
-      const file = source[f.path];
-      if (!file) return null;
-      const label = treeView ? (f.target ?? f.path) : f.path;
-
-      return { label, code: file.code, html: file.html };
-    })
-    .filter((t): t is CodeBlockTab => t !== null);
-
-  const exampleList: ExampleEntry[] = (examples ?? []).map((example) => ({
-    slug: example.slug,
-    title: example.title,
-    files: example.sources[base],
-  }));
+  const isTree = isComposite || (entry.files ?? []).length > 1;
+  const codeTabs = buildCodeTabs(entry, sources[base], isTree);
   const registryDeps = entry.registryDependencies ?? [];
   const npmDeps = entry.dependencies ?? [];
-
+  const related = extras?.related ?? [];
   const sections: PageSection[] = [];
 
   if (isComposite) {
-    sections.push({
-      id: 'preview',
-      label: 'Preview',
-      content: <BlockViewer entry={entry} eager />,
-    });
+    sections.push({ id: 'preview', label: 'Preview', content: <BlockViewer entry={entry} eager /> });
   } else {
-    sections.push({
-      id: 'examples',
-      label: exampleList.length > 1 ? 'Examples' : 'Example',
-      content: (
-        <div className="flex flex-col gap-8">
-          {exampleList.map((example, index) => (
-            <ExampleBlock
-              key={example.slug}
-              entry={entry}
-              example={example}
-              showTitle={exampleList.length > 1}
-              eager={index === 0}
-            />
-          ))}
-        </div>
-      ),
-    });
+    const exampleList = examples.map(({ slug, title, sources: files }) => ({ slug, title, files: files[base] }));
+    const label = exampleList.length > 1 ? 'Examples' : 'Example';
+    sections.push({ id: 'examples', label, content: <Examples entry={entry} examples={exampleList} /> });
   }
 
-  sections.push({
-    id: 'installation',
-    label: 'Installation',
-    content: <InstallBlock name={entry.name} />,
-  });
+  sections.push({ id: 'installation', label: 'Installation', content: <InstallBlock name={entry.name} /> });
 
   if (!isComposite && usage) {
-    sections.push({
-      id: 'usage',
-      label: 'Usage',
-      content: (
-        <div className="flex flex-col gap-3">
-          <InlineCodeBlock code={usage.code} html={usage.html} />
-          <p className="text-xs text-muted-foreground">
-            Paths assume the default <code className="font-mono">@/</code> alias from your{' '}
-            <code className="font-mono">components.json</code>.
-            {isUtility ? null : ' The example above shows the parts composed.'}
-          </p>
-        </div>
-      ),
-    });
+    sections.push({ id: 'usage', label: 'Usage', content: <Usage usage={usage} isUtility={isUtility} /> });
   }
-
   if (!isComposite && api?.length) {
-    sections.push({
-      id: 'api',
-      label: 'API',
-      content: <ApiPanel parts={api} />,
-    });
+    sections.push({ id: 'api', label: 'API', content: <ApiPanel parts={api} /> });
   }
-
-  if (codeTabs.length > 0) {
-    sections.push(
-      isComposite
-        ? {
-            id: 'code',
-            label: 'Code',
-            content: <CodeBlock tabs={codeTabs} layout="tree" />,
-          }
-        : {
-            id: 'component-source',
-            label: isUtility ? 'Source' : 'Component source',
-            content: <CodeBlock tabs={codeTabs} layout={treeView ? 'tree' : 'tabs'} collapsible />,
-          },
-    );
+  if (codeTabs.length > 0 && isComposite) {
+    sections.push({ id: 'code', label: 'Code', content: <CodeBlock tabs={codeTabs} layout="tree" /> });
   }
-
-  if (registryDeps.length || npmDeps.length) {
-    sections.push({
-      id: 'dependencies',
-      label: 'Dependencies',
-      content: (
-        <div className="grid gap-4 sm:grid-cols-2">
-          {registryDeps.length > 0 && <DepGroup title="shadcn registry" deps={registryDeps} />}
-          {npmDeps.length > 0 && <DepGroup title="npm" deps={npmDeps} />}
-        </div>
-      ),
-    });
+  if (codeTabs.length > 0 && !isComposite) {
+    const content = <CodeBlock tabs={codeTabs} layout={isTree ? 'tree' : 'tabs'} collapsible />;
+    sections.push({ id: 'component-source', label: isUtility ? 'Source' : 'Component source', content });
   }
-
-  const related = extras?.related ?? [];
+  if (registryDeps.length > 0 || npmDeps.length > 0) {
+    const content = <Dependencies registryDeps={registryDeps} npmDeps={npmDeps} />;
+    sections.push({ id: 'dependencies', label: 'Dependencies', content });
+  }
   if (related.length > 0) {
-    sections.push({
-      id: 'related',
-      label: 'Related',
-      content: <ItemCards items={related} />,
-    });
+    sections.push({ id: 'related', label: 'Related', content: <ItemCards items={related} /> });
   }
 
+  return sections;
+};
+
+interface ComponentHeaderProps {
+  entry: RegistryEntryMeta;
+  base: RegistryBase;
+  breadcrumb?: Crumb[];
+  addedAt?: string;
+}
+
+const ComponentHeader = ({ entry, base, breadcrumb, addedAt }: ComponentHeaderProps) => {
+  const sourceUrl = githubSourceUrl(entry, base);
+
+  return (
+    <header className="flex flex-col gap-4">
+      {breadcrumb ? (
+        <Breadcrumbs items={breadcrumb} />
+      ) : (
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="text-xs text-muted-foreground uppercase">{entry.category}</span>
+          {entry.blockKind && (
+            <>
+              <span className="text-xs text-muted-foreground">/</span>
+              <span className="text-xs text-foreground uppercase">{entry.blockKind}</span>
+            </>
+          )}
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <h1 className="text-3xl leading-tight font-semibold tracking-tight text-balance md:text-4xl">
+            {entry.title}
+          </h1>
+          <NewBadge addedAt={addedAt} />
+        </div>
+        <div className="flex flex-wrap items-center gap-0.5">
+          {sourceUrl && (
+            <HeaderAction href={sourceUrl} title="View source on GitHub" icon={<GithubIcon />}>
+              Source
+            </HeaderAction>
+          )}
+          <HeaderAction href={issueHref(entry)} title="Open a GitHub issue" icon={<CircleAlert />}>
+            Report issue
+          </HeaderAction>
+          <CopyPageButton name={entry.name} title={entry.title} />
+        </div>
+      </div>
+
+      <p className="max-w-xl text-base text-pretty text-muted-foreground md:text-lg">{entry.description}</p>
+    </header>
+  );
+};
+
+export const ComponentPage = (props: ComponentPageProps) => {
+  const { entry, breadcrumb, extras } = props;
+  const base = useRegistryBase();
+  const sections = buildSections(props, base);
   const tocItems: TocItem[] = sections.map(({ id, label }) => ({ id, label }));
   const { prev, next } = entrySiblings(entry);
-  const sourceUrl = githubSourceUrl(entry, base);
-  const issueUrl = `${SITE.githubRepoUrl}/issues/new?title=${encodeURIComponent(`[${entry.name}] `)}`;
 
   return (
     <div className="container py-10 sm:py-12 md:py-14">
       <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-10">
         <div className="flex min-w-0 flex-col gap-10 sm:gap-12">
-          <header className="flex flex-col gap-4">
-            {breadcrumb ? (
-              <Breadcrumbs items={breadcrumb} />
-            ) : (
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs text-muted-foreground uppercase">{entry.category}</span>
-                {entry.blockKind && (
-                  <>
-                    <span className="text-xs text-muted-foreground">/</span>
-                    <span className="text-xs text-foreground uppercase">{entry.blockKind}</span>
-                  </>
-                )}
-              </div>
-            )}
-
-            <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-3">
-              <div className="flex flex-wrap items-center gap-3">
-                <h1 className="text-3xl leading-tight font-semibold tracking-tight text-balance md:text-4xl">
-                  {entry.title}
-                </h1>
-                <NewBadge addedAt={extras?.addedAt} />
-              </div>
-              <div className="flex flex-wrap items-center gap-0.5">
-                {sourceUrl && (
-                  <HeaderAction href={sourceUrl} title="View source on GitHub" icon={<GithubIcon />}>
-                    Source
-                  </HeaderAction>
-                )}
-                <HeaderAction href={issueUrl} title="Open a GitHub issue" icon={<CircleAlert />}>
-                  Report issue
-                </HeaderAction>
-                <CopyPageButton name={entry.name} title={entry.title} />
-              </div>
-            </div>
-
-            <p className="max-w-xl text-base text-pretty text-muted-foreground md:text-lg">{entry.description}</p>
-          </header>
+          <ComponentHeader entry={entry} base={base} breadcrumb={breadcrumb} addedAt={extras?.addedAt} />
 
           <BlockSiblings entry={entry} />
 

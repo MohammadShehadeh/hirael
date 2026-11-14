@@ -25,26 +25,17 @@ const VIEWPORT_VALUES = ['mobile', 'tablet', 'desktop'] as const;
 
 type Viewport = (typeof VIEWPORT_VALUES)[number];
 
-const isViewport = (value: string): value is Viewport => VIEWPORT_VALUES.some((option) => option === value);
-
-interface ViewportSize {
+interface ViewportSpec {
   width: number;
   label: string;
+  icon: LucideIcon;
 }
 
-const SIZES: Record<Viewport, ViewportSize> = {
-  mobile: { width: 380, label: 'Mobile' },
-  tablet: { width: 768, label: 'Tablet' },
-  desktop: { width: 1280, label: 'Desktop' },
+const VIEWPORTS: Record<Viewport, ViewportSpec> = {
+  mobile: { width: 380, label: 'Mobile', icon: Smartphone },
+  tablet: { width: 768, label: 'Tablet', icon: Tablet },
+  desktop: { width: 1280, label: 'Desktop', icon: Monitor },
 };
-
-const ICONS: Record<Viewport, LucideIcon> = {
-  mobile: Smartphone,
-  tablet: Tablet,
-  desktop: Monitor,
-};
-
-const ORDER: Viewport[] = ['mobile', 'tablet', 'desktop'];
 
 // A floor keeps a refresh from collapsing the frame. Templates are capped so they scroll instead of stretching the page.
 const MIN_HEIGHT = 320;
@@ -62,7 +53,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
   const embedHref = entryEmbedHref(entry, useRegistryBase());
   const maxHeight = entry.category === 'templates' ? TEMPLATE_MAX_HEIGHT : BLOCK_MAX_HEIGHT;
   const [viewport, setViewport] = React.useState<Viewport>('desktop');
-  const [key, setKey] = React.useState(0);
+  const [refreshKey, setRefreshKey] = React.useState(0);
   const [isRtl, setIsRtl] = React.useState(false);
   const previewTheme = usePreviewTheme();
   const stageRef = React.useRef<HTMLDivElement>(null);
@@ -82,7 +73,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
   const src = previewSrc(embedHref, { theme: previewTheme.previewMode, isRtl });
 
   // The frame keeps the viewport's real width so the block hits its own breakpoints, then shrinks to fit the page.
-  const width = SIZES[viewport].width;
+  const width = VIEWPORTS[viewport].width;
   const fitScale = stageWidth > 0 ? Math.min(1, stageWidth / width) : 1;
   const scale = zoom === 'fit' ? fitScale : zoom / 100;
   const visibleHeight = (frameHeight ?? initialHeight / scale) * scale;
@@ -94,21 +85,19 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
           role="tab"
           ariaLabel="Preview viewport"
           value={viewport}
-          onValueChange={(v) => {
-            if (isViewport(v)) setViewport(v);
-          }}
+          onValueChange={setViewport}
           className="rounded-sm border border-border bg-background p-0.5"
           itemClassName="h-6 rounded-[2px] px-2 text-xs uppercase"
-          items={ORDER.map((v) => {
-            const Icon = ICONS[v];
+          items={VIEWPORT_VALUES.map((value) => {
+            const { icon: Icon, label, width: viewportWidth } = VIEWPORTS[value];
 
             return {
-              value: v,
-              ariaLabel: `${SIZES[v].label} viewport (${SIZES[v].width}px)`,
-              label: () => (
+              value,
+              ariaLabel: `${label} viewport (${viewportWidth}px)`,
+              label: (
                 <>
                   <Icon className="size-3" />
-                  <span className="hidden sm:inline">{SIZES[v].label}</span>
+                  <span className="hidden sm:inline">{label}</span>
                 </>
               ),
             };
@@ -120,7 +109,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
           <PreviewZoomMenu value={zoom} onValueChange={setZoom} fitPercent={Math.round(fitScale * 100)} />
           <DirectionToggle pressed={isRtl} onPressedChange={setIsRtl} className="me-1" />
           <PreviewThemeButton theme={previewTheme} />
-          <PreviewRefreshButton onRefresh={() => setKey((k) => k + 1)} />
+          <PreviewRefreshButton onRefresh={() => setRefreshKey((count) => count + 1)} />
           <PreviewOpenButton href={src} />
 
           <PreviewMoreMenu entry={entry} />
@@ -132,7 +121,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
           <PreviewFrame
             src={src}
             title={`${entry.title} preview`}
-            refreshKey={key}
+            refreshKey={refreshKey}
             initialHeight={initialHeight / scale}
             minHeight={MIN_HEIGHT / scale}
             maxHeight={maxHeight / scale}

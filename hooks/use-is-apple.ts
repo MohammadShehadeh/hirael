@@ -2,11 +2,11 @@
 
 import * as React from 'react';
 
-const NEVER_CHANGES = () => () => {};
+import { subscribeNever } from '@/lib/subscribe-never';
 
 export const useIsApple = (): boolean =>
   React.useSyncExternalStore(
-    NEVER_CHANGES,
+    subscribeNever,
     () => /mac|iphone|ipad|ipod/i.test(navigator.userAgent),
     () => false,
   );

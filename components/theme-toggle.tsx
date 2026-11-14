@@ -29,7 +29,7 @@ export const ThemeToggle = () => {
         <Sun
           className={cn(
             'size-3.5 transition-all duration-200',
-            isMounted && isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0',
+            isLight ? 'scale-100 rotate-0 opacity-100' : 'scale-0 -rotate-90 opacity-0',
           )}
         />
         <Moon

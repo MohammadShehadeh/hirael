@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { cn } from '@/lib/utils';
 import { useRegistryBase } from '@/components/active-theme';
+import { observeShellHeight } from '@/components/preview-frame';
 import { useDeferredMount } from '@/hooks/use-deferred-mount';
 import { entryEmbedHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
@@ -13,6 +14,43 @@ const SIM_WIDTH = 1280;
 const DEFAULT_HEIGHT = 720;
 const MIN_HEIGHT = 360;
 const MAX_HEIGHT = 760;
+
+/** Null until the element has a width, so nothing is scaled against a guess. */
+const useElementWidth = (ref: React.RefObject<HTMLElement | null>) => {
+  const [width, setWidth] = React.useState<number | null>(null);
+
+  React.useLayoutEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const measure = () => {
+      if (element.clientWidth > 0) setWidth(element.clientWidth);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return width;
+};
+
+interface PreviewPlaceholderProps {
+  title: string;
+  isHidden: boolean;
+}
+
+const PreviewPlaceholder = ({ title, isHidden }: PreviewPlaceholderProps) => (
+  <div
+    aria-hidden
+    className={cn(
+      'absolute inset-0 flex items-center justify-center bg-dot-grid transition-opacity duration-500',
+      isHidden ? 'pointer-events-none opacity-0' : 'opacity-100',
+    )}
+  >
+    <span className="text-xs text-muted-foreground/70 uppercase">{title}</span>
+  </div>
+);
 
 export interface BlockPreviewProps {
   entry: RegistryEntryMeta;
@@ -24,48 +62,25 @@ export interface BlockPreviewProps {
 export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = false }: BlockPreviewProps) => {
   const embedHref = entryEmbedHref(entry, useRegistryBase());
   const ref = React.useRef<HTMLDivElement>(null);
-  const contentRoRef = React.useRef<ResizeObserver | null>(null);
-  const [width, setWidth] = React.useState<number | null>(null);
+  const shellObserverRef = React.useRef<ResizeObserver | null>(null);
+  const width = useElementWidth(ref);
   const [simHeight, setSimHeight] = React.useState(DEFAULT_HEIGHT);
-  const [loaded, setLoaded] = React.useState(false);
+  const [isLoaded, setIsLoaded] = React.useState(false);
   const shouldMount = useDeferredMount(ref);
 
-  React.useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const measure = () => {
-      const w = el.clientWidth;
-      if (w > 0) setWidth(w);
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(el);
-
-    return () => ro.disconnect();
-  }, []);
-
-  React.useEffect(() => () => contentRoRef.current?.disconnect(), []);
+  React.useEffect(() => () => shellObserverRef.current?.disconnect(), []);
 
   const scale = width === null ? null : width / simWidth;
 
-  function handleLoad(event: React.SyntheticEvent<HTMLIFrameElement>) {
-    setLoaded(true);
+  const handleLoad = (event: React.SyntheticEvent<HTMLIFrameElement>) => {
+    setIsLoaded(true);
     if (fill) return;
-    const doc = event.currentTarget.contentDocument;
-    if (!doc) return;
-    // The document height never shrinks below the iframe, so measure the embed shell instead.
-    const target = doc.querySelector<HTMLElement>('[data-embed-shell]');
-    if (!target) return;
-    const measureHeight = () => {
-      const h = target.getBoundingClientRect().height;
-      if (h > 0) setSimHeight(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, h)));
-    };
-    measureHeight();
-    contentRoRef.current?.disconnect();
-    const ro = new ResizeObserver(measureHeight);
-    ro.observe(target);
-    contentRoRef.current = ro;
-  }
+    shellObserverRef.current?.disconnect();
+    // The document height never shrinks below the iframe, so the embed shell is measured instead.
+    shellObserverRef.current = observeShellHeight(event.currentTarget, (shellHeight) =>
+      setSimHeight(Math.min(MAX_HEIGHT, Math.max(MIN_HEIGHT, shellHeight))),
+    );
+  };
 
   return (
     <div
@@ -77,15 +92,7 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
       )}
       style={fill ? undefined : { aspectRatio: `${simWidth} / ${simHeight}` }}
     >
-      <div
-        aria-hidden
-        className={cn(
-          'absolute inset-0 flex items-center justify-center bg-dot-grid transition-opacity duration-500',
-          loaded ? 'pointer-events-none opacity-0' : 'opacity-100',
-        )}
-      >
-        <span className="text-xs text-muted-foreground/70 uppercase">{entry.title}</span>
-      </div>
+      <PreviewPlaceholder title={entry.title} isHidden={isLoaded} />
       {shouldMount && scale !== null && (
         <iframe
           src={`${embedHref}?static=1`}
@@ -95,7 +102,7 @@ export const BlockPreview = ({ entry, simWidth = SIM_WIDTH, className, fill = fa
           onLoad={handleLoad}
           className={cn(
             'pointer-events-none absolute top-0 left-0 origin-top-left border-0 transition-opacity duration-500',
-            loaded ? 'opacity-100' : 'opacity-0',
+            isLoaded ? 'opacity-100' : 'opacity-0',
           )}
           style={{
             width: `${simWidth}px`,

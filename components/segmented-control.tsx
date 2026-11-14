@@ -22,6 +22,15 @@ export interface SegmentedControlProps<T extends string = string> {
   itemClassName?: string;
 }
 
+/** Which way an arrow key moves the selection, mirrored in RTL. 0 for any other key. */
+const arrowStep = (event: React.KeyboardEvent<HTMLElement>) => {
+  if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return 0;
+  const isRtl = getComputedStyle(event.currentTarget).direction === 'rtl';
+  const isForward = event.key === 'ArrowRight' ? !isRtl : isRtl;
+
+  return isForward ? 1 : -1;
+};
+
 export const SegmentedControl = <T extends string>({
   items,
   value,
@@ -34,11 +43,9 @@ export const SegmentedControl = <T extends string>({
   const listRef = React.useRef<HTMLDivElement>(null);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+    const step = arrowStep(event);
+    if (step === 0) return;
     event.preventDefault();
-    const isRtl = getComputedStyle(event.currentTarget).direction === 'rtl';
-    const isForward = event.key === 'ArrowRight' ? !isRtl : isRtl;
-    const step = isForward ? 1 : -1;
     const activeIndex = items.findIndex((item) => item.value === value);
     if (activeIndex === -1) return;
     const nextItem = items[(activeIndex + step + items.length) % items.length];

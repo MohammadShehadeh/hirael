@@ -173,6 +173,58 @@ const RecentGroup = ({ onSelect }: RecentGroupProps) => {
   );
 };
 
+interface PaletteListProps {
+  query: string;
+  onSelect: (item: RecentItem) => void;
+  onClose: () => void;
+  onNavigate: (href: string) => void;
+}
+
+const PaletteList = ({ query, onSelect, onClose, onNavigate }: PaletteListProps) => {
+  const quickGroups = <QuickGroups query={query} onClose={onClose} onNavigate={onNavigate} />;
+
+  if (!query) {
+    return (
+      <>
+        <RecentGroup onSelect={onSelect} />
+        {quickGroups}
+        {BROWSE_GROUPS.map((group) => (
+          <BrowseGroup key={group.heading} heading={group.heading} docs={group.docs} onSelect={onSelect} />
+        ))}
+      </>
+    );
+  }
+
+  const results = searchIndex(SEARCH_INDEX, query);
+
+  return (
+    <>
+      {results.length > 0 && (
+        <CommandGroup heading="Results">
+          {results.map((doc) => (
+            <EntryItem key={doc.entry.name} doc={doc} onSelect={onSelect} />
+          ))}
+        </CommandGroup>
+      )}
+      {quickGroups}
+    </>
+  );
+};
+
+const PaletteFooter = () => (
+  <div className="flex items-center gap-4 border-t border-border bg-popover px-3 py-2 text-xs text-muted-foreground uppercase">
+    <span className="inline-flex items-center gap-1.5">
+      <Kbd>↑↓</Kbd> navigate
+    </span>
+    <span className="inline-flex items-center gap-1.5">
+      <Kbd>↵</Kbd> open
+    </span>
+    <span className="ms-auto inline-flex items-center gap-1.5">
+      <Kbd>esc</Kbd> close
+    </span>
+  </div>
+);
+
 export interface CommandPaletteProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -181,29 +233,22 @@ export interface CommandPaletteProps {
 export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
   const router = useRouter();
   const [search, setSearch] = React.useState('');
+  const query = search.trim();
 
   const handleOpenChange = (next: boolean) => {
     if (!next) setSearch('');
     onOpenChange(next);
   };
 
-  const handleSelect = (item: RecentItem) => {
-    pushRecent(item);
+  const handleNavigate = (href: string) => {
     handleOpenChange(false);
-    router.push(item.href);
+    router.push(href);
   };
 
-  const results = search.trim() ? searchIndex(SEARCH_INDEX, search) : null;
-  const quickGroups = (
-    <QuickGroups
-      query={search.trim()}
-      onClose={() => handleOpenChange(false)}
-      onNavigate={(href) => {
-        handleOpenChange(false);
-        router.push(href);
-      }}
-    />
-  );
+  const handleSelect = (item: RecentItem) => {
+    pushRecent(item);
+    handleNavigate(item.href);
+  };
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -216,40 +261,16 @@ export const CommandPalette = ({ open, onOpenChange }: CommandPaletteProps) => {
         <Command loop shouldFilter={false}>
           <CommandInput value={search} onValueChange={setSearch} placeholder="Search by name or what it does…" />
           <CommandList>
-            <CommandEmpty>No results for “{search.trim()}”.</CommandEmpty>
-            {results ? (
-              <>
-                {results.length > 0 && (
-                  <CommandGroup heading="Results">
-                    {results.map((doc) => (
-                      <EntryItem key={doc.entry.name} doc={doc} onSelect={handleSelect} />
-                    ))}
-                  </CommandGroup>
-                )}
-                {quickGroups}
-              </>
-            ) : (
-              <>
-                <RecentGroup onSelect={handleSelect} />
-                {quickGroups}
-                {BROWSE_GROUPS.map((group) => (
-                  <BrowseGroup key={group.heading} heading={group.heading} docs={group.docs} onSelect={handleSelect} />
-                ))}
-              </>
-            )}
+            <CommandEmpty>No results for “{query}”.</CommandEmpty>
+            <PaletteList
+              query={query}
+              onSelect={handleSelect}
+              onClose={() => handleOpenChange(false)}
+              onNavigate={handleNavigate}
+            />
           </CommandList>
         </Command>
-        <div className="flex items-center gap-4 border-t border-border bg-popover px-3 py-2 text-xs text-muted-foreground uppercase">
-          <span className="inline-flex items-center gap-1.5">
-            <Kbd>↑↓</Kbd> navigate
-          </span>
-          <span className="inline-flex items-center gap-1.5">
-            <Kbd>↵</Kbd> open
-          </span>
-          <span className="ms-auto inline-flex items-center gap-1.5">
-            <Kbd>esc</Kbd> close
-          </span>
-        </div>
+        <PaletteFooter />
       </DialogContent>
     </Dialog>
   );

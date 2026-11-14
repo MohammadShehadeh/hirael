@@ -48,20 +48,8 @@ const readPersistedConfig = (): CustomizerConfig => {
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 
-interface TokenProviderProps {
-  children: React.ReactNode;
-}
-
-const TokenProvider = ({ children }: TokenProviderProps) => {
-  const { resolvedTheme, theme: activeMode, setTheme } = useNextTheme();
-  const mode: ThemeMode = (resolvedTheme ?? activeMode) === 'light' ? 'light' : 'dark';
-
-  const pathname = usePathname();
-  const isEmbed = isEmbedPath(pathname ?? '');
-
+const useCustomizerConfig = () => {
   const [config, setConfigState] = React.useState<CustomizerConfig>(readPersistedConfig);
-
-  const isMounted = useMounted();
 
   React.useEffect(() => {
     const handleStorage = (event: StorageEvent) => {
@@ -74,7 +62,24 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
     return () => window.removeEventListener('storage', handleStorage);
   }, []);
 
-  const tokens = resolveTokens(config);
+  const setConfig = (patch: Partial<CustomizerConfig>) => {
+    setConfigState((prev) => {
+      const next: Partial<CustomizerConfig> = { ...prev, ...patch };
+      if ('theme' in patch && !('chartColor' in patch)) {
+        next.chartColor = patch.theme;
+      }
+
+      return normalizeConfig(next);
+    });
+  };
+
+  const reset = () => setConfigState(DEFAULT_CONFIG);
+
+  return { config, setConfig, reset };
+};
+
+/** Applies the config's CSS to this page and saves it for the prehydration script to replay on the next load. */
+const useCustomizerCss = (config: CustomizerConfig, tokens: ResolvedTokens, isEmbed: boolean) => {
   const mainCss = buildCustomizerCss(tokens, config.previewOnly);
   const embedCss = buildCustomizerCss(tokens, false);
 
@@ -107,19 +112,21 @@ const TokenProvider = ({ children }: TokenProviderProps) => {
 
     return () => window.clearTimeout(timerId);
   }, [config, mainCss, embedCss]);
+};
 
-  const setConfig = (patch: Partial<CustomizerConfig>) => {
-    setConfigState((prev) => {
-      const next: Partial<CustomizerConfig> = { ...prev, ...patch };
-      if ('theme' in patch && !('chartColor' in patch)) {
-        next.chartColor = patch.theme;
-      }
+interface TokenProviderProps {
+  children: React.ReactNode;
+}
 
-      return normalizeConfig(next);
-    });
-  };
+const TokenProvider = ({ children }: TokenProviderProps) => {
+  const { resolvedTheme, theme: activeMode, setTheme } = useNextTheme();
+  const mode: ThemeMode = (resolvedTheme ?? activeMode) === 'light' ? 'light' : 'dark';
+  const pathname = usePathname();
+  const isMounted = useMounted();
+  const { config, setConfig, reset } = useCustomizerConfig();
+  const tokens = resolveTokens(config);
 
-  const reset = () => setConfigState(DEFAULT_CONFIG);
+  useCustomizerCss(config, tokens, isEmbedPath(pathname ?? ''));
 
   const value: ThemeContextValue = {
     mode,

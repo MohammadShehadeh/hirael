@@ -185,6 +185,37 @@ const FileTree = ({ paths, activePath, onSelect, maxHeight }: FileTreeProps) => 
   );
 };
 
+interface TreeLayoutProps {
+  tabs: CodeBlockTab[];
+  currentTab: CodeBlockTab;
+  onSelect: (path: string) => void;
+  maxHeight: string;
+  className?: string;
+  children: React.ReactNode;
+}
+
+const TreeLayout = ({ tabs, currentTab, onSelect, maxHeight, className, children }: TreeLayoutProps) => (
+  <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
+    <div className="flex min-h-0">
+      <FileTree
+        paths={tabs.map((tab) => tab.label)}
+        activePath={currentTab.label}
+        onSelect={onSelect}
+        maxHeight={maxHeight}
+      />
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="flex items-center justify-between gap-2 border-b border-l border-border px-2.5 py-1.5">
+          <span title={currentTab.label} className="truncate text-xs text-muted-foreground">
+            {currentTab.label}
+          </span>
+          <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" />
+        </div>
+        {children}
+      </div>
+    </div>
+  </div>
+);
+
 export const CodeBlock = ({
   tabs,
   defaultTab,
@@ -199,34 +230,28 @@ export const CodeBlock = ({
 
   if (!currentTab) return null;
 
+  const pane = (
+    <CodePane
+      html={currentTab.html}
+      maxHeight={maxHeight}
+      isCollapsible={collapsible}
+      isExpanded={isExpanded}
+      onExpandedChange={setIsExpanded}
+      className={layout === 'tree' ? 'border-l border-border' : undefined}
+    />
+  );
+
   if (layout === 'tree') {
     return (
-      <div className={cn('overflow-hidden rounded-md border border-border bg-card', className)}>
-        <div className="flex min-h-0">
-          <FileTree
-            paths={tabs.map((tab) => tab.label)}
-            activePath={currentTab.label}
-            onSelect={setActiveLabel}
-            maxHeight={maxHeight}
-          />
-          <div className="flex min-w-0 flex-1 flex-col">
-            <div className="flex items-center justify-between gap-2 border-b border-l border-border px-2.5 py-1.5">
-              <span title={currentTab.label} className="truncate text-xs text-muted-foreground">
-                {currentTab.label}
-              </span>
-              <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" />
-            </div>
-            <CodePane
-              html={currentTab.html}
-              maxHeight={maxHeight}
-              isCollapsible={collapsible}
-              isExpanded={isExpanded}
-              onExpandedChange={setIsExpanded}
-              className="border-l border-border"
-            />
-          </div>
-        </div>
-      </div>
+      <TreeLayout
+        tabs={tabs}
+        currentTab={currentTab}
+        onSelect={setActiveLabel}
+        maxHeight={maxHeight}
+        className={className}
+      >
+        {pane}
+      </TreeLayout>
     );
   }
 
@@ -247,13 +272,7 @@ export const CodeBlock = ({
         />
         <CopyButton value={currentTab.code} size="sm" aria-label="Copy code" className="mr-0.5" />
       </div>
-      <CodePane
-        html={currentTab.html}
-        maxHeight={maxHeight}
-        isCollapsible={collapsible}
-        isExpanded={isExpanded}
-        onExpandedChange={setIsExpanded}
-      />
+      {pane}
     </div>
   );
 };

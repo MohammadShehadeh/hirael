@@ -185,46 +185,87 @@ export const issueHref = (entry: RegistryEntryMeta) => {
   return `${SITE.githubRepoUrl}/issues/new?${params.toString()}`;
 };
 
+interface DependencyItemsProps {
+  entry: RegistryEntryMeta;
+}
+
+const DependencyItems = ({ entry }: DependencyItemsProps) => {
+  const npmDeps = entry.dependencies ?? [];
+  const registryDeps = entry.registryDependencies ?? [];
+  const knownDeps = registryDeps.flatMap((name) => REGISTRY_BY_NAME[name] ?? []);
+  const unknownDeps = registryDeps.filter((name) => !REGISTRY_BY_NAME[name]);
+
+  if (npmDeps.length === 0 && registryDeps.length === 0) return <DropdownMenuItem disabled>None</DropdownMenuItem>;
+
+  return (
+    <>
+      {npmDeps.map((name) => (
+        <DropdownMenuItem key={name} asChild>
+          <a href={`https://www.npmjs.com/package/${name}`} target="_blank" rel="noreferrer noopener">
+            {name}
+          </a>
+        </DropdownMenuItem>
+      ))}
+      {knownDeps.map((dep) => (
+        <DropdownMenuItem key={dep.name} asChild>
+          <Link href={entryHref(dep)}>{dep.title}</Link>
+        </DropdownMenuItem>
+      ))}
+      {unknownDeps.length > 0 && (
+        <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">{unknownDeps.join(', ')}</p>
+      )}
+    </>
+  );
+};
+
+const COPIED_NOTICE_MS = 1200;
+
+interface CopyLinkItemProps {
+  url: string;
+  /** Called once the copied notice has been shown for a moment. */
+  onConfirmed: () => void;
+}
+
+// Lives inside the menu content, so closing the menu unmounts it and clears the notice and its timer.
+const CopyLinkItem = ({ url, onConfirmed }: CopyLinkItemProps) => {
+  const [isCopied, setIsCopied] = React.useState(false);
+  const noticeTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+
+  React.useEffect(() => () => clearTimeout(noticeTimer.current), []);
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(url);
+    } catch {
+      return;
+    }
+    setIsCopied(true);
+    clearTimeout(noticeTimer.current);
+    noticeTimer.current = setTimeout(onConfirmed, COPIED_NOTICE_MS);
+  };
+
+  return (
+    <DropdownMenuItem
+      onSelect={(event) => {
+        event.preventDefault();
+        void copyLink();
+      }}
+    >
+      {isCopied ? <Check aria-hidden /> : <Copy aria-hidden />}
+      {isCopied ? 'Copied link' : 'Copy link'}
+    </DropdownMenuItem>
+  );
+};
+
 export interface PreviewMoreMenuProps {
   entry: RegistryEntryMeta;
 }
 
 export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
-  const pageUrl = `${SITE.url}${entryHref(entry)}`;
-  const [isCopied, setIsCopied] = React.useState(false);
   const [isOpen, setIsOpen] = React.useState(false);
-  const copyTimer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
-
-  const npmDeps = entry.dependencies ?? [];
-  const registryDeps = entry.registryDependencies ?? [];
-  const hasDeps = npmDeps.length > 0 || registryDeps.length > 0;
-  const knownDeps = registryDeps.flatMap((name) => REGISTRY_BY_NAME[name] ?? []);
-  const unknownDeps = registryDeps.filter((name) => !REGISTRY_BY_NAME[name]);
-
-  React.useEffect(() => () => clearTimeout(copyTimer.current), []);
-
-  const copyPageLink = async () => {
-    try {
-      await navigator.clipboard.writeText(pageUrl);
-      setIsCopied(true);
-      clearTimeout(copyTimer.current);
-      copyTimer.current = setTimeout(() => {
-        setIsCopied(false);
-        setIsOpen(false);
-      }, 1200);
-    } catch {
-      setIsCopied(false);
-    }
-  };
 
   return (
-    <DropdownMenu
-      open={isOpen}
-      onOpenChange={(next) => {
-        setIsOpen(next);
-        if (!next) setIsCopied(false);
-      }}
-    >
+    <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <Hint label="More">
         <DropdownMenuTrigger asChild>
           <Button
@@ -239,15 +280,7 @@ export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
         </DropdownMenuTrigger>
       </Hint>
       <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuItem
-          onSelect={(event) => {
-            event.preventDefault();
-            void copyPageLink();
-          }}
-        >
-          {isCopied ? <Check aria-hidden /> : <Copy aria-hidden />}
-          {isCopied ? 'Copied link' : 'Copy link'}
-        </DropdownMenuItem>
+        <CopyLinkItem url={`${SITE.url}${entryHref(entry)}`} onConfirmed={() => setIsOpen(false)} />
         <DropdownMenuItem asChild>
           <a href={issueHref(entry)} target="_blank" rel="noreferrer noopener">
             <CircleAlert aria-hidden />
@@ -259,33 +292,13 @@ export const PreviewMoreMenu = ({ entry }: PreviewMoreMenuProps) => {
           <Package className="size-3" />
           Dependencies
         </DropdownMenuLabel>
-        {hasDeps ? (
-          <>
-            {npmDeps.map((name) => (
-              <DropdownMenuItem key={name} asChild>
-                <a href={`https://www.npmjs.com/package/${name}`} target="_blank" rel="noreferrer noopener">
-                  {name}
-                </a>
-              </DropdownMenuItem>
-            ))}
-            {knownDeps.map((dep) => (
-              <DropdownMenuItem key={dep.name} asChild>
-                <Link href={entryHref(dep)}>{dep.title}</Link>
-              </DropdownMenuItem>
-            ))}
-            {unknownDeps.length > 0 && (
-              <p className="px-2 py-1.5 text-xs leading-relaxed text-muted-foreground">{unknownDeps.join(', ')}</p>
-            )}
-          </>
-        ) : (
-          <DropdownMenuItem disabled>None</DropdownMenuItem>
-        )}
+        <DependencyItems entry={entry} />
       </DropdownMenuContent>
     </DropdownMenu>
   );
 };
 
-const observeShellHeight = (frame: HTMLIFrameElement, onHeight: (shellHeight: number) => void) => {
+export const observeShellHeight = (frame: HTMLIFrameElement, onHeight: (shellHeight: number) => void) => {
   const shell = frame.contentDocument?.querySelector<HTMLElement>('[data-embed-shell]');
   if (!shell) return null;
   const measure = () => {

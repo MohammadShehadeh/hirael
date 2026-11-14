@@ -10,6 +10,25 @@ const rise = 'animate-in fade-in-0 slide-in-from-bottom-3 duration-700 ease-out 
 // Text only slides: starting it at opacity 0 would hold back Largest Contentful Paint.
 const riseText = 'animate-in slide-in-from-bottom-3 duration-700 ease-out motion-reduce:animate-none';
 
+interface ReleasePillProps {
+  release: ChangelogEntry;
+}
+
+const ReleasePill = ({ release }: ReleasePillProps) => (
+  <Link href="/changelog" className={cn('group max-w-full text-foreground', rise)}>
+    <span className="glass-panel glass-panel-lit inline-flex max-w-full min-w-0 items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
+      {release.version && (
+        <span className="rounded-full bg-foreground px-2 py-0.5 text-xs text-background">v{release.version}</span>
+      )}
+      <span className="line-clamp-1 text-start group-hover:underline">{release.title}</span>
+      <ArrowRight
+        className="-rotate-45 text-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
+        size={16}
+      />
+    </span>
+  </Link>
+);
+
 export interface HeroProps {
   latestRelease: ChangelogEntry | null;
 }
@@ -26,22 +45,7 @@ export const Hero = ({ latestRelease }: HeroProps) => {
         className="pointer-events-none absolute inset-y-0 inset-e-4 hidden w-px bg-linear-to-b from-transparent via-border to-border md:end-8 md:block"
       />
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-4 py-12 text-center sm:gap-6 sm:px-6 sm:py-16">
-        {latestRelease && (
-          <Link href="/changelog" className={cn('group max-w-full text-foreground', rise)}>
-            <span className="glass-panel glass-panel-lit inline-flex max-w-full min-w-0 items-center gap-2.5 rounded-full py-1 ps-1.5 pe-4 text-sm">
-              {latestRelease.version && (
-                <span className="rounded-full bg-foreground px-2 py-0.5 text-xs text-background">
-                  v{latestRelease.version}
-                </span>
-              )}
-              <span className="line-clamp-1 text-start group-hover:underline">{latestRelease.title}</span>
-              <ArrowRight
-                className="-rotate-45 text-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-px"
-                size={16}
-              />
-            </span>
-          </Link>
-        )}
+        {latestRelease && <ReleasePill release={latestRelease} />}
 
         <h1
           className={cn(

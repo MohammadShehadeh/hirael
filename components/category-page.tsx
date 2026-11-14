@@ -9,10 +9,6 @@ import { Breadcrumbs } from '@/components/breadcrumbs';
 import { TocChips } from '@/components/toc';
 import { BLOCKS_BY_KIND, entryFileLabel, entryHref, type RegistryEntryMeta } from '@/registry/hirael/registry-meta';
 
-interface CategoryPageProps {
-  category: CategoryMeta;
-}
-
 const chipStyle =
   'inline-flex h-7 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-sm border border-border bg-card px-2.5 text-xs uppercase text-muted-foreground transition-colors outline-none hover:border-foreground/40 hover:text-foreground focus-visible:border-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 [&_svg]:size-3 [&_svg]:shrink-0';
 
@@ -49,6 +45,66 @@ const RoadmapState = ({ category }: RoadmapStateProps) => {
   );
 };
 
+interface BlockArticleProps {
+  entry: RegistryEntryMeta;
+  index: number;
+  total: number;
+}
+
+const BlockArticle = ({ entry, index, total }: BlockArticleProps) => {
+  const href = entryHref(entry);
+
+  return (
+    <article id={entry.name} aria-labelledby={`${entry.name}-title`} className="flex scroll-mt-24 flex-col gap-5">
+      <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
+        <div className="flex min-w-0 flex-col gap-2">
+          <p className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase">
+            <span className="text-foreground tabular-nums">
+              {String(index + 1).padStart(2, '0')}
+              <span className="text-muted-foreground/60"> / {String(total).padStart(2, '0')}</span>
+            </span>
+            {entry.blockTagline && (
+              <>
+                <span aria-hidden className="text-border">
+                  |
+                </span>
+                <span className="tracking-wide">{entry.blockTagline}</span>
+              </>
+            )}
+          </p>
+          <h2 id={`${entry.name}-title`} className="text-2xl font-semibold tracking-tight sm:text-3xl">
+            <Link
+              href={href}
+              className="rounded-sm outline-none hover:underline hover:underline-offset-6 focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            >
+              {entry.title}
+            </Link>
+          </h2>
+          <p className="max-w-2xl text-sm text-muted-foreground sm:text-[15px]">{entry.description}</p>
+        </div>
+
+        <div className="flex shrink-0 items-center gap-2">
+          <span className={chipStyle}>{entryFileLabel(entry)}</span>
+          <Link href={`${href}#code`} className={chipStyle}>
+            <Code2 />
+            Code
+          </Link>
+          <Link href={href} className={cn(chipStyle, 'group')}>
+            Details
+            <ArrowRight className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+          </Link>
+        </div>
+      </header>
+
+      <BlockViewer entry={entry} initialHeight={640} />
+    </article>
+  );
+};
+
+interface CategoryPageProps {
+  category: CategoryMeta;
+}
+
 export const CategoryPage = ({ category }: CategoryPageProps) => {
   const blocks: RegistryEntryMeta[] = category.blockKind ? BLOCKS_BY_KIND[category.blockKind] : [];
   const total = blocks.length;
@@ -81,60 +137,9 @@ export const CategoryPage = ({ category }: CategoryPageProps) => {
           </div>
 
           <section className="flex flex-col gap-14 sm:gap-20">
-            {blocks.map((entry, index) => {
-              const href = entryHref(entry);
-
-              return (
-                <article
-                  key={entry.name}
-                  id={entry.name}
-                  aria-labelledby={`${entry.name}-title`}
-                  className="flex scroll-mt-24 flex-col gap-5"
-                >
-                  <header className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-8">
-                    <div className="flex min-w-0 flex-col gap-2">
-                      <p className="flex flex-wrap items-center gap-x-2 text-xs text-muted-foreground uppercase">
-                        <span className="text-foreground tabular-nums">
-                          {String(index + 1).padStart(2, '0')}
-                          <span className="text-muted-foreground/60"> / {String(total).padStart(2, '0')}</span>
-                        </span>
-                        {entry.blockTagline && (
-                          <>
-                            <span aria-hidden className="text-border">
-                              |
-                            </span>
-                            <span className="tracking-wide">{entry.blockTagline}</span>
-                          </>
-                        )}
-                      </p>
-                      <h2 id={`${entry.name}-title`} className="text-2xl font-semibold tracking-tight sm:text-3xl">
-                        <Link
-                          href={href}
-                          className="rounded-sm outline-none hover:underline hover:underline-offset-6 focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                        >
-                          {entry.title}
-                        </Link>
-                      </h2>
-                      <p className="max-w-2xl text-sm text-muted-foreground sm:text-[15px]">{entry.description}</p>
-                    </div>
-
-                    <div className="flex shrink-0 items-center gap-2">
-                      <span className={chipStyle}>{entryFileLabel(entry)}</span>
-                      <Link href={`${href}#code`} className={chipStyle}>
-                        <Code2 />
-                        Code
-                      </Link>
-                      <Link href={href} className={cn(chipStyle, 'group')}>
-                        Details
-                        <ArrowRight className="transition-transform duration-150 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
-                      </Link>
-                    </div>
-                  </header>
-
-                  <BlockViewer entry={entry} initialHeight={640} />
-                </article>
-              );
-            })}
+            {blocks.map((entry, index) => (
+              <BlockArticle key={entry.name} entry={entry} index={index} total={total} />
+            ))}
           </section>
         </>
       )}

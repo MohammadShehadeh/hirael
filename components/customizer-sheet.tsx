@@ -192,7 +192,8 @@ const ConfigSection = () => {
   );
 };
 
-const StylesSection = () => {
+/** Theme and chart color pick from one list: the themes offered under the chosen base color. */
+const ThemeRows = () => {
   const { config, mode, setConfig } = useTheme();
   const themes = getThemesForBaseColor(config.baseColor);
 
@@ -203,6 +204,31 @@ const StylesSection = () => {
       swatch: themeSwatch(theme, kind, mode),
       separatorAfter: index === 0 && isBaseColor(theme.name),
     }));
+
+  return (
+    <>
+      <Row label="Theme">
+        <Picker
+          ariaLabel="Theme"
+          value={config.theme}
+          onValueChange={(theme) => setConfig({ theme })}
+          items={buildThemeItems('theme')}
+        />
+      </Row>
+      <Row label="Chart color">
+        <Picker
+          ariaLabel="Chart color"
+          value={config.chartColor}
+          onValueChange={(chartColor) => setConfig({ chartColor })}
+          items={buildThemeItems('chart')}
+        />
+      </Row>
+    </>
+  );
+};
+
+const StylesSection = () => {
+  const { config, mode, setConfig } = useTheme();
 
   return (
     <Section title="Styles">
@@ -226,22 +252,7 @@ const StylesSection = () => {
             }))}
           />
         </Row>
-        <Row label="Theme">
-          <Picker
-            ariaLabel="Theme"
-            value={config.theme}
-            onValueChange={(theme) => setConfig({ theme })}
-            items={buildThemeItems('theme')}
-          />
-        </Row>
-        <Row label="Chart color">
-          <Picker
-            ariaLabel="Chart color"
-            value={config.chartColor}
-            onValueChange={(chartColor) => setConfig({ chartColor })}
-            items={buildThemeItems('chart')}
-          />
-        </Row>
+        <ThemeRows />
         <Row label="Font">
           <Picker
             ariaLabel="Font"

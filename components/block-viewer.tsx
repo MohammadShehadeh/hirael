@@ -42,6 +42,52 @@ const MIN_HEIGHT = 320;
 const BLOCK_MAX_HEIGHT = 1200;
 const TEMPLATE_MAX_HEIGHT = 700;
 
+interface ViewportSwitchProps {
+  value: Viewport;
+  onValueChange: (value: Viewport) => void;
+}
+
+const ViewportSwitch = ({ value, onValueChange }: ViewportSwitchProps) => (
+  <SegmentedControl
+    role="tab"
+    ariaLabel="Preview viewport"
+    value={value}
+    onValueChange={onValueChange}
+    className="rounded-sm border border-border bg-background p-0.5"
+    itemClassName="h-6 rounded-[2px] px-2 text-xs uppercase"
+    items={VIEWPORT_VALUES.map((viewport) => {
+      const { icon: Icon, label, width } = VIEWPORTS[viewport];
+
+      return {
+        value: viewport,
+        ariaLabel: `${label} viewport (${width}px)`,
+        label: (
+          <>
+            <Icon className="size-3" />
+            <span className="hidden sm:inline">{label}</span>
+          </>
+        ),
+      };
+    })}
+  />
+);
+
+/** The element's width inside its padding, 0 until it is measured. */
+const useContentWidth = (ref: React.RefObject<HTMLElement | null>) => {
+  const [width, setWidth] = React.useState(0);
+
+  React.useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([item]) => setWidth(item.contentRect.width));
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return width;
+};
+
 export interface BlockViewerProps {
   entry: RegistryEntryMeta;
   initialHeight?: number;
@@ -57,18 +103,9 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
   const [isRtl, setIsRtl] = React.useState(false);
   const previewTheme = usePreviewTheme();
   const stageRef = React.useRef<HTMLDivElement>(null);
-  const [stageWidth, setStageWidth] = React.useState(0);
+  const stageWidth = useContentWidth(stageRef);
   const [frameHeight, setFrameHeight] = React.useState<number | null>(null);
   const [zoom, setZoom] = React.useState<PreviewZoom>('fit');
-
-  React.useEffect(() => {
-    const stage = stageRef.current;
-    if (!stage) return;
-    const observer = new ResizeObserver(([item]) => setStageWidth(item.contentRect.width));
-    observer.observe(stage);
-
-    return () => observer.disconnect();
-  }, []);
 
   const src = previewSrc(embedHref, { theme: previewTheme.previewMode, isRtl });
 
@@ -81,28 +118,7 @@ export const BlockViewer = ({ entry, initialHeight = TEMPLATE_MAX_HEIGHT, eager 
   return (
     <div data-slot="block-viewer" className="overflow-hidden rounded-sm border border-border bg-background">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border bg-card/50 px-3 py-2">
-        <SegmentedControl
-          role="tab"
-          ariaLabel="Preview viewport"
-          value={viewport}
-          onValueChange={setViewport}
-          className="rounded-sm border border-border bg-background p-0.5"
-          itemClassName="h-6 rounded-[2px] px-2 text-xs uppercase"
-          items={VIEWPORT_VALUES.map((value) => {
-            const { icon: Icon, label, width: viewportWidth } = VIEWPORTS[value];
-
-            return {
-              value,
-              ariaLabel: `${label} viewport (${viewportWidth}px)`,
-              label: (
-                <>
-                  <Icon className="size-3" />
-                  <span className="hidden sm:inline">{label}</span>
-                </>
-              ),
-            };
-          })}
-        />
+        <ViewportSwitch value={viewport} onValueChange={setViewport} />
 
         <div className="flex items-center gap-1">
           <PreviewCustomizeButton />

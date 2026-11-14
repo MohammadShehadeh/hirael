@@ -66,6 +66,109 @@ const exampleFilesSection = (files: MarkdownExampleFile[]): string[] => {
   ];
 };
 
+const headerSection = (entry: RegistryEntryMeta, baseLabel: string, pageUrl: string, itemUrl: string): string[] => [
+  '---',
+  yaml('title', entry.title),
+  yaml('description', entry.description),
+  yaml('collection', entry.blockKind ? `${entry.category}/${entry.blockKind}` : entry.category),
+  yaml('base', baseLabel),
+  yaml('documentation', pageUrl),
+  yaml('registryItem', itemUrl),
+  yaml('license', 'MIT'),
+  '---',
+  '',
+  `# ${entry.title}`,
+  '',
+  `> ${entry.description}`,
+  '',
+  `Built on ${baseLabel}. Live preview: ${pageUrl}`,
+  '',
+  '## Installation',
+  '',
+  ...codeFence(`npx shadcn@latest add ${itemUrl}`, 'bash'),
+  '',
+];
+
+const examplesSection = (
+  examples: MarkdownExample[],
+  exampleFiles: MarkdownExampleFile[],
+  isComposite: boolean,
+): string[] => {
+  if (examples.length === 0 && !isComposite) return [];
+  if (examples.length === 0) {
+    return [
+      '## Example',
+      '',
+      'This item is a whole section or page. Compose it from the source below, or open the live preview.',
+      '',
+    ];
+  }
+
+  const out = [examples.length > 1 ? '## Examples' : '## Example', ''];
+  if (examples.some((example) => example.code.includes(DEMO_LOCALE_IMPORT))) {
+    out.push(
+      `The demos below read their copy through \`useT\` from \`${DEMO_LOCALE_IMPORT}\`, a helper that exists only on ` +
+        'this site so the previews can switch to Arabic. Copy it from below, or replace `t({ en, ar })` with the English string.',
+      '',
+    );
+  }
+  for (const example of examples) {
+    if (examples.length > 1) out.push(`### ${example.title}`, '');
+    out.push(...codeFence(forConsumer(example.code)), '');
+  }
+
+  return [...out, ...exampleFilesSection(exampleFiles)];
+};
+
+const sourceSection = (files: NonNullable<RegistryEntryMeta['files']>, sources: Record<string, string>): string[] => {
+  const shipped = files.filter((file) => sources[file.path]);
+  if (shipped.length === 0) return [];
+
+  return [
+    '## Source',
+    '',
+    ...shipped.flatMap((file) => [
+      `### \`${installTarget(file)}\``,
+      '',
+      ...codeFence(forConsumer(sources[file.path])),
+      '',
+    ]),
+  ];
+};
+
+const propRow = (prop: MarkdownApiProp): string => {
+  const columns = [
+    `\`${prop.name}\`${prop.required ? '\*' : ''}`,
+    `\`${cell(prop.type)}\``,
+    prop.default ? `\`${cell(prop.default)}\`` : 'none',
+    cell(prop.description ?? ''),
+  ];
+
+  return `| ${columns.join(' | ')} |`;
+};
+
+const apiPartSection = (part: MarkdownApiPart): string[] => {
+  const out = [`### \`<${part.name} />\``, ''];
+  if (part.extendsNative) out.push("Also accepts the underlying element's own props.", '');
+  if (part.props.length > 0) {
+    out.push('| Prop | Type | Default | Description |', '| --- | --- | --- | --- |', ...part.props.map(propRow), '');
+  }
+
+  return out;
+};
+
+const dependenciesSection = (entry: RegistryEntryMeta): string[] => {
+  const registryDeps = entry.registryDependencies ?? [];
+  const npmDeps = entry.dependencies ?? [];
+  if (registryDeps.length === 0 && npmDeps.length === 0) return [];
+
+  const out = ['## Dependencies', ''];
+  if (registryDeps.length) out.push(`- Registry: ${registryDeps.map((dep) => `\`${dep}\``).join(', ')}`);
+  if (npmDeps.length) out.push(`- npm: ${npmDeps.map((dep) => `\`${dep}\``).join(', ')}`);
+
+  return [...out, ''];
+};
+
 export const registryMarkdown = ({
   entry,
   base,
@@ -82,93 +185,14 @@ export const registryMarkdown = ({
   const files = entry.files ?? [];
   const usage = buildUsageCode(files, (path) => sources[path], api);
 
-  const out: string[] = [
-    '---',
-    yaml('title', entry.title),
-    yaml('description', entry.description),
-    yaml('collection', entry.blockKind ? `${entry.category}/${entry.blockKind}` : entry.category),
-    yaml('base', baseLabel),
-    yaml('documentation', pageUrl),
-    yaml('registryItem', itemUrl),
-    yaml('license', 'MIT'),
-    '---',
-    '',
-    `# ${entry.title}`,
-    '',
-    `> ${entry.description}`,
-    '',
-    `Built on ${baseLabel}. Live preview: ${pageUrl}`,
-    '',
-    '## Installation',
-    '',
-    ...codeFence(`npx shadcn@latest add ${itemUrl}`, 'bash'),
-    '',
+  const out = [
+    ...headerSection(entry, baseLabel, pageUrl, itemUrl),
+    ...(usage ? ['## Usage', '', ...codeFence(usage), ''] : []),
+    ...examplesSection(examples, exampleFiles, isComposite),
+    ...sourceSection(files, sources),
+    ...(api?.length ? ['## API', '', ...api.flatMap(apiPartSection)] : []),
+    ...dependenciesSection(entry),
   ];
-
-  if (usage) {
-    out.push('## Usage', '', ...codeFence(usage), '');
-  }
-
-  if (examples.length > 0) {
-    out.push(examples.length > 1 ? '## Examples' : '## Example', '');
-    if (examples.some((example) => example.code.includes(DEMO_LOCALE_IMPORT))) {
-      out.push(
-        `The demos below read their copy through \`useT\` from \`${DEMO_LOCALE_IMPORT}\`, a helper that exists only on ` +
-          'this site so the previews can switch to Arabic. Copy it from below, or replace `t({ en, ar })` with the English string.',
-        '',
-      );
-    }
-    for (const example of examples) {
-      if (examples.length > 1) out.push(`### ${example.title}`, '');
-      out.push(...codeFence(forConsumer(example.code)), '');
-    }
-    out.push(...exampleFilesSection(exampleFiles));
-  } else if (isComposite) {
-    out.push(
-      '## Example',
-      '',
-      'This item is a whole section or page. Compose it from the source below, or open the live preview.',
-      '',
-    );
-  }
-
-  const shipped = files.filter((file) => sources[file.path]);
-  if (shipped.length > 0) {
-    out.push('## Source', '');
-    for (const file of shipped) {
-      out.push(`### \`${installTarget(file)}\``, '', ...codeFence(forConsumer(sources[file.path])), '');
-    }
-  }
-
-  if (api?.length) {
-    out.push('## API', '');
-    for (const part of api) {
-      out.push(`### \`<${part.name} />\``, '');
-      if (part.extendsNative) out.push("Also accepts the underlying element's own props.", '');
-      if (part.props.length > 0) {
-        out.push('| Prop | Type | Default | Description |', '| --- | --- | --- | --- |');
-        for (const prop of part.props) {
-          const columns = [
-            `\`${prop.name}\`${prop.required ? '\*' : ''}`,
-            `\`${cell(prop.type)}\``,
-            prop.default ? `\`${cell(prop.default)}\`` : 'none',
-            cell(prop.description ?? ''),
-          ];
-          out.push(`| ${columns.join(' | ')} |`);
-        }
-        out.push('');
-      }
-    }
-  }
-
-  const registryDeps = entry.registryDependencies ?? [];
-  const npmDeps = entry.dependencies ?? [];
-  if (registryDeps.length || npmDeps.length) {
-    out.push('## Dependencies', '');
-    if (registryDeps.length) out.push(`- Registry: ${registryDeps.map((dep) => `\`${dep}\``).join(', ')}`);
-    if (npmDeps.length) out.push(`- npm: ${npmDeps.map((dep) => `\`${dep}\``).join(', ')}`);
-    out.push('');
-  }
 
   return `${out
     .join('\n')

@@ -882,6 +882,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'header-04',
+    title: 'Header 04',
+    subtitle: 'Fullscreen Menu Header',
+    description:
+      'Minimal bar with a Menu button that opens a full-height sheet: large numbered links that rise in one after another, beside contact details and social links.',
+    blockTagline: 'Full-height menu, numbered links, staggered entrance',
+    category: 'blocks',
+    blockKind: 'header',
+    files: [
+      {
+        path: 'blocks/header-04/header-04.tsx',
+        target: 'components/blocks/header-04.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'sheet'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'footer-01',
     title: 'Footer 01',
     subtitle: 'Four Column Footer',
@@ -1100,6 +1118,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['button', 'empty', 'tabs'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'blog-03',
+    title: 'Blog 03',
+    subtitle: 'Article Page',
+    description:
+      'Blog post layout with a category and reading time, an author row with a copy-link button, body copy with a pull quote, a numbered list and a results strip, a feedback prompt and related posts.',
+    blockTagline: 'Article layout, copy link, feedback, related posts',
+    category: 'blocks',
+    blockKind: 'blog',
+    files: [
+      {
+        path: 'blocks/blog-03/blog-03.tsx',
+        target: 'components/blocks/blog-03.tsx',
+      },
+    ],
+    registryDependencies: ['avatar', 'badge', 'button', 'copy-button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -1467,6 +1503,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['lightbox', 'toggle-group'],
+    dependencies: ['lucide-react'],
+  },
+  {
+    name: 'image-gallery-03',
+    title: 'Image Gallery 03',
+    subtitle: 'Featured Image with Filmstrip',
+    description:
+      'One large photo with its caption and a position counter above a strip of thumbnails. Previous and next buttons, the thumbnails and the arrow keys all change the photo.',
+    blockTagline: 'Large photo, thumbnail strip, arrow keys',
+    category: 'blocks',
+    blockKind: 'image-gallery',
+    files: [
+      {
+        path: 'blocks/image-gallery-03/image-gallery-03.tsx',
+        target: 'components/blocks/image-gallery-03.tsx',
+      },
+    ],
+    registryDependencies: ['button'],
     dependencies: ['lucide-react'],
   },
   {
@@ -3376,6 +3430,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
     dependencies: ['lucide-react'],
   },
   {
+    name: 'process-03',
+    title: 'Process 03',
+    subtitle: 'Interactive Steps Panel',
+    description:
+      'How-it-works section with three numbered steps beside a panel that shows what each step looks like: a repository list, the detected settings and a deploy log. Pick a step or walk through with Back and Next.',
+    blockTagline: 'Numbered steps, live panel, back and next',
+    category: 'blocks',
+    blockKind: 'process',
+    files: [
+      {
+        path: 'blocks/process-03/process-03.tsx',
+        target: 'components/blocks/process-03.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'feature-03',
     title: 'Feature 03',
     subtitle: 'Terminal Feature Bento',
@@ -3563,6 +3635,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
     cssVars: STATUS_CSS_VARS,
   },
   {
+    name: 'newsletter-03',
+    title: 'Newsletter 03',
+    subtitle: 'Newsletter with Past Issues',
+    description:
+      'Newsletter signup beside a list of recent issues. Subscribers choose topics with checkboxes, the form validates the email and the selection, and the confirmation names the topics chosen.',
+    blockTagline: 'Topic checkboxes, validation, recent issues',
+    category: 'blocks',
+    blockKind: 'newsletter',
+    files: [
+      {
+        path: 'blocks/newsletter-03/newsletter-03.tsx',
+        target: 'components/blocks/newsletter-03.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'checkbox', 'field', 'input'],
+    dependencies: ['lucide-react'],
+  },
+  {
     name: 'careers-01',
     title: 'Careers 01',
     subtitle: 'Open Roles List',
@@ -3598,6 +3688,24 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ['button', 'field', 'file-dropzone', 'input', 'separator', 'textarea', 'spinner'],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'careers-03',
+    title: 'Careers 03',
+    subtitle: 'Principles and Grouped Roles',
+    description:
+      'Careers page section with numbered working principles and open roles grouped by team. Team links jump to each group, and a remote-only switch filters the roles and updates the counts.',
+    blockTagline: 'Numbered principles, roles by team, remote filter',
+    category: 'blocks',
+    blockKind: 'careers',
+    files: [
+      {
+        path: 'blocks/careers-03/careers-03.tsx',
+        target: 'components/blocks/careers-03.tsx',
+      },
+    ],
+    registryDependencies: ['button', 'label', 'switch'],
+    dependencies: ['lucide-react'],
   },
   {
     name: 'hero-09',
@@ -4632,6 +4740,23 @@ export const REGISTRY: RegistryEntryMeta[] = [
     registryDependencies: ['badge', 'button', 'tabs', 'toggle-group'],
     dependencies: ['lucide-react'],
     cssVars: STATUS_CSS_VARS,
+  },
+  {
+    name: 'changelog-03',
+    title: 'Changelog 03',
+    subtitle: 'Monthly Changelog Digest',
+    description:
+      'Dense changelog grouped by month, one line per change with its date, type and product area. Tabs filter by type with live counts, and older months load one at a time.',
+    blockTagline: 'Grouped by month, type filter, load older',
+    category: 'blocks',
+    blockKind: 'changelog',
+    files: [
+      {
+        path: 'blocks/changelog-03/changelog-03.tsx',
+        target: 'components/blocks/changelog-03.tsx',
+      },
+    ],
+    registryDependencies: ['badge', 'button', 'tabs'],
   },
   {
     name: 'not-found-02',

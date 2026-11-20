@@ -126,6 +126,15 @@ interface CancelDialogProps {
   onCancel: (feedback: Feedback) => void;
 }
 
+const submitLabelFor = (followUp: FollowUp, chosen: string | undefined) => {
+  if (followUp !== 'discount' && followUp !== 'pause') return 'Send and cancel';
+  if (!chosen) return 'Confirm';
+  if (chosen === 'cancel') return 'Cancel plan';
+  if (followUp === 'discount') return 'Apply 30% off';
+
+  return `Pause for ${PAUSE_OPTIONS.find((option) => option.value === chosen)?.label}`;
+};
+
 const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: CancelDialogProps) => {
   const [item, setItem] = React.useState('reason');
   const [reason, setReason] = React.useState<Reason | ''>('');
@@ -184,15 +193,7 @@ const CancelDialog = ({ open, onOpenChange, onDiscount, onPause, onCancel }: Can
 
   const chosen = decision[followUp];
   const offer = followUp === 'discount' || followUp === 'pause';
-  const submitLabel = !offer
-    ? 'Send and cancel'
-    : !chosen
-      ? 'Confirm'
-      : chosen === 'cancel'
-        ? 'Cancel plan'
-        : followUp === 'discount'
-          ? 'Apply 30% off'
-          : `Pause for ${PAUSE_OPTIONS.find((option) => option.value === chosen)?.label}`;
+  const submitLabel = submitLabelFor(followUp, chosen);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -368,6 +369,46 @@ interface SummaryRow {
   value: string;
 }
 
+interface PlanOverview {
+  summary: string;
+  details: SummaryRow[];
+}
+
+const planOverview = (status: PlanStatus): PlanOverview => {
+  switch (status.kind) {
+    case 'active':
+      return {
+        summary: 'Cancel any time. You keep access until the end of the billing period.',
+        details: [{ label: 'Renews on', value: formatDate(PLAN.renews) }],
+      };
+    case 'discounted':
+      return {
+        summary: `30% off your next ${DISCOUNT_MONTHS} invoices, then ${formatPrice(PLAN.price)} a month again.`,
+        details: [
+          { label: 'Renews on', value: formatDate(PLAN.renews) },
+          { label: 'Discount ends', value: formatDate(status.until) },
+        ],
+      };
+    case 'paused':
+      return {
+        summary: `No charges while paused. Billing resumes on ${formatDate(status.until)}.`,
+        details: [
+          { label: 'Pauses on', value: formatDate(PLAN.renews) },
+          { label: 'Paused until', value: formatDate(status.until) },
+        ],
+      };
+    case 'canceling':
+      return {
+        summary: `You keep access until ${formatDate(status.on)}. Nothing else will be charged.`,
+        details: [{ label: 'Cancels on', value: formatDate(status.on) }],
+      };
+    default: {
+      const unhandled: never = status;
+      throw new Error(`Unhandled plan status: ${String(unhandled)}`);
+    }
+  }
+};
+
 const Survey03 = () => {
   const [status, setStatus] = React.useState<PlanStatus>({ kind: 'active' });
   const [feedback, setFeedback] = React.useState<Feedback | null>(null);
@@ -389,29 +430,7 @@ const Survey03 = () => {
   const badge = STATUS_BADGE[status.kind];
   const price = status.kind === 'discounted' ? DISCOUNTED_PRICE : PLAN.price;
 
-  const summary =
-    status.kind === 'active'
-      ? 'Cancel any time. You keep access until the end of the billing period.'
-      : status.kind === 'discounted'
-        ? `30% off your next ${DISCOUNT_MONTHS} invoices, then ${formatPrice(PLAN.price)} a month again.`
-        : status.kind === 'paused'
-          ? `No charges while paused. Billing resumes on ${formatDate(status.until)}.`
-          : `You keep access until ${formatDate(status.on)}. Nothing else will be charged.`;
-
-  const details: SummaryRow[] =
-    status.kind === 'active'
-      ? [{ label: 'Renews on', value: formatDate(PLAN.renews) }]
-      : status.kind === 'discounted'
-        ? [
-            { label: 'Renews on', value: formatDate(PLAN.renews) },
-            { label: 'Discount ends', value: formatDate(status.until) },
-          ]
-        : status.kind === 'paused'
-          ? [
-              { label: 'Pauses on', value: formatDate(PLAN.renews) },
-              { label: 'Paused until', value: formatDate(status.until) },
-            ]
-          : [{ label: 'Cancels on', value: formatDate(status.on) }];
+  const { summary, details } = planOverview(status);
 
   return (
     <section data-slot="cancel-survey" aria-labelledby="survey-03-heading" className="bg-background py-16 sm:py-24">

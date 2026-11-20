@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
@@ -81,11 +82,15 @@ const TONE_CLASS: Record<GaugeTone, string> = {
   'chart-5': 'text-chart-5',
 };
 
-const SIZE_CLASS: Record<GaugeSize, string> = {
-  sm: 'w-32',
-  default: 'w-44',
-  lg: 'w-60',
-};
+const gaugeVariants = cva('group/gauge relative inline-grid shrink-0 justify-items-center text-center', {
+  variants: {
+    size: {
+      sm: 'w-32',
+      default: 'w-44',
+      lg: 'w-60',
+    } satisfies Record<GaugeSize, string>,
+  },
+});
 
 const CENTER = 50;
 const BAND_WIDTH = 1.5;
@@ -329,11 +334,7 @@ const Gauge = ({
         data-slot="gauge"
         data-size={size}
         data-tone={active.tone}
-        className={cn(
-          'group/gauge relative inline-grid shrink-0 justify-items-center text-center',
-          SIZE_CLASS[size],
-          className,
-        )}
+        className={cn(gaugeVariants({ size }), className)}
         style={{
           aspectRatio: geometry.aspectRatio,
           gridTemplateRows: `${geometry.above}fr auto auto ${geometry.below}fr`,

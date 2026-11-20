@@ -64,11 +64,12 @@ interface Hero01BackdropProps {
 const Hero01Backdrop = ({ active = false }: Hero01BackdropProps) => {
   const palette = usePalette();
   const reduced = useReducedMotion();
+  const speed = active ? 0.5 : 0.16;
   if (!palette) return null;
 
   return (
     <Shader style={{ width: '100%', height: '100%' }}>
-      <Swirl speed={reduced ? 0 : active ? 0.5 : 0.16} detail={1.5} colorA={palette.swirl} colorB={palette.narrow} />
+      <Swirl speed={reduced ? 0 : speed} detail={1.5} colorA={palette.swirl} colorB={palette.narrow} />
       <Beam
         startPosition={{ x: 0.32, y: -0.1 }}
         endPosition={{ x: 0.46, y: 1.1 }}

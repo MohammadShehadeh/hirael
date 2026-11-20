@@ -132,6 +132,7 @@ const PullToRefresh = ({
 
   const progress = Math.min(1, pull / threshold);
   const ready = progress >= 1;
+  const pullHint = ready ? text.release : text.pull;
   const settling = pull === 0 || refreshing;
 
   return (
@@ -155,9 +156,7 @@ const PullToRefresh = ({
           ) : (
             <ArrowDown aria-hidden className={cn('size-4 transition-transform duration-200', ready && 'rotate-180')} />
           )}
-          <span role={refreshing ? 'status' : undefined}>
-            {refreshing ? text.refreshing : ready ? text.release : text.pull}
-          </span>
+          <span role={refreshing ? 'status' : undefined}>{refreshing ? text.refreshing : pullHint}</span>
         </span>
       </div>
       <div

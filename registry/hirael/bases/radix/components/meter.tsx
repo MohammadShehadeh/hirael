@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 
@@ -163,8 +164,10 @@ const MeterValue = ({ unit, className, children, ...props }: MeterValueProps) =>
 
 // Each fill spans the whole track and slides in from the start edge, so it animates on transform
 // alone and flips with the writing direction.
-const fillClass =
-  'absolute inset-0 -translate-x-(--meter-offset) transition-[translate,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:translate-x-(--meter-offset)';
+const meterFillVariants = cva(
+  'absolute inset-0 -translate-x-(--meter-offset) transition-[translate,background-color] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none rtl:translate-x-(--meter-offset)',
+  { variants: { tone: FILL_CLASS } },
+);
 
 const MeterIndicator = ({ className, style, ...props }: React.ComponentProps<'div'>) => {
   const { percent, tone } = useMeter();
@@ -173,7 +176,7 @@ const MeterIndicator = ({ className, style, ...props }: React.ComponentProps<'di
     <div
       data-slot="meter-indicator"
       data-tone={tone}
-      className={cn(fillClass, FILL_CLASS[tone], className)}
+      className={cn(meterFillVariants({ tone }), className)}
       // React's CSSProperties type has no custom properties.
       style={{ '--meter-offset': `${100 - percent}%`, ...style } as React.CSSProperties}
       {...props}
@@ -195,7 +198,7 @@ const MeterSegment = ({ index, className, style, ...props }: MeterSegmentProps) 
     <div
       data-slot="meter-segment"
       data-tone={segment.tone}
-      className={cn(fillClass, FILL_CLASS[segment.tone], className)}
+      className={cn(meterFillVariants({ tone: segment.tone }), className)}
       // Later segments reach further, so earlier ones stack on top to stay visible.
       // React's CSSProperties type has no custom properties.
       style={

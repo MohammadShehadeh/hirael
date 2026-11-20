@@ -32,6 +32,13 @@ export interface VirtualListProps<Item> extends Omit<React.ComponentProps<'div'>
   gap?: number;
 }
 
+// The loader row sits one past the last item, so it needs a key no item can have.
+const rowKey = <Item,>(items: Item[], index: number, getItemKey: VirtualListProps<Item>['getItemKey']) => {
+  if (index >= items.length) return '__loader';
+
+  return getItemKey ? getItemKey(items[index], index) : index;
+};
+
 const VirtualList = <Item,>({
   items,
   children,
@@ -60,7 +67,7 @@ const VirtualList = <Item,>({
     estimateSize: () => estimateSize,
     overscan,
     gap,
-    getItemKey: (index) => (index >= items.length ? '__loader' : getItemKey ? getItemKey(items[index], index) : index),
+    getItemKey: (index) => rowKey(items, index, getItemKey),
   });
 
   const virtualItems = virtualizer.getVirtualItems();

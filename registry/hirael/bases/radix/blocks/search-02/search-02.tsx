@@ -202,6 +202,13 @@ const EntryMedia = ({ entry }: EntryMediaProps) =>
     </span>
   );
 
+// Up from the first option, or from none, wraps to the last.
+const previousIndex = (active: number, count: number) => {
+  if (count === 0) return -1;
+
+  return active <= 0 ? count - 1 : active - 1;
+};
+
 const Search02 = () => {
   const baseId = React.useId();
   const listboxId = `${baseId}-listbox`;
@@ -302,7 +309,7 @@ const Search02 = () => {
       case 'ArrowUp':
         event.preventDefault();
         setOpen(true);
-        setActiveIndex(options.length === 0 ? -1 : active <= 0 ? options.length - 1 : active - 1);
+        setActiveIndex(previousIndex(active, options.length));
         break;
       case 'Enter': {
         const firstOption = terms.length > 0 ? options[0] : undefined;

@@ -60,6 +60,7 @@ interface Hero05BackdropProps {
 const Hero05Backdrop = ({ active = false }: Hero05BackdropProps) => {
   const palette = usePalette();
   const reduced = useReducedMotion();
+  const speed = active ? 0.7 : 0.3;
   if (!palette) return null;
 
   return (
@@ -71,7 +72,7 @@ const Hero05Backdrop = ({ active = false }: Hero05BackdropProps) => {
         balance={0.5}
         intensity={1.1}
         curtainCount={4}
-        speed={reduced ? 0 : active ? 0.7 : 0.3}
+        speed={reduced ? 0 : speed}
         waviness={0.7}
         height={0.9}
       />

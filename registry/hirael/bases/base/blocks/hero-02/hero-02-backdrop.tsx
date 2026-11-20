@@ -43,6 +43,7 @@ interface Hero02BackdropProps {
 const Hero02Backdrop = ({ active = false }: Hero02BackdropProps) => {
   const palette = usePalette();
   const reduced = useReducedMotion();
+  const speed = active ? 0.5 : 0.16;
   if (!palette) return null;
 
   return (
@@ -54,7 +55,7 @@ const Hero02Backdrop = ({ active = false }: Hero02BackdropProps) => {
         density={9}
         balance={0.5}
         softness={1}
-        speed={reduced ? 0 : active ? 0.5 : 0.16}
+        speed={reduced ? 0 : speed}
       />
     </Shader>
   );

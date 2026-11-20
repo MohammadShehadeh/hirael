@@ -125,7 +125,7 @@ const LazySelect = ({
   const listboxId = React.useId();
 
   // Own keys only: a value like "constructor" must not read an inherited Object.prototype member.
-  const selectedLabel = value === undefined ? undefined : Object.hasOwn(labelCache, value) ? labelCache[value] : value;
+  const selectedLabel = value !== undefined && Object.hasOwn(labelCache, value) ? labelCache[value] : value;
 
   const ctx: Ctx = {
     value,

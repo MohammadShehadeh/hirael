@@ -93,6 +93,13 @@ export type MonthPickerProps =
       onValueChange?: (range: MonthRange) => void;
     });
 
+const nextMonthRange = (current: MonthRange | undefined, month: MonthValue): MonthRange => {
+  if (!current || current.to) return { from: month };
+  if (compareMonth(month, current.from) < 0) return { from: month, to: current.from };
+
+  return { from: current.from, to: month };
+};
+
 const MonthPicker = (props: MonthPickerProps) => {
   const {
     min: minProp,
@@ -152,16 +159,7 @@ const MonthPicker = (props: MonthPickerProps) => {
   }
 
   const setValue = (v: MonthValue) => {
-    // This branch is range mode, where the value is a range.
-    const current = value as MonthRange | undefined;
-    const next: MonthValue | MonthRange =
-      mode === 'single'
-        ? v
-        : !current || current.to
-          ? { from: v }
-          : compareMonth(v, current.from) < 0
-            ? { from: v, to: current.from }
-            : { from: current.from, to: v };
+    const next = mode === 'single' ? v : nextMonthRange(value && 'from' in value ? value : undefined, v);
     if (valueProp === undefined) setInternal(next);
     onValueChange?.(next);
     if (mode === 'single' || 'to' in next) setOpen(false);
@@ -271,12 +269,11 @@ const MonthPickerContent = ({
   const firstInBounds = Array.from({ length: 12 }, (_, month) => month).find((month) =>
     inBounds({ year: ctx.displayYear, month }),
   );
+  const visibleTodayMonth = today.year === ctx.displayYear && inBounds(today) ? today.month : undefined;
   const tabbableMonth =
     selectedMonth && selectedMonth.year === ctx.displayYear && inBounds(selectedMonth)
       ? selectedMonth.month
-      : today.year === ctx.displayYear && inBounds(today)
-        ? today.month
-        : (firstInBounds ?? 0);
+      : (visibleTodayMonth ?? firstInBounds ?? 0);
 
   const gridRef = React.useRef<HTMLDivElement>(null);
   const focusCell = (year: number, month: number) => {

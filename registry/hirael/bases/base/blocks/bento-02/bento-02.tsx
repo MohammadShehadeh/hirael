@@ -586,6 +586,12 @@ type Delivery = (typeof DELIVERY_VALUES)[number];
 
 const isDelivery = (value: unknown): value is Delivery => DELIVERY_VALUES.some((option) => option === value);
 
+const DELIVERY_PHRASE: Record<Delivery, string> = {
+  instant: 'sent as they happen',
+  hourly: 'grouped into one message an hour',
+  daily: 'in one email at 9:00',
+};
+
 const DAILY_EVENTS: Record<Scope, number> = { all: 38, mentions: 9, none: 0 };
 const WORK_HOURS = 8;
 
@@ -607,13 +613,7 @@ const NotificationPrefs = (props: TileProps) => {
   const summary =
     scope === 'none'
       ? 'You will only see updates when you open the app.'
-      : `${DAILY_EVENTS[scope]} ${scope === 'all' ? 'updates' : 'mentions and replies'} on a typical day, ${
-          delivery === 'instant'
-            ? 'sent as they happen'
-            : delivery === 'hourly'
-              ? 'grouped into one message an hour'
-              : 'in one email at 9:00'
-        }.`;
+      : `${DAILY_EVENTS[scope]} ${scope === 'all' ? 'updates' : 'mentions and replies'} on a typical day, ${DELIVERY_PHRASE[delivery]}.`;
 
   return (
     <BentoTile

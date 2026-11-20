@@ -77,6 +77,9 @@ export interface MaskedInputProps extends Omit<
 
 const DIGIT: Replacement = { _: /\d/ };
 
+const applyCase = (text: string, transform: MaskTransform) =>
+  transform === 'uppercase' ? text.toUpperCase() : text.toLowerCase();
+
 const MaskedInput = ({
   mask,
   replacement = DIGIT,
@@ -96,9 +99,7 @@ const MaskedInput = ({
     mask,
     replacement,
     showMask,
-    track: transform
-      ? ({ data }) => (data === null ? data : transform === 'uppercase' ? data.toUpperCase() : data.toLowerCase())
-      : undefined,
+    track: transform ? ({ data }) => (data === null ? data : applyCase(data, transform)) : undefined,
   });
   const composedRef = composeRefs(maskRef, ref);
   const numeric = Object.values(replacement).every((pattern) => pattern.test('5') && !pattern.test('a'));

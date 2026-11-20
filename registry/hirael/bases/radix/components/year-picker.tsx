@@ -69,6 +69,13 @@ export type YearPickerProps =
       onValueChange?: (range: YearRange) => void;
     });
 
+const nextYearRange = (current: YearRange | undefined, year: number): YearRange => {
+  if (!current || current.to !== undefined) return { from: year };
+  if (year < current.from) return { from: year, to: current.from };
+
+  return { from: current.from, to: year };
+};
+
 const YearPicker = (props: YearPickerProps) => {
   const {
     minYear = 1900,
@@ -118,20 +125,10 @@ const YearPicker = (props: YearPickerProps) => {
   }
 
   const setValue = (year: number) => {
-    // This branch is range mode, where the value is a range.
-    const current = value as YearRange | undefined;
-    const next: number | YearRange =
-      mode === 'single'
-        ? year
-        : !current || current.to !== undefined
-          ? { from: year }
-          : year < current.from
-            ? { from: year, to: current.from }
-            : { from: current.from, to: year };
+    const next = mode === 'single' ? year : nextYearRange(typeof value === 'object' ? value : undefined, year);
     if (valueProp === undefined) setInternal(next);
     onValueChange?.(next);
-    // Outside single mode, `next` is a range.
-    if (mode === 'single' || (next as YearRange).to !== undefined) setOpen(false);
+    if (typeof next === 'number' || next.to !== undefined) setOpen(false);
   };
 
   const ctx = {
@@ -219,12 +216,11 @@ const YearPickerContent = ({
 
   const inBounds = (year: number) => year >= ctx.minYear && year <= ctx.maxYear;
   const selectedYear = ctx.mode === 'single' ? ctx.value : ctx.value?.from;
+  const visibleTodayYear = years.includes(today) && inBounds(today) ? today : undefined;
   const tabbableYear =
     selectedYear !== undefined && years.includes(selectedYear)
       ? selectedYear
-      : years.includes(today) && inBounds(today)
-        ? today
-        : (years.find(inBounds) ?? years[0]);
+      : (visibleTodayYear ?? years.find(inBounds) ?? years[0]);
 
   const gridRef = React.useRef<HTMLDivElement>(null);
   const focusYear = (year: number) => {

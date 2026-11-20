@@ -100,6 +100,13 @@ export interface CheckboxGroupProps extends Omit<React.ComponentProps<'div'>, 'd
   name?: string;
 }
 
+const scopeCheckedState = (allChecked: boolean, noneChecked: boolean): CheckboxGroupCheckedState => {
+  if (allChecked) return true;
+  if (noneChecked) return false;
+
+  return 'indeterminate';
+};
+
 const CheckboxGroup = ({
   value: valueProp,
   defaultValue,
@@ -214,7 +221,7 @@ const CheckboxGroup = ({
     const anySelectableChecked = selectable.some((item) => checkedSet.has(item.value));
 
     return {
-      state: allChecked ? true : noneChecked ? false : 'indeterminate',
+      state: scopeCheckedState(allChecked, noneChecked),
       disabled: disabled || selectable.length === 0 || (!allChecked && !fits && !anySelectableChecked),
       toggle: () => {
         if (allChecked || !fits) {

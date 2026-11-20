@@ -109,6 +109,14 @@ const suggest = (query: string, customers: readonly Customer[], limit = 2) => {
     .map((entry) => entry.customer);
 };
 
+const noResultsHint = (hidden: number, query: string) => {
+  if (hidden === 1) return '1 customer matches your search but is hidden by the plan and status filters.';
+  if (hidden > 1) return `${hidden} customers match your search but are hidden by the plan and status filters.`;
+  if (query) return 'Check the spelling, or search by email address instead.';
+
+  return 'Try removing a filter to widen the list.';
+};
+
 const EmptyState02 = () => {
   const [query, setQuery] = React.useState('desing');
   const [plans, setPlans] = React.useState<string[]>(['Pro']);
@@ -218,13 +226,7 @@ const EmptyState02 = () => {
                   <SearchX />
                 </EmptyMedia>
                 <EmptyTitle>{trimmed ? `No results for “${trimmed}”` : 'No customers match these filters'}</EmptyTitle>
-                <EmptyDescription>
-                  {hidden > 0
-                    ? `${hidden} ${hidden === 1 ? 'customer matches' : 'customers match'} your search but ${hidden === 1 ? 'is' : 'are'} hidden by the plan and status filters.`
-                    : trimmed
-                      ? 'Check the spelling, or search by email address instead.'
-                      : 'Try removing a filter to widen the list.'}
-                </EmptyDescription>
+                <EmptyDescription>{noResultsHint(hidden, trimmed)}</EmptyDescription>
               </EmptyHeader>
 
               <EmptyContent>

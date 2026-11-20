@@ -434,11 +434,19 @@ const formatCountdown = (seconds: number) => {
   return `${days}d ${clock}`;
 };
 
-const certificateStatus = (msLeft: number) => {
+type CertificateStatus = 'expired' | 'soon' | 'valid';
+
+const certificateStatus = (msLeft: number): CertificateStatus => {
   if (msLeft <= 0) return 'expired';
   if (msLeft < 14 * DAY) return 'soon';
 
   return 'valid';
+};
+
+const STATUS_TONE: Record<CertificateStatus, string> = {
+  expired: 'text-destructive',
+  soon: 'text-warning',
+  valid: 'text-muted-foreground',
 };
 
 const CertificateList = (props: TileProps) => {
@@ -500,16 +508,7 @@ const CertificateList = (props: TileProps) => {
                 <span className="truncate font-medium">{cert.domain}</span>
                 <span className="text-xs text-muted-foreground">{cert.issuer}</span>
               </div>
-              <span
-                className={cn(
-                  'text-end text-xs tabular-nums',
-                  status === 'expired'
-                    ? 'text-destructive'
-                    : status === 'soon'
-                      ? 'text-warning'
-                      : 'text-muted-foreground',
-                )}
-              >
+              <span className={cn('text-end text-xs tabular-nums', STATUS_TONE[status])}>
                 {status === 'expired' ? `Expired ${Math.max(1, Math.floor(-left / DAY))}d ago` : formatCountdown(left)}
               </span>
               {left < 30 * DAY ? (
@@ -577,6 +576,7 @@ const AccessMatrix = (props: TileProps) => {
   const [draft, setDraft] = React.useState<Policy>(INITIAL_POLICY);
   const [justSaved, setJustSaved] = React.useState(false);
   const changes = diffCount(saved, draft);
+  const savedText = justSaved ? 'Saved' : 'Up to date';
   const risky = ROLES.filter((role) => role !== 'Owner' && draft[role].prod && draft[role].export);
 
   const set = (role: Role, permission: Permission, value: boolean) => {
@@ -648,11 +648,7 @@ const AccessMatrix = (props: TileProps) => {
 
         <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
           <span aria-live="polite" className="text-sm text-muted-foreground tabular-nums">
-            {changes
-              ? `${changes} unsaved ${changes === 1 ? 'change' : 'changes'}`
-              : justSaved
-                ? 'Saved'
-                : 'Up to date'}
+            {changes ? `${changes} unsaved ${changes === 1 ? 'change' : 'changes'}` : savedText}
           </span>
           <div className="flex gap-2">
             <Button variant="ghost" size="sm" disabled={!changes} onClick={() => setDraft(saved)}>

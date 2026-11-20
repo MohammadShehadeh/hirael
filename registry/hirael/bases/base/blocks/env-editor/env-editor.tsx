@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { Eye, EyeOff, Lock, LockOpen, Plus, Search, Trash2, Upload } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -714,9 +715,39 @@ const EnvEditorTable = ({ className, children, ...props }: EnvEditorTableProps) 
 
 type EnvEditorFooterProps = React.ComponentProps<'div'>;
 
+type SaveStatus = 'invalid' | 'dirty' | 'saved';
+
+const saveStatus = (hasErrors: boolean, dirtyCount: number): SaveStatus => {
+  if (hasErrors) return 'invalid';
+  if (dirtyCount > 0) return 'dirty';
+
+  return 'saved';
+};
+
+const saveStatusVariants = cva(
+  'animate-in text-[11px] tabular-nums duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none',
+  {
+    variants: {
+      status: {
+        invalid: 'text-destructive',
+        dirty: 'text-foreground',
+        saved: 'text-muted-foreground',
+      },
+    },
+  },
+);
+
+const saveStatusText = (status: SaveStatus, dirtyCount: number) => {
+  if (status === 'invalid') return 'Fix the highlighted keys to save.';
+  if (status === 'dirty') return `${dirtyCount} unsaved ${dirtyCount === 1 ? 'change' : 'changes'}`;
+
+  return 'All changes saved';
+};
+
 const EnvEditorFooter = ({ className, children, ...props }: EnvEditorFooterProps) => {
   const { dirtyCount, hasErrors, save, discard } = useEnvEditor();
   const dirty = dirtyCount > 0;
+  const status = saveStatus(hasErrors, dirtyCount);
 
   return (
     <div
@@ -724,20 +755,8 @@ const EnvEditorFooter = ({ className, children, ...props }: EnvEditorFooterProps
       className={cn('flex items-center justify-between gap-3 border-t border-border bg-muted/40 px-4 py-3', className)}
       {...props}
     >
-      <span
-        key={hasErrors ? 'errors' : dirty ? 'dirty' : 'saved'}
-        aria-live="polite"
-        className={cn(
-          'text-[11px] tabular-nums',
-          'animate-in duration-250 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in slide-in-from-bottom-1 motion-reduce:animate-none',
-          hasErrors ? 'text-destructive' : dirty ? 'text-foreground' : 'text-muted-foreground',
-        )}
-      >
-        {hasErrors
-          ? 'Fix the highlighted keys to save.'
-          : dirty
-            ? `${dirtyCount} unsaved ${dirtyCount === 1 ? 'change' : 'changes'}`
-            : 'All changes saved'}
+      <span key={status} aria-live="polite" className={saveStatusVariants({ status })}>
+        {saveStatusText(status, dirtyCount)}
       </span>
       <div className="flex items-center gap-2">
         {children}

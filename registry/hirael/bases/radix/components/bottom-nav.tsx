@@ -107,7 +107,7 @@ const BottomNavItem = ({
                 : 'h-4 min-w-4 translate-x-1/2 -translate-y-1 px-1 tabular-nums rtl:-translate-x-1/2',
             )}
           >
-            {badge === true ? null : badge > 99 ? '99+' : badge}
+            {badge !== true && (badge > 99 ? '99+' : badge)}
           </span>
         )}
       </span>

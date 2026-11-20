@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { Check, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -34,6 +35,27 @@ const INVOICE_TONE: Record<InvoiceState, string> = {
   Open: 'bg-muted-foreground/50',
   Overdue: 'bg-destructive',
 };
+
+type Trend = 'up' | 'down' | 'flat';
+
+const trendOf = (delta: number): Trend => {
+  if (delta > 0) return 'up';
+  if (delta < 0) return 'down';
+
+  return 'flat';
+};
+
+const TREND_SIGN: Record<Trend, string> = { up: '+', down: '−', flat: '' };
+
+const monthDeltaVariants = cva('text-xs uppercase', {
+  variants: {
+    trend: {
+      up: 'text-success',
+      down: 'text-destructive',
+      flat: 'text-muted-foreground',
+    },
+  },
+});
 
 interface PlanSlice {
   plan: PlanName;
@@ -328,18 +350,8 @@ const Dashboard03 = () => {
                     <span className="text-2xl font-semibold tracking-[-0.035em] tabular-nums">
                       {usd.format(month.total)}
                     </span>
-                    <span
-                      dir="ltr"
-                      className={cn(
-                        'text-xs uppercase',
-                        month.delta === 0
-                          ? 'text-muted-foreground'
-                          : month.delta > 0
-                            ? 'text-success'
-                            : 'text-destructive',
-                      )}
-                    >
-                      {month.delta > 0 ? '+' : month.delta < 0 ? '−' : ''}
+                    <span dir="ltr" className={monthDeltaVariants({ trend: trendOf(month.delta) })}>
+                      {TREND_SIGN[trendOf(month.delta)]}
                       {Math.abs(month.delta)}% vs {month.comparedWith}
                     </span>
                   </div>

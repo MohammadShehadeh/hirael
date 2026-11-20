@@ -589,6 +589,13 @@ const JsonViewerTree = ({ className, ...props }: Omit<React.ComponentProps<'div'
   );
 };
 
+const initialDepth = (defaultExpanded: number | boolean) => {
+  if (defaultExpanded === true) return Infinity;
+  if (defaultExpanded === false) return 0;
+
+  return defaultExpanded;
+};
+
 const JsonViewer = ({
   value,
   defaultExpanded = 2,
@@ -600,7 +607,7 @@ const JsonViewer = ({
   ...props
 }: JsonViewerProps) => {
   const [internal, setInternal] = React.useState<UncontrolledState>(() => ({
-    depth: defaultExpanded === true ? Infinity : defaultExpanded === false ? 0 : defaultExpanded,
+    depth: initialDepth(defaultExpanded),
     overrides: {},
   }));
   const [focusStore] = React.useState(() => createFocusStore('$'));

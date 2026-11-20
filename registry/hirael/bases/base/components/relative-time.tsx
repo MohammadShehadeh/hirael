@@ -145,7 +145,7 @@ const RelativeTime = ({ date, locale, numeric = 'auto', format = 'long', title, 
       title={title ?? (now === null || !iso ? undefined : absoluteFormat(locale).format(time))}
       {...props}
     >
-      {!iso ? '' : now === null ? iso.slice(0, 10) : formatRelative(diff, relativeFormat(locale, numeric, format))}
+      {iso && (now === null ? iso.slice(0, 10) : formatRelative(diff, relativeFormat(locale, numeric, format)))}
     </time>
   );
 };

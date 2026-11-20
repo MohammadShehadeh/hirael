@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { ChevronsLeftRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -317,6 +318,20 @@ export interface ImageCompareLabelProps extends React.ComponentProps<'span'> {
   side: 'before' | 'after';
 }
 
+const imageCompareLabelVariants = cva(
+  'pointer-events-none absolute z-30 rounded-md bg-background/70 px-2 py-1 text-xs font-medium text-foreground backdrop-blur-sm transition-opacity duration-200',
+  {
+    variants: {
+      side: { before: 'start-3 top-3', after: '' },
+      orientation: { horizontal: '', vertical: '' },
+    },
+    compoundVariants: [
+      { side: 'after', orientation: 'horizontal', class: 'end-3 top-3' },
+      { side: 'after', orientation: 'vertical', class: 'start-3 bottom-3' },
+    ],
+  },
+);
+
 const ImageCompareLabel = ({ side, className, children, ...props }: ImageCompareLabelProps) => {
   const { orientation, dragging } = useImageCompare();
 
@@ -324,18 +339,7 @@ const ImageCompareLabel = ({ side, className, children, ...props }: ImageCompare
     <span
       data-slot="image-compare-label"
       data-side={side}
-      className={cn(
-        'pointer-events-none absolute z-30 rounded-md bg-background/70 px-2 py-1 text-xs font-medium text-foreground backdrop-blur-sm transition-opacity duration-200',
-        orientation === 'vertical'
-          ? side === 'before'
-            ? 'start-3 top-3'
-            : 'start-3 bottom-3'
-          : side === 'before'
-            ? 'start-3 top-3'
-            : 'end-3 top-3',
-        dragging && 'opacity-0',
-        className,
-      )}
+      className={cn(imageCompareLabelVariants({ side, orientation }), dragging && 'opacity-0', className)}
       {...props}
     >
       {children}

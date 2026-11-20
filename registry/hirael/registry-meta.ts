@@ -1287,7 +1287,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['badge', 'button', 'card', 'separator'],
-    dependencies: ['lucide-react'],
+    dependencies: ['class-variance-authority', 'lucide-react'],
   },
   {
     name: 'dashboard-04',
@@ -1786,7 +1786,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: 'display',
     files: [{ path: 'components/image-compare.tsx' }],
     registryDependencies: ['compose-refs'],
-    dependencies: ['lucide-react'],
+    dependencies: ['class-variance-authority', 'lucide-react'],
   },
   {
     name: 'lightbox',
@@ -3427,7 +3427,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       },
     ],
     registryDependencies: ['copy-button', 'tabs'],
-    dependencies: ['lucide-react'],
+    dependencies: ['class-variance-authority', 'lucide-react'],
   },
   {
     name: 'process-03',
@@ -4270,7 +4270,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: 'data',
     files: [{ path: 'components/sparkline.tsx' }],
     registryDependencies: [],
-    dependencies: ['recharts'],
+    dependencies: ['class-variance-authority', 'recharts'],
     cssVars: STATUS_CSS_VARS,
   },
   {
@@ -4281,6 +4281,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: 'data',
     files: [{ path: 'components/gauge.tsx' }],
     cssVars: STATUS_CSS_VARS,
+    dependencies: ['class-variance-authority'],
   },
   {
     name: 'meter',
@@ -4290,6 +4291,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: 'data',
     files: [{ path: 'components/meter.tsx' }],
     cssVars: STATUS_CSS_VARS,
+    dependencies: ['class-variance-authority'],
   },
 
   {
@@ -4311,7 +4313,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: 'inputs',
     files: [{ path: 'components/cron-editor.tsx' }],
     registryDependencies: ['button', 'field', 'input', 'native-select', 'use-controllable-state'],
-    dependencies: [],
+    dependencies: ['class-variance-authority', 'croner', 'cronstrue'],
   },
   {
     name: 'country-select',
@@ -5121,7 +5123,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     blockKind: 'chat',
     files: [{ path: 'blocks/chat-04/chat-04.tsx', target: 'components/blocks/chat-04.tsx' }],
     registryDependencies: ['avatar', 'button', 'dropdown-menu', 'empty', 'input-group', 'item', 'tabs', 'toggle-group'],
-    dependencies: ['lucide-react'],
+    dependencies: ['class-variance-authority', 'lucide-react'],
     cssVars: STATUS_CSS_VARS,
   },
 
@@ -5151,7 +5153,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
       'empty',
       'toggle-group',
     ],
-    dependencies: ['lucide-react'],
+    dependencies: ['class-variance-authority', 'lucide-react'],
   },
   {
     name: 'prompt-input',
@@ -5476,7 +5478,7 @@ export const REGISTRY: RegistryEntryMeta[] = [
     category: 'navigation',
     files: [{ path: 'components/swipe-actions.tsx' }],
     registryDependencies: ['compose-refs'],
-    dependencies: [],
+    dependencies: ['class-variance-authority'],
     cssVars: STATUS_CSS_VARS,
   },
   {

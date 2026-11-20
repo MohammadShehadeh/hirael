@@ -260,6 +260,14 @@ type MobilePane = 'list' | 'thread';
 
 const LIST_KEYS = ['ArrowDown', 'ArrowUp', 'Home', 'End'];
 
+const listKeyTarget = (key: string, current: number, last: number) => {
+  if (key === 'Home') return 0;
+  if (key === 'End') return last;
+  if (current < 0) return 0;
+
+  return key === 'ArrowDown' ? Math.min(last, current + 1) : Math.max(0, current - 1);
+};
+
 const AppShell03 = () => {
   const [selectedId, setSelectedId] = React.useState<string | null>(CONVERSATIONS[0].id);
   const [readIds, setReadIds] = React.useState<readonly string[]>([CONVERSATIONS[0].id]);
@@ -288,6 +296,7 @@ const AppShell03 = () => {
 
     return c.sender.toLowerCase().includes(normalized) || c.subject.toLowerCase().includes(normalized);
   });
+  const emptyViewText = filter === 'unread' ? 'Everything here has been read.' : 'Nothing left in this view.';
 
   const selected = inbox.find((c) => c.id === selectedId) ?? null;
   const thread = selected ? [...selected.thread, ...(replies[selected.id] ?? [])] : [];
@@ -305,14 +314,7 @@ const AppShell03 = () => {
 
     const current = visible.findIndex((c) => c.id === selectedId);
     const last = visible.length - 1;
-    const next =
-      event.key === 'Home'
-        ? 0
-        : event.key === 'End'
-          ? last
-          : event.key === 'ArrowDown'
-            ? Math.min(last, current < 0 ? 0 : current + 1)
-            : Math.max(0, current < 0 ? 0 : current - 1);
+    const next = listKeyTarget(event.key, current, last);
 
     const target = visible[next];
     openConversation(target.id);
@@ -480,13 +482,7 @@ const AppShell03 = () => {
                 <Inbox />
               </EmptyMedia>
               <EmptyTitle>{query.trim() ? 'No conversations match' : 'Inbox zero'}</EmptyTitle>
-              <EmptyDescription>
-                {query.trim()
-                  ? `Nothing matches “${query.trim()}”.`
-                  : filter === 'unread'
-                    ? 'Everything here has been read.'
-                    : 'Nothing left in this view.'}
-              </EmptyDescription>
+              <EmptyDescription>{query.trim() ? `Nothing matches “${query.trim()}”.` : emptyViewText}</EmptyDescription>
             </EmptyHeader>
             {query.trim() && (
               <EmptyContent>

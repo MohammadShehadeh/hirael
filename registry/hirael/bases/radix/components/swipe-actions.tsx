@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/utils';
 import { composeRefs } from '@/registry/hirael/lib/compose-refs';
@@ -70,6 +71,14 @@ const restingOffset = (open: Side | null, widths: Record<Side, number>) => {
   return 0;
 };
 
+// Past the actions the row resists, so it feels anchored.
+const resistPastBounds = (offset: number, min: number, max: number) => {
+  if (offset > max) return max + (offset - max) * 0.2;
+  if (offset < min) return min + (offset - min) * 0.2;
+
+  return offset;
+};
+
 const SwipeActionsContent = ({
   ref,
   className,
@@ -122,8 +131,7 @@ const SwipeActionsContent = ({
       const max = widths.start;
       const min = -widths.end;
       const raw = startOffset + dx;
-      // Past the actions the row resists, so it feels anchored.
-      latest = raw > max ? max + (raw - max) * 0.2 : raw < min ? min + (raw - min) * 0.2 : raw;
+      latest = resistPastBounds(raw, min, max);
       setDrag(latest);
     };
     const onUp = () => {
@@ -220,14 +228,21 @@ const SwipeActionsGroup = ({ side, className, onFocus, ...props }: SwipeActionsG
 
 export type SwipeActionTone = 'default' | 'primary' | 'destructive' | 'warning' | 'success';
 
-// Destructive uses the same pairing as shadcn's destructive Button, so it matches the rest of the app.
-const TONE_CLASS: Record<SwipeActionTone, string> = {
-  default: 'bg-muted text-foreground',
-  primary: 'bg-primary text-primary-foreground',
-  destructive: 'bg-destructive text-white dark:bg-destructive/60',
-  warning: 'bg-warning text-background',
-  success: 'bg-success text-background',
-};
+const swipeActionVariants = cva(
+  'flex w-20 flex-col items-center justify-center gap-1 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset [&_svg]:size-5',
+  {
+    variants: {
+      tone: {
+        default: 'bg-muted text-foreground',
+        primary: 'bg-primary text-primary-foreground',
+        // The same pairing as shadcn's destructive Button, so it matches the rest of the app.
+        destructive: 'bg-destructive text-white dark:bg-destructive/60',
+        warning: 'bg-warning text-background',
+        success: 'bg-success text-background',
+      } satisfies Record<SwipeActionTone, string>,
+    },
+  },
+);
 
 export interface SwipeActionProps extends React.ComponentProps<'button'> {
   tone?: SwipeActionTone;
@@ -246,11 +261,7 @@ const SwipeAction = ({ tone = 'default', icon, className, children, onClick, ...
         onClick?.(event);
         setOpen(null);
       }}
-      className={cn(
-        'flex w-20 flex-col items-center justify-center gap-1 text-xs font-medium outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset [&_svg]:size-5',
-        TONE_CLASS[tone],
-        className,
-      )}
+      className={cn(swipeActionVariants({ tone }), className)}
       {...props}
     >
       {icon}

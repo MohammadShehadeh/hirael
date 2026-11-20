@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import 'cronstrue/locales/ar';
 
 import { useDemoLocale, useT } from '@/lib/demo-locale';
 import {
@@ -71,7 +72,7 @@ const CronEditorDemo = () => {
           <div className="grid gap-4 rounded-md border border-border bg-card p-4 sm:grid-cols-[1fr_auto]">
             <div className="grid gap-3">
               <CronEditorExpression label={t({ en: 'Expression', ar: 'التعبير' })} />
-              <CronEditorPreview />
+              <CronEditorPreview locale={locale} />
             </div>
             <div className="grid content-start gap-1.5">
               <p className="text-xs text-muted-foreground uppercase">
@@ -106,7 +107,7 @@ const CronEditorDemo = () => {
               <p className="text-sm font-medium text-foreground">
                 {t({ en: 'Backup schedule', ar: 'جدول النسخ الاحتياطي' })}
               </p>
-              <CronEditorPreview />
+              <CronEditorPreview locale={locale} />
             </div>
             <CronEditorPresets presets={presets} />
             <CronEditorExpression label={t({ en: 'Cron', ar: 'Cron' })} showError={false} />

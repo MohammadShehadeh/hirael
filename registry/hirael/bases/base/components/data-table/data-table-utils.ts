@@ -37,6 +37,13 @@ interface ColumnPinningStyleOptions<TData extends RowData> {
   withBorder?: boolean;
 }
 
+const pinnedEdgeShadow = (isLastStartPinned: boolean, isFirstEndPinned: boolean) => {
+  if (isLastStartPinned) return '-4px 0 4px -4px var(--border) inset';
+  if (isFirstEndPinned) return '4px 0 4px -4px var(--border) inset';
+
+  return undefined;
+};
+
 export const getColumnPinningStyle = <TData extends RowData>({
   column,
   withBorder = false,
@@ -46,13 +53,7 @@ export const getColumnPinningStyle = <TData extends RowData>({
   const isFirstEndPinnedColumn = isPinned === 'end' && column.getIsFirstColumn('end');
 
   return {
-    boxShadow: withBorder
-      ? isLastStartPinnedColumn
-        ? '-4px 0 4px -4px var(--border) inset'
-        : isFirstEndPinnedColumn
-          ? '4px 0 4px -4px var(--border) inset'
-          : undefined
-      : undefined,
+    boxShadow: withBorder ? pinnedEdgeShadow(isLastStartPinnedColumn, isFirstEndPinnedColumn) : undefined,
     insetInlineStart: isPinned === 'start' ? `${column.getStart('start')}px` : undefined,
     insetInlineEnd: isPinned === 'end' ? `${column.getAfter('end')}px` : undefined,
     opacity: isPinned ? 0.97 : 1,

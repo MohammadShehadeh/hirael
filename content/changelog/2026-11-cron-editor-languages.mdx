@@ -1,0 +1,27 @@
+---
+title: Cron Editor in 40+ languages
+version: '8.4.0'
+date: 2026-11-21
+description: 'Cron Editor describes schedules in any language cronstrue supports and gets its next run times from croner. Several components now use cva for their variants.'
+updated:
+  - cron-editor
+  - gauge
+  - meter
+  - sparkline
+  - swipe-actions
+  - image-compare
+---
+
+Changed:
+
+- **Cron Editor** describes schedules with
+  [cronstrue](https://github.com/bradymholt/cRonstrue), so the preview can read
+  in any of its 40+ languages. Pass `locale` to `CronEditorPreview` and load the
+  language once with `import 'cronstrue/locales/ar'`. The English wording
+  changes a little: "At 09:00 on weekdays" now reads "At 09:00, Monday through
+  Friday". Next run times come from [croner](https://github.com/Hexagon/croner),
+  which handles daylight saving changes. The shadcn CLI installs both for you.
+- **Gauge, Meter, Sparkline, Swipe Actions and Image Compare** build their
+  sizes, tones and label positions with `cva`, the same way shadcn's own
+  components do. They look the same as before. A fresh install adds
+  `class-variance-authority`, which most shadcn projects already have.

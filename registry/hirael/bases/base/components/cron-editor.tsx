@@ -1,6 +1,9 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
+import { Cron } from 'croner';
+import cronstrue from 'cronstrue';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/base/ui/button';
@@ -48,26 +51,13 @@ const FIELD_RANGE: Record<CronField, FieldRange> = {
   dayOfWeek: { min: 0, max: 6 },
 };
 
-const MONTH_NAMES = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-  'July',
-  'August',
-  'September',
-  'October',
-  'November',
-  'December',
-];
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const FIELD_ALIASES: Partial<Record<CronField, string[]>> = {
-  month: MONTH_NAMES.map((m) => m.slice(0, 3).toUpperCase()),
-  dayOfWeek: DAY_NAMES.map((d) => d.slice(0, 3).toUpperCase()),
+  month: MONTH_NAMES.map((name) => name.toUpperCase()),
+  dayOfWeek: DAY_NAMES.map((name) => name.toUpperCase()),
 };
 
 const rangeList = (min: number, max: number, step = 1): number[] => {
@@ -105,63 +95,63 @@ const everyField = (field: CronField): CronFieldValue => {
   };
 };
 
-const parseField = (raw: string, field: CronField): CronFieldValue => {
+type Parsed<T> = { ok: true; value: T } | { ok: false; error: string };
+
+// Day-of-week 7 is Sunday; keep it as 7 while bounding so `5-7` is not read as backwards.
+const parseBound = (token: string, field: CronField) =>
+  field === 'dayOfWeek' && /^\d+$/.test(token) && Number(token) === 7 ? 7 : parseNumber(token, field);
+
+const parseBounds = (part: string, base: string, hasStep: boolean, field: CronField): Parsed<FieldRange> => {
+  const { min, max } = FIELD_RANGE[field];
+  if (base === '*') return { ok: true, value: { min, max } };
+
+  if (base.includes('-')) {
+    const [a, b] = base.split('-');
+    const lo = parseBound(a, field);
+    const hi = parseBound(b, field);
+    if (lo === null || hi === null) return { ok: false, error: `Cannot read "${part}"` };
+    if (lo > hi) return { ok: false, error: `Range is backwards: "${part}"` };
+
+    return { ok: true, value: { min: lo, max: hi } };
+  }
+
+  const n = parseNumber(base, field);
+  if (n === null) return { ok: false, error: `Cannot read "${part}"` };
+
+  return { ok: true, value: { min: n, max: hasStep ? max : n } };
+};
+
+const parseField = (raw: string, field: CronField): Parsed<CronFieldValue> => {
   const { min, max } = FIELD_RANGE[field];
   const token = raw.trim();
-  if (token === '*') return everyField(field);
+  if (token === '*') return { ok: true, value: everyField(field) };
 
   const stepMatch = /^\*\/(\d+)$/.exec(token);
   if (stepMatch) {
     const step = Number(stepMatch[1]);
-    if (step < 1 || step > max) throw new Error(`Step out of range: ${token}`);
+    if (step < 1 || step > max) return { ok: false, error: `Step out of range: ${token}` };
 
-    return {
-      mode: 'step',
-      values: [],
-      step,
-      allowed: rangeList(min, max, step),
-      raw: token,
-    };
+    return { ok: true, value: { mode: 'step', values: [], step, allowed: rangeList(min, max, step), raw: token } };
   }
 
   const allowed = new Set<number>();
   for (const part of token.split(',')) {
-    if (part === '') throw new Error(`Empty value in "${token}"`);
+    if (part === '') return { ok: false, error: `Empty value in "${token}"` };
     const rangeStep = /^([^/]+)(?:\/(\d+))?$/.exec(part);
-    if (!rangeStep) throw new Error(`Cannot read "${part}"`);
+    if (!rangeStep) return { ok: false, error: `Cannot read "${part}"` };
     const [, base, stepStr] = rangeStep;
     const step = stepStr ? Number(stepStr) : 1;
-    if (step < 1) throw new Error(`Step must be at least 1 in "${part}"`);
-    let lo: number;
-    let hi: number;
-    if (base === '*') {
-      lo = min;
-      hi = max;
-    } else if (base.includes('-')) {
-      const [a, b] = base.split('-');
-      // Day-of-week 7 is Sunday; keep it as 7 while bounding so `5-7` is not read as backwards.
-      const parseBound = (t: string) =>
-        field === 'dayOfWeek' && /^\d+$/.test(t) && Number(t) === 7 ? 7 : parseNumber(t, field);
-      const pa = parseBound(a);
-      const pb = parseBound(b);
-      if (pa === null || pb === null) {
-        throw new Error(`Cannot read "${part}"`);
-      }
-      lo = pa;
-      hi = pb;
-      if (lo > hi) throw new Error(`Range is backwards: "${part}"`);
-    } else {
-      const n = parseNumber(base, field);
-      if (n === null) throw new Error(`Cannot read "${part}"`);
-      lo = n;
-      hi = stepStr ? max : n;
+    if (step < 1) return { ok: false, error: `Step must be at least 1 in "${part}"` };
+    const bounds = parseBounds(part, base, Boolean(stepStr), field);
+    if (!bounds.ok) return bounds;
+    for (let i = bounds.value.min; i <= bounds.value.max; i += step) {
+      allowed.add(field === 'dayOfWeek' && i === 7 ? 0 : i);
     }
-    for (let i = lo; i <= hi; i += step) allowed.add(field === 'dayOfWeek' && i === 7 ? 0 : i);
   }
 
   const values = Array.from(allowed).sort((a, b) => a - b);
 
-  return { mode: 'specific', values, step: 1, allowed: values, raw: token };
+  return { ok: true, value: { mode: 'specific', values, step: 1, allowed: values, raw: token } };
 };
 
 /**
@@ -192,13 +182,15 @@ export const parseCron = (expression: string): ParsedCron => {
   let error: string | null = null;
   let errorField: CronField | null = null;
   CRON_FIELDS.forEach((field, i) => {
-    try {
-      fields[field] = parseField(tokens[i], field);
-    } catch (e) {
-      if (!error) {
-        error = e instanceof Error ? e.message : String(e);
-        errorField = field;
-      }
+    const result = parseField(tokens[i], field);
+    if (result.ok) {
+      fields[field] = result.value;
+
+      return;
+    }
+    if (error === null) {
+      error = result.error;
+      errorField = field;
     }
   });
 
@@ -231,138 +223,27 @@ export const formatCron = (fields: Record<CronField, Pick<CronFieldValue, 'mode'
   return CRON_FIELDS.map((f) => formatCronField(fields[f])).join(' ');
 };
 
-const joinList = (items: string[]): string => {
-  if (items.length <= 1) return items.join('');
-  if (items.length === 2) return `${items[0]} and ${items[1]}`;
-
-  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`;
-};
-
-const ORDINAL_SUFFIXES = ['th', 'st', 'nd', 'rd'];
-
-const ordinal = (n: number): string => {
-  const v = n % 100;
-
-  return `${n}${ORDINAL_SUFFIXES[(v - 20) % 10] ?? ORDINAL_SUFFIXES[v] ?? ORDINAL_SUFFIXES[0]}`;
-};
-
-const pad2 = (n: number): string => {
-  return String(n).padStart(2, '0');
-};
-
-/** Turn a cron expression into a plain sentence, like "At 09:00 on Monday". */
-export const describeCron = (expression: string): string => {
+/**
+ * Turn a cron expression into a plain sentence, like "At 09:00, Monday through Friday". `locale` is a
+ * cronstrue locale code; load it once with `import 'cronstrue/locales/<code>'`.
+ */
+export const describeCron = (expression: string, locale?: string): string => {
   const parsed = parseCron(expression);
   if (!parsed.valid) return parsed.error ?? 'Invalid expression';
-  const { minute, hour, dayOfMonth, month, dayOfWeek } = parsed.fields;
-  const parts: string[] = [];
 
-  if (minute.mode === 'specific' && hour.mode === 'specific') {
-    const times: string[] = [];
-    for (const h of hour.values) {
-      for (const m of minute.values) times.push(`${pad2(h)}:${pad2(m)}`);
-    }
-    parts.push(`At ${joinList(times.slice(0, 6))}`);
-    if (times.length > 6) parts.push(`and ${times.length - 6} more times`);
-  } else if (minute.mode === 'specific' && hour.mode === 'every') {
-    parts.push(`Every hour at minute ${joinList(minute.values.map(String))}`);
-  } else if (minute.mode === 'specific' && hour.mode === 'step') {
-    parts.push(`At minute ${joinList(minute.values.map(String))} past every ${ordinal(hour.step)} hour`);
-  } else if (minute.mode === 'step' && hour.mode === 'every') {
-    parts.push(minute.step === 1 ? 'Every minute' : `Every ${minute.step} minutes`);
-  } else if (minute.mode === 'step' && hour.mode === 'specific') {
-    parts.push(`Every ${minute.step} minutes past hour ${joinList(hour.values.map(String))}`);
-  } else if (minute.mode === 'step' && hour.mode === 'step') {
-    parts.push(`Every ${minute.step} minutes past every ${ordinal(hour.step)} hour`);
-  } else if (minute.mode === 'every' && hour.mode === 'specific') {
-    parts.push(`Every minute past hour ${joinList(hour.values.map(String))}`);
-  } else if (minute.mode === 'every' && hour.mode === 'step') {
-    parts.push(`Every minute past every ${ordinal(hour.step)} hour`);
-  } else {
-    parts.push('Every minute');
-  }
-
-  if (dayOfMonth.mode === 'specific') {
-    parts.push(`on day ${joinList(dayOfMonth.values.map(String))} of the month`);
-  } else if (dayOfMonth.mode === 'step') {
-    parts.push(`every ${ordinal(dayOfMonth.step)} day of the month`);
-  }
-
-  if (dayOfWeek.mode === 'specific' && dayOfWeek.values.length === 7) {
-    parts.push(dayOfMonth.mode === 'specific' ? 'and every day' : 'every day');
-  } else if (dayOfWeek.mode === 'specific') {
-    // A 7 in the expression (`5-7`) means Sunday ends the week, so list it last instead of first.
-    const sundayLast = /(^|\D)7(?!\d)/.test(dayOfWeek.raw) && dayOfWeek.values.includes(0);
-    const days = sundayLast ? [...dayOfWeek.values.filter((d) => d !== 0), 0] : dayOfWeek.values;
-    const isWeekdays = days.join(',') === '1,2,3,4,5';
-    const label = isWeekdays ? 'weekdays' : joinList(days.map((d) => DAY_NAMES[d]));
-    parts.push(dayOfMonth.mode === 'specific' ? `and on ${label}` : `on ${label}`);
-  } else if (dayOfWeek.mode === 'step') {
-    parts.push(`every ${ordinal(dayOfWeek.step)} day of the week`);
-  }
-
-  if (month.mode === 'specific') {
-    parts.push(`in ${joinList(month.values.map((m) => MONTH_NAMES[m - 1]))}`);
-  } else if (month.mode === 'step') {
-    parts.push(`every ${ordinal(month.step)} month`);
-  }
-
-  return parts.join(' ');
+  return cronstrue.toString(expression, { locale, use24HourTimeFormat: true }).trim();
 };
 
-/**
- * Compute the next `count` times the expression fires after `from`, in local
- * time. Vixie cron rules: when neither day field starts with `*`, either one
- * matching is enough; otherwise both must match, so a stepped `*` (every 2nd day) still counts as unrestricted.
- */
+/** Compute the next `count` times the expression fires after `from`, in local time. */
 export const nextCronRuns = (expression: string, count = 3, from: Date = new Date()): Date[] => {
   const parsed = parseCron(expression);
   if (!parsed.valid) return [];
-  const { minute, hour, dayOfMonth, month, dayOfWeek } = parsed.fields;
-  const minutes = new Set(minute.allowed);
-  const hours = new Set(hour.allowed);
-  const months = new Set(month.allowed);
-  const doms = new Set(dayOfMonth.allowed);
-  const dows = new Set(dayOfWeek.allowed);
-  const eitherDay = !dayOfMonth.raw.startsWith('*') && !dayOfWeek.raw.startsWith('*');
 
-  const dayMatches = (d: Date) => {
-    const domOk = doms.has(d.getDate());
-    const dowOk = dows.has(d.getDay());
+  // Vixie cron: a day field starting with `*`, even a stepped one, makes both day fields required.
+  const { dayOfMonth, dayOfWeek } = parsed.fields;
+  const domAndDow = dayOfMonth.raw.startsWith('*') || dayOfWeek.raw.startsWith('*');
 
-    return eitherDay ? domOk || dowOk : domOk && dowOk;
-  };
-
-  const out: Date[] = [];
-  const d = new Date(from.getTime());
-  d.setSeconds(0, 0);
-  d.setMinutes(d.getMinutes() + 1);
-
-  // Hard cap so an unsatisfiable expression (Feb 31) cannot spin forever.
-  for (let i = 0; i < 200_000 && out.length < count; i++) {
-    if (!months.has(d.getMonth() + 1)) {
-      d.setMonth(d.getMonth() + 1, 1);
-      d.setHours(0, 0, 0, 0);
-      continue;
-    }
-    if (!dayMatches(d)) {
-      d.setDate(d.getDate() + 1);
-      d.setHours(0, 0, 0, 0);
-      continue;
-    }
-    if (!hours.has(d.getHours())) {
-      d.setHours(d.getHours() + 1, 0, 0, 0);
-      continue;
-    }
-    if (!minutes.has(d.getMinutes())) {
-      d.setMinutes(d.getMinutes() + 1);
-      continue;
-    }
-    out.push(new Date(d.getTime()));
-    d.setMinutes(d.getMinutes() + 1);
-  }
-
-  return out;
+  return new Cron(expression, { domAndDow }).nextRuns(count, from);
 };
 
 interface CronEditorContextValue {
@@ -494,6 +375,18 @@ const CronEditorPresets = ({ presets = CRON_PRESETS, className, ...props }: Cron
   );
 };
 
+const cronValuesVariants = cva('grid gap-1', {
+  variants: {
+    field: {
+      minute: 'grid-cols-8',
+      hour: 'grid-cols-8',
+      dayOfMonth: 'grid-cols-8',
+      month: 'grid-cols-6',
+      dayOfWeek: 'grid-cols-7',
+    },
+  },
+});
+
 const DEFAULT_FIELD_LABELS: Record<CronField, string> = {
   minute: 'Minute',
   hour: 'Hour',
@@ -509,8 +402,8 @@ const DEFAULT_MODE_LABELS: Record<CronFieldMode, string> = {
 };
 
 const optionLabel = (field: CronField, n: number): string => {
-  if (field === 'month') return MONTH_NAMES[n - 1].slice(0, 3);
-  if (field === 'dayOfWeek') return DAY_NAMES[n].slice(0, 3);
+  if (field === 'month') return MONTH_NAMES[n - 1];
+  if (field === 'dayOfWeek') return DAY_NAMES[n];
 
   return String(n);
 };
@@ -574,18 +467,18 @@ const CronEditorField = ({
           onChange={(e) => {
             const mode = CRON_FIELD_MODES.find((option) => option === e.target.value);
             if (!mode) return;
-            if (mode === 'every') ctx.setField(field, { mode });
-            else if (mode === 'step') {
-              ctx.setField(field, {
-                mode,
-                step: state.step > 1 ? state.step : field === 'minute' ? 15 : 2,
-              });
-            } else {
-              ctx.setField(field, {
-                mode,
-                values: state.values.length > 0 ? state.values : [min],
-              });
+            if (mode === 'every') {
+              ctx.setField(field, { mode });
+
+              return;
             }
+            if (mode === 'step') {
+              const defaultStep = field === 'minute' ? 15 : 2;
+              ctx.setField(field, { mode, step: state.step > 1 ? state.step : defaultStep });
+
+              return;
+            }
+            ctx.setField(field, { mode, values: state.values.length > 0 ? state.values : [min] });
           }}
         >
           <NativeSelectOption value="every">{modeLabels.every}</NativeSelectOption>
@@ -618,14 +511,7 @@ const CronEditorField = ({
           role="group"
           aria-label={`${label} values`}
           data-slot="cron-editor-field-values"
-          className={cn(
-            'grid gap-1',
-            field === 'minute' || field === 'hour' || field === 'dayOfMonth'
-              ? 'grid-cols-8'
-              : field === 'month'
-                ? 'grid-cols-6'
-                : 'grid-cols-7',
-          )}
+          className={cronValuesVariants({ field })}
         >
           {options.map((n) => {
             const on = selected.has(n);
@@ -725,13 +611,15 @@ const CronEditorExpression = ({
 };
 
 interface CronEditorPreviewProps extends Omit<React.ComponentProps<'p'>, 'children'> {
+  /** cronstrue locale code for the default sentence; load it once with `import 'cronstrue/locales/<code>'`. */
+  locale?: string;
   /** Override the sentence. Defaults to `describeCron`. */
   describe?: (parsed: ParsedCron, expression: string) => React.ReactNode;
 }
 
-const CronEditorPreview = ({ describe, className, ...props }: CronEditorPreviewProps) => {
+const CronEditorPreview = ({ locale, describe, className, ...props }: CronEditorPreviewProps) => {
   const ctx = useCronEditor();
-  const text = describe ? describe(ctx.parsed, ctx.value) : describeCron(ctx.value);
+  const text = describe ? describe(ctx.parsed, ctx.value) : describeCron(ctx.value, locale);
 
   return (
     <p

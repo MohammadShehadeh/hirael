@@ -23,6 +23,7 @@ import { createRequire } from 'node:module';
 import os from 'node:os';
 import path from 'node:path';
 import { registryItemSchema, registrySchema, type RegistryItem } from 'shadcn/schema';
+import { z } from 'zod';
 
 import {
   BASE_LABELS,
@@ -54,17 +55,16 @@ interface DryRunResult {
   output: string;
 }
 
-interface LiveHealth {
-  score: number;
-  status: string;
-  checkedAt: string;
-  breakdown: Record<string, number>;
-}
+const liveHealthSchema = z.object({
+  score: z.number(),
+  status: z.string(),
+  checkedAt: z.string(),
+  breakdown: z.record(z.string(), z.number()),
+});
 
-interface RegistryListing {
-  name: string;
-  health?: LiveHealth;
-}
+type LiveHealth = z.infer<typeof liveHealthSchema>;
+
+const registryListingSchema = z.array(z.object({ name: z.unknown(), health: z.unknown() }));
 
 interface LocalServer {
   url: string;
@@ -395,16 +395,17 @@ const checkBase = async (base: RegistryBase, selected: string[] | null) => {
   );
   check('    ', `@${indexName}` === NAMESPACE, `Index name "${indexName}" matches the ${NAMESPACE} namespace`);
 
+  const schemaIssues =
+    parsedIndex?.success === false
+      ? parsedIndex.error.issues.slice(0, 5).map((issue) => `${issue.path.join('.')}: ${issue.message}`)
+      : [];
+
   console.log('  Correctness · 25 pts');
   check(
     '    ',
     !!parsedIndex?.success,
     `Index ${route}registry.json matches the registry schema (${plural(names.length, 'item')}, ${kb(JSON.stringify(index.json ?? '').length)})`,
-    !index.ok
-      ? [`HTTP ${index.status}`]
-      : parsedIndex && !parsedIndex.success
-        ? parsedIndex.error.issues.slice(0, 5).map((issue) => `${issue.path.join('.')}: ${issue.message}`)
-        : [],
+    index.ok ? schemaIssues : [`HTTP ${index.status}`],
   );
   const { items, schemaProblems, nameProblems } = await fetchItems(names, itemUrl);
   check('    ', !schemaProblems.length, `${items.length}/${names.length} items match the item schema`, schemaProblems);
@@ -426,9 +427,10 @@ const checkBase = async (base: RegistryBase, selected: string[] | null) => {
 const liveHealth = async (): Promise<LiveHealth | undefined> => {
   try {
     const response = await fetch('https://ui.shadcn.com/r/registries.json', { signal: AbortSignal.timeout(10_000) });
-    const registries = (await response.json()) as RegistryListing[];
+    const registries = registryListingSchema.parse(await response.json());
+    const health = registries.find((registry) => registry.name === NAMESPACE)?.health;
 
-    return registries.find((registry) => registry.name === NAMESPACE)?.health;
+    return liveHealthSchema.optional().parse(health);
   } catch {
     return undefined;
   }

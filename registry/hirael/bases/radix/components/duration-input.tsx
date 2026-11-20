@@ -262,7 +262,7 @@ const DurationInput = ({
   const [draft, setDraft] = React.useState<DurationDraft | null>(null);
 
   const setSeconds = (next: number | null) => {
-    const clamped = next === null ? null : Math.max(0, max === undefined ? next : Math.min(max, next));
+    const clamped = next === null ? null : Math.max(0, Math.min(max ?? Infinity, next));
     setControlledSeconds(clamped);
   };
 

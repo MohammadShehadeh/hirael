@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { Check } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -15,6 +16,28 @@ const SWAP =
 const stagger = (index: number, step = 60, offset = 0): React.CSSProperties => ({
   animationDelay: `${offset + index * step}ms`,
 });
+
+type StepProgress = 'current' | 'done' | 'upcoming';
+
+const stepProgress = (index: number, activeIndex: number): StepProgress => {
+  if (index === activeIndex) return 'current';
+  if (index < activeIndex) return 'done';
+
+  return 'upcoming';
+};
+
+const stepMarkerVariants = cva(
+  'relative me-2.5 grid size-7 shrink-0 place-items-center rounded-full border text-[11px] font-medium tabular-nums transition-colors duration-250 lg:me-0 lg:mb-3.5',
+  {
+    variants: {
+      progress: {
+        current: 'border-foreground bg-foreground text-background',
+        done: 'border-foreground bg-background text-foreground',
+        upcoming: 'border-border bg-background text-muted-foreground group-hover/step:border-muted-foreground',
+      },
+    },
+  },
+);
 
 const COMMAND = 'npx shadcn add https://hirael.com/r/command-palette.json';
 
@@ -137,17 +160,7 @@ const Process02 = () => {
                       </span>
                     </>
                   )}
-                  <span
-                    dir="ltr"
-                    className={cn(
-                      'relative me-2.5 grid size-7 shrink-0 place-items-center rounded-full border text-[11px] font-medium tabular-nums transition-colors duration-250 lg:me-0 lg:mb-3.5',
-                      index === activeIndex
-                        ? 'border-foreground bg-foreground text-background'
-                        : reached
-                          ? 'border-foreground bg-background text-foreground'
-                          : 'border-border bg-background text-muted-foreground group-hover/step:border-muted-foreground',
-                    )}
-                  >
+                  <span dir="ltr" className={stepMarkerVariants({ progress: stepProgress(index, activeIndex) })}>
                     {formatIndex(index)}
                   </span>
                   <span className="flex min-w-0 flex-col gap-1.5 pe-4 pt-0.5 pb-8 lg:pt-0 lg:pb-0">

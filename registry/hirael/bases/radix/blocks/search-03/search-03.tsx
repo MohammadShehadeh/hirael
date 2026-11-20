@@ -352,15 +352,19 @@ const FILE_ICONS: Record<FileExt, LucideIcon> = {
 const PAGE_SIZE = 5;
 const SEED_QUERY = 'onboarding';
 
-const primaryText = (record: Result) =>
-  record.kind === 'doc' ? record.title : record.kind === 'person' ? record.name : `${record.name}.${record.ext}`;
+const primaryText = (record: Result) => {
+  if (record.kind === 'doc') return record.title;
+  if (record.kind === 'person') return record.name;
 
-const secondaryText = (record: Result) =>
-  record.kind === 'doc'
-    ? `${record.path.join(' ')} ${record.snippet}`
-    : record.kind === 'person'
-      ? `${record.role} ${record.team} ${record.email}`
-      : record.owner;
+  return `${record.name}.${record.ext}`;
+};
+
+const secondaryText = (record: Result) => {
+  if (record.kind === 'doc') return `${record.path.join(' ')} ${record.snippet}`;
+  if (record.kind === 'person') return `${record.role} ${record.team} ${record.email}`;
+
+  return record.owner;
+};
 
 interface ScoredResult {
   record: Result;
@@ -400,7 +404,7 @@ const VOCABULARY = Array.from(
 // Optimal string alignment distance: Levenshtein plus adjacent swaps, so "onbaording" is two edits away.
 const editDistance = (a: string, b: string) => {
   const rows = Array.from({ length: a.length + 1 }, (_, i) =>
-    Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0)),
+    Array.from({ length: b.length + 1 }, (_, j) => (i === 0 || j === 0 ? i + j : 0)),
   );
   for (let i = 1; i <= a.length; i++) {
     for (let j = 1; j <= b.length; j++) {

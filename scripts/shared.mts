@@ -5,7 +5,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import type { RegistryItem } from 'shadcn/schema';
+import { registryItemSchema, type RegistryItem } from 'shadcn/schema';
 
 import pkg from '../package.json';
 import {
@@ -58,8 +58,7 @@ const readBuiltItems = (base: RegistryBase = 'radix') =>
       return {
         base,
         file,
-        // These are the payloads shadcn build just wrote.
-        item: JSON.parse(readFileSync(file, 'utf8')) as RegistryItem,
+        item: registryItemSchema.parse(JSON.parse(readFileSync(file, 'utf8'))),
       };
     });
 

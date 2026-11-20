@@ -264,6 +264,12 @@ const BrandMark = ({ className }: BrandMarkProps) => {
 
 type SaveState = 'idle' | 'saving' | 'saved';
 
+const SAVE_LABEL: Record<SaveState, string> = {
+  idle: 'changes save automatically',
+  saving: 'saving…',
+  saved: 'all changes saved',
+};
+
 interface FieldRowProps {
   field: Field;
   values: Record<string, string>;
@@ -597,11 +603,7 @@ const AppShell02 = () => {
                           saveState === 'saved' ? 'text-success' : 'text-muted-foreground',
                         )}
                       >
-                        {saveState === 'saving'
-                          ? 'saving…'
-                          : saveState === 'saved'
-                            ? 'all changes saved'
-                            : 'changes save automatically'}
+                        {SAVE_LABEL[saveState]}
                       </span>
                       <Button variant="outline" size="sm" render={<a href="#" />} nativeButton={false}>
                         Audit log

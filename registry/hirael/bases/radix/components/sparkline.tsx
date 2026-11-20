@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import { Area, Bar, ComposedChart, Line, ReferenceDot, ReferenceLine, Tooltip, XAxis, YAxis } from 'recharts';
 
 import { cn } from '@/lib/utils';
@@ -34,14 +35,18 @@ const useSparkline = () => {
   return ctx;
 };
 
-const TONE_CLASS: Record<ResolvedSparklineTone, string> = {
-  neutral: 'text-foreground',
-  info: 'text-info',
-  success: 'text-success',
-  warning: 'text-warning',
-  destructive: 'text-destructive',
-  muted: 'text-muted-foreground',
-};
+const sparklineVariants = cva('relative inline-block h-8 w-24 align-middle [&_.recharts-surface]:overflow-visible', {
+  variants: {
+    tone: {
+      neutral: 'text-foreground',
+      info: 'text-info',
+      success: 'text-success',
+      warning: 'text-warning',
+      destructive: 'text-destructive',
+      muted: 'text-muted-foreground',
+    } satisfies Record<ResolvedSparklineTone, string>,
+  },
+});
 
 const numberFormat = new Intl.NumberFormat('en-US');
 
@@ -163,11 +168,7 @@ const Sparkline = ({
         data-slot="sparkline"
         data-variant={variant}
         data-tone={resolvedTone}
-        className={cn(
-          'relative inline-block h-8 w-24 align-middle [&_.recharts-surface]:overflow-visible',
-          TONE_CLASS[resolvedTone],
-          className,
-        )}
+        className={cn(sparklineVariants({ tone: resolvedTone }), className)}
         {...props}
       >
         <ComposedChart

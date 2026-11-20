@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { cva } from 'class-variance-authority';
 import {
   ArrowDown,
   ArrowLeft,
@@ -263,6 +264,26 @@ interface ChatBubbleProps extends React.ComponentProps<'div'> {
   note?: boolean;
 }
 
+const chatBubbleVariants = cva(
+  'max-w-full rounded-2xl px-3.5 py-2 text-sm leading-relaxed break-words whitespace-pre-wrap',
+  {
+    variants: {
+      own: {
+        true: '[&:has(+[data-slot=chat-bubble])]:rounded-ee-md [[data-slot=chat-bubble]+&]:rounded-se-md',
+        false: '[&:has(+[data-slot=chat-bubble])]:rounded-es-md [[data-slot=chat-bubble]+&]:rounded-ss-md',
+      },
+      note: {
+        true: 'border border-dashed border-warning/60 bg-warning/10 text-foreground',
+        false: '',
+      },
+    },
+    compoundVariants: [
+      { note: false, own: true, class: 'bg-primary text-primary-foreground' },
+      { note: false, own: false, class: 'bg-muted text-foreground' },
+    ],
+  },
+);
+
 /** Corners next to a neighbouring bubble in the same group tighten, so a run reads as one block. */
 const ChatBubble = ({ note = false, className, ...props }: ChatBubbleProps) => {
   const own = React.useContext(ChatMessageGroupContext);
@@ -271,18 +292,7 @@ const ChatBubble = ({ note = false, className, ...props }: ChatBubbleProps) => {
     <div
       data-slot="chat-bubble"
       data-note={note || undefined}
-      className={cn(
-        'max-w-full rounded-2xl px-3.5 py-2 text-sm leading-relaxed break-words whitespace-pre-wrap',
-        note
-          ? 'border border-dashed border-warning/60 bg-warning/10 text-foreground'
-          : own
-            ? 'bg-primary text-primary-foreground'
-            : 'bg-muted text-foreground',
-        own
-          ? '[&:has(+[data-slot=chat-bubble])]:rounded-ee-md [[data-slot=chat-bubble]+&]:rounded-se-md'
-          : '[&:has(+[data-slot=chat-bubble])]:rounded-es-md [[data-slot=chat-bubble]+&]:rounded-ss-md',
-        className,
-      )}
+      className={cn(chatBubbleVariants({ own, note }), className)}
       {...props}
     />
   );
@@ -659,6 +669,12 @@ interface Conversation {
   snoozedUntil?: string;
   entries: Entry[];
 }
+
+const statusLabel = (conversation: Conversation) => {
+  if (conversation.status === 'snoozed') return `Snoozed until ${conversation.snoozedUntil}`;
+
+  return conversation.status === 'open' ? 'Open' : 'Closed';
+};
 
 const CONVERSATIONS: Conversation[] = [
   {
@@ -1422,14 +1438,7 @@ const Chat04 = () => {
                   ['Plan', active.customer.plan],
                   ['Customer since', active.customer.since],
                   ['Assignee', active.assignee ? TEAM[active.assignee].name : 'Unassigned'],
-                  [
-                    'Status',
-                    active.status === 'snoozed'
-                      ? `Snoozed until ${active.snoozedUntil}`
-                      : active.status === 'open'
-                        ? 'Open'
-                        : 'Closed',
-                  ],
+                  ['Status', statusLabel(active)],
                 ].map(([label, value]) => (
                   <div key={label} className="flex flex-col gap-0.5 border-t border-border pt-3">
                     <dt className="text-xs text-muted-foreground">{label}</dt>

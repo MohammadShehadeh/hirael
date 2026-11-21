@@ -98,11 +98,6 @@ const Hub = ({ active, onActiveChange }: HubProps) => {
       </svg>
 
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 m-auto size-32 rounded-full bg-primary opacity-[0.18] blur-3xl"
-      />
-
-      <div
         data-slot="integrations-hub"
         className="absolute inset-0 m-auto flex size-[22%] items-center justify-center rounded-2xl border border-border bg-card text-card-foreground shadow-lg"
       >

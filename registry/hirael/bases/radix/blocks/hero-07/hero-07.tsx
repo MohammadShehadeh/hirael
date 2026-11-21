@@ -8,12 +8,6 @@ import { cn } from '@/lib/utils';
 
 // Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
 // primary at low opacity greys out against the background (a brown haze on dark canvases).
-const GLOW =
-  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
-const DEPTH =
-  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
-const WISP =
-  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
 
 const HEADLINE = 'Build the page once, ship it everywhere';
 
@@ -178,28 +172,6 @@ const Hero07 = () => {
       data-slot="hero"
       className="relative isolate grid min-h-[640px] place-items-center overflow-hidden bg-background px-6 py-28 text-center text-foreground md:px-10 md:py-32"
     >
-      <div
-        aria-hidden
-        data-slot="hero-backdrop"
-        className="pointer-events-none absolute inset-0 overflow-hidden [mask-image:radial-gradient(ellipse_at_center,black_10%,transparent_72%)]"
-      >
-        <div
-          className={cn(
-            'absolute start-1/2 top-0 size-180 -translate-x-1/2 rounded-full opacity-50 blur-3xl rtl:translate-x-1/2 dark:opacity-25',
-            GLOW,
-          )}
-        />
-        <div
-          className={cn(
-            'absolute -start-32 -bottom-32 size-140 rounded-full opacity-45 blur-3xl dark:opacity-20',
-            DEPTH,
-          )}
-        />
-        <div
-          className={cn('absolute -end-32 -bottom-32 size-140 rounded-full opacity-40 blur-3xl dark:opacity-20', WISP)}
-        />
-      </div>
-
       <Beam
         reduce={reduce}
         className="pointer-events-none absolute start-1/2 -top-8 -translate-x-1/2 scale-[0.6] sm:top-0 sm:scale-90 rtl:translate-x-1/2"

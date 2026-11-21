@@ -128,10 +128,6 @@ const Integrations05 = () => {
             ))}
           </svg>
 
-          <div
-            aria-hidden
-            className="absolute top-1/2 left-1/2 size-48 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl"
-          />
           <div className="absolute top-1/2 left-1/2 z-10 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-2xl bg-primary text-primary-foreground shadow-lg sm:size-20">
             <BrandMark className="size-7 sm:size-9" />
           </div>

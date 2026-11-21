@@ -235,11 +235,6 @@ const Pricing05 = () => {
             'relative flex flex-col gap-6 self-start overflow-hidden rounded-xl border border-border bg-card/40 p-6 shadow-sm md:p-8 lg:sticky lg:top-8',
           )}
         >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
-          />
-
           <div className="flex items-center justify-between gap-4">
             <span className="text-xs text-muted-foreground uppercase">Estimate</span>
             <ToggleGroup

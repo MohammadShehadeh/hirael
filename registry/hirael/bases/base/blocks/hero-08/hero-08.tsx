@@ -7,12 +7,6 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 // Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
 // primary at low opacity greys out against the background (a brown haze on dark canvases).
-const GLOW =
-  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
-const DEPTH =
-  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
-const WISP =
-  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
 
 const RISE =
   'animate-in fade-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
@@ -86,20 +80,6 @@ const Hero08 = () => {
       data-slot="hero"
       className="relative z-0 min-h-180 overflow-hidden rounded-sm border border-border bg-background pt-30"
     >
-      <div data-slot="hero-backdrop" aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className={cn(
-            'absolute start-1/2 -top-64 size-200 -translate-x-1/2 rounded-full opacity-50 blur-3xl rtl:translate-x-1/2 dark:opacity-25',
-            GLOW,
-          )}
-        />
-        <div
-          className={cn('absolute -end-24 -bottom-48 size-150 rounded-full opacity-45 blur-3xl dark:opacity-25', DEPTH)}
-        />
-        <div
-          className={cn('absolute -start-40 bottom-0 size-130 rounded-full opacity-40 blur-3xl dark:opacity-15', WISP)}
-        />
-      </div>
       <div
         data-slot="hero-grid"
         aria-hidden
@@ -153,7 +133,7 @@ const Hero08 = () => {
           className={cn(
             RISE,
             'mx-auto max-w-5xl rounded-t-xl border border-b-0 border-border',
-            'bg-card/60 p-2 shadow-xl shadow-foreground/10 backdrop-blur-sm',
+            'bg-card/60 p-2 shadow-lg backdrop-blur-sm',
           )}
         >
           <div className="flex items-center justify-between gap-3 px-2 pb-2">

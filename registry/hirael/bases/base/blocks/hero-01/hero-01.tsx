@@ -9,12 +9,6 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 
 // Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
 // primary at low opacity greys out against the background (a brown haze on dark canvases).
-const GLOW =
-  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
-const DEPTH =
-  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
-const WISP =
-  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
 
 const Hero01Backdrop = dynamic(() => import('./hero-01-backdrop'), {
   ssr: false,
@@ -37,6 +31,18 @@ const STATS = [
   { value: '99.9%', label: 'Uptime' },
 ] as const;
 
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+      <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
+    </svg>
+  );
+};
+
 const Hero01 = () => {
   const [active, setActive] = React.useState(false);
 
@@ -47,27 +53,7 @@ const Hero01 = () => {
         onMouseEnter={() => setActive(true)}
         onMouseLeave={() => setActive(false)}
       >
-        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card text-card-foreground shadow-sm md:rounded-[40px]">
-          <div aria-hidden data-slot="hero-wash" className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div
-              className={cn(
-                'absolute -start-24 -top-32 size-160 rounded-full opacity-60 blur-3xl dark:opacity-20',
-                GLOW,
-              )}
-            />
-            <div
-              className={cn(
-                'absolute -end-24 -bottom-40 size-150 rounded-full opacity-60 blur-3xl dark:opacity-20',
-                DEPTH,
-              )}
-            />
-            <div
-              className={cn(
-                'absolute start-1/4 -bottom-56 size-170 rounded-full opacity-50 blur-3xl dark:opacity-15',
-                WISP,
-              )}
-            />
-          </div>
+        <div className="relative isolate flex min-h-[680px] flex-col overflow-hidden rounded-3xl border border-border bg-card text-card-foreground shadow-sm">
           <div
             aria-hidden
             data-slot="hero-backdrop"
@@ -80,7 +66,10 @@ const Hero01 = () => {
             data-slot="hero-nav"
             className={cn(ENTER, 'relative z-10 flex items-center justify-between gap-4 px-6 py-5 md:px-10')}
           >
-            <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">Hirael</span>
+            <span className="flex items-center text-foreground">
+              <BrandMark className="size-5" />
+              <span className="sr-only">Hirael</span>
+            </span>
             <div className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
               {NAV_LINKS.map((link) => (
                 <a key={link} href="#" className="transition-colors duration-150 hover:text-foreground">

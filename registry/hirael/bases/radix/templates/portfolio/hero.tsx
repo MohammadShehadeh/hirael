@@ -189,7 +189,7 @@ export const Hero = ({ start = true }: HeroProps) => {
           lives in Chicago.
         </p>
         <p className="lead-rise mb-12 max-w-md [transform:translateY(20px)] text-sm text-[hsl(var(--muted))] motion-reduce:[transform:none] md:text-base">
-          Designing seamless digital interactions by focusing on the unique nuances which bring systems to life.
+          Designing digital products, with care for the small details that make them feel finished.
         </p>
         <div className="inline-flex flex-wrap items-center justify-center gap-4 opacity-0 blur-in">
           <RingLink

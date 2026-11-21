@@ -30,7 +30,7 @@ export const Hero = ({ videoSrc = HERO_VIDEO, posterSrc }: HeroProps) => {
         </h1>
 
         <p className="rise-still mt-6 max-w-2xl text-sm leading-relaxed font-light text-foreground [animation-delay:0.8s] md:text-base">
-          Stunning design. Blazing performance. Built by AI, refined by experts. This is web design, wildly reimagined.
+          Fast sites that look like your brand. Drafted with AI, finished by designers.
         </p>
 
         <div className="rise mt-8 flex flex-wrap items-center justify-center gap-6 [animation-delay:1.1s]">

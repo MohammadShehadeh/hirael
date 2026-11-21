@@ -18,10 +18,7 @@ const Cta01 = () => {
       <div className="mx-auto w-full max-w-5xl px-6 md:px-10">
         <div
           data-slot="cta-panel"
-          className={cn(
-            ENTER,
-            'relative overflow-hidden rounded-[2rem] border border-border bg-card shadow-[0_30px_70px_-40px_color-mix(in_oklch,var(--foreground)_30%,transparent)]',
-          )}
+          className={cn(ENTER, 'relative overflow-hidden rounded-3xl border border-border bg-card shadow-lg')}
         >
           <div
             aria-hidden

@@ -35,7 +35,7 @@ export const Features = () => {
           </span>
           <div className="relative">
             <h3 className="text-2xl leading-snug font-semibold text-foreground md:text-3xl">
-              Unlock the liquidity of your staked assets
+              Borrow against what you stake
             </h3>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-muted-foreground">
               Borrow against staked positions and NFTs without unwinding them. Your collateral keeps earning while the

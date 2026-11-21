@@ -254,10 +254,6 @@ const Feature11 = () => {
               'relative mt-6 flex min-h-80 flex-col overflow-hidden rounded-xl border border-border bg-card/40 shadow-sm lg:ms-12 lg:mt-0 lg:min-h-96',
             )}
           >
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
-            />
             {FEATURES.map((feature, index) => {
               const Panel = PANELS[feature.value];
 

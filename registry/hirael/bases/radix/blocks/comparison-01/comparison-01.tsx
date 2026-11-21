@@ -46,7 +46,7 @@ const Comparison01 = () => {
           data-slot="comparison-grid"
           className={cn(
             ENTER,
-            'relative mt-12 grid overflow-hidden rounded-xl border border-border shadow-[0_24px_60px_-34px_color-mix(in_oklch,var(--foreground)_22%,transparent)] md:grid-cols-2',
+            'relative mt-12 grid overflow-hidden rounded-xl border border-border shadow-lg md:grid-cols-2',
           )}
           style={stagger(3)}
         >

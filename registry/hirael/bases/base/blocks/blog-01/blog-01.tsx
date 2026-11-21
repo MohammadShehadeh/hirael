@@ -144,10 +144,6 @@ const PostCover = ({ cover, alt, category, featured }: PostCoverProps) => {
         aria-hidden
         className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,var(--border)_1px,transparent_1px),linear-gradient(to_bottom,var(--border)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black_30%,transparent_75%)] bg-size-[24px_24px] opacity-40"
       />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -end-16 -top-16 size-64 rounded-full bg-primary opacity-[0.18] blur-3xl"
-      />
       <div className="absolute inset-0 flex items-end p-4">
         <div className="flex items-center gap-2">
           {featured && <Badge>Featured</Badge>}

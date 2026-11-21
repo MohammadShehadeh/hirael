@@ -19,7 +19,7 @@ const SERVICES = [
     tag: 'Craft',
     title: 'Design & Execution',
     description:
-      'From concept to launch, we obsess over every detail to deliver experiences that feel effortless and look extraordinary.',
+      'From first sketch to launch, we work through every detail until the product is easy to use and good to look at.',
   },
 ];
 

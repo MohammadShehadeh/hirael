@@ -87,10 +87,6 @@ const Integrations04 = () => {
       >
         <div className="relative size-full">
           <div aria-hidden className="absolute inset-[16%] rounded-full border border-dashed border-border/70" />
-          <div
-            aria-hidden
-            className="absolute start-1/2 top-1/2 size-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/20 blur-3xl"
-          />
           <svg aria-hidden viewBox={`0 0 ${WIDTH} ${HEIGHT}`} className="absolute inset-0 size-full text-border">
             {SPOKES.map((spoke, index) => {
               const { x, y } = spokePosition(spoke.angle);

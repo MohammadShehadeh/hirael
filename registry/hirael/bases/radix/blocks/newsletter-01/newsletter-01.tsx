@@ -38,7 +38,7 @@ const Newsletter01 = () => {
         data-slot="newsletter-panel"
         className={cn(
           ENTER,
-          'relative mx-auto w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card p-8 text-center shadow-[0_24px_60px_-34px_color-mix(in_oklch,var(--foreground)_24%,transparent)] sm:p-12',
+          'relative mx-auto w-full max-w-2xl overflow-hidden rounded-xl border border-border bg-card p-8 text-center shadow-lg sm:p-12',
         )}
       >
         <div

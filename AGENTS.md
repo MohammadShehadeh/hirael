@@ -31,7 +31,10 @@ Next.js 16, React 19, Tailwind v4, pnpm 12, Vitest 5. Check the `nextjs` /
   (`<kind>/<name>/<name>.tsx`, `examples/<name>-demo.tsx`).
 - **Generated files are never committed or hand-edited:** `registry*.json`,
   `registry-props.json`, `llms.txt`, `public/r/**` (JSON and per-item `.md`).
-  `pnpm install` and `pnpm build` regenerate them.
+  `pnpm install` and `pnpm build` regenerate them. The exception is
+  `content/og-shots/`: blocks' and templates' social-card screenshots, taken
+  by `pnpm og:shots` after a build and committed, since the deploy has no
+  browser. Re-shoot an item when its look changes.
 - **`registryDependencies` by bare name.** Generation turns Hirael-to-Hirael
   deps into `/r/<name>.json` or `/r/base/<name>.json` URLs.
 

@@ -13,6 +13,7 @@ single source of truth; everything below derives from it and is git-ignored.
 | `pnpm registry:md`    | `build-markdown.mts`                       | item source, examples, `registry-props.json`   | `public/r/*.md`, `public/r/base/*.md`     |
 | `pnpm check:install`  | `check-install.mts`                        | `public/r/**/*.json` (rebuilds first)          | nothing (exits 1 on problems)             |
 | `pnpm check:health`   | `check-health.mts`                         | `public/r/**/*.json` (rebuilds first), network | nothing (exits 1 on problems)             |
+| `pnpm og:shots`       | `capture-og-shots.mts`                     | the built site in `out/` (run `pnpm build`)    | `content/og-shots/*.jpg` (committed)      |
 
 Order matters, and `package.json` encodes it:
 
@@ -25,6 +26,12 @@ Order matters, and `package.json` encodes it:
   before a PR: `pnpm check:health --changed` dry-runs the items your branch
   touches plus their dependents. The header of `check-health.mts` lists every
   flag.
+
+`og:shots` is the exception to "git-ignored": it screenshots every block and
+template preview with Playwright for its social card, and the deploy build has
+no browser, so the images are committed. Run it for an item when you add it or
+change how it looks (`pnpm og:shots --items=hero-09`); `pnpm test` fails while
+a block or template has none.
 
 Each script opens with a comment saying what it does. Check scripts report
 every failure and exit 1 at the end, so one run lists every problem.

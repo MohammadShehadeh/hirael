@@ -53,6 +53,7 @@ registry/hirael/
   registry-meta.ts the list of everything Hirael publishes
   tests/           component tests
 content/changelog/ one file per release
+content/og-shots/  screenshots for the social cards of blocks and templates
 app/, components/, lib/  the website itself
 ```
 
@@ -83,6 +84,11 @@ Cloud"). **Templates** are complete pages in `bases/<base>/templates/<name>/`
 with `category: 'templates'`. Neither needs a separate demo file. If you're
 unsure which one something is: a general control is a component, and something
 built for one kind of product is a block.
+
+Blocks and templates also need a screenshot for the card that shows when a
+page is shared. After `pnpm build`, run `pnpm og:shots --items=<name>` and
+commit the image it writes to `content/og-shots/`. Run it again when an item
+changes how it looks. `pnpm test` fails while one is missing.
 
 ## Guidelines
 

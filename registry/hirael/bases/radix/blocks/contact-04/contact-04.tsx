@@ -354,10 +354,6 @@ const Contact04 = () => {
             'relative flex flex-col overflow-hidden rounded-xl border border-border bg-card/40 p-6 shadow-sm md:p-8 lg:self-start',
           )}
         >
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-primary/40 to-transparent"
-          />
           {status === 'sent' ? (
             <div
               key="sent"

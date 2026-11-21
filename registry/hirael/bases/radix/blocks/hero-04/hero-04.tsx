@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Image from 'next/image';
-import { ArrowRight, Orbit } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Button } from '@/registry/hirael/bases/radix/ui/button';
@@ -12,6 +12,18 @@ const ENTER_TEXT =
   'animate-in slide-in-from-bottom-4 duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both motion-reduce:animate-none';
 
 const stagger = (index: number): React.CSSProperties => ({ animationDelay: `${index * 70}ms` });
+
+interface BrandMarkProps {
+  className?: string;
+}
+
+const BrandMark = ({ className }: BrandMarkProps) => {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+      <path d="M2.3 12h2.4v10.95h6.2V14.6h4.6v8.35h6.2V12h-2.4V1.05h-6.2V9.4H8.5V1.05H2.3Z" />
+    </svg>
+  );
+};
 
 const Hero04 = () => {
   return (
@@ -35,9 +47,9 @@ const Hero04 = () => {
 
       <header data-slot="hero-nav" className={cn(ENTER, 'relative z-10 px-4 py-4 md:px-6')}>
         <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 rounded-full border border-border bg-card/70 py-2 ps-5 pe-2 backdrop-blur-md">
-          <span className="flex items-center gap-2 text-base font-medium tracking-tight text-foreground">
-            <Orbit aria-hidden className="size-5 text-primary" />
-            Hirael
+          <span className="flex items-center">
+            <BrandMark className="size-5 text-foreground" />
+            <span className="sr-only">Hirael</span>
           </span>
           <Button asChild size="sm">
             <a href="#">Get started</a>

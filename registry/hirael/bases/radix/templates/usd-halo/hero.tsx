@@ -103,8 +103,7 @@ export const HeroSection = () => {
           </h1>
 
           <p className="mb-8 max-w-md [font-family:var(--font-inter),ui-sans-serif,system-ui,sans-serif] text-base leading-relaxed text-foreground/70 md:text-lg">
-            An automated, reward-powered digital dollar built for native passive earnings and effortless connection into
-            DeFi.
+            A digital dollar that earns rewards on its own and plugs into the DeFi apps you already use.
           </p>
 
           <PillButton label="Join us" large />

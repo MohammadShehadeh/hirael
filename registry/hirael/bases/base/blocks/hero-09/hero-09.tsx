@@ -11,12 +11,6 @@ import { Button } from '@/registry/hirael/bases/base/ui/button';
 // WebGL can't paint before hydration; the CSS wash below carries the first frame.
 // Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
 // primary at low opacity greys out against the background (a brown haze on dark canvases).
-const GLOW =
-  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
-const DEPTH =
-  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
-const WISP =
-  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
 
 const Hero09Backdrop = dynamic(() => import('./hero-09-backdrop'), {
   ssr: false,
@@ -39,6 +33,9 @@ const STATS = [
   { value: '40s', label: 'median queue to start' },
   { value: '$0', label: 'to start building' },
 ];
+
+const FILLET =
+  'absolute size-6 rounded-ee-3xl shadow-[12px_12px_0_12px_var(--background)] rtl:shadow-[-12px_12px_0_12px_var(--background)]';
 
 interface BrandMarkProps {
   className?: string;
@@ -96,26 +93,8 @@ const HeroZoom = ({ className, children }: React.ComponentProps<'div'>) => {
 const Hero09 = () => {
   return (
     <section data-slot="hero" className="relative min-h-svh bg-background pt-2.5">
-      <HeroZoom className="sticky top-2.5 mx-2.5 flex min-h-200 origin-top flex-col overflow-hidden rounded-[18px] bg-card will-change-transform lg:h-[calc(100svh-20px)]">
+      <HeroZoom className="sticky top-2.5 mx-2.5 flex min-h-200 origin-top flex-col overflow-hidden rounded-2xl bg-card will-change-transform lg:h-[calc(100svh-20px)]">
         <div aria-hidden className="absolute inset-0">
-          {/* First frame, and the fallback wherever WebGL is unavailable. */}
-          <div className="absolute inset-0 overflow-hidden">
-            <div
-              className={cn(
-                'absolute start-1/2 -top-64 size-200 -translate-x-1/2 rounded-full opacity-60 blur-3xl rtl:translate-x-1/2 dark:opacity-30',
-                WISP,
-              )}
-            />
-            <div
-              className={cn(
-                'absolute -start-32 -bottom-48 size-150 rounded-full opacity-55 blur-3xl dark:opacity-30',
-                GLOW,
-              )}
-            />
-            <div
-              className={cn('absolute -end-40 top-10 size-130 rounded-full opacity-50 blur-3xl dark:opacity-25', DEPTH)}
-            />
-          </div>
           <Hero09Backdrop className="absolute inset-0 size-full" />
 
           {/* Grain keeps the wide gradients from banding on large displays. */}
@@ -130,9 +109,9 @@ const Hero09 = () => {
 
         <div className="relative z-10 flex flex-1 flex-col justify-between gap-10 p-6 pb-28 text-foreground md:p-10 md:pt-7">
           <div data-slot="hero-nav" className={cn(ENTER, 'relative flex items-center justify-between')}>
-            <a href="#" data-slot="hero-brand" className="flex items-center gap-2">
+            <a href="#" data-slot="hero-brand" className="flex items-center">
               <BrandMark className="size-5 text-foreground" />
-              <span className="text-base font-semibold tracking-tight">Hirael</span>
+              <span className="sr-only">Hirael</span>
             </a>
             <nav className="absolute start-1/2 hidden items-center gap-6 md:flex ltr:-translate-x-1/2 rtl:translate-x-1/2">
               {NAV_LINKS.map((link) => (
@@ -239,10 +218,15 @@ const Hero09 = () => {
           data-slot="hero-stats"
           style={stagger(5)}
           className={cn(
-            'absolute end-0 bottom-0 z-10 hidden items-end gap-8 rounded-ss-[18px] bg-background ps-7 pe-8 pt-5 pb-2.5 md:flex',
+            'absolute end-0 bottom-0 z-10 hidden items-end gap-8 rounded-ss-3xl bg-background ps-7 pe-8 pt-5 pb-2.5 md:flex',
             'animate-in duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] fill-mode-both fade-in motion-reduce:animate-none',
           )}
         >
+          {/* Concave fillets with the panel's radius. A box-shadow never paints under its own rounded box, so the
+              shadow fills the square around the curve. Each overlaps the panel by 1px so no seam shows when zoomed
+              out, and runs 1px past the card edge, where the card clips it. */}
+          <div aria-hidden className={cn(FILLET, '-end-px -top-[23px]')} />
+          <div aria-hidden className={cn(FILLET, '-start-[23px] -bottom-px')} />
           {STATS.map((stat) => (
             <div key={stat.label}>
               <div

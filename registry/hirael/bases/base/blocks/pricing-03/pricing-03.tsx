@@ -95,11 +95,6 @@ const Pricing03 = () => {
 
   return (
     <section data-slot="pricing" className="relative overflow-hidden bg-background py-20 text-foreground sm:py-28">
-      <div aria-hidden className="pointer-events-none absolute inset-0">
-        <div className="absolute start-1/2 -top-24 h-72 w-3/5 -translate-x-1/2 rounded-full bg-foreground/[0.06] blur-3xl rtl:translate-x-1/2" />
-        <div className="absolute end-[-8%] -bottom-24 h-72 w-2/5 rounded-full bg-primary/10 blur-3xl" />
-      </div>
-
       <div className="relative mx-auto flex max-w-[1480px] flex-col items-center gap-8 px-4">
         <div data-slot="pricing-header" className="flex max-w-2xl flex-col items-center gap-4 text-center">
           <span className={cn(ENTER, 'text-xs text-muted-foreground uppercase')}>Pricing</span>

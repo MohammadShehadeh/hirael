@@ -29,7 +29,7 @@ const Cta03 = () => {
       >
         <div
           data-slot="cta-panel"
-          className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-card shadow-sm md:rounded-[48px]"
+          className="relative flex min-h-[600px] flex-col items-center justify-center overflow-hidden rounded-3xl border border-border bg-card shadow-sm"
         >
           <div
             aria-hidden

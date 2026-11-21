@@ -9,12 +9,6 @@ import { Button } from '@/registry/hirael/bases/radix/ui/button';
 
 // Shades of the theme's primary for the backdrop glows. Lightness and chroma are set per mode, because the raw
 // primary at low opacity greys out against the background (a brown haze on dark canvases).
-const GLOW =
-  'bg-[oklch(from_var(--primary)_0.86_calc(c*0.7)_h)] dark:bg-[oklch(from_var(--primary)_0.58_calc(c*0.9)_calc(h-10))]';
-const DEPTH =
-  'bg-[oklch(from_var(--primary)_0.88_calc(c*0.55)_calc(h-20))] dark:bg-[oklch(from_var(--primary)_0.4_calc(c*0.7)_calc(h-30))]';
-const WISP =
-  'bg-[oklch(from_var(--primary)_0.92_calc(c*0.45)_calc(h+15))] dark:bg-[oklch(from_var(--primary)_0.7_calc(c*0.8)_calc(h-5))]';
 
 const Hero02Backdrop = dynamic(() => import('./hero-02-backdrop'), {
   ssr: false,
@@ -48,23 +42,6 @@ const Hero02 = () => {
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
     >
-      <div aria-hidden data-slot="hero-wash" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div
-          className={cn(
-            'absolute start-1/2 -top-48 size-160 -translate-x-1/2 rounded-full opacity-60 blur-3xl rtl:translate-x-1/2 dark:opacity-30',
-            GLOW,
-          )}
-        />
-        <div
-          className={cn(
-            'absolute -start-32 -bottom-40 size-140 rounded-full opacity-55 blur-3xl dark:opacity-25',
-            DEPTH,
-          )}
-        />
-        <div
-          className={cn('absolute -end-32 -bottom-32 size-140 rounded-full opacity-50 blur-3xl dark:opacity-20', WISP)}
-        />
-      </div>
       <div
         aria-hidden
         data-slot="hero-backdrop"

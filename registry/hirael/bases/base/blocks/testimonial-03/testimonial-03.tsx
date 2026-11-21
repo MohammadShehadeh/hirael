@@ -39,15 +39,9 @@ const Testimonial03 = () => {
               style={stagger(1)}
               className={cn(ENTER, 'flex items-center justify-center gap-2 text-foreground sm:gap-3 md:justify-start')}
             >
-              <span
-                aria-hidden
-                className="hidden h-[2px] w-8 bg-linear-to-r from-transparent to-primary/50 sm:inline-flex rtl:bg-linear-to-l"
-              />
+              <span aria-hidden className="hidden h-px w-8 bg-border sm:inline-flex" />
               of the way and let
-              <span
-                aria-hidden
-                className="hidden h-[2px] w-8 bg-linear-to-l from-transparent to-primary/50 sm:inline-flex rtl:bg-linear-to-r"
-              />
+              <span aria-hidden className="hidden h-px w-8 bg-border sm:inline-flex" />
             </span>
             <span
               data-slot="testimonial-highlight"

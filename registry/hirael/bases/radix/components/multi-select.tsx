@@ -14,6 +14,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
+  CommandShortcut,
 } from '@/registry/hirael/bases/radix/ui/command';
 import { Spinner } from '@/registry/hirael/bases/radix/ui/spinner';
 import { InputGroup } from '@/registry/hirael/bases/radix/ui/input-group';
@@ -96,8 +97,15 @@ const MultiSelect = ({
   });
 
   const toggle = (v: string) => {
-    if (value.includes(v)) setValue(value.filter((x) => x !== v));
-    else if (maxCount === undefined || value.length < maxCount) setValue([...value, v]);
+    if (value.includes(v)) {
+      setValue(value.filter((x) => x !== v));
+
+      return;
+    }
+
+    if (maxCount === undefined || value.length < maxCount) {
+      setValue([...value, v]);
+    }
   };
 
   const remove = (v: string) => setValue(value.filter((x) => x !== v));
@@ -153,6 +161,8 @@ const MultiSelectTrigger = ({
   const selected = ctx.options.filter((o) => ctx.value.includes(o.value));
   const isDisabled = ctx.disabled || disabled;
 
+  // Radix's trigger only wires the toggle. On a div, focus, Enter/Space and disabled are ours
+  // (Base UI's `nativeButton={false}` covers them); Radix skips the toggle once `onClick` prevents default.
   return (
     <PopoverTrigger
       asChild
@@ -163,7 +173,6 @@ const MultiSelectTrigger = ({
       <InputGroup
         role="combobox"
         aria-controls={ctx.listboxId}
-        aria-expanded={ctx.open}
         aria-haspopup="listbox"
         aria-disabled={isDisabled || undefined}
         tabIndex={isDisabled ? -1 : 0}
@@ -175,27 +184,26 @@ const MultiSelectTrigger = ({
           event.currentTarget.click();
         }}
         className={cn(
-          'group h-auto min-h-9 cursor-pointer justify-between gap-2 px-2 py-1 text-start text-sm focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50',
-          isDisabled && 'cursor-not-allowed opacity-50',
+          'group h-auto min-h-9 cursor-pointer justify-between gap-2 px-2 py-1 text-start text-sm focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
           className,
         )}
         {...props}
       >
         {selected.length > 0 && (
-          <span
-            data-slot="multi-select-chips"
-            onClick={(event) => event.stopPropagation()}
-            className="flex flex-wrap items-center gap-1"
-          >
+          <span data-slot="multi-select-chips" className="flex flex-wrap items-center gap-1">
             {selected.map((opt) => (
               <Badge key={opt.value} variant="default" data-slot="multi-select-chip" className="gap-1 pe-1">
                 {opt.label}
-                {!isDisabled && (
+                {!isDisabled && !opt.disabled && (
                   <button
                     type="button"
                     data-slot="multi-select-chip-remove"
                     aria-label={removeLabel(opt.label)}
-                    onClick={() => ctx.remove(opt.value)}
+                    onClick={(event) => {
+                      // The chip sits inside the trigger; without this the click also toggles the popover.
+                      event.stopPropagation();
+                      ctx.remove(opt.value);
+                    }}
                     className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-sm text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
                   >
                     <X className="size-2.5" />
@@ -278,7 +286,6 @@ const MultiSelectContent = ({
   ...props
 }: MultiSelectContentProps) => {
   const ctx = useMultiSelect();
-  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const enabled = ctx.options.filter((o) => !o.disabled);
   const locked = ctx.options.filter((o) => o.disabled && ctx.value.includes(o.value)).map((o) => o.value);
@@ -290,20 +297,35 @@ const MultiSelectContent = ({
   const groups = new Map<string | undefined, MultiSelectOption[]>();
   for (const opt of ctx.options) groups.set(opt.group, [...(groups.get(opt.group) ?? []), opt]);
 
+  const handleSelectAll = () => {
+    if (allSelected) {
+      ctx.clear();
+
+      return;
+    }
+
+    // Keep what is already picked and fill the room left under maxCount.
+    const room = Math.max(0, (ctx.maxCount ?? Infinity) - ctx.value.length);
+    const additions = enabled
+      .map((o) => o.value)
+      .filter((v) => !ctx.value.includes(v))
+      .slice(0, room);
+
+    ctx.setValue([...ctx.value, ...additions]);
+  };
+
+  const handleClear = () => ctx.clear();
+
   return (
     <PopoverContent
       align="start"
       sideOffset={6}
       data-slot="multi-select-content"
       className={cn('w-(--radix-popover-trigger-width) min-w-56 p-0', className)}
-      onOpenAutoFocus={(e) => {
-        e.preventDefault();
-        inputRef.current?.focus();
-      }}
       {...props}
     >
       <Command shouldFilter loop>
-        <CommandInput ref={inputRef} placeholder={searchPlaceholder} />
+        <CommandInput placeholder={searchPlaceholder} />
         <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
@@ -321,37 +343,26 @@ const MultiSelectContent = ({
                     ))}
                   </CommandGroup>
                 ))}
+
               {(showSelectAllItem || showClearItem) && (
                 <>
                   <CommandSeparator />
                   <CommandGroup>
                     {showSelectAllItem && (
-                      <CommandItem
-                        onSelect={() => {
-                          if (allSelected) {
-                            ctx.clear();
-                          } else {
-                            // Keep what is already picked and fill the room left under maxCount.
-                            const room = Math.max(0, (ctx.maxCount ?? Infinity) - ctx.value.length);
-                            const additions = enabled
-                              .map((o) => o.value)
-                              .filter((v) => !ctx.value.includes(v))
-                              .slice(0, room);
-                            ctx.setValue([...ctx.value, ...additions]);
-                          }
-                        }}
-                        className="justify-between"
-                      >
+                      <CommandItem onSelect={handleSelectAll}>
                         <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
-                        <span className="text-xs text-muted-foreground tabular-nums">
+                        <CommandShortcut className="tabular-nums">
                           {selectedEnabled} / {enabled.length}
-                        </span>
+                        </CommandShortcut>
                       </CommandItem>
                     )}
+
                     {showClearItem && (
-                      <CommandItem onSelect={() => ctx.clear()} className="justify-between">
+                      <CommandItem onSelect={handleClear}>
                         <span className="text-xs uppercase">{clearLabel}</span>
-                        <X className="size-3 text-muted-foreground" />
+                        <CommandShortcut>
+                          <X className="size-3" />
+                        </CommandShortcut>
                       </CommandItem>
                     )}
                   </CommandGroup>

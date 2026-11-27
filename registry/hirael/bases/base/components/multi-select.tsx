@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { Check, ChevronDown, X } from 'lucide-react';
+import { ChevronDown, X } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
 import { Badge } from '@/registry/hirael/bases/base/ui/badge';
@@ -14,6 +14,7 @@ import {
   CommandItem,
   CommandList,
   CommandSeparator,
+  CommandShortcut,
 } from '@/registry/hirael/bases/base/ui/command';
 import { Spinner } from '@/registry/hirael/bases/base/ui/spinner';
 import { InputGroup } from '@/registry/hirael/bases/base/ui/input-group';
@@ -96,8 +97,15 @@ const MultiSelect = ({
   });
 
   const toggle = (v: string) => {
-    if (value.includes(v)) setValue(value.filter((x) => x !== v));
-    else if (maxCount === undefined || value.length < maxCount) setValue([...value, v]);
+    if (value.includes(v)) {
+      setValue(value.filter((x) => x !== v));
+
+      return;
+    }
+
+    if (maxCount === undefined || value.length < maxCount) {
+      setValue([...value, v]);
+    }
   };
 
   const remove = (v: string) => setValue(value.filter((x) => x !== v));
@@ -161,12 +169,10 @@ const MultiSelectTrigger = ({
         <InputGroup
           role="combobox"
           aria-controls={ctx.listboxId}
-          aria-expanded={ctx.open}
           aria-haspopup="listbox"
           data-slot="multi-select-trigger"
           className={cn(
-            'group h-auto min-h-9 cursor-pointer justify-between gap-2 px-2 py-1 text-start text-sm focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50',
-            isDisabled && 'cursor-not-allowed opacity-50',
+            'group h-auto min-h-9 cursor-pointer justify-between gap-2 px-2 py-1 text-start text-sm focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 data-disabled:cursor-not-allowed data-disabled:opacity-50',
             className,
           )}
           {...props}
@@ -174,20 +180,20 @@ const MultiSelectTrigger = ({
       }
     >
       {selected.length > 0 && (
-        <span
-          data-slot="multi-select-chips"
-          onClick={(event) => event.stopPropagation()}
-          className="flex flex-wrap items-center gap-1"
-        >
+        <span data-slot="multi-select-chips" className="flex flex-wrap items-center gap-1">
           {selected.map((opt) => (
             <Badge key={opt.value} variant="default" data-slot="multi-select-chip" className="gap-1 pe-1">
               {opt.label}
-              {!isDisabled && (
+              {!isDisabled && !opt.disabled && (
                 <button
                   type="button"
                   data-slot="multi-select-chip-remove"
                   aria-label={removeLabel(opt.label)}
-                  onClick={() => ctx.remove(opt.value)}
+                  onClick={(event) => {
+                    // The chip sits inside the trigger; without this the click also toggles the popover.
+                    event.stopPropagation();
+                    ctx.remove(opt.value);
+                  }}
                   className="ms-0.5 inline-flex size-3.5 items-center justify-center rounded-sm text-primary-foreground/70 hover:bg-primary-foreground/20 hover:text-primary-foreground"
                 >
                   <X className="size-2.5" />
@@ -236,24 +242,17 @@ const MultiSelectItem = ({ option, children, className, ...props }: MultiSelectI
   const atCap = !selected && ctx.maxCount !== undefined && ctx.value.length >= ctx.maxCount;
 
   return (
+    // Base UI's CommandItem draws its own trailing check from `data-checked`.
     <CommandItem
       value={`${option.label} ${option.value}`}
       disabled={option.disabled || atCap}
       onSelect={() => ctx.toggle(option.value)}
+      data-checked={selected}
       data-slot="multi-select-item"
-      className={cn('justify-between', className)}
+      className={className}
       {...props}
     >
       <span className="min-w-0 truncate">{children ?? option.label}</span>
-      <span
-        aria-hidden
-        className={cn(
-          'flex size-4 items-center justify-center rounded-sm border border-border transition-colors',
-          selected && 'border-primary bg-primary text-primary-foreground',
-        )}
-      >
-        {selected && <Check className="size-2.5" strokeWidth={3} />}
-      </span>
     </CommandItem>
   );
 };
@@ -269,7 +268,6 @@ const MultiSelectContent = ({
   ...props
 }: MultiSelectContentProps) => {
   const ctx = useMultiSelect();
-  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const enabled = ctx.options.filter((o) => !o.disabled);
   const locked = ctx.options.filter((o) => o.disabled && ctx.value.includes(o.value)).map((o) => o.value);
@@ -281,17 +279,35 @@ const MultiSelectContent = ({
   const groups = new Map<string | undefined, MultiSelectOption[]>();
   for (const opt of ctx.options) groups.set(opt.group, [...(groups.get(opt.group) ?? []), opt]);
 
+  const handleSelectAll = () => {
+    if (allSelected) {
+      ctx.clear();
+
+      return;
+    }
+
+    // Keep what is already picked and fill the room left under maxCount.
+    const room = Math.max(0, (ctx.maxCount ?? Infinity) - ctx.value.length);
+    const additions = enabled
+      .map((o) => o.value)
+      .filter((v) => !ctx.value.includes(v))
+      .slice(0, room);
+
+    ctx.setValue([...ctx.value, ...additions]);
+  };
+
+  const handleClear = () => ctx.clear();
+
   return (
     <PopoverContent
       align="start"
       sideOffset={6}
       data-slot="multi-select-content"
       className={cn('w-(--anchor-width) min-w-56 p-0', className)}
-      initialFocus={() => inputRef.current}
       {...props}
     >
       <Command shouldFilter loop>
-        <CommandInput ref={inputRef} placeholder={searchPlaceholder} />
+        <CommandInput placeholder={searchPlaceholder} />
         <CommandList id={ctx.listboxId}>
           {ctx.loading ? (
             <div className="flex items-center justify-center gap-2 py-6 text-xs text-muted-foreground">
@@ -309,37 +325,26 @@ const MultiSelectContent = ({
                     ))}
                   </CommandGroup>
                 ))}
+
               {(showSelectAllItem || showClearItem) && (
                 <>
                   <CommandSeparator />
                   <CommandGroup>
                     {showSelectAllItem && (
-                      <CommandItem
-                        onSelect={() => {
-                          if (allSelected) {
-                            ctx.clear();
-                          } else {
-                            // Keep what is already picked and fill the room left under maxCount.
-                            const room = Math.max(0, (ctx.maxCount ?? Infinity) - ctx.value.length);
-                            const additions = enabled
-                              .map((o) => o.value)
-                              .filter((v) => !ctx.value.includes(v))
-                              .slice(0, room);
-                            ctx.setValue([...ctx.value, ...additions]);
-                          }
-                        }}
-                        className="justify-between"
-                      >
+                      <CommandItem onSelect={handleSelectAll}>
                         <span className="text-xs uppercase">{allSelected ? clearLabel : selectAllLabel}</span>
-                        <span className="text-xs text-muted-foreground tabular-nums">
+                        <CommandShortcut className="tabular-nums">
                           {selectedEnabled} / {enabled.length}
-                        </span>
+                        </CommandShortcut>
                       </CommandItem>
                     )}
+
                     {showClearItem && (
-                      <CommandItem onSelect={() => ctx.clear()} className="justify-between">
+                      <CommandItem onSelect={handleClear}>
                         <span className="text-xs uppercase">{clearLabel}</span>
-                        <X className="size-3 text-muted-foreground" />
+                        <CommandShortcut>
+                          <X className="size-3" />
+                        </CommandShortcut>
                       </CommandItem>
                     )}
                   </CommandGroup>

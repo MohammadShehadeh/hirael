@@ -19,6 +19,7 @@ export const useControllableState = <T>({ prop, defaultProp, onChange }: UseCont
   // Read through a ref so an inline `onChange` doesn't give the setter a new identity every render,
   // which would defeat the memoized context values built on it.
   const onChangeRef = React.useRef(onChange);
+
   React.useLayoutEffect(() => {
     onChangeRef.current = onChange;
   });

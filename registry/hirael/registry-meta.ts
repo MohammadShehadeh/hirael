@@ -5669,6 +5669,12 @@ export interface ExampleRef {
 }
 
 const EXAMPLE_OVERRIDES: Record<string, ExampleRef[]> = {
+  'multi-select': [
+    { slug: 'multi-select-demo', title: 'Example' },
+    { slug: 'multi-select-disabled', title: 'Disabled and locked options' },
+    { slug: 'multi-select-limit', title: 'Selection limit' },
+    { slug: 'multi-select-loading', title: 'Loading on open' },
+  ],
   'tag-input': [
     { slug: 'tag-input-demo', title: 'Tags' },
     { slug: 'tag-input-emails', title: 'Validated emails' },

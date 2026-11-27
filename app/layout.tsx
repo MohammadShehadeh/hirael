@@ -93,9 +93,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: customizerPrehydrationScript() }} />
-
         <JsonLd id="hirael-jsonld" data={siteJsonLd()} />
-
         <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt" />
         <link rel="alternate" type="application/json" title="Registry catalog" href="/r/registry.json" />
       </head>

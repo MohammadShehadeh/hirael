@@ -47,5 +47,80 @@ describe.each(Object.entries(registry))(
       );
       expect(screen.getByText('2 / 2')).toBeInTheDocument();
     });
+
+    it('should stay closed when a disabled trigger is clicked', async () => {
+      render(
+        <MultiSelect options={OPTIONS} disabled>
+          <MultiSelectTrigger />
+          <MultiSelectContent />
+        </MultiSelect>,
+      );
+      await userEvent.setup().click(screen.getByRole('combobox'));
+      expect(screen.queryByText('Select all')).not.toBeInTheDocument();
+    });
+
+    it('should open from the keyboard', async () => {
+      render(
+        <MultiSelect options={OPTIONS}>
+          <MultiSelectTrigger />
+          <MultiSelectContent />
+        </MultiSelect>,
+      );
+      const user = userEvent.setup();
+      const trigger = screen.getByRole('combobox');
+      await user.tab();
+      expect(trigger).toHaveFocus();
+      await user.keyboard('{Enter}');
+      expect(screen.getByText('Select all')).toBeInTheDocument();
+      expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
+    it('should focus the search input when opened', async () => {
+      render(
+        <MultiSelect options={OPTIONS}>
+          <MultiSelectTrigger />
+          <MultiSelectContent />
+        </MultiSelect>,
+      );
+      await userEvent.setup().click(screen.getByRole('combobox'));
+      expect(await screen.findByPlaceholderText('Search…')).toHaveFocus();
+    });
+
+    it('should skip a disabled trigger in the tab order and mark it disabled', async () => {
+      render(
+        <MultiSelect options={OPTIONS} disabled>
+          <MultiSelectTrigger />
+          <MultiSelectContent />
+        </MultiSelect>,
+      );
+      await userEvent.setup().tab();
+      const trigger = screen.getByRole('combobox');
+      expect(trigger).not.toHaveFocus();
+      expect(trigger).toHaveAttribute('aria-disabled', 'true');
+    });
+
+    it('should not offer to remove a locked option chip', () => {
+      render(
+        <MultiSelect options={[{ value: 'x', label: 'X', disabled: true }, ...OPTIONS]} defaultValue={['x', 'a']}>
+          <MultiSelectTrigger />
+          <MultiSelectContent />
+        </MultiSelect>,
+      );
+      expect(screen.queryByRole('button', { name: 'Remove X' })).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Remove A' })).toBeInTheDocument();
+    });
+
+    it('should remove a chip without opening the popover', async () => {
+      const onValueChange = vi.fn();
+      render(
+        <MultiSelect options={OPTIONS} defaultValue={['a', 'b']} onValueChange={onValueChange}>
+          <MultiSelectTrigger />
+          <MultiSelectContent />
+        </MultiSelect>,
+      );
+      await userEvent.setup().click(screen.getByRole('button', { name: 'Remove A' }));
+      expect(onValueChange).toHaveBeenLastCalledWith(['b']);
+      expect(screen.queryByText('Select all')).not.toBeInTheDocument();
+    });
   },
 );
